@@ -5,4 +5,140 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 		
 <mapper namespace="TicketMapper">
+
+	<resultMap type="ticket" id="selectTicketMap">
+		<result property="ticketNo" column="ticket_no" jdbcType="NUMERIC"/>
+		<result property="ticketPrice" column="ticket_price" jdbcType="NUMERIC"/>
+		<result property="ticketCount" column="ticket_count" jdbcType="NUMERIC"/>
+		
+		<association property="festival" javaType="com.codebrew.moana.service.domain.Festival">
+			<id property="festivalNo" column="festival_no" jdbcType="NUMERIC"/>
+			<result property="festivalName" column="festival_name" jdbcType="VARCHAR"/>
+			<result property="festivalImage" column="festival_image" jdbcType="VARCHAR"/>
+			<result property="startDate" column="start_date" jdbcType="VARCHAR"/>
+			<result property="endDate" column="end_date" jdbcType="VARCHAR"/>
+			<result property="addr" column="addr" jdbcType="VARCHAR"/>
+		</association>
+		
+		<association property="party" javaType="com.codebrew.moana.service.domain.Party">
+			<id property="partyNo" column="party_no" jdbcType="NUMERIC"/>
+			<result property="partyName" column="party_name" jdbcType="VARCHAR"/>
+			<result property="partyDate" column="party_date" jdbcType="DATE"/>
+			<result property="partyTime" column="party_time" jdbcType="VARCHAR"/>
+			<result property="partyPlace" column="party_place" jdbcType="VARCHAR"/>
+			<result property="partyImage" column="party_image" jdbcType="VARCHAR"/>
+		</association>
+	</resultMap>
+	
+	<insert id="addTicket" parameterType="ticket"
+		useGeneratedKeys="true" keyProperty="ticketNo" keyColumn="ticket_no">
+		INSERT INTO ticket (ticket_no, festival_no, party_no, ticket_price, ticket_count)
+		VALUES (
+			seq_ticket_ticket_no.NEXTVAL,
+			<if test="festival != null">
+			#{festival.festivalNo}
+			</if>
+			<if test="festival == null">
+			null
+			</if>,
+			<if test="party != null">
+			 #{party.partyNo}
+			</if>
+			<if test="party == null">
+			null
+			</if>,
+			#{ticketPrice},
+			#{ticketCount}
+		)
+	</insert>
+	
+	<select id="getTicketByTicketNo" parameterType="ticket" resultMap="selectTicketMap">
+		SELECT
+		t.ticket_no AS ticket_no,
+		f.festival_no AS festival_no,
+		f.festival_name AS festival_name,
+		f.addr AS addr,
+		f.start_date AS start_date,
+		f.end_date AS end_date,
+		f.festival_image AS festival_image,
+		p.party_no AS party_no,
+		p.party_name AS party_name,
+		p.party_place AS party_place,
+		p.party_date AS party_date,
+		p.party_time AS party_time,
+		p.party_image AS party_image,
+		t.ticket_price AS ticket_price,
+		t.ticket_count AS ticket_count
+		FROM festival f, party p, ticket t
+		WHERE t.festival_no = f.festival_no(+)
+		AND t.party_no = p.party_no(+)
+		AND t.ticket_no = #{ticketNo}
+	</select>
+	
+	<select id="getTicket" parameterType="ticket" resultMap="selectTicketMap">
+		SELECT
+		t.ticket_no AS ticket_no,
+		<if test="festival != null">
+		f.festival_no AS festival_no,
+		f.festival_name AS festival_name,
+		f.addr AS addr,
+		f.start_date AS start_date,
+		f.end_date AS end_date,
+		f.festival_image AS festival_image,
+		</if>
+		<if test="party != null">
+		p.party_no AS party_no,
+		p.party_name AS party_name,
+		p.party_place AS party_place,
+		p.party_date AS party_date,
+		p.party_time AS party_time,
+		p.party_image AS party_image,
+		</if>
+		t.ticket_price AS ticket_price,
+		t.ticket_count AS ticket_count
+		FROM 
+		<if test="festival != null">
+			festival f,
+		</if>
+		<if test="party != null">
+			 party p,
+		</if>
+		ticket t
+		<where>
+			<if test="festival != null">
+				t.festival_no = f.festival_no
+				AND f.festival_no = #{festival.festivalNo}
+			</if>
+			<if test="party != null">
+				t.party_no = p.party_no
+				AND p.party_no = #{party.partyNo}
+			</if>
+		</where>
+	</select>
+	
+	<update id="updateTicket" parameterType="ticket">
+		UPDATE ticket
+		<set>
+			<if test="ticketPrice != 0">
+				ticket_price = #{ticketPrice},
+			</if>
+			<if test="ticketCount != 0">
+				ticket_count = #{ticketCount}
+			</if>
+		</set>
+		<where>
+			<if test="festival != null">
+				festival_no = #{festival.festivalNo}
+			</if>
+			<if test="party != null">
+				party_no = #{party.partyNo}
+			</if>
+		</where>
+	</update>
+	
+	<update id="updateTicketCount" parameterType="ticket">
+		UPDATE ticket
+		SET	ticket_count = #{ticketCount}
+		WHERE ticket_no = #{ticketNo}
+	</update>
 </mapper>
