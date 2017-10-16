@@ -4,12 +4,13 @@
 <%
 	
 	Party party = new Party();
-	party.setPartyNo(10001);
-	party.setPartyName("세리찡의파티");
-	party.setPartyImage("http://tong.visitkorea.or.kr/cms/resource/18/1999118_image2_1.jpg");
-	party.setPartyPlace("서울턱별시 강남");
-	party.setTicketCount(35);
-	party.setTicketPrice(50000);
+	party.setPartyNo(10000);
+	party.setPartyName("할로윈 파티");
+	party.setPartyImage("1507724033981_party1.jpg");
+	party.setPartyPlace("서울특별시 서초구 강남대로53길 8 비트아카데미빌딩");
+	party.setPartyTime("20시00분");
+	party.setTicketCount(50);
+	party.setTicketPrice(500);
 	
 	request.setAttribute("party", party);
 	

@@ -126,6 +126,12 @@
 							</div>
 							<div class="col-md-12">
 								<small>
+									<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+									${ticket.party.partyTime}
+								</small>
+							</div>
+							<div class="col-md-12">
+								<small>
 									<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
 									${ticket.party.partyPlace}
 								</small>
@@ -151,7 +157,7 @@
 							<div class="row">
 								<div class="col-xs-4 col-md-6"><strong>결제상태</strong></div>
 								<div class="col-xs-8 col-md-6">
-									<c:if test="${empty purchase.tranCode}">
+									<c:if test="${purchase.tranCode == 1}">
 										결제완료
 									</c:if>
 									<c:if test="${purchase.tranCode == 2}">
@@ -161,7 +167,7 @@
 							</div>
 							<hr>
 							<div class="row">
-								<img class="col-md-offset-3" width="50%" height="50%" src="../../resources/image/QRCodeImage/qrcode.png">
+								<img class="col-md-offset-3" width="50%" height="50%" src="../../resources/image/QRCodeImage/${purchase.qrCode.qrCodeImage}">
 							</div>
 							<button class="btn btn-default" type="button">확인</button>
 							<button class="btn btn-primary" type="button" value="${purchase.purchaseNo}">결제취소하기</button>

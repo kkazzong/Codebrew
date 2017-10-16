@@ -2,7 +2,7 @@
     pageEncoding="EUC-KR"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
 <%-- <%@ include file="/data/purchaseData.jsp" %> --%>
-<%-- <%@ include file="/data/userData.jsp" %> --%>
+<%@ include file="/data/purchase/userData.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -127,6 +127,12 @@
 										<small>
 											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
 											${purchase.ticket.party.partyDate}
+										</small>
+									</div>
+									<div class="col-md-12">
+										<small>
+											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+											${purchase.ticket.party.partyTime}
 										</small>
 									</div>
 									<div class="col-md-12">

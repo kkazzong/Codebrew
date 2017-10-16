@@ -64,6 +64,7 @@
 		
 		//구매수량 선택 시
 		$("select").on("change",function(){
+			
 			selectedCount = $("select option:selected").val();
 			ticketPrice = $("input:hidden[name='ticketPrice']").val();
 			purchasePrice = selectedCount * ticketPrice;
@@ -78,6 +79,8 @@
 			
 			$("#purchaseCount").html(selectedCount); //구매수량
 			$("#purchasePrice").html(purchasePrice); //결제금액
+			
+			$("#kakaoPay").removeAttr("disabled"); //카카오페이 버튼 활성화
 		});
 		
 		//카카오페이 클릭 시
@@ -148,7 +151,7 @@
 					<!-- 파티정보 -->
 					<c:if test="${!empty party}">
 						<input type="hidden" name="party.partyName" value="${party.partyName}">
-						<img class="col-md-6" height="90" src="${party.partyImage}">
+						<img class="col-md-6" height="90" src="../../resources/image/uploadFile/${party.partyImage}">
 						<div class="row">
 							<div class="col-md-6">
 								<strong>${party.partyName}</strong>
@@ -163,15 +166,20 @@
 					</c:if>
 					
 					<!-- 수량선택 -->
+									<c:if test="${ticket.ticketCount == 0}">
+										<jsp:include page="soldOutTicket.jsp"></jsp:include>										
+									</c:if>
 					<div class="row">
 						<div class="col-md-offset-2 col-xs-4 col-md-8">
 								<div class="form-group form-inline">
 									<label class="control-label" for="ticketCount">수량선택</label>
 									<select class="col-md-offset-5 form-control input-sm" name="ticketCount">
+									<c:if test="${ticket.ticketCount > 0 }">
 										<option>선택하세요</option>
 											<c:forEach begin="1" end="${ticket.ticketCount}" var="i" step="1">
 												<option>${i}</option>
 											</c:forEach>
+									</c:if>
 									</select>
 								</div>
 						</div>
@@ -201,7 +209,7 @@
 					<!-- 카카오페이 -->
 					<div class="row">
 						<div class="col-md-offset-4 col-md-4">
-							<button class="btn btn-link btn-block" type="button"><img src="../../resources/image/buttonImage/kakaopay.png"></button>
+							<button id="kakaoPay" class="btn btn-link btn-block" disabled="disabled" type="button"><img src="../../resources/image/buttonImage/kakaopay.png"></button>
 						</div>
 					</div>
 					
