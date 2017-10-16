@@ -11,6 +11,8 @@ public class Search {
 	private int startRowNum;
 	
 	private String arrange;
+
+
 	
 	///Constructor
 	public Search() {
@@ -24,15 +26,9 @@ public class Search {
 	public String getArrange() {
 		return arrange;
 	}
-
-	public void setArrange(String arrange) {
-		this.arrange = arrange;
-	}
-	
 	public int getPageSize() {
 		return pageSize;
 	}
-
 	public void setPageSize(int paseSize) {
 		this.pageSize = paseSize;
 	}
@@ -44,6 +40,10 @@ public class Search {
 		this.currentPage = currentPage;
 	}
 
+	public void setArrange(String arrange) {
+		this.arrange = arrange;
+	}
+	
 	public String getSearchCondition() {
 		return searchCondition;
 	}
@@ -72,4 +72,5 @@ public class Search {
 				+ ", pageSize=" + pageSize + ", endRowNum=" + endRowNum
 				+ ", startRowNum=" + startRowNum + ", arrange="+ arrange+"]";
 	}
+
 }

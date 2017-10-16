@@ -1,6 +1,6 @@
 package com.codebrew.moana.service.domain;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class User {
 	
