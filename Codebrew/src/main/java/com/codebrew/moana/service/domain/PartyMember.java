@@ -2,6 +2,7 @@ package com.codebrew.moana.service.domain;
 
 public class PartyMember {
     //수정후
+	//파티멤버수정
 	///Field///
 	private int partyMemberNo;
 	private Party party;
