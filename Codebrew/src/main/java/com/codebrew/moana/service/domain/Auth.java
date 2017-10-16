@@ -2,8 +2,8 @@ package com.codebrew.moana.service.domain;
 
 public class Auth {
 	
-	private String authId;
-	private String authCode;
+	private String authId;//이메일
+	private String authCode;//인증코드
 	
 	
 	public Auth() {
