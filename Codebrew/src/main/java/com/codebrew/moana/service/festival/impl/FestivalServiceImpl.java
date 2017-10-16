@@ -85,7 +85,7 @@ public class FestivalServiceImpl implements FestivalService{
 		
 		List<Festival> list = festivalDAO.getFestivalListDB(search);
 		int totalCount = festivalDAO.getTotalCount(search);
-
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", list);
 		map.put("totalCount", new Integer(totalCount));
