@@ -4,5 +4,50 @@
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 		
-<mapper namespace="PartyMapper">
+		
+<mapper namespace = "PartyMapper">
+
+	<resultMap type="com.codebrew.moana.service.domain.Party" id="partySelectMap">
+		<result property="partyNo" column="party_no" jdbcType="NUMERIC"/>
+		<result property="partyName" column="party_name" jdbcType="VARCHAR2"/>
+		<result property="festival.festivalNo" column="festival_no" jdbcType="NUMERIC"/>
+		<result property="user.userId" column="user_id" jdbcType="VARCHAR2"/>
+		<result property="partyDate" column="party_date" jdbcType="DATE"/>
+		<result property="partyTime" column="party_time" jdbcType="VARCHAR2"/>
+		<result property="partyMemberLimit" column="party_member_limit" jdbcType="NUMERIC"/>
+		<result property="partyImage" column="party_image" jdbcType="VARCHAR2"/>
+		<result property="partyDetail" column="party_detail" jdbcType="VARCHAR2"/>
+		<result property="partyPlace" column="party_place" jdbcType="VARCHAR2"/>
+		<result property="partyRegDate" column="party_reg_date" jdbcType="DATE"/>
+		<result property="deleteFlag" column="delete_flag" jdbcType="VARCHAR2"/>
+	</resultMap>
+	
+	<insert id="addParty" parameterType="com.codebrew.moana.service.domain.Party" useGeneratedKeys="true" keyProperty="partyNo" keyColumn="party_no">
+		INSERT
+		INTO party(party_no, party_name, festival_no, user_id, party_date, party_time, party_member_limit
+		, party_image, party_detail, party_place, party_reg_date, delete_flag)
+		VALUES(seq_party_party_no.nextval
+		,#{partyName:VARCHAR2}
+		,#{festival.festivalNo:NUMERIC}
+		,#{user.userId:VARCHAR2}
+		,#{partyDate:DATE}
+		,#{partyTime:VARCHAR2}
+		,#{partyMemberLimit:NUMERIC}
+		,#{partyImage:VARCHAR2}
+		,#{partyDetail:VARCHAR2}
+		,#{partyPlace:VARCHAR2}
+		,SYSDATE
+		,#{delete_flag:VARCHAR2})
+	</insert>
+		
+
+	<select id="getParty" parameterType="int" resultMap="partySelectMap">
+		SELECT p.party_no, p.party_name, f.festival_name, u.nickname
+				, p.party_date, p.party_time, p.party_member_limit, p.party_image
+				, p.party_detail, p.party_place, p.party_reg_date
+		FROM party p, test_user u, festival f
+		WHERE p.user_id = u.user_id
+		AND p.festival_no = f.festival_no
+		AND p.PARTY_NO = #{partyNo}
+	</select>
 </mapper>
