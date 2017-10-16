@@ -4,8 +4,8 @@
 <%
 	
 	/* User user = new User();
-	user.setUserId("lgj1522@gmail.com");
-	user.setNickname("까까종");
+	user.setUserId("user04@naver.com");
+	user.setNickname("까정");
 	
 	request.setAttribute("user", user); */
 	
