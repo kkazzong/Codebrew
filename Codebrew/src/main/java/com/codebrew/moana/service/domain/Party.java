@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class Party {
 
+	//파티도메인 필드 추가
 	///Field///
 	private int partyNo;
 	private String partyName;
