@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <!DOCTYPE html>
 <html>
@@ -16,6 +16,13 @@
 <!-- jQuery -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script type="text/javascript">
+
+	function fncGetList(currentPage) {
+		console.log("페이지클릭 : "+currentPage);
+		$("#currentPage").val(currentPage);
+		$("#searchForm").attr("method", "POST").attr("action", "/purchase/getSaleList").submit();
+	}
+	
 </script>
 <style type="text/css">
 	body {
@@ -35,45 +42,53 @@
 		<div class="row">
 			<div class="col-md-offset-4 col-md-4">
 				<div class="page-header text-center">
-					<h3 class="text-info"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> �ǸŸ��</h3>
+					<h3 class="text-info"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> 판매목록</h3>
 				</div>
 			</div>
 		</div>
 		
 		<div class="row">
 			<div class="col-md-offset-1 col-md-2 ">
-				<!-- ���� -->
+				<!-- 정렬 -->
 				<form class="form form-inline" id="orderForm" name="orderForm">
 					<select class="form-group">
-						<option value="" selected="selected">����</option>
-						<optgroup label="����">
-							<option value="1">���ݡ�</option>
-							<option value="2">���ݡ�</option>
+						<option value="" selected="selected">필터</option>
+						<optgroup label="가격">
+							<option value="1">가격▲</option>
+							<option value="2">가격▼</option>
 						</optgroup>
-						<optgroup label="���̵�">
-							<option value="3">���̵��</option>
-							<option value="4">���̵��</option>
+						<optgroup label="아이디">
+							<option value="3">아이디▲</option>
+							<option value="4">아이디▼</option>
 						</optgroup>
-						<optgroup label="���ų�¥">
-							<option value="5">���ų�¥��</option>
-							<option value="6">���ų�¥��</option>
+						<optgroup label="구매날짜">
+							<option value="5">구매날짜▲</option>
+							<option value="6">구매날짜▼</option>
 						</optgroup>
 					</select>
 				</form>
 			</div>
 			<div class="col-md-offset-4 col-md-5 ">
-				<!-- �˻� -->
+				<!-- 검색 -->
 				<form class="form form-inline" id="searchForm" name="searchForm">
+					<input type="hidden" id="currentPage" name="currentPage" value=""/>
 					<select class="form-group">
-						<option value="1" selected="selected">���Ź�ȣ</option>
-						<option value="2">���̵�</option>
+						<option value="1" selected="selected">구매번호</option>
+						<option value="2">아이디</option>
 					</select>
 					<input class="form-group" name="searchKeyword" type="text">
-					<button class="btn btn-default" type="button">�˻�</button>
+					<button class="btn btn-default" type="button">검색</button>
 				</form>
 			</div>
 		</div>
 		
+		<!-- 데이터 수 -->
+		<div class="row">
+			<div class="col-md-offset-1 col-md-10">
+				<h5>총 : ${resultPage.totalCount} 건</h5>
+				<h5>현재 : ${resultPage.currentPage} 페이지</h5>
+			</div>
+		</div>
 		<!-- table -->
 		<div class="row">
 			<div class="col-md-offset-1 col-md-10">
@@ -81,13 +96,13 @@
 					<thead>
 						<tr>
 							<th>NO</th>
-							<th>���Ź�ȣ</th>
-							<th>���̵�</th>
-							<th>Ƽ�ϸ�</th>
-							<th>���ų�¥</th>
-							<th>����</th>
-							<th>�����ݾ�</th>
-							<th>����</th>
+							<th>구매번호</th>
+							<th>아이디</th>
+							<th>티켓명</th>
+							<th>구매날짜</th>
+							<th>수량</th>
+							<th>결제금액</th>
+							<th>상태</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -102,8 +117,8 @@
 								<td>${purchase.purchaseCount}</td>
 								<td>${purchase.purchasePrice}</td>
 								<td>
-								<c:if test="${empty purchase.tranCode}">�����Ϸ�</c:if>
-								<c:if test="${purchase.tranCode == 2}">�������</c:if>
+								<c:if test="${empty purchase.tranCode}">결제완료</c:if>
+								<c:if test="${purchase.tranCode == 2}">결제취소</c:if>
 								</td>
 							</tr>
 						</c:forEach>
@@ -112,46 +127,50 @@
 			</div>
 		</div>
 		
+		<!-- 내가 만든 페이지네비게이터 -->
+		<jsp:include page="../../common/pageNavigator_new.jsp"/>
+		<%-- <jsp:include page="../../common/pageNavigator.jsp"/> --%>
+		
 	</div>
 	
 	<%-- <form name="orderForm">
 		<select>
-			<option value="" selected="selected">����</option>
-			<optgroup label="����">
-				<option value="1">���ݡ�</option>
-				<option value="2">���ݡ�</option>
+			<option value="" selected="selected">필터</option>
+			<optgroup label="가격">
+				<option value="1">가격▲</option>
+				<option value="2">가격▼</option>
 			</optgroup>
-			<optgroup label="���̵�">
-				<option value="3">���̵��</option>
-				<option value="4">���̵��</option>
+			<optgroup label="아이디">
+				<option value="3">아이디▲</option>
+				<option value="4">아이디▼</option>
 			</optgroup>
-			<optgroup label="���ų�¥">
-				<option value="5">���ų�¥��</option>
-				<option value="6">���ų�¥��</option>
+			<optgroup label="구매날짜">
+				<option value="5">구매날짜▲</option>
+				<option value="6">구매날짜▼</option>
 			</optgroup>
 		</select>
 	</form>
 	
 	<form name="searchForm">
 		<select>
-			<option value="1" selected="selected">���Ź�ȣ</option>
-			<option value="2">���̵�</option>
+			<option value="1" selected="selected">구매번호</option>
+			<option value="2">아이디</option>
 		</select>
 		<input name="searchKeyword" type="text">
-		<button type="button">�˻�</button>
+		<button type="button">검색</button>
 	</form>
 	
 	<table>
 		<thead>
 			<tr>
 				<th>NO</th>
-				<th>���Ź�ȣ</th>
-				<th>���̵�</th>
-				<th>Ƽ�ϸ�</th>
-				<th>���ų�¥</th>
-				<th>����</th>
-				<th>�����ݾ�</th>
-				<th>����</th>
+				<th>구매번호</th>
+				<th>아이디</th>
+				<th>티켓명</th>
+				<th>구매날짜</th>
+				<th>수량</th>
+				<th>결제금액</th>
+				<th>상태</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -166,8 +185,8 @@
 					<td>${purchase.purchaseCount}</td>
 					<td>${purchase.purchasePrice}</td>
 					<td>
-					<c:if test="${empty purchase.tranCode}">�����Ϸ�</c:if>
-					<c:if test="${purchase.tranCode == 2}">�������</c:if>
+					<c:if test="${empty purchase.tranCode}">결제완료</c:if>
+					<c:if test="${purchase.tranCode == 2}">결제취소</c:if>
 					</td>
 				</tr>
 			</c:forEach>

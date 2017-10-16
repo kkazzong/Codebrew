@@ -4,9 +4,13 @@
 <%
 	
 	User user = new User();
-	user.setUserId("user04@naver.com");
-	user.setNickname("까정");
 	
-	request.setAttribute("user", user); 
+	//user.setUserId("user04@naver.com");
+	//user.setNickname("까정");
 	
+	user.setUserId("user03@naver.com");
+	user.setNickname("썽경");
+	
+	session.setAttribute("user", user);
+
 %>

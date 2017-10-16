@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
+import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Purchase;
 import com.codebrew.moana.service.domain.QRCode;
 import com.codebrew.moana.service.purchase.PurchaseDAO;
@@ -69,24 +70,31 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 	}
 
 	@Override
-	public List<Purchase> getPurchaseList(String userId, String purchaseFlag) {
-		Map<String, String> map = new HashMap<String, String>();
+	public List<Purchase> getPurchaseList(String userId, String purchaseFlag, Search search) {
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("userId", userId);
+		map.put("search", search);
 		List<Purchase> list = null;
+		if(purchaseFlag == null) {
+			purchaseFlag = "";
+		}
 		switch (purchaseFlag) {
-		case "1":
-			list = sqlSession.selectList("PurchaseMapper.getFestivalPurchaseList", map);
-			break;
-		case "2":
-			list = sqlSession.selectList("PurchaseMapper.getPartyPurchaseList", map);
-			break;
+			case "1":
+				list = sqlSession.selectList("PurchaseMapper.getFestivalPurchaseList", map);
+				break;
+			case "2":
+				list = sqlSession.selectList("PurchaseMapper.getPartyPurchaseList", map);
+				break;
+			default : 
+				list = sqlSession.selectList("PurchaseMapper.getPurchaseList", map);
+				break;
 		}
 		return list;
 	}
 
 	@Override
-	public List<Purchase> getSaleList() {
-		return sqlSession.selectList("PurchaseMapper.getSaleList");
+	public List<Purchase> getSaleList(Search search) {
+		return sqlSession.selectList("PurchaseMapper.getSaleList", search);
 	}
 
 	@Override
@@ -343,6 +351,14 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			e.printStackTrace();
 		}
 
+	}
+	
+	@Override
+	public int getTotalCount(String userId, Search search) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("search", search);
+		map.put("userId", userId);
+		return sqlSession.selectOne("PurchaseMapper.getTotalCount", map);
 	}
 
 	//create qrcode image

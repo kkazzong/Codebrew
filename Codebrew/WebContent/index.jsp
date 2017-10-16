@@ -21,5 +21,15 @@
 
 <a href="/festival/getFestivalListDB"> 축제리스트 (서버DB) 회원 / 비회원 </a>
 
+<!-- 가정이가 써보았다 -->
+<br>
+<br>
+
+<a href="/purchase/getSaleList"> 판매목록 (관리자only) </a>
+
+<br>
+<br>
+
+<a href="/purchase/getPurchaseList?userId=user03@naver.com"> my티켓 </a>
 </body>
 </html>

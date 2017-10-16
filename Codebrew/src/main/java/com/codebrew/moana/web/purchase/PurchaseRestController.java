@@ -42,7 +42,8 @@ public class PurchaseRestController {
 	}
 	
 	@RequestMapping("/json/readyPayment/{ticketNo}")
-	public Purchase readyPayment(@RequestBody Purchase purchase, @PathVariable int ticketNo) {
+	public Purchase readyPayment(@RequestBody Purchase purchase,
+														@PathVariable("ticketNo") int ticketNo) {
 		
 		System.out.println(ticketNo);
 		System.out.println(purchase);
@@ -84,10 +85,13 @@ public class PurchaseRestController {
 		}
 		
 		User user = new User();
-		user.setUserId("user04@naver.com");
-		user.setNickname("까정");
+		//user.setUserId("user04@naver.com");
+		//user.setNickname("까정");
+		//user.setUserId("user03@naver.com");
+		//user.setNickname("썽경");
+		//User user = userService.getUser(userId);
 		
-		purchase.setUser(user);
+		//purchase.setUser(user);
 		return purchaseService.readyPayment(purchase);
 	}
 	

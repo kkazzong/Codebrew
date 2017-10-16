@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Purchase;
 import com.codebrew.moana.service.purchase.PurchaseDAO;
 import com.codebrew.moana.service.purchase.PurchaseService;
@@ -64,18 +65,22 @@ public class PurchaseServiceImpl implements PurchaseService {
 	}
 	
 	@Override
-	public Map<String, Object> getPurchaseList(String userId, String purchaseFlag) {
-		List<Purchase> list = purchaseDAO.getPurchaseList(userId, purchaseFlag);
+	public Map<String, Object> getPurchaseList(String userId, String purchaseFlag, Search search) {
+		List<Purchase> list = purchaseDAO.getPurchaseList(userId, purchaseFlag, search);
+		int totalCount = purchaseDAO.getTotalCount(userId, search);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", list);
+		map.put("totalCount", totalCount);
 		return map;
 	}
 	
 	@Override
-	public Map<String, Object> getSaleList() {
-		List<Purchase> list = purchaseDAO.getSaleList();
+	public Map<String, Object> getSaleList(Search search) {
+		List<Purchase> list = purchaseDAO.getSaleList(search);
+		int totalCount = purchaseDAO.getTotalCount(null, search);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", list);
+		map.put("totalCount", totalCount);
 		return map;
 	}
 	
