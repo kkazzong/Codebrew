@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +18,8 @@ import com.codebrew.moana.service.domain.User;
 import com.codebrew.moana.service.purchase.PurchaseService;
 import com.codebrew.moana.service.ticket.TicketService;
 
+@Controller
+@RequestMapping("/purchase/*")
 public class PurchaseController {
 
 	@Autowired
@@ -51,7 +54,7 @@ public class PurchaseController {
 		//user.setUserId("lgj1522@gmail.com");
 		//user.setNickname("�����");
 		
-//		System.out.println("������ȣ : "+festivalNo+" | ��Ƽ��ȣ : "+partyNo);
+		System.out.println("축제라면 : "+festivalNo+" 파티라면 : "+partyNo);
 		ModelAndView modelAndView = new ModelAndView();
 		if(festivalNo != null) {
 			System.out.println("디즈이즈 축제");
