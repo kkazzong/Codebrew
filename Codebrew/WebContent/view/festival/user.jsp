@@ -15,7 +15,7 @@ user.setGender("여자");
 user.setAge(27);
 user.setLocationFlag(null);
 user.setNickname("gj");
-user.setRegDate(new Date(20150505));
+/* user.setRegDate(new Date(20150505)); */
 user.setCoconutCount(30);
 
 

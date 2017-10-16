@@ -15,7 +15,7 @@
 	user.setAge(27);
 	user.setLocationFlag(null);
 	user.setNickname("sk");
-	user.setRegDate(new Date(20171106));
+	/* user.setRegDate(new Date(20171106)); */
 	user.setCoconutCount(10);
 	
 	

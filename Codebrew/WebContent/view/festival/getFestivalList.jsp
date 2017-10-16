@@ -37,7 +37,7 @@
 		 $( "button:contains('축제명으로 찾기')" ).on("click" , function() {
 			 /* $("form").attr("method" , "GET").attr("action" , "/festival/searchKeywordList").submit(); */
 			 
-			 self.location = "/festival/searchKeywordList.jsp";
+			 self.location = "/view/festival/searchKeywordList.jsp";
 		});
 });
    

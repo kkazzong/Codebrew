@@ -2,10 +2,10 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%-- <%@include file="/view/festival/admin.jsp"%> --%>
+<%@include file="/view/festival/admin.jsp"%>
 
+<%-- <%@include file="/view/festival/user.jsp"%> --%>
 
-<%@include file="/view/festival/user.jsp"%>
 
 
 <!DOCTYPE html>
