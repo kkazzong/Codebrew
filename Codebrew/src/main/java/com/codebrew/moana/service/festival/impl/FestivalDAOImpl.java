@@ -24,7 +24,7 @@ import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Festival;
 import com.codebrew.moana.service.festival.FestivalDAO;
 
-@Repository("festivalDaoImpl")
+@Repository("festivalDAOImpl")
 public class FestivalDAOImpl implements FestivalDAO {
 
 	/// Field

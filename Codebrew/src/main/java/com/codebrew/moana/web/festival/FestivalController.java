@@ -39,7 +39,7 @@ public class FestivalController {
 	@Value("#{commonProperties['pageSize']}")
 	int pageSize;
 
-	@Value("#{commonProperties['fileRoot']}")
+	@Value("#{imageRepositoryProperties['fileRoot']}")
 	String fileRoot;
 
 	@RequestMapping(value = "addFestivalView", method = RequestMethod.GET)
