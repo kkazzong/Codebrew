@@ -1,7 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <%-- <%@ include file="/data/purchaseData.jsp" %> --%>
+<%@ include file="/data/purchase/sessionData.jsp" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -36,18 +37,18 @@
 	
 	$(function(){
 		
-		$("button:contains('È®ÀÎ')").on("click", function(){
+		$("button:contains('í™•ì¸')").on("click", function(){
 			history.go(-1);
 		});
 		
-		$("button:contains('°áÁ¦Ãë¼ÒÇÏ±â')").on("click", function(){
+		$("button:contains('ê²°ì œì·¨ì†Œí•˜ê¸°')").on("click", function(){
 			
-			var result = confirm("Á¤¸»·Î °áÁ¦¸¦ Ãë¼ÒÇÏ½Ã°Ú½À´Ï±î?");
+			var result = confirm("ì •ë§ë¡œ ê²°ì œë¥¼ ì·¨ì†Œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?");
 			
 			if(result) {
 				var purchaseNo = $(this).val();
 				
-				console.log("°áÁ¦Ãë¼ÒÇÏ±â ¹öÆ° val = "+purchaseNo);
+				console.log("ê²°ì œì·¨ì†Œí•˜ê¸° ë²„íŠ¼ val = "+purchaseNo);
 				fncCancelPayment(purchaseNo);
 			} else {
 				return;
@@ -75,7 +76,7 @@
 		<div class="row">
 			<div class="col-md-offset-4 col-md-4">
 				<div class="page-header text-center">
-					<h3 class="text-info"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span> ¸¶ÀÌÆ¼ÄÏ»ó¼¼</h3>
+					<h3 class="text-info"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span> ë§ˆì´í‹°ì¼“ìƒì„¸</h3>
 				</div>
 			</div>
 		</div>
@@ -84,10 +85,10 @@
 			<div class="col-md-offset-3 col-md-6">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-						<h3 class="panel-title">${purchase.itemName} Æ¼ÄÏ</h3>
+						<h3 class="panel-title">${purchase.itemName} í‹°ì¼“</h3>
 					</div>
 					<div class="panel-body">
-						<!-- ÃàÁ¦Æ¼ÄÏ -->
+						<!-- ì¶•ì œí‹°ì¼“ -->
 						<c:if test="${!empty ticket.festival}">
 						<img width="100%" height="100" src="${ticket.festival.festivalImage}">
 						<hr>
@@ -109,7 +110,7 @@
 								</small>
 							</div>
 							</c:if>
-							<!-- ÆÄÆ¼Æ¼ÄÏ -->
+							<!-- íŒŒí‹°í‹°ì¼“ -->
 							<c:if test="${!empty ticket.party}">
 							<img width="100%" height="100" src="${ticket.party.partyImage}">
 							<hr>
@@ -126,6 +127,12 @@
 							</div>
 							<div class="col-md-12">
 								<small>
+									<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+									${ticket.party.partyTime}
+								</small>
+							</div>
+							<div class="col-md-12">
+								<small>
 									<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
 									${ticket.party.partyPlace}
 								</small>
@@ -133,38 +140,38 @@
 							</c:if>
 							<br>
 							<div class="row">
-								<div class="col-xs-4 col-md-6"><strong>°áÁ¦¹øÈ£</strong></div>
+								<div class="col-xs-4 col-md-6"><strong>ê²°ì œë²ˆí˜¸</strong></div>
 								<div class="col-xs-8 col-md-6">${purchase.paymentNo}</div>
 							</div>
 							<div class="row">
-								<div class="col-xs-4 col-md-6"><strong>°áÁ¦ÀÏ½Ã</strong></div>
+								<div class="col-xs-4 col-md-6"><strong>ê²°ì œì¼ì‹œ</strong></div>
 								<div class="col-xs-8 col-md-6">${purchase.purchaseDate}</div>
 							</div>
 							<div class="row">
-								<div class="col-xs-4 col-md-6"><strong>±¸¸Å¼ö·®</strong></div>
-								<div class="col-xs-8 col-md-6">${purchase.purchaseCount} Àå</div>
+								<div class="col-xs-4 col-md-6"><strong>êµ¬ë§¤ìˆ˜ëŸ‰</strong></div>
+								<div class="col-xs-8 col-md-6">${purchase.purchaseCount} ì¥</div>
 							</div>
 							<div class="row">
-								<div class="col-xs-4 col-md-6"><strong>°áÁ¦±İ¾×</strong></div>
-								<div class="col-xs-8 col-md-6">${purchase.purchasePrice} ¿ø</div>
+								<div class="col-xs-4 col-md-6"><strong>ê²°ì œê¸ˆì•¡</strong></div>
+								<div class="col-xs-8 col-md-6">${purchase.purchasePrice} ì›</div>
 							</div>
 							<div class="row">
-								<div class="col-xs-4 col-md-6"><strong>°áÁ¦»óÅÂ</strong></div>
+								<div class="col-xs-4 col-md-6"><strong>ê²°ì œìƒíƒœ</strong></div>
 								<div class="col-xs-8 col-md-6">
-									<c:if test="${empty purchase.tranCode}">
-										°áÁ¦¿Ï·á
+									<c:if test="${purchase.tranCode == 1}">
+										ê²°ì œì™„ë£Œ
 									</c:if>
 									<c:if test="${purchase.tranCode == 2}">
-										°áÁ¦Ãë¼Ò
+										ê²°ì œì·¨ì†Œ
 									</c:if>
 								</div>
 							</div>
 							<hr>
 							<div class="row">
-								<img class="col-md-offset-3" width="50%" height="50%" src="../../resources/image/QRCodeImage/qrcode.png">
+								<img class="col-md-offset-3" width="50%" height="50%" src="../../resources/image/QRCodeImage/${purchase.qrCode.qrCodeImage}">
 							</div>
-							<button class="btn btn-default" type="button">È®ÀÎ</button>
-							<button class="btn btn-primary" type="button" value="${purchase.purchaseNo}">°áÁ¦Ãë¼ÒÇÏ±â</button>
+							<button class="btn btn-default" type="button">í™•ì¸</button>
+							<button class="btn btn-primary" type="button" value="${purchase.purchaseNo}">ê²°ì œì·¨ì†Œí•˜ê¸°</button>
 						</div>
 					</div>
 				</div>
@@ -181,7 +188,7 @@
 		<hr>
 		${ticket.festival.addr}
 		<hr>
-		<button type="button" value="${ticket.festival.festivalNo}">ÃàÁ¦ Á¤º¸ ´õº¸±â</button>
+		<button type="button" value="${ticket.festival.festivalNo}">ì¶•ì œ ì •ë³´ ë”ë³´ê¸°</button>
 	</c:if>
 	<c:if test="${!empty ticket.party}">
 		${ticket.party.partyName}
@@ -190,30 +197,30 @@
 		<hr>
 		${ticket.party.partyPlace}
 		<hr>
-		<button type="button" value="${ticket.party.partyNo}">ÆÄÆ¼ Á¤º¸ ´õº¸±â</button>
+		<button type="button" value="${ticket.party.partyNo}">íŒŒí‹° ì •ë³´ ë”ë³´ê¸°</button>
 	</c:if>
 	<hr>
 	<hr>
-	°áÁ¦¹øÈ£ : ${purchase.paymentNo}
+	ê²°ì œë²ˆí˜¸ : ${purchase.paymentNo}
 	<hr>
-	°áÁ¦ÀÏ½Ã : ${purchase.purchaseDate}
+	ê²°ì œì¼ì‹œ : ${purchase.purchaseDate}
 	<hr>
-	°áÁ¦¼ö´Ü : 
-	<c:if test="${purchase.purchaseMethodType == CARD}">Ä«µå</c:if>
-	<c:if test="${purchase.purchaseMethodType == MONEY}">Çö±İ</c:if>
+	ê²°ì œìˆ˜ë‹¨ : 
+	<c:if test="${purchase.purchaseMethodType == CARD}">ì¹´ë“œ</c:if>
+	<c:if test="${purchase.purchaseMethodType == MONEY}">í˜„ê¸ˆ</c:if>
 	<hr>
-	±¸¸Å¼ö·® : ${purchase.purchaseCount}
+	êµ¬ë§¤ìˆ˜ëŸ‰ : ${purchase.purchaseCount}
 	<hr>
-	°áÁ¦±İ¾× : ${purchase.purchasePrice}
+	ê²°ì œê¸ˆì•¡ : ${purchase.purchasePrice}
 	<hr>
-	°áÁ¦»óÅÂ : 
+	ê²°ì œìƒíƒœ : 
 	<c:if test="${empty purchase.tranCode}">
-		°áÁ¦¿Ï·á
+		ê²°ì œì™„ë£Œ
 	</c:if>
 	<hr>
-	<img alt="Å¥¾ËÄÚµå" src="../../resources/image/QRCodeImage/${purchase.qrCode.qrCodeImage}">
+	<img alt="íì•Œì½”ë“œ" src="../../resources/image/QRCodeImage/${purchase.qrCode.qrCodeImage}">
 	<hr>
-	<button type="button">È®ÀÎ</button>
-	<button type="button" value="${purchase.purchaseNo}">°áÁ¦Ãë¼ÒÇÏ±â</button> --%>
+	<button type="button">í™•ì¸</button>
+	<button type="button" value="${purchase.purchaseNo}">ê²°ì œì·¨ì†Œí•˜ê¸°</button> --%>
 </body>
 </html>

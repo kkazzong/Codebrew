@@ -1,12 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
 <%-- <%@ include file="/data/purchaseData.jsp" %> --%>
-<%-- <%@ include file="/data/userData.jsp" %> --%>
+<%-- <%@ include file="/data/purchase/userData.jsp" %> --%>
+<%@ include file="/data/purchase/sessionData.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>getPurchaseList</title>
 
 <!-- Bootstrap CSS -->
@@ -18,21 +19,35 @@
 <!-- jQuery -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script type="text/javascript">
+	
+	function fncGetList(currentPage) {
+		console.log("í˜ì´ì§€í´ë¦­ : "+currentPage);
+		$("#currentPage").val(currentPage);
+		$("#searchForm").attr("method", "POST").attr("action", "/purchase/getSaleList").submit();
+	}
+
 	$(function(){
 		
+		var userId = $("input:hidden[name='userId']").val();
+		
 		$("#festivalBtn").on("click", function(){
-			console.log("ÃàÁ¦¹öÆ° Å¬¸¯ : val = "+$(this).val());
-			self.location = "/purchase/getPurchaseList?userId=lgj1522@gmail.com&purchaseFlag="+$(this).val();
+			console.log("ì¶•ì œë²„íŠ¼ í´ë¦­ : val = "+$(this).val());
+			self.location = "/purchase/getPurchaseList?userId="+userId+"&purchaseFlag="+$(this).val();
 		});
 		
 		$("#partyBtn").on("click", function(){
-			console.log("ÆÄÆ¼¹öÆ° Å¬¸¯ : val = "+$(this).val());
-			self.location = "/purchase/getPurchaseList?userId=lgj1522@gmail.com&purchaseFlag="+$(this).val();
+			console.log("íŒŒí‹°ë²„íŠ¼ í´ë¦­ : val = "+$(this).val());
+			self.location = "/purchase/getPurchaseList?userId="+userId+"&purchaseFlag="+$(this).val();
 		});
 		
-		$("button:contains('Á¶È¸')").on("click", function(){
-			console.log("Á¶È¸¹öÆ° Å¬¸¯ : val = "+$(this).val());
+		$("button:contains('ì¡°íšŒ')").on("click", function(){
+			console.log("ì¡°íšŒë²„íŠ¼ í´ë¦­ : val = "+$(this).val());
 			self.location = "/purchase/getPurchase?purchaseNo="+$(this).val();
+		});
+		
+		$(".btn:contains('ë§ˆì´í‹°ì¼“')").on("click", function(){
+			console.log("ë§ˆì´í‹°ì¼“ í´ë¦­");
+			self.location = "/purchase/getPurchaseList?userId="+userId;
 		});
 		
 	});
@@ -51,12 +66,14 @@
 </style>
 </head>
 <body>
-
+	
+	<input type="hidden" name="userId" value="${user.userId}">
+	
 	<div class="container">
 	
 		<div class="row">
 			<div class="col-md-offset-4 col-md-4">
-				<button class="btn btn-primary">¸¶ÀÌÆ¼ÄÏ</button>
+				<button class="btn btn-primary">ë§ˆì´í‹°ì¼“</button>
 			</div>
 		</div>
 		
@@ -64,18 +81,29 @@
 		<div class="row">
 			<div class="col-md-offset-4 col-md-4">
 				<div class="page-header text-center">
-					<h3 class="text-info"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span> ¸¶ÀÌÆ¼ÄÏ</h3>
+					<h3 class="text-info"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span> ë§ˆì´í‹°ì¼“</h3>
 				</div>
 			</div>
 		</div>
 		
-		<!-- ÃàÁ¦ / ÆÄÆ¼ ¹öÆ° -->
+		<!-- ì¶•ì œ / íŒŒí‹° ë²„íŠ¼ -->
 		<div class="row">
-			<div class="col-md-6">
-				<button class="btn btn-default btn-block" id="festivalBtn" type="button" value="1">ÃàÁ¦Æ¼ÄÏ</button>
-			</div>
-			<div class="col-md-6">
-				<button class="btn btn-default btn-block" id="partyBtn" type="button" value="2">ÆÄÆ¼Æ¼ÄÏ</button>
+			<form>
+				<input type="hidden" id="currentPage" name="currentPage" value=""/>
+				<div class="col-md-6">
+					<button class="btn btn-default btn-block" id="festivalBtn" type="button" value="1">ì¶•ì œí‹°ì¼“</button>
+				</div>
+				<div class="col-md-6">
+					<button class="btn btn-default btn-block" id="partyBtn" type="button" value="2">íŒŒí‹°í‹°ì¼“</button>
+				</div>
+			</form>
+		</div>
+		
+		<!-- ë°ì´í„° ìˆ˜ -->
+		<div class="row">
+			<div class="col-md-offset-1 col-md-10">
+				<h5>ì´ : ${resultPage.totalCount} ê±´</h5>
+				<h5>í˜„ì¬ : ${resultPage.currentPage} í˜ì´ì§€</h5>
 			</div>
 		</div>
 		
@@ -85,10 +113,10 @@
 				<div class="col-md-6">
 						<div class="panel panel-primary">
 							<div class="panel-heading">
-								<h3 class="panel-title">${i} Æ¼ÄÏ</h3>
+								<h3 class="panel-title">${i} í‹°ì¼“</h3>
 							</div>
 							<div class="panel-body">
-								<!-- ÃàÁ¦Æ¼ÄÏ -->
+								<!-- ì¶•ì œí‹°ì¼“ -->
 								<c:if test="${!empty purchase.ticket.festival}">
 									<img width="100%" height="100" src="${purchase.ticket.festival.festivalImage}">
 									<hr>
@@ -110,7 +138,7 @@
 										 </small>
 									</div>
 								</c:if>
-								<!-- ÆÄÆ¼Æ¼ÄÏ -->
+								<!-- íŒŒí‹°í‹°ì¼“ -->
 								<c:if test="${!empty purchase.ticket.party}">
 									<img width="100%" height="100" src="${purchase.ticket.party.partyImage}">
 									<hr>
@@ -127,6 +155,12 @@
 									</div>
 									<div class="col-md-12">
 										<small>
+											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+											${purchase.ticket.party.partyTime}
+										</small>
+									</div>
+									<div class="col-md-12">
+										<small>
 											<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
 											${purchase.ticket.party.partyPlace}
 										</small>
@@ -134,46 +168,50 @@
 								</c:if>
 								<br>
 								<div class="row">
-									<div class="col-xs-4 col-md-6"><strong>°áÁ¦¹øÈ£</strong></div>
+									<div class="col-xs-4 col-md-6"><strong>ê²°ì œë²ˆí˜¸</strong></div>
 									<div class="col-xs-8 col-md-6">${purchase.paymentNo}</div>
 								</div>
 								<div class="row">
-									<div class="col-xs-4 col-md-6"><strong>±¸¸Å¼ö·®</strong></div>
-									<div class="col-xs-8 col-md-6">${purchase.purchaseCount} Àå</div>
+									<div class="col-xs-4 col-md-6"><strong>êµ¬ë§¤ìˆ˜ëŸ‰</strong></div>
+									<div class="col-xs-8 col-md-6">${purchase.purchaseCount} ì¥</div>
 								</div>
 								<div class="row">
-									<div class="col-xs-4 col-md-6"><strong>°áÁ¦±İ¾×</strong></div>
-									<div class="col-xs-8 col-md-6">${purchase.purchasePrice} ¿ø</div>
+									<div class="col-xs-4 col-md-6"><strong>ê²°ì œê¸ˆì•¡</strong></div>
+									<div class="col-xs-8 col-md-6">${purchase.purchasePrice} ì›</div>
 								</div>
 								<div class="row">
-									<div class="col-xs-4 col-md-6"><strong>°áÁ¦»óÅÂ</strong></div>
+									<div class="col-xs-4 col-md-6"><strong>ê²°ì œìƒíƒœ</strong></div>
 									<div class="col-xs-8 col-md-6">
-										<c:if test="${empty purchase.tranCode}">
-											°áÁ¦¿Ï·á
+										<c:if test="${purchase.tranCode == 1}">
+											ê²°ì œì™„ë£Œ
 										</c:if>
 										<c:if test="${purchase.tranCode == 2}">
-											°áÁ¦Ãë¼Ò
+											ê²°ì œì·¨ì†Œ
 										</c:if>
 									</div>
 								</div>
 								<hr>
-								<button class="btn btn-primary" type="button" value="${purchase.purchaseNo}">Á¶È¸</button>
-								<button class="btn btn-default" type="button" value="${purchase.purchaseNo}">»èÁ¦</button>
+								<button class="btn btn-primary" type="button" value="${purchase.purchaseNo}">ì¡°íšŒ</button>
+								<button class="btn btn-default" type="button" value="${purchase.purchaseNo}">ì‚­ì œ</button>
 							</div>
 						</div>
 				</div>
 			</c:forEach>
 		</div>
 		
+		<!-- ë‚´ê°€ ë§Œë“  í˜ì´ì§€ë„¤ë¹„ê²Œì´í„° -->
+		<jsp:include page="../../common/pageNavigator_new.jsp"/>
+		<%-- <jsp:include page="../../common/pageNavigator.jsp"/> --%>
+		
 	</div>
 
-	<%-- °Ô¶ó°Ù°Ù¸¶ÀÌÆ¼ÄÏ¸®½ºÅõ
+	<%-- ê²Œë¼ê²Ÿê²Ÿë§ˆì´í‹°ì¼“ë¦¬ìŠ¤íˆ¬
 	<hr>
-	<button id="festivalBtn" type="button" value="1">ÃàÁ¦Æ¼ÄÏ</button>
-	<button id="partyBtn" type="button" value="2">ÆÄÆ¼Æ¼ÄÏ</button>
+	<button id="festivalBtn" type="button" value="1">ì¶•ì œí‹°ì¼“</button>
+	<button id="partyBtn" type="button" value="2">íŒŒí‹°í‹°ì¼“</button>
 	<hr>
-	³ªÀ¸¾ÆÀÌµğ : ${user.userId} <br>
-	³ªÀ¸´Ğ³×ÀÓ : ${user.nickname}
+	ë‚˜ìœ¼ì•„ì´ë”” : ${user.userId} <br>
+	ë‚˜ìœ¼ë‹‰ë„¤ì„ : ${user.nickname}
 	<hr>
 	<c:forEach var="purchase" items="${list}">
 		<c:set var="i" value="${i+1}"></c:set>
@@ -198,18 +236,18 @@
 			${purchase.ticket.party.partyPlace}	
 		</c:if>
 		<hr>
-		±¸¸Å¼ö·® : ${purchase.purchaseCount}Àå
+		êµ¬ë§¤ìˆ˜ëŸ‰ : ${purchase.purchaseCount}ì¥
 		<hr>
-		°áÁ¦»óÅÂ : 
+		ê²°ì œìƒíƒœ : 
 		<c:if test="${empty purchase.tranCode}">
-			°áÁ¦¿Ï·á
+			ê²°ì œì™„ë£Œ
 		</c:if>
 		<c:if test="${purchase.tranCode == 2}">
-			°áÁ¦Ãë¼Ò
+			ê²°ì œì·¨ì†Œ
 		</c:if>
 		<hr>
-		<button type="button" value="${purchase.purchaseNo}">Á¶È¸</button>
-		<button type="button" value="${purchase.purchaseNo}">»èÁ¦</button>
+		<button type="button" value="${purchase.purchaseNo}">ì¡°íšŒ</button>
+		<button type="button" value="${purchase.purchaseNo}">ì‚­ì œ</button>
 		<hr>
 	</c:forEach>
 	<hr> --%>

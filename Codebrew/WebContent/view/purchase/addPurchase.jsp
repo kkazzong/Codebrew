@@ -1,13 +1,14 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
-<%@ include file="/data/purchase/festivalData.jsp" %>
+<%-- <%@ include file="/data/purchase/festivalData.jsp" %> --%>
 <%-- <%@ include file="/data/purchase/partyData.jsp" %> --%>
 <%-- <%@ include file="/data/purchase/userData.jsp" %> --%>
+<%@ include file="/data/purchase/sessionData.jsp" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>addPurchase</title>
 
 <!-- Bootstrap CSS -->
@@ -23,10 +24,11 @@
 	function fncPayment(selectedCount, purchasePrice, purchaseFlag){
 
 		var ticketNo = $("input:hidden[name='ticketNo']").val();
+		var userId = $("input:hidden[name='userId']").val();
 		
-		console.log("¼ö·®¼±ÅÃÇÑ°Å : "+selectedCount);
+		console.log("ìˆ˜ëŸ‰ì„ íƒí•œê±° : "+selectedCount);
 		if(selectedCount == null || selectedCount == 0) {
-			alert("¼ö·®À» ¼±ÅÃÇÏ¼¼¿ä");
+			alert("ìˆ˜ëŸ‰ì„ ì„ íƒí•˜ì„¸ìš”");
 			return;
 		}
 		
@@ -41,7 +43,10 @@
 			data : JSON.stringify({
 				purchaseCount : selectedCount,
 				purchasePrice : purchasePrice,
-				purchaseFlag : purchaseFlag
+				purchaseFlag : purchaseFlag,
+				user : {
+					userId : userId
+				}
 			}), 
 			dataType : "json",
 			success : function(data){
@@ -56,33 +61,40 @@
 	
 	$(function(){
 		
-		var selectedCount; //±¸¸Å¼ö·®
-		var ticketPrice; //Æ¼ÄÏ°¡°İ
-		var purchasePrice; //°áÁ¦±İ¾×
-		var purchaseFlag = $("input:hidden[name='purchaseFlag']").val(); //1-ÃàÁ¦,2-ÆÄÆ¼
-		console.log("ÃàÁ¦ÀÔ´Ï±î ÆÄÆ¼ÀÔ´Ï±î : "+purchaseFlag);
+		var selectedCount; //êµ¬ë§¤ìˆ˜ëŸ‰
+		var ticketPrice; //í‹°ì¼“ê°€ê²©
+		var purchasePrice; //ê²°ì œê¸ˆì•¡
+		var purchaseFlag = $("input:hidden[name='purchaseFlag']").val(); //1-ì¶•ì œ,2-íŒŒí‹°
+		console.log("ì¶•ì œì…ë‹ˆê¹Œ íŒŒí‹°ì…ë‹ˆê¹Œ : "+purchaseFlag);
 		
-		//±¸¸Å¼ö·® ¼±ÅÃ ½Ã
+		//êµ¬ë§¤ìˆ˜ëŸ‰ ì„ íƒ ì‹œ
 		$("select").on("change",function(){
+			
 			selectedCount = $("select option:selected").val();
 			ticketPrice = $("input:hidden[name='ticketPrice']").val();
 			purchasePrice = selectedCount * ticketPrice;
 			
-			console.log("¼ö·®¼±ÅÃ : "+selectedCount+"°³ ¼±ÅÃ");
-			console.log("°áÁ¦±İ¾× : "+purchasePrice+"¿ø");
+			console.log("ìˆ˜ëŸ‰ì„ íƒ : "+selectedCount+"ê°œ ì„ íƒ");
+			console.log("ê²°ì œê¸ˆì•¡ : "+purchasePrice+"ì›");
 			
 			if(purchasePrice >= 100000) {
-				alert("°áÁ¦±İ¾×Àº 100,000¸¸¿ø ÀÌÇÏ¿©¾ß ÇÕ´Ï´Ù");
+				alert("ê²°ì œê¸ˆì•¡ì€ 100,000ë§Œì› ì´í•˜ì—¬ì•¼ í•©ë‹ˆë‹¤");
 				return;
 			}
 			
-			$("#purchaseCount").html(selectedCount); //±¸¸Å¼ö·®
-			$("#purchasePrice").html(purchasePrice); //°áÁ¦±İ¾×
+			$("#purchaseCount").html(selectedCount); //êµ¬ë§¤ìˆ˜ëŸ‰
+			$("#purchasePrice").html(purchasePrice); //ê²°ì œê¸ˆì•¡
+			
+			$("#kakaoPay").removeAttr("disabled"); //ì¹´ì¹´ì˜¤í˜ì´ ë²„íŠ¼ í™œì„±í™”
 		});
 		
-		//Ä«Ä«¿ÀÆäÀÌ Å¬¸¯ ½Ã
-		$("button").on("click",function(){
+		//ì¹´ì¹´ì˜¤í˜ì´ í´ë¦­ ì‹œ
+		$("#kakaoPay").on("click",function(){
 			fncPayment(selectedCount, purchasePrice, purchaseFlag);
+		});
+		
+		$(".btn:contains('ë’¤ë¡œê°€ê¸°')").on("click", function() {
+			history.go(-1);
 		});
 		
 	});
@@ -93,7 +105,7 @@
 		padding-top : 70px;
     }
     .btn {
-		/*¸µÅ© Å¬¸¯½Ã ÆÄ¶õ»ö ¾È³²µµ·Ï */
+		/*ë§í¬ í´ë¦­ì‹œ íŒŒë€ìƒ‰ ì•ˆë‚¨ë„ë¡ */
 		text-decoration : none;
 		border : 0;
 		outline : 0;
@@ -113,8 +125,8 @@
 		<div class="row">
 			<div class="col-md-offset-4 col-md-4">
 				<div class="page-header text-center">
-					<h3 class="text-info"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span> Æ¼ÄÏ±¸¸Å</h3>
-					<small class="text-muted">±¸¸ÅÁ¤º¸¸¦ È®ÀÎÇØÁÖ¼¼¿ä</small>
+					<h3 class="text-info"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span> í‹°ì¼“êµ¬ë§¤</h3>
+					<small class="text-muted">êµ¬ë§¤ì •ë³´ë¥¼ í™•ì¸í•´ì£¼ì„¸ìš”</small>
 				</div>
 			</div>
 		</div>
@@ -127,8 +139,8 @@
 					<input type="hidden" name="ticketNo" value="${ticket.ticketNo}">
 					<input type="hidden" name="ticketPrice" value="${ticket.ticketPrice}">
 					<input type="hidden" name="purchaseFlag" value="${purchaseFlag}">
-					
-					<!-- ÃàÁ¦Á¤º¸ -->
+					<input type="hidden" name="userId" value="${user.userId}">
+					<!-- ì¶•ì œì •ë³´ -->
 					<c:if test="${!empty festival}">
 						<input type="hidden" name="festival.festivalName" value="${festival.festivalName}">
 						<img class="col-md-5" height="90" src="${festival.festivalImage}">
@@ -140,15 +152,15 @@
 								<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> <small>${festival.addr}</small>
 							</div>
 							<div class="col-md-6">
-								${festival.ticketPrice}¿ø	
+								${ticket.ticketPrice}ì›	
 							</div>
 						</div>
 					</c:if>
 					
-					<!-- ÆÄÆ¼Á¤º¸ -->
+					<!-- íŒŒí‹°ì •ë³´ -->
 					<c:if test="${!empty party}">
 						<input type="hidden" name="party.partyName" value="${party.partyName}">
-						<img class="col-md-6" height="90" src="${party.partyImage}">
+						<img class="col-md-6" height="90" src="../../resources/image/uploadFile/${party.partyImage}">
 						<div class="row">
 							<div class="col-md-6">
 								<strong>${party.partyName}</strong>
@@ -157,53 +169,61 @@
 								<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> <small>${party.partyPlace}</small>
 							</div>
 							<div class="col-md-6">
-								${party.ticketPrice}¿ø	
+								${ticket.ticketPrice}ì›	
 							</div>
 						</div>
 					</c:if>
 					
-					<!-- ¼ö·®¼±ÅÃ -->
-					<div class="row">
-						<div class="col-md-offset-2 col-xs-4 col-md-8">
-								<div class="form-group form-inline">
-									<label class="control-label" for="ticketCount">¼ö·®¼±ÅÃ</label>
-									<select class="col-md-offset-5 form-control input-sm" name="ticketCount">
-										<option>¼±ÅÃÇÏ¼¼¿ä</option>
-											<c:forEach begin="1" end="${ticket.ticketCount}" var="i" step="1">
-												<option>${i}</option>
-											</c:forEach>
-									</select>
+					<!-- ìˆ˜ëŸ‰ì´ 0ì¼ë•Œ -->
+					<c:if test="${ticket.ticketCount == 0}">
+						<jsp:include page="soldOutTicket.jsp"></jsp:include>
+						<button class="btn btn-default" type="button">ë’¤ë¡œê°€ê¸°</button>										
+					</c:if>
+					
+					<!-- ìˆ˜ëŸ‰ 0 ì•„ë‹ë•Œ -->
+					<c:if test="${ticket.ticketCount > 0 }">
+						<div class="row">
+							<div class="col-md-offset-2 col-xs-4 col-md-8">
+									<div class="form-group form-inline">
+										<label class="control-label" for="ticketCount">ìˆ˜ëŸ‰ì„ íƒ</label>
+										<select class="col-md-offset-5 form-control input-sm" name="ticketCount">
+											<option>ì„ íƒí•˜ì„¸ìš”</option>
+												<c:forEach begin="1" end="${ticket.ticketCount}" var="i" step="1">
+													<option>${i}</option>
+												</c:forEach>
+										</select>
+									</div>
+							</div>
+						</div>
+					
+						<!-- êµ¬ë§¤ì •ë³´ -->
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<h3 class="panel-title">${user.nickname}ë‹˜ì˜ êµ¬ë§¤ì •ë³´</h3>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+							  		<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>ì•„ì´ë””</strong></div>
+									<div class="col-xs-8 col-md-4">${user.userId}</div>
 								</div>
-						</div>
-					</div>
-					
-					<!-- ±¸¸ÅÁ¤º¸ -->
-					<div class="panel panel-primary">
-						<div class="panel-heading">
-							<h3 class="panel-title">${user.nickname}´ÔÀÇ ±¸¸ÅÁ¤º¸</h3>
-						</div>
-						<div class="panel-body">
-							<div class="row">
-						  		<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>¾ÆÀÌµğ</strong></div>
-								<div class="col-xs-8 col-md-4">${user.userId}</div>
-							</div>
-							<div class="row">
-						  		<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>±¸¸Å¼ö·®</strong></div>
-								<div class="col-xs-8 col-md-4"><span id="purchaseCount">0</span>Àå</div>
-							</div>
-							<div class="row">
-						  		<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>°áÁ¦±İ¾×</strong></div>
-								<div class="col-xs-8 col-md-4"><span id="purchasePrice">0</span>¿ø</div>
+								<div class="row">
+							  		<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>êµ¬ë§¤ìˆ˜ëŸ‰</strong></div>
+									<div class="col-xs-8 col-md-4"><span id="purchaseCount">0</span>ì¥</div>
+								</div>
+								<div class="row">
+							  		<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>ê²°ì œê¸ˆì•¡</strong></div>
+									<div class="col-xs-8 col-md-4"><span id="purchasePrice">0</span>ì›</div>
+								</div>
 							</div>
 						</div>
-					</div>
-					
-					<!-- Ä«Ä«¿ÀÆäÀÌ -->
-					<div class="row">
-						<div class="col-md-offset-4 col-md-4">
-							<button class="btn btn-link btn-block" type="button"><img src="../../resources/image/buttonImage/kakaopay.png"></button>
+						
+						<!-- ì¹´ì¹´ì˜¤í˜ì´ -->
+						<div class="row">
+							<div class="col-md-offset-4 col-md-4">
+								<button id="kakaoPay" class="btn btn-link btn-block" disabled="disabled" type="button"><img src="../../resources/image/buttonImage/kakaopay.png"></button>
+							</div>
 						</div>
-					</div>
+					</c:if>
 					
 				</form>
 			</div>
@@ -227,7 +247,7 @@
 		<input type="hidden" name="ticketPrice" value="${ticket.ticketPrice}">
 	</label>
 	<c:if test="${!empty festival}">
-	ÃàÁ¦Á¤º¸
+	ì¶•ì œì •ë³´
 		<input type="hidden" name="purchaseFlag" value="${purchaseFlag}">
 		<label for="festivalName">
 			<input type="hidden" name="festival.festivalName" value="${festival.festivalName}">
@@ -238,12 +258,12 @@
 		<hr>
 		${festival.addr}
 		<hr>
-		${festival.ticketPrice}¿ø	
+		${festival.ticketPrice}ì›	
 		<hr>
 	</c:if>
 	
 	<c:if test="${!empty party}">
-	ÆÄÆ¼Á¤º¸
+	íŒŒí‹°ì •ë³´
 		<input type="hidden" name="purchaseFlag" value="${purchaseFlag}">
 		<label for="partyName">
 			<input type="hidden" name="party.partyName" value="${party.partyName}">
@@ -254,10 +274,10 @@
 		<hr>
 		${party.partyPlace}
 		<hr>
-		${party.ticketPrice}¿ø	
+		${party.ticketPrice}ì›	
 		<hr>
 	</c:if>
-		¼ö·®¼±ÅÃ 
+		ìˆ˜ëŸ‰ì„ íƒ 
 		<select name="ticketCount">
 			<c:if test="${!empty party}">
 				<c:forEach begin="1" end="${party.ticketCount}" var="i" step="1">
@@ -271,18 +291,18 @@
 			</c:if>
 		</select>
 		<select name="ticketCount">
-				<option>¼±ÅÃÇÏ¼¼¿ä</option>
+				<option>ì„ íƒí•˜ì„¸ìš”</option>
 				<c:forEach begin="1" end="${ticket.ticketCount}" var="i" step="1">
 					<option>${i}</option>
 				</c:forEach>
 		</select>
 		<hr>
 		id : ${user.userId} <br>
-		${user.nickname}´ÔÀÇ ±¸¸ÅÁ¤º¸
+		${user.nickname}ë‹˜ì˜ êµ¬ë§¤ì •ë³´
 		<br>		
-		±¸¸Å¼ö·® : <span></span>°³
+		êµ¬ë§¤ìˆ˜ëŸ‰ : <span></span>ê°œ
 		<br>
-		°áÁ¦±İ¾× : <span></span>¿ø
+		ê²°ì œê¸ˆì•¡ : <span></span>ì›
 		<hr>
 		<button type="button"><img src="../../resources/image/buttonImage/kakaopay.png"></button>
 	</form> --%>

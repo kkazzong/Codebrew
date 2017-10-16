@@ -24,6 +24,8 @@
 		<typeAlias alias="ticket" type="com.codebrew.moana.service.domain.Ticket" />
 		<typeAlias alias="purchase" type="com.codebrew.moana.service.domain.Purchase" />
 		<typeAlias alias="statistics" type="com.codebrew.moana.service.domain.Statistics" />
+		<typeAlias alias="search" type="com.codebrew.moana.common.Search" />
+		<typeAlias alias="page" type="com.codebrew.moana.common.Page" />
 	</typeAliases>
 	
 	 <!-- SQL Definition :: file include -->

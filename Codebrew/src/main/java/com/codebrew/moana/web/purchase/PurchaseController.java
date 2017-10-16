@@ -4,19 +4,27 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.codebrew.moana.common.Page;
+import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Festival;
 import com.codebrew.moana.service.domain.Party;
 import com.codebrew.moana.service.domain.Purchase;
 import com.codebrew.moana.service.domain.Ticket;
 import com.codebrew.moana.service.domain.User;
+import com.codebrew.moana.service.festival.FestivalService;
 import com.codebrew.moana.service.purchase.PurchaseService;
 import com.codebrew.moana.service.ticket.TicketService;
 
+@Controller
+@RequestMapping("/purchase/*")
 public class PurchaseController {
 
 	@Autowired
@@ -31,13 +39,20 @@ public class PurchaseController {
 	@Qualifier("partyServiceImpl")
 	PartyService partyService;*/
 	
-	/*@Autowired
+	@Autowired
 	@Qualifier("festivalServiceImpl")
-	FestivalService festivalService;*/
+	FestivalService festivalService;
 	
 	/*@Autowired
 	@Qualifier("userServiceImpl")
 	UserService userService;*/
+	
+	@Value("#{commonProperties['pageUnit']}")
+	private int pageUnit;
+	
+	@Value("#{commonProperties['pageSize']}")
+	private int pageSize;
+	
 	
 	public PurchaseController() {
 		System.out.println(this.getClass());
@@ -45,17 +60,19 @@ public class PurchaseController {
 
 	@RequestMapping(value="addPurchase", method=RequestMethod.GET)
 	public ModelAndView addPurchase(@RequestParam(value="festivalNo", required=false) String festivalNo,
-																@RequestParam(value="partyNo", required=false) String partyNo) {
+																@RequestParam(value="partyNo", required=false) String partyNo) throws Exception {
 		
 		User user = new User();
-		//user.setUserId("lgj1522@gmail.com");
-		//user.setNickname("�����");
+		//user.setUserId("user04@naver.com");
+		//user.setNickname("까종");
+		user.setUserId("user03@naver.com");
+		user.setNickname("썽경");
 		
-//		System.out.println("������ȣ : "+festivalNo+" | ��Ƽ��ȣ : "+partyNo);
+		System.out.println("축제라면 : "+festivalNo+" 파티라면 : "+partyNo);
 		ModelAndView modelAndView = new ModelAndView();
 		if(festivalNo != null) {
 			System.out.println("디즈이즈 축제");
-			Festival festival = new Festival();
+			/*Festival festival = new Festival();
 			festival.setFestivalNo(2510101);
 			festival.setFestivalName("예술로 산책로 2017");
 			festival.setAddr("서울특별시 종로구 효자로13길 45");
@@ -63,8 +80,8 @@ public class PurchaseController {
 			festival.setEndDate("20171118");
 			festival.setFestivalImage("http://tong.visitkorea.or.kr/cms/resource/97/2510097_image2_1.jpg");
 			festival.setTicketCount(30);
-			festival.setTicketPrice(1000);
-			//Festival festival = festivalService.getFestival(Integer.parseInt(festivalNo));
+			festival.setTicketPrice(1000);*/
+			Festival festival = festivalService.getFestival(Integer.parseInt(festivalNo));
 			
 			Ticket ticket = ticketService.getTicket(festival.getFestivalNo(), "1");
 			
@@ -74,17 +91,19 @@ public class PurchaseController {
 		} else {
 			System.out.println("아모루파티");
 			Party party = new Party();
-			//party.setPartyNo(Integer.parseInt(partyNo));
-			//party.setPartyName("����������Ƽ");
-			//party.setPartyImage("https://i.ytimg.com/vi/9V7xyUb0NKI/maxresdefault.jpg");
-			//party.setPartyPlace("�����κ��� ����");
-			//party.setTicketCount(35);
-			//party.setTicketPrice(50000);
+			party.setPartyNo(10000);
+			party.setPartyName("할로윈 파티");
+			party.setPartyImage("1507724033981_party1.jpg");
+			party.setPartyPlace("서울특별시 서초구 강남대로53길 8 비트아카데미빌딩");
+			party.setPartyTime("20시00분");
+			party.setTicketCount(50);
+			party.setTicketPrice(500);
+			
 			//Party party = partyService.getParty(partyNo);
 			
-			//Ticket ticket = ticketService.getTicket(party.getPartyNo(), "2");
+			Ticket ticket = ticketService.getTicket(party.getPartyNo(), "2");
 			
-			//modelAndView.addObject("ticket", ticket);
+			modelAndView.addObject("ticket", ticket);
 			modelAndView.addObject("party", party);
 			modelAndView.addObject("purchaseFlag", "2");
 		}
@@ -112,6 +131,7 @@ public class PurchaseController {
 	
 	@RequestMapping(value="getPurchaseList")
 	public ModelAndView getPurchaseList(@RequestParam("userId") String userId,
+																	@ModelAttribute("search") Search search,
 																	@RequestParam(value="purchaseFlag", required=false) String purchaseFlag) {
 		
 		System.out.println(userId);
@@ -119,27 +139,45 @@ public class PurchaseController {
 		//user.setUserId(userId);
 		//user.setNickname("�����");
 		
-		if(purchaseFlag == null) {
-			purchaseFlag = "1"; //default�� ����Ƽ��
-		} 
+		/*if(purchaseFlag == null) {
+			purchaseFlag = "1"; //default is festival
+		} */
 		System.out.println(purchaseFlag);
 		
-		Map<String, Object> map = purchaseService.getPurchaseList(userId, purchaseFlag);
+		if(search.getCurrentPage() == 0) {
+			search.setCurrentPage(1);
+		}
+		search.setPageSize(pageSize);
+		
+		Map<String, Object> map = purchaseService.getPurchaseList(userId, purchaseFlag, search);
+		
+		Page resultPage = new Page(search.getCurrentPage(), ((Integer)(map.get("totalCount"))).intValue(), pageUnit, pageSize);
 		
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("list", map.get("list"));
+		modelAndView.addObject("resultPage", resultPage);
+		modelAndView.addObject("search", search);
 		modelAndView.setViewName("/view/purchase/getPurchaseList.jsp");
 		
 		return modelAndView;
 	}
 	
-	@RequestMapping(value="getSaleList", method=RequestMethod.GET)
-	public ModelAndView getSaleList() {
+	@RequestMapping(value="getSaleList")
+	public ModelAndView getSaleList(@ModelAttribute("search") Search search) {
+
+		if(search.getCurrentPage() == 0) {
+			search.setCurrentPage(1);
+		}
+		search.setPageSize(pageSize);
 		
-		Map<String, Object> map = purchaseService.getSaleList();
+		Map<String, Object> map = purchaseService.getSaleList(search);
+		
+		Page resultPage = new Page(search.getCurrentPage(), ((Integer)(map.get("totalCount"))).intValue(), pageUnit, pageSize);
 		
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("list", map.get("list"));
+		modelAndView.addObject("resultPage", resultPage);
+		modelAndView.addObject("search", search);
 		modelAndView.setViewName("/view/purchase/getSaleList.jsp");
 		
 		return modelAndView;
