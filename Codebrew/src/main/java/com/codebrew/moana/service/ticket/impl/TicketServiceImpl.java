@@ -43,13 +43,13 @@ public class TicketServiceImpl implements TicketService {
 		switch(ticketFlag) {
 			case "1" : //축제티켓
 				Festival festival = new Festival();
-				//festival.setFestivalNo(num);
+				festival.setFestivalNo(num);
 				ticket.setFestival(festival);
 				ticket = ticketDAO.getTicket(ticket);
 				break;
 			case "2" : //파티티켓
 				Party party = new Party();
-				//party.setPartyNo(num);
+				party.setPartyNo(num);
 				ticket.setParty(party);
 				ticket = ticketDAO.getTicket(ticket);
 				break;

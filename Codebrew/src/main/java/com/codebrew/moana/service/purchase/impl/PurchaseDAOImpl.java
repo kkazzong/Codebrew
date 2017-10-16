@@ -24,6 +24,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import com.codebrew.moana.service.domain.Purchase;
@@ -42,6 +43,10 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 	@Autowired
 	@Qualifier("sqlSessionTemplate")
 	SqlSession sqlSession;
+	
+	@Value("#{imageRepositoryProperties['qrCode']}")
+	private String qrCodePath;
+	
 
 	private Purchase purchase;
 	public static final String ISO_8601_24H_FULL_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
@@ -115,7 +120,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			map.put("cid", "TC0ONETIME");
 			map.put("partner_order_id", "partner_order_id");
 			map.put("partner_user_id", "partner_user_id");
-			map.put("item_name", purchase.getItemName()); // �����̸�or��Ƽ�̸�
+			map.put("item_name", purchase.getItemName()); //축제명or파티명
 			map.put("approval_url", "http://127.0.0.1:8080/purchase/approvePayment");
 			map.put("fail_url", "http://127.0.0.1:8080/kakaoPay/failKakaoPay.jsp");
 			map.put("cancel_url", "http://127.0.0.1:8080/kakaoPay/cancelKakaoPay.jsp");
@@ -134,19 +139,19 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 
 			if (responseCode == 200) {
 				br = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
-			} else { // ���� �߻�
+			} else { 
 				br = new BufferedReader(new InputStreamReader(con.getErrorStream(), "UTF-8"));
 			}
 
 			JSONObject jsonObject = (JSONObject) JSONValue.parse(br);
-			System.out.println("mapping�� ���̽�  : " + jsonObject);
+			System.out.println("mapping json : " + jsonObject);
 
 			purchase.setTid(jsonObject.get("tid").toString());
 			purchase.setPaymentNo(jsonObject.get("tid").toString());
 			purchase.setNextRedirectPcUrl(jsonObject.get("next_redirect_pc_url").toString());
 			this.setPurchase(purchase);
 
-			System.out.println("binding�Ѱ� : " + purchase);
+			System.out.println("binding purchase : " + purchase);
 
 			// ObjectMapper objectMapper = new ObjectMapper();
 			// String json = objectMapper.writeValueAsString(kakaoPay);
@@ -166,7 +171,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 		String kakaoPayOpenAPIURL = "https://kapi.kakao.com/v1/payment/approve";
 		// Purchase purchase = null;
 		Purchase purchase = this.getPurchaseDomain();
-		System.out.println("īī�����̰����Ϸ� : " + purchase);
+		System.out.println("approve purchase : " + purchase);
 		try {
 			URL url = new URL(kakaoPayOpenAPIURL);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -219,7 +224,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			long unixSeconds = 1372339860;
 			Date date = new Date(unixSeconds * 1000L);
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-			// GMT(�׸���ġ ǥ�ؽ� +9 �ð� �ѱ��� ǥ�ؽ�
+			// GMT
 			sdf.setTimeZone(TimeZone.getTimeZone("GMT+9"));
 			String formattedDate = sdf.format(date);
 			date = sdf.parse(jsonObject.get("approved_at").toString());
@@ -239,17 +244,17 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			purchase.setQrCode(this.createQRCode());
 
 			switch (purchase.getPurchaseFlag()) {
-			case "1": // ����
+			case "1": //festival
 				// purchase.setFestival(this.getPurchaseDomain().getFestival());
 				break;
-			case "2": // ��Ƽ
+			case "2": //party
 				// purchase.setParty(this.getPurchaseDomain().getParty());
 				break;
 			}
 			// kakaoPay.setApproved_at(new Date(jsonObject.get("approved_at").toString()));
 			// this.setPurchase(purchase);
 
-			System.out.println("binding�Ѱ� : " + purchase);
+			System.out.println("binding purchase : " + purchase);
 
 			// ObjectMapper objectMapper = new ObjectMapper();
 			// String json = objectMapper.writeValueAsString(kakaoPay);
@@ -296,16 +301,16 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 
 			if (responseCode == 200) {
 				br = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
-			} else { // ���� �߻�
+			} else { // 
 				br = new BufferedReader(new InputStreamReader(con.getErrorStream(), "UTF-8"));
 			}
 
 			JSONObject jsonObject = (JSONObject) JSONValue.parse(br);
-			System.out.println("mapping�� ���̽�  : " + jsonObject);
+			System.out.println("mapping json  : " + jsonObject);
 
 			if (jsonObject.get("status").equals("CANCEL_PAYMENT")) {
 				System.out.println("������ҿϷ�");
-				purchase.setTranCode("2"); // 2�ΰ�� �������
+				purchase.setTranCode("2"); //2 : 결제취소
 			}
 			purchase.setAid(jsonObject.get("aid").toString());
 			purchase.setPaymentNo(jsonObject.get("tid").toString());
@@ -321,13 +326,13 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			purchase.setPurchasePrice(new Integer(amount.get("total").toString()));
 
 			SimpleDateFormat origin = new SimpleDateFormat(ISO_8601_24H_FULL_FORMAT);
-			Date date = origin.parse(jsonObject.get("canceled_at").toString()); // ������ҽð�
+			Date date = origin.parse(jsonObject.get("canceled_at").toString()); // 결제취소시각
 			purchase.setPurchaseDate(date);
 			// purchase.setPurchaseDate(jsonObject.get("canceled_at").toString());
 			System.out.println(origin);
 			System.out.println(date.toString());
 
-			System.out.println("binding�Ѱ� : " + purchase);
+			System.out.println("binding purchase: " + purchase);
 
 			// ObjectMapper objectMapper = new ObjectMapper();
 			// String json = objectMapper.writeValueAsString(kakaoPay);
@@ -340,34 +345,42 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 
 	}
 
+	//create qrcode image
 	public QRCode createQRCode() {
 		QRCode qrCode = null;
 		try {
 			File file = null;
-			// ť���̹����� ������ ���丮 ����
-			file = new File("c:\\z.Project\\workspace\\Codebrew(Purchase)\\WebContent\\resources\\image\\QRCodeImage");
+			// 파일경로
+			System.out.println("from properties [path] : "+qrCodePath);
+			file = new File(qrCodePath);
 			if (!file.exists()) {
 				file.mkdirs();
 			}
 			String url = "http://127.0.0.1:8080/view/purchase/getPurchase.jsp";
 			qrCode = new QRCode();
 			qrCode.setQrCodeResult(url);
-			// �ڵ��νĽ� ��ũ�� URL�ּ�
+			//code
 			String codeurl = new String(url.getBytes("UTF-8"), "ISO-8859-1");
-			// ť���ڵ� ���ڵ� ����
+			// qrcode color
 			// int qrcodeColor = 00000000;
-			// ť���ڵ� ������
+			// bgcolor
 			// int backgroundColor = 0xFFFFFFFF;
 
 			QRCodeWriter qrCodeWriter = new QRCodeWriter();
-			// 3,4��° parameter�� : width/height�� ����
+			// parameter width, height
 			BitMatrix bitMatrix = qrCodeWriter.encode(codeurl, BarcodeFormat.QR_CODE, 200, 200);
 			//
 			MatrixToImageConfig matrixToImageConfig = new MatrixToImageConfig();
 			BufferedImage bufferedImage = MatrixToImageWriter.toBufferedImage(bitMatrix, matrixToImageConfig);
-			String src = "c:\\\\z.Project\\\\workspace\\\\Codebrew(Purchase)\\\\WebContent\\resources\\image\\QRCodeImage\\qrcode.png";
-			qrCode.setQrCodeImage("qrcode.png");
-			// ImageIO�� ����� ���ڵ� ���Ͼ���
+			
+			//file name randomly
+			long time = System.currentTimeMillis();
+			int random = (int)(Math.random()*1000000);
+			
+			String fileName = ""+time+random+"qrcode.png"; 
+			String src = qrCodePath+"\\"+fileName;
+			qrCode.setQrCodeImage(fileName);
+			// ImageIO png write
 			ImageIO.write(bufferedImage, "png", new File(src));
 
 		} catch (Exception e) {

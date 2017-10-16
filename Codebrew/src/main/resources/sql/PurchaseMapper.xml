@@ -55,8 +55,7 @@
 		purchase_price,
 		purchase_count,
 		tran_code,
-		qr_code_image,
-		qr_code_result)
+		qr_code_image)
 		VALUES (seq_purchase_purchase_no.nextval,
 						#{user.userId:VARCHAR},
 						#{ticket.ticketNo:NUMERIC},
@@ -66,10 +65,8 @@
 						#{purchaseDate:TIMESTAMP},
 						#{purchasePrice:NUMERIC},
 						#{purchaseCount:NUMERIC},
-						#{tranCode:VARCHAR},
-						#{qrCode.qrCodeImage:VARCHAR},
-						#{qrCode.qrCodeResult:VARCHAR}
-						)
+						'1',
+						#{qrCode.qrCodeImage:VARCHAR})
 	</insert>
 	
 	<select id="getPurchase" parameterType="int" resultMap="selectPurchaseMap">
@@ -90,8 +87,7 @@
 		pc.purchase_price AS purchase_price,
 		pc.purchase_count AS purchase_count,
 		pc.tran_code AS tran_code,
-		pc.qr_code_image AS qr_code_image,
-		pc.qr_code_result AS qr_code_result
+		pc.qr_code_image AS qr_code_image
 		FROM users u, festival f, party p, ticket t, purchase pc
 		WHERE
 		pc.ticket_no = t.ticket_no

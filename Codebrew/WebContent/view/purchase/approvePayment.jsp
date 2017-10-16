@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
+<%@ include file="/data/purchase/userData.jsp" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -19,7 +20,8 @@
 	$(function(){
 		
 		$("button").bind("click", function(){
-			opener.parent.location="/purchase/getPurchaseList?userId=lgj1522@gmail.com";
+			var userId = $("input:hidden[name='userId']").val();
+			opener.parent.location="/purchase/getPurchaseList?userId="+userId;
 			//익스플로러경우 닫기할때 alert창 안뜨게 하기위해..
 			window.open("about:blank", "_self").close();
 		});
@@ -34,6 +36,8 @@
 </style>
 </head>
 <body>
+	
+	<input type="hidden" name="userId" value="${user.userId}">
 	
 	<div class="container">
 	
@@ -74,10 +78,10 @@
 						<div class="row">
 							<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>결제수단</strong></div>
 							<div class="col-xs-8 col-md-4">
-								<c:if test="${purchase.purchaseMethodType == 'MONEY'}">
+								<c:if test="${purchase.paymentMethodType == 'MONEY'}">
 									현금
 								</c:if>
-								<c:if test="${purchase.purchaseMethodType == 'CARD'}">
+								<c:if test="${purchase.paymentMethodType == 'CARD'}">
 									카드
 								</c:if>
 							</div>
