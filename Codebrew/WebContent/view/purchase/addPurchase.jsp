@@ -180,14 +180,12 @@
 					<!-- 구매정보 -->
 					<div class="panel panel-primary">
 						<div class="panel-heading">
-							<%-- <h3 class="panel-title">${user.nickname}님의 구매정보</h3> --%>
-							<h3 class="panel-title">까정님의 구매정보</h3>
+							<h3 class="panel-title">${user.nickname}님의 구매정보</h3>
 						</div>
 						<div class="panel-body">
 							<div class="row">
 						  		<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>아이디</strong></div>
-								<%-- <div class="col-xs-8 col-md-4">${user.userId}</div> --%>
-								<div class="col-xs-8 col-md-4">user04@naver.com</div>
+								<div class="col-xs-8 col-md-4">${user.userId}</div>
 							</div>
 							<div class="row">
 						  		<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>구매수량</strong></div>

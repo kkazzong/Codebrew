@@ -84,8 +84,8 @@ public class PurchaseRestController {
 		}
 		
 		User user = new User();
-		//user.setUserId("lgj1522@gmail.com");
-		//user.setNickname("�����");
+		user.setUserId("user04@naver.com");
+		user.setNickname("까정");
 		
 		purchase.setUser(user);
 		return purchaseService.readyPayment(purchase);

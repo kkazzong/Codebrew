@@ -51,8 +51,8 @@ public class PurchaseController {
 																@RequestParam(value="partyNo", required=false) String partyNo) {
 		
 		User user = new User();
-		//user.setUserId("lgj1522@gmail.com");
-		//user.setNickname("�����");
+		user.setUserId("user04@naver.com");
+		user.setNickname("까종");
 		
 		System.out.println("축제라면 : "+festivalNo+" 파티라면 : "+partyNo);
 		ModelAndView modelAndView = new ModelAndView();

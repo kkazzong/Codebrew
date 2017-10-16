@@ -20,14 +20,16 @@
 <script type="text/javascript">
 	$(function(){
 		
+		var userId = $("input:hidden[name='userId']").val();
+		
 		$("#festivalBtn").on("click", function(){
 			console.log("축제버튼 클릭 : val = "+$(this).val());
-			self.location = "/purchase/getPurchaseList?userId=lgj1522@gmail.com&purchaseFlag="+$(this).val();
+			self.location = "/purchase/getPurchaseList?userId="+userId+"&purchaseFlag="+$(this).val();
 		});
 		
 		$("#partyBtn").on("click", function(){
 			console.log("파티버튼 클릭 : val = "+$(this).val());
-			self.location = "/purchase/getPurchaseList?userId=lgj1522@gmail.com&purchaseFlag="+$(this).val();
+			self.location = "/purchase/getPurchaseList?userId="+userId+"&purchaseFlag="+$(this).val();
 		});
 		
 		$("button:contains('조회')").on("click", function(){
@@ -51,7 +53,9 @@
 </style>
 </head>
 <body>
-
+	
+	<input type="hidden" name="userId" value="${user.userId}">
+	
 	<div class="container">
 	
 		<div class="row">
@@ -148,7 +152,7 @@
 								<div class="row">
 									<div class="col-xs-4 col-md-6"><strong>결제상태</strong></div>
 									<div class="col-xs-8 col-md-6">
-										<c:if test="${empty purchase.tranCode}">
+										<c:if test="${purchase.tranCode == 1}">
 											결제완료
 										</c:if>
 										<c:if test="${purchase.tranCode == 2}">
