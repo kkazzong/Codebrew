@@ -24,8 +24,8 @@ public class UserController {
 	@Qualifier("userServiceImpl")
 	private UserService userService;
 	
-	@Autowired
-	 private JavaMailSender mailSender;
+	/*@Autowired
+	 private JavaMailSender mailSender;*/
 	
 	
 	//constructor
