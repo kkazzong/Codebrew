@@ -1,10 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
+<%-- <%@ include file="/data/purchase/userData.jsp" %> --%>
+<%@ include file="/data/purchase/sessionData.jsp" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>approvePayment</title>
 
 <!-- Bootstrap CSS -->
@@ -19,8 +21,9 @@
 	$(function(){
 		
 		$("button").bind("click", function(){
-			opener.parent.location="/purchase/getPurchaseList?userId=lgj1522@gmail.com";
-			//ÀÍ½ºÇÃ·Î·¯°æ¿ì ´İ±âÇÒ¶§ alertÃ¢ ¾È¶ß°Ô ÇÏ±âÀ§ÇØ..
+			var userId = $("input:hidden[name='userId']").val();
+			opener.parent.location="/purchase/getPurchaseList?userId="+userId;
+			//ìµìŠ¤í”Œë¡œëŸ¬ê²½ìš° ë‹«ê¸°í• ë•Œ alertì°½ ì•ˆëœ¨ê²Œ í•˜ê¸°ìœ„í•´..
 			window.open("about:blank", "_self").close();
 		});
 		
@@ -35,24 +38,26 @@
 </head>
 <body>
 	
+	<input type="hidden" name="userId" value="${user.userId}">
+	
 	<div class="container">
 	
 		<!-- page header -->
 		<div class="row">
 			<div class="col-md-offset-4 col-md-4">
 				<div class="page-header text-center">
-					<h3 class="text-info"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> °áÁ¦¿Ï·á</h3>
-					<small class="text-muted">°áÁ¦Á¤º¸¸¦ È®ÀÎÇØÁÖ¼¼¿ä</small>
+					<h3 class="text-info"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> ê²°ì œì™„ë£Œ</h3>
+					<small class="text-muted">ê²°ì œì •ë³´ë¥¼ í™•ì¸í•´ì£¼ì„¸ìš”</small>
 				</div>
 			</div>
 		</div>
 		
-		<!-- °áÁ¦Á¤º¸ -->
+		<!-- ê²°ì œì •ë³´ -->
 		<div class="row">
 			<div class="col-md-offset-3 col-md-6">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-						<h3 class="panel-title">${user.nickname}´ÔÀÇ °áÁ¦Á¤º¸</h3>
+						<h3 class="panel-title">${user.nickname}ë‹˜ì˜ ê²°ì œì •ë³´</h3>
 					</div>
 					<div class="panel-body">
 						<img class="col-md-12" width="100%" height="190" src="${purchase.ticket.party.partyImage}">
@@ -60,33 +65,33 @@
 							<div class="col-md-offset-2 col-xs-4 col-md-8"><strong>${purchase.itemName}</strong></div>
 						</div>
 						<div class="row">
-							<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>¾ÆÀÌµğ</strong></div>
+							<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>ì•„ì´ë””</strong></div>
 							<div class="col-xs-8 col-md-4">${user.userId}</div>
 						</div>
 						<div class="row">
-							<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>±¸¸Å¼ö·®</strong></div>
-							<div class="col-xs-8 col-md-4">${purchase.purchaseCount}Àå</div>
+							<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>êµ¬ë§¤ìˆ˜ëŸ‰</strong></div>
+							<div class="col-xs-8 col-md-4">${purchase.purchaseCount}ì¥</div>
 						</div>
 						<div class="row">
-							<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>°áÁ¦±İ¾×</strong></div>
-							<div class="col-xs-8 col-md-4">${purchase.purchasePrice}¿ø</div>
+							<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>ê²°ì œê¸ˆì•¡</strong></div>
+							<div class="col-xs-8 col-md-4">${purchase.purchasePrice}ì›</div>
 						</div>
 						<div class="row">
-							<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>°áÁ¦¼ö´Ü</strong></div>
+							<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>ê²°ì œìˆ˜ë‹¨</strong></div>
 							<div class="col-xs-8 col-md-4">
-								<c:if test="${purchase.purchaseMethodType == 'MONEY'}">
-									Çö±İ
+								<c:if test="${purchase.paymentMethodType == 'MONEY'}">
+									í˜„ê¸ˆ
 								</c:if>
-								<c:if test="${purchase.purchaseMethodType == 'CARD'}">
-									Ä«µå
+								<c:if test="${purchase.paymentMethodType == 'CARD'}">
+									ì¹´ë“œ
 								</c:if>
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>°áÁ¦ÀÏ½Ã</strong></div>
+							<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>ê²°ì œì¼ì‹œ</strong></div>
 							<div class="col-xs-8 col-md-4">${purchase.purchaseDate}</div>
 						</div>
-						<!-- Å¥¾ËÄÚµå -->
+						<!-- íì•Œì½”ë“œ -->
 						<div class="row">
 							<img class="col-md-offset-3" width="50%" height="50%" src="../../resources/image/QRCodeImage/qrcode.png">
 						</div>
@@ -96,10 +101,10 @@
 		</div>
 		
 		
-		<!-- È®ÀÎ¹öÆ° -->
+		<!-- í™•ì¸ë²„íŠ¼ -->
 		<div class="row">
 			<div class="col-md-offset-3 col-md-6">
-				<button class="btn btn-primary btn-block" type="button">È®ÀÎ</button>
+				<button class="btn btn-primary btn-block" type="button">í™•ì¸</button>
 			</div>
 		</div>
 		
@@ -108,21 +113,21 @@
 	
 	<%-- ${purchase.itemName}
 	<hr>
-	${purchase.purchaseCount}Àå
+	${purchase.purchaseCount}ì¥
 	<hr>
 		<c:if test="${purchase.purchaseMethodType == 'MONEY'}">
-			Çö±İ
+			í˜„ê¸ˆ
 		</c:if>
 		<c:if test="${purchase.purchaseMethodType == 'CARD'}">
-			Ä«µå
+			ì¹´ë“œ
 		</c:if>
 	<hr>
 	${purchase.purchaseDate}
 	<hr>
-	${purchase.purchasePrice}¿ø
+	${purchase.purchasePrice}ì›
 	<hr>
 	<img src="../../resources/image/QRCodeImage/${purchase.qrCode.qrCodeImage}">
 	<hr>
-	<button type="button">È®ÀÎ</button> --%>
+	<button type="button">í™•ì¸</button> --%>
 </body>
 </html>

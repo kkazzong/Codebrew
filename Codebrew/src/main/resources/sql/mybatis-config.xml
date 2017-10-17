@@ -24,6 +24,9 @@
 		<typeAlias alias="ticket" type="com.codebrew.moana.service.domain.Ticket" />
 		<typeAlias alias="purchase" type="com.codebrew.moana.service.domain.Purchase" />
 		<typeAlias alias="statistics" type="com.codebrew.moana.service.domain.Statistics" />
+		<typeAlias alias="search" type="com.codebrew.moana.common.Search" />
+		<typeAlias alias="page" type="com.codebrew.moana.common.Page" />
+		<typeAlias alias="zzim" type="com.codebrew.moana.service.domain.Zzim" />
 	</typeAliases>
 	
 	 <!-- SQL Definition :: file include -->
@@ -37,6 +40,7 @@
 		<mapper resource="sql/TicketMapper.xml"/>
 		<mapper resource="sql/PurchaseMapper.xml"/>
 		<mapper resource="sql/StatisticsMapper.xml"/>
+		<mapper resource="sql/ZzimMapper.xml"/>
 	</mappers>
 
 </configuration>

@@ -3,11 +3,12 @@ package com.codebrew.moana.service.domain;
 public class Ticket {
 
 	// Field
-	private Festival festival; //축제티켓
-	private Party party; //파티티켓
-	private int ticketNo; //티켓번호
-	private int ticketPrice; //티켓가격
-	private int ticketCount; //티켓수량
+	private Festival festival; // 축제티켓
+	private Party party; // 파티티켓
+	private int ticketNo; // 티켓번호
+	private int ticketPrice; // 티켓가격
+	private int ticketCount; // 티켓수량
+	private String ticketFlag; // 티켓플래그[null : 기본티켓 , nolimit : 무제한티켓 , free : 무료티켓]
 
 	// Constructor
 	public Ticket() {
@@ -55,9 +56,18 @@ public class Ticket {
 		this.ticketCount = ticketCount;
 	}
 
+	public String getTicketFlag() {
+		return ticketFlag;
+	}
+
+	public void setTicketFlag(String ticketFlag) {
+		this.ticketFlag = ticketFlag;
+	}
+
 	@Override
 	public String toString() {
 		return "Ticket [festival=" + festival + ", party=" + party + ", ticketNo=" + ticketNo + ", ticketPrice="
-				+ ticketPrice + ", ticketCount=" + ticketCount + "]";
+				+ ticketPrice + ", ticketCount=" + ticketCount + ", ticketFlag=" + ticketFlag + "]";
 	}
+
 }

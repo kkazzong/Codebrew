@@ -32,6 +32,7 @@
 			<result property="party.partyPlace" column="party_place" jdbcType="VARCHAR"/>
 			<result property="party.partyDate" column="party_date" jdbcType="DATE"/>
 			<result property="party.partyImage" column="party_image" jdbcType="VARCHAR"/>
+			<result property="party.partyTime" column="party_time" jdbcType="VARCHAR"/>
 			<result property="ticketPrice" column="ticket_price" jdbcType="NUMERIC"/>
 			<result property="ticketCount" column="ticket_count" jdbcType="NUMERIC"/>
 		</association>
@@ -55,8 +56,7 @@
 		purchase_price,
 		purchase_count,
 		tran_code,
-		qr_code_image,
-		qr_code_result)
+		qr_code_image)
 		VALUES (seq_purchase_purchase_no.nextval,
 						#{user.userId:VARCHAR},
 						#{ticket.ticketNo:NUMERIC},
@@ -66,10 +66,8 @@
 						#{purchaseDate:TIMESTAMP},
 						#{purchasePrice:NUMERIC},
 						#{purchaseCount:NUMERIC},
-						#{tranCode:VARCHAR},
-						#{qrCode.qrCodeImage:VARCHAR},
-						#{qrCode.qrCodeResult:VARCHAR}
-						)
+						'1',
+						#{qrCode.qrCodeImage:VARCHAR})
 	</insert>
 	
 	<select id="getPurchase" parameterType="int" resultMap="selectPurchaseMap">
@@ -90,8 +88,7 @@
 		pc.purchase_price AS purchase_price,
 		pc.purchase_count AS purchase_count,
 		pc.tran_code AS tran_code,
-		pc.qr_code_image AS qr_code_image,
-		pc.qr_code_result AS qr_code_result
+		pc.qr_code_image AS qr_code_image
 		FROM users u, festival f, party p, ticket t, purchase pc
 		WHERE
 		pc.ticket_no = t.ticket_no
@@ -124,7 +121,7 @@
 		SELECT
 		u.user_id AS user_id, u.nickname AS nickname
 		,t.ticket_no AS ticket_no
-		,p.party_name AS party_name, p.party_date AS party_date
+		,p.party_name AS party_name, p.party_date AS party_date, p.party_time As party_time
 		,p.party_place AS party_place, p.party_image AS party_image
 		,pc.purchase_no AS purchase_no, pc.payment_no AS payment_no, pc.purchase_count AS purchase_count
 		,pc.purchase_price AS purchase_price, pc.tran_code AS tran_code
@@ -137,21 +134,59 @@
 		AND u.user_id = #{userId}
 	</select>
 	
-	<select id="getSaleList" resultMap="selectPurchaseMap">
-		SELECT
-		u.user_id AS user_id,
-		t.ticket_no AS ticket_no,
-		pc.purchase_no AS purchase_no,
-		pc.item_name AS item_name,
-		pc.purchase_date AS purchase_date,
-		pc.purchase_count AS purchase_count,
-		pc.purchase_price AS purchase_price,
-		pc.tran_code AS tran_code
-		FROM users u, festival f, party p, ticket t, purchase pc
-		WHERE pc.user_id = u.user_id
-		AND pc.ticket_no = t.ticket_no
-		AND t.festival_no = f.festival_no(+)
-		AND t.party_no = p.party_no(+)
+	<select id="getPurchaseList" parameterType="map" resultMap="selectPurchaseMap">
+		SELECT * 
+		FROM (SELECT inner_table.*, ROWNUM AS row_seq
+      				FROM (SELECT
+								u.user_id AS user_id,
+								t.ticket_no AS ticket_no,
+								f.festival_name AS festival_name,
+								f.addr AS addr,
+								f.start_date AS start_date,
+								f.end_date AS end_date,
+								f.festival_image AS festival_image,
+								p.party_name AS party_name,
+								p.party_date AS party_date,
+								p.party_time As party_time,
+								p.party_place AS party_place,
+								p.party_image AS party_image,
+								pc.purchase_no AS purchase_no,
+								pc.item_name AS item_name,
+								pc.purchase_date AS purchase_date,
+								pc.purchase_count AS purchase_count,
+								pc.purchase_price AS purchase_price,
+								pc.tran_code AS tran_code
+								FROM users u, festival f, party p, ticket t, purchase pc
+								WHERE pc.user_id = u.user_id
+								AND pc.ticket_no = t.ticket_no
+								AND t.festival_no = f.festival_no(+)
+								AND t.party_no = p.party_no(+)
+								AND u.user_id = #{userId}
+								ORDER BY pc.purchase_date) inner_table
+     				 WHERE ROWNUM &lt;= #{search.endRowNum})
+		WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum}
+	</select>
+	
+	<select id="getSaleList" parameterType="search" resultMap="selectPurchaseMap">
+		SELECT * 
+		FROM (SELECT inner_table.*, ROWNUM AS row_seq
+      				FROM (SELECT
+								u.user_id AS user_id,
+								t.ticket_no AS ticket_no,
+								pc.purchase_no AS purchase_no,
+								pc.item_name AS item_name,
+								pc.purchase_date AS purchase_date,
+								pc.purchase_count AS purchase_count,
+								pc.purchase_price AS purchase_price,
+								pc.tran_code AS tran_code
+								FROM users u, festival f, party p, ticket t, purchase pc
+								WHERE pc.user_id = u.user_id
+								AND pc.ticket_no = t.ticket_no
+								AND t.festival_no = f.festival_no(+)
+								AND t.party_no = p.party_no(+)
+								ORDER BY pc.purchase_date) inner_table
+     				 WHERE ROWNUM &lt;= #{endRowNum})
+		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}
 	</select>
 	
 	<update id="updatePurchaseTranCode" parameterType="purchase">
@@ -165,4 +200,15 @@
 		SET delete_flag = '1'
 		WHERE purchase_no = #{value}
 	</update>
+	
+	<select id="getTotalCount" parameterType="map" resultType="int">
+		SELECT COUNT(*)
+		FROM (
+		  SELECT purchase_no
+		  FROM purchase
+		  <if test="userId != null">
+		  	WHERE user_id = #{userId}
+		  </if>
+		) countTable
+	</select>
 </mapper>
