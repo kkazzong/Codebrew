@@ -19,7 +19,9 @@
 <br/>
 <br/>
 
-<a href="/festival/getFestivalListDB"> 축제리스트 (서버DB) 회원 / 비회원 </a>
+<!-- <a href="/festival/getFestivalListDB"> 축제리스트 (서버DB) 회원 / 비회원 </a> -->
+
+<a href="/festival/getFestivalListDB?menu=db"> 축제리스트 (서버DB) 회원 / 비회원 </a>
 
 <!-- 가정이가 써보았다 -->
 <br>
