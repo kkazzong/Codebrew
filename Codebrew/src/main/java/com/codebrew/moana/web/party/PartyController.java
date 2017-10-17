@@ -19,11 +19,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.codebrew.moana.service.domain.Party;
 import com.codebrew.moana.service.domain.Ticket;
+import com.codebrew.moana.service.domain.User;
 import com.codebrew.moana.service.party.PartyService;
 import com.codebrew.moana.service.ticket.TicketService;
 
 
-//==> ÆÄÆ¼°ü¸® Controller
+//==> íŒŒí‹°ê´€ë¦¬ Controller
 @Controller
 @RequestMapping("/party/*")
 public class PartyController {
@@ -54,9 +55,14 @@ public class PartyController {
 		
 		System.out.println("addParty :: userId :: "+userId);
 		
+		
+		User user = new User();
+		user.setUserId(userId);
+		user.setNickname("ì„ë¦¬");
+		
 		//Model(data) & View(jsp)
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject(userId);
+		modelAndView.addObject(user);
 		modelAndView.setViewName("/view/party/addParty.jsp");
 		
 		return modelAndView;
@@ -67,8 +73,8 @@ public class PartyController {
 		
 		System.out.println("\n>>> /party/addParty :: POST start <<<");
 		
-		//party µµ¸ŞÀÎ Ãâ·Â
-		System.out.println(">>> /party/addParty party µµ¸ŞÀÎ \n"+party);
+		//party ë„ë©”ì¸ ì¶œë ¥
+		System.out.println(">>> /party/addParty party ë„ë©”ì¸ \n"+party);
 		
 		//Party Image Upload
 		MultipartFile uploadfile = party.getUploadFile();
@@ -91,15 +97,15 @@ public class PartyController {
 		}
 		
 		//partyTime = hour + minutes
-		party.setPartyTime(party.getHour()+"½Ã"+party.getMinutes()+"ºĞ");
+		party.setPartyTime(party.getHour()+"ì‹œ "+party.getMinutes()+"ë¶„");
 		System.out.println("Party Time ==>"+party.getPartyTime());
 		
 		//Business Logic
-		/* ÆÄÆ¼ µî·Ï */
+		/* íŒŒí‹° ë“±ë¡ */
 		partyService.addParty(party);
 		
 		
-		/* ÆÄÆ¼ Æ¼ÄÏ µî·Ï */
+		/* íŒŒí‹° í‹°ì¼“ ë“±ë¡ */
 		Ticket ticket = new Ticket();
 		ticket.setParty(party);
 		ticket.setTicketPrice(party.getTicketPrice());
