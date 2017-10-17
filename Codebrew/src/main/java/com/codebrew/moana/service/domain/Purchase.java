@@ -19,6 +19,7 @@ public class Purchase {
 	private String purchaseFlag; // 구매플래그[1 : 축제, 2 : 파티]
 	private String tid; // KakaoPay tid
 	private String nextRedirectPcUrl; // KakaoPay 결제준비 url
+	private String nextRedirectMobileUrl;
 	private String aid; // KakaoPay Request 고유번호
 	private String cid; // KakaoPay 가맹점 고유번호
 	private String partnetOrderId;
@@ -29,7 +30,7 @@ public class Purchase {
 		System.out.println("purchase default constructor");
 	}
 
-	//getter, setter
+	// getter, setter
 	public int getPurchaseNo() {
 		return purchaseNo;
 	}
@@ -174,14 +175,23 @@ public class Purchase {
 		this.partnerUserId = partnerUserId;
 	}
 
+	public String getNextRedirectMobileUrl() {
+		return nextRedirectMobileUrl;
+	}
+
+	public void setNextRedirectMobileUrl(String nextRedirectMobileUrl) {
+		this.nextRedirectMobileUrl = nextRedirectMobileUrl;
+	}
+
 	@Override
 	public String toString() {
 		return "Purchase [purchaseNo=" + purchaseNo + ", paymentNo=" + paymentNo + ", user=" + user + ", ticket="
 				+ ticket + ", itemName=" + itemName + ", purchasePrice=" + purchasePrice + ", purchaseCount="
 				+ purchaseCount + ", purchaseDate=" + purchaseDate + ", paymentMethodType=" + paymentMethodType
 				+ ", tranCode=" + tranCode + ", qrCode=" + qrCode + ", purchaseFlag=" + purchaseFlag + ", tid=" + tid
-				+ ", nextRedirectPcUrl=" + nextRedirectPcUrl + ", aid=" + aid + ", cid=" + cid + ", partnetOrderId="
-				+ partnetOrderId + ", partnerUserId=" + partnerUserId + "]";
+				+ ", nextRedirectPcUrl=" + nextRedirectPcUrl + ", nextRedirectMobileUrl=" + nextRedirectMobileUrl
+				+ ", aid=" + aid + ", cid=" + cid + ", partnetOrderId=" + partnetOrderId + ", partnerUserId="
+				+ partnerUserId + "]";
 	}
 
 }

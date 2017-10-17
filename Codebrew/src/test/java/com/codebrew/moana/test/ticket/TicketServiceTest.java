@@ -38,11 +38,11 @@ public class TicketServiceTest {
 	@Qualifier("ticketServiceImpl")
 	TicketService ticketService;
 
-	@Test
+	//@Test
 	public void addTicket() {
 
 		Festival festival = new Festival();
-		//festival.setFestivalNo(10023);
+		festival.setFestivalNo(2510119);
 		// festival.setFestivalName("2017 �Ҳ� ����");
 		//festival.setFestivalNo(10002); // ���� ���� ����
 
@@ -55,6 +55,7 @@ public class TicketServiceTest {
 		//ticket.setParty(party);
 		ticket.setTicketCount(100);
 		ticket.setTicketPrice(0);
+		//ticket.setTicketFlag("nolimit");
 		
 		//int result = ticketDAO.addTicket(ticket);
 		
@@ -62,14 +63,15 @@ public class TicketServiceTest {
 		Ticket returnTicket = ticketService.addTicket(ticket);
 		
 		Assert.assertEquals(0, returnTicket.getTicketPrice());
-		Assert.assertEquals(100, returnTicket.getTicketCount());
+		Assert.assertEquals(30, returnTicket.getTicketCount());
+		Assert.assertEquals("free", returnTicket.getTicketFlag());
 	}
 	
 	//@Test
 	public void getTicket() {
 		
 		Festival festival = new Festival();
-		//festival.setFestivalNo(10006); // 2017 �Ҳ� ����
+		festival.setFestivalNo(2510119); 
 		// festival.setFestivalName("2017 �Ҳ� ����");
 		//festival.setFestivalNo(10002); // ���� ���� ����
 
@@ -78,13 +80,14 @@ public class TicketServiceTest {
 		//party.setPartyNo(10001); // �������� ����
 		
 		Ticket ticket = new Ticket();
-		//ticket.setFestival(festival);
-		ticket.setParty(party);
+		ticket.setFestival(festival);
+		//ticket.setParty(party);
 		//ticket.setTicketCount(10);
 		//ticket.setTicketPrice(500);
 		
-		//Ticket returnTicket = ticketDAO.getTicket(ticket);
+		Ticket returnTicket = ticketDAO.getTicket(ticket);
 		
+		Assert.assertNull(returnTicket);
 		//Assert.assertEquals(500, returnTicket.getTicketPrice());
 		//Assert.assertEquals(10, returnTicket.getTicketCount());
 		
@@ -106,10 +109,11 @@ public class TicketServiceTest {
 		Assert.assertEquals(4444, returnTicket.getTicketPrice());
 	}
 	
-	//@Test
+	@Test
 	public void updateTicket() {
+		
 		Festival festival = new Festival();
-		//festival.setFestivalNo(10006); // 2017 �Ҳ� ����
+		festival.setFestivalNo(2510119); 
 		// festival.setFestivalName("2017 �Ҳ� ����");
 		//festival.setFestivalNo(10002); // ���� ���� ����
 
@@ -118,10 +122,10 @@ public class TicketServiceTest {
 		//party.setPartyNo(10001); // �������� ����
 		
 		Ticket ticket = new Ticket();
-		//ticket.setFestival(festival);
-		ticket.setTicketPrice(4444);
-		//ticket.setTicketCount(33);
-		ticket.setParty(party);
+		ticket.setFestival(festival);
+		ticket.setTicketPrice(330);
+		ticket.setTicketCount(20);
+		//ticket.setParty(party);
 		
 		//int result = ticketDAO.updateTicket(ticket);
 		
@@ -129,9 +133,9 @@ public class TicketServiceTest {
 		
 		Ticket returnTicket = ticketService.updateTicket(ticket);
 		
-		Assert.assertEquals(4444, returnTicket.getTicketPrice());
+		Assert.assertEquals(0, returnTicket.getTicketPrice());
 		Assert.assertEquals(100, returnTicket.getTicketCount());
-		
+		Assert.assertEquals("free", returnTicket.getTicketFlag());
 	}
 	
 	//@Test

@@ -157,6 +157,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			purchase.setTid(jsonObject.get("tid").toString());
 			purchase.setPaymentNo(jsonObject.get("tid").toString());
 			purchase.setNextRedirectPcUrl(jsonObject.get("next_redirect_pc_url").toString());
+			purchase.setNextRedirectMobileUrl(jsonObject.get("next_redirect_mobile_url").toString());
 			this.setPurchase(purchase);
 
 			System.out.println("binding purchase : " + purchase);

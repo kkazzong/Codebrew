@@ -21,8 +21,28 @@ public class TicketServiceImpl implements TicketService {
 		System.out.println(this.getClass());
 	}
 	
+	/*
+	 * ticketFlag : 티켓 가격과 티켓 수량에 따라 다름
+	 * 	1. 기본티켓 (가격 > 0, 수량 > 0) => null
+	 *  2. 무료티켓 (가격 = 0, 수량 > 0) => free
+	 *  3. 무제한티켓 (가격 > 0, 수량 = 0) => nolimit
+	 *  4. 딜릿티켓 (가격 = 0, 수량 = 0) => del 
+	 * */
 	@Override
 	public Ticket addTicket(Ticket ticket) {
+		
+		if(ticket.getTicketPrice() == 0) { 
+			if(ticket.getTicketCount() == 0) {
+				//딜릿 티켓(가격 0, 수량 0)
+				ticket.setTicketFlag("del");
+			} else {
+				//무료 티켓
+				ticket.setTicketFlag("free");
+			}
+		} else if(ticket.getTicketCount() == 0) {
+			//무제한티켓
+			ticket.setTicketFlag("nolimit");
+		}
 		
 		int result = ticketDAO.addTicket(ticket);
 		System.out.println("ticketNo : "+ticket.getTicketNo());
@@ -65,6 +85,19 @@ public class TicketServiceImpl implements TicketService {
 
 	@Override
 	public Ticket updateTicket(Ticket ticket) {
+		
+		if(ticket.getTicketPrice() == 0) { 
+			if(ticket.getTicketCount() == 0) {
+				//딜릿 티켓(가격 0, 수량 0)
+				ticket.setTicketFlag("del");
+			} else {
+				//무료 티켓
+				ticket.setTicketFlag("free");
+			}
+		} else if(ticket.getTicketCount() == 0) {
+			//무제한티켓
+			ticket.setTicketFlag("nolimit");
+		}
 		
 		int result = ticketDAO.updateTicket(ticket);
 		if(result == 1) {
