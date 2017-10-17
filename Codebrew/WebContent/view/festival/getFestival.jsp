@@ -2,9 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%@include file="/view/festival/admin.jsp"%>
+<%-- <%@include file="/view/festival/admin.jsp"%> --%>
 
-<%-- <%@include file="/view/festival/user.jsp"%> --%>
+<%@include file="/view/festival/user.jsp"%>
 
 
 
@@ -92,14 +92,6 @@ $(function() {
 		    map.panTo(moveLatLon);            
 		}        
 		
-/* 		$(function(){
-			$("#addFestival").on("click", function(){
-				console.log("야야야야" + $(this).html());
-				$('form').attr("method","POST").attr("action", "/festival/addFestivalView").submit();
-				
-			});
-		}); */
-		
 		$(function(){
 			$("#back").on("click", function(){
 				history.go(-1);
@@ -107,27 +99,74 @@ $(function() {
 		});
 		
 		$(function() {
-			/* $("button[type='button']").on("click", function() { */
 				$("button:contains('등록하기')").on("click", function() {
 				self.location = "/festival/addFestivalView?festivalNo=" + ${festival.festivalNo};
 			});
 		});
 			
 		$(function() {
-			/* $("button[type='button']").on("click", function() { */
 				$("button:contains('애프터파티 조회')").on("click", function() {
 				self.location = "/party/getPartyList?festivalNo="+${festival.festivalNo};
 			});
 		});
 			
 		$(function() {
-			/* $("button[type='button']").on("click", function() { */
 				$("button:contains('티켓구매')").on("click", function() {
 				self.location = "/purchase/addPurchase?festivalNo="+${festival.festivalNo};
 			});
 		});
-
-		
+			
+		 $(function(){
+			 
+			 $("p:contains('♡')").on("click", function() {
+				 		
+					$.ajax( 
+							{
+								url : "/festivalRest/json/addZzim/${user.userId}/${festival.festivalNo}",
+								method : "GET" ,
+								dataType : "json" ,
+								headers : {
+									"Accept" : "application/json",
+									"Content-Type" : "application/json"
+								},
+								success : function(JSONData , status) {
+	
+											var displayValue = "<p>♥</p>";
+								
+									$(this).remove();
+									$("p").html(displayValue);
+								
+								}
+						});
+			 });
+		 });
+		 
+$(function(){
+			 
+			 $("p:contains('♥')").on("click", function() {
+				 		
+					$.ajax( 
+							{
+								url : "/festivalRest/json/deleteZzim/${user.userId}/${festival.festivalNo}",
+								method : "GET" ,
+								dataType : "json" ,
+								headers : {
+									"Accept" : "application/json",
+									"Content-Type" : "application/json"
+								},
+								
+								success : function(JSONData , status) {
+	
+											var displayValue = "<p>♡</p>";
+								
+									$("p").html(displayValue);
+								
+								}
+						});
+			 });
+		 });
+	
+			 
 		</script>		
 	
 </head>
@@ -139,7 +178,6 @@ $(function() {
 <button onclick="panTo()">지도 중심좌표 부드럽게 이동시키기</button>
 	</p>
 	
-		
 	<br/>
 	<br/>
 	
@@ -165,6 +203,19 @@ $(function() {
 
 	
 	 <img src = "${festival.festivalImage }" />
+	 
+	 
+	 
+	 <c:if test="${returnZzim == null }">
+		<p>♡</p>
+	</c:if>
+	
+	<c:if test="${returnZzim != null }">
+		<p>♥</p>
+	</c:if>
+	
+	
+	
 	 
 	 	
 	<br/>
@@ -245,6 +296,7 @@ $(function() {
 	<br/>
 	<br/>
 	
+	<c:if test= "${user.role=='u' }" >
 	
 	티켓가격 : ${festival.ticketPrice }
 		
@@ -257,10 +309,22 @@ $(function() {
 	<br/>
 	<br/>
 	
+	</c:if>
+	
 	
 	<input type = "hidden" class="form-control" id="festivalLongitude" name="festivalLongitude" value= "${festival.festivalLongitude }">
 	<input type = "hidden" class="form-control" id="festivalLatitude" name="festivalLatitude" value= "${festival.festivalLatitude }">
 	<input type = "hidden" class="form-control" id="festivalNo" name="festivalNo" value= "${festival.festivalNo }">
+	
+	<!-- user sample  -->
+	
+	<input type = "hidden" class="form-control" id="userId" name="userId" value= "${user.userId }">
+	<input type = "hidden" class="form-control" id="userName" name="userName" value= "${user.userName }">
+	<input type = "hidden" class="form-control" id="role" name="role" value= "${user.role }">
+	<input type = "hidden" class="form-control" id="nickname" name="userId" value= "${user.nickname }">
+	
+	
+	
 	
 	
 	<c:if test= "${user.role=='a' }" >
@@ -277,7 +341,11 @@ $(function() {
 		<div class="form-group">
 				<div class="col-sm-offset-4  col-sm-4 text-center">
 					<button type="button" class="btn btn-primary">애프터파티 조회</button>
-					<button type="button" class="btn btn-primary">티켓구매</button>
+					
+					<c:if test="${ticket.ticketFlag!='del' }">
+						<button type="button" class="btn btn-primary">티켓구매</button>
+					</c:if>
+					
 					<input type = "button" id = "back" name = "back" value = "뒤로"/>
 				</div>
 			</div>

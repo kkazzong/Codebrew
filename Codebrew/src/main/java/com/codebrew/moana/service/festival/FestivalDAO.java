@@ -5,6 +5,8 @@ import java.util.Map;
 
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Festival;
+import com.codebrew.moana.service.domain.Zzim;
+import com.codebrew.moana.service.domain.Zzim;
 
 public interface FestivalDAO {
 	
@@ -22,5 +24,11 @@ public interface FestivalDAO {
 	public Festival getFestivalDB(int festivalNo) throws Exception;
 	
 	public List<Festival> getFestivalListDB(Search search) throws Exception;
+	
+	public void addZzim(Zzim zzim) throws Exception;
+	
+	public void deleteZzim(Zzim zzim) throws Exception;
+	
+	public Zzim getZzim(Zzim zzim) throws Exception;
 	
 }

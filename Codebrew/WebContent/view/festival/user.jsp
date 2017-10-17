@@ -20,5 +20,5 @@ user.setCoconutCount(30);
 
 
 
-request.setAttribute("user", user);
+session.setAttribute("user", user);
 %>
