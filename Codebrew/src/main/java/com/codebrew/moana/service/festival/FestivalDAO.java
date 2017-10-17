@@ -31,4 +31,6 @@ public interface FestivalDAO {
 	
 	public Zzim getZzim(Zzim zzim) throws Exception;
 	
+	public void updateFestival(Festival festival) throws Exception;
+	
 }

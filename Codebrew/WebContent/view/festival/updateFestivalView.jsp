@@ -44,7 +44,7 @@
 	
 	<script type="text/javascript">
 		
-	 	var map = null;
+		var map = null;
 		var mapx = ${festival.festivalLongitude}; // 경도
 		var mapy = ${festival.festivalLatitude};	//위도'
 		
@@ -84,8 +84,7 @@ $(function() {
 		    // 지도 중심을 부드럽게 이동시킵니다
 		    // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
 		    map.panTo(moveLatLon);            
-		}         
-		
+		}        
 		
 		$(function(){
 			$("#back").on("click", function(){
@@ -95,8 +94,8 @@ $(function() {
 		
 		$(function() {
 			$("button[type='button']").on("click", function() {
-
-				$('form').attr("method","POST").attr("enctype", "multipart/form-data").attr("action", "/festival/addFestival").submit();
+ 
+				$('form').attr("method","POST").attr("enctype", "multipart/form-data").attr("action", "/festival/updateFestival").submit();
 			});
 		});
 
@@ -112,12 +111,10 @@ $(function() {
 			<button onclick="panTo()">지도 중심좌표 부드럽게 이동시키기</button>
 		</p> 
 
-	
-
+	<form name="detailForm" class="form-horizontal">
+                          
 <br/>
 <br/>
-
-<form name="detailForm" class="form-horizontal">
 	
 	<div class = "form-group">
 	
@@ -381,7 +378,7 @@ $(function() {
 
 	<div class="form-group">
 				<div class="col-sm-offset-4  col-sm-4 text-center">
-					<button type="button" class="btn btn-primary">등록</button>
+					<button type="button" class="btn btn-primary">수정</button>
 					<input type = "button" id = "back" name = "back" value = "내용삭제"/>
 				</div>
 			</div>

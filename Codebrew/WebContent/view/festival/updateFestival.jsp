@@ -2,6 +2,12 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<%-- <%@include file="/view/festival/admin.jsp"%> --%>
+
+<%-- <%@include file="/view/festival/user.jsp"%> --%>
+
+
+
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -44,7 +50,7 @@
 	
 	<script type="text/javascript">
 		
-	 	var map = null;
+		var map = null;
 		var mapx = ${festival.festivalLongitude}; // 경도
 		var mapy = ${festival.festivalLatitude};	//위도'
 		
@@ -84,8 +90,7 @@ $(function() {
 		    // 지도 중심을 부드럽게 이동시킵니다
 		    // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
 		    map.panTo(moveLatLon);            
-		}         
-		
+		}        
 		
 		$(function(){
 			$("#back").on("click", function(){
@@ -93,16 +98,16 @@ $(function() {
 			});
 		});
 		
-		$(function() {
-			$("button[type='button']").on("click", function() {
-				
-				self.location = "/festival/getFestivalListDB";
-
-				//$('form').attr("method","GET").attr("action", "/festival/addFestivalView").submit();
-			});
-		});
-
+			
 		
+		$(function() {
+			$("button:contains('완료')").on("click", function() {
+			self.location = "/festival/getFestivalListDB";
+		});
+	});
+			
+	
+			 
 		</script>		
 	
 </head>
@@ -114,7 +119,6 @@ $(function() {
 <button onclick="panTo()">지도 중심좌표 부드럽게 이동시키기</button>
 	</p>
 	
-		
 	<br/>
 	<br/>
 	
@@ -137,10 +141,8 @@ $(function() {
 		
 	<br/>
 	<br/>
-
 	
 	 <img src = "${festival.festivalImage }" />
-	 
 	 	
 	<br/>
 	<br/>
@@ -220,7 +222,6 @@ $(function() {
 	<br/>
 	<br/>
 	
-	
 	티켓가격 : ${festival.ticketPrice }
 		
 	<br/>
@@ -233,17 +234,31 @@ $(function() {
 	<br/>
 	
 	
+	
 	<input type = "hidden" class="form-control" id="festivalLongitude" name="festivalLongitude" value= "${festival.festivalLongitude }">
 	<input type = "hidden" class="form-control" id="festivalLatitude" name="festivalLatitude" value= "${festival.festivalLatitude }">
 	<input type = "hidden" class="form-control" id="festivalNo" name="festivalNo" value= "${festival.festivalNo }">
 	
+	<!-- user sample  -->
+	
+	<input type = "hidden" class="form-control" id="userId" name="userId" value= "${user.userId }">
+	<input type = "hidden" class="form-control" id="userName" name="userName" value= "${user.userName }">
+	<input type = "hidden" class="form-control" id="role" name="role" value= "${user.role }">
+	<input type = "hidden" class="form-control" id="nickname" name="userId" value= "${user.nickname }">
+	
+	
+	
+	
+	
+		
 		<div class="form-group">
 				<div class="col-sm-offset-4  col-sm-4 text-center">
-					<button type="button" class="btn btn-primary">리스트로가기</button>
-					<input type = "button" id = "back" name = "back" value = "뒤로"/>
+				
+					<button type="button" class="btn btn-primary">완료</button>
+			
 				</div>
 			</div>
-	
+			
 	
 	
 	
