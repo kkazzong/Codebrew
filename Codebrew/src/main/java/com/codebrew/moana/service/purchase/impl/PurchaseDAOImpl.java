@@ -250,7 +250,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			System.out.println(date.toString());
 			// System.out.println(date2.getTime());
 
-			purchase.setQrCode(this.createQRCode());
+			//purchase.setQrCode(this.createQRCode());
 
 			switch (purchase.getPurchaseFlag()) {
 			case "1": //festival
@@ -363,6 +363,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 	}
 
 	//create qrcode image
+	@Override
 	public QRCode createQRCode() {
 		QRCode qrCode = null;
 		try {

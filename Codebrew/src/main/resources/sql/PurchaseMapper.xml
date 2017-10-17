@@ -57,13 +57,23 @@
 		purchase_count,
 		tran_code,
 		qr_code_image)
-		VALUES (seq_purchase_purchase_no.nextval,
+		VALUES (seq_purchase_purchase_no.NEXTVAL,
 						#{user.userId:VARCHAR},
 						#{ticket.ticketNo:NUMERIC},
-						#{paymentNo:VARCHAR},
+						<if test="paymentNo != null">
+							#{paymentNo:VARCHAR},
+						</if>
+						<if test="paymentNo == null">
+							seq_purchase_payment_no.NEXTVAL,
+						</if>
 						#{paymentMethodType:VARCHAR},
 						#{itemName:VARCHAR},
-						#{purchaseDate:TIMESTAMP},
+						<if test="purchaseDate != null">
+							#{purchaseDate:TIMESTAMP},
+						</if>
+						<if test="purchaseDate == null">
+							SYSDATE,
+						</if>
 						#{purchasePrice:NUMERIC},
 						#{purchaseCount:NUMERIC},
 						'1',
@@ -151,6 +161,7 @@
 								p.party_place AS party_place,
 								p.party_image AS party_image,
 								pc.purchase_no AS purchase_no,
+								pc.payment_no AS payment_no,
 								pc.item_name AS item_name,
 								pc.purchase_date AS purchase_date,
 								pc.purchase_count AS purchase_count,

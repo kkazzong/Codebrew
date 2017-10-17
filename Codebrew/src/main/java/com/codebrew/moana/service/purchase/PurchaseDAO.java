@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Purchase;
+import com.codebrew.moana.service.domain.QRCode;
 
 public interface PurchaseDAO {
 	
@@ -18,5 +19,6 @@ public interface PurchaseDAO {
 	public Purchase approvePayment(String pgToken);
 	public void cancelPayment(Purchase purchase);
 	public int getTotalCount(String userId, Search search);
+	public QRCode createQRCode();
 	
 }
