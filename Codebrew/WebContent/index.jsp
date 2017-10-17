@@ -31,5 +31,11 @@
 <br>
 
 <a href="/purchase/getPurchaseList?userId=user03@naver.com"> my티켓 </a>
+
+<br>
+<br>
+<!--주영이가 써보았다.  -->
+<a href="/user/login">로그인</a>
+
 </body>
 </html>
