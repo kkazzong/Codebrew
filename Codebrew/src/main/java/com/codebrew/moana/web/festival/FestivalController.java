@@ -1,10 +1,8 @@
 package com.codebrew.moana.web.festival;
 
-
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +20,8 @@ import com.codebrew.moana.common.Page;
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Festival;
 import com.codebrew.moana.service.domain.Ticket;
+import com.codebrew.moana.service.domain.User;
+import com.codebrew.moana.service.domain.Zzim;
 import com.codebrew.moana.service.festival.FestivalService;
 import com.codebrew.moana.service.ticket.TicketService;
 
@@ -32,7 +32,7 @@ public class FestivalController {
 	@Autowired
 	@Qualifier("festivalServiceImpl")
 	private FestivalService festivalService;
-	
+
 	@Autowired
 	@Qualifier("ticketServiceImpl")
 	private TicketService ticketService;
@@ -75,26 +75,25 @@ public class FestivalController {
 			@RequestParam("file") MultipartFile file) throws Exception {
 
 		System.out.println("/add");
-		
-		
+
 		ModelAndView modelAndView = new ModelAndView();
 
 		boolean duplication = festivalService.duplication(festival.getFestivalNo());
-		
+
 		System.out.println("add에서 축제등록 중복체ㅡ................." + duplication);
 
-		if (duplication==true) {
+		if (duplication == true) {
 
 			if (file.getSize() > 0) {
 
 				System.out.println("size=0 으로 들어옴!! " + festival.getFestivalNo());
-				
+
 				File UploadedFile = new File(fileRoot, file.getOriginalFilename());
 
 				festival.setFestivalImage(file.getOriginalFilename());
 
 				file.transferTo(UploadedFile);
-				
+
 				festivalService.addFestival(festival);
 
 				modelAndView.setViewName("forward:/view/festival/addFestival.jsp");
@@ -110,20 +109,20 @@ public class FestivalController {
 				modelAndView.addObject(festival);
 
 			}
-			
+
 			Ticket ticket = new Ticket();
 			ticket.setFestival(festival);
 			ticket.setTicketPrice(festival.getTicketPrice());
 			ticket.setTicketCount(festival.getTicketCount());
 
 			ticketService.addTicket(ticket);
-			
-		}else{
-			
+
+		} else {
+
 			modelAndView.setViewName("forward:/view/festival/duplication.jsp");
-			
+
 		}
-		
+
 		return modelAndView;
 	}
 
@@ -218,13 +217,12 @@ public class FestivalController {
 		return modelAndView;
 
 	}
-	
+
 	@RequestMapping(value = "getFestivalListDB")
 
 	public ModelAndView getFestivalListDB(@ModelAttribute("search") Search search, @ModelAttribute("page") Page page)
 			throws Exception {
 
-		
 		if (search.getCurrentPage() == 0) {
 			search.setCurrentPage(1);
 		}
@@ -234,7 +232,6 @@ public class FestivalController {
 
 		Page resultPage = new Page(search.getCurrentPage(), ((Integer) map.get("totalCount")).intValue(), pageUnit,
 				pageSize);
-		
 
 		ModelAndView modelAndView = new ModelAndView();
 
@@ -247,33 +244,78 @@ public class FestivalController {
 		return modelAndView;
 
 	}
-	
+
 	@RequestMapping(value = "getFestivalDB")
 
-	public ModelAndView getFestivalDB(@RequestParam ("festivalNo") int festivalNo)
-			throws Exception {
+	public ModelAndView getFestivalDB(@RequestParam("festivalNo") int festivalNo) throws Exception {
+	//,@ModelAttribute("user") User user) throws Exception {
 		
+		System.out.println("getFestivalDB.............." );
+		
+//		System.out.println("user 체크............"  + user);
+
 		Festival festival = festivalService.getFestival(festivalNo);
 		
-		Ticket ticket = ticketService.getTicket(festivalNo, "1");
+		Zzim zzim = new Zzim();
 		
+		zzim.setFestivalNo(festivalNo);
+//		zzim.setUserId(user.getUserId());
+		
+		Zzim returnZzim = festivalService.getZzim(zzim);
+
+		Ticket ticket = ticketService.getTicket(festivalNo, "1");
+
 		festival.setTicketCount(ticket.getTicketCount());
 		festival.setTicketPrice(ticket.getTicketPrice());
-		
 
 		ModelAndView modelAndView = new ModelAndView();
-		
-		
+
 		modelAndView.addObject("festival", festival);
-		
-		
+		modelAndView.addObject("zzim",returnZzim);
 
 		modelAndView.setViewName("forward:/view/festival/getFestival.jsp");
 
 		return modelAndView;
 
 	}
-	
 
+	@RequestMapping(value = "addZzim", method = RequestMethod.GET)
+	public ModelAndView addZzim(@RequestParam String userId, @RequestParam int festivalNo) throws Exception {
+
+		System.out.println("addZzim........");
+
+		Zzim zzim = new Zzim(userId, festivalNo);
+
+		festivalService.addZzim(zzim);
+
+		ModelAndView modelAndView = new ModelAndView();
+
+		modelAndView.setViewName("forward:/view/festival/getFestival.jsp");
+		modelAndView.addObject("zzim", zzim);
+
+		return modelAndView;
+
+	}
+	
+	@RequestMapping(value = "getZzim", method = RequestMethod.GET)
+	public ModelAndView getZzim(@ModelAttribute("user") User user, @RequestParam int festivalNo) throws Exception {
+
+		System.out.println("getZzim........");
+
+		Zzim zzim = new Zzim();
+		
+		zzim.setFestivalNo(festivalNo);
+		zzim.setUserId("sk@naver.com");
+
+		festivalService.getZzim(zzim);
+
+		ModelAndView modelAndView = new ModelAndView();
+
+		modelAndView.setViewName("forward:/view/festival/getFestival.jsp");
+		modelAndView.addObject("zzim", zzim);
+
+		return modelAndView;
+
+	}
 
 }
