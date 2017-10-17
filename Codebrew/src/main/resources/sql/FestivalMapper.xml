@@ -33,9 +33,8 @@
 		<result property="deleteFlag" column="DELETE_FLAG" jdbcType="VARCHAR" />
 		<result property="festivalImage" column="FESTIVAL_IMAGE" jdbcType="VARCHAR" />
 		
-		
-		
 </resultMap>
+
 
 	<select id="getFestivalDB" parameterType="int" resultMap="festivalSelectMap" >
 		SELECT FESTIVAL_NO,

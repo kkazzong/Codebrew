@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Festival;
+import com.codebrew.moana.service.domain.Zzim;
 import com.codebrew.moana.service.festival.FestivalDAO;
 import com.codebrew.moana.service.festival.FestivalService;
 
@@ -91,6 +92,27 @@ public class FestivalServiceImpl implements FestivalService{
 		map.put("totalCount", new Integer(totalCount));
 		
 		return map;
+	}
+
+	@Override
+	public void addZzim(Zzim zzim) throws Exception {
+		// TODO Auto-generated method stub
+		festivalDAO.addZzim(zzim);
+	}
+
+	@Override
+	public Zzim getZzim(Zzim zzim) throws Exception {
+		// TODO Auto-generated method stub
+		
+		return festivalDAO.getZzim(zzim);
+		
+	}
+
+	@Override
+	public void deleteZzim(Zzim zzim) throws Exception {
+		// TODO Auto-generated method stub
+		festivalDAO.deleteZzim(zzim);
+		
 	}
 	
 	

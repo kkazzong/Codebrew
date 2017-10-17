@@ -20,6 +20,6 @@
 	
 	
 	
-	request.setAttribute("user", user); 
+	session.setAttribute("user", user); 
 	
 %>
