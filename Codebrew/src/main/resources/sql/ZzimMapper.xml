@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="ZzimMapper">
+
+	<resultMap id="zzimSelectMap" type="zzim">
+		<result property="zzimNo" column="ZZIM_NO" jdbcType="NUMERIC" />	
+		<result property="festivalNo" column="FESTIVAL_NO" jdbcType="NUMERIC" />
+		<result property="userId" column="USER_ID" jdbcType="VARCHAR" />
+		
+</resultMap>
+
+	<insert id="addZzim" parameterType="zzim" >
+		INSERT INTO ZZIM (
+		
+		ZZIM_NO,
+		USER_ID,
+		FESTIVAL_NO
+		
+		)
+		
+		VALUES (
+		
+		SEQ_ZZIM_ZZIM_NO.NEXTVAL,
+		#{userId:VARCHAR},
+		#{festivalNo:NUMERIC}
+		
+		)
+	</insert>
+	
+	<delete id="deleteZzim" parameterType="zzim" >
+		DELETE FROM ZZIM 
+		WHERE USER_ID = #{userId:VARCHAR}
+		AND FESTIVAL_NO = #{festivalNo:NUMERIC}
+		
+	</delete>
+	
+	<select id="getZzim" parameterType="zzim" resultMap="zzimSelectMap">
+		SELECT * FROM ZZIM
+		WHERE USER_ID = #{userId:VARCHAR}
+		AND FESTIVAL_NO = #{festivalNo:NUMERIC}
+	</select>
+
+
+</mapper>	
+			
+		

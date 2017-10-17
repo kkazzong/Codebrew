@@ -4,5 +4,169 @@
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 		
-<mapper namespace="PartyMapper">
+		
+<mapper namespace = "PartyMapper">
+
+	<resultMap type="com.codebrew.moana.service.domain.Party" id="partySelectMap">
+		<result property="partyNo" column="party_no" jdbcType="NUMERIC"/>
+		<result property="partyName" column="party_name" jdbcType="VARCHAR"/>
+		<result property="festival.festivalNo" column="festival_no" jdbcType="NUMERIC"/>
+		<result property="festival.festivalName" column="festival_name" jdbcType="VARCHAR"/>
+		<result property="user.userId" column="user_id" jdbcType="VARCHAR"/>
+		<result property="user.nickname" column="nickname" jdbcType="VARCHAR"/>
+		<result property="partyDate" column="party_date" jdbcType="DATE"/>
+		<result property="partyTime" column="party_time" jdbcType="VARCHAR"/>
+		<result property="partyMemberLimit" column="party_member_limit" jdbcType="NUMERIC"/>
+		<result property="partyImage" column="party_image" jdbcType="VARCHAR"/>
+		<result property="partyDetail" column="party_detail" jdbcType="VARCHAR"/>
+		<result property="partyPlace" column="party_place" jdbcType="VARCHAR"/>
+		<result property="partyRegDate" column="party_reg_date" jdbcType="DATE"/>
+		<result property="deleteFlag" column="delete_flag" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="addParty" parameterType="party">
+		INSERT
+		INTO party(party_no, party_name, festival_no, user_id, party_date, party_time, party_member_limit
+		, <if test="partyImage != null">party_image,</if> party_detail, party_place, party_reg_date, delete_flag)
+		VALUES(seq_party_party_no.nextval
+				,#{partyName:VARCHAR}
+				,#{festival.festivalNo:NUMERIC}
+				,#{user.userId:VARCHAR}
+				,#{partyDate:DATE}
+				,#{partyTime:VARCHAR}
+				,#{partyMemberLimit:NUMERIC}
+				<if test="partyImage != null">
+					,#{partyImage:VARCHAR}
+				</if>
+				,#{partyDetail:VARCHAR}
+				,#{partyPlace:VARCHAR}
+				,SYSDATE
+				,#{deleteFlag:VARCHAR})
+	</insert>
+		
+
+	<select id="getParty" parameterType="int" resultMap="partySelectMap">
+		SELECT  p.party_no, 
+				p.party_name,
+				f.festival_name,
+				u.nickname,
+				TO_CHAR(p.party_date, 'yy/mm/dd' ) AS party_date, 
+				p.party_time, 
+				p.party_member_limit, 
+				p.party_image, 
+				p.party_detail, 
+				p.party_place, 
+				TO_CHAR(p.party_reg_date, 'yy/mm/dd') AS party_reg_date,
+				p.delete_flag
+		FROM party p, users u, festival f
+		WHERE p.user_id = u.user_id
+		AND p.festival_no = f.festival_no
+		AND p.party_no = #{value}
+	</select>
+	
+	<!-- <select id="getParty" parameterType="int" resultMap="partySelectMap">
+		SELECT TO_CHAR(party_date, 'yy/mm/dd') AS party_date
+		FROM party
+		WHERE party_no = #{partyNo}
+	</select> -->
+	
+	<update id="updateParty" parameterType="party">
+		UPDATE party
+		<set>
+			<if test="festival.festivalNo != null">festival_no = #{festival.festivalNo}, </if>
+			<if test="partyName != null">party_name = #{partyName}, </if>
+			<if test="partyDate != null">party_date = #{partyDate}, </if>
+			<if test="partyTime != null">party_time = #{partyTime}, </if>
+			<if test="partyDetail != null">party_detail = #{partyDetail}, </if>
+			<if test="partyMemberLimit != null">party_member_limit = #{partyMemberLimit}, </if>
+			<if test="partyPlace != null">party_place = #{partyPlace}, </if>
+			<if test="partyImage != null">party_image = #{partyImage} </if>
+		</set>
+		WHERE party_no = #{partyNo}
+	</update>
+	
+	
+	<update id="updateDeleteFlag" parameterType="int">
+		UPDATE party
+		<set>
+			delete_flag = 'del'
+		</set>
+		WHERE party_no = #{value}
+	</update>
+	
+	
+	<select  id="getPartyList" parameterType="com.codebrew.moana.common.Search" resultMap="partySelectMap">
+	  	SELECT *
+	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
+	  					FROM		(	SELECT p.party_no, p.party_image, f.festival_name, p.party_name, u.nickname, p.party_date, p.party_time, p.party_place
+										FROM party p, festival f, users u
+										<if test="searchCondition == null">
+										    <where>
+										        p.festival_no = f.festival_no
+										        AND p.user_id = u.user_id
+										    </where>
+										</if>
+										<if test="searchCondition != null">
+										    <where>
+										        p.festival_no = f.festival_no
+										        AND p.user_id = u.user_id
+										        
+										        <if test="searchCondition == 1 and searchKeyword =='' ">
+										            AND p.festival_no IS NULL;
+										        </if>
+										        <if test="searchCondition == 1 and searchKeyword !='' ">
+										            AND p.festival_no IS NULL;
+										            AND p.party_name LIKE '%${searchKeyword}%'
+										        </if>
+										        <if test="searchCondition == 2 and searchKeyword =='' ">
+										            AND p.festival_no IS NOT NULL;
+										        </if>
+										        <if test="searchCondition == 2 and searchKeyword !='' ">
+										            AND p.festival_no IS NOT NULL;
+										            AND p.party_name LIKE '%${searchKeyword}%'
+										        </if>
+										    </where>
+										</if>
+										ORDER BY p.party_reg_date DESC  ) inner_table
+						WHERE ROWNUM &lt;= #{endRowNum} )
+		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 	
+	 </select>
+	 
+	 
+	 <select  id="getTotalCount"  parameterType="com.codebrew.moana.common.Search"	 resultType="int">
+	  	SELECT COUNT(*)
+	  	FROM(	SELECT 	p.party_no, p.party_image, f.festival_name, p.party_name, u.nickname, p.party_date, p.party_time, p.party_place
+						FROM party
+						<if test="searchCondition != null">
+							<where>
+								<if test="searchCondition == null">
+								    <where>
+								        p.festival_no = f.festival_no
+								        AND p.user_id = u.user_id
+								    </where>
+								</if>
+								<if test="searchCondition != null">
+								    <where>
+								        p.festival_no = f.festival_no
+								        AND p.user_id = u.user_id
+								        
+								        <if test="searchCondition == 1 and searchKeyword =='' ">
+								            AND p.festival_no IS NULL;
+								        </if>
+								        <if test="searchCondition == 1 and searchKeyword !='' ">
+								            AND p.festival_no IS NULL;
+								            AND p.party_name LIKE '%${searchKeyword}%'
+								        </if>
+								        <if test="searchCondition == 2 and searchKeyword =='' ">
+								            AND p.festival_no IS NOT NULL;
+								        </if>
+								        <if test="searchCondition == 2 and searchKeyword !='' ">
+								            AND p.festival_no IS NOT NULL;
+								            AND p.party_name LIKE '%${searchKeyword}%'
+								        </if>
+								    </where>
+								</if>
+							</where>
+						</if> ) countTable						
+	 </select>
 </mapper>
