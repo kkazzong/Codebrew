@@ -205,6 +205,20 @@
 								<div class="col-xs-8 col-md-6">${purchase.purchasePrice} 원</div>
 							</div>
 							<div class="row">
+								<div class="col-xs-4 col-md-6"><strong>결제수단</strong></div>
+								<div class="col-xs-8 col-md-6">
+									<c:if test="${purchase.paymentMethodType == 'CARD'}">
+										카드
+									</c:if>
+									<c:if test="${purchase.paymentMethodType == 'MONEY'}">
+										현금
+									</c:if>
+									<c:if test="${empty purchase.paymentMethodType}">
+										무료결제
+									</c:if>
+								</div>
+							</div>
+							<div class="row">
 								<div class="col-xs-4 col-md-6"><strong>결제상태</strong></div>
 								<div class="col-xs-8 col-md-6">
 									<c:if test="${purchase.tranCode == 1}">

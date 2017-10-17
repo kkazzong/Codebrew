@@ -45,23 +45,33 @@ public class PurchaseServiceImpl implements PurchaseService {
 	@Override
 	public Purchase addPurchase(Purchase purchase) {
 		
-		//원래 티켓 수량
-		int originTicketCount = purchase.getTicket().getTicketCount();
+		String flag = purchase.getTicket().getTicketFlag();
+		System.out.println("@@@@@@@@@@"+flag);
 		
-		//구매할 티켓 수량
-		int purchaseTicketCount = purchase.getPurchaseCount();
-		
-		//원래수량 - 구매수량 으로 티켓수량 업데이트
-		purchase.getTicket().setTicketCount(originTicketCount - purchaseTicketCount);
-		ticketDAO.updateTicketCount(purchase.getTicket());
+			
+		// 기본티켓, 무료티켓일때
+		if (purchase.getTicket().getTicketFlag() == null || purchase.getTicket().getTicketFlag().equals("free")) {
+
+			System.out.println("@@@@@@@요기서 에러..?");
+			// 원래 티켓 수량
+			int originTicketCount = purchase.getTicket().getTicketCount();
+
+			// 구매할 티켓 수량
+			int purchaseTicketCount = purchase.getPurchaseCount();
+			purchase.getTicket().setTicketCount(originTicketCount - purchaseTicketCount);
+			// 원래수량 - 구매수량 으로 티켓수량 업데이트
+			ticketDAO.updateTicketCount(purchase.getTicket());
+		}
 		
 		//구매테이블 insert
+		purchase.setQrCode(purchaseDAO.createQRCode());
 		int result = purchaseDAO.addPurchase(purchase);
 		if(result == 1) {
 			return purchaseDAO.getPurchase(purchase.getPurchaseNo());
 		} else {
 			return null;
 		}
+		
 	}
 	
 	@Override
