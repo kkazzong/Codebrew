@@ -37,7 +37,6 @@
 		WHERE USER_ID = #{userId:VARCHAR}
 		AND FESTIVAL_NO = #{festivalNo:NUMERIC}
 		
-		)
 	</delete>
 	
 	<select id="getZzim" parameterType="zzim" resultMap="zzimSelectMap">
