@@ -4,7 +4,7 @@
 
 <%-- <%@include file="/view/festival/admin.jsp"%> --%>
 
-<%@include file="/view/festival/user.jsp"%>
+<%-- <%@include file="/view/festival/user.jsp"%> --%>
 
 
 
@@ -135,6 +135,7 @@ $(function() {
 								
 									$(this).remove();
 									$("p").html(displayValue);
+									location.reload();
 								
 								}
 						});
@@ -158,8 +159,11 @@ $(function(){
 								success : function(JSONData , status) {
 	
 											var displayValue = "<p>♡</p>";
-								
+									
+									$(this).remove();
 									$("p").html(displayValue);
+									
+									location.reload();
 								
 								}
 						});
@@ -337,7 +341,7 @@ $(function(){
 			
 			</c:if>
 			
-	<c:if test="${user.role=='u' }">
+	<c:if test="${user.role!='a' }">
 		<div class="form-group">
 				<div class="col-sm-offset-4  col-sm-4 text-center">
 					<button type="button" class="btn btn-primary">애프터파티 조회</button>
