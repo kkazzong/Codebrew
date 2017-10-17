@@ -37,5 +37,17 @@
 <!--주영이가 써보았다.  -->
 <a href="/user/login">로그인</a>
 
+<!-- 가정이가 또 써보았다 -->
+<br>
+<br>
+<c:if test="${!empty user}">
+ 현재 로그인한 userId : ${user.userId} <br>
+ 어드민이니? 유저니? : ${user.role} <br>
+</c:if>
+
+<c:if test="${user.role == 'a'}">
+	<a href="/statistics/getStatistics"> 판매통계보기 (관리자only) </a>
+</c:if>
+
 </body>
 </html>

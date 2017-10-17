@@ -1,5 +1,9 @@
 package com.codebrew.moana.service.statistics;
 
-public interface StatisticsService {
+import java.util.List;
 
+import com.codebrew.moana.service.domain.Statistics;
+
+public interface StatisticsService {
+	public List<Statistics> getStatistic(String statFlag);
 }

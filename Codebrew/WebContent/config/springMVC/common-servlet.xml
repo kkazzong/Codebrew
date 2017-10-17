@@ -103,7 +103,7 @@
 	
 	
 	 <!--메일 보낼때 쓸 프로퍼티 -->
-     <bean id="mailSender" class = "org.springframework.mail.javamail.JavaMailSenderImpl">
+     <!-- <bean id="mailSender" class = "org.springframework.mail.javamail.JavaMailSenderImpl">
       <property name="host" value="smtp.naver.com" />
       <property name="port" value="587" />
       <property name="username" value="codebrew@naver.com" />
@@ -117,7 +117,7 @@
          </props>
       </property>
      
-     </bean>
+     </bean> -->
      
      
 </beans>
