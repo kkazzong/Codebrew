@@ -2,8 +2,9 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="ko">
+
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -38,7 +39,7 @@
 
 			var festivalNo = $("p", this).text();
 
-			self.location = "/festival/getFestival?festivalNo=" + festivalNo;
+			self.location = "/festival/getFestivalDB?festivalNo=" + festivalNo;
 		});
 	});
 </script>
@@ -119,8 +120,21 @@
 		<br />
 			<table>
 				<tr>
-					<td><img src="${festival.festivalImage }" width="300"
-						height="300" /> <br />
+					<td>
+					
+					<c:if test="${festival.festivalImage.contains('http://')==true }">
+					
+					<img src="${festival.festivalImage }" width="300"height="300" />
+					
+					</c:if>
+					
+					<c:if test="${festival.festivalImage.contains('http://')==false }">
+					
+					<img src="../../resources/uploadFile/${festival.festivalImage }" width="300"height="300" />
+					
+					</c:if>
+					
+					 <br />
 						<div id="festivalNo" style="display: none">
 							<p>${festival.festivalNo }</p>
 						</div> <span> ${festival.festivalName } </span> <br /></td>
@@ -138,7 +152,7 @@
 			
 			<input type = hidden id="currentPage" name = "currentPage" value = ${i } />
 			
-			<jsp:include page="../common/pageNavigator.jsp"/>
+			<jsp:include page="../../common/pageNavigator.jsp"/>
 			
 
 

@@ -349,8 +349,8 @@ public class FestivalDAOImpl implements FestivalDAO {
 			Festival festival = new Festival();
 
 			if (jsonobj5.get("firstimage") == null || jsonobj5.get("firstimage") == "") {
-				festival.setFestivalImage("../images/uploadFiles/no.png");
-				// festival.setFestivalImage(null);
+//				festival.setFestivalImage("no.png");
+				festival.setFestivalImage(null);
 			} else {
 				festival.setFestivalImage(jsonobj5.get("firstimage").toString()); // 원본사진
 			}

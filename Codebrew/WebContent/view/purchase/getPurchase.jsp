@@ -16,8 +16,50 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <!-- jQuery -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<!-- KakaoLink -->
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 <script type="text/javascript">
+	
+	// '가정'app 키 ip변경시 동적변경해줘야함
+	Kakao.init('4c581b38ff4c308971bc220233e61b89');
+	
+	var ticketPrice = ${ticket.ticketPrice};
+	var itemName = "${purchase.itemName}";
+	var imageUrl = "${ticket.festival.festivalImage}";
+	var ip = "http://192.168.0.7:8080";
+	var festivalNo = ${ticket.festival.festivalNo};
+	if(!imageUrl.includes('http://')) {
+		imageUrl = ip+"/resources/uploadFile/${ticket.festival.festivalImage}";
+	}
+	
+	// 카카오 링크 보내기
+	function sendLink() {
+	    Kakao.Link.sendDefault({
+	      objectType: 'commerce',
+	      content: {
+	        title: itemName,
+	        imageUrl: imageUrl,
+	        link: {
+	          mobileWebUrl: ip+"/festival/getFestival?festivalNo="+festivalNo,
+	          webUrl: 'https://developers.kakao.com'
+	        }
+	      },
+	      commerce: {
+	        regularPrice: ticketPrice
+	      },
+	      buttons: [
+	        {
+	          title: '구매하기',
+	          link: {
+	            mobileWebUrl: ip+'/purchase/addPurchase?festivalNo='+festivalNo,
+	            webUrl: 'https://developers.kakao.com'
+	          }
+	        }
+	      ]
+	    });
+	  }
 
+	// 카카오페이 결제취소
 	function fncCancelPayment(purchaseNo) {
 		
 		$.ajax({
@@ -69,7 +111,9 @@
 </style>
 </head>
 <body>
-
+	
+	<input type="hidden" name="itemName" value="${purchase.itemName}">
+	
 	<div class="container">
 	
 		<!-- page header -->
@@ -80,6 +124,11 @@
 				</div>
 			</div>
 		</div>
+		
+		<!-- kakao link -->
+		<a id="kakao-link-btn" href="javascript:sendLink();">
+			<img src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"/>
+		</a>
 		
 		<div class="row">
 			<div class="col-md-offset-3 col-md-6">

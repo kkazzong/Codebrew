@@ -2,8 +2,9 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="ko">
+
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -36,7 +37,7 @@
 		 $( "button:contains('축제명으로 찾기')" ).on("click" , function() {
 			 /* $("form").attr("method" , "GET").attr("action" , "/festival/searchKeywordList").submit(); */
 			 
-			 self.location = "/festival/searchKeywordList.jsp";
+			 self.location = "/view/festival/searchKeywordList.jsp";
 		});
 });
    
@@ -131,9 +132,24 @@
 		
 		<br />
 			<table>
-				<tr>
-					<td><img src="${festival.festivalImage }" width="300"
-						height="300" /> <br />
+				<tr> 
+					<td>
+					
+					<c:if test="${festival.festivalImage == null }"> 
+						
+						<img src="../resources/uploadFile/no.png" width="300" height="300"/>
+						
+					</c:if>
+					
+					<c:if test="${festival.festivalImage != null }">
+					
+						<img src="${festival.festivalImage }" width="300" height="300" />
+						
+					</c:if>
+					
+					
+					 <br />
+					
 						<div id="festivalNo" style="display: none">
 							<p>${festival.festivalNo }</p>
 						</div> <span> ${festival.festivalName } </span> <br /></td>
@@ -151,7 +167,7 @@
 			
 			<input type = hidden id="currentPage" name = "currentPage" value = ${i } />
 			
-			<jsp:include page="../common/pageNavigator.jsp"/>
+			<jsp:include page="../../common/pageNavigator.jsp"/>
 			
 
 
