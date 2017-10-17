@@ -143,7 +143,12 @@
 					<!-- 축제정보 -->
 					<c:if test="${!empty festival}">
 						<input type="hidden" name="festival.festivalName" value="${festival.festivalName}">
-						<img class="col-md-5" height="90" src="${festival.festivalImage}">
+						<c:if test="${festival.festivalImage.contains('http://')}">
+							<img class="col-md-5" height="90" src="${festival.festivalImage}">
+						</c:if>
+						<c:if test="${!festival.festivalImage.contains('http://')}">
+							<img class="col-md-5" height="90" src="../resources/uploadFile/${festival.festivalImage}">
+						</c:if>
 						<div class="row">
 							<div class="col-md-6">
 								<strong>${festival.festivalName}</strong>

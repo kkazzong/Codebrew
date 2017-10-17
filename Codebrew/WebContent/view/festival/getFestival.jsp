@@ -2,8 +2,15 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<%@include file="/view/festival/admin.jsp"%>
+
+<%-- <%@include file="/view/festival/user.jsp"%> --%>
+
+
+
+<!DOCTYPE html>
+<html lang="ko">
+
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -100,11 +107,23 @@ $(function() {
 		});
 		
 		$(function() {
-			$("button[type='button']").on("click", function() {
-				
-				self.location = "/festival/getFestivalListDB";
-
-				//$('form').attr("method","GET").attr("action", "/festival/addFestivalView").submit();
+			/* $("button[type='button']").on("click", function() { */
+				$("button:contains('등록하기')").on("click", function() {
+				self.location = "/festival/addFestivalView?festivalNo=" + ${festival.festivalNo};
+			});
+		});
+			
+		$(function() {
+			/* $("button[type='button']").on("click", function() { */
+				$("button:contains('애프터파티 조회')").on("click", function() {
+				self.location = "/party/getPartyList?festivalNo="+${festival.festivalNo};
+			});
+		});
+			
+		$(function() {
+			/* $("button[type='button']").on("click", function() { */
+				$("button:contains('티켓구매')").on("click", function() {
+				self.location = "/purchase/addPurchase?festivalNo="+${festival.festivalNo};
 			});
 		});
 
@@ -243,12 +262,27 @@ $(function() {
 	<input type = "hidden" class="form-control" id="festivalLatitude" name="festivalLatitude" value= "${festival.festivalLatitude }">
 	<input type = "hidden" class="form-control" id="festivalNo" name="festivalNo" value= "${festival.festivalNo }">
 	
+	
+	<c:if test= "${user.role=='a' }" >
 		<div class="form-group">
 				<div class="col-sm-offset-4  col-sm-4 text-center">
-					<button type="button" class="btn btn-primary">리스트로가기</button>
+					<button type="button" class="btn btn-primary">등록하기</button>
 					<input type = "button" id = "back" name = "back" value = "뒤로"/>
 				</div>
 			</div>
+			
+			</c:if>
+			
+	<c:if test="${user.role=='u' }">
+		<div class="form-group">
+				<div class="col-sm-offset-4  col-sm-4 text-center">
+					<button type="button" class="btn btn-primary">애프터파티 조회</button>
+					<button type="button" class="btn btn-primary">티켓구매</button>
+					<input type = "button" id = "back" name = "back" value = "뒤로"/>
+				</div>
+			</div>
+			
+			</c:if>
 	
 	
 	

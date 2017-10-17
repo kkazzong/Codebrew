@@ -10,6 +10,7 @@
 		<result property="ticketNo" column="ticket_no" jdbcType="NUMERIC"/>
 		<result property="ticketPrice" column="ticket_price" jdbcType="NUMERIC"/>
 		<result property="ticketCount" column="ticket_count" jdbcType="NUMERIC"/>
+		<result property="ticketFlag" column="ticket_flag" jdbcType="VARCHAR"/>
 		
 		<association property="festival" javaType="com.codebrew.moana.service.domain.Festival">
 			<id property="festivalNo" column="festival_no" jdbcType="NUMERIC"/>
@@ -32,7 +33,13 @@
 	
 	<insert id="addTicket" parameterType="ticket"
 		useGeneratedKeys="true" keyProperty="ticketNo" keyColumn="ticket_no">
-		INSERT INTO ticket (ticket_no, festival_no, party_no, ticket_price, ticket_count)
+		INSERT INTO ticket (
+			ticket_no,
+			festival_no,
+			party_no,
+			ticket_price,
+			ticket_count,
+			ticket_flag)
 		VALUES (
 			seq_ticket_ticket_no.NEXTVAL,
 			<if test="festival != null">
@@ -48,7 +55,8 @@
 			null
 			</if>,
 			#{ticketPrice},
-			#{ticketCount}
+			#{ticketCount},
+			#{ticketFlag:VARCHAR}
 		)
 	</insert>
 	
@@ -68,7 +76,9 @@
 		p.party_time AS party_time,
 		p.party_image AS party_image,
 		t.ticket_price AS ticket_price,
-		t.ticket_count AS ticket_count
+		t.ticket_count AS ticket_count,
+		t.ticket_price AS ticket_price,
+		t.ticket_flag AS ticket_flag
 		FROM festival f, party p, ticket t
 		WHERE t.festival_no = f.festival_no(+)
 		AND t.party_no = p.party_no(+)
@@ -95,7 +105,8 @@
 		p.party_image AS party_image,
 		</if>
 		t.ticket_price AS ticket_price,
-		t.ticket_count AS ticket_count
+		t.ticket_count AS ticket_count,
+		t.ticket_flag AS ticket_flag
 		FROM 
 		<if test="festival != null">
 			festival f,
@@ -119,12 +130,9 @@
 	<update id="updateTicket" parameterType="ticket">
 		UPDATE ticket
 		<set>
-			<if test="ticketPrice != 0">
-				ticket_price = #{ticketPrice},
-			</if>
-			<if test="ticketCount != 0">
-				ticket_count = #{ticketCount}
-			</if>
+			ticket_price = #{ticketPrice},
+			ticket_count = #{ticketCount},
+			ticket_flag = #{ticketFlag:VARCHAR}
 		</set>
 		<where>
 			<if test="festival != null">
@@ -141,4 +149,5 @@
 		SET	ticket_count = #{ticketCount}
 		WHERE ticket_no = #{ticketNo}
 	</update>
+	
 </mapper>
