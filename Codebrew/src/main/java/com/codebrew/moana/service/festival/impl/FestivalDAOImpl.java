@@ -22,6 +22,7 @@ import org.springframework.stereotype.Repository;
 
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Festival;
+import com.codebrew.moana.service.domain.Zzim;
 import com.codebrew.moana.service.festival.FestivalDAO;
 
 @Repository("festivalDAOImpl")
@@ -626,6 +627,27 @@ public class FestivalDAOImpl implements FestivalDAO {
 	public List<Festival> getFestivalListDB(Search search) throws Exception {
 		// TODO Auto-generated method stub
 		return sqlSession.selectList("FestivalMapper.getFestivalListDB", search);
+	}
+
+	@Override
+	public void addZzim(Zzim zzim) throws Exception {
+		// TODO Auto-generated method stub
+		
+		sqlSession.insert("ZzimMapper.addZzim",zzim);
+		
+	}
+
+	@Override
+	public Zzim getZzim(Zzim zzim) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("ZzimMapper.getZzim",zzim);
+	}
+
+	@Override
+	public void deleteZzim(Zzim zzim) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.delete("ZzimMapper.addZzim",zzim);
+		
 	}
 
 }
