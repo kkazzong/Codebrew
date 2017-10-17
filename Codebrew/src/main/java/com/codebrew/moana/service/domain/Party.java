@@ -1,18 +1,15 @@
 package com.codebrew.moana.service.domain;
 
-import java.util.Date;
-
 import org.springframework.web.multipart.MultipartFile;
 
 public class Party {
 
-	//파티도메인 필드 추가
 	///Field///
 	private int partyNo;
 	private String partyName;
 	private Festival festival;
 	private User user;
-	private Date partyDate;
+	private String partyDate;
 	private String partyTime;
 	private String hour;
 	private String minutes;
@@ -23,7 +20,7 @@ public class Party {
 	private String partyPlace;
 	private int ticketCount;
 	private int ticketPrice;
-	private Date partyRegDate;
+	private String partyRegDate;
 	private String deleteFlag;
 	private double femalePercentage;
 	private double malePercentage;
@@ -60,7 +57,7 @@ public class Party {
 	}
 
 
-	public Date getPartyDate() {
+	public String getPartyDate() {
 		return partyDate;
 	}
 
@@ -115,7 +112,7 @@ public class Party {
 	}
 
 
-	public Date getPartyRegDate() {
+	public String getPartyRegDate() {
 		return partyRegDate;
 	}
 
@@ -165,7 +162,7 @@ public class Party {
 	}
 
 
-	public void setPartyDate(Date partyDate) {
+	public void setPartyDate(String partyDate) {
 		this.partyDate = partyDate;
 	}
 
@@ -220,7 +217,7 @@ public class Party {
 	}
 
 
-	public void setPartyRegDate(Date partyRegDate) {
+	public void setPartyRegDate(String partyRegDate) {
 		this.partyRegDate = partyRegDate;
 	}
 

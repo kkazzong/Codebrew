@@ -1,5 +1,6 @@
 package com.codebrew.moana.common;
 
+ 
 public class Search {
 	
 	///Field
@@ -74,3 +75,6 @@ public class Search {
 	}
 
 }
+
+	
+

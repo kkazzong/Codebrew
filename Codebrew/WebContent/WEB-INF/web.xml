@@ -12,6 +12,10 @@
 		classpath:config/context-transaction.xml
 	</param-value>
   </context-param>
+  <context-param>
+    <param-name>fileDirectory</param-name>
+    <param-value>C:\Users\seri\git\Codebrew\Codebrew\WebContent\resources\uploadFile\</param-value>
+  </context-param>
   
   <filter>
     <filter-name>encodingFilter</filter-name>
