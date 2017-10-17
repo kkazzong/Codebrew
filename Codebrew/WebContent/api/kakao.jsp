@@ -1,5 +1,6 @@
-<%@ page contentType="text/html; charset=EUC-KR" %>
-<%@ page pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -11,7 +12,7 @@
 	
 	Kakao.init('9f9b09052da56dddc3bc66e8a1632a69');
 	function loginWithKakao() {
-	// 로그인 창을 띄웁니다.
+	//로그인 창을 띄웁니다.
 		Kakao.Auth.login({
 	 		success: function(authObj) {
 	   			/* alert("dddddddd :: "+JSON.stringify(authObj)); */
@@ -91,7 +92,7 @@
 					url: '/v1/user/me',
 					success: function(res) {
 						$("#kakao-profile").append(res.properties.nickname);
-						$("#kakao-profile").append($("<img/>",{"src":res.properties.profile_image,"alt":res.properties.nickname+"님의 프로필 사진"}));
+						$("#kakao-profile").append($("<img/>",{"src":res.properties.profile_image,"alt":res.properties.nickname+"���� ��濡��� �ъ�"}));
 					},
 					fail: function(error) {
 						console.log(error);
@@ -100,7 +101,7 @@
 			}
 			function createKakaotalkLogin(){
 				$("#kakao-logged-group .kakao-logout-btn,#kakao-logged-group .kakao-login-btn").remove();
-				var loginBtn = $("<a/>",{"class":"kakao-login-btn","text":"로그인"});
+				var loginBtn = $("<a/>",{"class":"kakao-login-btn","text":"濡�洹몄��"});
 				loginBtn.click(function(){
 					Kakao.Auth.login({
 						persistAccessToken: true,
@@ -118,7 +119,7 @@
 			}
 			function createKakaotalkLogout(){
 				$("#kakao-logged-group .kakao-logout-btn,#kakao-logged-group .kakao-login-btn").remove();
-				var logoutBtn = $("<a/>",{"class":"kakao-logout-btn","text":"로그아웃"});
+				var logoutBtn = $("<a/>",{"class":"kakao-logout-btn","text":"濡�洹몄����"});
 				logoutBtn.click(function(){
 					Kakao.Auth.logout();
 					createKakaotalkLogin();
