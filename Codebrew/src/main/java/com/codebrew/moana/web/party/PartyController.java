@@ -97,6 +97,7 @@ public class PartyController {
 				
 				File file = new File(fileDirectory+partyImage);
 				uploadfile.transferTo(file);
+				
 				party.setPartyImage(partyImage);
 			}
 			
@@ -120,30 +121,126 @@ public class PartyController {
 		
 		//Model(data) & View(jsp)
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject(party);
+		modelAndView.addObject("party", party);
+		modelAndView.addObject("ticket", ticket);
 		modelAndView.setViewName("/view/party/getParty.jsp");
 		
 		return modelAndView;
 	}
 
 	
-	@RequestMapping( value="joinParty", method=RequestMethod.POST )
-	public ModelAndView joinParty(@ModelAttribute("party") Party party, HttpSession session) {
+	@RequestMapping( value="joinParty", method=RequestMethod.GET )
+	public ModelAndView joinParty(@RequestParam("partyNo") String partyNo, HttpSession session) {
 		
-		System.out.println("\n>>> /party/joinParty :: POST start <<<");
-		
-		int partyNo = party.getPartyNo();
-		
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("partyNo", partyNo);
+		System.out.println("\n>>> /party/joinParty :: GET start <<<");
 		
 		return null; 
 	}
 	
-	@RequestMapping( value="deleteParty", method=RequestMethod.POST )
+	
+	@RequestMapping( value="deleteParty", method=RequestMethod.GET )
 	public ModelAndView deleteParty(@RequestParam("partyNo") String partyNo, HttpSession session) {
 		
+		System.out.println("\n>>> /party/deleteParty :: GET start <<<");
 		
 		return null;
+	}
+	
+	
+	@RequestMapping( value="getParty", method=RequestMethod.GET )
+	public ModelAndView getParty(@RequestParam("partyNo") String partyNo) throws Exception {
+		
+		System.out.println("\n>>> /party/getParty :: GET start <<<");
+		
+		//partyNo 파라미터 출력
+		System.out.println(">>> /party/getParty partyNo 파라미터 \n"+partyNo);
+		
+		//Business Logic
+		int dbPartyNo = Integer.parseInt(partyNo);
+		Ticket ticket = ticketService.getTicket(dbPartyNo, "2");
+		Party party = partyService.getParty(dbPartyNo);
+		party.setTicketCount(party.getTicketCount());
+		party.setTicketPrice(party.getTicketPrice());
+		
+		//Model(data) & View(jsp)
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("party", party);
+		modelAndView.addObject("ticket", ticket);
+		modelAndView.setViewName("/view/party/getParty.jsp");
+		
+		return modelAndView;
+	}
+	
+	
+	@RequestMapping( value="updateParty", method=RequestMethod.GET )
+	public ModelAndView updateParty(@RequestParam("partyNo") String partyNo) throws Exception {
+		
+		System.out.println("\n>>> /party/updateParty :: GET start <<<");
+		
+		//partyNo 파라미터 출력
+		System.out.println(">>> /party/updateParty partyNo 파라미터 \n"+partyNo);
+		
+		//Business Logic
+		int dbPartyNo = Integer.parseInt(partyNo);
+		Party party = partyService.getParty(dbPartyNo);
+		Ticket ticket = ticketService.getTicket(dbPartyNo, "2");
+		
+		//Model(data) & View(jsp)
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("party", party);
+		modelAndView.addObject("ticket", ticket);
+		modelAndView.setViewName("forward:/view/party/updateParty.jsp");
+		
+		return modelAndView;
+	}
+	
+	
+	@RequestMapping( value="updateParty", method=RequestMethod.POST)
+	public ModelAndView updateParty(@ModelAttribute("party") Party party, HttpServletRequest request) throws Exception {
+		
+		System.out.println("\n>>> /party/updateParty :: POST start <<<");
+		
+		//party 도메인 출력
+		System.out.println(">>> /party/updateParty party 도메인 \n"+party);
+		
+		
+		//Party Image Upload
+		MultipartFile uploadfile = party.getUploadFile();
+		
+		if(uploadfile != null){
+			String partyImage = uploadfile.getOriginalFilename();
+			System.out.println("uploaded file name :: "+partyImage);
+			
+			String fileDirectory = partyImageDir;
+			System.out.println("uploaded file Directory :: "+fileDirectory);
+			
+			if(partyImage != null && !partyImage.equals("")){
+				partyImage = System.currentTimeMillis()+"_"+partyImage;
+				
+				File file = new File(fileDirectory+partyImage);
+				uploadfile.transferTo(file);
+				
+				party.setPartyImage(partyImage);
+			}
+		}
+		
+		//Business Logic
+		int partyNo = party.getPartyNo(); 
+		partyService.updateParty(party);
+		party = partyService.getParty(partyNo);
+		
+		Ticket ticket = new Ticket();
+		ticket.setTicketCount(party.getTicketCount());
+		ticket.setTicketPrice(party.getTicketPrice());
+		ticketService.updateTicket(ticket);
+		ticket = ticketService.getTicket(partyNo, "2");
+		
+		//Model(data) & View(jsp)
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("party", party);
+		modelAndView.addObject("ticket", ticket);
+		modelAndView.setViewName("forward:/view/party/getParty.jsp");
+		
+		return modelAndView;
 	}
 }

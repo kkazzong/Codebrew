@@ -14,6 +14,7 @@
 		<result property="festival.festivalName" column="festival_name" jdbcType="VARCHAR"/>
 		<result property="user.userId" column="user_id" jdbcType="VARCHAR"/>
 		<result property="user.nickname" column="nickname" jdbcType="VARCHAR"/>
+		<result property="user.profileImage" column="profile_image" jdbcType="VARCHAR"/>
 		<result property="partyDate" column="party_date" jdbcType="DATE"/>
 		<result property="partyTime" column="party_time" jdbcType="VARCHAR"/>
 		<result property="partyMemberLimit" column="party_member_limit" jdbcType="NUMERIC"/>
@@ -38,11 +39,27 @@
 	
 	<insert id="addParty" parameterType="party" useGeneratedKeys="true" keyColumn="party_no" keyProperty="partyNo">
 		INSERT
-		INTO party(party_no, party_name, festival_no, user_id, party_date, party_time, party_member_limit
-		, <if test="partyImage != null">party_image,</if> party_detail, party_place, party_reg_date, delete_flag)
+		INTO party(party_no
+					, party_name
+				    <if test="festival.festivalNo != null">
+				    	,festival_no
+				    </if>
+				    , user_id
+				    , party_date
+				    , party_time
+				    , party_member_limit
+					<if test="partyImage != null">
+						, party_image
+					</if>
+					, party_detail
+					, party_place
+					, party_reg_date
+					, delete_flag)
 		VALUES(seq_party_party_no.nextval
 				,#{partyName:VARCHAR}
-				,#{festival.festivalNo:NUMERIC}
+				<if test="festival.festivalNo != null">
+					,#{festival.festivalNo:NUMERIC}
+				</if>
 				,#{user.userId:VARCHAR}
 				,#{partyDate:DATE}
 				,#{partyTime:VARCHAR}
@@ -60,8 +77,11 @@
 	<select id="getParty" parameterType="int" resultMap="partySelectMap">
 		SELECT  p.party_no, 
 				p.party_name,
+				f.festival_no,
 				f.festival_name,
+				u.user_id,
 				u.nickname,
+				u.profile_image,
 				TO_CHAR(p.party_date, 'yy/mm/dd' ) AS party_date, 
 				p.party_time, 
 				p.party_member_limit, 

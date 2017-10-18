@@ -4,7 +4,7 @@
 <%
 	
 	User user = new User();
-	user.setUserId("user01@naver.com");
+	/* user.setUserId("user01@naver.com");
 	user.setNickname("쎄리");
 	user.setPassword("1111");
 	user.setRole("a");
@@ -12,7 +12,10 @@
 	user.setGender("f");
 	user.setAge(27);
 	user.setLocationFlag("y");
-	user.setCoconutCount(1000);
+	user.setCoconutCount(1000); */
+	
+	user.setUserId("user04@naver.com");
+	user.setNickname("까정");
 	
 	request.setAttribute("user", user); 
 	

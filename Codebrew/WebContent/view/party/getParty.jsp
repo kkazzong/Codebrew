@@ -1,4 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@include file="/data/party/userData.jsp"%> 
 
 <!--  ///////////////////////// JSTL  ////////////////////////// -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -9,9 +11,9 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 	
-	<title>ÆÄÆ¼ »ó¼¼ Á¶È¸ È­¸é</title>
+	<title>íŒŒí‹° ìƒì„¸ ì¡°íšŒ í™”ë©´</title>
 
-	<!-- ÂüÁ¶ : http://getbootstrap.com/css/   ÂüÁ¶ -->
+	<!-- ì°¸ì¡° : http://getbootstrap.com/css/   ì°¸ì¡° -->
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	
@@ -32,58 +34,59 @@
     <!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
 		
-		//============= "ÆÄÆ¼¼öÁ¤"  Event ¿¬°á =============
+		//============= "íŒŒí‹°ìˆ˜ì •"  Event ì—°ê²° =============
 		$(function(){
-			$("button:contains('ÆÄÆ¼¼öÁ¤')").on("click", function() {
-				self.location="/party/updateParty/"+${party.partyNo};
+			$("button:contains('íŒŒí‹°ìˆ˜ì •')").on("click", function() {
+				console.log($( "td.ct_btn01:contains('íŒŒí‹°ìˆ˜ì •')" ).html());
+				self.location="/party/updateParty?partyNo=${party.partyNo}";
 		
 			});
 		});
 		
-		//============= "ÆÄÆ¼»èÁ¦"  Event Ã³¸® ¹×  ¿¬°á =============
+		//============= "íŒŒí‹°ì‚­ì œ"  Event ì²˜ë¦¬ ë°  ì—°ê²° =============
 		$(function(){
-			$("button:contains('ÆÄÆ¼»èÁ¦')").on("click", function() {
-				self.location="/party/deleteParty/"+${party.partyNo}+"/"+${sessionScope.user.userId};
+			$("button:contains('íŒŒí‹°ì‚­ì œ')").on("click", function() {
+				self.location="/party/deleteParty/"+${party.partyNo};
 		
 			});
 		});
 		
-		//============= "ÆÄÆ¼Æ¼ÄÏ±¸¸Å"  Event Ã³¸® ¹×  ¿¬°á =============
+		//============= "íŒŒí‹°í‹°ì¼“êµ¬ë§¤"  Event ì²˜ë¦¬ ë°  ì—°ê²° =============
 		$(function(){
-			$("button:contains('ÆÄÆ¼Æ¼ÄÏ±¸¸Å')").on("click", function() {
-				self.location="/party/joinParty/"+${party.partyNo}+"/"+${sessionScope.user.userId};
+			$("button:contains('íŒŒí‹°í‹°ì¼“êµ¬ë§¤')").on("click", function() {
+				self.location="/purchase/addPurchase?partyNo=${party.partyNo}";
 		
 			});
 		});
 		
-		//============= "ÆÄÆ¼Âü¿©Ãë¼Ò"  Event Ã³¸® ¹×  ¿¬°á =============
+		//============= "íŒŒí‹°ì°¸ì—¬ì·¨ì†Œ"  Event ì²˜ë¦¬ ë°  ì—°ê²° =============
 		$(function(){
-			$("button:contains('ÆÄÆ¼Âü¿©Ãë¼Ò')").on("click", function() {
-				self.location="/party/cancelParty/"+${party.partyNo}+"/"+${sessionScope.user.userId};
+			$("button:contains('íŒŒí‹°ì°¸ì—¬ì·¨ì†Œ')").on("click", function() {
+				self.location="/party/cancelParty/"+${party.partyNo};
 		
 			});
 		});
 		
-		//============= "Âü¿©ÀÚ¸ñ·Ïº¸±â"  Event Ã³¸® ¹×  ¿¬°á =============
+		//============= "ì°¸ì—¬ìëª©ë¡ë³´ê¸°"  Event ì²˜ë¦¬ ë°  ì—°ê²° =============
 		$(function(){
-			$("button:contains('Âü¿©ÀÚ¸ñ·Ïº¸±â')").on("click", function() {
+			$("button:contains('ì°¸ì—¬ìëª©ë¡ë³´ê¸°')").on("click", function() {
 				self.location="/party/getMemberList/"+${party.partyNo};
 		
 			});
 		});
 		
-		//============= "È®ÀÎ"  Event Ã³¸® ¹×  ¿¬°á =============
+		//============= "í™•ì¸"  Event ì²˜ë¦¬ ë°  ì—°ê²° =============
 		$(function(){
-			$("button:contains('È®ÀÎ')").on("click", function() {
-				self.location="/party/getGenderRatio/"+${party.partyNo}+"/"+${sessionScope.user.userId};
+			$("button:contains('í™•ì¸')").on("click", function() {
+				self.location="/party/getGenderRatio/"+${party.partyNo};
 		
 			});
 		});
 		
-		//============= "ÁÖÃÖÀÚ"  Event Ã³¸® ¹×  ¿¬°á =============
+		//============= "ì£¼ìµœì"  Event ì²˜ë¦¬ ë°  ì—°ê²° =============
 		$(function(){
 			$("div.host").on("click", function() {
-				self.location="/user/getProfile/"+${party.user.userId};
+				self.location="/user/getProfile/"+"${party.user.userId}";
 		
 			});
 		});
@@ -92,10 +95,10 @@
 </head>
 <body>
 
-	<!--  È­¸é±¸¼º div Start /////////////////////////////////////-->
+	<!--  í™”ë©´êµ¬ì„± div Start /////////////////////////////////////-->
 	<div class="container">
 		<h1 class="bg-primary text-center"> 
-		${ empty party.festival.festivalNo  ? 'ÆÄÆ¼ »ó¼¼ º¸±â' : '¾ÖÇÁÅÍ ÆÄÆ¼ »ó¼¼ º¸±â'}
+		${ empty party.festival.festivalNo  ? 'íŒŒí‹° ìƒì„¸ ë³´ê¸°' : 'ì• í”„í„° íŒŒí‹° ìƒì„¸ ë³´ê¸°'}
 		</h1>
 		<hr />
 
@@ -104,13 +107,15 @@
 				<h2 class="text-center">${ party.partyName }</h2>
 				<div>
 					<%-- <p><img class="rounded-circle" src="/resources/image/uploadFile/${ party.user.profileImage }" alt="Generic placeholder image" width="40" height="40"></p> --%>
-					<p><img class="rounded-circle" src="/resources/image/uploadFile/user01.jpg" alt="Generic placeholder image" width="40" height="40"></p>
-					<p>${ party.user.userId }</p>
+					<p>íŒŒí‹° í˜¸ìŠ¤íŠ¸ &nbsp;<img class="rounded-circle" src="/resources/uploadFile/${party.partyImage}" alt="Generic placeholder image" width="40" height="40">
+					${ party.user.nickname }</p>
+					<%-- <p>íŒŒí‹° í˜¸ìŠ¤íŠ¸ &nbsp;<img class="rounded-circle" src="/resources/uploadFile/${ party.user.profileImage }" alt="Generic placeholder image" width="40" height="40">
+					${ party.user.nickname }</p> --%>
 				</div>
 			</div>
 			
 			<div class="text-center">
-				<img src="/resources/image/uploadFile/${party.partyImage}" />
+				<img src="../../resources/uploadFile/${party.partyImage}" width="800" >
 			</div>
 			
 			<br>
@@ -119,7 +124,7 @@
 				<div class="row">
 					<br />
 					<div class="col-xs-4 col-md-2 ">
-						<strong>ÃàÁ¦¸í</strong>
+						<strong>ì¶•ì œëª…</strong>
 					</div>
 					<div class="col-xs-8 col-md-4">${party.festival.festivalName}</div>
 				</div>
@@ -128,7 +133,7 @@
 
 				<div class="row">
 					<div class="col-xs-4 col-md-2 ">
-						<strong>ÆÄÆ¼³¯Â¥</strong>
+						<strong>íŒŒí‹°ë‚ ì§œ</strong>
 					</div>
 					<div class="col-xs-8 col-md-4">${party.partyDate}</div>
 				</div>
@@ -137,9 +142,9 @@
 
 				<div class="row">
 					<div class="col-xs-4 col-md-2 ">
-						<strong>ÆÄÆ¼ÀÎ¿ø</strong>
+						<strong>íŒŒí‹°ì¸ì›</strong>
 					</div>
-					<div class="col-xs-4 col-md-2">${party.partyMemberLimit} ¸í Áß ${partyMember.currentMemberCount} ¸í Âü¿©Áß</div>
+					<div class="col-xs-4 col-md-2">${party.partyMemberLimit} ëª… ì¤‘ ${partyMember.currentMemberCount} ëª… ì°¸ì—¬ì¤‘</div>
 					
 					<c:set var="i" value="0"/>
 					<c:forEach var="partyMember" items="${list}">
@@ -148,7 +153,7 @@
 							
 							<!-- Button trigger modal -->
 							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-							  Âü¿©ÀÚ¸ñ·Ïº¸±â
+							  ì°¸ì—¬ìëª©ë¡ë³´ê¸°
 							</button>
 							
 							<!-- Modal -->
@@ -156,7 +161,7 @@
 							  <div class="modal-dialog" role="document">
 							    <div class="modal-content">
 							      <div class="modal-header">
-							        <h5 class="modal-title" id="exampleModalLabel">ÆÄÆ¼ Âü¿©ÀÚ ¸ñ·Ï</h5>
+							        <h5 class="modal-title" id="exampleModalLabel">íŒŒí‹° ì°¸ì—¬ì ëª©ë¡</h5>
 							        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							          <span aria-hidden="true">&times;</span>
 							        </button>
@@ -177,7 +182,7 @@
 									</form>
 							      </div>
 							      <div class="modal-footer">
-							        <button type="button" class="btn btn-secondary" data-dismiss="modal">´İ±â</button>
+							        <button type="button" class="btn btn-secondary" data-dismiss="modal">ë‹«ê¸°</button>
 							      </div>
 							    </div>
 							  </div>
@@ -193,16 +198,16 @@
 				
 				<div class="row">
 					<div class="col-xs-4 col-md-2 ">
-						<strong>ÆÄÆ¼ Æ¼ÄÏ °¡°İ</strong>
+						<strong>íŒŒí‹° í‹°ì¼“ ê°€ê²©</strong>
 					</div>
-					<div class="col-xs-8 col-md-4">${party.ticketPrice}</div>
+					<div class="col-xs-8 col-md-4">${ticket.ticketPrice}</div>
 				</div>
 				
 				<hr />
 
 				<div class="row">
 					<div class="col-xs-4 col-md-2">
-						<strong>ÆÄÆ¼¼³¸í</strong>
+						<strong>íŒŒí‹°ì„¤ëª…</strong>
 					</div>
 					<div class="col-xs-8 col-md-4">${party.partyDetail}</div>
 				</div>
@@ -210,11 +215,11 @@
 				<hr/>
 
 				<div class="jumbotron">
-					<p>´ç½ÅÀº ÇöÀç Âü¿©ÁßÀÎ Âü¿©ÀÚÀÇ ¼ºº°ºñÀ²À» º¼ ¼ö ÀÖ½À´Ï´Ù.....´ç½ÅÀº ±Ã±İÇÕ´Ï´Ù.....ÄÚÄÚ³ÓÀ» »ç¿ëÇØ È®ÀÎÇÏ½Ã°Ú½À´Ï±î?</p>
+					<p>ë‹¹ì‹ ì€ í˜„ì¬ ì°¸ì—¬ì¤‘ì¸ ì°¸ì—¬ìì˜ ì„±ë³„ë¹„ìœ¨ì„ ë³¼ ìˆ˜ ìˆìŠµë‹ˆë‹¤.....ë‹¹ì‹ ì€ ê¶ê¸ˆí•©ë‹ˆë‹¤.....ì½”ì½”ë„›ì„ ì‚¬ìš©í•´ í™•ì¸í•˜ì‹œê² ìŠµë‹ˆê¹Œ?</p>
 				
 					<!-- Button trigger modal -->
 					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-					  È®ÀÎ
+					  í™•ì¸
 					</button>
 					
 					<!-- Modal -->
@@ -222,7 +227,7 @@
 					  <div class="modal-dialog" role="document">
 					    <div class="modal-content">
 					      <div class="modal-header">
-					        <h5 class="modal-title" id="exampleModalLabel">ÆÄÆ¼ ¼ºº° ºñÀ²</h5>
+					        <h5 class="modal-title" id="exampleModalLabel">íŒŒí‹° ì„±ë³„ ë¹„ìœ¨</h5>
 					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					          <span aria-hidden="true">&times;</span>
 					        </button>
@@ -243,7 +248,7 @@
 							</form>
 					      </div>
 					      <div class="modal-footer">
-					        <button type="button" class="btn btn-secondary" data-dismiss="modal">´İ±â</button>
+					        <button type="button" class="btn btn-secondary" data-dismiss="modal">ë‹«ê¸°</button>
 					      </div>
 					    </div>
 					  </div>
@@ -255,7 +260,7 @@
 
 				<div class="row">
 					<div class="col-xs-4 col-md-2 ">
-						<strong>ÆÄÆ¼ Àå¼Ò</strong>
+						<strong>íŒŒí‹° ì¥ì†Œ</strong>
 					</div>
 					<div class="col-xs-8 col-md-4">${party.partyPlace}</div>
 				</div>
@@ -263,18 +268,18 @@
 				<hr />
 
 				<div class="row">
-					<div class="col-md-12 text-center ">
-						<c:if test="${ ! empty party.user.userId && party.user.userId==sessionScope.user.userId }">
-							<button type="button" class="btn btn-primary">ÆÄÆ¼¼öÁ¤</button>
+					<div class="col-md-12 text-center">
+						<c:if test="${ ! empty party.user.userId && party.user.userId==user.userId }">
+							<button type="button" class="btn btn-primary">íŒŒí‹°ìˆ˜ì •</button>
 						</c:if>
-						<c:if test="${ ! empty party.user.userId && party.user.userId==sessionScope.user.userId }">
-							<button type="button" class="btn btn-primary">ÆÄÆ¼»èÁ¦</button>
+						<%-- <c:if test="${ ! empty party.user.userId && party.user.userId==sessionScope.user.userId }">
+							<button type="button" class="btn btn-primary">íŒŒí‹°ì‚­ì œ</button>
+						</c:if> --%>
+						<c:if test="${ ! empty party.user.userId && party.user.userId!=user.userId }">
+							<button type="button" class="btn btn-primary">íŒŒí‹°í‹°ì¼“êµ¬ë§¤</button>
 						</c:if>
-						<c:if test="${ ! empty party.user.userId && party.user.userId!=sessionScope.user.userId }">
-							<button type="button" class="btn btn-primary">ÆÄÆ¼Æ¼ÄÏ±¸¸Å</button>
-						</c:if>
-						<c:if test="${ ! empty party.user.userId && party.user.userId!=sessionScope.user.userId }">
-							<button type="button" class="btn btn-primary">ÆÄÆ¼Âü¿©Ãë¼Ò</button>
+						<c:if test="${ ! empty party.user.userId && party.user.userId!=user.userId }">
+							<button type="button" class="btn btn-primary">íŒŒí‹°ì°¸ì—¬ì·¨ì†Œ</button>
 						</c:if>
 					</div>
 				</div>
@@ -283,7 +288,7 @@
 
 		</div>
 	</div>
-	<!--  È­¸é±¸¼º div end /////////////////////////////////////-->
+	<!--  í™”ë©´êµ¬ì„± div end /////////////////////////////////////-->
 
 </body>
 </html>

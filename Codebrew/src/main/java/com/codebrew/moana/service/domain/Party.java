@@ -248,8 +248,8 @@ public class Party {
 
 	@Override
 	public String toString() {
-		return "Party [partyNo=" + partyNo + ", partyName=" + partyName + ", festival=" + festival + ", user=" + user
-				+ ", partyDate=" + partyDate + ", partyTime=" + partyTime + ", hour=" + hour + ", minutes=" + minutes
+		return "Party [partyNo=" + partyNo + ", partyName=" + partyName + ",\n festival=" + festival + ",\n user=" + user
+				+ ",\n partyDate=" + partyDate + ", partyTime=" + partyTime + ", hour=" + hour + ", minutes=" + minutes
 				+ ", partyMemberLimit=" + partyMemberLimit + ", uploadFile=" + uploadFile + ", partyImage=" + partyImage
 				+ ", partyDetail=" + partyDetail + ", partyPlace=" + partyPlace + ", ticketCount=" + ticketCount
 				+ ", ticketPrice=" + ticketPrice + ", partyRegDate=" + partyRegDate + ", deleteFlag=" + deleteFlag

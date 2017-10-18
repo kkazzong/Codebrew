@@ -1,14 +1,14 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 	
-	<title>ÆÄÆ¼ ¼öÁ¤ È­¸é</title>
+	<title>íŒŒí‹° ìˆ˜ì • í™”ë©´</title>
 
-	<!-- ÂüÁ¶ : http://getbootstrap.com/css/   ÂüÁ¶ -->
+	<!-- ì°¸ì¡° : http://getbootstrap.com/css/   ì°¸ì¡° -->
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	
@@ -29,33 +29,33 @@
     <!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
 		
-		//============= "¼öÁ¤"  Event ¿¬°á =============
+		//============= "ìˆ˜ì •"  Event ì—°ê²° =============
 		 $(function() {
-			//==> DOM Object GET 3°¡Áö ¹æ¹ı ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			$( "button.btn.btn-primary" ).on("click" , function() {
-				fncAddProduct();
+			//==> DOM Object GET 3ê°€ì§€ ë°©ë²• ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+			$( "button:contains('ìˆ˜ì •')" ).on("click" , function() {
+				$("form").attr("method" , "POST").attr("action" , "/party/updateParty").attr("enctype","multipart/form-data").submit();
 			});
 		});	
 		
 		
-		//============= "Ãë¼Ò"  Event Ã³¸® ¹×  ¿¬°á =============
+		//============= "ì·¨ì†Œ"  Event ì²˜ë¦¬ ë°  ì—°ê²° =============
 		$(function() {
-			//==> DOM Object GET 3°¡Áö ¹æ¹ı ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+			//==> DOM Object GET 3ê°€ì§€ ë°©ë²• ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			$("a[href='#']").on("click" , function() {
 				history.go(-1);
 			});
 		});
 		
-		//============= "DatePicker"  Event Ã³¸® ¹×  ¿¬°á =============
+		//============= "DatePicker"  Event ì²˜ë¦¬ ë°  ì—°ê²° =============
 		$(function() {
 	      $( "#datepicker" ).datepicker({
 	   	   changeMonth: true, 
 	          changeYear: true,
-		       dateFormat: "yy/mm/dd" 
+		       dateFormat: "y/mm/dd" 
 	      });   
 	    });
 
-		//============= "Æ¼ÄÏ¼ö·®"  Event Ã³¸® ¹×  ¿¬°á =============
+		//============= "í‹°ì¼“ìˆ˜ëŸ‰"  Event ì²˜ë¦¬ ë°  ì—°ê²° =============
 		$(function(){
 			$("#partyMemberCount").on("keyup", function(){
 				var ticketCount = $("#partyMemberCount").val();
@@ -68,107 +68,107 @@
 </head>
 <body>
 	
-	<!--  È­¸é±¸¼º div Start /////////////////////////////////////-->
+	<!--  í™”ë©´êµ¬ì„± div Start /////////////////////////////////////-->
 	<div class="container">
 		<hr/>
-		<h1 class="bg-primary text-center">ÆÄÆ¼ ¼öÁ¤</h1>
+		<h1 class="bg-primary text-center">${ empty party.festival.festivalNo  ? 'íŒŒí‹° ìˆ˜ì •' : 'ì• í”„í„° íŒŒí‹° ìˆ˜ì •'}</h1>
 		<br>
 		<!-- form Start /////////////////////////////////////-->
-		<form class="form-horizontal" enctype="multipart/form-data">
+		<form class="form-horizontal">
 		
 		  <div class="form-group">
-		    <label for="partyFlag" class="col-sm-offset-1 col-sm-3 control-label">ÆÄÆ¼±¸ºĞ</label>
+		    <label for="host" class="col-sm-offset-1 col-sm-3 control-label">íŒŒí‹° í˜¸ìŠ¤íŠ¸</label>
 		    <div class="col-sm-4">
-		      <input type="radio" name="partyFlag" value="party" checked />ÆÄÆ¼
-		      <input type="radio" name="partyFlag" value="afterParty" />¾ÖÇÁÅÍÆÄÆ¼		  		      
-		    </div>
-		  </div>
-	
-		  <div class="form-group">
-		    <label for="festivalName" class="col-sm-offset-1 col-sm-3 control-label">ÃàÁ¦¸í</label>
-		    <div class="col-sm-4">
-		      <input type="text" readonly="readonly" class="form-control" id="festivalName" name="festivalName" placeholder="ÃàÁ¦¸¦ °Ë»öÇØÁÖ¼¼¿ä.">
-		      <input type="hidden" class="form-control" id="festivalNo" name="festivalNo">
-		    </div>
-		    <div>
-		      <button type="button" class="btn btn-primary" id="search-festival"  >ÃàÁ¦°Ë»ö</button>
-		    </div>
-		  </div>
-		  
-		  <div class="form-group">
-		    <label for="host" class="col-sm-offset-1 col-sm-3 control-label">ÁÖÃÖÀÚ</label>
-		    <div class="col-sm-4">
-		      <input type="text" readonly="readonly" class="form-control" id="host" name="nickName" >
+		      <img class="rounded-circle" src="/resources/uploadFile/${party.partyImage}" alt="Generic placeholder image" width="40" height="40">
+			  ${ party.user.nickname }
+			  <input type="hidden" class="form-control" id="user.userId" name="user.userId" value="${ party.user.userId }" />
 		    </div>
 		   	
 		  </div>
 		  
+		  <div class="text-center">
+				<img src="../../resources/uploadFile/${party.partyImage}" width="800" >
+		  </div>
+		  
 		  <div class="form-group">
-		    <label for="partyName" class="col-sm-offset-1 col-sm-3 control-label">ÆÄÆ¼ÀÌ¸§</label>
+		    <label for="uploadFile" class="col-sm-offset-1 col-sm-3 control-label">íŒŒí‹°ì‚¬ì§„(ì„ íƒì…ë ¥)</label>
 		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="partyName" name="partyName" >
+		      <input type="file" class="form-control" id="uploadFile" name="uploadFile" >
+		    </div>
+		  </div>
+		  
+		  <div class="form-group">
+		    <label for="festivalName" class="col-sm-offset-1 col-sm-3 control-label">ì¶•ì œëª…</label>
+		    <div class="col-sm-4">
+		      <input type="text" class="form-control" id="festival.festivalName" name="festival.festivalName" value="${ party.festival.festivalName }" />
+		      <!-- <input type="text" readonly="readonly" class="form-control" id="festival.festivalName" name="festival.festivalName" placeholder="ì¶•ì œë¥¼ ê²€ìƒ‰í•´ì£¼ì„¸ìš”."> -->
+		      <input type="hidden" class="form-control" id="festival.festivalNo" name="festival.festivalNo" value="${ party.festival.festivalNo}">
+		    </div>
+		    <div>
+		      <button type="button" class="btn btn-primary" id="search-festival"  >ì¶•ì œê²€ìƒ‰</button>
+		    </div>
+		  </div>
+		  
+		  <div class="form-group">
+		    <label for="partyName" class="col-sm-offset-1 col-sm-3 control-label">íŒŒí‹°ì´ë¦„</label>
+		    <div class="col-sm-4">
+		      <input type="text" class="form-control" id="partyName" name="partyName" value="${ party.partyName }">
+		      <input type="hidden" class="form-control" id="partyNo" name="partyNo" value="${ party.partyNo }">
 			</div>
 		  </div>
 		  
 		  <div class="form-group">
-		    <label for="partyDate" class="col-sm-offset-1 col-sm-3 control-label">ÆÄÆ¼³¯Â¥</label>
+		    <label for="partyDate" class="col-sm-offset-1 col-sm-3 control-label">íŒŒí‹°ë‚ ì§œ</label>
 		    <div class="col-sm-4">
-		      <input type="text" readonly="readonly" class="form-control" id="datepicker" name="partyDate" placeholder="ÆÄÆ¼³¯Â¥¸¦ ¼±ÅÃÇØÁÖ¼¼¿ä.">
+		      <input type="text" readonly="readonly" class="form-control" id="datepicker" name="partyDate" value="${ party.partyDate }">
 		    </div> 	
 		  </div>
 		  
 		  <div class="form-group">
-		    <label for="partyDetail" class="col-sm-offset-1 col-sm-3 control-label">ÆÄÆ¼¼³¸í</label>
+		    <label for="partyDetail" class="col-sm-offset-1 col-sm-3 control-label">íŒŒí‹°ì„¤ëª…</label>
 		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="partyDetail" name="partyDetail" >
+		      <textarea name = "partyDetail" rows="10" cols="50">${ party.partyDetail }</textarea>
 			</div>
 		  </div>
 		  
 		  <div class="form-group">
-		    <label for="partyDetail" class="col-sm-offset-1 col-sm-3 control-label">ÆÄÆ¼ÀÎ¿ø</label>
+		    <label for="partyDetail" class="col-sm-offset-1 col-sm-3 control-label">íŒŒí‹°ì¸ì›</label>
 		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="partyMemberCount" name="partyMemberCount" >
+		      <input type="text" class="form-control" id="partyMemberLimit" name="partyMemberLimit" value="${ party.partyMemberLimit }">
 			</div>
 		  </div>
 		  
 		  <div class="form-group">
-		    <label for="partyPlace" class="col-sm-offset-1 col-sm-3 control-label">ÆÄÆ¼Àå¼Ò(¼±ÅÃÀÔ·Â)</label>
+		    <label for="partyPlace" class="col-sm-offset-1 col-sm-3 control-label">íŒŒí‹°ì¥ì†Œ(ì„ íƒì…ë ¥)</label>
 		    <div class="col-sm-4">
-		      <input type="text" readonly="readonly" class="form-control" id="partyPlace" name="partyPlave" placeholder="ÆÄÆ¼Àå¼Ò¸¦ °Ë»öÇØÁÖ¼¼¿ä.">
+		      <input type="text" readonly="readonly" class="form-control" id="partyPlace" name="partyPlace" value="${ party.partyPlace }">
 		    </div>
 		    <div>
-		      <button type="button" class="btn btn-primary" id="search-partyPlace"  >°Ë»ö</button> 	
-		    </div>
-		  </div>
-		  		  	  
-		  <div class="form-group">
-		    <label for="partyImage" class="col-sm-offset-1 col-sm-3 control-label">ÆÄÆ¼»çÁø(¼±ÅÃÀÔ·Â)</label>
-		    <div class="col-sm-4">
-		      <input type="file" class="form-control" id="partyImage" name="partyImage" placeholder="ÆÄÆ¼»çÁøÀ» ¿Ã·ÁÁÖ¼¼¿ä.">
+		      <button type="button" class="btn btn-primary" id="search-partyPlace"  >ê²€ìƒ‰</button> 	
 		    </div>
 		  </div>
 		  
 		  <div class="form-group">
-		    <label for="ticketCount" class="col-sm-offset-1 col-sm-3 control-label">Æ¼ÄÏ¼ö·®</label>
+		    <label for="ticketCount" class="col-sm-offset-1 col-sm-3 control-label">í‹°ì¼“ìˆ˜ëŸ‰</label>
 		    <div class="col-sm-4">
-		      <input type="text" readonly="readonly" class="form-control" id="ticketCount" name="ticketCount" >
+		      <input type="text" class="form-control" id="ticketCount" name="ticketCount" value="${ ticket.ticketCount }">
 			</div>
 		  </div>
 		  
 		  <div class="form-group">
-		    <label for="ticketPrice" class="col-sm-offset-1 col-sm-3 control-label">Æ¼ÄÏ°¡°İ</label>
+		    <label for="ticketPrice" class="col-sm-offset-1 col-sm-3 control-label">í‹°ì¼“ê°€ê²©</label>
 		    <div class="col-sm-2">
-		      <input type="text" class="form-control" id="ticketPrice" name="ticketPrice" > 
+		      <input type="text" class="form-control" id="ticketPrice" name="ticketPrice" value="${ ticket.ticketPrice }"> 
 			</div>
 			<div class="col-sm-1">
-			   ¹«·á<input type="radio" class="form-control" id="ticketPrice" name="ticketPrice" value="0">
+			   ë¬´ë£Œ<input type="radio" class="form-control" id="ticketPrice" name="ticketPrice" value="0">
 			</div>
 		  </div>
 		 		  
 		  <div class="form-group">
 		    <div class="col-sm-offset-4  col-sm-4 text-center">
-		      <button type="button" class="btn btn-primary"  >µî&nbsp;·Ï</button>
-			  <a class="btn btn-primary btn" href="#" role="button">Ãë&nbsp;¼Ò</a>
+		      <button type="button" class="btn btn-primary"  >ìˆ˜ì •</button>
+			  <a class="btn btn-primary btn" href="#" role="button">ì·¨ì†Œ</a>
 		    </div>
 		  </div>
 		</form>
@@ -177,7 +177,7 @@
 		<!-- form End /////////////////////////////////////-->
 		
  	</div>
-	<!--  È­¸é±¸¼º div end /////////////////////////////////////-->
+	<!--  í™”ë©´êµ¬ì„± div end /////////////////////////////////////-->
 	
 </body>
 </html>

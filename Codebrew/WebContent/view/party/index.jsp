@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
@@ -20,7 +20,7 @@
 <body>
 	여기있음 하이퍼링크
 	<div><a href = "/party/addParty?userId=user01@naver.com">addParty.jsp</a></div>
-	<div><a href = "http://127.0.0.1:8080/view/party/getParty.jsp">getParty.jsp</a></div>
+	<div><a href = "/party/getParty?partyNo=10000">getParty.jsp</a></div>
 	<div><a href = "http://127.0.0.1:8080/view/party/Sample.jsp">Sample.jsp</a></div>
 	<div><a href = "http://127.0.0.1:8080/view/party/addr.jsp">addr.jsp</a></div>
 	<div><a href = "http://127.0.0.1:8080/view/party/getPartyList.jsp">getPartyList.jsp</a></div>
