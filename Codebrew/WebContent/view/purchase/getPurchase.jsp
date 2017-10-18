@@ -4,9 +4,16 @@
 <%-- <%@ include file="/data/purchaseData.jsp" %> --%>
 <%@ include file="/data/purchase/sessionData.jsp" %>
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
 <title>getPurchase</title>
+<!-- facebook metadata -->
+<meta property="fb:app_id" content="365648920529865" />
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="티켓공유"/>
+<meta property="og:url" content="http://127.0.0.1:8080/purchase/getPurchase" />
+<meta property="og:description" content="이것은 공유다 이것은 공유다" />
+<meta property="og:image" content="http://www.kccosd.org/files/testing_image.jpg" />
 
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
@@ -18,7 +25,44 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <!-- KakaoLink -->
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+<!-- facebook share -->
+<script src="http://connect.facebook.net/ko_KR/all.js"></script>
 <script type="text/javascript">
+	
+	//1.facebook공유
+	function share(url) {
+		window.open("http://www.facebook.com/sharer/sharer.php?u="+url);
+	}
+	
+	//2.facebook 공유 sdk
+	window.fbAsyncInit = function() {
+	    FB.init({appId: '365648920529865', status: true, cookie: true, xfbml: true});
+	  };
+	 
+	 /*  (function() {
+	    var e = document.createElement('script'); e.async = true;
+	    e.src = document.location.protocol +
+	      '//connect.facebook.net/ko_KR/all.js';
+	    document.getElementById('fb-root').appendChild(e);
+	  }()); */
+	  
+	  function share2(){
+		    var share = {
+		        method: 'share',
+		        href: 'http://127.0.0.1:8080/purchase/getPurchase',
+		    	title : "티켓공유",
+		    	description : "이것은 티켓공유를 위한 것이다",
+		    	image : "http://www.kccosd.org/files/testing_image.jpg"
+		    };
+		 
+		    FB.ui(share, function(response) { 
+		    	if (response && !response.error_message) {
+		    	      alert("게시완료");
+		    	    } else {
+		    	      alert("띠로리 썸띵롱");
+		    	    }	
+		    }); 
+		}
 	
 	// '가정'app 키 ip변경시 동적변경해줘야함
 	Kakao.init('4c581b38ff4c308971bc220233e61b89');
@@ -97,6 +141,11 @@
 			}
 		});
 		
+		$("#facebookShare").on("click", function(){
+			//share("http://127.0.0.1:8080/purchase/getPurchase");
+			share2();
+		});
+		
 	});
 
 </script>
@@ -128,6 +177,11 @@
 		<!-- kakao link -->
 		<a id="kakao-link-btn" href="javascript:sendLink();">
 			<img src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"/>
+		</a>
+		
+		<!-- facebook share -->
+		<a id="facebookShare">
+			<img src="../../resources/image/buttonImage/facebook.png">
 		</a>
 		
 		<div class="row">
