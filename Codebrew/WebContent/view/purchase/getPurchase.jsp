@@ -126,6 +126,8 @@
 			}
 		});
 		
+		self.location = "/purchase/getPurchaseList";
+		
 	}
 	
 	$(function(){

@@ -49,6 +49,7 @@
 
 		var ticketNo = $("input:hidden[name='ticketNo']").val();
 		var userId = $("input:hidden[name='userId']").val();
+		var ticketCount = ${ticket.ticketCount};
 		
 		console.log("수량선택한거 : "+selectedCount);
 		if(selectedCount == null || selectedCount == 0) {
@@ -70,6 +71,9 @@
 				purchaseFlag : purchaseFlag,
 				user : {
 					userId : userId
+				},
+				ticket : {
+					ticketCount : ticketCount
 				}
 			}), 
 			dataType : "json",
@@ -217,6 +221,7 @@
 					<input type="hidden" name="ticketNo" value="${ticket.ticketNo}">
 					<input type="hidden" name="ticket.ticketNo" value="${ticket.ticketNo}">
 					<input type="hidden" name="ticket.ticketFlag" value="${ticket.ticketFlag}">
+					<input type="hidden" name="ticket.ticketCount" value="${ticket.ticketCount}">
 					<input type="hidden" name="ticketPrice" value="${ticket.ticketPrice}">
 					<input type="hidden" name="purchaseFlag" value="${purchaseFlag}">
 					<input type="hidden" name="userId" value="${user.userId}">
