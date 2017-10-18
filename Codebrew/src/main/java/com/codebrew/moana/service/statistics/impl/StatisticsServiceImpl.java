@@ -23,7 +23,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 	}
 
 	@Override
-	public List<Statistics> getStatistic(String statFlag) {
+	public List<Statistics> getStatistic(String statFlag) throws Exception {
 		
 		List<Statistics> list = new ArrayList<Statistics>();
 		
@@ -40,5 +40,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 		}
 		return list;
 	}
+	
+	
 
 }

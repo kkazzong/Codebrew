@@ -20,14 +20,14 @@
 <script src="https://www.amcharts.com/lib/3/pie.js"></script>
 <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
 <!-- Amchart dataloader plugin -->
-<!-- <script src="amcharts/plugins/dataloader/dataloader.min.js" type="text/javascript"></script> -->
+<script src="//www.amcharts.com/lib/3/plugins/dataloader/dataloader.min.js" type="text/javascript"></script>
 <!-- jQuery -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script type="text/javascript">
 	
 	/////////////////////////////////////////////amChart getData////////////////////////////////////////////////////////
 	var datas = [];
-	var datas2 = [];
+	
 	function getChartData(statFlag) {
 		
 		//var statFlag2 = $("input:hidden[name='statFlag']").val();
@@ -48,37 +48,12 @@
 						statDate : JSONData[i].statDate
 					});
 				}
+				
 			}
 		});
 		
 		console.log(datas);
 		return datas;
-	}
-	function getChartData2(statFlag) {
-		
-		//var statFlag2 = $("input:hidden[name='statFlag']").val();
-		console.log("amChart data ajax2");
-		
-		$.ajax({
-			url : "/statisticsRest/json/getStatistics/"+statFlag,
-			method : "get",
-			dataType : "json",
-			success : function(JSONData){
-				console.log(JSON.stringify(JSONData));
-				
-				//JSON data 만큼 datas에 push
-				for(var i = 0; i < JSONData.length; i++) {
-					datas2.push({
-						totalPrice : JSONData[i].totalPrice,
-						totalCount : JSONData[i].totalCount,
-						statDate : JSONData[i].statDate
-					});
-				}
-			}
-		});
-		
-		console.log(datas2);
-		return datas2;
 	}
 	
 	////////////////////////////////////////amChart////////////////////////////////////////////////////
@@ -104,14 +79,18 @@
 	  
 	}, ["serial"]); */
 	
-	 var chart = AmCharts.makeChart("chartDiv", {
+	//막대차트 - 일단위
+	var chart = AmCharts.makeChart("chartDiv", {
 	    "theme": "light",
 	    "type": "serial",
 	   "legend": { 
 	        "generateFromData": true //custom property for the plugin
 	     },  
 		"startDuration": 1,
-	    "dataProvider" : datas, //serial chart의 데이터셋
+	    "dataLoader" : {
+	    	"url" : "../data/statistics/test.json",
+	    	"format" : "json"
+	    }, //serial chart의 데이터셋
 	    "valueAxes": [{
 	    	"id" : "priceAxis",
 	        "position": "left",
@@ -162,6 +141,8 @@
 	     }
 	}); 
 	
+	//도넛차트 - 분기단위
+	
 	var chartPie = AmCharts.makeChart("chartPie", {
 		"type" : "pie", //타입은 파이
 		"theme" : "light", //테마는 라이트
@@ -181,30 +162,19 @@
 				} 
 			} ]
 		}, 
-		"dataProvider" : [ {
-			"quarter" : "1분기",
-			"price" : 1300000
-		}, {
-			"quarter" : "2분기",
-			"price" : 50000
-		}, {
-			"quarter" : "3분기",
-			"price" : 110000
-		}, {
-			"quarter" : "4분기",
-			"price" : 330000
-		}],
-		"valueField" : "price",
-		"titleField" : "quarter",
+		"dataProvider" : datas,
+		"valueField" : "totalPrice",
+		"titleField" : "statDate",
 		"export" : {
 			"enabled" : true
 		}
 	});
 	
+	
 	var chartLine = AmCharts.makeChart("chartLine", {
 	    "type": "serial",
 	    "theme": "light",
-	    "dataProvider": getChartData2("1"),
+	    "dataProvider": datas,
 	    "marginRight": 40,
 	    "marginLeft": 40,
 	    "autoMarginOffset": 20,
@@ -277,16 +247,16 @@
 	    "export": {
 	        "enabled": true
 	    }
-	});
+	}); 
 	
-	chartLine.addListener("rendered", zoomChart);
+	/* chartLine.addListener("rendered", zoomChart);
 
 	zoomChart();
 
 	function zoomChart() {
 		console.log(chart.dataProvider.length);
 	    chartLine.zoomToIndexes(chartLine.dataProvider.length - 40, chartLine.dataProvider.length - 1);
-	}
+	}  */
 	
 	////////////////////////////////////////chart.js////////////////////////////////////////////////////
 	//차트 옵션
@@ -421,7 +391,7 @@
 		display: none;
 	}
 	
-	#chartLine {
+	 #chartLine {
 		width: 100%;
 		height: 500px;
 		display: none;

@@ -24,7 +24,7 @@ public class StatisticsRestController {
 	}
 
 	@RequestMapping(value="json/getStatistics/{statFlag}")
-	public List<Statistics> getSatistics(@PathVariable("statFlag") String statFlag) {
+	public List<Statistics> getSatistics(@PathVariable("statFlag") String statFlag) throws Exception {
 		
 		List<Statistics> list = statisticsService.getStatistic(statFlag);
 		
