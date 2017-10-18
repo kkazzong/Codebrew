@@ -90,9 +90,15 @@
 		t.ticket_price AS ticket_price,
 		f.festival_no AS festival_no,
 		f.festival_name AS festival_name,
+		f.addr AS addr,
+		f.start_date AS start_date,
+		f.end_date AS end_date,
+		f.festival_image AS festival_image,
 		p.party_no AS party_no,
 		p.party_name AS party_name,
 		p.party_image AS party_image,
+		p.party_time As party_time,
+		p.party_place AS party_place,
 		pc.payment_no AS payment_no,
 		pc.payment_method_type AS payment_method_type,
 		pc.item_name AS item_name,
@@ -129,6 +135,7 @@
 		AND pc.ticket_no = t.ticket_no
 		AND t.festival_no = f.festival_no
 		AND u.user_id = #{userId}
+		ORDER BY pc.purchase_date
 	</select>
 	
 	<select id="getPartyPurchaseList" parameterType="map" resultMap="selectPurchaseMap">
@@ -147,6 +154,7 @@
 		AND pc.ticket_no = t.ticket_no
 		AND t.party_no = p.party_no
 		AND u.user_id = #{userId}
+		ORDER BY pc.purchase_date
 	</select>
 	
 	<select id="getPurchaseList" parameterType="map" resultMap="selectPurchaseMap">

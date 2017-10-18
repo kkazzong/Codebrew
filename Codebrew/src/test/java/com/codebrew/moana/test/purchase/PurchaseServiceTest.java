@@ -75,9 +75,9 @@ public class PurchaseServiceTest {
 		qrCode.setQrCodeResult("http://112");
 		purchase.setQrCode(qrCode);
 
-		int result = purchaseDAO.addPurchase(purchase);
+		//int result = purchaseDAO.addPurchase(purchase);
 
-		Assert.assertEquals(1, result);
+		//Assert.assertEquals(1, result);
 	}
 
 	//@Test

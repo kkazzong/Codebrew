@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.json.simple.JSONObject;
@@ -30,7 +31,9 @@ import org.springframework.stereotype.Repository;
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Purchase;
 import com.codebrew.moana.service.domain.QRCode;
+import com.codebrew.moana.service.domain.Ticket;
 import com.codebrew.moana.service.purchase.PurchaseDAO;
+import com.codebrew.moana.service.ticket.TicketDAO;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.client.j2se.MatrixToImageConfig;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
@@ -44,6 +47,10 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 	@Autowired
 	@Qualifier("sqlSessionTemplate")
 	SqlSession sqlSession;
+	
+	@Autowired
+	@Qualifier("ticketDAOImpl")
+	private TicketDAO ticketDAO;
 	
 	@Value("#{imageRepositoryProperties['qrCode']}")
 	private String qrCodePath;
@@ -60,7 +67,25 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 
 	// Method
 	@Override
-	public int addPurchase(Purchase purchase) {
+	public int addPurchase(Purchase purchase, String path) {
+		String flag = purchase.getTicket().getTicketFlag();
+		System.out.println("@@@@@@@@@@"+flag);
+		
+			
+		// 기본티켓, 무료티켓일때
+		if (purchase.getTicket().getTicketFlag() == null || purchase.getTicket().getTicketFlag().equals("free")) {
+
+			System.out.println("@@@@@@@요기서 에러..?");
+			// 원래 티켓 수량
+			int originTicketCount = purchase.getTicket().getTicketCount();
+
+			// 구매할 티켓 수량
+			int purchaseTicketCount = purchase.getPurchaseCount();
+			purchase.getTicket().setTicketCount(originTicketCount - purchaseTicketCount);
+			// 원래수량 - 구매수량 으로 티켓수량 업데이트
+			ticketDAO.updateTicketCount(purchase.getTicket());
+		}
+		purchase.setQrCode(this.createQRCode(path));
 		return sqlSession.insert("PurchaseMapper.addPurchase", purchase);
 	}
 
@@ -278,12 +303,13 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 	}
 
 	@Override
-	public Purchase cancelPayment(Purchase purchase) {
+	public int cancelPayment(Purchase purchase) {
 
 		System.out.println("[cancelPayment] : ");
 
 		String kakaoPayOpenAPIURL = "https://kapi.kakao.com/v1/payment/cancel";
 		System.out.println(purchase);
+		int cancelResult = 0;
 		try {
 
 			URL url = new URL(kakaoPayOpenAPIURL);
@@ -347,12 +373,27 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			// String json = objectMapper.writeValueAsString(kakaoPay);
 			// System.out.println("json���� ���� : " + json);
 			br.close();
-
+			
+			purchase.setTranCode("2");
+			int updatePurchaseResult = this.updatePurchaseTranCode(purchase);
+			if(updatePurchaseResult == 1) {
+				
+				Ticket ticket =  ticketDAO.getTicketByTicketNo(purchase.getTicket().getTicketNo());
+				int plusCount = ticket.getTicketCount() + purchase.getPurchaseCount();
+				ticket.setTicketCount(plusCount);
+			
+				int updateTicketResult = ticketDAO.updateTicketCount(ticket);
+				if(updateTicketResult == 1) {
+					cancelResult = 1;
+				} else {
+					cancelResult = 0;
+				}
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return purchase;
-
+		return cancelResult;
 	}
 	
 	@Override
@@ -365,13 +406,16 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 
 	//create qrcode image
 	@Override
-	public QRCode createQRCode() {
+	public QRCode createQRCode(String path) {
 		QRCode qrCode = null;
 		try {
 			File file = null;
+			File serverFile = null;
 			// 파일경로
 			System.out.println("from properties [path] : "+qrCodePath);
+			System.out.println("from session [path] : "+path);
 			file = new File(qrCodePath);
+			serverFile = new File(path);
 			if (!file.exists()) {
 				file.mkdirs();
 			}
@@ -398,9 +442,11 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			
 			String fileName = ""+time+random+"qrcode.png"; 
 			String src = qrCodePath+"\\"+fileName;
+			String serverSrc = path+"\\"+fileName;
 			qrCode.setQrCodeImage(fileName);
 			// ImageIO png write
 			ImageIO.write(bufferedImage, "png", new File(src));
+			ImageIO.write(bufferedImage, "png", new File(serverSrc));
 
 		} catch (Exception e) {
 			e.printStackTrace();

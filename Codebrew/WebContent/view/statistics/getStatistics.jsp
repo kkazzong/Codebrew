@@ -88,7 +88,7 @@
 	     },  
 		"startDuration": 1,
 	    "dataLoader" : {
-	    	"url" : "../data/statistics/test.json",
+	    	"url" : "C:\\Users\\GJ\\git\\Codebrew\\Codebrew\\WebContent\\data\\statistics\\test.json",
 	    	"format" : "json"
 	    }, //serial chart의 데이터셋
 	    "valueAxes": [{
