@@ -124,7 +124,7 @@
 							<div class="panel-body">
 								<!-- 축제티켓 -->
 								<c:if test="${!empty purchase.ticket.festival}">
-									<img width="100%" height="100" src="${purchase.ticket.festival.festivalImage}">
+									<img width="100%" height="300" src="${purchase.ticket.festival.festivalImage}">
 									<hr>
 									<div class="col-md-12">
 										<strong>
@@ -197,7 +197,9 @@
 									</div>
 								</div>
 								<hr>
-								<button class="btn btn-primary" type="button" value="${purchase.purchaseNo}">조회</button>
+								<c:if test="${purchase.tranCode == 1}">
+									<button class="btn btn-primary" type="button" value="${purchase.purchaseNo}">조회</button>
+								</c:if>
 								<button class="btn btn-default" type="button" value="${purchase.purchaseNo}">삭제</button>
 							</div>
 						</div>

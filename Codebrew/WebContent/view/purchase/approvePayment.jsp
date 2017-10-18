@@ -57,7 +57,17 @@
 						<h3 class="panel-title">${user.nickname}님의 결제정보</h3>
 					</div>
 					<div class="panel-body">
-						<img class="col-md-12" width="100%" height="190" src="${purchase.ticket.party.partyImage}">
+						<c:if test="${!empty purchase.ticket.festival}">
+							<c:if test="${purchase.ticket.festival.festivalImage.contains('http://')}">
+								<img class="col-md-12" width="100%" height="190" src="${purchase.ticket.festival.festivalImage}">
+							</c:if>
+							<c:if test="${!purchase.ticket.festival.festivalImage.contains('http://')}">
+								<img class="col-md-12" width="100%" height="190" src="/resources/uploadFile/${purchase.ticket.festival.festivalImage}">
+							</c:if>
+						</c:if>
+						<c:if test="${!empty purchase.ticket.party}">
+							<img class="col-md-12" width="100%" height="190" src="/resources/uploadFile/${purchase.ticket.party.partyImage}">
+						</c:if>
 						<div class="row">
 							<div class="col-md-offset-2 col-xs-4 col-md-8"><strong>${purchase.itemName}</strong></div>
 						</div>
@@ -90,7 +100,7 @@
 						</div>
 						<!-- 큐알코드 -->
 						<div class="row">
-							<img class="col-md-offset-3" width="50%" height="50%" src="../../resources/image/QRCodeImage/qrcode.png">
+							<img class="col-md-offset-3" width="50%" height="50%" src="../../resources/image/QRCodeImage/${purchase.qrCode.qrCodeImage}">
 						</div>
 					</div>
 				</div>

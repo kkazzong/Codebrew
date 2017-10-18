@@ -23,10 +23,6 @@ public class PurchaseServiceImpl implements PurchaseService {
 	@Qualifier("purchaseDAOImpl")
 	private PurchaseDAO purchaseDAO;
 	
-	@Autowired
-	@Qualifier("ticketDAOImpl")
-	private TicketDAO ticketDAO;
-	
 	//Constructor
 	public PurchaseServiceImpl() {
 		System.out.println(this.getClass());
@@ -39,40 +35,19 @@ public class PurchaseServiceImpl implements PurchaseService {
 	}
 
 	@Override
-	public Purchase approvePayment(String pgToken) {
-		return purchaseDAO.approvePayment(pgToken);
+	public Purchase approvePayment(String pgToken, String path) {
+		Purchase purchase = purchaseDAO.approvePayment(pgToken);
+		return this.addPurchase(purchase, path);
 	}
 
 	@Override
-	public Purchase addPurchase(Purchase purchase) {
-		
-		String flag = purchase.getTicket().getTicketFlag();
-		System.out.println("@@@@@@@@@@"+flag);
-		
-			
-		// 기본티켓, 무료티켓일때
-		if (purchase.getTicket().getTicketFlag() == null || purchase.getTicket().getTicketFlag().equals("free")) {
-
-			System.out.println("@@@@@@@요기서 에러..?");
-			// 원래 티켓 수량
-			int originTicketCount = purchase.getTicket().getTicketCount();
-
-			// 구매할 티켓 수량
-			int purchaseTicketCount = purchase.getPurchaseCount();
-			purchase.getTicket().setTicketCount(originTicketCount - purchaseTicketCount);
-			// 원래수량 - 구매수량 으로 티켓수량 업데이트
-			ticketDAO.updateTicketCount(purchase.getTicket());
-		}
-		
-		//구매테이블 insert
-		purchase.setQrCode(purchaseDAO.createQRCode());
-		int result = purchaseDAO.addPurchase(purchase);
+	public Purchase addPurchase(Purchase purchase, String path) {
+		int result = purchaseDAO.addPurchase(purchase, path);
 		if(result == 1) {
 			return purchaseDAO.getPurchase(purchase.getPurchaseNo());
 		} else {
 			return null;
 		}
-		
 	}
 	
 	@Override
@@ -103,14 +78,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 	@Override
 	public int cancelPayment(int purchaseNo) {
 		Purchase purchase = purchaseDAO.getPurchase(purchaseNo);
-		purchase = purchaseDAO.cancelPayment(purchase);
-		purchase.setTranCode("2");
-		purchaseDAO.updatePurchaseTranCode(purchase);
-		Ticket ticket = purchase.getTicket();
-		Ticket origin = ticketDAO.getTicketByTicketNo(purchase.getTicket().getTicketNo());
-		int plusCount = ticket.getTicketCount() + origin.getTicketCount();
-		ticket.setTicketCount(plusCount);
-		int result = ticketDAO.updateTicketCount(ticket);
+		int result = purchaseDAO.cancelPayment(purchase);
 		if(result == 1) {
 			return 1;
 		} else {

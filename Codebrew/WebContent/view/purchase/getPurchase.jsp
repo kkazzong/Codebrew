@@ -123,17 +123,17 @@
 			data : "json",
 			success : function(data) {
 				console.log(data);
+				self.location = "/purchase/deletePurchase";
 			}
 		});
 		
-		self.location = "/purchase/getPurchaseList";
 		
 	}
 	
 	$(function(){
 		
 		$("button:contains('확인')").on("click", function(){
-			history.go(-1);
+			self.location = "/purchase/getPurchaseList";
 		});
 		
 		$("button:contains('결제취소하기')").on("click", function(){
@@ -204,7 +204,7 @@
 					<div class="panel-body">
 						<!-- 축제티켓 -->
 						<c:if test="${!empty ticket.festival}">
-						<img width="100%" height="100" src="${ticket.festival.festivalImage}">
+						<img width="100%" height="300" src="${ticket.festival.festivalImage}">
 						<hr>
 						<div class="col-md-12">
 							<strong>

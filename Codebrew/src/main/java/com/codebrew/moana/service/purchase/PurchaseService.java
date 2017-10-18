@@ -8,8 +8,8 @@ import com.codebrew.moana.service.domain.Purchase;
 public interface PurchaseService {
 
 	public Purchase readyPayment(Purchase purchase);
-	public Purchase approvePayment(String pgToken);
-	public Purchase addPurchase(Purchase purchase);
+	public Purchase approvePayment(String pgToken, String path);
+	public Purchase addPurchase(Purchase purchase, String path);
 	public Map<String, Object> getPurchaseList(String userId, String purchaseFlag, Search search);
 	public Map<String, Object> getSaleList(Search search);
 	public Purchase getPurchase(int purchaseNo);
