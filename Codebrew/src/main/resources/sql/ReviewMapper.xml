@@ -5,4 +5,234 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 		
 <mapper namespace="ReviewMapper">
+
+<!-- review 관련하여 필요한 review Table 조회 : review(VO)는 user domain 객체와 festival domain 객체를 가진다. -->
+
+	<!-- TTL : 13 in the class , 11 Columns in the DB -->
+	<resultMap id="reviewSelectMap" type="review">
+		<result property="reviewNo" column="review_no" jdbcType="NUMERIC"/>
+		<result property="writerId" column="writer_id" jdbcType="VARCHAR"/>
+		<result property="festivalNo" column="festival_no" jdbcType="NUMERIC"/>
+		<result property="checkCode" column="check_code" jdbcType="NUMERIC"/>
+		<result property="reviewTitle" column="review_title" jdbcType="VARCHAR"/>
+		<result property="goodCount" column="good_count" jdbcType="NUMERIC"/>
+		<result property="reviewFestivalRating" column="review_festival_rating" jdbcType="NUMERIC"/>
+		<result property="reviewVideo" column="review_video" jdbcType="VARCHAR"/>
+		<result property="reviewDetail" column="review_detail" jdbcType="VARCHAR"/>
+		<result property="reviewRegDate" column="review_reg_date" jdbcType="DATE"/>
+		<result property="deleteFlag" column="delete_flag" jdbcType="VARCHAR"/>	
+	</resultMap>
+	
+	<!-- TTL : 5 in the class , 5 Columns in the DB -->
+	<resultMap id="replySelectMap" type="reply">
+		<result property="replyNo" column="reply_no" jdbcType="NUMERIC"/>
+		<result property="userId" column="user_id" jdbcType="VARCHAR"/>
+		<result property="reviewNo" column="review_no" jdbcType="NUMERIC"/>
+		<result property="replyDetail" column="reply_detail" jdbcType="VARCHAR"/>
+		<result property="replyRegDate" column="reply_reg_date" jdbcType="DATE"/>
+	</resultMap>
+	
+	<!-- TTL : 3 in the class , 3 Columns in the DB -->
+	<resultMap id="imageSelectMap" type="image">
+		<result property="imageNo" column="image_no" jdbcType="VARCHAR"/>
+		<result property="reviewNo" column="review_no" jdbcType="NUMERIC"/>
+		<result property="reviewImage" column="review_image" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<!-- TTL : 3 in the class , 3 Columns in the DB -->
+	<resultMap id="hashtagSelectMap" type="hashtag">
+		<result property="hashtagNo" column="hashtag_no" jdbcType="NUMERIC"/>
+		<result property="reviewNo" column="review_no" jdbcType="NUMERIC"/>
+		<result property="hashtagDetail" column="hashtag_detail" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<!-- TTL : 3 in the class , 3 Columns in the DB -->
+	<resultMap id="goodSelectMap" type="good">
+		<result property="goodNo" column="good_no" jdbcType="NUMERIC"/>
+		<result property="reviewNo" column="review_no" jdbcType="NUMERIC"/>
+		<result property="userId" column="user_id" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	
+	<insert id="addReview" parameterType="review">
+		INSERT 
+			INTO review (
+						review_no, 
+						user_id, 
+						festival_no, 
+						check_code, 
+						review_title, 
+						good_count, 
+						review_festival_rating, 
+						review_video, 
+						review_detail, 
+						review_reg_date, 
+						delete_flag, 
+						review_image, 
+						hashtag
+						)
+			VALUES 	(
+					seq_review_review_no.nextval, 
+					#{writerId}, 
+					#{festivalNo}, 
+					'1', 
+					#{reviewTitle}, 
+					0, 
+					#{reviewFestivalRating}, 
+					#{reviewVideo}, 
+					#{reviewDetail}, 
+					SYSDATE, 
+					'1'
+					#{reviewImage}
+					#{hashtag}
+					)
+	</insert>
+	
+	<insert id="uploadReviewImage" parameterType="list">
+		INSERT 
+			INTO image 	(
+						image_no, 
+						img_port_no, 
+						img_name
+						)
+		SELECT seq_image_image_no.nextval, (select MAX(review_no) from review), inner_view.*
+		FROM (
+			<foreach collection="list" item="reviewImage" separator="UNION ALL">
+			SELECT #{"reviewImage".image} 
+			FROM DUAL
+			</foreach>
+		) inner_view
+	</insert>
+	
+	<update id="passCheckCode" parameterType="review">
+		UPDATE review SET
+			<if test="checkCode=='1'">
+				checkCode = '2'			
+			</if>
+			<if test="checkCode=='11'">
+				checkCode='22'
+			</if>
+		WHERE review_no=#{reviewNo}
+	</update>
+	
+	<update id="failCheckCode" parameterType="review">
+		UPDATE review SET
+			<if test="checkCode=='1'">
+				checkCode = '4'			
+			</if>
+			<if test="checkCode=='11'">
+				checkCode='44'
+			</if>
+		WHERE review_no=#{reviewNo}
+	</update>
+	
+	<select id="getReview" parameterType="int" resultMap="reviewSelectMap">
+		SELECT
+			rv.review_no, 
+			rv.user_id, 
+			rv.festival_no, 
+			rv.check_code, 
+			rv.review_title, 
+			rv.good_count, 
+			rv.review_festival_rating, 
+			rv.review_video, 
+			rv.review_detail, 
+			rv.review_reg_date, 
+			rv.delete_flag, 
+			rp.reply_no, 
+			rp.user_id, 
+			rp.reply_detail, 
+			rp.reply_reg_date
+		FROM review rv, 
+			(SELECT image_no, review_no, review_image FROM image WHERE review_no=#{reviewNo}) i, 
+			(SELECT good_no, review_no, user_id FROM good WHERE review_no=#{reviewNo}) g, 
+			(SELECT hashtag_no, review_no, hastag_detail FROM hashtag WHERE review_no=#{reviewNo}) h, 
+			(SELECT reply_no, review_no, user_id, reply_detail, reply_reg_date WHERE review_no=#{reviewNo}) rp
+		WHERE rv.review_no=rp.review_no(+) 
+		AND rv.review_no=i.review_no(+)
+		AND rv.review_no=g.review_no(+) 
+		AND rv.review_no=h.review_no(+) 
+		AND rv.review_no=#{reviewNo}
+	</select>
+	
+	<select id="getReviewImage" parameterType="int" resultMap="imageSelectMap">
+		SELECT
+			image_no, 
+			review_no, 
+			review_image
+		FROM image 
+		WHERE review_no=#{reviewNo}
+	</select>
+	
+	<update id="deleteReview" parameterType="int">
+		UPDATE review SET
+			delete_flag = '4'
+		WHERE review_no = #{reviewNo}
+	</update>
+	
+	<insert id="addGood" parameterType="user">
+		INSERT 
+			INTO good 	(
+						good_no, 
+						review_no, 
+						user_id
+						) 
+			VALUES 	(
+					seq_good_good_no.nextval, 
+					#{reviewNo}, 
+					#{userId}
+					)
+	</insert>
+	
+	<delete id="deleteGood" parameterType="int">
+		DELETE from good
+		WHERE good_no = #{goodNo}
+	</delete>
+	
+	<select id="getReviewList" parameterType="search" resultMap="reviewSelectMap">
+		SELECT *
+	  	FROM ( SELECT inner_table.*, ROWNUM AS row_seq
+	  		FROM ( 	SELECT 	review_no, 
+	  						user_id, 
+	  						festival_no, 
+	  						review_title 
+					FROM review
+						<if test="searchCondition != null">
+							<where>
+								<if test="searchCondition == 0 and searchKeyword !='' ">
+					 				review_title like '%${searchKeyword}%' 
+								</if>
+								<if test="searchCondition == 1 and searchKeyword !='' ">
+					 				festival_no like '%${searchKeyword}%' 
+								</if>
+							</where>
+						</if>
+					ORDER BY review_no ) inner_table
+			WHERE ROWNUM &lt;= #{endRowNum} )
+		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
+	</select>
+	
+	<select id="getMyReviewList" parameterType="search" resultMap="reviewSelectMap">
+		SELECT *
+	  	FROM ( SELECT inner_table.*, ROWNUM AS row_seq
+	  		FROM ( 	SELECT 	review_no, 
+	  						user_id, 
+	  						festival_no, 
+	  						review_title 
+					FROM review
+						<if test="searchCondition != null">
+							<where>
+								<if test="searchCondition == 0 and searchKeyword !='' ">
+					 				review_title like '%${searchKeyword}%' 
+								</if>
+								<if test="searchCondition == 1 and searchKeyword !='' ">
+					 				festival_no like '%${searchKeyword}%' 
+								</if>
+							</where>
+						</if>
+					ORDER BY review_no ) inner_table
+			WHERE ROWNUM &lt;= #{endRowNum} )
+		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
+	</select>
+	
 </mapper>
