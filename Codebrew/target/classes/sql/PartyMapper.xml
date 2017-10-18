@@ -36,7 +36,7 @@
 		<result property="user.profileImage" column="profile_image" jdbcType="VARCHAR"/>
 	</resultMap>
 	
-	<insert id="addParty" parameterType="party">
+	<insert id="addParty" parameterType="party" useGeneratedKeys="true" keyColumn="party_no" keyProperty="partyNo">
 		INSERT
 		INTO party(party_no, party_name, festival_no, user_id, party_date, party_time, party_member_limit
 		, <if test="partyImage != null">party_image,</if> party_detail, party_place, party_reg_date, delete_flag)
