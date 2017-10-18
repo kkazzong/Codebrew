@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Purchase;
+import com.codebrew.moana.service.domain.Ticket;
 import com.codebrew.moana.service.purchase.PurchaseDAO;
 import com.codebrew.moana.service.purchase.PurchaseService;
 import com.codebrew.moana.service.ticket.TicketDAO;
@@ -100,9 +101,21 @@ public class PurchaseServiceImpl implements PurchaseService {
 	}
 	
 	@Override
-	public void cancelPayment(int purchaseNo) {
+	public int cancelPayment(int purchaseNo) {
 		Purchase purchase = purchaseDAO.getPurchase(purchaseNo);
-		purchaseDAO.cancelPayment(purchase);
+		purchase = purchaseDAO.cancelPayment(purchase);
+		purchase.setTranCode("2");
+		purchaseDAO.updatePurchaseTranCode(purchase);
+		Ticket ticket = purchase.getTicket();
+		Ticket origin = ticketDAO.getTicketByTicketNo(purchase.getTicket().getTicketNo());
+		int plusCount = ticket.getTicketCount() + origin.getTicketCount();
+		ticket.setTicketCount(plusCount);
+		int result = ticketDAO.updateTicketCount(ticket);
+		if(result == 1) {
+			return 1;
+		} else {
+			return 0;
+		}
 	}
 
 	//getter, setter

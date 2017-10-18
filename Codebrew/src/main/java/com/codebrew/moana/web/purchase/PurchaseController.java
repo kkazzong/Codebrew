@@ -2,6 +2,8 @@ package com.codebrew.moana.web.purchase;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,14 +61,15 @@ public class PurchaseController {
 	}
 
 	@RequestMapping(value="addPurchase", method=RequestMethod.GET)
-	public ModelAndView addPurchase(@RequestParam(value="festivalNo", required=false) String festivalNo,
+	public ModelAndView addPurchase(HttpSession session,
+																@RequestParam(value="festivalNo", required=false) String festivalNo,
 																@RequestParam(value="partyNo", required=false) String partyNo) throws Exception {
 		
-		User user = new User();
+		User user = (User)session.getAttribute("user");
 		//user.setUserId("user04@naver.com");
 		//user.setNickname("까종");
-		user.setUserId("user03@naver.com");
-		user.setNickname("썽경");
+		//user.setUserId("user03@naver.com");
+		//user.setNickname("썽경");
 		
 		System.out.println("축제라면 : "+festivalNo+" 파티라면 : "+partyNo);
 		ModelAndView modelAndView = new ModelAndView();
@@ -151,12 +154,12 @@ public class PurchaseController {
 	}
 	
 	@RequestMapping(value="getPurchaseList")
-	public ModelAndView getPurchaseList(@RequestParam("userId") String userId,
+	public ModelAndView getPurchaseList(HttpSession session,
 																	@ModelAttribute("search") Search search,
 																	@RequestParam(value="purchaseFlag", required=false) String purchaseFlag) {
 		
-		System.out.println(userId);
-		User user = new User();
+		//System.out.println(session.getAttribute("user"));
+		User user = (User)session.getAttribute("user");
 		//user.setUserId(userId);
 		//user.setNickname("�����");
 		
@@ -170,7 +173,7 @@ public class PurchaseController {
 		}
 		search.setPageSize(pageSize);
 		
-		Map<String, Object> map = purchaseService.getPurchaseList(userId, purchaseFlag, search);
+		Map<String, Object> map = purchaseService.getPurchaseList(user.getUserId(), purchaseFlag, search);
 		
 		Page resultPage = new Page(search.getCurrentPage(), ((Integer)(map.get("totalCount"))).intValue(), pageUnit, pageSize);
 		

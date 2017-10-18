@@ -4,21 +4,26 @@
 <%-- <%@ include file="/data/purchase/festivalData.jsp" %> --%>
 <%-- <%@ include file="/data/purchase/partyData.jsp" %> --%>
 <%-- <%@ include file="/data/purchase/userData.jsp" %> --%>
-<%@ include file="/data/purchase/sessionData.jsp" %>
+<%-- <%@ include file="/data/purchase/sessionData.jsp" %> --%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>addPurchase</title>
 
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-<!-- Bootstrap Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"/>
-<!-- Bootstrap JavaScript -->
+<!-- Bootstrap, jQuery CDN -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<!-- jQuery -->
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+<!-- Bootstrap Dropdown Hover CSS -->
+<link href="/resources/css/animate.min.css" rel="stylesheet">
+<link href="/resources/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
+
+<!-- Bootstrap Dropdown Hover JS -->
+<script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
+
 <script type="text/javascript">
 	
 	//수량 선택시 validation check function
@@ -44,6 +49,7 @@
 
 		var ticketNo = $("input:hidden[name='ticketNo']").val();
 		var userId = $("input:hidden[name='userId']").val();
+		var ticketCount = ${ticket.ticketCount};
 		
 		console.log("수량선택한거 : "+selectedCount);
 		if(selectedCount == null || selectedCount == 0) {
@@ -65,6 +71,9 @@
 				purchaseFlag : purchaseFlag,
 				user : {
 					userId : userId
+				},
+				ticket : {
+					ticketCount : ticketCount
 				}
 			}), 
 			dataType : "json",
@@ -189,7 +198,9 @@
 </head>
 
 <body>
-
+	
+	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
+	
 	<div class="container">
 		
 		<!-- page header -->
@@ -210,6 +221,7 @@
 					<input type="hidden" name="ticketNo" value="${ticket.ticketNo}">
 					<input type="hidden" name="ticket.ticketNo" value="${ticket.ticketNo}">
 					<input type="hidden" name="ticket.ticketFlag" value="${ticket.ticketFlag}">
+					<input type="hidden" name="ticket.ticketCount" value="${ticket.ticketCount}">
 					<input type="hidden" name="ticketPrice" value="${ticket.ticketPrice}">
 					<input type="hidden" name="purchaseFlag" value="${purchaseFlag}">
 					<input type="hidden" name="userId" value="${user.userId}">

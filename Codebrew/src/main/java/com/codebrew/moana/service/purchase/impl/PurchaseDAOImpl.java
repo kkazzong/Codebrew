@@ -278,7 +278,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 	}
 
 	@Override
-	public void cancelPayment(Purchase purchase) {
+	public Purchase cancelPayment(Purchase purchase) {
 
 		System.out.println("[cancelPayment] : ");
 
@@ -296,7 +296,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("cid", "TC0ONETIME");
-			map.put("tid", "T2407463864296399898");
+			map.put("tid", purchase.getPaymentNo());
 			map.put("cancel_amount", new Integer(purchase.getPurchasePrice()));
 			map.put("cancel_tax_free_amount", new Integer(0));
 
@@ -318,7 +318,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			System.out.println("mapping json  : " + jsonObject);
 
 			if (jsonObject.get("status").equals("CANCEL_PAYMENT")) {
-				System.out.println("������ҿϷ�");
+				System.out.println("결제취소");
 				purchase.setTranCode("2"); //2 : 결제취소
 			}
 			purchase.setAid(jsonObject.get("aid").toString());
@@ -351,6 +351,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return purchase;
 
 	}
 	

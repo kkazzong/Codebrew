@@ -3,27 +3,32 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
 <%-- <%@ include file="/data/purchaseData.jsp" %> --%>
 <%-- <%@ include file="/data/purchase/userData.jsp" %> --%>
-<%@ include file="/data/purchase/sessionData.jsp" %>
+<%-- <%@ include file="/data/purchase/sessionData.jsp" %> --%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>getPurchaseList</title>
 
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-<!-- Bootstrap Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"/>
-<!-- Bootstrap JavaScript -->
+<!-- Bootstrap, jQuery CDN -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<!-- jQuery -->
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+<!-- Bootstrap Dropdown Hover CSS -->
+<link href="/resources/css/animate.min.css" rel="stylesheet">
+<link href="/resources/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
+
+<!-- Bootstrap Dropdown Hover JS -->
+<script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
+
 <script type="text/javascript">
 	
 	function fncGetList(currentPage) {
 		console.log("페이지클릭 : "+currentPage);
 		$("#currentPage").val(currentPage);
-		$("#searchForm").attr("method", "POST").attr("action", "/purchase/getSaleList").submit();
+		$("form").attr("method", "POST").attr("action", "/purchase/getPurchaseList").submit();
 	}
 
 	$(function(){
@@ -67,7 +72,7 @@
 </head>
 <body>
 	
-	<input type="hidden" name="userId" value="${user.userId}">
+	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>
 	
 	<div class="container">
 	
@@ -89,6 +94,7 @@
 		<!-- 축제 / 파티 버튼 -->
 		<div class="row">
 			<form>
+				<input type="hidden" name="userId" value="${user.userId}">
 				<input type="hidden" id="currentPage" name="currentPage" value=""/>
 				<div class="col-md-6">
 					<button class="btn btn-default btn-block" id="festivalBtn" type="button" value="1">축제티켓</button>
