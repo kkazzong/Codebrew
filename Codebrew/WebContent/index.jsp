@@ -68,5 +68,10 @@
 	<a href="/statistics/getStatistics"> 판매통계보기 (관리자only) </a>
 </c:if>
 <h1>각자 jsp에서 dropdown cdn추가하고 툴바.jsp include하셈 (index.jsp참고하세염)</h1>
+<br>
+<br>
+<!--후기등록 테스트중 -->
+<a href="/review/addReview">후기등록</a>
+
 </body>
 </html>
