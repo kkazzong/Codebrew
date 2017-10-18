@@ -7,14 +7,19 @@
 
 <title>getSaleList</title>
 
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-<!-- Bootstrap Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"/>
-<!-- Bootstrap JavaScript -->
+<!-- Bootstrap, jQuery CDN -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<!-- jQuery -->
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+<!-- Bootstrap Dropdown Hover CSS -->
+<link href="/resources/css/animate.min.css" rel="stylesheet">
+<link href="/resources/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
+
+<!-- Bootstrap Dropdown Hover JS -->
+<script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
+
 <script type="text/javascript">
 
 	function fncGetList(currentPage) {
@@ -35,6 +40,8 @@
 </style>
 </head>
 <body>
+	
+	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>
 	
 	<div class="container">
 	

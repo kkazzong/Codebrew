@@ -2,27 +2,24 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
 <%-- <%@ include file="/data/purchase/userData.jsp" %> --%>
-<%@ include file="/data/purchase/sessionData.jsp" %>
+<%-- <%@ include file="/data/purchase/sessionData.jsp" %> --%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>approvePayment</title>
 
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-<!-- Bootstrap Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"/>
-<!-- Bootstrap JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<!-- jQuery -->
+<!-- Bootstrap, jQuery CDN -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 <script type="text/javascript">
 	$(function(){
 		
 		$("button").bind("click", function(){
-			var userId = $("input:hidden[name='userId']").val();
-			opener.parent.location="/purchase/getPurchaseList?userId="+userId;
+			opener.parent.location="/purchase/getPurchaseList?userId=${user.userId}";
 			//익스플로러경우 닫기할때 alert창 안뜨게 하기위해..
 			window.open("about:blank", "_self").close();
 		});
@@ -30,10 +27,10 @@
 	});
 </script>
 <style type="text/css">
-	div {
+	/* div {
 		border : 3px solid #D6CDB7;
 		margin0top : 10px;
-	}
+	} */
 </style>
 </head>
 <body>

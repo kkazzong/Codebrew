@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <%-- <%@ include file="/data/purchaseData.jsp" %> --%>
-<%@ include file="/data/purchase/sessionData.jsp" %>
+<%-- <%@ include file="/data/purchase/sessionData.jsp" %> --%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,18 +15,25 @@
 <meta property="og:description" content="이것은 공유다 이것은 공유다" />
 <meta property="og:image" content="http://www.kccosd.org/files/testing_image.jpg" />
 
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-<!-- Bootstrap Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"/>
-<!-- Bootstrap JavaScript -->
+<!-- Bootstrap, jQuery CDN -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<!-- jQuery -->
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+<!-- Bootstrap Dropdown Hover CSS -->
+<link href="/resources/css/animate.min.css" rel="stylesheet">
+<link href="/resources/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
+
+<!-- Bootstrap Dropdown Hover JS -->
+<script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
+
 <!-- KakaoLink -->
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+
 <!-- facebook share -->
 <script src="http://connect.facebook.net/ko_KR/all.js"></script>
+
 <script type="text/javascript">
 	
 	//1.facebook공유
@@ -160,6 +167,8 @@
 </style>
 </head>
 <body>
+	
+	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
 	
 	<input type="hidden" name="itemName" value="${purchase.itemName}">
 	

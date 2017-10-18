@@ -9,10 +9,27 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- Bootstrap Dropdown Hover CSS -->
+<link href="/resources/css/animate.min.css" rel="stylesheet">
+<link href="/resources/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
+
+<!-- Bootstrap Dropdown Hover JS -->
+<script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
+<style type="text/css">
+	body {
+       padding-top : 50px;
+    }
+</style>
 <title>Insert title here</title>
 </head>
 <body>
-
+<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
 <!-- <a href="/festival/ListFestival"> 축제리스트 (api사용) </a> -->
 <a href="/festival/getFestivalList?pageNo=1"> 축제리스트 (api사용) 관리자 </a>
 
@@ -26,13 +43,13 @@
 <!-- 가정이가 써보았다 -->
 <br>
 <br>
-
+<c:if test="${user.role == 'a'}">
 <a href="/purchase/getSaleList"> 판매목록 (관리자only) </a>
-
+</c:if>
 <br>
 <br>
 
-<a href="/purchase/getPurchaseList?userId=user03@naver.com"> my티켓 </a>
+<a href="/purchase/getPurchaseList"> my티켓 </a>
 
 <br>
 <br>
@@ -50,6 +67,6 @@
 <c:if test="${user.role == 'a'}">
 	<a href="/statistics/getStatistics"> 판매통계보기 (관리자only) </a>
 </c:if>
-
+<h1>각자 jsp에서 dropdown cdn추가하고 툴바.jsp include하셈 (index.jsp참고하세염)</h1>
 </body>
 </html>
