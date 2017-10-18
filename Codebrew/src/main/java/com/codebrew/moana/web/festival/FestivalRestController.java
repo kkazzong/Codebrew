@@ -45,14 +45,27 @@ public class FestivalRestController {
 		System.out.println("festivalNo : "+festivalNo);
 		System.out.println("userId : "+userId);
 		
-		Zzim returnZzim = new Zzim();
+		Zzim returnZzim = new Zzim(userId, festivalNo);
 		
-		returnZzim.setUserId(userId);
-		returnZzim.setFestivalNo(festivalNo);
-		
-		festivalService.addZzim(returnZzim); 
-				
-		return returnZzim;
+		if(festivalService.getZzim(returnZzim)==null){
+			
+			System.out.println("addZzim 댐");
+			
+			festivalService.addZzim(returnZzim);
+			
+			return returnZzim;
+			
+		}else{
+			
+			System.out.println("deleteZzim~~~~~~~~~~~");
+			
+			festivalService.deleteZzim(returnZzim);
+			
+			returnZzim = null;
+			
+			return returnZzim;
+			
+		}
 		
 		}
 	
@@ -64,12 +77,13 @@ public class FestivalRestController {
 		System.out.println("deleteZzim userId........." + userId + "," + festivalNo);
 		
 		
-		Zzim returnZzim = new Zzim();
-		
-		returnZzim.setUserId(userId);
-		returnZzim.setFestivalNo(festivalNo);
+		Zzim returnZzim = new Zzim(userId,festivalNo);
 		
 		festivalService.deleteZzim(returnZzim); 
+		
+//		returnZzim=null;
+		
+		System.out.println("returnZzim 확인 : " + returnZzim);
 				
 		return returnZzim;
 		

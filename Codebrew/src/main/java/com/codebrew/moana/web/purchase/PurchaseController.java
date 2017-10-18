@@ -112,6 +112,27 @@ public class PurchaseController {
 		return modelAndView;
 	}
 	
+	@RequestMapping(value="addPurchase", method=RequestMethod.POST)
+	public ModelAndView addPurchase(@ModelAttribute("purchase") Purchase purchase) {
+		
+		Ticket ticket = ticketService.getTicketByTicketNo(purchase.getTicket().getTicketNo());
+		
+		if(ticket.getFestival() != null) {
+			purchase.setItemName(ticket.getFestival().getFestivalName());
+		} else if(ticket.getParty() != null) {
+			purchase.setItemName(ticket.getParty().getPartyName());
+		}
+		
+		System.out.println("@@@@controller purchase : "+purchase);
+		purchaseService.addPurchase(purchase);
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("purchase", purchase);
+		modelAndView.setViewName("/purchase/getPurchaseList");
+		
+		return modelAndView;
+	}
+	
 	@RequestMapping(value="approvePayment")
 	public ModelAndView approvePurchase(@RequestParam("pg_token") String pgToken) {
 		

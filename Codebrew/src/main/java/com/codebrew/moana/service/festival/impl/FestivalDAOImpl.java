@@ -646,8 +646,14 @@ public class FestivalDAOImpl implements FestivalDAO {
 	@Override
 	public void deleteZzim(Zzim zzim) throws Exception {
 		// TODO Auto-generated method stub
-		sqlSession.delete("ZzimMapper.addZzim",zzim);
+		sqlSession.delete("ZzimMapper.deleteZzim",zzim);
 		
+	}
+
+	@Override
+	public void updateFestival(Festival festival) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.update("FestivalMapper.updateFestival",festival);
 	}
 
 }

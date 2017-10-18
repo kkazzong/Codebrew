@@ -4,7 +4,233 @@
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+<mapper namespace="FestivalMapper">
 
+	<resultMap id="festivalSelectMap" type="festival">
+		<result property="festivalNo" column="FESTIVAL_NO" jdbcType="NUMERIC" />
+		
+		<result property="festivalName" column="FESTIVAL_NAME" jdbcType="VARCHAR" />
+		
+		<result property="contentTypeId" column="CONTENT_TYPE_ID" jdbcType="VARCHAR" />
+		
+		<result property="readCount" column="READ_COUNT" jdbcType="VARCHAR" />
+		
+		<result property="festivalLongitude" column="FESTIVAL_LONGITUDE" jdbcType="VARCHAR" />
+		
+		<result property="festivalLatitude" column="FESTIVAL_LATITUDE" jdbcType="VARCHAR" />
+		
+		<result property="addr" column="ADDR" jdbcType="VARCHAR" />
+		
+		<result property="areaCode" column="AREA_CODE" jdbcType="VARCHAR" />
+		
+		<result property="sigunguCode" column="SIGUNGU_CODE" jdbcType="VARCHAR" />
+		
+		<result property="orgPhone" column="ORG_PHONE" jdbcType="VARCHAR" />
+		
+		<result property="startDate" column="START_DATE" jdbcType="VARCHAR" />
+		
+		<result property="endDate" column="END_DATE" jdbcType="VARCHAR" />
+		
+		<result property="festivalDetail" column="FESTIVAL_DETAIL" jdbcType="VARCHAR" />
+		
+		<result property="festivalOverview" column="FESTIVAL_OVERVIEW" jdbcType="VARCHAR" />
+		
+		<result property="ageLimit" column="AGE_LIMIT" jdbcType="VARCHAR" />
+		
+		<result property="bookingPlace" column="BOOKING_PLACE" jdbcType="VARCHAR" />
+		
+		<result property="discount" column="DISCOUNT" jdbcType="VARCHAR" />
+		
+		<result property="playTime" column="PLAY_TIME" jdbcType="VARCHAR" />
+		
+		<result property="spendTimeFestival" column="SPEND_TIME_FESTIVAL" jdbcType="VARCHAR" />
+		
+		<result property="subEvent" column="SUB_EVENT" jdbcType="VARCHAR" />
+		
+		<result property="program" column="PROGRAM" jdbcType="VARCHAR" />
+		
+		<result property="useTimeFestival" column="USE_TIME_FESTIVAL" jdbcType="VARCHAR" />
+		
+		<result property="deleteFlag" column="DELETE_FLAG" jdbcType="VARCHAR" />
+		
+		<result property="festivalImage" column="FESTIVAL_IMAGE" jdbcType="VARCHAR" />
+		
+</resultMap>
+
+<update id="updateFestival" parameterType="festival">
+		UPDATE festival
+		<set>
+			FESTIVAL_NO = #{festivalNo:NUMERIC},
+			FESTIVAL_NAME = #{festivalName:VARCHAR},
+			CONTENT_TYPE_ID = #{contentTypeId:VARCHAR},
+			READ_COUNT = #{readCount:VARCHAR},
+			FESTIVAL_LONGITUDE = #{festivalLongitude:VARCHAR},
+			FESTIVAL_LATITUDE = #{festivalLatitude:VARCHAR},
+			ADDR = #{addr:VARCHAR},
+			AREA_CODE = #{areaCode:VARCHAR},
+			SIGUNGU_CODE = #{sigunguCode:VARCHAR},
+			ORG_PHONE = #{orgPhone:VARCHAR},
+			START_DATE = #{startDate:VARCHAR},
+			END_DATE = #{endDate:VARCHAR},
+			FESTIVAL_DETAIL = #{festivalDetail:VARCHAR},
+			FESTIVAL_OVERVIEW = #{festivalOverview:VARCHAR},
+			AGE_LIMIT = #{ageLimit:VARCHAR},
+			BOOKING_PLACE = #{bookingPlace:VARCHAR},
+			DISCOUNT = #{discount:VARCHAR},
+			PLAY_TIME = #{playTime:VARCHAR},
+			SPEND_TIME_FESTIVAL = #{spendTimeFestival:VARCHAR},
+			SUB_EVENT = #{subEvent:VARCHAR},
+			PROGRAM = #{program:VARCHAR},
+			USE_TIME_FESTIVAL = #{useTimeFestival:VARCHAR},
+			DELETE_FLAG = #{deleteFlag:VARCHAR},
+			FESTIVAL_IMAGE = #{festivalImage:VARCHAR},
+			
+		</set>
+		WHERE FESTIVAL_NO =#{festivalNo:NUMERIC}
+	</update>
+
+
+	<select id="getFestivalDB" parameterType="int" resultMap="festivalSelectMap" >
+		SELECT FESTIVAL_NO,
+		FESTIVAL_NAME,
+		CONTENT_TYPE_ID,
+		READ_COUNT,
+		FESTIVAL_LONGITUDE,
+		FESTIVAL_LATITUDE,
+		ADDR,
+		AREA_CODE,
+		SIGUNGU_CODE,
+		ORG_PHONE,
+		START_DATE,
+		END_DATE,
+		FESTIVAL_DETAIL,
+		FESTIVAL_OVERVIEW,
+		AGE_LIMIT,
+		BOOKING_PLACE,
+		DISCOUNT,
+		PLAY_TIME,
+		SPEND_TIME_FESTIVAL,
+		SUB_EVENT,
+		PROGRAM,
+		USE_TIME_FESTIVAL,
+		DELETE_FLAG,
+		FESTIVAL_IMAGE
+		 FROM festival
+		 WHERE FESTIVAL_NO = #{VALUE}
+	</select>
+	
+	<insert id="addFestival" parameterType="festival" >
+		INSERT INTO festival (
+		
+		FESTIVAL_NO,
+		FESTIVAL_NAME,
+		CONTENT_TYPE_ID,
+		READ_COUNT,
+		FESTIVAL_LONGITUDE,
+		FESTIVAL_LATITUDE,
+		ADDR,
+		AREA_CODE,
+		SIGUNGU_CODE,
+		ORG_PHONE,
+		START_DATE,
+		END_DATE,
+		FESTIVAL_DETAIL,
+		FESTIVAL_OVERVIEW,
+		AGE_LIMIT,
+		BOOKING_PLACE,
+		DISCOUNT,
+		PLAY_TIME,
+		SPEND_TIME_FESTIVAL,
+		SUB_EVENT,
+		PROGRAM,
+		USE_TIME_FESTIVAL,
+		DELETE_FLAG,
+		FESTIVAL_IMAGE
+		
+		)
+		
+		VALUES (
+		
+		#{festivalNo:NUMERIC},
+		#{festivalName:VARCHAR},
+		#{contentTypeId:VARCHAR},
+		#{readCount:VARCHAR},
+		#{festivalLongitude:VARCHAR},
+		#{festivalLatitude:VARCHAR},
+		#{addr:VARCHAR},
+		#{areaCode:VARCHAR},
+		#{sigunguCode:VARCHAR},
+		#{orgPhone:VARCHAR},
+		#{startDate:VARCHAR},
+		#{endDate:VARCHAR},
+		#{festivalDetail:VARCHAR},
+		#{festivalOverview:VARCHAR},
+		#{ageLimit:VARCHAR},
+		#{bookingPlace:VARCHAR},
+		#{discount:VARCHAR},
+		#{playTime:VARCHAR},
+		#{spendTimeFestival:VARCHAR},
+		#{subEvent:VARCHAR},
+		#{program:VARCHAR},
+		#{useTimeFestival:VARCHAR},
+		#{deleteFlag:VARCHAR},
+		#{festivalImage:VARCHAR}
+		
+		
+		)
+	</insert>
+	
+	<select  id="getFestivalListDB"  parameterType="search"	resultMap="festivalSelectMap">
+
+	 SELECT *
+	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
+	  					FROM		
+	  					(	SELECT
+	  					 FESTIVAL_NO,
+	  					 FESTIVAL_NAME,
+	  					 START_DATE,
+	  					 END_DATE,
+	  					 FESTIVAL_IMAGE
+
+						 FROM festival
+					
+					<if test="searchCondition != null">
+												
+						<if test="searchCondition == 0 and searchKeyword !='' ">
+										 		 	AND FESTIVAL_NO LIKE '%${searchKeyword}%'
+													</if>
+													<if test="searchCondition == 1 and searchKeyword !='' ">
+										 			AND FESTIVAL_NAME LIKE '%${searchKeyword}%'
+													</if>
+																					
+											</if>
+										
+											ORDER BY START_DATE ) inner_table
+						WHERE ROWNUM &lt;= #{endRowNum} )
+		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
+	 </select>
+	
+	<select  id="getTotalCount"  parameterType="search"	 resultType="int">
+	  	SELECT COUNT(*)
+	  	FROM(	SELECT FESTIVAL_NO , FESTIVAL_NAME 
+						FROM festival
+						<if test="searchCondition != null">
+							<where>
+								<if test="searchCondition == 0 and searchKeyword !='' ">
+						 			FESTIVAL_NO = #{searchKeyword}
+								</if>
+								<if test="searchCondition == 1 and searchKeyword !='' ">
+						 			FESTIVAL_NAME = #{searchKeyword}
+								</if>
+							</where>
+						</if> ) countTable						
+	 </select>
+
+	 
+</mapper>	
+			 
+			 
+<!--  이전꺼
 <mapper namespace="FestivalMapper">
 
 	<resultMap id="festivalSelectMap" type="festival">
@@ -175,4 +401,8 @@
 	 
 </mapper>	
 			
+		 -->
+ 
 		
+ 
+ 

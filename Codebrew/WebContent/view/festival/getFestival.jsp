@@ -4,7 +4,7 @@
 
 <%-- <%@include file="/view/festival/admin.jsp"%> --%>
 
-<%@include file="/view/festival/user.jsp"%>
+<%-- <%@include file="/view/festival/user.jsp"%> --%>
 
 
 
@@ -50,7 +50,7 @@
 	
 	<script type="text/javascript">
 		
-		var map = null;
+ 		var map = null;
 		var mapx = ${festival.festivalLongitude}; // 경도
 		var mapy = ${festival.festivalLatitude};	//위도'
 		
@@ -90,7 +90,7 @@ $(function() {
 		    // 지도 중심을 부드럽게 이동시킵니다
 		    // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
 		    map.panTo(moveLatLon);            
-		}        
+		}         
 		
 		$(function(){
 			$("#back").on("click", function(){
@@ -115,6 +115,12 @@ $(function() {
 				self.location = "/purchase/addPurchase?festivalNo="+${festival.festivalNo};
 			});
 		});
+		
+		$(function() {
+			$("button:contains('수정하기')").on("click", function() {
+			self.location = "/festival/updateFestivalView?festivalNo="+${festival.festivalNo};
+		});
+	});
 			
 		 $(function(){
 			 
@@ -135,6 +141,7 @@ $(function() {
 								
 									$(this).remove();
 									$("p").html(displayValue);
+									location.reload();
 								
 								}
 						});
@@ -158,8 +165,11 @@ $(function(){
 								success : function(JSONData , status) {
 	
 											var displayValue = "<p>♡</p>";
-								
+									
+									$(this).remove();
 									$("p").html(displayValue);
+									
+									location.reload();
 								
 								}
 						});
@@ -328,21 +338,30 @@ $(function(){
 	
 	
 	<c:if test= "${user.role=='a' }" >
+		
 		<div class="form-group">
 				<div class="col-sm-offset-4  col-sm-4 text-center">
+				
+				<c:if test="${ticket==null }">
 					<button type="button" class="btn btn-primary">등록하기</button>
+				</c:if>
+			
+				<c:if test="${ticket!=null }">
+					<button type="button" class="btn btn-primary">수정하기</button>
+				</c:if>
+			
 					<input type = "button" id = "back" name = "back" value = "뒤로"/>
+			
 				</div>
 			</div>
 			
-			</c:if>
+	</c:if>
 			
-	<c:if test="${user.role=='u' }">
+	<c:if test="${user.role!='a' }">
 		<div class="form-group">
 				<div class="col-sm-offset-4  col-sm-4 text-center">
 					<button type="button" class="btn btn-primary">애프터파티 조회</button>
-					
-					<c:if test="${ticket.ticketFlag!='del' }">
+					<c:if test="${ticket.ticketFlag!='del'}">
 						<button type="button" class="btn btn-primary">티켓구매</button>
 					</c:if>
 					

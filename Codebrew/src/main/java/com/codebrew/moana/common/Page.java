@@ -14,6 +14,8 @@ public class Page {
 	///Constructor
 	public Page() {
 	}
+
+
 	
 	public Page(int totalCount){
 		this.totalCount = totalCount;
@@ -90,3 +92,4 @@ public class Page {
 				+ beginUnitPage + ", endUnitPage=" + endUnitPage + "]";
 	}
 }
+

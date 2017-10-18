@@ -4,7 +4,7 @@
 
 <%-- <%@include file="/view/festival/admin.jsp"%> --%>
 
-<%@include file="/view/festival/user.jsp"%>
+<%-- <%@include file="/view/festival/user.jsp"%> --%>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -43,6 +43,7 @@
 
 			var festivalNo = $("p", this).text();
 
+			/* self.location = "/festival/getFestivalDB?festivalNo=" + festivalNo; */
 			self.location = "/festival/getFestivalDB?festivalNo=" + festivalNo;
 		});
 	});

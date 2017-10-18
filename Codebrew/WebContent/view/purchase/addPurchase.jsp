@@ -20,7 +20,26 @@
 <!-- jQuery -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script type="text/javascript">
-
+	
+	//수량 선택시 validation check function
+	function fncCheckPurchase(ticketPrice, selectedCount, purchasePrice) {
+		
+		console.log("수량선택 : "+selectedCount+"개 선택");
+		console.log("결제금액 : "+purchasePrice+"원");
+		
+		if(purchasePrice >= 100000) {
+			alert("결제금액은 100,000만원 이하여야 합니다");
+			return;
+		}
+		
+		$("#purchaseCount").html(selectedCount); //구매수량
+		$("#purchasePrice").html(purchasePrice); //결제금액
+		
+		$("#kakaoPay").removeAttr("disabled"); //카카오페이 버튼 활성화
+		
+	}
+	
+	//카카오페이 결제준비 호출 function
 	function fncPayment(selectedCount, purchasePrice, purchaseFlag){
 
 		var ticketNo = $("input:hidden[name='ticketNo']").val();
@@ -50,9 +69,11 @@
 			}), 
 			dataType : "json",
 			success : function(data){
+				
 				console.log(JSON.stringify(data));
 				var url = data.nextRedirectPcUrl;
 				window.open(url,'kakaoPay','toolbar=no,location=center,menubar=no,width=426,height=510');
+				
 			}
 			
 		});
@@ -62,39 +83,89 @@
 	$(function(){
 		
 		var selectedCount; //구매수량
-		var ticketPrice; //티켓가격
+		var ticketPrice = $("input:hidden[name='ticketPrice']").val(); //티켓가격
 		var purchasePrice; //결제금액
+		var ticketFlag = "${ticket.ticketFlag}";
 		var purchaseFlag = $("input:hidden[name='purchaseFlag']").val(); //1-축제,2-파티
 		console.log("축제입니까 파티입니까 : "+purchaseFlag);
 		
 		//구매수량 선택 시
 		$("select").on("change",function(){
 			
-			selectedCount = $("select option:selected").val();
-			ticketPrice = $("input:hidden[name='ticketPrice']").val();
-			purchasePrice = selectedCount * ticketPrice;
-			
-			console.log("수량선택 : "+selectedCount+"개 선택");
-			console.log("결제금액 : "+purchasePrice+"원");
-			
-			if(purchasePrice >= 100000) {
-				alert("결제금액은 100,000만원 이하여야 합니다");
-				return;
+			//무료티켓
+			if(ticketFlag != null || ticketFlag != '') {
+				$("#purchase").removeAttr("disabled");
 			}
 			
-			$("#purchaseCount").html(selectedCount); //구매수량
-			$("#purchasePrice").html(purchasePrice); //결제금액
+			selectedCount = $("select option:selected").val();
+			purchasePrice = selectedCount * ticketPrice;
+			fncCheckPurchase(ticketPrice, selectedCount, purchasePrice);
 			
-			$("#kakaoPay").removeAttr("disabled"); //카카오페이 버튼 활성화
 		});
 		
 		//카카오페이 클릭 시
 		$("#kakaoPay").on("click",function(){
+			
 			fncPayment(selectedCount, purchasePrice, purchaseFlag);
+			
 		});
 		
+		//구매하기 클릭 시
+		$("#purchase").on("click", function(){
+			
+			console.log("구매버튼 클릭클릭");
+			selectedCount = $("#purchaseCount").html().trim();
+			$("input:hidden[name='purchaseCount']").val(selectedCount);
+			$("input:hidden[name='purchasePrice']").val(purchasePrice);
+			console.log(selectedCount+"개, "+purchasePrice+"원");
+			$("form").attr("method", "POST").attr("action", "/purchase/addPurchase").submit();
+			
+		});
+		
+		//뒤로가기 클릭 시
 		$(".btn:contains('뒤로가기')").on("click", function() {
-			history.go(-1);
+			
+			if(confirm("구매를 취소하시겠습니까?")) {
+				history.go(-1);
+			} else {
+				return;
+			}
+			
+		});
+		
+		//수량 + 선택
+		$("#plus").on("click", function(){
+			
+			var originVal = $("input:text[name='ticketCount']").val();
+			console.log("원래 수량 : "+originVal);
+			
+			selectedCount = ++originVal;
+			console.log("변경 수량 : "+selectedCount);
+			$("input:text[name='ticketCount']").val(selectedCount);
+			
+			purchasePrice = ticketPrice * selectedCount;
+			fncCheckPurchase(ticketPrice, selectedCount, purchasePrice);
+			
+		});
+		
+		//수량 - 선택
+		$("#minus").on("click", function(){
+			
+			var originVal = $("input:text[name='ticketCount']").val();
+			console.log("원래 수량 : "+originVal);
+			
+			if(originVal == 0) {
+				alert("0이하는 구매 할 수 없습니다");
+				return;
+			}
+			
+			var selectedCount = --originVal;
+			console.log("변경 수량 : "+selectedCount);
+			$("input:text[name='ticketCount']").val(selectedCount);
+			
+			purchasePrice = ticketPrice * selectedCount;
+			fncCheckPurchase(ticketPrice, selectedCount, purchasePrice);
+			
 		});
 		
 	});
@@ -134,12 +205,17 @@
 		<!-- form -->
 		<div class="row">
 			<div class="col-md-offset-3 col-md-6">
-				<form class="form-horizontal" id="purchaseForm" name="purchaseForm">
+				<form class="form-inline" id="purchaseForm" name="purchaseForm">
 					<!-- hidden -->
 					<input type="hidden" name="ticketNo" value="${ticket.ticketNo}">
+					<input type="hidden" name="ticket.ticketNo" value="${ticket.ticketNo}">
+					<input type="hidden" name="ticket.ticketFlag" value="${ticket.ticketFlag}">
 					<input type="hidden" name="ticketPrice" value="${ticket.ticketPrice}">
 					<input type="hidden" name="purchaseFlag" value="${purchaseFlag}">
 					<input type="hidden" name="userId" value="${user.userId}">
+					<input type="hidden" name="user.userId" value="${user.userId}">
+					<input type="hidden" name="purchaseCount" value="">
+					<input type="hidden" name="purchasePrice" value="">
 					<!-- 축제정보 -->
 					<c:if test="${!empty festival}">
 						<input type="hidden" name="festival.festivalName" value="${festival.festivalName}">
@@ -156,9 +232,9 @@
 							<div class="col-md-6 text-muted">
 								<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> <small>${festival.addr}</small>
 							</div>
-							<div class="col-md-6">
+							<%-- <div class="col-md-6">
 								${ticket.ticketPrice}원	
-							</div>
+							</div> --%>
 						</div>
 					</c:if>
 					
@@ -173,64 +249,126 @@
 							<div class="col-md-6 text-muted">
 								<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> <small>${party.partyPlace}</small>
 							</div>
-							<div class="col-md-6">
+							<%-- <div class="col-md-6">
 								${ticket.ticketPrice}원	
-							</div>
+							</div> --%>
 						</div>
 					</c:if>
 					
-					<!-- 수량이 0일때 -->
-					<c:if test="${ticket.ticketCount == 0}">
-						<jsp:include page="soldOutTicket.jsp"></jsp:include>
-						<button class="btn btn-default" type="button">뒤로가기</button>										
-					</c:if>
 					
-					<!-- 수량 0 아닐때 -->
-					<c:if test="${ticket.ticketCount > 0 }">
+					
+					<!-- 기본티켓 or 무제한티켓 -->
+					<c:if test="${empty ticket.ticketFlag or ticket.ticketFlag == 'nolimit'}">
 						<div class="row">
 							<div class="col-md-offset-2 col-xs-4 col-md-8">
+								<label class="control-label" for="ticketCount">티켓가격</label>
+								${ticket.ticketPrice} 원
+							</div>
+						</div>
+					</c:if>
+					<!-- 무료티켓 -->
+					<c:if test="${ticket.ticketFlag == 'free'}">
+						<div class="row">
+							<div class="col-md-offset-2 col-xs-4 col-md-8">
+								무료
+							</div>
+						</div>
+					</c:if>
+						<!-- 기본티켓 수량이 0일때 (품절)-->
+						<c:if test="${ticket.ticketFlag != 'nolimit' and ticket.ticketCount == 0}">
+							<jsp:include page="soldOutTicket.jsp"></jsp:include>
+						</c:if>
+						<c:if test="${ticket.ticketFlag == 'nolimit' and ticket.ticketCount == 0}">
+							일단 수량 선택해야함
+							<div class="row">
+								<div class="col-md-offset-2 col-xs-4 col-md-8">
+									<div class="form-group form-inline">
+										<span id="minus" class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+										<input class="form-control input-sm" type="text" name="ticketCount" value="0" placeholder="0" readonly>
+										<span id="plus" class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+									</div>
+								</div>
+							</div>
+						</c:if>
+						<!-- 기본티켓, 무료티켓 수량 0 아닐때 -->
+						<c:if test="${ticket.ticketCount > 0 }">
+							<div class="row">
+								<div class="col-md-offset-2 col-xs-4 col-md-8">
 									<div class="form-group form-inline">
 										<label class="control-label" for="ticketCount">수량선택</label>
 										<select class="col-md-offset-5 form-control input-sm" name="ticketCount">
 											<option>선택하세요</option>
-												<c:forEach begin="1" end="${ticket.ticketCount}" var="i" step="1">
-													<option>${i}</option>
-												</c:forEach>
+											<c:forEach begin="1" end="${ticket.ticketCount}" var="i" step="1">
+												<option>${i}</option>
+											</c:forEach>
 										</select>
 									</div>
+								</div>
 							</div>
-						</div>
+							<!-- 구매정보 -->
+							<div class="panel panel-primary">
+								<div class="panel-heading">
+									<h3 class="panel-title">${user.nickname}님의구매정보</h3>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-offset-2 col-xs-4 col-md-4">
+											<strong>아이디</strong>
+										</div>
+										<div class="col-xs-8 col-md-4">${user.userId}</div>
+									</div>
+									<div class="row">
+										<div class="col-md-offset-2 col-xs-4 col-md-4">
+											<strong>구매수량</strong>
+										</div>
+										<div class="col-xs-8 col-md-4">
+											<span id="purchaseCount">0</span>장
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-offset-2 col-xs-4 col-md-4">
+											<strong>결제금액</strong>
+										</div>
+										<div class="col-xs-8 col-md-4">
+											<span id="purchasePrice">0</span>원
+										</div>
+									</div>
+								</div>
+							</div>
+							</c:if>
+							<!-- 카카오페이 -->
+							<c:if test="${empty ticket.ticketFlag or ticket.ticketFlag == 'nolimit'}">
+							<div class="row">
+								<div class="col-md-offset-4 col-md-4">
+									<button id="kakaoPay" class="btn btn-link btn-block" disabled="disabled" type="button">
+										<img src="../../resources/image/buttonImage/kakaopay.png">
+									</button>
+								</div>
+							</div>
+							</c:if>
+							
+							<c:if test="${ticket.ticketFlag == 'free' and ticket.ticketCount > 0}">
+							<div class="row">
+								<div class="col-md-offset-4 col-md-4">
+									<button id="purchase" class="btn btn-default btn-block" disabled="disabled" type="button">
+										구매하기
+									</button>
+								</div>
+							</div>
+							</c:if>
 					
-						<!-- 구매정보 -->
-						<div class="panel panel-primary">
-							<div class="panel-heading">
-								<h3 class="panel-title">${user.nickname}님의 구매정보</h3>
-							</div>
-							<div class="panel-body">
-								<div class="row">
-							  		<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>아이디</strong></div>
-									<div class="col-xs-8 col-md-4">${user.userId}</div>
-								</div>
-								<div class="row">
-							  		<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>구매수량</strong></div>
-									<div class="col-xs-8 col-md-4"><span id="purchaseCount">0</span>장</div>
-								</div>
-								<div class="row">
-							  		<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>결제금액</strong></div>
-									<div class="col-xs-8 col-md-4"><span id="purchasePrice">0</span>원</div>
-								</div>
-							</div>
-						</div>
-						
-						<!-- 카카오페이 -->
-						<div class="row">
-							<div class="col-md-offset-4 col-md-4">
-								<button id="kakaoPay" class="btn btn-link btn-block" disabled="disabled" type="button"><img src="../../resources/image/buttonImage/kakaopay.png"></button>
-							</div>
-						</div>
+					<!-- 딜릿티켓일때(예외상황) -->
+					<c:if test="${ticket.ticketFlag == 'del'}">
+						<h1>딜릿티켓 (이 페이지로 넘어오면 안댐)</h1>
 					</c:if>
 					
+					
 				</form>
+					<div class="row">
+						<div class="col-md-12">
+							<button class="btn btn-default btn-lg" type="button">뒤로가기</button>
+						</div>
+					</div>
 			</div>
 		</div>
 	</div>
