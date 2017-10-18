@@ -39,5 +39,10 @@
 <!--주영이가 써보았다.  -->
 <a href="/user/login">로그인</a>
 
+<br>
+<br>
+<!--후기등록 테스트중 -->
+<a href="/review/addReview">후기등록</a>
+
 </body>
 </html>
