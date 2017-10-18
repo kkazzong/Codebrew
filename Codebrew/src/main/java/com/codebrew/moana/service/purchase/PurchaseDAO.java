@@ -17,7 +17,7 @@ public interface PurchaseDAO {
 	public int deletePurchase(int purchaseNo);
 	public Purchase readyPayment(Purchase purchase);
 	public Purchase approvePayment(String pgToken);
-	public void cancelPayment(Purchase purchase);
+	public Purchase cancelPayment(Purchase purchase);
 	public int getTotalCount(String userId, Search search);
 	public QRCode createQRCode();
 	
