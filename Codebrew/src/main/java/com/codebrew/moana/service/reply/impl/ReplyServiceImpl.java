@@ -22,38 +22,32 @@ public class ReplyServiceImpl implements ReplyService {
 	public ReplyServiceImpl() {
 		System.out.println(this.getClass());
 	}
+	
+	
+	///Service Method
 	@Override
 	public void addReply(Reply reply) throws Exception {
-		// TODO Auto-generated method stub
-		
+		replyDAO.addReply(reply);
 	}
 	@Override
 	public Reply getReply(int replyNo) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return replyDAO.getReply(replyNo);
 	}
 	@Override
 	public void updateReply(Reply reply) throws Exception {
-		// TODO Auto-generated method stub
-		
+		replyDAO.updateReply(reply);
 	}
 	@Override
 	public void deleteReply(int replyNo) throws Exception {
-		// TODO Auto-generated method stub
-		
+		replyDAO.deleteReply(replyNo);
 	}
 	@Override
 	public Map<String, Object> getAllReplyList(Search search) throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	@Override
 	public Map<String, Object> getReplyList(Search search, String userId) throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
-
-	///Service Method
-	
 
 }

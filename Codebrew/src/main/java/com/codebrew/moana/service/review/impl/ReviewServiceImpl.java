@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.codebrew.moana.common.Search;
+import com.codebrew.moana.service.domain.Hashtag;
+import com.codebrew.moana.service.domain.Image;
 import com.codebrew.moana.service.domain.Review;
 import com.codebrew.moana.service.domain.User;
 import com.codebrew.moana.service.review.ReviewDAO;
@@ -33,8 +35,34 @@ public class ReviewServiceImpl implements ReviewService {
 
 	///Service Method
 	@Override
-	public void addReview(Review review) throws Exception {
+	public Review addReview(Review review) throws Exception {
+		
+		System.out.println("Service :: addReview");
+		
 		reviewDAO.addReview(review);
+		
+		System.out.println();
+
+		if(review.getReviewImage() != null && review.getReviewImage().size() != 0) { //이미지 올렸을 때
+			for(Image image : review.getReviewImage()) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("reviewNo", review.getReviewNo()); //reviewNo
+				map.put("reviewImage", image);
+				System.out.println("\n\n\nokokok\n\n\n"+map.get("reviewImage"));
+				reviewDAO.uploadReviewImage(map);
+			}
+		}
+		if(review.getReviewHashtag() != null && review.getReviewHashtag().size() != 0){ //해시태그 올렸을 때
+			for(Hashtag hashtag : review.getReviewHashtag()){
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("reviewNo", review.getReviewNo());
+				map.put("reviewHashtag", hashtag);
+				System.out.println("\n\n\nokokok\n\n\n"+map.get("reviewHashtag"));
+				reviewDAO.uploadReviewHashtag(map);
+			}
+		}
+			
+		return reviewDAO.getReview(review.getReviewNo());
 	}
 
 	@Override
