@@ -12,7 +12,7 @@ public class Purchase {
 	private String itemName; // 티켓이름(축제이름,파티이름)
 	private int purchasePrice; // 구매가격
 	private int purchaseCount; // 구매수량
-	private Date purchaseDate; // 구매날짜
+	private String purchaseDate; // 구매날짜
 	private String paymentMethodType; // 결제수단[CARD, MONEY]
 	private String tranCode; // 구매상태[1 : 결제완료, 2 : 결제취소]
 	private QRCode qrCode; // 큐알코드
@@ -87,11 +87,11 @@ public class Purchase {
 		this.purchaseCount = purchaseCount;
 	}
 
-	public Date getPurchaseDate() {
+	public String getPurchaseDate() {
 		return purchaseDate;
 	}
 
-	public void setPurchaseDate(Date purchaseDate) {
+	public void setPurchaseDate(String purchaseDate) {
 		this.purchaseDate = purchaseDate;
 	}
 
@@ -183,6 +183,7 @@ public class Purchase {
 		this.nextRedirectMobileUrl = nextRedirectMobileUrl;
 	}
 
+	
 	//@Override
 	/*public String toString() {
 		return "@Purchase [purchaseNo=" + purchaseNo + ", paymentNo=" + paymentNo + ", user.userId=" + user + ", ticket="

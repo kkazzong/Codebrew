@@ -92,10 +92,10 @@ public class PurchaseController {
 
 			System.out.println("아모루파티");
 
-			Party party = partyService.getParty(Integer.parseInt(partyNo));
-			ticket = ticketService.getTicket(party.getPartyNo(), "2");
+			//Party party = partyService.getParty(Integer.parseInt(partyNo));
+			//ticket = ticketService.getTicket(party.getPartyNo(), "2");
 
-			modelAndView.addObject("party", party);
+			//modelAndView.addObject("party", party);
 			modelAndView.addObject("purchaseFlag", "2");
 
 		}
@@ -179,10 +179,24 @@ public class PurchaseController {
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "cancelPurchase")
+	@RequestMapping(value = "cancelPurchase", method = RequestMethod.GET)
 	public ModelAndView cancelPurchase(HttpSession session, RedirectAttributes redirectAttributes) {
 
 		User user = (User) session.getAttribute("user");
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("redirect:/purchase/getPurchaseList");
+
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = "cancelPurchase", method = RequestMethod.POST)
+	public ModelAndView cancelPurchase(HttpSession session,
+																		@ModelAttribute("purchase") Purchase purchase) throws Exception {
+
+		User user = (User) session.getAttribute("user");
+		purchase = purchaseService.getPurchase(purchase.getPurchaseNo());
+		purchase.setTranCode("2");
+		purchaseService.cancelPurchase(purchase);
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("redirect:/purchase/getPurchaseList");
 

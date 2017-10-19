@@ -86,6 +86,11 @@ public class PurchaseServiceImpl implements PurchaseService {
 			return 0;
 		}
 	}
+	
+	@Override
+	public int cancelPurchase(Purchase purchase) throws Exception {
+		return purchaseDAO.updatePurchaseTranCode(purchase);
+	}
 
 	@Override
 	public int deletePurchase(int purchaseNo) {
