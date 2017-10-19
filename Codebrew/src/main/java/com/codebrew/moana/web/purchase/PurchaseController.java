@@ -179,10 +179,24 @@ public class PurchaseController {
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "cancelPurchase")
+	@RequestMapping(value = "cancelPurchase", method = RequestMethod.GET)
 	public ModelAndView cancelPurchase(HttpSession session, RedirectAttributes redirectAttributes) {
 
 		User user = (User) session.getAttribute("user");
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("redirect:/purchase/getPurchaseList");
+
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = "cancelPurchase", method = RequestMethod.POST)
+	public ModelAndView cancelPurchase(HttpSession session,
+																		@ModelAttribute("purchase") Purchase purchase) throws Exception {
+
+		User user = (User) session.getAttribute("user");
+		purchase = purchaseService.getPurchase(purchase.getPurchaseNo());
+		purchase.setTranCode("2");
+		purchaseService.cancelPurchase(purchase);
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("redirect:/purchase/getPurchaseList");
 

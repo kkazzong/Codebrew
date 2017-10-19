@@ -161,11 +161,12 @@
 	
 	$(function(){
 		
+		//확인 버튼
 		$("button:contains('확인')").on("click", function(){
 			self.location = "/purchase/getPurchaseList";
 		});
 		
-		
+		//카카오페이 결제 취소
 		$("button:contains('결제취소하기')").on("click", function(){
 			
 			var result = confirm("정말로 결제를 취소하시겠습니까?");
@@ -178,6 +179,18 @@
 			} else { 
 				return;
 			}
+		});
+		
+		//구매취소(무료티켓 구매한 내역)
+		$(".btn:contains('구매취소하기')").on("click", function(){
+			
+			if(confirm("정말로 구매를 취소하시겠습니까?")) {
+				alert($("#cancelForm").serialize());
+				$("#cancelForm").attr("method", "POST").attr("action", "/purchase/cancelPurchase").submit();
+			} else {
+				return;
+			}
+			
 		});
 		
 		$("#facebookShare").on("click", function(){
@@ -337,7 +350,15 @@
 								<img class="col-md-offset-3" width="50%" height="50%" src="../../resources/image/QRCodeImage/${purchase.qrCode.qrCodeImage}">
 							</div>
 							<button class="btn btn-default" type="button">확인</button>
-							<button class="btn btn-primary" type="button" value="${purchase.purchaseNo}">결제취소하기</button>
+							<c:if test="${ticket.ticketFlag != 'free' }">
+								<button class="btn btn-primary" type="button" value="${purchase.purchaseNo}">결제취소하기</button>
+							</c:if>
+							<c:if test="${ticket.ticketFlag == 'free' }">
+								<form id="cancelForm">
+									<input type="hidden" name="purchaseNo" value="${purchase.purchaseNo}" >
+									<button class="btn btn-primary" type="button" value="${purchase.purchaseNo}">구매취소하기</button>
+								</form>
+							</c:if>
 						</div>
 					</div>
 				</div>

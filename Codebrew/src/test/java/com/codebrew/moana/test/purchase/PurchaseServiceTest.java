@@ -106,7 +106,7 @@ public class PurchaseServiceTest {
 	}
 
 	// @Test
-	public void updatePurchaseTranCode() {
+	public void updatePurchaseTranCode() throws Exception {
 
 		Purchase purchase = new Purchase();
 		purchase.setPurchaseNo(10033);

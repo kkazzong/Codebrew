@@ -145,7 +145,22 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 	}
 
 	@Override
-	public int updatePurchaseTranCode(Purchase purchase) {
+	public int updatePurchaseTranCode(Purchase purchase) throws Exception {
+			
+		Ticket ticket = ticketDAO.getTicketByTicketNo(purchase.getTicket().getTicketNo());
+		// 무제한티켓이 아닐때 수량 업뎃
+		if (ticket.getTicketFlag() == null || ticket.getTicketFlag().equals("free")) {
+
+			int plusCount = ticket.getTicketCount() + purchase.getPurchaseCount();
+			ticket.setTicketCount(plusCount);
+
+			int updateTicketResult = ticketDAO.updateTicketCount(ticket);
+			if (updateTicketResult == 1) {
+				if (purchase.getPurchaseFlag().equals("2")) {
+					partyDAO.cancelParty(ticket.getParty().getPartyNo(), purchase.getUser().getUserId());
+				}
+			}
+		}
 		return sqlSession.update("PurchaseMapper.updatePurchaseTranCode", purchase);
 	}
 
@@ -179,7 +194,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			map.put("approval_url", "http://127.0.0.1:8080/purchase/approvePayment");
 			map.put("fail_url", "http://127.0.0.1:8080/kakaoPay/failKakaoPay.jsp");
 			map.put("cancel_url", "http://127.0.0.1:8080/kakaoPay/cancelKakaoPay.jsp");
-			map.put("user_phone_number", "01030343783");
+			//map.put("user_phone_number", "01030343783");
 			map.put("quantity", new Integer(purchase.getPurchaseCount()));
 			map.put("total_amount", new Integer(purchase.getPurchasePrice()));
 			map.put("tax_free_amount", new Integer(0));
@@ -282,8 +297,9 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 			// GMT
 			sdf.setTimeZone(TimeZone.getTimeZone("GMT+9"));
-			String formattedDate = sdf.format(date);
 			date = sdf.parse(jsonObject.get("approved_at").toString());
+			String formattedDate = sdf.format(date);
+			formattedDate = formattedDate.replaceAll("T", " ");
 			System.out.println(formattedDate);
 			System.out.println(date.toString());
 
@@ -292,7 +308,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			// SimpleDateFormat origin2 = new SimpleDateFormat("HH:mm:ss");
 			// Date date = origin.parse(jsonObject.get("approved_at").toString());
 			// Date date2 = origin2.parse(jsonObject.get("approved_at").toString());
-			purchase.setPurchaseDate(date);
+			purchase.setPurchaseDate(formattedDate);
 			// purchase.setPurchaseDate(jsonObject.get("approved_at").toString());
 			System.out.println(date.toString());
 			// System.out.println(date2.getTime());
@@ -331,7 +347,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 
 		String kakaoPayOpenAPIURL = "https://kapi.kakao.com/v1/payment/cancel";
 		System.out.println(purchase);
-		int cancelResult = 0;
+		int updatePurchaseResult = 0;
 		try {
 
 			URL url = new URL(kakaoPayOpenAPIURL);
@@ -384,7 +400,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 
 			SimpleDateFormat origin = new SimpleDateFormat(ISO_8601_24H_FULL_FORMAT);
 			Date date = origin.parse(jsonObject.get("canceled_at").toString()); // 결제취소시각
-			purchase.setPurchaseDate(date);
+			purchase.setPurchaseDate(date.toString());
 			// purchase.setPurchaseDate(jsonObject.get("canceled_at").toString());
 			System.out.println(origin);
 			System.out.println(date.toString());
@@ -398,8 +414,8 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			
 			purchase.setTranCode("2");
 			
-			int updatePurchaseResult = this.updatePurchaseTranCode(purchase);
-			if(updatePurchaseResult == 1) {
+			updatePurchaseResult = this.updatePurchaseTranCode(purchase);
+			/*if(updatePurchaseResult == 1) {
 				
 				Ticket ticket =  ticketDAO.getTicketByTicketNo(purchase.getTicket().getTicketNo());
 				int plusCount = ticket.getTicketCount() + purchase.getPurchaseCount();
@@ -414,12 +430,12 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 				} else {
 					cancelResult = 0;
 				}
-			}
+			}*/
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return cancelResult;
+		return updatePurchaseResult;
 	}
 	
 	@Override

@@ -17,7 +17,7 @@ public interface PurchaseDAO {
 	public List<Purchase> getPurchaseList(String userId, String purchaseFlag, Search search);
 	public List<Purchase> getSaleList(Search search);
 	public int cancelPayment(Purchase purchase);
-	public int updatePurchaseTranCode(Purchase purchase);
+	public int updatePurchaseTranCode(Purchase purchase) throws Exception;
 	public int deletePurchase(int purchaseNo);
 	public int getTotalCount(String userId, Search search);
 	public QRCode createQRCode(String path);

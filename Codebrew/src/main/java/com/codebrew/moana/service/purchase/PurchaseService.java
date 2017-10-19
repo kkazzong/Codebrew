@@ -14,5 +14,6 @@ public interface PurchaseService {
 	public Map<String, Object> getPurchaseList(String userId, String purchaseFlag, Search search);
 	public Map<String, Object> getSaleList(Search search);
 	public int cancelPayment(int purchaseNo);
+	public int cancelPurchase(Purchase purchase) throws Exception;
 	public int deletePurchase(int purchaseNo);
 }
