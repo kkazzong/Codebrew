@@ -5,14 +5,22 @@
 <head>
 <title>getStatistics</title>
 
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-<!-- Bootstrap Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"/>
-<!-- Bootstrap JavaScript -->
+<!-- Bootstrap, jQuery CDN -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- Bootstrap Dropdown Hover CSS -->
+<link href="/resources/css/animate.min.css" rel="stylesheet">
+<link href="/resources/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
+
+<!-- Bootstrap Dropdown Hover JS -->
+<script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
+
 <!-- chart.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js" type="text/javascript"></script>
+
 <!-- Amchart Resources -->
 <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
 <script src="https://www.amcharts.com/lib/3/serial.js"></script>
@@ -21,8 +29,7 @@
 <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
 <!-- Amchart dataloader plugin -->
 <script src="//www.amcharts.com/lib/3/plugins/dataloader/dataloader.min.js" type="text/javascript"></script>
-<!-- jQuery -->
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
 <script type="text/javascript">
 	
 	/////////////////////////////////////////////amChart getData////////////////////////////////////////////////////////
@@ -65,9 +72,11 @@
 	  }
 	  
 	  var categoryField = chart.categoryField;
-	  var legendData =  chart.dataProvider.map(function(data) {
+	  var legendData =  chart.dataProvider.map(function(datas) {
+		  console.log(datas);
 	    var markerData = {
-	      "title": data[categoryField] + ": " + data[chart.graphs[0].valueField]
+	    	  "title": data[categoryField] + ": " + data[chart.graphs[0].valueField]+"원", 
+	  	      "color": data[colorField]
 	    };
 	    if (!markerData.color) {
 	      markerData.color = chart.graphs[0].lineColor;
@@ -83,14 +92,18 @@
 	var chart = AmCharts.makeChart("chartDiv", {
 	    "theme": "light",
 	    "type": "serial",
-	   "legend": { 
-	        "generateFromData": true //custom property for the plugin
-	     },  
+	    "legend" : {
+	    	"useGraphSettings": true,
+	    	"generateFromData": true,
+			"position" : "right",
+			"marginRight" : 100,
+			"autoMargins" : false,
+			"color" : "#000000"
+		},
+	     "dataProvider" : datas,
+	     "mouseWheelZoomEnabled":true, //마우스로 확대, 축소
+	     "dataDateFormat": "YYYY-MM-DD", //데이터의 날짜 포맷
 		"startDuration": 1,
-	    "dataLoader" : {
-	    	"url" : "C:\\Users\\GJ\\git\\Codebrew\\Codebrew\\WebContent\\data\\statistics\\test.json",
-	    	"format" : "json"
-	    }, //serial chart의 데이터셋
 	    "valueAxes": [{
 	    	"id" : "priceAxis",
 	        "position": "left",
@@ -103,14 +116,17 @@
 	    	"titleRotation" : 0 
 	    }],
 	    "graphs": [{
-	        "balloonText": "[[category]]: <b>[[value]]원</b>",
+	    	"id": "gp",
+	    	"balloonText": "[[category]]: <b>[[value]]원</b>",
 	        "fillColorsField": "color",
 	        "fillAlphas": 0.8,
 	        "lineAlpha": 0,
 	        "type": "column",
+	        "title" : "총판매금액",
 	        "valueField": "totalPrice",
 	        "valueAxis" : "priceAxis"
 	    }, {
+	    	"id": "gc",
 	    	"bullet": "round",
 	    	"lineThickness" : 2,
 	    	"lineColor" : "#000000",
@@ -119,18 +135,46 @@
 	        "bulletColor" : "#FFFFFF",
 	        "balloonText": "[[value]]장",
 	        "useLineColorForBulletBorder": true,
-	        "title" : "count",
+	        "title" : "총판매수량",
 	        "fillAlpha": 0,
 	        "valueField": "totalCount",
 	        "valueAxis" : "countAxis"
 	    }],
+	    "chartScrollbar": { //가로축 스크롤(날짜)
+	        "graph": "gc",
+	        "oppositeAxis":false,
+	        "offset":30,
+	        "scrollbarHeight": 80,
+	        "backgroundAlpha": 0,
+	        "selectedBackgroundAlpha": 0.1,
+	        "selectedBackgroundColor": "#888888",
+	        "graphFillAlpha": 0,
+	        "graphLineAlpha": 0.5,
+	        "selectedGraphFillAlpha": 0,
+	        "selectedGraphLineAlpha": 1,
+	        "autoGridCount":true,
+	        "color":"#AAAAAA"
+	    },
 	    "depth3D": 20,
 		"angle": 30,
-	    "chartCursor": {
+	    "chartCursor": { //차트 위에 나타나는 커서
 	        "categoryBalloonEnabled": false,
 	        "cursorAlpha": 0,
-	        "zoomable": false
+	        "zoomable": false,
+	        "pan": true,
+	        "valueLineEnabled": true,
+	        "valueLineBalloonEnabled": true,
+	        "cursorAlpha":1,
+	        "cursorColor":"#258cbb",
+	        "limitToGraph":"gp",
+	        "valueLineAlpha":0.2,
+	        "valueZoomable":true
 	    },
+	    "valueScrollbar":{
+		      "oppositeAxis":false,
+		      "offset":50,
+		      "scrollbarHeight":10
+		},
 	    "categoryField": "statDate",
 	    "categoryAxis": {
 	        "gridPosition": "start",
@@ -141,45 +185,23 @@
 	     }
 	}); 
 	
-	//도넛차트 - 분기단위
 	
-	var chartPie = AmCharts.makeChart("chartPie", {
-		"type" : "pie", //타입은 파이
-		"theme" : "light", //테마는 라이트
-		"startDuration" : 1, //시작 애니메이션
-		"addClassNames" : true,
-		"legend" : {
-			"position" : "right",
-			"marginRight" : 100,
-			"autoMargins" : false
-		},
-		"innerRadius" : "40%", //동그라미 안의 비율
-		"defs" : {
-			"filter" : [ {
-				"id" : "shadow",
-				"feBlend" : {
-					"mode" : "normal"
-				} 
-			} ]
-		}, 
-		"dataProvider" : datas,
-		"valueField" : "totalPrice",
-		"titleField" : "statDate",
-		"export" : {
-			"enabled" : true
-		}
-	});
-	
-	
+	//월단위
 	var chartLine = AmCharts.makeChart("chartLine", {
 	    "type": "serial",
 	    "theme": "light",
 	    "dataProvider": datas,
+	    "legend" : {
+	    	"useGraphSettings": true,
+	    	"generateFromData": true,
+			"position" : "right",
+			"marginRight" : 100,
+			"autoMargins" : false
+		},
 	    "marginRight": 40,
 	    "marginLeft": 40,
 	    "autoMarginOffset": 20,
 	    "mouseWheelZoomEnabled":true,
-	    "dataDateFormat": "YYYY-MM-DD", 
 	    "valueAxes": [{
 	        "id": "v1",
 	        "axisAlpha": 0,
@@ -203,7 +225,7 @@
 	        "bulletSize": 5,
 	        "hideBulletsCount": 50,
 	        "lineThickness": 2,
-	        "title": "red line",
+	        "title": "총판매금액",
 	        "useLineColorForBulletBorder": true,
 	        "valueField": "totalPrice",
 	        "balloonText": "<span style='font-size:18px;'>[[value]]</span>"
@@ -240,7 +262,6 @@
 	    },
 	    "categoryField": "statDate",
 	    "categoryAxis": {
-	        "parseDates": true,
 	        "dashLength": 1,
 	        "minorGridEnabled": true
 	    },
@@ -249,14 +270,45 @@
 	    }
 	}); 
 	
-	/* chartLine.addListener("rendered", zoomChart);
+	//도넛차트 - 분기단위
+	
+	var chartPie = AmCharts.makeChart("chartPie", {
+		"type" : "pie", //타입은 파이
+		"theme" : "light", //테마는 라이트
+		"startDuration" : 1, //시작 애니메이션
+		"addClassNames" : true,
+		"legend" : {
+			"useGraphSettings": true,
+	    	"generateFromData": true,
+			"position" : "right",
+			"marginRight" : 100,
+			"autoMargins" : false
+		},
+		"innerRadius" : "40%", //동그라미 안의 비율
+		"defs" : {
+			"filter" : [ {
+				"id" : "shadow",
+				"feBlend" : {
+					"mode" : "normal"
+				} 
+			} ]
+		}, 
+		"dataProvider" : datas,
+		"valueField" : "totalPrice",
+		"titleField" : "statDate",
+		"export" : {
+			"enabled" : true
+		}
+	});
+	
+	chartLine.addListener("rendered", zoomChart);
 
 	zoomChart();
 
 	function zoomChart() {
 		console.log(chart.dataProvider.length);
 	    chartLine.zoomToIndexes(chartLine.dataProvider.length - 40, chartLine.dataProvider.length - 1);
-	}  */
+	} 
 	
 	////////////////////////////////////////chart.js////////////////////////////////////////////////////
 	//차트 옵션
@@ -357,9 +409,9 @@
 		var statFlag = $("input:hidden[name='statFlag']").val();
 		
 		if(statFlag == '1') { //일단위
-			$("#chartLine").css("display", "block");
-		} else if(statFlag == '2') { //월단위
 			$("#chartDiv").css("display", "block");
+		} else if(statFlag == '2') { //월단위
+			$("#chartLine").css("display", "block");
 		} else { //분기단위
 			$("#chartPie").css("display", "block");
 		}
@@ -379,6 +431,10 @@
 	});
 </script>
 <style type="text/css">
+	body {
+		padding-top : 70px;
+    }
+    
 	#chartDiv {
 		width: 100%;
 		height: 500px;
@@ -416,6 +472,8 @@
 </style>
 </head>
 <body>
+
+	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
 	
 	<jsp:include page="/view/statistics/clock.jsp"></jsp:include>
 	

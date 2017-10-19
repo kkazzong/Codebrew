@@ -35,13 +35,13 @@ public class PurchaseServiceImpl implements PurchaseService {
 	}
 
 	@Override
-	public Purchase approvePayment(String pgToken, String path) {
+	public Purchase approvePayment(String pgToken, String path) throws Exception {
 		Purchase purchase = purchaseDAO.approvePayment(pgToken);
 		return this.addPurchase(purchase, path);
 	}
 
 	@Override
-	public Purchase addPurchase(Purchase purchase, String path) {
+	public Purchase addPurchase(Purchase purchase, String path) throws Exception{
 		int result = purchaseDAO.addPurchase(purchase, path);
 		if(result == 1) {
 			return purchaseDAO.getPurchase(purchase.getPurchaseNo());
@@ -52,6 +52,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 	
 	@Override
 	public Map<String, Object> getPurchaseList(String userId, String purchaseFlag, Search search) {
+		System.out.println(search);
 		List<Purchase> list = purchaseDAO.getPurchaseList(userId, purchaseFlag, search);
 		int totalCount = purchaseDAO.getTotalCount(userId, search);
 		Map<String, Object> map = new HashMap<String, Object>();

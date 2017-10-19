@@ -12,7 +12,6 @@ public class Ticket {
 
 	// Constructor
 	public Ticket() {
-		System.out.println("Ticket Default Constructor");
 	}
 
 	// getter, setter

@@ -4,16 +4,20 @@
 <%-- <%@ include file="/data/purchaseData.jsp" %> --%>
 <%-- <%@ include file="/data/purchase/sessionData.jsp" %> --%>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<title>getPurchase</title>
+<!-- <title>getPurchase</title> -->
 <!-- facebook metadata -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="keywords" content="web,blog,google,search,analytics">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta property="fb:app_id" content="365648920529865" />
-<meta property="og:type" content="website"/>
-<meta property="og:title" content="티켓공유"/>
-<meta property="og:url" content="http://127.0.0.1:8080/purchase/getPurchase" />
-<meta property="og:description" content="이것은 공유다 이것은 공유다" />
-<meta property="og:image" content="http://www.kccosd.org/files/testing_image.jpg" />
+<meta property="og:url"                content="http://127.0.0.1:8080/index.jsp" />
+<meta property="og:type"               content="website" />
+<meta property="og:title"              content="When Great Minds Don’t Think Alike" />
+<meta property="og:description"        content="How much does culture influence creative thinking?" />
+<meta property="og:image"              content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg" />
 
 <!-- Bootstrap, jQuery CDN -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -43,8 +47,21 @@
 	
 	//2.facebook 공유 sdk
 	window.fbAsyncInit = function() {
-	    FB.init({appId: '365648920529865', status: true, cookie: true, xfbml: true});
+	    FB.init({
+	    	appId: '365648920529865',
+	    	status: true,
+	    	version: 'v2.10',
+	    	cookie: true,
+	    	xfbml: true});
 	  };
+	  
+	  (function(d, s, id){
+		     var js, fjs = d.getElementsByTagName(s)[0];
+		     if (d.getElementById(id)) {return;}
+		     js = d.createElement(s); js.id = id;
+		     js.src = "//connect.facebook.net/en_US/sdk.js";
+		     fjs.parentNode.insertBefore(js, fjs);
+	 }(document, 'script', 'facebook-jssdk'));
 	 
 	 /*  (function() {
 	    var e = document.createElement('script'); e.async = true;
@@ -62,13 +79,18 @@
 		    	image : "http://www.kccosd.org/files/testing_image.jpg"
 		    };
 		 
-		    FB.ui(share, function(response) { 
+		   /*  FB.ui(share, function(response) { 
 		    	if (response && !response.error_message) {
 		    	      alert("게시완료");
 		    	    } else {
 		    	      alert("띠로리 썸띵롱");
 		    	    }	
-		    }); 
+		    });  */
+		    FB.ui(
+		    		 {
+		    		  method: 'share',
+		    		  href: 'http://127.0.0.1/view/purchase/getPurchase.jsp'
+		    		}, function(response){});
 		}
 	
 	// '가정'app 키 ip변경시 동적변경해줘야함
@@ -78,7 +100,14 @@
 	var itemName = "${purchase.itemName}";
 	var imageUrl = "${ticket.festival.festivalImage}";
 	var ip = "http://192.168.0.7:8080";
-	var festivalNo = ${ticket.festival.festivalNo};
+	var referNo;
+	
+	/* if(${ticket.festival} != "") {
+		referNo = ${ticket.festival.festivalNo};
+	} else if(${ticket.party} != "") {
+		referNo = ${ticket.party.partyNo};
+	} */
+	
 	if(!imageUrl.includes('http://')) {
 		imageUrl = ip+"/resources/uploadFile/${ticket.festival.festivalImage}";
 	}
@@ -195,6 +224,14 @@
 			<img src="../../resources/image/buttonImage/facebook.png">
 		</a>
 		
+		<!-- facebook -->
+		<div
+		  	class="fb-like"
+		  data-share="true"
+		  data-width="450"
+		  data-show-faces="true">
+		</div>
+		
 		<div class="row">
 			<div class="col-md-offset-3 col-md-6">
 				<div class="panel panel-primary">
@@ -226,7 +263,7 @@
 							</c:if>
 							<!-- 파티티켓 -->
 							<c:if test="${!empty ticket.party}">
-							<img width="100%" height="100" src="${ticket.party.partyImage}">
+							<img width="100%" height="300" src="/resources/uploadFile/${ticket.party.partyImage}">
 							<hr>
 							<div class="col-md-12">
 								<strong>

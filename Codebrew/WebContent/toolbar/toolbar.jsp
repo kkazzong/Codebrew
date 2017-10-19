@@ -109,6 +109,9 @@
 	             
 	             
 	             <ul class="nav navbar-nav navbar-right">
+	             	<c:if test="${!empty user}">
+		             	<li><a href="#">${user.nickname}님</a></li>
+	             	</c:if>
 	                <li><a href="#">로그인</a></li>
 	            </ul>
 		</div>

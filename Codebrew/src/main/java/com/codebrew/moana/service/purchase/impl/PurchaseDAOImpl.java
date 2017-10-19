@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import javax.imageio.ImageIO;
-import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.json.simple.JSONObject;
@@ -29,9 +28,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import com.codebrew.moana.common.Search;
+import com.codebrew.moana.service.domain.PartyMember;
 import com.codebrew.moana.service.domain.Purchase;
 import com.codebrew.moana.service.domain.QRCode;
 import com.codebrew.moana.service.domain.Ticket;
+import com.codebrew.moana.service.domain.User;
+import com.codebrew.moana.service.party.PartyDAO;
 import com.codebrew.moana.service.purchase.PurchaseDAO;
 import com.codebrew.moana.service.ticket.TicketDAO;
 import com.google.zxing.BarcodeFormat;
@@ -52,6 +54,10 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 	@Qualifier("ticketDAOImpl")
 	private TicketDAO ticketDAO;
 	
+	@Autowired
+	@Qualifier("partyDAOImpl")
+	private PartyDAO partyDAO;
+	
 	@Value("#{imageRepositoryProperties['qrCode']}")
 	private String qrCodePath;
 	
@@ -67,7 +73,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 
 	// Method
 	@Override
-	public int addPurchase(Purchase purchase, String path) {
+	public int addPurchase(Purchase purchase, String path) throws Exception {
 		String flag = purchase.getTicket().getTicketFlag();
 		System.out.println("@@@@@@@@@@"+flag);
 		
@@ -86,6 +92,15 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			ticketDAO.updateTicketCount(purchase.getTicket());
 		}
 		purchase.setQrCode(this.createQRCode(path));
+		PartyMember partyMember = new PartyMember();
+		User user = purchase.getUser();
+		partyMember.setAge(user.getAge());
+		partyMember.setGender(user.getGender());
+		partyMember.setRole(user.getRole());
+		partyMember.setUser(user);
+		partyMember.setParty(purchase.getTicket().getParty());
+		partyDAO.joinParty(partyMember);
+		
 		return sqlSession.insert("PurchaseMapper.addPurchase", purchase);
 	}
 
@@ -96,6 +111,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 
 	@Override
 	public List<Purchase> getPurchaseList(String userId, String purchaseFlag, Search search) {
+		System.out.println(search);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("userId", userId);
 		map.put("search", search);
@@ -398,6 +414,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 	
 	@Override
 	public int getTotalCount(String userId, Search search) {
+		System.out.println(search);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("search", search);
 		map.put("userId", userId);

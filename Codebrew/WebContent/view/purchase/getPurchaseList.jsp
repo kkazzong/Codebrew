@@ -37,12 +37,12 @@
 		
 		$("#festivalBtn").on("click", function(){
 			console.log("축제버튼 클릭 : val = "+$(this).val());
-			self.location = "/purchase/getPurchaseList?userId="+userId+"&purchaseFlag="+$(this).val();
+			self.location = "/purchase/getPurchaseList?userId="+userId+"&purchaseFlag="+$(this).val()+"&searchCondition=1";
 		});
 		
 		$("#partyBtn").on("click", function(){
 			console.log("파티버튼 클릭 : val = "+$(this).val());
-			self.location = "/purchase/getPurchaseList?userId="+userId+"&purchaseFlag="+$(this).val();
+			self.location = "/purchase/getPurchaseList?userId="+userId+"&purchaseFlag="+$(this).val()+"&searchCondition=2";
 		});
 		
 		$("button:contains('조회')").on("click", function(){
@@ -96,6 +96,7 @@
 			<form>
 				<input type="hidden" name="userId" value="${user.userId}">
 				<input type="hidden" id="currentPage" name="currentPage" value=""/>
+				<input type="hidden" id="searchCondition" name="searchCondition" value="${search.searchCondition}"/>
 				<div class="col-md-6">
 					<button class="btn btn-default btn-block" id="festivalBtn" type="button" value="1">축제티켓</button>
 				</div>
@@ -146,7 +147,7 @@
 								</c:if>
 								<!-- 파티티켓 -->
 								<c:if test="${!empty purchase.ticket.party}">
-									<img width="100%" height="100" src="${purchase.ticket.party.partyImage}">
+									<img width="100%" height="300" src="/resources/uploadFile/${purchase.ticket.party.partyImage}">
 									<hr>
 									<div class="col-md-12">
 										<strong>

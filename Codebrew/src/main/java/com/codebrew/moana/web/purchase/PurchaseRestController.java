@@ -1,5 +1,7 @@
 package com.codebrew.moana.web.purchase;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -7,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.codebrew.moana.service.domain.Festival;
-import com.codebrew.moana.service.domain.Party;
 import com.codebrew.moana.service.domain.Purchase;
 import com.codebrew.moana.service.domain.Ticket;
 import com.codebrew.moana.service.domain.User;
@@ -42,7 +42,8 @@ public class PurchaseRestController {
 	}
 	
 	@RequestMapping("/json/readyPayment/{ticketNo}")
-	public Purchase readyPayment(@RequestBody Purchase purchase,
+	public Purchase readyPayment(HttpSession session,
+														@RequestBody Purchase purchase,
 														@PathVariable("ticketNo") int ticketNo) {
 		
 		System.out.println(ticketNo);
@@ -50,6 +51,7 @@ public class PurchaseRestController {
 		
 		Ticket ticket = ticketService.getTicketByTicketNo(ticketNo);
 		purchase.setTicket(ticket);
+		purchase.setUser((User)session.getAttribute("user"));
 
 		switch(purchase.getPurchaseFlag()) {
 			case "1" : //축제티켓

@@ -108,7 +108,7 @@ public class PurchaseController {
 	}
 
 	@RequestMapping(value = "addPurchase", method = RequestMethod.POST)
-	public ModelAndView addPurchase(HttpSession session, @ModelAttribute("purchase") Purchase purchase) {
+	public ModelAndView addPurchase(HttpSession session, @ModelAttribute("purchase") Purchase purchase) throws Exception {
 
 		Ticket ticket = ticketService.getTicketByTicketNo(purchase.getTicket().getTicketNo());
 
@@ -129,7 +129,7 @@ public class PurchaseController {
 	}
 
 	@RequestMapping(value = "approvePayment")
-	public ModelAndView approvePurchase(HttpSession session, @RequestParam("pg_token") String pgToken) {
+	public ModelAndView approvePurchase(HttpSession session, @RequestParam("pg_token") String pgToken) throws Exception {
 
 		System.out.println(pgToken);
 		String path = session.getServletContext().getRealPath("/");
@@ -146,8 +146,9 @@ public class PurchaseController {
 	}
 
 	@RequestMapping(value = "getPurchaseList")
-	public ModelAndView getPurchaseList(HttpSession session, @ModelAttribute("search") Search search,
-			@RequestParam(value = "purchaseFlag", required = false) String purchaseFlag) {
+	public ModelAndView getPurchaseList(HttpSession session,
+																	@ModelAttribute("search") Search search,
+																	@RequestParam(value = "purchaseFlag", required = false) String purchaseFlag) {
 
 		// System.out.println(session.getAttribute("user"));
 		User user = (User) session.getAttribute("user");
@@ -163,12 +164,12 @@ public class PurchaseController {
 			search.setCurrentPage(1);
 		}
 		search.setPageSize(pageSize);
-
+		
+		System.out.println(search);
 		Map<String, Object> map = purchaseService.getPurchaseList(user.getUserId(), purchaseFlag, search);
 
-		Page resultPage = new Page(search.getCurrentPage(), ((Integer) (map.get("totalCount"))).intValue(), pageUnit,
-				pageSize);
-
+		Page resultPage = new Page(search.getCurrentPage(), ((Integer) (map.get("totalCount"))).intValue(), pageUnit, pageSize);
+		System.out.println(resultPage);
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("list", map.get("list"));
 		modelAndView.addObject("resultPage", resultPage);

@@ -183,8 +183,8 @@ public class Purchase {
 		this.nextRedirectMobileUrl = nextRedirectMobileUrl;
 	}
 
-	@Override
-	public String toString() {
+	//@Override
+	/*public String toString() {
 		return "@Purchase [purchaseNo=" + purchaseNo + ", paymentNo=" + paymentNo + ", user.userId=" + user + ", ticket="
 				+ ticket + ", itemName=" + itemName + ", purchasePrice=" + purchasePrice + ", purchaseCount="
 				+ purchaseCount + ", purchaseDate=" + purchaseDate + ", paymentMethodType=" + paymentMethodType
@@ -192,6 +192,6 @@ public class Purchase {
 				+ ", nextRedirectPcUrl=" + nextRedirectPcUrl + ", nextRedirectMobileUrl=" + nextRedirectMobileUrl
 				+ ", aid=" + aid + ", cid=" + cid + ", partnetOrderId=" + partnetOrderId + ", partnerUserId="
 				+ partnerUserId + "]@";
-	}
+	}*/
 
 }

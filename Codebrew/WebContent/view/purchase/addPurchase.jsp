@@ -235,7 +235,7 @@
 							<img class="col-md-5" height="90" src="${festival.festivalImage}">
 						</c:if>
 						<c:if test="${!festival.festivalImage.contains('http://')}">
-							<img class="col-md-5" height="90" src="../resources/uploadFile/${festival.festivalImage}">
+							<img class="col-md-5" height="90" src="/resources/uploadFile/${festival.festivalImage}">
 						</c:if>
 						<div class="row">
 							<div class="col-md-6">
@@ -253,7 +253,7 @@
 					<!-- 파티정보 -->
 					<c:if test="${!empty party}">
 						<input type="hidden" name="party.partyName" value="${party.partyName}">
-						<img class="col-md-6" height="90" src="../../resources/image/uploadFile/${party.partyImage}">
+						<img class="col-md-6" height="90" src="/resources/uploadFile/${party.partyImage}">
 						<div class="row">
 							<div class="col-md-6">
 								<strong>${party.partyName}</strong>

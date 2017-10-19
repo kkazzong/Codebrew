@@ -10,7 +10,7 @@ import com.codebrew.moana.service.domain.QRCode;
 
 public interface PurchaseDAO {
 	
-	public int addPurchase(Purchase purchase, String path); 
+	public int addPurchase(Purchase purchase, String path) throws Exception; 
 	public Purchase getPurchase(int purchaseNo);
 	public List<Purchase> getPurchaseList(String userId, String purchaseFlag, Search search);
 	public List<Purchase> getSaleList(Search search);
