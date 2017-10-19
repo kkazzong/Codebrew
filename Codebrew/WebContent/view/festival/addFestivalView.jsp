@@ -44,7 +44,7 @@
 	
 	<script type="text/javascript">
 		
-		var map = null;
+	 	var map = null;
 		var mapx = ${festival.festivalLongitude}; // 경도
 		var mapy = ${festival.festivalLatitude};	//위도'
 		
@@ -84,15 +84,8 @@ $(function() {
 		    // 지도 중심을 부드럽게 이동시킵니다
 		    // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
 		    map.panTo(moveLatLon);            
-		}        
+		}         
 		
-		$(function(){
-			$("#addFestival").on("click", function(){
-				console.log("야야야야" + $(this).html());
-				$('form').attr("method","POST").attr("action", "/festival/addFestivalView").submit();
-				
-			});
-		});
 		
 		$(function(){
 			$("#back").on("click", function(){
@@ -119,10 +112,12 @@ $(function() {
 			<button onclick="panTo()">지도 중심좌표 부드럽게 이동시키기</button>
 		</p> 
 
-	<form name="detailForm" class="form-horizontal">
+	
 
 <br/>
 <br/>
+
+<form name="detailForm" class="form-horizontal">
 	
 	<div class = "form-group">
 	

@@ -1,9 +1,11 @@
 package com.codebrew.moana.service.party;
 
 import java.util.List;
+import java.util.Map;
 
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Party;
+import com.codebrew.moana.service.domain.PartyMember;
 
 public interface PartyDAO {
 
@@ -21,5 +23,25 @@ public interface PartyDAO {
 
 	// SELECT LIST
 	public List<Party> getPartyList(Search search) throws Exception;
+	
+	// SELECT LIST
+		public List<Party> getMyPartyList(Search search) throws Exception;
+	
+	// SELECT ONE
+	public int getTotalCount(Search search) throws Exception ;
+	
+	/////////////////////////////////////////////////////////////////////////
+	
+	// INSERT
+	public void joinParty(PartyMember partyMember) throws Exception ;
+	
+	// SELECT LIST
+	public List<PartyMember> getPartyMemberList(int partyNo, Search search) throws Exception;
+
+	// SELECT ONE
+	public int getCurrentMemberCount(int partyNo, Search search) throws Exception ;
+	
+	// DELETE
+	public void cancelParty(int partyNo, String userId) throws Exception ;
 }
 

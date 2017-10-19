@@ -8,7 +8,6 @@ public class QRCode {
 
 	// Constructor
 	public QRCode() {
-		System.out.println("QRCode default Constructor");
 	}
 
 	//getter, setter

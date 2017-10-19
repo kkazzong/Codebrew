@@ -110,6 +110,7 @@ public class TicketServiceImpl implements TicketService {
 	@Override
 	public Ticket updateTicketCount(Ticket ticket) {
 		
+		
 		int result = ticketDAO.updateTicketCount(ticket);
 		if(result == 1) {
 			return ticketDAO.getTicket(ticket);

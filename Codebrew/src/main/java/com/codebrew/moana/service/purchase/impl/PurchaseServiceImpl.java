@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Purchase;
+import com.codebrew.moana.service.domain.Ticket;
 import com.codebrew.moana.service.purchase.PurchaseDAO;
 import com.codebrew.moana.service.purchase.PurchaseService;
 import com.codebrew.moana.service.ticket.TicketDAO;
@@ -21,10 +22,6 @@ public class PurchaseServiceImpl implements PurchaseService {
 	@Autowired
 	@Qualifier("purchaseDAOImpl")
 	private PurchaseDAO purchaseDAO;
-	
-	@Autowired
-	@Qualifier("ticketDAOImpl")
-	private TicketDAO ticketDAO;
 	
 	//Constructor
 	public PurchaseServiceImpl() {
@@ -38,44 +35,24 @@ public class PurchaseServiceImpl implements PurchaseService {
 	}
 
 	@Override
-	public Purchase approvePayment(String pgToken) {
-		return purchaseDAO.approvePayment(pgToken);
+	public Purchase approvePayment(String pgToken, String path) throws Exception {
+		Purchase purchase = purchaseDAO.approvePayment(pgToken);
+		return this.addPurchase(purchase, path);
 	}
 
 	@Override
-	public Purchase addPurchase(Purchase purchase) {
-		
-		String flag = purchase.getTicket().getTicketFlag();
-		System.out.println("@@@@@@@@@@"+flag);
-		
-			
-		// 기본티켓, 무료티켓일때
-		if (purchase.getTicket().getTicketFlag() == null || purchase.getTicket().getTicketFlag().equals("free")) {
-
-			System.out.println("@@@@@@@요기서 에러..?");
-			// 원래 티켓 수량
-			int originTicketCount = purchase.getTicket().getTicketCount();
-
-			// 구매할 티켓 수량
-			int purchaseTicketCount = purchase.getPurchaseCount();
-			purchase.getTicket().setTicketCount(originTicketCount - purchaseTicketCount);
-			// 원래수량 - 구매수량 으로 티켓수량 업데이트
-			ticketDAO.updateTicketCount(purchase.getTicket());
-		}
-		
-		//구매테이블 insert
-		purchase.setQrCode(purchaseDAO.createQRCode());
-		int result = purchaseDAO.addPurchase(purchase);
+	public Purchase addPurchase(Purchase purchase, String path) throws Exception{
+		int result = purchaseDAO.addPurchase(purchase, path);
 		if(result == 1) {
 			return purchaseDAO.getPurchase(purchase.getPurchaseNo());
 		} else {
 			return null;
 		}
-		
 	}
 	
 	@Override
 	public Map<String, Object> getPurchaseList(String userId, String purchaseFlag, Search search) {
+		System.out.println(search);
 		List<Purchase> list = purchaseDAO.getPurchaseList(userId, purchaseFlag, search);
 		int totalCount = purchaseDAO.getTotalCount(userId, search);
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -100,9 +77,14 @@ public class PurchaseServiceImpl implements PurchaseService {
 	}
 	
 	@Override
-	public void cancelPayment(int purchaseNo) {
+	public int cancelPayment(int purchaseNo) {
 		Purchase purchase = purchaseDAO.getPurchase(purchaseNo);
-		purchaseDAO.cancelPayment(purchase);
+		int result = purchaseDAO.cancelPayment(purchase);
+		if(result == 1) {
+			return 1;
+		} else {
+			return 0;
+		}
 	}
 
 	//getter, setter

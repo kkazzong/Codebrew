@@ -22,8 +22,8 @@ public class Party {
 	private int ticketPrice;
 	private String partyRegDate;
 	private String deleteFlag;
-	private double femalePercentage;
-	private double malePercentage;
+	private float femalePercentage;
+	private float malePercentage;
 	private int femaleAgeAverage;
 	private int maleAgeAverage;
 
@@ -34,7 +34,6 @@ public class Party {
 		// TODO Auto-generated constructor stub
 	}
 
-	
 	
 	///Method///
 	public int getPartyNo() {
@@ -122,12 +121,12 @@ public class Party {
 	}
 
 
-	public double getFemalePercentage() {
+	public float getFemalePercentage() {
 		return femalePercentage;
 	}
 
 
-	public double getMalePercentage() {
+	public float getMalePercentage() {
 		return malePercentage;
 	}
 
@@ -227,12 +226,12 @@ public class Party {
 	}
 
 
-	public void setFemalePercentage(double femalePercentage) {
+	public void setFemalePercentage(float femalePercentage) {
 		this.femalePercentage = femalePercentage;
 	}
 
 
-	public void setMalePercentage(double malePercentage) {
+	public void setMalePercentage(float malePercentage) {
 		this.malePercentage = malePercentage;
 	}
 
@@ -249,16 +248,15 @@ public class Party {
 
 	@Override
 	public String toString() {
-		return "Party [partyNo=" + partyNo + ", partyName=" + partyName + ", festival=" + festival + ", user=" + user
-				+ ", partyDate=" + partyDate + ", partyTime=" + partyTime + ", hour=" + hour + ", minutes=" + minutes
-				+ ", partyMemberLimit=" + partyMemberLimit + ", partyImage=" + partyImage + ", partyDetail="
-				+ partyDetail + ", partyPlace=" + partyPlace + ", ticketCount=" + ticketCount + ", ticketPrice="
-				+ ticketPrice + ", partyRegDate=" + partyRegDate + ", deleteFlag=" + deleteFlag + ", femalePercentage="
-				+ femalePercentage + ", malePercentage=" + malePercentage + ", femaleAgeAverage=" + femaleAgeAverage
-				+ ", maleAgeAverage=" + maleAgeAverage + "]";
+		return "Party [partyNo=" + partyNo + ", partyName=" + partyName + ",\n festival=" + festival + ",\n user=" + user
+				+ ",\n partyDate=" + partyDate + ", partyTime=" + partyTime + ", hour=" + hour + ", minutes=" + minutes
+				+ ", partyMemberLimit=" + partyMemberLimit + ", uploadFile=" + uploadFile + ", partyImage=" + partyImage
+				+ ", partyDetail=" + partyDetail + ", partyPlace=" + partyPlace + ", ticketCount=" + ticketCount
+				+ ", ticketPrice=" + ticketPrice + ", partyRegDate=" + partyRegDate + ", deleteFlag=" + deleteFlag
+				+ ", femalePercentage=" + femalePercentage + ", malePercentage=" + malePercentage
+				+ ", femaleAgeAverage=" + femaleAgeAverage + ", maleAgeAverage=" + maleAgeAverage + "]";
 	}
 
 
-	
 	
 }

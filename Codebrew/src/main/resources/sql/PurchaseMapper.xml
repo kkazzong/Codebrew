@@ -86,11 +86,19 @@
 		u.user_id AS user_id,
 		u.nickname AS nickname,
 		t.ticket_no AS ticket_no,
+		t.ticket_count AS ticket_count,
+		t.ticket_price AS ticket_price,
 		f.festival_no AS festival_no,
 		f.festival_name AS festival_name,
+		f.addr AS addr,
+		f.start_date AS start_date,
+		f.end_date AS end_date,
+		f.festival_image AS festival_image,
 		p.party_no AS party_no,
 		p.party_name AS party_name,
 		p.party_image AS party_image,
+		p.party_time As party_time,
+		p.party_place AS party_place,
 		pc.payment_no AS payment_no,
 		pc.payment_method_type AS payment_method_type,
 		pc.item_name AS item_name,
@@ -111,37 +119,50 @@
 	
 	
 	<select id="getFestivalPurchaseList" parameterType="map" resultMap="selectPurchaseMap">
-		SELECT
-		u.user_id AS user_id, u.nickname AS nickname
-		,t.ticket_no AS ticket_no
-		,f.festival_name AS festival_name
-		,f.addr AS addr, f.start_date AS start_date, f.end_date AS end_date, f.festival_image AS festival_image
-		,pc.purchase_no AS purchase_no, pc.payment_no AS payment_no, pc.purchase_count AS purchase_count
-		,pc.purchase_price AS purchase_price, pc.tran_code AS tran_code
-		,pc.item_name AS item_name
-		FROM users u, festival f, ticket t, purchase pc
-		WHERE
-		pc.user_id = u.user_id
-		AND pc.ticket_no = t.ticket_no
-		AND t.festival_no = f.festival_no
-		AND u.user_id = #{userId}
+		SELECT * 
+		FROM (SELECT inner_table.*, ROWNUM AS row_seq
+					FROM (SELECT
+								u.user_id AS user_id, u.nickname AS nickname,
+								t.ticket_no AS ticket_no,
+								t.ticket_count AS ticket_count,
+								t.ticket_price AS ticket_price,
+								f.festival_name AS festival_name,
+								f.addr AS addr, f.start_date AS start_date, f.end_date AS end_date, f.festival_image AS festival_image
+								,pc.purchase_no AS purchase_no, pc.payment_no AS payment_no, pc.purchase_count AS purchase_count
+								,pc.purchase_price AS purchase_price, pc.tran_code AS tran_code
+								,pc.item_name AS item_name
+								FROM users u, festival f, ticket t, purchase pc
+								WHERE
+								pc.user_id = u.user_id
+								AND pc.ticket_no = t.ticket_no
+								AND t.festival_no = f.festival_no
+								AND u.user_id = #{userId}
+								ORDER BY pc.purchase_date) inner_table
+					WHERE ROWNUM &lt;= #{search.endRowNum})
+		WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum}
 	</select>
 	
 	<select id="getPartyPurchaseList" parameterType="map" resultMap="selectPurchaseMap">
-		SELECT
-		u.user_id AS user_id, u.nickname AS nickname
-		,t.ticket_no AS ticket_no
-		,p.party_name AS party_name, p.party_date AS party_date, p.party_time As party_time
-		,p.party_place AS party_place, p.party_image AS party_image
-		,pc.purchase_no AS purchase_no, pc.payment_no AS payment_no, pc.purchase_count AS purchase_count
-		,pc.purchase_price AS purchase_price, pc.tran_code AS tran_code
-		,pc.item_name AS item_name
-		FROM users u, party p, ticket t, purchase pc
-		WHERE
-		pc.user_id = u.user_id
-		AND pc.ticket_no = t.ticket_no
-		AND t.party_no = p.party_no
-		AND u.user_id = #{userId}
+		SELECT * 
+		FROM (SELECT inner_table.*, ROWNUM AS row_seq
+					FROM (SELECT
+								u.user_id AS user_id, u.nickname AS nickname
+								,t.ticket_no AS ticket_no, t.ticket_count AS ticket_count,
+								t.ticket_price AS ticket_price
+								,p.party_name AS party_name, p.party_date AS party_date, p.party_time As party_time
+								,p.party_place AS party_place, p.party_image AS party_image
+								,pc.purchase_no AS purchase_no, pc.payment_no AS payment_no, pc.purchase_count AS purchase_count
+								,pc.purchase_price AS purchase_price, pc.tran_code AS tran_code
+								,pc.item_name AS item_name
+								FROM users u, party p, ticket t, purchase pc
+								WHERE
+								pc.user_id = u.user_id
+								AND pc.ticket_no = t.ticket_no
+								AND t.party_no = p.party_no
+								AND u.user_id = #{userId}
+								ORDER BY pc.purchase_date) inner_table
+					WHERE ROWNUM &lt;= #{search.endRowNum})
+		WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum}
 	</select>
 	
 	<select id="getPurchaseList" parameterType="map" resultMap="selectPurchaseMap">
@@ -217,9 +238,21 @@
 		FROM (
 		  SELECT purchase_no
 		  FROM purchase
-		  <if test="userId != null">
-		  	WHERE user_id = #{userId}
-		  </if>
+		  <where>
+			  <if test="userId != null">
+			  	 user_id = #{userId}
+			  </if>
+			  <if test="search.searchCondition != null">
+				  	<!-- 축제티켓검색 -->
+				  	<if test="search.searchCondition == 1">
+						AND purchase_flag = 1
+					</if>
+					<!-- 파티티켓 -->
+					<if test="search.searchCondition == 2">
+						AND purchase_flag = 2
+					</if>
+			  </if>
+			</where>
 		) countTable
 	</select>
 </mapper>

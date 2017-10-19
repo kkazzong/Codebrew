@@ -114,6 +114,12 @@ public class FestivalServiceImpl implements FestivalService{
 		festivalDAO.deleteZzim(zzim);
 		
 	}
+
+	@Override
+	public void updateFestival(Festival festival) throws Exception {
+		// TODO Auto-generated method stub
+			festivalDAO.updateFestival(festival);
+	}
 	
 	
 }

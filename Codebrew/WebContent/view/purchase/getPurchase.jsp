@@ -2,23 +2,96 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <%-- <%@ include file="/data/purchaseData.jsp" %> --%>
-<%@ include file="/data/purchase/sessionData.jsp" %>
+<%-- <%@ include file="/data/purchase/sessionData.jsp" %> --%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<title>getPurchase</title>
+<!-- <title>getPurchase</title> -->
+<!-- facebook metadata -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="keywords" content="web,blog,google,search,analytics">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta property="fb:app_id" content="365648920529865" />
+<meta property="og:url"                content="http://127.0.0.1:8080/index.jsp" />
+<meta property="og:type"               content="website" />
+<meta property="og:title"              content="When Great Minds Don’t Think Alike" />
+<meta property="og:description"        content="How much does culture influence creative thinking?" />
+<meta property="og:image"              content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg" />
 
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-<!-- Bootstrap Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"/>
-<!-- Bootstrap JavaScript -->
+<!-- Bootstrap, jQuery CDN -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<!-- jQuery -->
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+<!-- Bootstrap Dropdown Hover CSS -->
+<link href="/resources/css/animate.min.css" rel="stylesheet">
+<link href="/resources/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
+
+<!-- Bootstrap Dropdown Hover JS -->
+<script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
+
 <!-- KakaoLink -->
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+
+<!-- facebook share -->
+<script src="http://connect.facebook.net/ko_KR/all.js"></script>
+
 <script type="text/javascript">
+	
+	//1.facebook공유
+	function share(url) {
+		window.open("http://www.facebook.com/sharer/sharer.php?u="+url);
+	}
+	
+	//2.facebook 공유 sdk
+	window.fbAsyncInit = function() {
+	    FB.init({
+	    	appId: '365648920529865',
+	    	status: true,
+	    	version: 'v2.10',
+	    	cookie: true,
+	    	xfbml: true});
+	  };
+	  
+	  (function(d, s, id){
+		     var js, fjs = d.getElementsByTagName(s)[0];
+		     if (d.getElementById(id)) {return;}
+		     js = d.createElement(s); js.id = id;
+		     js.src = "//connect.facebook.net/en_US/sdk.js";
+		     fjs.parentNode.insertBefore(js, fjs);
+	 }(document, 'script', 'facebook-jssdk'));
+	 
+	 /*  (function() {
+	    var e = document.createElement('script'); e.async = true;
+	    e.src = document.location.protocol +
+	      '//connect.facebook.net/ko_KR/all.js';
+	    document.getElementById('fb-root').appendChild(e);
+	  }()); */
+	  
+	  function share2(){
+		    var share = {
+		        method: 'share',
+		        href: 'http://127.0.0.1:8080/purchase/getPurchase',
+		    	title : "티켓공유",
+		    	description : "이것은 티켓공유를 위한 것이다",
+		    	image : "http://www.kccosd.org/files/testing_image.jpg"
+		    };
+		 
+		   /*  FB.ui(share, function(response) { 
+		    	if (response && !response.error_message) {
+		    	      alert("게시완료");
+		    	    } else {
+		    	      alert("띠로리 썸띵롱");
+		    	    }	
+		    });  */
+		    FB.ui(
+		    		 {
+		    		  method: 'share',
+		    		  href: 'http://127.0.0.1/view/purchase/getPurchase.jsp'
+		    		}, function(response){});
+		}
 	
 	// '가정'app 키 ip변경시 동적변경해줘야함
 	Kakao.init('4c581b38ff4c308971bc220233e61b89');
@@ -27,7 +100,14 @@
 	var itemName = "${purchase.itemName}";
 	var imageUrl = "${ticket.festival.festivalImage}";
 	var ip = "http://192.168.0.7:8080";
-	var festivalNo = ${ticket.festival.festivalNo};
+	var referNo;
+	
+	/* if(${ticket.festival} != "") {
+		referNo = ${ticket.festival.festivalNo};
+	} else if(${ticket.party} != "") {
+		referNo = ${ticket.party.partyNo};
+	} */
+	
 	if(!imageUrl.includes('http://')) {
 		imageUrl = ip+"/resources/uploadFile/${ticket.festival.festivalImage}";
 	}
@@ -72,15 +152,17 @@
 			data : "json",
 			success : function(data) {
 				console.log(data);
+				self.location = "/purchase/deletePurchase";
 			}
 		});
+		
 		
 	}
 	
 	$(function(){
 		
 		$("button:contains('확인')").on("click", function(){
-			history.go(-1);
+			self.location = "/purchase/getPurchaseList";
 		});
 		
 		$("button:contains('결제취소하기')").on("click", function(){
@@ -97,6 +179,11 @@
 			}
 		});
 		
+		$("#facebookShare").on("click", function(){
+			//share("http://127.0.0.1:8080/purchase/getPurchase");
+			share2();
+		});
+		
 	});
 
 </script>
@@ -111,6 +198,8 @@
 </style>
 </head>
 <body>
+	
+	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
 	
 	<input type="hidden" name="itemName" value="${purchase.itemName}">
 	
@@ -130,6 +219,19 @@
 			<img src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"/>
 		</a>
 		
+		<!-- facebook share -->
+		<a id="facebookShare">
+			<img src="../../resources/image/buttonImage/facebook.png">
+		</a>
+		
+		<!-- facebook -->
+		<div
+		  	class="fb-like"
+		  data-share="true"
+		  data-width="450"
+		  data-show-faces="true">
+		</div>
+		
 		<div class="row">
 			<div class="col-md-offset-3 col-md-6">
 				<div class="panel panel-primary">
@@ -139,7 +241,7 @@
 					<div class="panel-body">
 						<!-- 축제티켓 -->
 						<c:if test="${!empty ticket.festival}">
-						<img width="100%" height="100" src="${ticket.festival.festivalImage}">
+						<img width="100%" height="300" src="${ticket.festival.festivalImage}">
 						<hr>
 						<div class="col-md-12">
 							<strong>
@@ -161,7 +263,7 @@
 							</c:if>
 							<!-- 파티티켓 -->
 							<c:if test="${!empty ticket.party}">
-							<img width="100%" height="100" src="${ticket.party.partyImage}">
+							<img width="100%" height="300" src="/resources/uploadFile/${ticket.party.partyImage}">
 							<hr>
 							<div class="col-md-12">
 								<strong>

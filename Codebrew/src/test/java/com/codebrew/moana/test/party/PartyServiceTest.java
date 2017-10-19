@@ -15,6 +15,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Festival;
 import com.codebrew.moana.service.domain.Party;
+import com.codebrew.moana.service.domain.PartyMember;
+import com.codebrew.moana.service.domain.User;
 import com.codebrew.moana.service.party.PartyService;
 
 
@@ -136,23 +138,25 @@ public class PartyServiceTest {
 	}
 	
 	
-	@Test
+	//@Test
 	public void testGetPartyListAll() throws Exception{
 		 
-	 	/*Search search = new Search();
+	 	Search search = new Search();
 	 	search.setCurrentPage(1);
 	 	search.setPageSize(3);
 	 	
 	 	Map<String,Object> map = partyService.getPartyList(search);
 	 	
 	 	List<Object> list = (List<Object>)map.get("list");
-	 	Assert.assertEquals(3, list.size());
+	 	Assert.assertEquals(2, list.size());
 	 	
 		//==> console 확인
-	 	System.out.println(list);
+	 	System.out.println("testGetPartyListAll() list :: "+list);
 	 	
 	 	Integer totalCount = (Integer)map.get("totalCount");
-	 	System.out.println(totalCount);
+	 	
+	 	//==> console 확인
+	 	System.out.println("testGetPartyListAll() totalCount :: "+totalCount);
 	 	
 	 	System.out.println("=======================================");
 	 	
@@ -163,12 +167,278 @@ public class PartyServiceTest {
 	 	map = partyService.getPartyList(search);
 	 	
 	 	list = (List<Object>)map.get("list");
-	 	Assert.assertEquals(3, list.size());
+	 	Assert.assertEquals(2, list.size());
 	 	
 	 	//==> console 확인
-	 	System.out.println(list);*/
+	 	System.out.println("testGetPartyListAll() list :: "+list);
 	 	
-	 	/*totalCount = (Integer)map.get("totalCount");
-	 	System.out.println(totalCount);*/
+	 	totalCount = (Integer)map.get("totalCount");
+
+	 	//==> console 확인
+	 	System.out.println("testGetPartyListAll() totalCount :: "+totalCount);
 	 }
+	
+	
+	//@Test
+	public void testGetPartyListByPartyCondition() throws Exception{
+		 
+	 	Search search = new Search();
+	 	search.setCurrentPage(1);
+	 	search.setPageSize(3);
+	 	search.setSearchCondition("1");
+	 	search.setSearchKeyword("할로윈");
+	 	
+	 	
+	 	Map<String,Object> map = partyService.getPartyList(search);
+	 	
+	 	List<Object> list = (List<Object>)map.get("list");
+	 	Assert.assertEquals(0, list.size());
+	 	
+		//==> console 확인
+	 	System.out.println("testGetPartyListAll() list :: "+list);
+	 	
+	 	Integer totalCount = (Integer)map.get("totalCount");
+	 	
+	 	//==> console 확인
+	 	System.out.println("testGetPartyListAll() totalCount :: "+totalCount);
+	 	
+	 	System.out.println("=======================================");
+	 	
+	 	search.setCurrentPage(1);
+	 	search.setPageSize(3);
+	 	search.setSearchCondition("1");
+	 	search.setSearchKeyword(""+System.currentTimeMillis());
+	 	map = partyService.getPartyList(search);
+	 	
+	 	list = (List<Object>)map.get("list");
+	 	Assert.assertEquals(0, list.size());
+	 	
+	 	//==> console 확인
+	 	System.out.println("testGetPartyListAll() list :: "+list);
+	 	
+	 	totalCount = (Integer)map.get("totalCount");
+
+	 	//==> console 확인
+	 	System.out.println("testGetPartyListAll() totalCount :: "+totalCount);
+	 }
+	
+	
+	//@Test
+	public void testGetPartyListByAfterPartyCondition() throws Exception{
+		 
+	 	Search search = new Search();
+	 	search.setCurrentPage(1);
+	 	search.setPageSize(3);
+	 	search.setSearchCondition("2");
+	 	search.setSearchKeyword("할로윈");
+	 	
+	 	
+	 	Map<String,Object> map = partyService.getPartyList(search);
+	 	
+	 	List<Object> list = (List<Object>)map.get("list");
+	 	Assert.assertEquals(2, list.size());
+	 	
+		//==> console 확인
+	 	System.out.println("testGetPartyListAll() list :: "+list);
+	 	
+	 	Integer totalCount = (Integer)map.get("totalCount");
+	 	
+	 	//==> console 확인
+	 	System.out.println("testGetPartyListAll() totalCount :: "+totalCount);
+	 	
+	 	System.out.println("=======================================");
+	 	
+	 	search.setCurrentPage(1);
+	 	search.setPageSize(3);
+	 	search.setSearchCondition("2");
+	 	search.setSearchKeyword(""+System.currentTimeMillis());
+	 	map = partyService.getPartyList(search);
+	 	
+	 	list = (List<Object>)map.get("list");
+	 	Assert.assertEquals(0, list.size());
+	 	
+	 	//==> console 확인
+	 	System.out.println("testGetPartyListAll() list :: "+list);
+	 	
+	 	totalCount = (Integer)map.get("totalCount");
+
+	 	//==> console 확인
+	 	System.out.println("testGetPartyListAll() totalCount :: "+totalCount);
+	 }
+	
+	
+	//@Test
+	public void testGetPartyListByPastCondition() throws Exception{
+		 
+	 	Search search = new Search();
+	 	search.setCurrentPage(1);
+	 	search.setPageSize(3);
+	 	search.setSearchCondition("3");
+	 	search.setSearchKeyword("할로윈");
+	 	
+	 	
+	 	Map<String,Object> map = partyService.getPartyList(search);
+	 	
+	 	List<Object> list = (List<Object>)map.get("list");
+	 	Assert.assertEquals(2, list.size());
+	 	
+		//==> console 확인
+	 	System.out.println("testGetPartyListAll() list :: "+list);
+	 	
+	 	Integer totalCount = (Integer)map.get("totalCount");
+	 	
+	 	//==> console 확인
+	 	System.out.println("testGetPartyListAll() totalCount :: "+totalCount);
+	 	
+	 	System.out.println("=======================================");
+	 	
+	 	search.setCurrentPage(1);
+	 	search.setPageSize(3);
+	 	search.setSearchCondition("3");
+	 	search.setSearchKeyword(""+System.currentTimeMillis());
+	 	map = partyService.getPartyList(search);
+	 	
+	 	list = (List<Object>)map.get("list");
+	 	Assert.assertEquals(2, list.size());
+	 	
+	 	//==> console 확인
+	 	System.out.println("testGetPartyListAll() list :: "+list);
+	 	
+	 	totalCount = (Integer)map.get("totalCount");
+
+	 	//==> console 확인
+	 	System.out.println("testGetPartyListAll() totalCount :: "+totalCount);
+	 }
+	
+	
+	//@Test
+	public void testGetPartyListByCurrentCondition() throws Exception{
+		 
+	 	Search search = new Search();
+	 	search.setCurrentPage(1);
+	 	search.setPageSize(3);
+	 	search.setSearchCondition("4");
+	 	search.setSearchKeyword("할로윈");
+	 	
+	 	
+	 	Map<String,Object> map = partyService.getPartyList(search);
+	 	
+	 	List<Object> list = (List<Object>)map.get("list");
+	 	Assert.assertEquals(0, list.size());
+	 	
+		//==> console 확인
+	 	System.out.println("testGetPartyListAll() list :: "+list);
+	 	
+	 	Integer totalCount = (Integer)map.get("totalCount");
+	 	
+	 	//==> console 확인
+	 	System.out.println("testGetPartyListAll() totalCount :: "+totalCount);
+	 	
+	 	System.out.println("=======================================");
+	 	
+	 	search.setCurrentPage(1);
+	 	search.setPageSize(3);
+	 	search.setSearchCondition("4");
+	 	search.setSearchKeyword(""+System.currentTimeMillis());
+	 	map = partyService.getPartyList(search);
+	 	
+	 	list = (List<Object>)map.get("list");
+	 	Assert.assertEquals(0, list.size());
+	 	
+	 	//==> console 확인
+	 	System.out.println("testGetPartyListAll() list :: "+list);
+	 	
+	 	totalCount = (Integer)map.get("totalCount");
+
+	 	//==> console 확인
+	 	System.out.println("testGetPartyListAll() totalCount :: "+totalCount);
+	 }
+	
+	
+	//@Test
+	public void testJoinParty() throws Exception {
+		
+		PartyMember partyMember = new PartyMember();
+		Party party = new Party();
+		User user = new User();
+		Search search = new Search();
+		
+		search.setCurrentPage(1);
+	 	search.setPageSize(3);
+		
+		party.setPartyNo(10000);
+		
+		user.setUserId("user03@naver.com");
+		
+		partyMember.setParty(party);
+		partyMember.setUser(user);
+		partyMember.setRole("guest");
+		partyMember.setAge(27);
+		partyMember.setGender("m");
+		
+		partyService.joinParty(partyMember);
+		Map<String, Object> map = partyService.getPartyMemberList(10000, search);
+		
+		List<Object> list = (List<Object>)map.get("list");
+		Assert.assertEquals(3, list.size());
+		
+		//==> console 확인
+	 	System.out.println("testGetJoinParty() list :: "+list);
+	 	
+	}
+	
+	
+	//@Test
+	public void testGetMemberList() throws Exception {
+		
+		Search search = new Search();
+	 	search.setCurrentPage(1);
+	 	search.setPageSize(3);
+	 	search.setSearchKeyword("쎄리");
+	 	
+		
+		Map<String,Object> map = partyService.getPartyMemberList(10000, search);
+	
+		List<Object> list = (List<Object>)map.get("list");
+	 	Assert.assertEquals(1, list.size());
+	 	
+		//==> console 확인
+	 	System.out.println("testGetPartyMemberList() list :: "+list);
+	 	
+	 	Integer totalCount = (Integer)map.get("totalCount");
+	 	
+	 	//==> console 확인
+	 	System.out.println("testGetPartyMemberList() totalCount :: "+totalCount);
+	}
+	
+	
+	//@Test
+	public void testCancelParty() throws Exception {
+		
+		int partyNo = 10000;
+		String userId = "user02@naver.com";
+		
+		Search search = new Search();
+	 	search.setCurrentPage(1);
+	 	search.setPageSize(3);
+	 	
+		partyService.cancelParty(partyNo, userId);
+		Map<String,Object> map = partyService.getPartyMemberList(partyNo, search);
+		
+		List<Object> list = (List<Object>)map.get("list");
+	 	Assert.assertEquals(1, list.size());
+		
+	}
+	
+	
+	@Test
+	public void testGetGenderRatio() throws Exception {
+		
+		int partyNo = 10000;
+		
+		Party party = partyService.getGenderRatio(partyNo);
+		
+		//==> console 확인
+	 	System.out.println("testGetGenderRatio() party :: "+party);
+	}
 }

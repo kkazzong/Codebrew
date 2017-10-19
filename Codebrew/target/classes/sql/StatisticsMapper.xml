@@ -5,4 +5,61 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 		
 <mapper namespace="StatisticsMapper">
+
+	<resultMap type="statistics" id="selectStatisticsMap">
+		<result property="statDate" column="stat_date" jdbcType="VARCHAR"/>
+		<result property="totalPrice" column="total_price" jdbcType="NUMERIC"/>
+		<result property="totalCount" column="total_count" jdbcType="NUMERIC"/>
+		<result property="statDate"/>
+		<association property="purchase" javaType="purchase">
+			<id property="purchaseNo" column="purchase_no" jdbcType="NUMERIC"/>
+			<result property="purchaseMethodType" column="purchase_method_type" jdbcType="VARCHAR"/>
+			<result property="itemName" column="item_name" jdbcType="VARCHAR"/>
+			<result property="purchaseDate" column="purchase_date" jdbcType="DATE"/>
+			<result property="purchasePrice" column="purchase_price" jdbcType="NUMERIC"/>
+			<result property="purchaseCount" column="purchase_count" jdbcType="VARCHAR"/>
+			<result property="tranCode" column="tran_code" jdbcType="VARCHAR"/>
+		</association>
+	</resultMap>
+	
+	<select id="getDailyTotalSaleAmountStat" resultMap="selectStatisticsMap">
+		SELECT
+		to_char(purchase_date,'yyyy-mm-dd') AS stat_date,
+		SUM(purchase_price) AS total_price,
+		SUM(purchase_count) AS total_count
+		FROM purchase
+		WHERE tran_code = '1'
+		AND purchase_price >= 0
+		<!-- AND purchase_date >= TO_DATE(SYSDATE - 7) -->
+		GROUP BY to_char(purchase_date,'yyyy-mm-dd')
+		ORDER BY 1
+	</select>
+	
+	<select id="getMonthlyTotalSaleAmountStat" resultMap="selectStatisticsMap">
+		SELECT
+		vt.purchase_date AS stat_date,
+		vt.purchase_price AS total_price,
+		vt.purchase_count AS total_count
+		FROM (
+					SELECT
+					to_char(purchase_date, 'yy-mm') AS purchase_date,
+					SUM(purchase_price) AS purchase_price,
+					SUM(purchase_count) AS purchase_count
+					FROM purchase
+          			WHERE to_char(purchase_date, 'yyyy') = to_char(SYSDATE, 'yyyy')  
+					GROUP BY to_char(purchase_date, 'yy-mm')
+					ORDER BY purchase_date
+					) vt
+	</select>
+	
+	<select id="getQuarterTotalSaleAmountStat" resultMap="selectStatisticsMap">
+		SELECT
+		TO_CHAR(purchase_date, 'q') AS stat_date,
+		SUM(purchase_price) AS total_price,
+		SUM(purchase_count) AS total_count
+		FROM purchase
+    	WHERE to_char(purchase_date, 'yyyy') = to_char(SYSDATE, 'yyyy')
+		GROUP BY TO_CHAR(purchase_date, 'q')
+		ORDER BY stat_date
+	</select>
 </mapper>

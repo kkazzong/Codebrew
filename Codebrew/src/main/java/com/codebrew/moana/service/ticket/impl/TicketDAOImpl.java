@@ -36,6 +36,10 @@ public class TicketDAOImpl implements TicketDAO {
 
 	@Override
 	public int updateTicket(Ticket ticket) {
+		if(ticket.getFestival() == null || ticket.getParty() == null) {
+			System.out.println("@@파티나 축제가 null임돠@@");
+			return 0;
+		}
 		return sqlSession.update("TicketMapper.updateTicket", ticket);
 	}
 

@@ -279,6 +279,7 @@ public class FestivalController {
 
 		modelAndView.addObject("festival", festival);
 		modelAndView.addObject("returnZzim",returnZzim);
+		modelAndView.addObject("ticket", ticket);
 
 		modelAndView.setViewName("forward:/view/festival/getFestival.jsp");
 
@@ -296,6 +297,89 @@ public class FestivalController {
 		}
 
 	}
+	
+	@RequestMapping(value = "updateFestivalView", method = RequestMethod.GET)
+	public ModelAndView updateFestivalView(@RequestParam("festivalNo") int festivalNo) throws Exception {
+		
+		System.out.println("/addView");
+
+		Festival festival = new Festival();
+
+		festival.setFestivalNo(festivalNo);
+
+		festival = festivalService.getFestival(festivalNo);
+
+		ModelAndView modelAndView = new ModelAndView();
+
+		modelAndView.addObject(festival);
+
+		modelAndView.setViewName("forward:/view/festival/updateFestivalView.jsp");
+
+		return modelAndView;
+		
+	}
+	
+	@RequestMapping(value = "updateFestival", method = RequestMethod.POST)
+	public ModelAndView updateFestival(@ModelAttribute("festival") Festival festival, 
+			@RequestParam("file") MultipartFile file) throws Exception{ 
+		
+		System.out.println("/update");
+		
+		
+
+		ModelAndView modelAndView = new ModelAndView();
+		
+		try{
+
+			if (file.getSize() > 0) {
+
+				System.out.println("size=0 으로 들어옴!! " + festival.getFestivalNo());
+
+				File UploadedFile = new File(fileRoot, file.getOriginalFilename());
+
+				festival.setFestivalImage(file.getOriginalFilename());
+
+				file.transferTo(UploadedFile);
+
+				festivalService.updateFestival(festival);
+				
+				System.out.println("festivalCh..........." + festival);
+
+				modelAndView.setViewName("forward:/view/festival/updateFestival.jsp");
+				modelAndView.addObject(festival);
+
+			} else {
+
+				System.out.println("else로 들어옴!! " + festival.getFestivalNo());
+
+				festivalService.updateFestival(festival);
+				System.out.println("festivalCh..........." + festival);
+				modelAndView.setViewName("forward:/view/festival/updateFestival.jsp");
+				modelAndView.addObject(festival);
+
+			}
+
+			Ticket ticket = new Ticket();
+			ticket.setFestival(festival);
+			ticket.setTicketPrice(festival.getTicketPrice());
+			ticket.setTicketCount(festival.getTicketCount());
+
+			ticketService.updateTicket(ticket);
+			
+			return modelAndView;
+
+
+		}catch(Exception e){
+			e.printStackTrace();
+			
+		}
+		return modelAndView;
+		
+		
+		
+	}
+	
+	
 
 	@RequestMapping(value = "addZzim", method = RequestMethod.GET)
 	public ModelAndView addZzim(@RequestParam String userId, @RequestParam int festivalNo) throws Exception {
