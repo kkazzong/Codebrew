@@ -61,9 +61,7 @@ public class UserRestController {
 	public boolean checkNickname(@RequestParam("nickname")String nickname)throws Exception{
 		
 		System.out.println("/userRest/json/checkNickname : POST");
-		//required=false은 모지?
-		//new boolean(result)가 모였지?
-		//비즈니스로직 Boolean은 왜 안되지??
+	
 		boolean result=userService.checkNickname(nickname);
 		
 		return result;
