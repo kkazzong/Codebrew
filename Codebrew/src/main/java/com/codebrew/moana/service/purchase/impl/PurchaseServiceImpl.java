@@ -87,8 +87,14 @@ public class PurchaseServiceImpl implements PurchaseService {
 		}
 	}
 
+	@Override
+	public int deletePurchase(int purchaseNo) {
+		return purchaseDAO.deletePurchase(purchaseNo);
+	}
+
 	//getter, setter
 	public void setPurchaseDAO(PurchaseDAO purchaseDAO) {
 		this.purchaseDAO = purchaseDAO;
 	}
+
 }

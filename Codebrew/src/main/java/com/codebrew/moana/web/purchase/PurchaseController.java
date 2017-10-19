@@ -1,5 +1,6 @@
 package com.codebrew.moana.web.purchase;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -119,11 +120,11 @@ public class PurchaseController {
 		}
 
 		String path = session.getServletContext().getRealPath("/");
-		purchaseService.addPurchase(purchase, path);
+		purchase = purchaseService.addPurchase(purchase, path);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("purchase", purchase);
-		modelAndView.setViewName("/purchase/getPurchaseList");
+		modelAndView.setViewName("redirect:/purchase/getPurchase?purchaseNo="+purchase.getPurchaseNo());
 
 		return modelAndView;
 	}
@@ -150,10 +151,7 @@ public class PurchaseController {
 																	@ModelAttribute("search") Search search,
 																	@RequestParam(value = "purchaseFlag", required = false) String purchaseFlag) {
 
-		// System.out.println(session.getAttribute("user"));
 		User user = (User) session.getAttribute("user");
-		// user.setUserId(userId);
-		// user.setNickname("�����");
 
 		/*
 		 * if(purchaseFlag == null) { purchaseFlag = "1"; //default is festival }
@@ -174,14 +172,15 @@ public class PurchaseController {
 		modelAndView.addObject("list", map.get("list"));
 		modelAndView.addObject("resultPage", resultPage);
 		modelAndView.addObject("search", search);
+		modelAndView.addObject("purchaseFlag", purchaseFlag);
 
 		modelAndView.setViewName("/view/purchase/getPurchaseList.jsp");
 
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "deletePurchase")
-	public ModelAndView deletePurchaseList(HttpSession session, RedirectAttributes redirectAttributes) {
+	@RequestMapping(value = "cancelPurchase")
+	public ModelAndView cancelPurchase(HttpSession session, RedirectAttributes redirectAttributes) {
 
 		User user = (User) session.getAttribute("user");
 		ModelAndView modelAndView = new ModelAndView();
@@ -189,15 +188,39 @@ public class PurchaseController {
 
 		return modelAndView;
 	}
+	
+	@RequestMapping(value = "deletePurchase", method=RequestMethod.POST)
+	public ModelAndView deletePurchase(HttpSession session,
+																	@RequestParam("purchaseNo") int purchaseNo,
+																	RedirectAttributes redirectAttributes) {
+		
+		int result = purchaseService.deletePurchase(purchaseNo);
+		if(result == 1) {
+		
+			System.out.println("deletePurchase");
+			User user = (User) session.getAttribute("user");
+			ModelAndView modelAndView = new ModelAndView();
+			//modelAndView.setViewName("redirect:/purchase/getPurchaseList");
+			
+			modelAndView.setViewName("/view/purchase/deletePurchase.jsp");
+			return modelAndView;
+
+		} else {
+			return null;
+		}
+		
+	}
 
 	@RequestMapping(value = "getSaleList")
 	public ModelAndView getSaleList(@ModelAttribute("search") Search search) {
 
+		System.out.println(search);
+		
 		if (search.getCurrentPage() == 0) {
 			search.setCurrentPage(1);
 		}
 		search.setPageSize(pageSize);
-
+		
 		Map<String, Object> map = purchaseService.getSaleList(search);
 
 		Page resultPage = new Page(search.getCurrentPage(), ((Integer) (map.get("totalCount"))).intValue(), pageUnit,

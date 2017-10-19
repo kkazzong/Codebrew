@@ -27,10 +27,10 @@
 	});
 </script>
 <style type="text/css">
-	/* div {
+	 /* div {
 		border : 3px solid #D6CDB7;
 		margin0top : 10px;
-	} */
+	}  */
 </style>
 </head>
 <body>
@@ -69,7 +69,7 @@
 							<img class="col-md-12" width="100%" height="190" src="/resources/uploadFile/${purchase.ticket.party.partyImage}">
 						</c:if>
 						<div class="row">
-							<div class="col-md-offset-2 col-xs-4 col-md-8"><strong>${purchase.itemName}</strong></div>
+							<div class="col-md-12"><strong>s${purchase.itemName}</strong></div>
 						</div>
 						<div class="row">
 							<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>아이디</strong></div>

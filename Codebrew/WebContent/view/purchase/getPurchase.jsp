@@ -152,7 +152,7 @@
 			data : "json",
 			success : function(data) {
 				console.log(data);
-				self.location = "/purchase/deletePurchase";
+				self.location = "/purchase/cancelPurchase";
 			}
 		});
 		
@@ -165,6 +165,7 @@
 			self.location = "/purchase/getPurchaseList";
 		});
 		
+		
 		$("button:contains('결제취소하기')").on("click", function(){
 			
 			var result = confirm("정말로 결제를 취소하시겠습니까?");
@@ -174,7 +175,7 @@
 				
 				console.log("결제취소하기 버튼 val = "+purchaseNo);
 				fncCancelPayment(purchaseNo);
-			} else {
+			} else { 
 				return;
 			}
 		});

@@ -24,9 +24,59 @@
 
 	function fncGetList(currentPage) {
 		console.log("페이지클릭 : "+currentPage);
+		
 		$("#currentPage").val(currentPage);
 		$("#searchForm").attr("method", "POST").attr("action", "/purchase/getSaleList").submit();
 	}
+	
+	function fncSearchList() {
+		$("#currentPage").val("1");
+		$("#searchForm").attr("method", "POST").attr("action", "/purchase/getSaleList").submit();
+	}
+	
+	function fncSortList(arrange) {
+		//alert(arrange);
+		$("#currentPageSort").val("1");
+		$("input:hidden[name='arrange']").val(arrange);
+		alert($("#sortForm").serialize());
+		$("#sortForm").attr("method", "POST").attr("action", "/purchase/getSaleList").submit();
+	}
+	
+	$(function(){
+		
+		//enter key 검색
+		$("#searchKeyword").on("keydown", function(event){
+			//alert(event.keyCode);
+			if(event.keyCode == '13') {
+				event.preventDefault();
+				//fncSearchList();
+				fncGetList(1);
+			}
+		});
+		
+		//검색버튼
+		$(".btn:contains('검색')").on("click", function(){
+			//fncSearchList();
+			fncGetList(1);
+		});
+		
+		//정렬 모달창에서 클릭한 모든 버튼
+		$(".modal-content .btn").each(function(){}).on("click", function(){
+			fncSortList($(this).val());
+		});
+		
+		//검색조건 바꿀때
+		$("#searchCondition").on("change", function(){
+			$("#searchKeyword").val("");
+			//alert($(this).val());
+			if($(this).val() == '3') {
+				$("#searchKeyword").attr("placeholder", "구매번호 입력");
+			} else if($(this).val() == '4') {
+				$("#searchKeyword").attr("placeholder", "회원아이디 입력");
+			}
+		});
+		
+	});
 	
 </script>
 <style type="text/css">
@@ -43,6 +93,12 @@
 	
 	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>
 	
+	<!-- 모달 -->
+	<jsp:include page="/view/purchase/filterModal.jsp"></jsp:include>
+	
+	서치컨디션 ${search.searchCondition } <br>
+	어레인지 ${search.arrange }
+	
 	<div class="container">
 	
 		<!-- page header -->
@@ -54,57 +110,59 @@
 			</div>
 		</div>
 		
+		<!-- 데이터 수 -->
 		<div class="row">
-			<div class="col-md-offset-1 col-md-2 ">
-				<!-- 정렬 -->
-				<form class="form form-inline" id="orderForm" name="orderForm">
-					<select class="form-group">
-						<option value="" selected="selected">필터</option>
-						<optgroup label="가격">
-							<option value="1">가격▲</option>
-							<option value="2">가격▼</option>
-						</optgroup>
-						<optgroup label="아이디">
-							<option value="3">아이디▲</option>
-							<option value="4">아이디▼</option>
-						</optgroup>
-						<optgroup label="구매날짜">
-							<option value="5">구매날짜▲</option>
-							<option value="6">구매날짜▼</option>
-						</optgroup>
-					</select>
+			<div class="col-md-12">
+				<h5>총 : ${resultPage.totalCount} 건</h5>
+				<h5>현재 : ${resultPage.currentPage} 페이지 / 총 ${resultPage.maxPage} 페이지</h5>
+			</div>
+		</div>
+		
+		<!-- 정렬 -->
+		<div class="row">
+			<div class="col-md-6 ">
+				<form class="form form-inline" id="sortForm" name="sortForm">
+					<input type="hidden" id="currentPageSort" name="currentPage" value=""/>
+					<input type="hidden" name="arrange" 
+								value="${!empty search.arrange ? search.arrange : ''}">
+					<div class="form-group">
+						<button class="btn btn-default" data-toggle="modal" 
+									 data-target=".bs-example-modal-sm" type="button">필터</button>
+					</div>
 				</form>
 			</div>
-			<div class="col-md-offset-4 col-md-5 ">
-				<!-- 검색 -->
+			<!-- 검색 -->
+			<div class="col-md-6 text-right">
 				<form class="form form-inline" id="searchForm" name="searchForm">
 					<input type="hidden" id="currentPage" name="currentPage" value=""/>
-					<select class="form-group">
-						<option value="1" selected="selected">구매번호</option>
-						<option value="2">아이디</option>
-					</select>
-					<input class="form-group" name="searchKeyword" type="text">
-					<button class="btn btn-default" type="button">검색</button>
+					<div class="form-group">
+						<select class="form-control" id="searchCondition" name="searchCondition" class="form-group">
+							<option value="3" ${!empty search.searchCondition && search.searchCondition == '3' ? "selected" : "" }>구매번호</option>
+							<option value="4" ${!empty search.searchCondition && search.searchCondition == '4' ? "selected" : "" }>아이디</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<input class="form-control" id="searchKeyword" name="searchKeyword" type="text" 
+									value="${!empty search.searchKeyword ? search.searchKeyword : ''}"
+									placeholder="구매번호 입력">
+					</div>
+					<div class="form-group">
+						<button class="btn btn-primary" type="button">검색</button>
+					</div>
 				</form>
 			</div>
 		</div>
 		
-		<!-- 데이터 수 -->
-		<div class="row">
-			<div class="col-md-offset-1 col-md-10">
-				<h5>총 : ${resultPage.totalCount} 건</h5>
-				<h5>현재 : ${resultPage.currentPage} 페이지</h5>
-			</div>
-		</div>
 		<!-- table -->
 		<div class="row">
-			<div class="col-md-offset-1 col-md-10">
+			<div class="col-md-12">
 				<table class="table table-striped">
 					<thead>
 						<tr>
 							<th>NO</th>
 							<th>구매번호</th>
 							<th>아이디</th>
+							<th>티켓분류</th>
 							<th>티켓명</th>
 							<th>구매날짜</th>
 							<th>수량</th>
@@ -119,12 +177,25 @@
 								<td>${i}</td>
 								<td>${purchase.purchaseNo}</td>
 								<td>${purchase.user.userId}</td>
+								<td>
+									<c:choose>
+										<c:when test="${empty purchase.ticket.ticketFlag}">
+											기본
+										</c:when>
+										<c:when test="${purchase.ticket.ticketFlag == 'free'}">
+											무료
+										</c:when>
+										<c:when test="${purchase.ticket.ticketFlag == 'nolimit'}">
+											무제한
+										</c:when>
+									</c:choose>
+								</td>
 								<td>${purchase.itemName}</td>
 								<td>${purchase.purchaseDate}</td>
 								<td>${purchase.purchaseCount}</td>
 								<td>${purchase.purchasePrice}</td>
 								<td>
-								<c:if test="${empty purchase.tranCode}">결제완료</c:if>
+								<c:if test="${purchase.tranCode == 1}">결제완료</c:if>
 								<c:if test="${purchase.tranCode == 2}">결제취소</c:if>
 								</td>
 							</tr>

@@ -92,14 +92,17 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			ticketDAO.updateTicketCount(purchase.getTicket());
 		}
 		purchase.setQrCode(this.createQRCode(path));
-		PartyMember partyMember = new PartyMember();
-		User user = purchase.getUser();
-		partyMember.setAge(user.getAge());
-		partyMember.setGender(user.getGender());
-		partyMember.setRole(user.getRole());
-		partyMember.setUser(user);
-		partyMember.setParty(purchase.getTicket().getParty());
-		partyDAO.joinParty(partyMember);
+		
+		if(purchase.getPurchaseFlag().equals("2")) {
+			PartyMember partyMember = new PartyMember();
+			User user = purchase.getUser();
+			partyMember.setAge(user.getAge());
+			partyMember.setGender(user.getGender());
+			partyMember.setRole(user.getRole());
+			partyMember.setUser(user);
+			partyMember.setParty(purchase.getTicket().getParty());
+			partyDAO.joinParty(partyMember);
+		}
 		
 		return sqlSession.insert("PurchaseMapper.addPurchase", purchase);
 	}
@@ -130,6 +133,9 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 				list = sqlSession.selectList("PurchaseMapper.getPurchaseList", map);
 				break;
 		}
+		/*for(Purchase purchase : list) {
+			purchase.setPurchaseFlag(purchaseFlag);
+		}*/
 		return list;
 	}
 
@@ -391,6 +397,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			br.close();
 			
 			purchase.setTranCode("2");
+			
 			int updatePurchaseResult = this.updatePurchaseTranCode(purchase);
 			if(updatePurchaseResult == 1) {
 				
@@ -401,6 +408,9 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 				int updateTicketResult = ticketDAO.updateTicketCount(ticket);
 				if(updateTicketResult == 1) {
 					cancelResult = 1;
+					if(purchase.getPurchaseFlag().equals("2")) {
+						partyDAO.cancelParty(ticket.getParty().getPartyNo(), purchase.getUser().getUserId());
+					}
 				} else {
 					cancelResult = 0;
 				}
