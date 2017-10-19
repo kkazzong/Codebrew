@@ -68,8 +68,13 @@
 	SELECT
 	user_id, user_name, password, nickname, role, phone, gender, age, profile_image, location_flag, coconut_count, user_reg_date
 	from users
-	Where user_id= #{value}
+	Where user_id= #{value} and role !='d'<!--탈퇴하면 로그인안됨 -->
 	</select>
+	
+	<!-- Where  user_id= #{value} and role = 'u' -->
+	
+	<!-- Where user_id= #{value} 
+	NOT IN(SELECT user_id from users where role = 'd') -->
 	
 	
 	

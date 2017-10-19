@@ -104,6 +104,17 @@ public class UserServiceTest {
 		Assert.assertNotNull(userService.getUser("user02@naver.com"));
 	
 	}
+	
+	@Test //탈퇴한 회원은 안불러오기
+    public void testGetUserNotInDeleteUser() throws Exception {
+
+			User user = new User();
+			user = userService.getUser("user01@naver.com");
+
+			System.out.println(user);
+	
+			Assert.assertNull("값이 안와야 합니다.",userService.getUser("user01@naver.com"));
+	}
 
 	
      //@Test // 회원정보 수정,-완료
