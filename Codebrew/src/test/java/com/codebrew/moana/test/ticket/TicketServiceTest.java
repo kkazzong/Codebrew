@@ -122,7 +122,7 @@ public class TicketServiceTest {
 		//party.setPartyNo(10001); // �������� ����
 		
 		Ticket ticket = new Ticket();
-		ticket.setFestival(festival);
+		//ticket.setFestival(festival);
 		ticket.setTicketPrice(330);
 		ticket.setTicketCount(20);
 		//ticket.setParty(party);

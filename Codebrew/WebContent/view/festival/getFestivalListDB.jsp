@@ -43,6 +43,7 @@
 
 			var festivalNo = $("p", this).text();
 
+			/* self.location = "/festival/getFestivalDB?festivalNo=" + festivalNo; */
 			self.location = "/festival/getFestivalDB?festivalNo=" + festivalNo;
 		});
 	});

@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@include file="/data/party/userData.jsp"%> 
+<%@include file="/data/party/festivalData.jsp"%> 
+   
 <!DOCTYPE html>
 <html>
 <head>
@@ -83,8 +86,7 @@
 	</script>
 
 	<!--  ///////////////////////// CSS ////////////////////////// -->
-	
-    
+
 </head>
 
 
@@ -111,10 +113,10 @@
 		  <div class="form-group">
 		    <label for="partyFlag" class="col-sm-offset-1 col-sm-3 control-label">파티구분</label>
 		    <div class="col-sm-2">
-		    	파티<input type="radio" class="form-control" id="partyFlag" name="partyFlag" value="파티" checked/>
+		    	파티<input type="radio" class="form-control" id="partyFlag" name="partyFlag" value="party" ${ empty festival.festivalNo ? "checked" : "" }/>
 		    </div>
 		    <div class="col-sm-2">
-		    	애프터파티<input type="radio" class="form-control" id="partyFlag" name="partyFlag" value="애프터파티"/>
+		    	애프터파티<input type="radio" class="form-control" id="partyFlag" name="partyFlag" value="afterParty" ${ empty festival.festivalNo ? "" : "checked" }/>
 		    </div>
 		    
 		  </div>
@@ -122,9 +124,9 @@
 		  <div class="form-group">
 		    <label for="festivalName" class="col-sm-offset-1 col-sm-3 control-label">축제명</label>
 		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="festival.festivalName" name="festival.festivalName" value="" />
-		      <%-- <input type="hidden" class="form-control" id="festival.festivalNo" name="festival.festivalNo" value="${festival.festivalNo}" /> --%>
-		      <input type="hidden" class="form-control" id="festival.festivalNo" name="festival.festivalNo" value="11111" />
+		      <input type="text" class="form-control" id="festival.festivalName" name="festival.festivalName" value="${festival.festivalName }" />
+		      <!-- <input type="text" readonly="readonly" class="form-control" id="festival.festivalName" name="festival.festivalName" placeholder="축제를 검색해주세요."> -->
+		      <input type="hidden" class="form-control" id="festival.festivalNo" name="festival.festivalNo" value="${festival.festivalNo }" />
 		      <button type="button" class="btn btn-primary" name="searchFestival" >축제검색</button>
 		    </div>
 		  </div>
@@ -139,12 +141,12 @@
 		  <div class="form-group">
 		    <label for="partyDate" class="col-sm-offset-1 col-sm-3 control-label">파티날짜</label>
 		    <div class="col-sm-4">
-		      <input type="text" readonly="readonly" class="form-control" id="datepicker" name="partyDate">
+		      <input type="text" readonly="readonly" class="form-control" id="datepicker" name="partyDate" placeholder="파티날짜를 선택해주세요.">
 		    </div>
 		  </div>
 		  
 		  <div class="form-group">
-		    <label for="partyName" class="col-sm-offset-1 col-sm-3 control-label">파티명</label>
+		    <label for="partyName" class="col-sm-offset-1 col-sm-3 control-label">파티시간</label>
 		    <div class="col-sm-2">
 		      <select name="hour">
 		        <option value="00" selected>00</option>
@@ -196,8 +198,7 @@
 		  <div class="form-group">
 		    <label for="partyPlace" class="col-sm-offset-1 col-sm-3 control-label">파티장소</label>
 		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="party.partyPlace" name="party.partyPlace" value="" />
-		      <input type="hidden" class="form-control" id="party.partyNo" name="party.partyNo" value="${party.partyNo}" />
+		      <input type="text" class="form-control" id="partyPlace" name="partyPlace" placeholder="파티장소를 검색해주세요.">
 		      <button type="button" class="btn btn-primary" name="searchPartyPlace" >장소검색</button>
 		    </div>
 		  </div>
@@ -212,7 +213,7 @@
 		  <div class="form-group">
 		    <label for="ticketCount" class="col-sm-offset-1 col-sm-3 control-label">티켓수량</label>
 		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="ticketCount" name="ticketCount"/>
+		      <input type="text" class="form-control" id="ticketCount" name="ticketCount" >
 		    </div>
 		  </div>
 		  

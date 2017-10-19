@@ -24,7 +24,7 @@
 		<association property="party" javaType="com.codebrew.moana.service.domain.Party">
 			<id property="partyNo" column="party_no" jdbcType="NUMERIC"/>
 			<result property="partyName" column="party_name" jdbcType="VARCHAR"/>
-			<result property="partyDate" column="party_date" jdbcType="DATE"/>
+			<result property="partyDate" column="party_date" jdbcType="VARCHAR"/>
 			<result property="partyTime" column="party_time" jdbcType="VARCHAR"/>
 			<result property="partyPlace" column="party_place" jdbcType="VARCHAR"/>
 			<result property="partyImage" column="party_image" jdbcType="VARCHAR"/>

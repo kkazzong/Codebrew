@@ -5,4 +5,168 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 		
 <mapper namespace="ReplyMapper">
+
+	<resultMap id="replySelectMap" type="reply">
+	
+		<result property="replyNo" column="reply_no" jdbcType="NUMERIC"/>
+		<result property="reviewNo" column="review_no" jdbcType="NUMERIC"/>
+		<result property="replyDetail" column="reply_detail" jdbcType="VARCHAR"/>
+		<result property="replyRegDate" column="reply_reg_date" jdbcType="DATE"/>
+				
+		<association property="user"  javaType="user"> <!-- Reply domain has user domain object  -->
+			<id property="userId" column="user_id" jdbcType="VARCHAR"/> <!-- reply Table has the user_id column -->
+			<result property="userName" column="user_name" jdbcType="VARCHAR"/>
+			<result property="password" column="password" jdbcType="VARCHAR"/>
+			<result property="profileImage" column="profile_image" jdbcType="VARCHAR"/>
+			<result property="role" column="role" jdbcType="VARCHAR"/>
+			<result property="phone" column="phone" jdbcType="VARCHAR"/>
+			<result property="gender" column="gender" jdbcType="VARCHAR"/>
+			<result property="birth" column="age" jdbcType="NUMERIC"/>
+			<result property="locationFlag" column="location_flag" jdbcType="VARCHAR"/>
+			<result property="nickname" column="nickname" jdbcType="VARCHAR"/>
+			<result property="userRegDate" column="user_reg_date" jdbcType="DATE"/>
+			<result property="coconutCount" column="coconut_count" jdbcType="NUMERIC"/>
+		</association>
+	
+	</resultMap>
+	
+	<insert id="addReply" parameterType="reply">
+		INSERT 
+		INTO reply (
+					reply_no, 
+					user_id, 
+					review_no, 
+					reply_detail, 
+					reply_reg_date
+					)
+		VALUES (
+				seq_reply_reply_no.NEXTVAL, 
+				#{user.userId:VARCHAR}, 
+				#{review.reviewNo:NUMERIC}, 
+				#{replyDetail:VARCHAR}, 
+				SYSDATE
+				)
+	</insert>
+	
+	<select id="getReply" parameterType="int" resultMap="replySelectMap">
+		SELECT
+			rp.reply_no, 
+			rp.user_id, 
+			rp.review_no, 
+			rp.reply_detail, 
+			rp.reply_reg_date
+		FROM reply rp 
+		WHERE rp.reply_no = #{replyNo:NUMERIC}
+	</select>
+	
+	<update id="updateReply" parameterType="reply">
+		UPDATE reply SET
+			reply_detail = #{replyDetail:VARCHAR}, 
+			reply_reg_date = SYSDATE 
+		WHERE reply_no = #{replyNo:NUMERIC} 
+		AND user_id = #{user.userId:VARCHAR} 
+		AND review_no = #{review.reviewNo:NUMERIC}
+	</update>
+	
+	<delete id="deleteReply" parameterType="int">
+		DELETE
+		FROM reply
+		WHERE reply_no = #{replyNo}
+	</delete>
+	
+	<!-- user가 자기자신이 쓴 댓글을 보고싶을 때 -->
+	<!-- user 경우 : SELECT * FROM WHERE user_id like '{userId}' -->
+	<!-- admin 경우 : SELECT * FROM WHERE user_id like '%' -->
+	<!-- 보통의 경우에 reply list는 review에 종속적이다 -->
+
+	<select id="getAllReplyList" parameterType="map" resultMap="replySelectMap">
+		SELECT * 
+		FROM ( SELECT inner_table.*, ROWNUM AS row_seq
+						FROM ( SELECT
+									reply_no, 
+									user_id, 
+									review_no, 
+									reply_detail, 
+									reply_reg_date
+									FROM reply 
+									WHERE user_id = #{userId}
+									ORDER BY reply_reg_date ) inner_table
+						WHERE ROWNUM <![CDATA[<=]]> #{search.currentPage}*#{search.pageSize} )
+  		WHERE row_seq BETWEEN (#{search.currentPage}-1)*#{search.pageSize}+1
+  		AND #{search.currentPage}*#{search.pageSize}
+	</select>
+
+	 
+	<!-- for 'normal user' menu -->
+	<select id="getReplyList" parameterType="map" resultMap="replySelectMap">
+		SELECT *
+		FROM ( SELECT inner_table.*, ROWNUM AS row_seq
+					FROM (	SELECT 
+									rp.reply_no, 
+									u.user_id, 
+									rp.review_no, 
+									rp.reply_detail, 
+									rp.reply_reg_date
+							FROM reply rp, users u 
+							WHERE rp.user_id = u.user_id 
+							AND rp.user_id = #{userId} 
+							ORDER BY rp.reply_no ) inner_table
+					WHERE ROWNUM <![CDATA[<=]]> #{search.currentPage}*#{search.pageSize} ) 
+  		WHERE row_seq BETWEEN (#{search.currentPage}-1)*#{search.pageSize}+1 
+  		AND #{search.currentPage}*#{search.pageSize}
+	</select>
+	
+	<!-- only for 'admin' menu -->
+	<!-- <select id="getAllReplyList" parameterType="search" resultMap="replySelectMap">
+		SELECT * 
+		FROM ( SELECT inner_table.*, ROWNUM AS row_seq
+					FROM ( 	SELECT
+								rp.reply_no, 
+								rp.user_id, 
+								rp.review_no, 
+								rp.reply_detail, 
+								rp.reply_reg_date, 
+							FROM reply rp, users u
+							WHERE rp.user_id = u.user_id
+							<if test="searchCondition != null">
+								<if test="searchCondition == 0 and searchKeyword != ''">
+									AND rp.user_id like '%${searchKeyword}%'
+								</if>
+								<if test="searchCondition == 1 and searchKeyword != ''">
+									AND rp.reply_no like '%${searchKeyword}%'
+								</if>
+								<if test="searchCondition == 2 and searchKeyword != ''">
+									And rp.review_no like '%${searchKeyword}%'
+								</if>
+							</if>
+							ORDER BY rp.reply_no) inner_table
+					WHERE ROWNUM &lt; = #{endRowNum})
+		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}
+	</select> -->
+	
+	<!-- SQL : SELECT ROW Count -->
+	<select  id="getTotalCount"  parameterType="search"	 resultType="int">
+	  	SELECT COUNT(*) 
+	  	FROM(	SELECT 
+		  				reply_no , 
+		  				user_id, 
+		  				review_no, 
+		  				reply_detail, 
+		  				reply_reg_date, 
+						FROM reply 
+						<if test="searchCondition != null">
+							<where>
+								<if test="searchCondition == 0 and searchKeyword !='' ">
+						 			reply_no like '%${searchKeyword}%'
+								</if>
+								<if test="searchCondition == 1 and searchKeyword !='' ">
+						 			reply_detail like '%${searchKeyword}%'
+								</if>
+								<if test="searchCondition == 2 and searchKeyword !='' ">
+						 			user_id like '%${searchKeyword}%'
+								</if>
+							</where>
+						</if> ) countTable	
+	</select>
+
 </mapper>
