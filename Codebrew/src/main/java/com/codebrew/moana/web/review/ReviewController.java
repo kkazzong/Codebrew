@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
@@ -65,18 +66,36 @@ public class ReviewController {
 	//2. POST 인 경우 : addReview.jsp에서 form작성을 완료하여 실제로 등록한 후 getReview.jsp로 넘어간다.
 	@RequestMapping(value="addReview", method=RequestMethod.POST)
 	public ModelAndView addReview(@ModelAttribute("review") Review review, 
-									@RequestParam("reviewImage") MultipartHttpServletRequest reviewImage, 
-									@RequestParam("reviewVideo") MultipartHttpServletRequest reviewVideo, 
-									Model model) throws Exception{
+									@RequestParam("uploadReviewImage") List<MultipartFile> uploadReviewImage, 
+									@RequestParam("uploadReviewVideo") List<MultipartFile> uploadReviewVideo) throws Exception{
+		
+//		@RequestParam("uploadReviewVideo") MultipartHttpServletRequest reviewVideo
 		
 		System.out.println("addReview processing...");
 		
-		//List<MultipartFile> uploadImage = reviewImage.getFiles("fileName[]");
-		List<Image> uploadImageList = new ArrayList();
+		String filePath = "C:\\Users\\Admin\\git\\Codebrew\\Codebrew\\WebContent\\resources\\uploadFile\\";
 		
-		System.out.println("loadImage : "+uploadImageList);
+		if(uploadReviewImage != null && uploadReviewImage.size() > 0){
+			
+			List<Image> uploadImageList = new ArrayList<Image>();
+			for(MultipartFile multipartFile : uploadReviewImage){
+				Image eachImage = new Image();
+				eachImage.setReviewImage(multipartFile.getOriginalFilename());
+				uploadImageList.add(eachImage);
+				File file = new File(filePath+multipartFile.getOriginalFilename());
+				multipartFile.transferTo(file);
+			}
+			review.setReviewImage(uploadImageList);
+		}
+	
+		
+		System.out.println("\n\n\n\n\n=============================ok=============================\n\n\n\n\n");
+		
+		reviewService.addReview(review);
 		
 		ModelAndView modelAndView = new ModelAndView();
+		//modelAndView.addObject(fileNames);
+		modelAndView.addObject(review);
 		modelAndView.setViewName("/view/review/getReview.jsp");
 		
 		return modelAndView;

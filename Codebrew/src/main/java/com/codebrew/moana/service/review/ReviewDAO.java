@@ -1,13 +1,14 @@
 package com.codebrew.moana.service.review;
 
 import java.util.List;
+import java.util.Map;
 
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Review;
 import com.codebrew.moana.service.domain.User;
 
 //==> 후기관리 CRUD : DAO interface
-//TTL Method : 12 EA
+//TTL Method : 14 EA
 public interface ReviewDAO {
 
 	//1
@@ -53,5 +54,11 @@ public interface ReviewDAO {
 	
 	//12
 	public int getTotalCount(Search search) throws Exception;
+	
+	//13
+	public void uploadReviewImage(Map<String, Object> map) throws Exception;
+	
+	//14
+	public void uploadReviewHashtag(Map<String, Object> map) throws Exception;
 	
 }

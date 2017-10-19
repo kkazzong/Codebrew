@@ -11,7 +11,7 @@ import com.codebrew.moana.service.domain.User;
 public interface ReviewService {
 
 	//1
-	public void addReview(Review review) throws Exception;
+	public Review addReview(Review review) throws Exception;
 	
 	//2
 	public Review getReview(int reviewNo) throws Exception;

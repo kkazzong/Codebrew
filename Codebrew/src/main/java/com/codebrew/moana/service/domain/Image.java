@@ -27,7 +27,7 @@ public class Image {
 	public void setReviewImage(String reviewImage) {
 		this.reviewImage = reviewImage;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Image [imageNo=" + imageNo + ", reviewNo=" + reviewNo + ", reviewImage=" + reviewImage + "]";

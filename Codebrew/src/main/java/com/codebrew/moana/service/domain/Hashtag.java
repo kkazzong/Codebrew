@@ -27,11 +27,10 @@ public class Hashtag {
 	public void setHashtagDetail(String hashtagDetail) {
 		this.hashtagDetail = hashtagDetail;
 	}
-	
-	
+
 	@Override
 	public String toString() {
-		return "Hashtag [hastagNo=" + hashtagNo + ", reviewNo=" + reviewNo + ", hashtagDetail=" + hashtagDetail + "]";
+		return "Hashtag [hashtagNo=" + hashtagNo + ", reviewNo=" + reviewNo + ", hashtagDetail=" + hashtagDetail + "]";
 	}
 	
 }

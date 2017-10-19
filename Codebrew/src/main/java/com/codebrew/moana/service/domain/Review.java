@@ -5,17 +5,19 @@ import java.util.List;
 public class Review {
 		
 	private int reviewNo;				// integer(raw) type : reviewNo(sequence)
-	private String writerId;				// User Object
-	private int festivalNo;			// Festival Object
+	private String writerId;				
+	private int festivalNo;			 
+	private String festivalName;
+	private String festivalAddr;
 	private List<Reply> reply;			// List of the replies
-	private int checkCode;				// Flag : checkCode
+	private String checkCode;			// Flag : checkCode
 	private String reviewTitle;			
 	private int goodCount;				// how many 'like'
-	private List<Image> reviewImage;	// 추가 : 가능하면 위의 1, 2, 3, 4, 5 삭제
+	private List<Image> reviewImage;
 	private int reviewFestivalRating;
 	private String reviewVideo;
 	private String reviewDetail;
-	private List<Hashtag> hashtag;		// 추가 : 가능하면 위의 1, 2, 3 삭제
+	private List<Hashtag> reviewHashtag;
 	private String reviewRegDate;
 	
 	
@@ -47,6 +49,22 @@ public class Review {
 	public void setFestivalNo(int festivalNo) {
 		this.festivalNo = festivalNo;
 	}
+	
+	public String getFestivalName() {
+		return festivalName;
+	}
+
+	public void setFestivalName(String festivalName) {
+		this.festivalName = festivalName;
+	}
+
+	public String getFestivalAddr() {
+		return festivalAddr;
+	}
+
+	public void setFestivalAddr(String festivalAddr) {
+		this.festivalAddr = festivalAddr;
+	}
 
 	public List<Reply> getReply() {
 		return reply;
@@ -56,11 +74,11 @@ public class Review {
 		this.reply = reply;
 	}
 
-	public int getCheckCode() {
+	public String getCheckCode() {
 		return checkCode;
 	}
 
-	public void setCheckCode(int checkCode) {
+	public void setCheckCode(String checkCode) {
 		this.checkCode = checkCode;
 	}
 
@@ -79,7 +97,7 @@ public class Review {
 	public void setGoodCount(int goodCount) {
 		this.goodCount = goodCount;
 	}
-
+	
 	public List<Image> getReviewImage() {
 		return reviewImage;
 	}
@@ -112,12 +130,12 @@ public class Review {
 		this.reviewDetail = reviewDetail;
 	}
 
-	public List<Hashtag> getHashtag() {
-		return hashtag;
+	public List<Hashtag> getReviewHashtag() {
+		return reviewHashtag;
 	}
 
-	public void setHashtag(List<Hashtag> hashtag) {
-		this.hashtag = hashtag;
+	public void setReviewHashtag(List<Hashtag> reviewHashtag) {
+		this.reviewHashtag = reviewHashtag;
 	}
 
 	public String getReviewRegDate() {
@@ -127,5 +145,17 @@ public class Review {
 	public void setReviewRegDate(String reviewRegDate) {
 		this.reviewRegDate = reviewRegDate;
 	}
+
+
+	@Override
+	public String toString() {
+		return "Review [reviewNo=" + reviewNo + ", writerId=" + writerId + ", festivalNo=" + festivalNo
+				+ ", festivalName=" + festivalName + ", festivalAddr=" + festivalAddr + ", reply=" + reply
+				+ ", checkCode=" + checkCode + ", reviewTitle=" + reviewTitle + ", goodCount=" + goodCount
+				+ ", reviewImage=" + reviewImage + ", reviewFestivalRating=" + reviewFestivalRating + ", reviewVideo="
+				+ reviewVideo + ", reviewDetail=" + reviewDetail + ", reviewHashtag=" + reviewHashtag
+				+ ", reviewRegDate=" + reviewRegDate + "]";
+	}
+
 	
 }

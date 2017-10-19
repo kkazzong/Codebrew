@@ -11,21 +11,20 @@
 	
 	<title>후기등록화면</title>
 	
-	<link rel="stylesheet" href="/css/admin.css" type="text/css">
+	<!-- <link rel="stylesheet" href="/css/admin.css" type="text/css"> -->
 	
 	<!--  ///////////////////////// Bootstrap, jQuery CDN(Content Delivery Network) ////////////////////////// -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
-	<script type="text/javascript" src="../javascript/calendar.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
-	<script src="js/vendor/jquery.ui.widget.js"></script>
+	<!-- <script src="js/vendor/jquery.ui.widget.js"></script> -->
 	<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
-	<script src="js/jquery.iframe-transport.js"></script>
+	<!-- <script src="js/jquery.iframe-transport.js"></script> -->
 	<!-- The basic File Upload plugin -->
-	<script src="js/jquery.fileupload.js"></script>
+	<!-- <script src="js/jquery.fileupload.js"></script> -->
 	
 	<!--  ///////////////////////// CSS ////////////////////////// -->
 	<style>
@@ -46,6 +45,11 @@
         .form-control{
         	resize: none; /* cannot be changed by the user */
         }
+        
+ 		body {
+            padding-top : 50px;
+        }
+		        
     </style>
     
 	<!--  ///////////////////////// JavaScript ////////////////////////// -->
@@ -102,10 +106,13 @@
 				return;
 			}
 		});
+		
+		//debug
+		$("input:text[name='festivalNo']").on("keydown", function(){
+			console.log($(this).val());
+		});
 	});
 	
-	
-
 	</script>
 	
 </head>
@@ -113,12 +120,17 @@
 <body>
 
 <!-- ////////// ToolBar Start ////////// -->
-<div class="navbar navbar-default">
+<!-- <div class="navbar navbar-default">
 	<div class="container">
 		<a class="navbar-brand" href="/index.jsp"><strong>MOANA addReview</strong></a>
 	</div>
-</div>
+</div> -->
 <!-- ////////// ToolBar End ////////// -->
+
+	<!-- ToolBar Start /////////////////////////////////////-->
+	<jsp:include page="../../toolbar/toolbar.jsp" />
+   	<!-- ToolBar End /////////////////////////////////////-->
+
 
 <!-- ////////// 화면구성 div Start ////////// -->
 <div class="container">
@@ -131,26 +143,8 @@
 		<div class="form-group">
 			<label for="festivalName" class="col-sm-offset-1 col-sm-3 control-label">축제번호</label>
 			<div class="col-sm-4">
-				<input type="hidden" id="festivalNo" name="festivalNo" value="${festival.festivalNo }"/>
-				<input type="text" class="form-control" id="festivalName" name="festivalName" value="${festival.festivalName }">
-			</div>
-		</div>
-		
-		<hr/>
-		
-		<div class="form-group">
-			<label for="reviewTitle" class="col-sm-offset-1 col-sm-3 control-label">후기제목</label>
-			<div class="col-sm-4">
-				<input type="text" class="form-control" id="reviewTitle" name="reviewTitle" value="${review.reviewTitle }"/>
-			</div>
-		</div>
-		
-		<hr/>
-		
-		<div class="form-group">
-			<label for="userId" class="col-sm-offset-1 col-sm-3 control-label">작성자</label>
-			<div class="col-sm-4">
-				<input type="text" class="form-control" id="writerId" name="writerId" value="${sessionScope.user.userId }" readonly/>
+				<!-- <input type="hidden" id="festivalNo" name="festivalNo" value="638576"/> -->
+				<input type="text" class="form-control" id="festivalNo" name="festivalNo">
 			</div>
 		</div>
 		
@@ -176,23 +170,27 @@
 		<hr/>
 		
 		<div class="form-group">
+			<label for="reviewTitle" class="col-sm-offset-1 col-sm-3 control-label">후기제목</label>
+			<div class="col-sm-4">
+				<input type="text" class="form-control" id="reviewTitle" name="reviewTitle" value="${review.reviewTitle }"/>
+			</div>
+		</div>
+		
+		<hr/>
+		
+		<div class="form-group">
+			<label for="userId" class="col-sm-offset-1 col-sm-3 control-label">작성자</label>
+			<div class="col-sm-4">
+				<input type="text" class="form-control" id="writerId" name="writerId" value="${sessionScope.user.userId }" readonly/>
+			</div>
+		</div>
+		
+		<hr/>
+		
+		<div class="form-group">
 			<label for="reviewFestivalRating" class="col-sm-offset-1 col-sm-3 control-label">축제에대한 작성자의 평점</label>
-			<div class="col-sm-3">
-				<span class="star-input">
-					<span class="input">
-						<input type="radio" name="star-input" id="p1" value="1"><label for="p1">1</label>
-						<input type="radio" name="star-input" id="p2" value="2"><label for="p2">2</label>
-						<input type="radio" name="star-input" id="p3" value="3"><label for="p3">3</label>
-						<input type="radio" name="star-input" id="p4" value="4"><label for="p4">4</label>
-						<input type="radio" name="star-input" id="p5" value="5"><label for="p5">5</label>
-						<input type="radio" name="star-input" id="p6" value="6"><label for="p6">6</label>
-						<input type="radio" name="star-input" id="p7" value="7"><label for="p7">7</label>
-						<input type="radio" name="star-input" id="p8" value="8"><label for="p8">8</label>
-						<input type="radio" name="star-input" id="p9" value="9"><label for="p9">9</label>
-						<input type="radio" name="star-input" id="p10" value="10"><label for="p10">10</label>
-					</span>
-					<output for="star-input"><b>0</b>점</output>
-				</span>
+			<div class="col-sm-2">
+				<input type="number" class="form-control" id="reviewFestivalRating" name="reviewFestivalRating" value="${review.reviewFestivalRating }" min="1" max="10"> 
 			</div>
 		</div>
 		
@@ -201,7 +199,7 @@
 		<div class="form-group">
 			<label for="reviewImage" class="col-sm-offset-1 col-sm-3 control-label">후기사진</label>
 			<div class="col-sm-3">
-				<input type="file" id="reviewImage" id="reviewImage" name="reviewImage" multiple/>			
+				<input type="file" class="form-control" id="uploadReviewImage" name="uploadReviewImage" multiple/>
 			</div>
 		</div>
 		
@@ -217,7 +215,7 @@
 		<div class="form-group">
 			<label for="reviewVideo" class="col-sm-offset-1 col-sm-3 control-label">동영상</label>
 			<div class="col-sm-4">
-				<input type="file" id="reviewImage" multiple/>			
+				<input type="file" class="form-control" id="uploadReviewVideo" name="uploadReviewVideo" multiple/>			
 			</div>
 		</div>
 		
