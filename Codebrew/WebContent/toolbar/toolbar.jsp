@@ -138,7 +138,7 @@
 				self.location = "/user/login";
 			}); 
 		 	$("a:contains('로그아웃')").on("click" , function() {
-				self.location = "/user/logut";
+				self.location = "/user/logout";
 			}); 
 		});
    		
