@@ -28,7 +28,7 @@
 	function fncGetList(currentPage) {
 		console.log("페이지클릭 : "+currentPage);
 		$("#currentPage").val(currentPage);
-		$("form").attr("method", "POST").attr("action", "/purchase/getPurchaseList").submit();
+		$("#searchForm").attr("method", "POST").attr("action", "/purchase/getPurchaseList").submit();
 	}
 
 	$(function(){
@@ -53,6 +53,31 @@
 		$(".btn:contains('마이티켓')").on("click", function(){
 			console.log("마이티켓 클릭");
 			self.location = "/purchase/getPurchaseList?userId="+userId;
+		});
+		
+		$("button:contains('삭제')").on("click", function(){
+			
+			if(confirm("정말로 삭제하시겠습니까?")) {
+				/* $.ajax({
+					
+					url : "/purchaseRest/json/deletePurchase/"+$(this).val(),
+					mehtod : "POST",
+					headers : {
+						"Accept" : "application/json",
+						"Content-Type" : "application/json"
+					},
+					dataType : "json",
+					success : function(JSONData) {
+						console.log("delete 성공(update delete flag)");
+						console.log(JSON.stringify(JSONData));
+						//self.location = "/purchase/deletePurchase";
+					}
+				}); */
+				$("#deleteForm").attr("method", "post").attr("action", "/purchase/deletePurchase").submit();
+			} else {
+				return;
+			}
+			
 		});
 		
 	});
@@ -91,29 +116,31 @@
 			</div>
 		</div>
 		
+		<!-- 데이터 수 -->
+		<div class="row">
+			<div class="col-md-12">
+				<h5>총 : ${resultPage.totalCount} 건</h5>
+				<h5>현재 : ${resultPage.currentPage} 페이지 / 총 : ${resultPage.maxPage} 페이지</h5>
+			</div>
+		</div>
+		
 		<!-- 축제 / 파티 버튼 -->
 		<div class="row">
-			<form>
+			<form id="searchForm">
 				<input type="hidden" name="userId" value="${user.userId}">
 				<input type="hidden" id="currentPage" name="currentPage" value=""/>
 				<input type="hidden" id="searchCondition" name="searchCondition" value="${search.searchCondition}"/>
-				<div class="col-md-6">
+				<input type="hidden" id="purchaseFlag" name="purchaseFlag" value="${purchaseFlag}"/>
+				<div class="col-md-12">
 					<button class="btn btn-default btn-block" id="festivalBtn" type="button" value="1">축제티켓</button>
 				</div>
-				<div class="col-md-6">
+				<div class="col-md-12">
 					<button class="btn btn-default btn-block" id="partyBtn" type="button" value="2">파티티켓</button>
 				</div>
 			</form>
 		</div>
 		
-		<!-- 데이터 수 -->
-		<div class="row">
-			<div class="col-md-offset-1 col-md-10">
-				<h5>총 : ${resultPage.totalCount} 건</h5>
-				<h5>현재 : ${resultPage.currentPage} 페이지</h5>
-			</div>
-		</div>
-		
+		<!-- 구매한 티켓 리스트 -->
 		<div class="row">
 			<c:forEach var="purchase" items="${list}">
 				<c:set var="i" value="${i+1}"></c:set>
@@ -201,7 +228,10 @@
 								<c:if test="${purchase.tranCode == 1}">
 									<button class="btn btn-primary" type="button" value="${purchase.purchaseNo}">조회</button>
 								</c:if>
+								<form id="deleteForm">
+								<input type="hidden" name="purchaseNo" value="${purchase.purchaseNo}">
 								<button class="btn btn-default" type="button" value="${purchase.purchaseNo}">삭제</button>
+								</form>
 							</div>
 						</div>
 				</div>

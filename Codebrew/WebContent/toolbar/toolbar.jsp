@@ -72,7 +72,7 @@
 	              <!-- 구매관리 DrowDown -->
 	              <li class="dropdown">
 	                <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-	                    <span >구매</span>
+	                    <span >Purchase</span>
 	                    <span class="caret"></span>
 	                </a>
 	                <ul class="dropdown-menu">
@@ -111,8 +111,11 @@
 	             <ul class="nav navbar-nav navbar-right">
 	             	<c:if test="${!empty user}">
 		             	<li><a href="#">${user.nickname}님</a></li>
+		             	<li><a href="#">로그아웃</a></li>
 	             	</c:if>
-	                <li><a href="#">로그인</a></li>
+	             	<c:if test="${empty user }">
+		                <li><a href="#">로그인</a></li>
+	             	</c:if>
 	            </ul>
 		</div>
 		<!-- dropdown hover END -->	       
@@ -129,10 +132,13 @@
    			$(this).toggleClass("mouse-on");
    		})
    		
-   		//////로그인//////
+   		//////로그인, 로그아웃//////
 		$(function(){
 		 	$("a:contains('로그인')").on("click" , function() {
 				self.location = "/user/login";
+			}); 
+		 	$("a:contains('로그아웃')").on("click" , function() {
+				self.location = "/user/logut";
 			}); 
 		});
    		

@@ -44,6 +44,10 @@
 			url : "/statisticsRest/json/getStatistics/"+statFlag,
 			method : "get",
 			dataType : "json",
+			headers : {
+				"Accept" : "application/json"//,
+			//"Content-Type" : "application/json"
+			},
 			success : function(JSONData){
 				console.log(JSON.stringify(JSONData));
 				
@@ -404,7 +408,6 @@
 
 	$(function() {
 	
-		
 		//차트만들기 default는 월단위
 		var statFlag = $("input:hidden[name='statFlag']").val();
 		
@@ -416,6 +419,7 @@
 			$("#chartPie").css("display", "block");
 		}
 		getChartData(statFlag);
+		
 		//chartData(statFlag);
 		//chartData(2);
 		//chartData(3);
@@ -438,19 +442,19 @@
 	#chartDiv {
 		width: 100%;
 		height: 500px;
-		display: none;
+		/* display: none; */
 	}
 	
 	#chartPie {
 		width: 100%;
 		height: 500px;
-		display: none;
+		/* display: none; */
 	}
 	
 	 #chartLine {
 		width: 100%;
 		height: 500px;
-		display: none;
+		/* display: none; */
 	}
 	
 	.amcharts-pie-slice {

@@ -1,5 +1,8 @@
 package com.codebrew.moana.web.purchase;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,5 +71,17 @@ public class PurchaseRestController {
 	@RequestMapping("json/cancelPayment/{purchaseNo}")
 	public void cancelPayment(@PathVariable("purchaseNo") int purchaseNo) {
 		purchaseService.cancelPayment(purchaseNo);
+	}
+	
+	@RequestMapping("json/deletePurchase/{purchaseNo}")
+	public Map<String, String> deletePurchase(@PathVariable("purchaseNo") int purchaseNo) {
+		int result = purchaseService.deletePurchase(purchaseNo);
+		if(result == 1) {
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("message", "성공적으로 삭제되었습니다.");
+			return map;
+		} else {
+			return null;
+		}
 	}
 }
