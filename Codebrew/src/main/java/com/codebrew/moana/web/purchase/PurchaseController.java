@@ -92,10 +92,10 @@ public class PurchaseController {
 
 			System.out.println("아모루파티");
 
-			Party party = partyService.getParty(Integer.parseInt(partyNo));
-			ticket = ticketService.getTicket(party.getPartyNo(), "2");
+			//Party party = partyService.getParty(Integer.parseInt(partyNo));
+			//ticket = ticketService.getTicket(party.getPartyNo(), "2");
 
-			modelAndView.addObject("party", party);
+			//modelAndView.addObject("party", party);
 			modelAndView.addObject("purchaseFlag", "2");
 
 		}
