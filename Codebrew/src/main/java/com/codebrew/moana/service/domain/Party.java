@@ -6,9 +6,8 @@ public class Party {
 
 	///Field///
 	private int partyNo;
+	private String partyFlag;
 	private String partyName;
-	private Festival festival;
-	private User user;
 	private String partyDate;
 	private String partyTime;
 	private String hour;
@@ -18,14 +17,19 @@ public class Party {
 	private String partyImage;
 	private String partyDetail;
 	private String partyPlace;
-	private int ticketCount;
-	private int ticketPrice;
 	private String partyRegDate;
 	private String deleteFlag;
+	
 	private float femalePercentage;
 	private float malePercentage;
 	private int femaleAgeAverage;
 	private int maleAgeAverage;
+	
+	private Festival festival;
+	private User user;
+	
+	private int ticketCount;
+	private int ticketPrice;
 
 	
 	///Constructor///
@@ -34,25 +38,20 @@ public class Party {
 		// TODO Auto-generated constructor stub
 	}
 
-	
+
 	///Method///
 	public int getPartyNo() {
 		return partyNo;
 	}
 
 
+	public String getPartyFlag() {
+		return partyFlag;
+	}
+
+
 	public String getPartyName() {
 		return partyName;
-	}
-
-
-	public Festival getFestival() {
-		return festival;
-	}
-
-
-	public User getUser() {
-		return user;
 	}
 
 
@@ -101,16 +100,6 @@ public class Party {
 	}
 
 
-	public int getTicketCount() {
-		return ticketCount;
-	}
-
-
-	public int getTicketPrice() {
-		return ticketPrice;
-	}
-
-
 	public String getPartyRegDate() {
 		return partyRegDate;
 	}
@@ -141,23 +130,38 @@ public class Party {
 	}
 
 
+	public Festival getFestival() {
+		return festival;
+	}
+
+
+	public User getUser() {
+		return user;
+	}
+
+
+	public int getTicketCount() {
+		return ticketCount;
+	}
+
+
+	public int getTicketPrice() {
+		return ticketPrice;
+	}
+
+
 	public void setPartyNo(int partyNo) {
 		this.partyNo = partyNo;
 	}
 
 
+	public void setPartyFlag(String partyFlag) {
+		this.partyFlag = partyFlag;
+	}
+
+
 	public void setPartyName(String partyName) {
 		this.partyName = partyName;
-	}
-
-
-	public void setFestival(Festival festival) {
-		this.festival = festival;
-	}
-
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 
 
@@ -206,16 +210,6 @@ public class Party {
 	}
 
 
-	public void setTicketCount(int ticketCount) {
-		this.ticketCount = ticketCount;
-	}
-
-
-	public void setTicketPrice(int ticketPrice) {
-		this.ticketPrice = ticketPrice;
-	}
-
-
 	public void setPartyRegDate(String partyRegDate) {
 		this.partyRegDate = partyRegDate;
 	}
@@ -246,17 +240,39 @@ public class Party {
 	}
 
 
-	@Override
-	public String toString() {
-		return "Party [partyNo=" + partyNo + ", partyName=" + partyName + ",\n festival=" + festival + ",\n user=" + user
-				+ ",\n partyDate=" + partyDate + ", partyTime=" + partyTime + ", hour=" + hour + ", minutes=" + minutes
-				+ ", partyMemberLimit=" + partyMemberLimit + ", uploadFile=" + uploadFile + ", partyImage=" + partyImage
-				+ ", partyDetail=" + partyDetail + ", partyPlace=" + partyPlace + ", ticketCount=" + ticketCount
-				+ ", ticketPrice=" + ticketPrice + ", partyRegDate=" + partyRegDate + ", deleteFlag=" + deleteFlag
-				+ ", femalePercentage=" + femalePercentage + ", malePercentage=" + malePercentage
-				+ ", femaleAgeAverage=" + femaleAgeAverage + ", maleAgeAverage=" + maleAgeAverage + "]";
+	public void setFestival(Festival festival) {
+		this.festival = festival;
 	}
 
 
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+
+	public void setTicketCount(int ticketCount) {
+		this.ticketCount = ticketCount;
+	}
+
+
+	public void setTicketPrice(int ticketPrice) {
+		this.ticketPrice = ticketPrice;
+	}
+
+
+	@Override
+	public String toString() {
+		return "\n\n Party [ @@@ partyNo=" + partyNo + ", partyFlag=" + partyFlag + ", partyName=" + partyName + ", partyDate="
+				+ partyDate + ", partyTime=" + partyTime + ", hour=" + hour + ", minutes=" + minutes
+				+ ", partyMemberLimit=" + partyMemberLimit + ", uploadFile=" + uploadFile + ", partyImage=" + partyImage
+				+ ", partyDetail=" + partyDetail + ", partyPlace=" + partyPlace + ", partyRegDate=" + partyRegDate
+				+ ", deleteFlag=" + deleteFlag + ", femalePercentage=" + femalePercentage + ", malePercentage="
+				+ malePercentage + ", femaleAgeAverage=" + femaleAgeAverage + ", maleAgeAverage=" + maleAgeAverage
+				+ ",\n @@@ festival=" + festival + ",\n @@@ user=" + user + ",\n @@@ ticketCount=" + ticketCount + ", ticketPrice="
+				+ ticketPrice + "]";
+	}
+
+
+	
 	
 }

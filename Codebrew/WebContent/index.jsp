@@ -73,5 +73,10 @@
 <!--후기등록 테스트중 -->
 <a href="/review/addReview">후기등록</a>
 
+
+<!-- 파티 index -->
+<div><a href = "/party/addParty?userId=${user.userId}">addParty.jsp</a></div>
+	<div><a href = "/party/getParty?partyNo=10000">getParty.jsp</a></div>
+	<div><a href = "/party/getPartyList">getPartyList.jsp</a></div>
 </body>
 </html>

@@ -21,8 +21,10 @@
 	여기있음 하이퍼링크
 	<div><a href = "/party/addParty?userId=user01@naver.com">addParty.jsp</a></div>
 	<div><a href = "/party/getParty?partyNo=10000">getParty.jsp</a></div>
+	<div><a href = "/party/getPartyList">getPartyList.jsp</a></div>
+	<div><a href = "/party/getMyPartyList?user">getMyPartyList.jsp</a></div>
 	<div><a href = "http://127.0.0.1:8080/view/party/Sample.jsp">Sample.jsp</a></div>
 	<div><a href = "http://127.0.0.1:8080/view/party/addr.jsp">addr.jsp</a></div>
-	<div><a href = "http://127.0.0.1:8080/view/party/getPartyList.jsp">getPartyList.jsp</a></div>
+	
 </body>
 </html>

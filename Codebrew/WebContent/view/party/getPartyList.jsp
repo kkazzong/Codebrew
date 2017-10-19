@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
     
 <!--  ///////////////////////// JSTL  ////////////////////////// -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -8,9 +9,9 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 
-	<title>ÆÄÆ¼ ¸ñ·Ï Á¶È¸</title>
+	<title>íŒŒí‹° ëª©ë¡ ì¡°íšŒ</title>
 
-	<!-- ÂüÁ¶ : http://getbootstrap.com/css/   ÂüÁ¶ -->
+	<!-- ì°¸ì¡° : http://getbootstrap.com/css/   ì°¸ì¡° -->
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	
@@ -32,68 +33,104 @@
 	<!--  ///////////////////////// JavaScript ////////////////////////// -->
     <script type="text/javascript">
 	
-		//=============    °Ë»ö / page µÎ°¡Áö °æ¿ì ¸ğµÎ  Event  Ã³¸®	 =============	
-		/* function fncGetList(currentPage) {
+    
+    	//=============    ê²€ìƒ‰ / page ë‘ê°€ì§€ ê²½ìš° ëª¨ë‘  Event  ì²˜ë¦¬	 =============	
+		function fncGetList(currentPage) {
 				$("#currentPage").val(currentPage)
-				$("form").attr("method" , "POST").attr("action", "/product/listProduct/${menu}").submit();
+				$("form").attr("method" , "POST").attr("action", "/party/getPartyList").submit();
 		} 
 		
 		$(function(){
-			$("button[type=button]").bind("click", function() {
-				console.log( $("button[type=button]:contains('°Ë»ö')").html() );
+			$("button:contains('ê²€ìƒ‰')").on("click", function() {
+				console.log( $("button[type=button]:contains('ê²€ìƒ‰')").html() );
 				fncGetList(1);
 			});
 			
+			$("input[name=searchKeyword]").on('keydown',function(event){
+				if(event.keyCode ==13){
+					fncGetList(1);
+				}
+			});
 			
-		}); */		
-	
-
+		}); 	
 		
-		//=============    »óÇ°»ó¼¼Á¶È¸(½æ³×ÀÏ)  Event  Ã³¸® 		=============
+		//=============    íŒŒí‹°ìƒì„¸ì¡°íšŒ(ì¸ë„¤ì¼)  Event  ì²˜ë¦¬ 		=============
 		$(function(){
-			$("#partyBlock").on("click", function() {
+			$("a.thumbnail_image").on("click", function() {
 				
 				var partyNo = $( "input[name=partyNo]", $(this) ).val();
+				var partyFlag = $( "input[name=partyFlag]", $(this) ).val();
 				
-				console.log( $( "a.thumbnail_image img", $(this) ).val() );
-				self.location="/party/getParty/"+partyNo;
+				console.log(partyNo+" / "+partyFlag);
+				/* console.log( $( "a.thumbnail_image img", $(this) ).val() ); */
+				self.location="/party/getParty?partyNo="+partyNo+"&partyFlag="+partyFlag;
 		
 			});
 		});
 		
-		//=============    Select ÆÄÆ¼  Event  Ã³¸® 		=============
+		//=============    searchCondition íŒŒí‹°  Event  ì²˜ë¦¬ 		=============
 		$(function(){
-			$("button:contains('ÆÄÆ¼')").on("click", function() {
-				self.location="/party/getParty/0";
-		
+			$("button:contains('íŒŒí‹°')").on("click", function() {
+				
+				if( $("#searchCondition").val() != "1"){
+					console.log("ê·¸ëƒ¥ ì¶œë ¥1");
+					$("#searchKeyword").val("");
+				}
+				$("#searchCondition").val("1");
+				fncGetList(1);
+				
+			});
+			
+			$("button:contains('ì• í”„í„° íŒŒí‹°')").on("click", function() {
+				if( $("#searchCondition").val() != "2"){
+					console.log("ê·¸ëƒ¥ ì¶œë ¥2");
+					$("#searchKeyword").val("");
+				}
+				$("#searchCondition").val("2");
+				fncGetList(1);
 			});
 		});
 		
-		//=============    Select ¾ÖÇÁÅÍ ÆÄÆ¼  Event  Ã³¸® 		=============
+		//=============    ì „ì²´ íŒŒí‹° ëª©ë¡  Event  ì²˜ë¦¬ 		=============
 		$(function(){
-			$("button:contains('¾ÖÇÁÅÍ ÆÄÆ¼')").on("click", function() {
-				self.location="/party/getParty/1";
-		
+			$("#title").on("click", function() {
+				$("#searchKeyword").val("");
+				$("#searchCondition").val("");
+				fncGetList(1);
 			});
 		});
 		
 	</script>
 	
+	<!--  ///////////////////////// CSS ////////////////////////// -->
+	<style>
+	  body {
+            padding-top : 50px;
+          }
+      
+      .thumbnail a {
+    	display: block;
+   		width:300px; height:200px;
+   		overflow:hidden;
+   		margin:auto;
+   		vertical-align:middle;
+		}    
+    </style>
 </head>
 <body>
 
-	<!--  È­¸é±¸¼º div Start /////////////////////////////////////-->
+	<!--  í™”ë©´êµ¬ì„± div Start /////////////////////////////////////-->
 	<div class="container">
 	  <div class="page-header text-info">
-   		   <h2 align="center">ÆÄÆ¼ ¸ñ·Ï</h2>
+   		   <h2 align="center" id="title">íŒŒí‹° ëª©ë¡</h2>
 	  </div>
 	  
-	  <!-- table À§ÂÊ °Ë»ö Start /////////////////////////////////////-->
+	  <!-- table ìœ„ìª½ ê²€ìƒ‰ Start /////////////////////////////////////-->
 	    <div class="row">
 	    
 		    <div class="col-md-6 text-left">
 		    	<p class="text-primary">
-		    		ÀüÃ¼  ${resultPage.totalCount } °Ç¼ö
+		    		ì „ì²´  ${resultPage.totalCount } ê±´ìˆ˜
    		
 		    	</p>
 		    </div>
@@ -103,31 +140,32 @@
 			    
 				  <div class="form-group ">
 				    <div class="form-select">
-						<button type="button" class="btn btn-default" >ÆÄÆ¼</button>
-						<button type="button" class="btn btn-default" >¾ÖÇÁÅÍ ÆÄÆ¼</button>
+						<button type="button" class="btn btn-default" >íŒŒí‹°</button>
+						<button type="button" class="btn btn-default" >ì• í”„í„° íŒŒí‹°</button>
+						<input type="hidden" class="form-control" id="searchCondition" name="searchCondition" value="${ ! empty search.searchCondition ? search.searchCondition : '' }">
 						
 					</div>
 				  </div>
 				  
 				  <div class="form-group">
-				    <label class="sr-only" for="searchKeyword">°Ë»ö¾î</label>
-				    <input type="text" class="form-control" id="searchKeyword" name="searchKeyword" 
-				    			 value="${! empty search.searchKeyword ? search.searchKeyword : '' }"  >
-				    <button type="button" class="btn btn-default">°Ë»ö</button>			 
+				    <label class="sr-only" for="searchKeyword">ê²€ìƒ‰ì–´</label>
+				    <input type="text" class="form-control" id="searchKeyword" name="searchKeyword" value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
+
+				    <button type="button" class="btn btn-default">ê²€ìƒ‰</button>			 
 				  </div>		  
 				  
-				  <!-- PageNavigation ¼±ÅÃ ÆäÀÌÁö °ªÀ» º¸³»´Â ºÎºĞ -->
+				  <!-- PageNavigation ì„ íƒ í˜ì´ì§€ ê°’ì„ ë³´ë‚´ëŠ” ë¶€ë¶„ -->
 				  <input type="hidden" id="currentPage" name="currentPage" value=""/>
 				  
 				</form>
 	    	</div>
 	    	
 		</div>
-	  <!-- table À§ÂÊ °Ë»ö End /////////////////////////////////////-->
+	  <!-- table ìœ„ìª½ ê²€ìƒ‰ End /////////////////////////////////////-->
 	  
 	  <br/>
 	  
-	  <!-- table ¸ñ·Ï Á¶È¸ Start /////////////////////////////////////-->
+	  <!-- table ëª©ë¡ ì¡°íšŒ Start /////////////////////////////////////-->
 		<div class="container_list">		
 			<div class="row_list">
 				<input type="hidden" id="currentPageList" name="currentPageList" value="${resultPage.currentPage}"/>
@@ -138,27 +176,34 @@
 					<div id="partyBlock" class="col-sm-6 col-md-4" >
 						<div class="thumbnail">
 							<a href="#" class="thumbnail_image">
-								<img src="../../images/uploadFiles/${party.fileName}" width="300" height="350"> 
-								<input type="hidden" id="prodNo" name="prodNo" value="${party.partyNo }"/>
+								<img src="../../resources/uploadFile/${party.partyImage}" width="250" height="350"> 
+								<input type="hidden" id="partyNo" name="partyNo" value="${party.partyNo }"/>
+								<input type="hidden" id="partyFlag" name="partyFlag" value="${ empty party.festival.festivalNo ? '1' : '2' }"/>
 							</a> 
 							<div class="caption">
-								<h3 class="thumbnail_festivalName">${ !empty party.festival.festivalName ? party.festival.festivalName : '' }	
+								<h3 class="thumbnail_festivalName">${ !empty party.festival.festivalName ? party.festival.festivalName : '' }
 								</h3>
 								<h3 class="thumbnail_partyName">${ party.partyName }
-									<input type="hidden" id="partyNo" name="partyNo" value="${party.partyNo }"/>
+									<%-- <input type="hidden" id="partyNo" name="partyNo" value="${party.partyNo }"/> --%>
 								</h3>
 								<p>${ party.user.nickname }</p>
 								<p>${ party.partyDate }</p>
 								<p>${ party.partyPlace }</p>	
 							</div>
+							<%-- <input type="hidden" id="partyNo" name="partyNo" value="${party.partyNo }"/>
+							<input type="hidden" id="partyFlag" name="partyFlag" value="${ empty party.festival.festivalNo ? '1' : '2' }"/> --%>
 						</div>
 					</div>
 				</c:forEach>
 			</div>
 		</div> 
-		<!-- table ¸ñ·Ï Á¶È¸ End /////////////////////////////////////-->
+		<!-- table ëª©ë¡ ì¡°íšŒ End /////////////////////////////////////-->
 	  
  	</div>
- 	<!--  È­¸é±¸¼º div End /////////////////////////////////////-->
+ 	<!--  í™”ë©´êµ¬ì„± div End /////////////////////////////////////-->
+ 	
+ 	<!-- PageNavigation Start... -->
+	<jsp:include page="../../common/pageNavigator_new.jsp"/>
+	<!-- PageNavigation End... -->
 </body>
 </html>

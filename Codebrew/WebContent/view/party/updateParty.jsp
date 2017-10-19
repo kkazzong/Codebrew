@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<!--  ///////////////////////// JSTL  ////////////////////////// -->
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -55,10 +58,18 @@
 	      });   
 	    });
 
+		//============= "티켓가격 무료"  Event 처리 및  연결 =============
+		$(function() {
+			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+			$("#ticketPriceFree").on("click" , function() {
+				$("#ticketPrice").val(0);
+			});
+		});
+		
 		//============= "티켓수량"  Event 처리 및  연결 =============
 		$(function(){
-			$("#partyMemberCount").on("keyup", function(){
-				var ticketCount = $("#partyMemberCount").val();
+			$("#partyMemberLimit").on("keyup", function(){
+				var ticketCount = $("#partyMemberLimit").val();
 				$("#ticketCount").val(ticketCount);
 			});
 		})
@@ -97,17 +108,19 @@
 		    </div>
 		  </div>
 		  
+		  <c:if test="${ party.festival != null }">
 		  <div class="form-group">
 		    <label for="festivalName" class="col-sm-offset-1 col-sm-3 control-label">축제명</label>
 		    <div class="col-sm-4">
 		      <input type="text" class="form-control" id="festival.festivalName" name="festival.festivalName" value="${ party.festival.festivalName }" />
 		      <!-- <input type="text" readonly="readonly" class="form-control" id="festival.festivalName" name="festival.festivalName" placeholder="축제를 검색해주세요."> -->
-		      <input type="hidden" class="form-control" id="festival.festivalNo" name="festival.festivalNo" value="${ party.festival.festivalNo}">
+		      <input type="hidden" class="form-control" id="festival.festivalNo" name="festival.festivalNo" value=0>
 		    </div>
 		    <div>
 		      <button type="button" class="btn btn-primary" id="search-festival"  >축제검색</button>
 		    </div>
 		  </div>
+		 </c:if>
 		  
 		  <div class="form-group">
 		    <label for="partyName" class="col-sm-offset-1 col-sm-3 control-label">파티이름</label>
@@ -161,7 +174,7 @@
 		      <input type="text" class="form-control" id="ticketPrice" name="ticketPrice" value="${ ticket.ticketPrice }"> 
 			</div>
 			<div class="col-sm-1">
-			   무료<input type="radio" class="form-control" id="ticketPrice" name="ticketPrice" value="0">
+			   무료<input type="radio" class="form-control" id="ticketPriceFree" name="ticketPrice" value="0">
 			</div>
 		  </div>
 		 		  

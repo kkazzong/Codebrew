@@ -1,6 +1,5 @@
 package com.codebrew.moana.test.party;
 
-import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +16,7 @@ import com.codebrew.moana.service.domain.Festival;
 import com.codebrew.moana.service.domain.Party;
 import com.codebrew.moana.service.domain.PartyMember;
 import com.codebrew.moana.service.domain.User;
+import com.codebrew.moana.service.party.PartyDAO;
 import com.codebrew.moana.service.party.PartyService;
 
 
@@ -45,17 +45,22 @@ public class PartyServiceTest {
 	@Autowired
 	@Qualifier("partyServiceImpl")
 	private PartyService partyService;
+	
+	@Autowired
+	@Qualifier("partyDAOImpl")
+	private PartyDAO partyDAO;
 
 	//@Test
 	public void testGetParty() throws Exception {
 		
 		Party party = new Party();
 		
-		party = partyService.getParty(10000);
+		party = partyDAO.getParty(10040, "2");
+		//party = partyService.getParty(10040, "1");
 		//party = partyService.getParty(10006);
 
 		//==> console 확인
-		System.out.println("testGetParty() party :: "+party);
+		System.out.println("testGetParty() party :: "+party); 
 		
 		//==> API 확인
 		Assert.assertEquals("할로윈파티", party.getPartyName());
@@ -71,7 +76,7 @@ public class PartyServiceTest {
 		
 		Party party = new Party();
 		
-		party = partyService.getParty(10000);
+		party = partyService.getParty(10000,"2");
 
 		//==> console 확인
 		System.out.println("testUpdateParty() party :: "+party);
@@ -104,7 +109,7 @@ public class PartyServiceTest {
 		
 		
 		partyService.updateParty(party);
-		party = partyService.getParty(10000);
+		party = partyService.getParty(10000,"2");
 		
 		//==> API 확인
 		Assert.assertEquals("할로윈 파티", party.getPartyName());
@@ -127,7 +132,7 @@ public class PartyServiceTest {
 		int partyNo = 10000;
 		
 		partyService.deleteParty(partyNo);				
-		party = partyService.getParty(partyNo);
+		party = partyService.getParty(partyNo,"2");
 		
 		//==> console 확인
 		System.out.println("testDeleteParty() party :: "+party);
@@ -389,26 +394,26 @@ public class PartyServiceTest {
 	
 	
 	//@Test
-	public void testGetMemberList() throws Exception {
+	public void testGetPartyMemberList() throws Exception {
 		
 		Search search = new Search();
 	 	search.setCurrentPage(1);
 	 	search.setPageSize(3);
-	 	search.setSearchKeyword("쎄리");
+	 	//search.setSearchKeyword("쎄리");
 	 	
 		
 		Map<String,Object> map = partyService.getPartyMemberList(10000, search);
 	
 		List<Object> list = (List<Object>)map.get("list");
-	 	Assert.assertEquals(1, list.size());
+	 	Assert.assertEquals(3, list.size());
 	 	
 		//==> console 확인
 	 	System.out.println("testGetPartyMemberList() list :: "+list);
 	 	
-	 	Integer totalCount = (Integer)map.get("totalCount");
+	 	Integer currentMemberCount = (Integer)map.get("currentMemberCount");
 	 	
 	 	//==> console 확인
-	 	System.out.println("testGetPartyMemberList() totalCount :: "+totalCount);
+	 	System.out.println("testGetPartyMemberList() currentMemberCount :: "+currentMemberCount);
 	}
 	
 	

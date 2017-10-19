@@ -45,9 +45,9 @@ public class PartyServiceImpl implements PartyService {
 
 
 	@Override
-	public Party getParty(int partyNo) throws Exception{
+	public Party getParty(int partyNo, String partyFlag) throws Exception{
 		// TODO Auto-generated method stub
-		return partyDAO.getParty(partyNo);
+		return partyDAO.getParty(partyNo, partyFlag);
 	}
 
 	
@@ -80,9 +80,9 @@ public class PartyServiceImpl implements PartyService {
 
 
 	@Override
-	public Map<String, Object> getMyPartyList(Search search) throws Exception {
+	public Map<String, Object> getMyPartyList(Search search, String userId) throws Exception {
 		// TODO Auto-generated method stub
-		List<Party> list = partyDAO.getMyPartyList(search);
+		List<Party> list = partyDAO.getMyPartyList(search, userId);
 		int totalCount = partyDAO.getTotalCount(search);
 		
 		Map<String, Object> map = new HashMap<String, Object>();

@@ -13,7 +13,7 @@ public interface PartyDAO {
 	public void addParty(Party party) throws Exception ;
 	
 	// SELECT ONE
-	public Party getParty(int partyNo) throws Exception;
+	public Party getParty(int partyNo, String partyFlag) throws Exception;
 	
 	// UPDATE
 	public void updateParty(Party party) throws Exception;
@@ -25,7 +25,7 @@ public interface PartyDAO {
 	public List<Party> getPartyList(Search search) throws Exception;
 	
 	// SELECT LIST
-		public List<Party> getMyPartyList(Search search) throws Exception;
+	public List<Party> getMyPartyList(Search search, String userId) throws Exception;
 	
 	// SELECT ONE
 	public int getTotalCount(Search search) throws Exception ;

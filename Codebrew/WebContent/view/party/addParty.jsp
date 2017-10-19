@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@include file="/data/party/userData.jsp"%> 
-<%@include file="/data/party/festivalData.jsp"%> 
+<%-- <%@include file="/data/party/userData.jsp"%>  --%>
+<%-- <%@include file="/data/party/festivalData.jsp"%>  --%>
    
 <!DOCTYPE html>
 <html>
@@ -53,7 +53,8 @@
 		//============= "취소"  Event 처리 및  연결 =============
 		$(function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			$("a[href='#']").on("click" , function() {
+			/* $("a[href='#']").on("click" , function() { */
+			$("a:contains('취소')").on("click" , function() {	
 				history.go(-1);
 			});
 		});
@@ -81,12 +82,51 @@
 				var ticketCount = $("#partyMemberLimit").val();
 				$("#ticketCount").val(ticketCount);
 			});
-		})
+		});
+		
+		//============= "파티 플래그"  Event 처리 및  연결 =============
+		$(function(){
+			$("#party").on("click", function(){
+				$("#partyFlag").val("1");
+				var partyFlag = $("#partyFlag").val();
+				console.log(partyFlag);
+				
+				$("#festivalNameDiv").css("display", "none");
+				$("#ticketCountDiv").css("display", "block");
+				$("#ticketPriceDiv").css("display", "block");
+				
+				$("#festival.festivalNo").val(0);
+			});
+			
+			$("#afterParty").on("click", function(){
+				$("#partyFlag").val("");
+				var partyFlag = $("#partyFlag").val();
+				console.log(partyFlag);
+				
+				$("#festivalNameDiv").css("display", "block");
+				$("#ticketCountDiv").css("display", "none");
+				$("#ticketPriceDiv").css("display", "none");
+				
+			});
+		});
+		
+		
 		
 	</script>
 
 	<!--  ///////////////////////// CSS ////////////////////////// -->
-
+	<style type="text/css">
+		#festivalNameDiv {
+			display: none;
+		}
+		#ticketCountDiv {
+			display: block;
+		}
+		#ticketPriceDiv {
+			display: block;
+		}
+	</style>
+		
 </head>
 
 
@@ -113,20 +153,26 @@
 		  <div class="form-group">
 		    <label for="partyFlag" class="col-sm-offset-1 col-sm-3 control-label">파티구분</label>
 		    <div class="col-sm-2">
-		    	파티<input type="radio" class="form-control" id="partyFlag" name="partyFlag" value="party" ${ empty festival.festivalNo ? "checked" : "" }/>
+		    	<%-- 파티<input type="radio" class="form-control" id="partyFlag" name="partyFlag" value="1" ${ empty festival.festivalNo ? "checked" : "" }/> --%>
+		    	<button type="button" class="btn btn-primary" name="party" id="party">파티</button>
+		    	<button type="button" class="btn btn-primary" name="party" id="afterParty">애프터파티</button>
+		    	<!-- <a class="btn btn-primary btn" href="#" role="button" id="party">파티</a> -->
+		    	<!-- <a class="btn btn-primary btn" href="#" role="button" id="afterParty">애프터파티</a> -->
+		    	<input type="hidden" class="form-control" id="partyFlag" name="partyFlag"/>
 		    </div>
-		    <div class="col-sm-2">
-		    	애프터파티<input type="radio" class="form-control" id="partyFlag" name="partyFlag" value="afterParty" ${ empty festival.festivalNo ? "" : "checked" }/>
-		    </div>
+		    <%-- <div class="col-sm-2">
+		    	애프터파티<input type="radio" class="form-control" id="partyFlag" name="partyFlag" value="2" ${ empty festival.festivalNo ? "" : "checked" }/>
+		    </div> --%>
 		    
 		  </div>
 		  		
-		  <div class="form-group">
+		  <div class="form-group" id="festivalNameDiv">
 		    <label for="festivalName" class="col-sm-offset-1 col-sm-3 control-label">축제명</label>
 		    <div class="col-sm-4">
 		      <input type="text" class="form-control" id="festival.festivalName" name="festival.festivalName" value="${festival.festivalName }" />
 		      <!-- <input type="text" readonly="readonly" class="form-control" id="festival.festivalName" name="festival.festivalName" placeholder="축제를 검색해주세요."> -->
-		      <input type="hidden" class="form-control" id="festival.festivalNo" name="festival.festivalNo" value="${festival.festivalNo }" />
+		      <%-- <input type="hidden" class="form-control" id="festival.festivalNo" name="festival.festivalNo" value="${festival.festivalNo }" /> --%>
+		      <input type="hidden" class="form-control" id="festival.festivalNo" name="festival.festivalNo" value=0 />
 		      <button type="button" class="btn btn-primary" name="searchFestival" >축제검색</button>
 		    </div>
 		  </div>
@@ -210,14 +256,14 @@
 		    </div>
 		  </div>
 		  
-		  <div class="form-group">
+		  <div class="form-group" id="ticketCountDiv">
 		    <label for="ticketCount" class="col-sm-offset-1 col-sm-3 control-label">티켓수량</label>
 		    <div class="col-sm-4">
 		      <input type="text" class="form-control" id="ticketCount" name="ticketCount" >
 		    </div>
 		  </div>
 		  
-		  <div class="form-group">
+		  <div class="form-group" id="ticketPriceDiv">
 		    <label for="ticketPrice" class="col-sm-offset-1 col-sm-3 control-label">티켓가격</label>
 		    <div class="col-sm-2">
 		    	<input type="text" class="form-control" id="ticketPrice" name="ticketPrice" >
