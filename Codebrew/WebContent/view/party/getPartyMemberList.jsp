@@ -1,16 +1,16 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+ <%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
     
 <!--  ///////////////////////// JSTL  ////////////////////////// -->
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%--<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 
 <!DOCTYPE html>
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-	<title>ÆÄÆ¼ Âü¿©ÀÚ ¸ñ·Ï È­¸é</title>
+	<title>íŒŒí‹° ì°¸ì—¬ì ëª©ë¡ í™”ë©´</title>
 	
-	<!-- ÂüÁ¶ : http://getbootstrap.com/css/   ÂüÁ¶ -->
+	<!-- ì°¸ì¡° : http://getbootstrap.com/css/   ì°¸ì¡° -->
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	
@@ -24,48 +24,68 @@
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 
-	<!-- Jquery DatePicker -->
-	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script type="text/javascript">
+	
+		$(function(){
+			$("div.user").on("click", function() {
+				var userId = $( "input[name=userId]", $(this) ).val();
+				
+				console.log(userId);
+				self.location="/myPage/getProfile?userId="+userId;
+		
+			});
+		});
+	
+	</script>
 
 </head>
-<body>
+<body> --%>
 
-	<!--  È­¸é±¸¼º div Start /////////////////////////////////////-->
-	<div class="modal">
+	<!--  í™”ë©´êµ¬ì„± div Start /////////////////////////////////////-->
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title">ÆÄÆ¼ Âü¿©ÀÚ ¸ñ·Ï</h5>
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	          <span aria-hidden="true">&times;</span>
 	        </button>
+	        <h1 class="modal-title" id="exampleModalLabel" align="center">íŒŒí‹° ë©¤ë²„ ëª©ë¡</h1>
+	        <div><h4 align="center">${ partyMember.party.partyName }</h4></div>
+	        
 	      </div>
 	      <div class="modal-body">
 	        <form class="form-horizontal" enctype="multipart/form-data">
-				${ partyMember.partyNo }
+				
 				<c:set var="i" value="0"/>
 				<c:forEach var="partyMember" items="${list}">
-					<div class="row">
-						<img class="rounded-circle" src="../../images/uploadFiles/${ partyMember.user.profileImage }" alt="Generic placeholder image" width="40" height="40">
-						${ partyMember.user.userId }
+					<div class="row" id="user">
+						<input type="hidden" id="userId" name="userId" value="${ partyMember.user.userId }">
+						<span>
+						<img class="rounded-circle" src="/resources/uploadFile/${ partyMember.user.profileImage }" alt="Generic placeholder image" width="40" height="40">
+						</span>
+						<span>
+						${ partyMember.user.nickname } &nbsp; ( ${ partyMember.user.userId } )
+						</span>
+						<span>
 						<c:if test="${partyMember.role =='host' }">
 							<strong>host</strong>
 						</c:if>
+						</span>
 					</div>
 				</c:forEach>
 			</form>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">ë‹«ê¸°</button>
 	      </div>
 	    </div>
 	  </div>
-	</div>
+	</div> 
 	
-	<div class="container">
+	<%-- <div class="container">
 		<hr/>
-		<h1 class="bg-primary text-center">ÆÄÆ¼ Âü¿©ÀÚ ¸ñ·Ï</h1>
+		<h1 class="bg-primary text-center">íŒŒí‹° ì°¸ì—¬ì ëª©ë¡</h1>
 		<hr/>
 		<!-- form Start /////////////////////////////////////-->
 		<form class="form-horizontal" enctype="multipart/form-data">
@@ -83,6 +103,6 @@
 			
 		
 		</form>
-	</div>
-</body>
-</html>
+	</div> --%>
+<!-- </body>
+</html> -->

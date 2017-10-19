@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <!DOCTYPE mapper
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
@@ -41,7 +41,7 @@
 		INSERT
 		INTO party(party_no
 					, party_name
-				    <if test="festival.festivalNo != null">
+				    <if test="festival.festivalNo != 0">
 				    	,festival_no
 				    </if>
 				    , user_id
@@ -57,7 +57,7 @@
 					, delete_flag)
 		VALUES(seq_party_party_no.nextval
 				,#{partyName:VARCHAR}
-				<if test="festival.festivalNo != null">
+				<if test="festival.festivalNo != 0">
 					,#{festival.festivalNo:NUMERIC}
 				</if>
 				,#{user.userId:VARCHAR}
@@ -73,28 +73,61 @@
 				,#{deleteFlag:VARCHAR})
 	</insert>
 		
-
-	<select id="getParty" parameterType="int" resultMap="partySelectMap">
-		SELECT  p.party_no, 
-				p.party_name,
-				f.festival_no,
-				f.festival_name,
-				u.user_id,
-				u.nickname,
-				u.profile_image,
-				TO_CHAR(p.party_date, 'yy/mm/dd' ) AS party_date, 
-				p.party_time, 
-				p.party_member_limit, 
-				p.party_image, 
-				p.party_detail, 
-				p.party_place, 
-				TO_CHAR(p.party_reg_date, 'yy/mm/dd') AS party_reg_date,
-				p.delete_flag
-		FROM party p, users u, festival f
+	<select id="getParty" parameterType="map" resultMap="partySelectMap">
+		SELECT  p.party_no
+				, p.party_name
+				,f.festival_no
+				,f.festival_name
+				,u.user_id
+				,u.nickname
+				,u.profile_image
+				,TO_CHAR(p.party_date, 'yy/mm/dd' ) AS party_date 
+				,p.party_time
+				,p.party_member_limit 
+				,p.party_image
+				,p.party_detail 
+				,p.party_place 
+				,TO_CHAR(p.party_reg_date, 'yy/mm/dd') AS party_reg_date
+				,p.delete_flag
+		FROM party p
+			 ,users u
+		 	 ,festival f
+		
 		WHERE p.user_id = u.user_id
-		AND p.festival_no = f.festival_no
-		AND p.party_no = #{value}
+		AND p.festival_no = f.festival_no(+)
+		AND p.party_no = #{partyNo:NUMERIC}
 	</select>
+	
+	<!-- <select id="getParty" parameterType="map" resultMap="partySelectMap">
+		SELECT  p.party_no
+				, p.party_name
+				<if test="partyFlag == '2'">
+					,f.festival_no
+					,f.festival_name
+				</if>
+				,u.user_id
+				,u.nickname
+				,u.profile_image
+				,TO_CHAR(p.party_date, 'yy/mm/dd' ) AS party_date 
+				,p.party_time
+				,p.party_member_limit 
+				,p.party_image
+				,p.party_detail 
+				,p.party_place 
+				,TO_CHAR(p.party_reg_date, 'yy/mm/dd') AS party_reg_date
+				,p.delete_flag
+		FROM party p
+			 ,users u
+		 	 <if test="partyFlag == '2'">
+		  		,festival f
+		  	 </if>
+		WHERE p.user_id = u.user_id
+		<if test="partyFlag == '2'">
+			AND p.festival_no = f.festival_no
+		</if>
+		
+		AND p.party_no = #{partyNo:NUMERIC}
+	</select> -->
 	
 	<!-- <select id="getParty" parameterType="int" resultMap="partySelectMap">
 		SELECT TO_CHAR(party_date, 'yy/mm/dd') AS party_date
@@ -105,7 +138,7 @@
 	<update id="updateParty" parameterType="party">
 		UPDATE party
 		<set>
-			<if test="festival.festivalNo != null">festival_no = #{festival.festivalNo}, </if>
+			<if test="festival != null">festival_no = #{festival.festivalNo}, </if>
 			<if test="partyName != null">party_name = #{partyName}, </if>
 			<if test="partyDate != null">party_date = #{partyDate}, </if>
 			<if test="partyTime != null">party_time = #{partyTime}, </if>
@@ -130,32 +163,33 @@
 	<select  id="getPartyList" parameterType="com.codebrew.moana.common.Search" resultMap="partySelectMap">
 	  	SELECT *
 	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
-	  					FROM		(	SELECT p.party_no, p.party_image, f.festival_name, p.party_name, u.nickname, p.party_date, p.party_time, p.party_place
+	  					FROM		(	SELECT p.party_no, p.party_image, f.festival_name, f.festival_no, p.party_name, u.nickname, p.party_date, p.party_time, p.party_place
 										FROM party p, festival f, users u
 										
 									    <where>
-									        p.festival_no = f.festival_no
+									        p.festival_no = f.festival_no(+)
 									        AND p.user_id = u.user_id
 									    	AND p.delete_flag IS NULL
-										
-										<if test="searchCondition != null">
-										     
-									        <if test="searchCondition == 1 and searchKeyword =='' ">
-									            AND p.festival_no IS NULL
-									        </if>
-									        <if test="searchCondition == 1 and searchKeyword !='' ">
-									            AND p.festival_no IS NULL
-									            AND p.party_name LIKE '%${searchKeyword}%'
-									        </if>
-									        <if test="searchCondition == 2 and searchKeyword =='' ">
-									            AND p.festival_no IS NOT NULL
-									        </if>
-									        <if test="searchCondition == 2 and searchKeyword !='' ">
-									            AND p.festival_no IS NOT NULL
-									            AND p.party_name LIKE '%${searchKeyword}%'
-									        </if>
-										    
-										</if>
+									    	
+											<if test="searchCondition == ''">
+												AND p.party_name LIKE '%${searchKeyword}%'
+											</if>
+											<if test="searchCondition != ''">
+										        <if test="searchCondition == 1 and searchKeyword =='' ">
+										            AND p.festival_no IS NULL
+										        </if>
+										        <if test="searchCondition == 1 and searchKeyword !='' ">
+										            AND p.festival_no IS NULL
+										            AND p.party_name LIKE '%${searchKeyword}%'
+										        </if>
+										        <if test="searchCondition == 2 and searchKeyword =='' ">
+										            AND p.festival_no IS NOT NULL
+										        </if>
+										        <if test="searchCondition == 2 and searchKeyword !='' ">
+										            AND p.festival_no IS NOT NULL
+										            AND p.party_name LIKE '%${searchKeyword}%'
+										        </if>
+											</if>
 										
 										</where>
 										ORDER BY p.party_reg_date DESC  ) inner_table
@@ -164,18 +198,21 @@
 	 </select>
 	 
 	 
-	 <select  id="getMyPartyList" parameterType="com.codebrew.moana.common.Search" resultMap="partySelectMap">
+	 <select  id="getMyPartyList" parameterType="map" resultMap="partySelectMap">
 	  	SELECT *
 	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
 	  					FROM		(	SELECT p.party_no, p.party_image, f.festival_name, p.party_name, u.nickname, p.party_date, p.party_time, p.party_place
 										FROM party p, festival f, users u
 										
 									    <where>
-									        p.festival_no = f.festival_no
+									        p.festival_no = f.festival_no(+)
 									        AND p.user_id = u.user_id
 									    	AND p.delete_flag IS NULL
-										
-										<if test="searchCondition != null">
+									    	AND u.userId = #{userId}
+										<if test="searchCondition == ''">
+											AND p.party_name LIKE '%${searchKeyword}%'
+										</if>
+										<if test="searchCondition != ''">
 										     
 									        <if test="searchCondition == 3 and searchKeyword =='' ">
 									            AND p.party_date &lt; SYSDATE
@@ -206,11 +243,14 @@
 	  	FROM(	SELECT 	*
 	  			FROM party p, festival f, users u
 				<where>
-			        p.festival_no = f.festival_no
+			        p.festival_no = f.festival_no(+)
 			        AND p.user_id = u.user_id
 					AND p.delete_flag IS NULL
 					
-					<if test="searchCondition != null">
+					<if test="searchCondition == ''">
+						AND p.party_name LIKE '%${searchKeyword}%'
+					</if>
+					<if test="searchCondition != ''">
 					    
 				        <if test="searchCondition == 1 and searchKeyword =='' ">
 				            AND p.festival_no IS NULL
@@ -240,8 +280,8 @@
 				,#{party.partyNo:NUMERIC}
 				,#{user.userId:VARCHAR}
 				,#{role:VARCHAR}
-				,#{age:NUMERIC}
-				,#{gender:VARCHAR})		
+				,#{user.age:NUMERIC}
+				,#{user.gender:VARCHAR})		
 	</insert>
 	
 	

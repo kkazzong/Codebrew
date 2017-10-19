@@ -10,7 +10,7 @@ public interface PartyService {
 	
 	public void addParty(Party party) throws Exception;
 	
-	public Party getParty(int partyNo) throws Exception;
+	public Party getParty(int partyNo, String partyFlag) throws Exception;
 	
 	public void updateParty(Party party) throws Exception;
 	
@@ -18,7 +18,7 @@ public interface PartyService {
 	
 	public Map<String, Object> getPartyList(Search search) throws Exception;
 	
-	public Map<String, Object> getMyPartyList(Search search) throws Exception;
+	public Map<String, Object> getMyPartyList(Search search, String userId) throws Exception;
 	
 	/////////////////////////////////////////////////////////////////////////////
 	

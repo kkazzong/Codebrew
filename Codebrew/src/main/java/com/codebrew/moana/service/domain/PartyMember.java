@@ -81,7 +81,7 @@ public class PartyMember {
 
 	@Override
 	public String toString() {
-		return "PartyMember [partyMemberNo=" + partyMemberNo + ", party=" + party + ", user=" + user + ", role=" + role
+		return "\n\n PartyMember [ @@@ partyMemberNo=" + partyMemberNo + ",\n @@@ party=" + party + ",\n @@@ user=" + user + ",\n @@@ role=" + role
 				+ ", age=" + age + ", gender=" + gender + "]"; 
 	}
 

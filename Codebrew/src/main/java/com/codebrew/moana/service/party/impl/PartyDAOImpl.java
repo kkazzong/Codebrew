@@ -46,9 +46,15 @@ public class PartyDAOImpl implements PartyDAO {
 
 	
 	@Override
-	public Party getParty(int partyNo) throws Exception{
+	public Party getParty(int partyNo, String partyFlag) throws Exception{
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne("PartyMapper.getParty", partyNo);
+		Map<String, Object> map = new HashMap<String, Object>();
+	
+		map.put("partyNo", partyNo);
+		map.put("partyFlag", partyFlag);
+		System.out.println("getPartyDAO :: map :: "+ map.get("partyNo") +" :: "+ map.get("partyFlag"));
+		
+		return sqlSession.selectOne("PartyMapper.getParty", map);
 	}
 
 
@@ -74,9 +80,14 @@ public class PartyDAOImpl implements PartyDAO {
 
 
 	@Override
-	public List<Party> getMyPartyList(Search search) throws Exception {
+	public List<Party> getMyPartyList(Search search, String userId) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList("PartyMapper.getMyPartyList", search);
+		Map<String , Object>  map = new HashMap<String, Object>();
+		
+		map.put("partyNo", userId);
+		map.put("search", search);
+		
+		return sqlSession.selectList("PartyMapper.getMyPartyList", map);
 	}
 
 
@@ -99,10 +110,10 @@ public class PartyDAOImpl implements PartyDAO {
 		
 		Map<String , Object>  map = new HashMap<String, Object>();
 			
-			map.put("partyNo", partyNo);
-			map.put("search", search);
-			
-			List<PartyMember> list = sqlSession.selectList("PartyMapper.getPartyMemberList", map); 
+		map.put("partyNo", partyNo);
+		map.put("search", search);
+		
+		List<PartyMember> list = sqlSession.selectList("PartyMapper.getPartyMemberList", map); 
 			
 		return list;
 	}
