@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.codebrew.moana.common.Search;
+import com.codebrew.moana.service.domain.Hashtag;
+import com.codebrew.moana.service.domain.Image;
 import com.codebrew.moana.service.domain.Review;
 import com.codebrew.moana.service.domain.User;
 import com.codebrew.moana.service.review.ReviewDAO;
@@ -99,7 +101,7 @@ public class ReviewDAOImpl implements ReviewDAO {
 	}
 	
 	@Override //12
-	public int getTotalCount(Search search) throws Exception{
+	public int getTotalCount(Search search) throws Exception {
 		System.out.println("DAO :: getTotalCount");
 		return sqlSession.selectOne("ReviewMapper.getTotalCount", search);
 	}
@@ -115,5 +117,18 @@ public class ReviewDAOImpl implements ReviewDAO {
 		System.out.println("DAO :: uploadReviewHashtag");
 		sqlSession.insert("ReviewMapper.uploadReviewHashtag", map);
 	}
+	
+	@Override //15
+	public List<Image> getReviewImage(int reviewNo) throws Exception {
+		System.out.println("DAO :: getReviewImage");
+		return sqlSession.selectList("ReviewMapper.getReviewImage", reviewNo);
+	}
+	
+	@Override //16
+	public List<Hashtag> getReviewHashtag(int reviewNo) throws Exception {
+		System.out.println("DAT :: getReviewHashtag");
+		return sqlSession.selectList("ReviewMapper.getReviewHashtag", reviewNo);
+	}
+	
 	
 }

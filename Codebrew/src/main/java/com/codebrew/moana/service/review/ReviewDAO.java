@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.codebrew.moana.common.Search;
+import com.codebrew.moana.service.domain.Hashtag;
+import com.codebrew.moana.service.domain.Image;
 import com.codebrew.moana.service.domain.Review;
 import com.codebrew.moana.service.domain.User;
 
@@ -61,4 +63,9 @@ public interface ReviewDAO {
 	//14
 	public void uploadReviewHashtag(Map<String, Object> map) throws Exception;
 	
+	//15
+	public List<Image> getReviewImage(int reviewNo) throws Exception;
+	
+	//16
+	public List<Hashtag> getReviewHashtag(int reviewNo) throws Exception;
 }

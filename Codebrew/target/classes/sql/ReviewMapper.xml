@@ -185,7 +185,8 @@
 			rp.user_id, 
 			rp.reply_detail, 
 			rp.reply_reg_date,
-			i.review_image
+			i.review_image, 
+			h.hashtag_detail 
 		FROM review rv, festival f,
 			(SELECT image_no, review_no, review_image FROM image WHERE review_no=#{reviewNo}) i, 
 			(SELECT hashtag_no, review_no, hashtag_detail FROM hashtag WHERE review_no=#{reviewNo}) h, 
@@ -206,6 +207,16 @@
 			review_no, 
 			review_image
 		FROM image 
+		WHERE review_no=#{reviewNo}
+	</select>
+	
+	
+	<select id="getReviewHashtag" parameterType="int" resultMap="hashtagSelectMap">
+		SELECT
+			hashtag_no, 
+			review_no, 
+			hashtag_detail 
+		FROM hashtag
 		WHERE review_no=#{reviewNo}
 	</select>
 	

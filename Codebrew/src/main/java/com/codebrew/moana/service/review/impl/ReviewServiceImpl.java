@@ -16,7 +16,7 @@ import com.codebrew.moana.service.domain.User;
 import com.codebrew.moana.service.review.ReviewDAO;
 import com.codebrew.moana.service.review.ReviewService;
 
-//TTL Method : 11 EA
+//TTL Method : 1 EA
 @Service("reviewServiceImpl")
 public class ReviewServiceImpl implements ReviewService {
 	
@@ -34,15 +34,13 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	///Service Method
-	@Override
+	@Override //1
 	public Review addReview(Review review) throws Exception {
 		
 		System.out.println("Service :: addReview");
 		
 		reviewDAO.addReview(review);
 		
-		System.out.println();
-
 		if(review.getReviewImage() != null && review.getReviewImage().size() != 0) { //이미지 올렸을 때
 			for(Image image : review.getReviewImage()) {
 				Map<String, Object> map = new HashMap<String, Object>();
@@ -65,22 +63,22 @@ public class ReviewServiceImpl implements ReviewService {
 		return reviewDAO.getReview(review.getReviewNo());
 	}
 
-	@Override
+	@Override //2
 	public Review getReview(int reviewNo) throws Exception {
 		return reviewDAO.getReview(reviewNo);
 	}
 
-	@Override
+	@Override //3
 	public void updateReview(Review review) throws Exception {
 		reviewDAO.updateReview(review);
 	}
 
-	@Override
+	@Override //4
 	public void deleteReview(int reviewNo) throws Exception {
 		reviewDAO.deleteReview(reviewNo);
 	}
 
-	@Override
+	@Override//5
 	public Map<String, Object> getReviewList(Search search) throws Exception {
 		List<Review> list = reviewDAO.getReviewList(search);
 		int totalCount = reviewDAO.getTotalCount(search);
@@ -92,7 +90,7 @@ public class ReviewServiceImpl implements ReviewService {
 		return map;
 	}
 
-	@Override
+	@Override //6
 	public Map<String, Object> getMyReviewList(Search search, String userId) throws Exception {
 		List<Review> list = reviewDAO.getMyReviewList(search);
 		int totalCount = reviewDAO.getTotalCount(search);
@@ -103,7 +101,7 @@ public class ReviewServiceImpl implements ReviewService {
 		return map;
 	}
 
-	@Override
+	@Override //7
 	public Map<String, Object> getCheckReviewList(Search search, String checkCode) throws Exception {
 		List<Review> list = reviewDAO.getCheckReviewList(search);
 		int totalCount = reviewDAO.getTotalCount(search);
@@ -114,24 +112,34 @@ public class ReviewServiceImpl implements ReviewService {
 		return map;
 	}
 
-	@Override
+	@Override //8
 	public void passCheckCode(Review review) throws Exception {
 		reviewDAO.passCheckCode(review);
 	}
 
-	@Override
+	@Override //9
 	public void failCheckCode(Review review) throws Exception {
 		reviewDAO.failCheckCode(review);
 	}
 
-	@Override
+	@Override //10
 	public void addGood(User user) throws Exception {
 		reviewDAO.addGood(user);
 	}
 
-	@Override
+	@Override //11
 	public void deleteGood(int goodNo) throws Exception {
 		reviewDAO.deleteGood(goodNo);
+	}
+	
+	@Override //12
+	public List<Image> getReviewImage(int reviewNo) throws Exception {
+		return reviewDAO.getReviewImage(reviewNo);
+	}
+	
+	@Override //13
+	public List<Hashtag> getReviewHashtag(int reviewNo) throws Exception {
+		return reviewDAO.getReviewHashtag(reviewNo);
 	}
 
 }

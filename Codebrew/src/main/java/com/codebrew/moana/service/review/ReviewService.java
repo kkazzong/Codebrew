@@ -1,8 +1,11 @@
 package com.codebrew.moana.service.review;
 
+import java.util.List;
 import java.util.Map;
 
 import com.codebrew.moana.common.Search;
+import com.codebrew.moana.service.domain.Hashtag;
+import com.codebrew.moana.service.domain.Image;
 import com.codebrew.moana.service.domain.Review;
 import com.codebrew.moana.service.domain.User;
 
@@ -42,5 +45,11 @@ public interface ReviewService {
 	
 	//11
 	public void deleteGood(int goodNo) throws Exception;
+	
+	//12
+	public List<Image> getReviewImage(int reviewNo) throws Exception;
+	
+	//13
+	public List<Hashtag> getReviewHashtag(int reviewNo) throws Exception;
 	
 }

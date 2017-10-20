@@ -1,6 +1,8 @@
 package com.codebrew.moana.web.review;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,21 +14,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.codebrew.moana.common.Page;
 import com.codebrew.moana.common.Search;
+import com.codebrew.moana.service.domain.Festival;
+import com.codebrew.moana.service.domain.Hashtag;
 import com.codebrew.moana.service.domain.Image;
 import com.codebrew.moana.service.domain.Review;
 import com.codebrew.moana.service.domain.User;
+import com.codebrew.moana.service.festival.FestivalService;
 import com.codebrew.moana.service.review.ReviewService;
+import com.codebrew.moana.service.user.UserService;
 
 //==> review controller
 @Controller
@@ -37,6 +41,14 @@ public class ReviewController {
 	@Autowired
 	@Qualifier("reviewServiceImpl")
 	private ReviewService reviewService;
+	
+	@Autowired
+	@Qualifier("festivalServiceImpl")
+	private FestivalService festivalService;
+	
+	@Autowired
+	@Qualifier("userServiceImpl")
+	private UserService userService;
 
 	public ReviewController() {
 		System.out.println(this.getClass());
@@ -65,36 +77,73 @@ public class ReviewController {
 	
 	//2. POST 인 경우 : addReview.jsp에서 form작성을 완료하여 실제로 등록한 후 getReview.jsp로 넘어간다.
 	@RequestMapping(value="addReview", method=RequestMethod.POST)
-	public ModelAndView addReview(@ModelAttribute("review") Review review, 
+	public ModelAndView addReview(HttpSession session,
+									@ModelAttribute("review") Review review, 
 									@RequestParam("uploadReviewImage") List<MultipartFile> uploadReviewImage, 
-									@RequestParam("uploadReviewVideo") List<MultipartFile> uploadReviewVideo) throws Exception{
+									@RequestParam("uploadReviewVideo") List<MultipartFile> uploadReviewVideo, 
+									@RequestParam("uploadHashtag") String uploadHashtag) throws Exception{
 		
 //		@RequestParam("uploadReviewVideo") MultipartHttpServletRequest reviewVideo
 		
 		System.out.println("addReview processing...");
 		
-		String filePath = "C:\\Users\\Admin\\git\\Codebrew\\Codebrew\\WebContent\\resources\\uploadFile\\";
+		String filePath1 = "C:\\Users\\Admin\\git\\Codebrew\\Codebrew\\WebContent\\resources\\uploadFile\\"; // 실제 directory 경로로 파일을 영구적으로 저장하기 위함이다.
+		String filePath2 = session.getServletContext().getRealPath("/")+"\\resources\\uploadFile\\"; //실제 folder가 아닌 tomcat의 임시 서버로서 add후 바로 get을 했을때 이미지를 볼 수 있도록 한다.
 		
 		if(uploadReviewImage != null && uploadReviewImage.size() > 0){
 			
 			List<Image> uploadImageList = new ArrayList<Image>();
 			for(MultipartFile multipartFile : uploadReviewImage){
 				Image eachImage = new Image();
-				eachImage.setReviewImage(multipartFile.getOriginalFilename());
-				uploadImageList.add(eachImage);
-				File file = new File(filePath+multipartFile.getOriginalFilename());
-				multipartFile.transferTo(file);
+				String fileName = UUID.randomUUID().toString()+System.currentTimeMillis()+multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."), multipartFile.getOriginalFilename().length());
+				eachImage.setReviewImage(fileName); //각각의 이미지 fileName을 setting
+				
+				uploadImageList.add(eachImage); //생성한 list에 setting이 끝난 각각의 Image 객체를 넣어줌
+				File file1 = new File(filePath1+fileName); // 1st Path : 실제 존재하는 uploadFile 경로+fileName
+				//File file1 = new File(filePath1, fileName);
+				File file2 = new File(filePath2+fileName); // 2nd Path : Tomcat의 temporary folder 경로+fileName
+				//File file2 = new File(filePath2, fileName);
+				
+				System.out.println("\n\n\n\n\nmultipartFile"+multipartFile);
+				multipartFile.transferTo(file2);
+				
+				FileInputStream fis = null;
+				FileOutputStream fos = null; 
+
+				try {
+					fis = new FileInputStream(file2);	// 원본파일
+					fos = new FileOutputStream(file1);	// 복사위치
+					   
+					byte[] buffer = new byte[1024];
+					int readcount = 0;
+					  
+					while((readcount=fis.read(buffer)) != -1) {
+					fos.write(buffer, 0, readcount);				// 파일 복사 
+					}
+				} catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+					fis.close();
+					fos.close();
+				}
+
 			}
 			review.setReviewImage(uploadImageList);
 		}
-	
+		if(uploadHashtag != null){
+			
+			List<Hashtag> uploadHashtagList = new ArrayList<Hashtag>();
+			for(String splitedHashtag : uploadHashtag.split(";")){
+				Hashtag eachHashtag = new Hashtag();
+				eachHashtag.setHashtagDetail(splitedHashtag.replaceAll("#", ""));
+				uploadHashtagList.add(eachHashtag);
+			}
+			review.setReviewHashtag(uploadHashtagList);
+		}
 		
-		System.out.println("\n\n\n\n\n=============================ok=============================\n\n\n\n\n");
-		
-		reviewService.addReview(review);
+		review = reviewService.addReview(review);
 		
 		ModelAndView modelAndView = new ModelAndView();
-		//modelAndView.addObject(fileNames);
 		modelAndView.addObject(review);
 		modelAndView.setViewName("/view/review/getReview.jsp");
 		
@@ -105,14 +154,19 @@ public class ReviewController {
 	@RequestMapping(value="getReview", method = RequestMethod.GET)
 	public ModelAndView getReview( @RequestParam("reviewNo") int reviewNo) throws Exception {
 		
-		System.out.println("/review/getReview");
+		System.out.println("/view/review/getReview");
 		
 		//Business Logic
 		Review review = reviewService.getReview(reviewNo);
+		User user = userService.getUser(review.getWriterId());
+		Festival festival = festivalService.getFestival(review.getFestivalNo());
+		
 		// Model 과 View 연결
 		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("writer", user);
+		modelAndView.addObject("festival", festival);
 		modelAndView.addObject("review", review);
-		modelAndView.setViewName("/review/getReview.jsp");
+		modelAndView.setViewName("/view/review/getReview.jsp");
 		
 		return modelAndView;
 	}
@@ -121,19 +175,22 @@ public class ReviewController {
 	@RequestMapping(value="updateReview", method = RequestMethod.GET)
 	public ModelAndView updateReview( @RequestParam("reviewNo") int reviewNo) throws Exception{
 
-		System.out.println("/review/updateReview");
+		System.out.println("/view/review/updateReview");
 		//Business Logic
 		Review review = reviewService.getReview(reviewNo);
+		
+		Festival festival = festivalService.getFestival(review.getFestivalNo());
 		
 		// Model 과 View 연결
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("review", review);
-		modelAndView.setViewName("/review/updateReview.jsp");
+		modelAndView.addObject("festival", festival);
+		modelAndView.setViewName("/view/review/updateReview.jsp");
 		
 		return modelAndView;
 	}
 	
-	@RequestMapping(value="getReviewList")
+	@RequestMapping(value="getReviewList", method = RequestMethod.POST)
 	public ModelAndView getReviewList( @ModelAttribute("search") Search search, 
 									@ModelAttribute("review") Review review) throws Exception{
 		
@@ -142,7 +199,7 @@ public class ReviewController {
 		 * 매개변수 HttpServletRequest type : request 삭제함.
 		 */
 		
-		System.out.println("/review/getReviewList");
+		System.out.println("/view/review/getReviewList");
 		
 		if(search.getCurrentPage() ==0 ){
 			search.setCurrentPage(1);
@@ -161,7 +218,7 @@ public class ReviewController {
 		modelAndView.addObject("resultPage", resultPage);
 		modelAndView.addObject("search", search);
 		
-		modelAndView.setViewName("/review/getReviewList.jsp");
+		modelAndView.setViewName("/view/review/getReviewList.jsp");
 		
 		return modelAndView;
 	}
@@ -171,7 +228,7 @@ public class ReviewController {
 										@ModelAttribute("review") Review review, 
 										HttpSession session) throws Exception{
 		
-		System.out.println("/review/getMyReviewList");
+		System.out.println("/view/review/getMyReviewList");
 		
 		if(search.getCurrentPage() == 0){
 			search.setCurrentPage(1);
@@ -194,7 +251,7 @@ public class ReviewController {
 		modelAndView.addObject("search", search);
 		modelAndView.addObject("writerId", writerId);
 		
-		modelAndView.setViewName("/review/getMyReviewList.jsp");
+		modelAndView.setViewName("/view/review/getMyReviewList.jsp");
 		
 		return modelAndView;
 	}
@@ -208,7 +265,7 @@ public class ReviewController {
 		 * 매개변수 HttpSession Type : session 삭제
 		 */
 		
-		System.out.println("/review/getCheckReviewList");
+		System.out.println("/view/review/getCheckReviewList");
 		
 		if(search.getCurrentPage() == 0){
 			search.setCurrentPage(1);
@@ -227,7 +284,7 @@ public class ReviewController {
 			modelAndView.addObject("resultPage", resultPage);
 			modelAndView.addObject("search", search);
 			
-			modelAndView.setViewName("/review/getCheckReviewList.jsp");
+			modelAndView.setViewName("/view/review/getCheckReviewList.jsp");
 			
 		}
 		return modelAndView;
