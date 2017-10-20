@@ -308,10 +308,15 @@ public class FestivalController {
 		festival.setFestivalNo(festivalNo);
 
 		festival = festivalService.getFestival(festivalNo);
-
+		
+		Ticket ticket = ticketService.getTicket(festivalNo,"1");
+		festival.setTicketCount(ticket.getTicketCount());
+		festival.setTicketPrice(ticket.getTicketPrice());
+		
 		ModelAndView modelAndView = new ModelAndView();
 
 		modelAndView.addObject(festival);
+		
 
 		modelAndView.setViewName("forward:/view/festival/updateFestivalView.jsp");
 
