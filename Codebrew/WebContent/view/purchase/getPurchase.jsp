@@ -6,18 +6,21 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<!-- <title>getPurchase</title> -->
-<!-- facebook metadata -->
+<title>getPurchase</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="keywords" content="web,blog,google,search,analytics">
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta property="fb:app_id" content="365648920529865" />
-<meta property="og:url"                content="http://127.0.0.1:8080/index.jsp" />
-<meta property="og:type"               content="website" />
-<meta property="og:title"              content="When Great Minds Don’t Think Alike" />
-<meta property="og:description"        content="How much does culture influence creative thinking?" />
-<meta property="og:image"              content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg" />
+<!-- Facebook image must be at least 600x315px -->
+<meta property="og:title" content="Title Here" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://www.codebrew.com:8080/" />
+<meta property="og:image" content="http://example.com/image.jpg" />
+<meta property="og:description" content="Description Here" />
+<meta property="og:site_name" content="Site Name" />
+<meta property="article:published_time" content="2013-09-17T05:59:00+01:00" />
+<meta property="article:modified_time" content="2013-09-16T19:08:47+01:00" />
+<meta property="article:section" content="Article Section" />
+<meta property="article:tag" content="Article Tag" />
+<meta property="fb:admins" content="365648920529865" />
 
 <!-- Bootstrap, jQuery CDN -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -33,7 +36,7 @@
 <script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
 
 <!-- KakaoLink -->
-<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+<!-- <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script> -->
 
 <!-- facebook share -->
 <script src="http://connect.facebook.net/ko_KR/all.js"></script>
@@ -72,35 +75,42 @@
 	  
 	  function share2(){
 		    var share = {
-		        method: 'share',
-		        href: 'http://127.0.0.1:8080/purchase/getPurchase',
-		    	title : "티켓공유",
-		    	description : "이것은 티켓공유를 위한 것이다",
-		    	image : "http://www.kccosd.org/files/testing_image.jpg"
+		        method: 'share_open_graph',
+		        action_type: 'og.likes',
+		        action_properties : JSON.stringify({
+		        	object :  'http://codebrew.com:8080/view/purchase/getPurchase.jsp',
+			        picture: 'http://ww2.sjkoreancatholic.org/files/testing_image.jpg',
+			        name: 'Facebook Dialogs',
+			        caption: 'Reference Documentation',
+			        description: 'Using Dialogs to interact with people.'
+		        }),
+		        href: 'http://codebrew.com:8080/view/purchase/getPurchase.jsp',
+		        name: 'codebrew moana',
+		        description: 'festival party'
 		    };
 		 
-		   /*  FB.ui(share, function(response) { 
+		   FB.ui(share, function(response) { 
 		    	if (response && !response.error_message) {
 		    	      alert("게시완료");
 		    	    } else {
 		    	      alert("띠로리 썸띵롱");
 		    	    }	
-		    });  */
-		    FB.ui(
+		    }); 
+		    /* FB.ui(
 		    		 {
 		    		  method: 'share',
 		    		  href: 'http://127.0.0.1/view/purchase/getPurchase.jsp'
-		    		}, function(response){});
+		    		}, function(response){}); */
 		}
 	
 	// '가정'app 키 ip변경시 동적변경해줘야함
-	Kakao.init('4c581b38ff4c308971bc220233e61b89');
+	/* Kakao.init('4c581b38ff4c308971bc220233e61b89');
 	
 	var ticketPrice = ${ticket.ticketPrice};
 	var itemName = "${purchase.itemName}";
 	var imageUrl = "${ticket.festival.festivalImage}";
 	var ip = "http://192.168.0.7:8080";
-	var referNo;
+	var referNo; */
 	
 	/* if(${ticket.festival} != "") {
 		referNo = ${ticket.festival.festivalNo};
@@ -108,7 +118,7 @@
 		referNo = ${ticket.party.partyNo};
 	} */
 	
-	if(!imageUrl.includes('http://')) {
+	/* if(!imageUrl.includes('http://')) {
 		imageUrl = ip+"/resources/uploadFile/${ticket.festival.festivalImage}";
 	}
 	
@@ -137,7 +147,7 @@
 	        }
 	      ]
 	    });
-	  }
+	  } */
 
 	// 카카오페이 결제취소
 	function fncCancelPayment(purchaseNo) {
@@ -229,9 +239,9 @@
 		</div>
 		
 		<!-- kakao link -->
-		<a id="kakao-link-btn" href="javascript:sendLink();">
+		<!-- <a id="kakao-link-btn" href="javascript:sendLink();">
 			<img src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"/>
-		</a>
+		</a> -->
 		
 		<!-- facebook share -->
 		<a id="facebookShare">
@@ -239,12 +249,12 @@
 		</a>
 		
 		<!-- facebook -->
-		<div
+		<!-- <div
 		  	class="fb-like"
 		  data-share="true"
 		  data-width="450"
 		  data-show-faces="true">
-		</div>
+		</div> -->
 		
 		<div class="row">
 			<div class="col-md-offset-3 col-md-6">
