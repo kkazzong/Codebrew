@@ -223,11 +223,10 @@ public class FestivalController {
 
 	@RequestMapping(value = "getFestivalListDB")
 
-	public ModelAndView getFestivalListDB(@ModelAttribute("search") Search search, @ModelAttribute("page") Page page,
-			@ModelAttribute("user") User user)
+	public ModelAndView getFestivalListDB(@ModelAttribute("search") Search search, @ModelAttribute("page") Page page)
 			throws Exception {
 		
-		System.out.println("유저 세션 체크 : " + user);
+		System.out.println("search 확인 : " + search);
 
 		if (search.getCurrentPage() == 0) {
 			search.setCurrentPage(1);
@@ -252,16 +251,15 @@ public class FestivalController {
 	}
 
 	@RequestMapping(value = "getFestivalDB")
-	public ModelAndView getFestivalDB(@RequestParam("festivalNo") int festivalNo, HttpServletRequest request) throws Exception {
+	public ModelAndView getFestivalDB(@RequestParam("festivalNo") int festivalNo, HttpSession session) throws Exception {
 		
 		System.out.println("getFestivalDB.............." );
 		
 		try{
 		
-		HttpSession session = request.getSession();
 		User user = (User)session.getAttribute("user");
 
-		Festival festival = festivalService.getFestival(festivalNo);
+		Festival festival = festivalService.getFestivalDB(festivalNo);
 		
 		Zzim zzim = new Zzim();
 		
@@ -307,7 +305,7 @@ public class FestivalController {
 
 		festival.setFestivalNo(festivalNo);
 
-		festival = festivalService.getFestival(festivalNo);
+		festival = festivalService.getFestivalDB(festivalNo);
 		
 		Ticket ticket = ticketService.getTicket(festivalNo,"1");
 		festival.setTicketCount(ticket.getTicketCount());
