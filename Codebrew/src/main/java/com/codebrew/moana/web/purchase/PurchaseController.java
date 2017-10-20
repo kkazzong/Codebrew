@@ -96,6 +96,10 @@ public class PurchaseController {
 			//ticket = ticketService.getTicket(party.getPartyNo(), "2");
 
 			//modelAndView.addObject("party", party);
+			Party party = partyService.getParty(Integer.parseInt(partyNo),"1");
+			ticket = ticketService.getTicket(party.getPartyNo(), "2");
+
+			modelAndView.addObject("party", party);
 			modelAndView.addObject("purchaseFlag", "2");
 
 		}
