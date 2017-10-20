@@ -65,7 +65,7 @@
 		
 		var reviewTitle = $("input[name='reviewTitle']").val();
 		var reviewDetail = $("input[name='reviewTitle']").val();
-		var reviewImage = $("input[name='reviewImage']").val();
+		var reviewImage = $("input[name='uploadReviewImage']").val();
 		
 		if(reviewTitle == null || reviewTitle.length<1){
 			alert("후기제목은 반드시 입력하여야 합니다.");
@@ -75,10 +75,10 @@
 			alert("후기상세정보는 반드시 입력하여야 합니다.");
 			return;
 		}
-		/* if(reviewImage == null || reviewImage.length<1){
+		if(reviewImage == null || reviewImage.length<1){
 			alert("후기사진는 반드시 1장 이상 등록하여야 합니다.");
 			return;
-		} */
+		}
 		
 		$("form").attr("method", "POST").attr("action", "/review/addReview").submit();
 	}
@@ -110,6 +110,21 @@
 		//debug
 		$("input:text[name='festivalNo']").on("keydown", function(){
 			console.log($(this).val());
+		});
+	});
+	
+	$(document).ready(function(){
+		$("input[name=toBeHashtag]").keydown(function(key){
+			if(key.keyCode == 13){ //키 값이 13(enter)면 실행
+				alert("hashtag로 등록됩니다.");
+				console.log($(this).val());	
+				var innerHtml = $("input:text[name=uploadHashtag]").val();
+				innerHtml += "#"+$(this).val()+";";
+				
+				$("input:text[name=uploadHashtag]").val(innerHtml);
+				$(this).val("");
+			}
+			
 		});
 	});
 	
@@ -154,7 +169,6 @@
 			<label for="festivalName" class="col-sm-offset-1 col-sm-3 control-label">축제명</label>
 			<div class="col-sm-4">
 				<input type="text" class="form-control" id="festivalName" name="festivalName" value="${festival.festivalName}" >
-				${festival.festivalName }
 			</div>
 		</div>
 		
@@ -234,7 +248,7 @@
 		<div class="form-group">
 			<label for="hashtag" class="col-sm-offset-1 col-sm-3 control-label">등록예정 해시태그</label>
 			<div class="col-sm-4">
-				<input type="text" class="form-control" id="hashtag" name="hashtag" value="${review.hashtag }">
+				<input type="text" class="form-control" id="uploadHashtag" name="uploadHashtag" readonly>
 			</div>
 		</div>
 		

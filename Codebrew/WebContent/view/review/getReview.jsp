@@ -20,12 +20,16 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 	
 	<!-- Bootstrap Dropdown Hover CSS -->
+	<!-- 
 	<link href="/css/animate.min.css" rel="stylesheet">
 	<link href="/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
-	
+	 -->
+	 
 	<!-- Bootstrap Dropdown Hover JS -->
+   <!-- 
    <script src="/javascript/bootstrap-dropdownhover.min.js"></script>
-	
+	 -->
+	 
 	<!--  ///////////////////////// CSS ////////////////////////// -->
 	<style>
  		body {
@@ -93,7 +97,7 @@
    	
    		<div class="page-header">
    			<h3 class="text-info">단일후기 상세조회</h3>
-   			<h5 class="text-muted">후기 정보를 <strong class="text-danger">항상 최신정보로 관리</strong>바랍니다.</h5>
+   			<h5 class="text-muted">후기 정보를 <strong class="text-danger">내놓으시길</strong>바랍니다.</h5>
    		</div>
    		
    		<c:if test="${user.role == 'a' }"> <!-- only!! admin이거나 본인이 작성한 후기 상세조회인경우만 보인다 -->
@@ -108,8 +112,10 @@
 	   			<c:if test="${review.checkCode == '4' || review.checkCode == '44' }">
 	   				<div class="col-xs-8 col-md-4">반려</div>	 
 	   			</c:if>
-	   		</div>   		
+	   		</div>
    		</c:if>
+   		
+   		<hr/>
    		
    		<div class="row">
    			<div class="col-xs-4 col-md-2"><strong>작성일시</strong></div>
@@ -127,21 +133,22 @@
    		
    		<div class="row">
    			<div class="col-xs-4 col-md-2"><strong>작성자</strong></div>
-   			<div class="col-xs-8 col-md-4">${review.user.userId }</div>
+   			<div class="col-xs-8 col-md-4">${review.writerId }</div>
    		</div>
    		
    		<hr/>
    		
    		<div class="row">
    			<div class="col-xs-4 col-md-2"><strong>축제명</strong></div>
-   			<div class="col-xs-8 col-md-4">${review.festival.festivalName }</div>
+   			<%-- <div class="col-xs-8 col-md-4">${festival.festivalName }</div> --%>
+   			<div class="col-xs-8 col-md-4">${review.festivalName }</div>
    		</div>
    		
    		<hr/>
    		
    		<div class="row">
    			<div class="col-xs-4 col-md-2"><strong>축제위치</strong></div>
-   			<div class="col-xs-8 col-md-4">${review.festival.Addr }</div>
+   			<div class="col-xs-8 col-md-4">${festival.addr }</div>
    		</div>
    		
    		<hr/>
@@ -162,7 +169,12 @@
    		
    		<div class="row">
    			<div class="col-xs-4 col-md-2" style="height:300px;text-align:left;line-height:300px;"><strong>사진</strong></div>
-   			<div class="col-xs-8 col-md-4"><img src="/images/uploadFiles/${review.reviewImage }" width="300"></div>
+   			<div class="col-xs-8 col-md-4">
+   				<c:set var="i" value="0"/>
+   				<c:forEach var="listI" items="${review.reviewImage}">
+   					<img src="/resources/uploadFile/${listI.reviewImage}" width="300">
+   				</c:forEach>
+   			</div>
    		</div>
    		
    		<hr/>
@@ -183,13 +195,28 @@
    		
    		<div class="row">
    			<div class="col-xs-4 col-md-2"><strong>해시태그</strong></div>
-   			<div class="col-xs-8 col-md-4">${review.hashtag }</div>
+	   			<c:set var="i" value="0"/>
+	  			<c:forEach var="listH" items="${review.reviewHashtag }">
+		   			<div class="col-xs-8 col-md-4">
+		   				${listH.hashtagDetail }
+		   			</div>
+	   			</c:forEach>
+   		</div>
+   		
+   		<hr/>
+   		
+   		<div class="row">
+   			<div class="col-xs-4 col-md-2"><strong>댓글</strong></div>
+   			<div class="col-xs-8 col-md-4">
+				<input type="text" class="form-control" id="reply" name="reply" value=""/>
+				<span class="btb pull-center btn btn-primary">댓글등록</span>
+			</div>
    		</div>
    		
    		<hr/>
    		
    		<div class="row"> <!-- 관리자, 해당유저, 일반유저(비회원 포함) : 3가지 경우 -->
-	   		<c:if test="${sessionScope.user.userId == review.user.userId}">
+	   		<c:if test="${sessionScope.user.userId == review.writerId}">
 	   			<center>
 	   				<button type="button" class="btn btn-primary">수정하기</button>
 	   				<button type="button" class="btn pull-center btn-primary">이전</button>
@@ -204,12 +231,12 @@
 	   				<button type="button" class="btn pull-center btn-primary">심사목록보기</button>
 		   		</center>
 	   		</c:if>
-	   		<c:if test="${sessionScope.user.userId != review.user.userId}">
+	   		<c:if test="${sessionScope.user.userId != review.writerId}">
 	   			<center>
 		   			<button type="button" class="btn pull-center btn-primary">이전</button>
 	   			</center>
 			</c:if>
-			<c:if test="${sessionScope.user.role != review.user.role}">
+			<c:if test="${sessionScope.user.role != writer.role}">
 	   			<center>
 		   			<button type="button" class="btn pull-center btn-primary">이전</button>
 	   			</center>
