@@ -265,18 +265,20 @@
 				</div>
 				
 				<hr/>
-				<c:if test="${ empty party.festival.festivalNo }">
-				<div class="row" id="ticketPriceDiv">
-					<div class="col-xs-4 col-md-2 ">
-						<strong>파티 티켓 가격</strong>
+				<c:if test="${ empty party.festival.festivalNo}">
+					<c:if test="${ !empty ticket.ticketPrice || ticket.ticketPrice == 0 }">
+					<div class="row" id="ticketPriceDiv">
+						<div class="col-xs-4 col-md-2 ">
+							<strong>파티 티켓 가격</strong>
+						</div>
+						<div class="col-xs-8 col-md-4">${ticket.ticketPrice}&nbsp;원</div>
 					</div>
-					<div class="col-xs-8 col-md-4">${ticket.ticketPrice}</div>
-				</div>
-				
-				<hr />
+					
+					<hr />
+					</c:if>
 				</c:if>
 				
-				<c:if test="${ ticket.ticketPrice == 0 }">
+				<%-- <c:if test="${ ticket.ticketPrice == 0 }">
 				<div class="row" id="ticketPriceDiv">
 					<div class="col-xs-4 col-md-2 ">
 						<strong>파티 티켓 가격</strong>
@@ -285,7 +287,7 @@
 				</div>
 				
 				<hr />
-				</c:if>
+				</c:if> --%>
 				
 				<div class="row">
 					<div class="col-xs-4 col-md-2">
