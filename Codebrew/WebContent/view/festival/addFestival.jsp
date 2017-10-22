@@ -117,7 +117,8 @@ $(function() {
 	<br/>
 	<br/>
 	
-		
+	조회수 : ${festival.readCount }
+	
 	<br/>
 	<br/>
 	

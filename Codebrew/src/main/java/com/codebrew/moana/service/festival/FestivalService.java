@@ -30,6 +30,8 @@ public interface FestivalService {
 	
 	public void updateFestival(Festival festival) throws Exception;
 	
+	public void appendReadCount(Festival festival) throws Exception;
+	
 	
 
 	

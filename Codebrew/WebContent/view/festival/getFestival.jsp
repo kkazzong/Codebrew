@@ -200,16 +200,21 @@ $(function(){
 	<br/>
 	<br/>
 	
-		
 	<br/>
 	<br/>
+	
+	조회수 : ${festival.readCount }
+	
+	<br/>
+	<br/>
+	
+
 	
 	
 	축제번호 : ${festival.festivalNo }
 	
 	<br/>
 	<br/>
-	
 	홈페이지 :  ${festival.homepage }
 	
 	<br/>

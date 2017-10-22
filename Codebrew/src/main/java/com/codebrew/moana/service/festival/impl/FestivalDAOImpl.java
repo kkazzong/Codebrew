@@ -47,6 +47,8 @@ public class FestivalDAOImpl implements FestivalDAO {
 	@Override
 	public void addFestival(Festival festival) throws Exception {
 		// TODO Auto-generated method stub
+		
+		System.out.println("add festival 리드카운트 , 이거 머지?? : " + festival.getReadCount());
 
 		sqlSession.insert("FestivalMapper.addFestival", festival);
 	}
@@ -276,6 +278,8 @@ public class FestivalDAOImpl implements FestivalDAO {
 			this.festival = festival;
 
 		}
+		
+		System.out.println("get 할때 readCount 는 머지..? : " + festival.getReadCount());
 		return festival;
 	}
 
@@ -356,11 +360,11 @@ public class FestivalDAOImpl implements FestivalDAO {
 				festival.setFestivalImage(jsonobj5.get("firstimage").toString()); // 원본사진
 			}
 
-			if (jsonobj5.get("readcount") == null || jsonobj5.get("readcount") == "") {
-				festival.setReadCount("제공정보없음");
-			} else {
-				festival.setReadCount(jsonobj5.get("readcount").toString());
-			}
+//			if (jsonobj5.get("readcount") == null || jsonobj5.get("readcount") == "") {
+//				festival.setReadCount("제공정보없음");
+//			} else {
+//				festival.setReadCount(jsonobj5.get("readcount").toString());
+//			}
 
 			if (jsonobj5.get("addr1") == null || jsonobj5.get("addr1") == "") {
 				festival.setAddr("제공정보없음");
@@ -509,11 +513,11 @@ public class FestivalDAOImpl implements FestivalDAO {
 					festival.setFestivalImage(jsonobj5.get("firstimage").toString()); // 원본사진
 				}
 
-				if (jsonobj5.get("readcount") == null || jsonobj5.get("readcount") == "") {
-					festival.setReadCount("제공정보없음");
-				} else {
-					festival.setReadCount(jsonobj5.get("readcount").toString());
-				}
+//				if (jsonobj5.get("readcount") == null || jsonobj5.get("readcount") == "") {
+//					festival.setReadCount("제공정보없음");
+//				} else {
+//					festival.setReadCount(jsonobj5.get("readcount").toString());
+//				}
 
 				if (jsonobj5.get("addr1") == null || jsonobj5.get("addr1") == "") {
 					festival.setAddr("제공정보없음");
@@ -654,6 +658,13 @@ public class FestivalDAOImpl implements FestivalDAO {
 	public void updateFestival(Festival festival) throws Exception {
 		// TODO Auto-generated method stub
 		sqlSession.update("FestivalMapper.updateFestival",festival);
+	}
+
+	@Override
+	public void appendReadCount(Festival festival) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.update("FestivalMapper.appendReadCount",festival);
+		
 	}
 
 }

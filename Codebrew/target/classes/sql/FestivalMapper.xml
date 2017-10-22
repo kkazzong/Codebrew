@@ -10,7 +10,7 @@
 		<result property="festivalNo" column="FESTIVAL_NO" jdbcType="NUMERIC" />
 		<result property="festivalName" column="FESTIVAL_NAME" jdbcType="VARCHAR" />
 		<result property="contentTypeId" column="CONTENT_TYPE_ID" jdbcType="VARCHAR" />
-		<result property="readCount" column="READ_COUNT" jdbcType="VARCHAR" />
+		<result property="readCount" column="READ_COUNT" jdbcType="NUMERIC" />
 		<result property="festivalLongitude" column="FESTIVAL_LONGITUDE" jdbcType="VARCHAR" />
 		<result property="festivalLatitude" column="FESTIVAL_LATITUDE" jdbcType="VARCHAR" />
 		<result property="addr" column="ADDR" jdbcType="VARCHAR" />
@@ -32,14 +32,23 @@
 		<result property="deleteFlag" column="DELETE_FLAG" jdbcType="VARCHAR" />
 		<result property="festivalImage" column="FESTIVAL_IMAGE" jdbcType="VARCHAR" />
 </resultMap>
+		
+		<update id="appendReadCount" parameterType="festival">
+		UPDATE festival
+		<set>
+			READ_COUNT = #{readCount:NUMERIC},
+		</set>
+		WHERE FESTIVAL_NO =#{festivalNo:NUMERIC}
+	</update>
 
+		
 <update id="updateFestival" parameterType="festival">
 		UPDATE festival
 		<set>
 			FESTIVAL_NO = #{festivalNo:NUMERIC},
 			FESTIVAL_NAME = #{festivalName:VARCHAR},
 			CONTENT_TYPE_ID = #{contentTypeId:VARCHAR},
-			READ_COUNT = #{readCount:VARCHAR},
+			READ_COUNT = #{readCount:NUMERIC},
 			FESTIVAL_LONGITUDE = #{festivalLongitude:VARCHAR},
 			FESTIVAL_LATITUDE = #{festivalLatitude:VARCHAR},
 			ADDR = #{addr:VARCHAR},
@@ -130,7 +139,7 @@
 		#{festivalNo:NUMERIC},
 		#{festivalName:VARCHAR},
 		#{contentTypeId:VARCHAR},
-		#{readCount:VARCHAR},
+		#{readCount:NUMERIC},
 		#{festivalLongitude:VARCHAR},
 		#{festivalLatitude:VARCHAR},
 		#{addr:VARCHAR},
