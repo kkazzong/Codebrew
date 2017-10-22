@@ -2,10 +2,10 @@ package com.codebrew.moana.service.domain;
 
 public class Festival {
 
-	private int festivalNo;//.
+	private int festivalNo;// .
 	private String festivalImage; // 축제사진.
 	private String festivalName; // 축제명.
-	private String readCount; // 조회수.
+	private int readCount; // 조회수.
 	private String contentTypeId; // 축제타입아이디.
 	private String festivalLongitude; // mapx.
 	private String festivalLatitude; // mapy.
@@ -30,48 +30,38 @@ public class Festival {
 
 	private int ticketPrice; //
 	private int ticketCount; // ticket 수량
-	
-	private boolean isNull;
-	
-	private String deleteFlag;
-	
 
+	private boolean isNull;
+
+	private String deleteFlag;
 
 	public Festival() {
 
 	}
-	
-	
-	
-	
+
+	public int getReadCount() {
+		return readCount;
+	}
+
+	public void setReadCount(int readCount) {
+		this.readCount = readCount;
+	}
 
 	public String getDeleteFlag() {
 		return deleteFlag;
 	}
 
-
-
-
-
 	public void setDeleteFlag(String deleteFlag) {
 		this.deleteFlag = deleteFlag;
 	}
-
-
-
-
 
 	public boolean getIsNull() {
 		return isNull;
 	}
 
-
-
 	public void setIsNull(boolean isNull) {
 		this.isNull = isNull;
 	}
-
-
 
 	public String getUseTimeFestival() {
 		return useTimeFestival;
@@ -185,14 +175,6 @@ public class Festival {
 		this.festivalName = (String) object;
 	}
 
-	public String getReadCount() {
-		return readCount;
-	}
-
-	public void setReadCount(Object object) {
-		this.readCount = (String) object;
-	}
-
 	public String getContentTypeId() {
 		return contentTypeId;
 	}
@@ -289,12 +271,10 @@ public class Festival {
 				+ addr + ", areaCode=" + areaCode + ", sigunguCode=" + sigunguCode + ", orgPhone=" + orgPhone
 				+ ", startDate=" + startDate + ", endDate=" + endDate + ", festivalDetail=" + festivalDetail
 				+ ", festivalOverview=" + festivalOverview + ", ageLimit=" + ageLimit + ", bookingPlace=" + bookingPlace
-				+ ", discount=" + discount  + ", playTime=" + playTime
-				+ ", spendTimeFestival=" + spendTimeFestival + ", subEvent=" + subEvent + ", program=" + program
-				+ ", useTimeFestival=" + useTimeFestival + ", ticketPrice=" + ticketPrice + ", ticketCount="
-				+ ticketCount + "homepage = " + homepage +", isNull="+isNull+", deleteFlag="+deleteFlag+"]";
+				+ ", discount=" + discount + ", playTime=" + playTime + ", spendTimeFestival=" + spendTimeFestival
+				+ ", subEvent=" + subEvent + ", program=" + program + ", useTimeFestival=" + useTimeFestival
+				+ ", ticketPrice=" + ticketPrice + ", ticketCount=" + ticketCount + "homepage = " + homepage
+				+ ", isNull=" + isNull + ", deleteFlag=" + deleteFlag + "]";
 	}
-	
-	
 
 }

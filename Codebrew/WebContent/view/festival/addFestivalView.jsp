@@ -369,7 +369,6 @@ $(function() {
 		<input type = "hidden" class="form-control" id="festivalNo" name="festivalNo" value= "${festival.festivalNo }">
 		<input type = "hidden" class="form-control" id="contentTypeId" name="contentTypeId" value= "${festival.contentTypeId }">
 		<input type = "hidden" class="form-control" id="readCount" name="readCount" value= "${festival.readCount }">
-		<input type = "hidden" class="form-control" id="readCount" name="readCount" value= "${festival.readCount }">
 		<input type = "hidden" class="form-control" id="areaCode" name="areaCode" value= "${festival.areaCode }">
 		<input type = "hidden" class="form-control" id="sigunguCode" name="sigunguCode" value= "${festival.sigunguCode }">
 		

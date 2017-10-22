@@ -251,15 +251,31 @@ public class FestivalController {
 	}
 
 	@RequestMapping(value = "getFestivalDB")
-	public ModelAndView getFestivalDB(@RequestParam("festivalNo") int festivalNo, HttpSession session) throws Exception {
+	public ModelAndView getFestivalDB(@RequestParam("festivalNo") int festivalNo, HttpServletRequest request) throws Exception {
 		
 		System.out.println("getFestivalDB.............." );
 		
 		try{
 		
+		
+		HttpSession session = request.getSession();
 		User user = (User)session.getAttribute("user");
 
+		
+		
+		
 		Festival festival = festivalService.getFestivalDB(festivalNo);
+		
+		festival.setReadCount(festival.getReadCount()+1);
+		
+		festivalService.appendReadCount(festival);
+		
+		
+		
+		
+		
+		
+		
 		
 		Zzim zzim = new Zzim();
 		
@@ -272,7 +288,7 @@ public class FestivalController {
 
 		festival.setTicketCount(ticket.getTicketCount());
 		festival.setTicketPrice(ticket.getTicketPrice());
-
+		
 		ModelAndView modelAndView = new ModelAndView();
 
 		modelAndView.addObject("festival", festival);
@@ -362,21 +378,22 @@ public class FestivalController {
 
 			}
 
-			Ticket ticket = new Ticket();
-			ticket.setFestival(festival);
-			ticket.setTicketPrice(festival.getTicketPrice());
-			ticket.setTicketCount(festival.getTicketCount());
+				Ticket ticket = new Ticket();
+				ticket.setFestival(festival);
+				ticket.setTicketPrice(festival.getTicketPrice());
+				ticket.setTicketCount(festival.getTicketCount());
+	
+				ticketService.updateTicket(ticket);
+				
+				return modelAndView;
 
-			ticketService.updateTicket(ticket);
-			
+
+			}catch(Exception e){
+				e.printStackTrace();
+				
+			}
+		
 			return modelAndView;
-
-
-		}catch(Exception e){
-			e.printStackTrace();
-			
-		}
-		return modelAndView;
 		
 		
 		

@@ -120,6 +120,12 @@ public class FestivalServiceImpl implements FestivalService{
 		// TODO Auto-generated method stub
 			festivalDAO.updateFestival(festival);
 	}
+
+	@Override
+	public void appendReadCount(Festival festival) throws Exception {
+		// TODO Auto-generated method stub
+		festivalDAO.appendReadCount(festival);
+	}
 	
 	
 }
