@@ -6,13 +6,13 @@
 
 
 <!-- ToolBar Start /////////////////////////////////////-->
-<div class="navbar navbar-default navbar-fixed-top">
+<div id="custom-menu" class="navbar navbar-default navbar-fixed-top">
 	
 	<div class="container">
 	       
-		<!-- <a class="navbar-brand" href="/index.jsp">Model2 MVC Shop</a> -->
 		<a class="navbar-brand" href="/index.jsp">
-			<img src="/resources/image/toolbarImage/monster.png" alt="MOANA">
+			<!-- <img src="/resources/image/toolbarImage/pumpkin.png" alt="MOANA"> -->
+			<img src="/resources/image/toolbarImage/logo4.png" alt="MOANA">
 		</a>
 		
 		<!-- toolBar Button Start //////////////////////// -->
@@ -38,12 +38,8 @@
 	              <!-- 축제관리 DrowDown  -->
 		          <li class="dropdown">
 		             <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-		                 <span>Festival</span>
-		                 <span class="caret"></span>
+		                 Festival
 		              </a>
-		              <ul class="dropdown-menu">
-		                  <li><a href="#">축제리스트 (서버DB) 회원 / 비회원</a></li>
-		               </ul>
 		           </li>
 		           
 		          <!-- 파티관리 DrowDown  -->
@@ -55,6 +51,8 @@
 		              <ul class="dropdown-menu">
 		                  <li><a href="#">파티등록</a></li>
 		                  <li><a href="#">파티목록</a></li>
+		                  <li><a href="#">애프터파티</a></li>
+		                  <li><a href="#">아모르파티</a></li>
 		               </ul>
 		           </li>
 		           
@@ -62,11 +60,7 @@
 		          <li class="dropdown">
 		             <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
 		                 <span>Review</span>
-		                 <span class="caret"></span>
 		              </a>
-		              <ul class="dropdown-menu">
-		                  <li><a href="#">후기목록</a></li>
-		               </ul>
 		           </li>
 	                 
 	              <!-- 구매관리 DrowDown -->
@@ -76,15 +70,12 @@
 	                    <span class="caret"></span>
 	                </a>
 	                <ul class="dropdown-menu">
-	                       <c:if test="${sessionScope.user.role == 'u'}">
-	                      		<li><a href="#">my티켓</a></li>
-	                       </c:if>
-	                       
+	                       <li><a href="#">my티켓</a></li>
 	                       <c:if test="${sessionScope.user.role == 'a'}">
+		                       <li class="divider"></li>
 		                       <li><a href="#">판매목록</a></li>
 		                       <li><a href="#">판매통계</a></li>
 	                       </c:if>  
-	                        
 	                   </ul>
 	                 </li>
 	                 
@@ -92,15 +83,15 @@
 	                <c:if test="${sessionScope.user.role == 'a'}">
 		                <li class="dropdown">
 			                <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-			                    <span >MANAGE</span>
+			                    <span >Manage</span>
 			                    <span class="caret"></span>
 			                </a>
 			                <ul class="dropdown-menu">
 			                    <li><a href="#">회원목록</a></li>
 			                    <li><a href="#">축제등록</a></li>
 			                    <li><a href="#">후기심사목록</a></li>
-			                    <li><a href="#">티켓판매목록</a></li>
-			                    <li><a href="#">판매통계</a></li>
+			                    <!-- <li><a href="#">티켓판매목록</a></li>
+			                    <li><a href="#">판매통계</a></li> -->
 			                 </ul>
 		                 </li>
 	                 </c:if>
@@ -113,7 +104,7 @@
 		             	<li><a href="#">${user.nickname}님</a></li>
 		             	<li><a href="#">로그아웃</a></li>
 	             	</c:if>
-	             	<c:if test="${empty user }">
+	             	<c:if test="${empty user}">
 		                <li><a href="#">로그인</a></li>
 	             	</c:if>
 	            </ul>
@@ -121,6 +112,38 @@
 		<!-- dropdown hover END -->	       
 	    
 	</div>
+	
+	<!-- <div id="custom-bootstrap-menu" class="navbar navbar-default " role="navigation">
+	    <div class="container-fluid">
+	        <div class="navbar-header"><a class="navbar-brand" href="#">Brand</a>
+	            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-menubuilder"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+	            </button>
+	        </div>
+	        <div class="collapse navbar-collapse navbar-menubuilder">
+	            <ul class="nav navbar-nav navbar-left">
+	                <li><a href="#">Festival</a>
+	                </li>
+	                <li><a href="#">Party</a>
+	                </li>
+	                <li><a href="#">Review</a>
+	                </li>
+	                <li><a href="#">Purchase</a>
+	                </li>
+	                <li><a href="#">Manage</a>
+	                </li>
+	                <li><a href="#">MyPage</a>
+	                </li>
+	                <li><a href="#">Login</a>
+	                </li>
+	                <li><a href="#">Logout</a>
+	                </li>
+	            </ul>
+	        </div>
+	    </div>
+	</div> -->
+	
+	
+	
 </div>
 
 		<!-- ToolBar End /////////////////////////////////////-->
@@ -144,8 +167,15 @@
    		
   		//////축제관리//////
    		$(function(){
-			$( "a:contains('축제리스트 (서버DB) 회원 / 비회원')" ).on("click" , function() {
+			$( "a:contains('Festival')" ).on("click" , function() {
 				self.location = "/festival/getFestivalListDB?menu=db";
+			});
+   		});
+  		
+  		//////후기관리//////
+   		$(function(){
+			$( "a:contains('Review')" ).on("click" , function() {
+				//self.location = "/review/getReviewList";
 			});
    		});
    		
@@ -165,30 +195,52 @@
 			});
 			
 		});
+  		
+		//////파티관리//////
+		$(function(){
+			
+			$("li > a:contains('파티등록')").bind('click', function(){
+				self.location = "/party/addParty";
+			});
+			
+			$("li > a:contains('파티목록')").bind('click', function(){
+				self.location = "/party/getPartyList";
+			});
+			
+			$("li > a:contains('애프터파티')").bind('click', function(){
+				
+			});
+			
+			$("li > a:contains('아모르파티')").bind('click', function(){
+				
+			});
+			
+		});
 		
 		
 		///////툴바 MANAGE////////
    		$(function(){
    			
+   			$("a:contains('회원목록')").on("click" , function() {
+				self.location = "/user/getUserList";
+			}); 
+   			
 		 	$("a:contains('축제등록')").on("click" , function() {
-				self.location = "/festival/getFestivalList?pageNo=1"
+				self.location = "/festival/getFestivalList?pageNo=1";
 			}); 
 		 	
-			$("li > a:contains('티켓판매목록')").bind('click', function(){
-				self.location = "/purchase/getSaleList";
-			});
-			
-			$("a[href='#']:contains('판매통계')").bind('click', function(){
-				self.location = "/statistics/getStatistics";
-			});
+		 	$("a:contains('후기심사목록')").on("click" , function() {
+				//self.location = "";
+			}); 
 			
    		});
    		
 	</script>  
 
 	<style>
-	.navbar-brand > img {
-			width : 30px;
-			heigth : 30px;
-	}
+		.navbar-brand > img {
+				width : 45%;
+				heigth : 45%;
+				padding-bottom: 3px;
+		}
 	</style>

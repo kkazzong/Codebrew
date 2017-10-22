@@ -124,6 +124,8 @@ public class PurchaseController {
 		}
 
 		String path = session.getServletContext().getRealPath("/");
+		purchase.setTicket(ticket);
+		purchase.setUser((User)session.getAttribute("user"));
 		purchase = purchaseService.addPurchase(purchase, path);
 
 		ModelAndView modelAndView = new ModelAndView();

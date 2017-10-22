@@ -23,13 +23,25 @@
 <script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
 <style type="text/css">
 	body {
-       padding-top : 50px;
+		padding-top : 70px;
     }
+    
+    section {
+    	background: url(/resources/image/toolbarImage/bg2.jpg) no-repeat center center;
+		width: 100%;
+	   	height: 100%;
+	   background-size: 100%;
+	   opacity: 0.7;
+    }
+    
 </style>
 <title>Insert title here</title>
 </head>
 <body>
-<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
+	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
+	
+	<!-- 배경 이미지 -->
+	<section>
 <!-- <a href="/festival/ListFestival"> 축제리스트 (api사용) </a> -->
 <a href="/festival/getFestivalList?pageNo=1"> 축제리스트 (api사용) 관리자 </a>
 
@@ -67,7 +79,7 @@
 <c:if test="${user.role == 'a'}">
 	<a href="/statistics/getStatistics"> 판매통계보기 (관리자only) </a>
 </c:if>
-<h1>jsp에서 dropdown cdn추가하고 툴바.jsp include(index.jsp참고하세염)</h1>
+<h5>jsp에서 dropdown cdn추가하고 툴바.jsp include(index.jsp참고하세염)</h5>
 <br>
 <br>
 <!--후기등록 테스트중 -->
@@ -78,5 +90,6 @@
 <div><a href = "/party/addParty?userId=${user.userId}">addParty.jsp</a></div>
 	<div><a href = "/party/getParty?partyNo=10000">getParty.jsp</a></div>
 	<div><a href = "/party/getPartyList">getPartyList.jsp</a></div>
+	</section>
 </body>
 </html>

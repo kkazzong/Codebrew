@@ -1,10 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
 <script type="text/javascript">
 
 	function printClock() {
@@ -27,8 +22,8 @@
 			currentSeconds = '<span style="color:#de1951;">' + currentSeconds
 					+ '</span>'
 		}
-		var innerHTML = calendar + " "+ currentHours + ":" + currentMinute +
-		":" + currentSeconds +" <span style='font-size:30px;'>" + amPm+ "</span>"; //날짜를 출력해 줌
+		var innerHTML = "<span class='glyphicon glyphicon-time'></span>  " + calendar + " "+ currentHours + ":" + currentMinute +
+		":" + currentSeconds +" <span style='font-size:20px;'>" + amPm+ "</span>"; //날짜를 출력해 줌
 		
 		$("#clock").html(innerHTML);
 
@@ -52,17 +47,14 @@
 </script>
 <style type="text/css">
 	#clock {
-		border:1px solid #dedede;
-		width:600px;
-		height:50px;
-		line-height:50px;
-		color:#666;
-		font-size:30px;
+		border : 1px solid #dedede;
+		width : 100%;
+		height : 50px;
+		line-height : 50px;
+		color : #666;
+		font-size : 20px;
+		text-align : center;
 	}
 </style>
-</head>
-<body>
-	<div id="clock"></div>
-</body>
+<div id="clock"></div>
 
-</html>
