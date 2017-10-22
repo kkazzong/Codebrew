@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>getSaleList</title>
 
 <!-- Bootstrap, jQuery CDN -->
@@ -20,13 +20,25 @@
 <!-- Bootstrap Dropdown Hover JS -->
 <script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
 
+<!-- jQuery ui -->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+
 <script type="text/javascript">
 
 	function fncGetList(currentPage) {
 		console.log("페이지클릭 : "+currentPage);
-		
-		$("#currentPage").val(currentPage);
-		$("#searchForm").attr("method", "POST").attr("action", "/purchase/getSaleList").submit();
+		var arrange = $("input:hidden[name='arrange']").val();
+		//alert(arrange);
+		if(arrange != '' && arrange != null) {
+			//alert("정렬");
+			$("#currentPageSort").val(currentPage);
+			$("#sortForm").attr("method", "POST").attr("action", "/purchase/getSaleList").submit();
+		} else {
+			//alert("검색");
+			$("#currentPage").val(currentPage);
+			$("#searchForm").attr("method", "POST").attr("action", "/purchase/getSaleList").submit();
+		}
 	}
 	
 	function fncSearchList() {
@@ -44,20 +56,35 @@
 	
 	$(function(){
 		
+		//page header 클릭(판매목록)
+		$(".page-header").on("click", function(){
+			self.location = "/purchase/getSaleList";
+		})
+		
 		//enter key 검색
 		$("#searchKeyword").on("keydown", function(event){
-			//alert(event.keyCode);
+			
 			if(event.keyCode == '13') {
+				if($("#searchKeyword").val() == '') {
+					event.preventDefault();
+					alert("검색어를 입력해주세요");
+					return;
+				}
 				event.preventDefault();
-				//fncSearchList();
 				fncGetList(1);
 			}
+
 		});
 		
 		//검색버튼
 		$(".btn:contains('검색')").on("click", function(){
-			//fncSearchList();
+			
+			if($("#searchKeyword").val() == '') {
+				alert("검색어를 입력해주세요");
+				return;
+			}
 			fncGetList(1);
+			
 		});
 		
 		//정렬 모달창에서 클릭한 모든 버튼
@@ -67,13 +94,56 @@
 		
 		//검색조건 바꿀때
 		$("#searchCondition").on("change", function(){
-			$("#searchKeyword").val("");
-			//alert($(this).val());
+			
 			if($(this).val() == '3') {
 				$("#searchKeyword").attr("placeholder", "구매번호 입력");
 			} else if($(this).val() == '4') {
 				$("#searchKeyword").attr("placeholder", "회원아이디 입력");
+			} else if($(this).val() == ''){
+				$("#searchKeyword").attr("placeholder", "검색조건 선택");
 			}
+			
+		});
+		
+		//autocomplete
+		$("#searchKeyword").autocomplete({
+			source: function( request, response ) {
+		        $.ajax( {
+		          url: "/purchaseRest/json/getSaleList",
+		          method : "POST",
+		          headers : {
+						"Accept" : "application/json",
+						"Content-Type" : "application/json"
+				  },
+		          dataType: "json",
+		          data: JSON.stringify({
+		        	currentPage : "1",
+		            searchKeyword : $("#searchKeyword").val(),
+		            searchCondition : $("#searchCondition").val()
+		          }),
+		          success: function( JSONData ) {
+		        		  
+		        	console.log("server data =>"+JSON.stringify(JSONData));
+		        	var searchCondition = $("#searchCondition").val();
+		            response($.map(JSONData, function(value, key){
+		            	console.log(value.user.userId);
+		            	console.log("key(autocomplete : value)====>"+key);
+		            	//아이디 검색 시
+		            	if(searchCondition == 4) {
+			        		return {
+			        			label : value.user.userId,
+			        			value : value.user.userId //원래는 key,, 선택시를 위해
+			        		}
+		            	} else if(searchCondition == 5) { //티켓명 검색 시
+		            		return {
+		            			label :  value.itemName,
+		            			value : value.itemName
+		            		}
+		            	}
+		        	}));
+		          }
+		        } );
+		    }
 		});
 		
 	});
@@ -137,14 +207,16 @@
 					<input type="hidden" id="currentPage" name="currentPage" value=""/>
 					<div class="form-group">
 						<select class="form-control" id="searchCondition" name="searchCondition" class="form-group">
-							<option value="3" ${!empty search.searchCondition && search.searchCondition == '3' ? "selected" : "" }>구매번호</option>
-							<option value="4" ${!empty search.searchCondition && search.searchCondition == '4' ? "selected" : "" }>아이디</option>
+							<option value="" selected>선택</option>
+							<option value="3" ${!empty search.searchCondition and search.searchCondition == 3 ? "selected" : "" }>구매번호</option>
+							<option value="4" ${!empty search.searchCondition and search.searchCondition == 4 ? "selected" : "" }>아이디</option>
+							<option value="5" ${!empty search.searchCondition and search.searchCondition == 5 ? "selected" : "" }>티켓명</option>
 						</select>
 					</div>
 					<div class="form-group">
 						<input class="form-control" id="searchKeyword" name="searchKeyword" type="text" 
 									value="${!empty search.searchKeyword ? search.searchKeyword : ''}"
-									placeholder="구매번호 입력">
+									placeholder="검색조건 선택">
 					</div>
 					<div class="form-group">
 						<button class="btn btn-primary" type="button">검색</button>
@@ -162,7 +234,7 @@
 							<th>NO</th>
 							<th>구매번호</th>
 							<th>아이디</th>
-							<th>티켓분류</th>
+							<th>분류</th>
 							<th>티켓명</th>
 							<th>구매날짜</th>
 							<th>수량</th>

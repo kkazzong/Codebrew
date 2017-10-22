@@ -216,7 +216,45 @@
 								AND t.party_no = p.party_no(+)
 								AND pc.delete_flag IS NULL
 								AND u.user_id = #{userId}
-								ORDER BY pc.purchase_date) inner_table
+								<if test="search.searchCondition != null">
+									<choose>
+										<!-- 티켓명검색 -->
+										<when test="search.searchCondition == 5">
+											AND pc.item_name LIKE '%${search.searchKeyword}%'
+										</when>
+									</choose>
+								</if>
+								<if test="arrange != null">
+									<choose>
+										<!-- 판매금액 ASC 오름차순 -->
+										<when test="arrange == 1">
+											ORDER BY pc.purchase_price
+										</when>
+										<!-- 판매금액 DESC 내림차순 -->
+										<when test="arrange == 2">
+											ORDER BY pc.purchase_price DESC
+										</when>
+										<!-- 판매수량 ASC 오름차순 -->
+										<when test="arrange == 3">
+											ORDER BY pc.purchase_count
+										</when>
+										<!-- 판매수량 DESC 내림차순 -->
+										<when test="arrange == 4">
+											ORDER BY pc.purchase_count DESC
+										</when>
+										<!-- 아이디 ASC 오름차순 -->
+										<when test="arrange == 5">
+											ORDER BY u.user_id
+										</when>
+										<!-- 아이디 DESC 내림차순 -->
+										<when test="arrange == 6">
+											ORDER BY u.user_id DESC
+										</when>
+									</choose>
+								</if>
+								<if test="arrange == null">
+									ORDER BY pc.purchase_date
+								</if>) inner_table
      				 WHERE ROWNUM &lt;= #{search.endRowNum})
 		WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum}
 	</select>
@@ -239,7 +277,53 @@
 								AND pc.ticket_no = t.ticket_no
 								AND t.festival_no = f.festival_no(+)
 								AND t.party_no = p.party_no(+)
-								ORDER BY pc.purchase_date) inner_table
+								<if test="searchCondition != null">
+									<choose>
+										<!-- 구매번호검색 -->
+										<when test="searchCondition == 3">
+											AND pc.purchase_no = #{searchKeyword}
+										</when>
+										<!-- 회원아이디검색 -->
+										<when test="searchCondition == 4">
+											AND u.user_id LIKE '%${searchKeyword}%'
+										</when>
+										<!-- 티켓명검색 -->
+										<when test="searchCondition == 5">
+											AND pc.item_name LIKE '%${searchKeyword}%'
+										</when>
+									</choose>
+								</if>
+								<if test="arrange != null">
+									<choose>
+										<!-- 판매금액 ASC 오름차순 -->
+										<when test="arrange == 1">
+											ORDER BY pc.purchase_price
+										</when>
+										<!-- 판매금액 DESC 내림차순 -->
+										<when test="arrange == 2">
+											ORDER BY pc.purchase_price DESC
+										</when>
+										<!-- 판매수량 ASC 오름차순 -->
+										<when test="arrange == 3">
+											ORDER BY pc.purchase_count
+										</when>
+										<!-- 판매수량 DESC 내림차순 -->
+										<when test="arrange == 4">
+											ORDER BY pc.purchase_count DESC
+										</when>
+										<!-- 아이디 ASC 오름차순 -->
+										<when test="arrange == 5">
+											ORDER BY u.user_id
+										</when>
+										<!-- 아이디 DESC 내림차순 -->
+										<when test="arrange == 6">
+											ORDER BY u.user_id DESC
+										</when>
+									</choose>
+								</if>
+								<if test="arrange == null">
+									ORDER BY pc.purchase_date
+								</if>) inner_table
      				 WHERE ROWNUM &lt;= #{endRowNum})
 		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}
 	</select>
@@ -267,14 +351,28 @@
 				 AND delete_flag IS NULL
 			  </if>
 			  <if test="search.searchCondition != null">
+			  	<choose>
 				  	<!-- 축제티켓검색 -->
-				  	<if test="search.searchCondition == 1">
+				  	<when test="search.searchCondition == 1">
 						AND purchase_flag = 1
-					</if>
+					</when>
 					<!-- 파티티켓 -->
-					<if test="search.searchCondition == 2">
+					<when test="search.searchCondition == 2">
 						AND purchase_flag = 2
-					</if>
+					</when>
+					<!-- 구매번호검색 -->
+					<when test="search.searchCondition == 3">
+						AND purchase_no = #{search.searchKeyword}
+					</when>
+					<!-- 회원아이디검색 -->
+					<when test="search.searchCondition == 4">
+						AND user_id LIKE '%${search.searchKeyword}%'
+					</when>
+					<!-- 티켓명 검색 -->
+					<when test="search.searchCondition == 5">
+						AND item_name LIKE '%${search.searchKeyword}%'
+					</when>
+				</choose>
 			  </if>
 			</where>
 		) countTable

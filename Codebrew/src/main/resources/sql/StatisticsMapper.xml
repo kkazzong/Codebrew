@@ -42,12 +42,12 @@
 		vt.purchase_count AS total_count
 		FROM (
 					SELECT
-					to_char(purchase_date, 'yy-mm') AS purchase_date,
+					to_char(purchase_date, 'yyyy-mm') AS purchase_date,
 					SUM(purchase_price) AS purchase_price,
 					SUM(purchase_count) AS purchase_count
 					FROM purchase
           			WHERE to_char(purchase_date, 'yyyy') = to_char(SYSDATE, 'yyyy')  
-					GROUP BY to_char(purchase_date, 'yy-mm')
+					GROUP BY to_char(purchase_date, 'yyyy-mm')
 					ORDER BY purchase_date
 					) vt
 	</select>

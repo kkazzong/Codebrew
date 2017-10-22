@@ -8,6 +8,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>getPurchaseList</title>
 
 <!-- Bootstrap, jQuery CDN -->
@@ -35,27 +36,61 @@
 		
 		var userId = $("input:hidden[name='userId']").val();
 		
+		//page header 클릭(판매목록)
+		$(".page-header").on("click", function(){
+			self.location = "/purchase/getPurchaseList?userId="+userId;
+		})
+		
+		//enter key 검색
+		$("#searchKeyword").on("keydown", function(event){
+			
+			if(event.keyCode == '13') {
+				if($("#searchKeyword").val() == '') {
+					event.preventDefault();
+					alert("검색어를 입력해주세요");
+					return;
+				}
+				event.preventDefault();
+				fncGetList(1);
+			}
+
+		});
+		
+		//검색버튼
+		$(".btn:contains('검색')").on("click", function(){
+			
+			if($("#searchKeyword").val() == '') {
+				alert("검색어를 입력해주세요");
+				return;
+			}
+			fncGetList(1);
+			
+		});
+		
+		//축제버튼
 		$("#festivalBtn").on("click", function(){
 			console.log("축제버튼 클릭 : val = "+$(this).val());
 			self.location = "/purchase/getPurchaseList?userId="+userId+"&purchaseFlag="+$(this).val()+"&searchCondition=1";
 		});
 		
+		//파티버튼		
 		$("#partyBtn").on("click", function(){
 			console.log("파티버튼 클릭 : val = "+$(this).val());
 			self.location = "/purchase/getPurchaseList?userId="+userId+"&purchaseFlag="+$(this).val()+"&searchCondition=2";
 		});
 		
+		//조회
 		$("button:contains('조회')").on("click", function(){
 			console.log("조회버튼 클릭 : val = "+$(this).val());
 			self.location = "/purchase/getPurchase?purchaseNo="+$(this).val();
 		});
 		
-		$(".btn:contains('마이티켓')").on("click", function(){
+		/* $(".btn:contains('마이티켓')").on("click", function(){
 			console.log("마이티켓 클릭");
 			self.location = "/purchase/getPurchaseList?userId="+userId;
-		});
+		}); */
 		
-		$("button:contains('삭제')").on("click", function(){
+		$(".pull-right").each(function(){}).on("click", function(){
 			
 			if(confirm("정말로 삭제하시겠습니까?")) {
 				/* $.ajax({
@@ -93,19 +128,30 @@
 		border : 3px solid #D6CDB7;
 		margin0top : 10px;
 	} */
+	.panel-heading h3 {
+	    white-space: nowrap;
+	    overflow: hidden;
+	    text-overflow: ellipsis;
+	    line-height: normal;
+	    width: 75%;
+	    padding-top: 8px;
+	}
 </style>
 </head>
 <body>
 	
 	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>
 	
+	<!-- 모달 -->
+	<jsp:include page="/view/purchase/filterModalUser.jsp"></jsp:include>
+	
 	<div class="container">
 	
-		<div class="row">
+		<!-- <div class="row">
 			<div class="col-md-offset-4 col-md-4">
 				<button class="btn btn-primary">마이티켓</button>
 			</div>
-		</div>
+		</div> -->
 		
 		<!-- page header -->
 		<div class="row">
@@ -124,8 +170,43 @@
 			</div>
 		</div>
 		
-		<!-- 축제 / 파티 버튼 -->
+		<!-- 정렬 -->
 		<div class="row">
+			<div class="col-md-6 ">
+				<form class="form form-inline" id="sortForm" name="sortForm">
+					<input type="hidden" id="currentPageSort" name="currentPage" value=""/>
+					<input type="hidden" name="arrange" 
+								value="${!empty search.arrange ? search.arrange : ''}">
+					<div class="form-group">
+						<button class="btn btn-default" data-toggle="modal" 
+									 data-target=".bs-example-modal-sm" type="button">필터</button>
+					</div>
+				</form>
+			</div>
+			<!-- 검색 -->
+			<div class="col-md-6 text-right">
+				<form class="form form-inline" id="searchForm" name="searchForm">
+					<input type="hidden" id="currentPage" name="currentPage" value=""/>
+					<div class="form-group">
+						<select class="form-control" id="searchCondition" name="searchCondition" class="form-group">
+							<option value="" selected>선택</option>
+							<option value="5" ${!empty search.searchCondition and search.searchCondition == 5 ? "selected" : "" }>티켓명</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<input class="form-control" id="searchKeyword" name="searchKeyword" type="text" 
+									value="${!empty search.searchKeyword ? search.searchKeyword : ''}"
+									placeholder="검색조건 선택">
+					</div>
+					<div class="form-group">
+						<button class="btn btn-primary" type="button">검색</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		
+		<!-- 축제 / 파티 버튼 -->
+		<%-- <div class="row">
 			<form id="searchForm">
 				<input type="hidden" name="userId" value="${user.userId}">
 				<input type="hidden" id="currentPage" name="currentPage" value=""/>
@@ -138,16 +219,26 @@
 					<button class="btn btn-default btn-block" id="partyBtn" type="button" value="2">파티티켓</button>
 				</div>
 			</form>
-		</div>
+		</div> --%>
 		
 		<!-- 구매한 티켓 리스트 -->
 		<div class="row">
+		<c:if test="${empty list}">
+			<jsp:include page="/view/purchase/noResult.jsp"></jsp:include>
+		</c:if>
 			<c:forEach var="purchase" items="${list}">
 				<c:set var="i" value="${i+1}"></c:set>
 				<div class="col-md-6">
 						<div class="panel panel-primary">
 							<div class="panel-heading">
-								<h3 class="panel-title">${i} 티켓</h3>
+								<h3 class="panel-title pull-left">${i} 티켓</h3>
+								<form id="deleteForm">
+										<input type="hidden" name="purchaseNo" value="${purchase.purchaseNo}">
+										<button class="btn btn-default pull-right" type="button" value="${purchase.purchaseNo}">
+											<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+										</button>
+								</form>
+        						<div class="clearfix"></div>
 							</div>
 							<div class="panel-body">
 								<!-- 축제티켓 -->
@@ -225,13 +316,15 @@
 									</div>
 								</div>
 								<hr>
-								<c:if test="${purchase.tranCode == 1}">
-									<button class="btn btn-primary" type="button" value="${purchase.purchaseNo}">조회</button>
-								</c:if>
-								<form id="deleteForm">
-								<input type="hidden" name="purchaseNo" value="${purchase.purchaseNo}">
-								<button class="btn btn-default" type="button" value="${purchase.purchaseNo}">삭제</button>
-								</form>
+								<div class="row">
+									<c:if test="${purchase.tranCode == 1}">
+										<button class="col-md-12 btn btn-default btn-block" type="button" value="${purchase.purchaseNo}">조회</button>
+									</c:if>
+									<%-- <form id="deleteForm">
+										<input type="hidden" name="purchaseNo" value="${purchase.purchaseNo}">
+										<button class="btn btn-default" type="button" value="${purchase.purchaseNo}">삭제</button>
+									</form> --%>
+								</div>
 							</div>
 						</div>
 				</div>

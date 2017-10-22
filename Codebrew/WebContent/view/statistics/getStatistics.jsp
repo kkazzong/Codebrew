@@ -4,7 +4,7 @@
 <html lang="ko">
 <head>
 <title>getStatistics</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <!-- Bootstrap, jQuery CDN -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
@@ -99,14 +99,14 @@
 	    "legend" : {
 	    	"useGraphSettings": true,
 	    	"generateFromData": true,
-			"position" : "right",
+			"position" : "bottom",
 			"marginRight" : 100,
 			"autoMargins" : false,
 			"color" : "#000000"
 		},
 	     "dataProvider" : datas,
 	     "mouseWheelZoomEnabled":true, //마우스로 확대, 축소
-	     "dataDateFormat": "YYYY-MM-DD", //데이터의 날짜 포맷
+	     "dataDateFormat": "YY-MM-DD", //데이터의 날짜 포맷
 		"startDuration": 1,
 	    "valueAxes": [{
 	    	"id" : "priceAxis",
@@ -174,11 +174,11 @@
 	        "valueLineAlpha":0.2,
 	        "valueZoomable":true
 	    },
-	    "valueScrollbar":{
+	   /*  "valueScrollbar":{
 		      "oppositeAxis":false,
 		      "offset":50,
 		      "scrollbarHeight":10
-		},
+		}, */
 	    "categoryField": "statDate",
 	    "categoryAxis": {
 	        "gridPosition": "start",
@@ -314,97 +314,6 @@
 	    chartLine.zoomToIndexes(chartLine.dataProvider.length - 40, chartLine.dataProvider.length - 1);
 	} 
 	
-	////////////////////////////////////////chart.js////////////////////////////////////////////////////
-	//차트 옵션
-	var options = {
-			   maintainAspectRatio: false,
-			   scales: {
-			     yAxes: [{
-			       stacked: true,
-			       gridLines: {
-			         display: true
-			       }
-			     }],
-			     xAxes: [{
-			       gridLines: {
-			         display: false
-			       }
-			     }]
-			   }
-		};
-
-
-	//차트만들기
-	function makeChart(){
-		   var chart = new Chart('chartBar', {
-			   type : "bar",
-			   options : options,
-			   data : chartData
-		   });
-		  var myPieChart = new Chart('chartPie', {
-				type: 'doughnut',
-				data: chartData,
-				options: options
-		   }); 
-	} 
-	
-	var chartDataSet = [];
-	//차트데이터	   
-	var chartData = function(statFlag) {
-		
-		console.log("statFlag => "+statFlag);
-		
-		$.ajax({
-			url : "/statisticsRest/json/getStatistics/"+statFlag,
-			method : "get",
-			dataType : "json",
-			success : function(JSONData){
-				
-				console.log(JSON.stringify(JSONData));
-				
-				var date = [];
-				var price = [];
-				var count = []; 
-				
-				for(var i = 0; i < JSONData.length; i++) {
-					date[i] = JSONData[i].statDate;
-					price[i] = JSONData[i].totalPrice;
-					count[i] = JSONData[i].totalCount;
-					console.log("date : "+date+", price : "+price+", count : "+count);
-					
-				}
-				chartData = {
-					labels: [date[0]+"",date[1]+"",date[2]+""],
-					datasets: [{
-					label : "총 판매 금액",					   
-					backgroundColor: [
-					 	"rgba(168, 145, 253, 0.4)",
-					 	"rgba(253, 166, 160, 0.4)",
-					 	"rgba(253, 215, 165, 0.4)",
-					 ], 
-					borderColor : [ 
-						"rgba(168, 145, 253, 1)",
-						"rgba(253, 166, 160, 1)",
-						"rgba(253, 215, 165, 1)", 
-					],
-					borderWidth : 1,
-					hoverBackgroundColor : [
-						"rgba(168, 145, 253, 0.8)",
-						"rgba(253, 166, 160, 0.8)",
-						"rgba(253, 215, 165, 0.8)", ],
-					hoverBorderColor : [
-						"rgba(168, 145, 253, 1)",
-						"rgba(253, 166, 160, 1)",
-						"rgba(253, 215, 165, 1)", 
-					],
-					data : [ price[0] + "", price[1] + "", price[2]+""],
-					}]
-				}; 
-				
-				makeChart();
-			}
-		});
-	}
 
 	$(function() {
 	
@@ -435,6 +344,7 @@
 	});
 </script>
 <style type="text/css">
+
 	body {
 		padding-top : 70px;
     }
@@ -473,15 +383,71 @@
 		transform: scale(1.1);
 		filter: url(#shadow);
 	}
+	
+	/* div {
+		border : 3px solid #D6CDB7;
+		margin0top : 10px;
+	} */
 </style>
 </head>
 <body>
 
+	<!-- 툴바 -->
 	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
 	
-	<jsp:include page="/view/statistics/clock.jsp"></jsp:include>
 	
-	<input type="hidden" name="statFlag" value="${statistics.statFlag}">
+	<div class="content">
+		
+		<!-- page header -->
+		<div class="row">
+			<div class="col-md-offset-4 col-md-4">
+				<div class="page-header text-center">
+					<h3 class="text-info"><span class="glyphicon glyphicon-object-align-bottom" aria-hidden="true"></span> 판매통계</h3>
+				</div>
+			</div>
+		</div>
+		
+		<!-- 현재날짜, 시각 -->
+		<div class="row">
+			<div class="col-md-offset-3 col-md-6">
+				<div class="row">
+					<div class="col-md-12">
+						<jsp:include page="/view/statistics/clock.jsp"></jsp:include>
+					</div>
+				</div>
+			</div>
+		</div>		
+		
+		<!-- 버튼 1: 일단위, 2: 월단위, 3:분기단위 -->
+		<div class="row">
+			<div class="col-md-offset-3 col-md-6">
+				<div class="row">
+						<div class="col-md-12 btn-group" role="group">
+							<button class="btn btn-default btn-lg" type="button" value="1">Daily</button>
+							<button class="btn btn-default btn-lg" type="button" value="2">Monthly</button>
+							<button class="btn btn-default btn-lg" type="button" value="3">Quarter</button>
+						</div>
+				</div>
+			</div>
+		</div>		
+		
+		<input type="hidden" name="statFlag" value="${statistics.statFlag}">
+		
+		<!-- 통계차트 -->
+		<div class="row">
+			<div class="col-md-offset-3 col-md-6">
+				<div class="row">
+					<div class="col-md-12">
+						<!-- amChart -->
+						<div id="chartDiv"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+	</div>
+	
+	<%-- <input type="hidden" name="statFlag" value="${statistics.statFlag}">
 	<h3>chart.js</h3>
 	<button type="button" value="1">일단위</button>
 	<button type="button" value="2">월단위</button>
@@ -489,7 +455,6 @@
 	
 	<hr>
 	
-	<!-- chart.js -->
 	<div class="chart-container">
 		<canvas id="chartBar"></canvas>
 	</div>
@@ -504,10 +469,9 @@
 	
 	<hr>
 	
-	<!-- amChart -->
 	<div id="chartDiv"></div>
 	<div id="chartLine"></div>
-	<div id="chartPie"></div>
+	<div id="chartPie"></div> --%>
 	
 </body>
 </html>
