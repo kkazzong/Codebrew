@@ -76,7 +76,7 @@ public class PartyController {
 	}
 	
 	@RequestMapping( value="addParty", method=RequestMethod.POST)
-	public ModelAndView addParty(@ModelAttribute("party") Party party, HttpServletRequest request) throws Exception {
+	public ModelAndView addParty(@ModelAttribute("party") Party party, HttpServletRequest request, HttpSession session) throws Exception {
 		
 		System.out.println("\n>>> /party/addParty :: POST start <<<");
 		
@@ -121,16 +121,31 @@ public class PartyController {
 		System.out.println("\n<<< /party/addParty party 도메인  \n"+party);
 		
 		/* 파티 티켓 등록 */
-		ticket.setParty(party);
-		ticket = ticketService.addTicket(ticket);
-		//ticket 도메인 출력
-		System.out.println("\n<<< /party/addParty ticket 도메인  \n"+ticket);
+		if(party.getFestival() == null) {
+			ticket.setParty(party);
+			ticket = ticketService.addTicket(ticket);
+			//ticket 도메인 출력
+			System.out.println("\n<<< /party/addParty ticket 도메인  \n"+ticket);
+		}
+		
+		/* 주최자 파티 멤버 셋팅 */
+		PartyMember partyMember = new PartyMember();
+		User user = (User)session.getAttribute("user");
+		partyMember.setParty(party);
+		partyMember.setUser(user);
+		partyMember.setRole("host");
+		
+		/* 주최자 파티 멤버 등록 */
+		partyService.joinParty(partyMember);
+		Map<String, Object> map = partyService.getPartyMemberList(party.getPartyNo(), new Search());
 		
 		
 		//Model(data) & View(jsp)
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("party", party);
 		modelAndView.addObject("ticket", ticket);
+		modelAndView.addObject("list", map.get("list"));
+		modelAndView.addObject("currentMemberCount", map.get("currentMemberCount"));
 		modelAndView.setViewName("/view/party/getParty.jsp");
 		
 		return modelAndView;
@@ -174,7 +189,7 @@ public class PartyController {
 		
 		System.out.println("\n>>> /party/cancelParty :: GET start <<<");
 		//partyNo 파라미터 출력
-		System.out.println(">>> /party/cancelParty partyNo 파라미터 \n"+partyNo);
+		System.out.println(">>> /party/cancelParty :: GET :: partyNo 파라미터 \n"+partyNo);
 		
 		
 		//Business Logic
@@ -193,6 +208,30 @@ public class PartyController {
 	}
 	
 	
+	@RequestMapping( value="deletePartyMember", method=RequestMethod.GET )
+	public ModelAndView deletePartyMember(@RequestParam("partyNo") String partyNo, HttpSession session) throws Exception {
+		
+		System.out.println("\n>>> /party/deletePartyMember :: GET start <<<");
+		//partyNo 파라미터 출력
+		System.out.println(">>> /party/deletePartyMember :: GET :: partyNo 파라미터 \n"+partyNo);
+		
+		
+		//Business Logic
+		int dbPartyNo = Integer.parseInt(partyNo);
+		User user = (User)session.getAttribute("user");
+		String userId = user.getUserId();
+		
+		partyService.cancelParty(dbPartyNo, userId);
+		
+
+		//Model(data) & View(jsp)
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("/view/party/getMyPartyList.jsp");
+		
+		return modelAndView;
+	}
+	
+	
 	@RequestMapping( value="getParty", method=RequestMethod.GET )
 	public ModelAndView getParty(@RequestParam("partyNo") String partyNo, @RequestParam("partyFlag") String partyFlag) throws Exception {
 		
@@ -205,10 +244,10 @@ public class PartyController {
 		
 		Search search = new Search();
 		
-		if(search.getCurrentPage() == 0){
+		/*if(search.getCurrentPage() == 0){
 			search.setCurrentPage(1);
 		}
-		search.setPageSize(pageSize);
+		search.setPageSize(pageSize);*/
 
 		
 		//Business Logic
@@ -216,10 +255,15 @@ public class PartyController {
 		Party dbParty = partyService.getGenderRatio(dbPartyNo);
 		Ticket ticket = ticketService.getTicket(dbPartyNo, "2");
 		Party party = partyService.getParty(dbPartyNo, partyFlag);
+		
 		party.setFemalePercentage(dbParty.getFemalePercentage());
 		party.setFemaleAgeAverage(dbParty.getFemaleAgeAverage());
 		party.setMalePercentage(dbParty.getMalePercentage());
 		party.setMaleAgeAverage(dbParty.getMaleAgeAverage());
+		
+		//party 도메인 출력
+		System.out.println("\n<<< /party/getParty party 도메인  \n"+party);
+		
 		Map<String, Object> map = partyService.getPartyMemberList(dbPartyNo, search);
 		
 		/*Page resultPage = new Page(search.getCurrentPage(),((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
@@ -232,8 +276,6 @@ public class PartyController {
 		modelAndView.addObject("ticket", ticket);
 		modelAndView.addObject("list", map.get("list"));
 		modelAndView.addObject("currentMemberCount", map.get("currentMemberCount"));
-		/*modelAndView.addObject("resultPage", resultPage);
-		modelAndView.addObject("search", search);*/
 		modelAndView.setViewName("/view/party/getParty.jsp");
 		
 		return modelAndView;
@@ -268,7 +310,7 @@ public class PartyController {
 		
 		System.out.println("\n>>> /party/updateParty :: POST start <<<");
 		
-		//party 도메인 출력
+		//party 도메인 파라미터 출력
 		System.out.println(">>> /party/updateParty party 도메인 파라미터 \n"+party);
 		
 		
@@ -292,6 +334,9 @@ public class PartyController {
 			}
 		}
 		
+		//partyTime = hour + minutes
+		party.setPartyTime(party.getHour()+"시 "+party.getMinutes()+"분");
+		
 		//Business Logic
 		/* 티켓 수정 */
 		Ticket ticket = new Ticket();
@@ -301,7 +346,7 @@ public class PartyController {
 		
 		ticket=ticketService.updateTicket(ticket);
 		//ticket 도메인 출력
-		System.out.println("\n<<< /party/updateParty party 도메인  \n"+ticket);
+		System.out.println("\n<<< /party/updateParty ticket 도메인  \n"+ticket);
 		
 		/* 파티 수정 */
 		partyService.updateParty(party);
@@ -335,6 +380,7 @@ public class PartyController {
 			search.setCurrentPage(1);
 		}
 		search.setPageSize(pageSize);
+		System.out.println("\n<<< /party/getPartyList :: GET :: currentPage\n"+search.getCurrentPage());
 		
 		
 		//Business Logic
@@ -366,9 +412,10 @@ public class PartyController {
 				
 		if(search.getCurrentPage() == 0){
 			search.setCurrentPage(1);
-			System.out.println("CurrentPage"+search.getCurrentPage());
 		}
 		search.setPageSize(pageSize);
+		System.out.println("\n<<< /party/getPartyList :: POST :: currentPage\n"+search.getCurrentPage());
+		
 		
 		//Business Logic
 		Map<String, Object> map = partyService.getPartyList(search);
@@ -388,21 +435,25 @@ public class PartyController {
 	}
 	
 	
-	@RequestMapping( value="getMyPartyList")
-	public ModelAndView getMyPartyList( @ModelAttribute("search") Search search, HttpSession session) throws Exception{
+	@RequestMapping( value="getMyPartyList", method=RequestMethod.GET)
+	public ModelAndView getMyPartyList( HttpSession session ) throws Exception {
 		
-		System.out.println("\n>>> /party/getMyPartyList :: POST start <<<");
-
-		//search 도메인 파라미터 출력
-		System.out.println(">>> /party/getMyPartyList search 도메인 파라미터 \n"+search);
-				
+		System.out.println("\n>>> /party/getMyPartyList :: GET start <<<");
+		
+		Search search = new Search();
+		
 		if(search.getCurrentPage() == 0){
 			search.setCurrentPage(1);
-			System.out.println("CurrentPage"+search.getCurrentPage());
 		}
 		search.setPageSize(pageSize);
+		System.out.println("\n<<< /party/getMyPartyList :: GET :: pageSize\n"+search.getPageSize());
+		System.out.println("\n<<< /party/getMyPartyList :: GET :: currentPage\n"+search.getCurrentPage());
+		System.out.println("\n<<< /party/getMyPartyList :: GET :: startPage\n"+search.getStartRowNum());
+		System.out.println("\n<<< /party/getMyPartyList :: GET :: endPage\n"+search.getEndRowNum());
+		
 		
 		String userId = ((User)session.getAttribute("user")).getUserId();
+		System.out.println("\n<<< /party/getMyPartyList :: GET :: userId\n"+userId);
 		
 		
 		//Business Logic
@@ -416,7 +467,41 @@ public class PartyController {
 		modelAndView.addObject("list", map.get("list"));
 		modelAndView.addObject("resultPage", resultPage);
 		modelAndView.addObject("search", search);
-		modelAndView.setViewName("forward:/view/party/getPartyList.jsp");
+		modelAndView.setViewName("forward:/view/party/getMyPartyList.jsp");
+		
+		return modelAndView;
+	}
+	
+	@RequestMapping( value="getMyPartyList", method= RequestMethod.POST)
+	public ModelAndView getMyPartyList( @ModelAttribute("search") Search search, HttpSession session) throws Exception{
+		
+		System.out.println("\n>>> /party/getMyPartyList :: POST start <<<");
+
+		//search 도메인 파라미터 출력
+		System.out.println(">>> /party/getMyPartyList :: POST :: search 도메인 파라미터 \n"+search);
+				
+		if(search.getCurrentPage() == 0){
+			search.setCurrentPage(1);
+		}
+		search.setPageSize(pageSize);
+		System.out.println("\n<<< /party/getMyPartyList :: POST :: currentPage\n"+search.getCurrentPage());
+		
+		String userId = ((User)session.getAttribute("user")).getUserId();
+		System.out.println("\n<<< /party/getMyPartyList :: POST :: userId\n"+userId);
+		
+		
+		//Business Logic
+		Map<String, Object> map = partyService.getMyPartyList(search, userId);
+		
+		Page resultPage = new Page(search.getCurrentPage(),((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+		
+		
+		//Model(data) & View(jsp)
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("list", map.get("list"));
+		modelAndView.addObject("resultPage", resultPage);
+		modelAndView.addObject("search", search);
+		modelAndView.setViewName("forward:/view/party/getMyPartyList.jsp");
 		
 		return modelAndView;
 		
@@ -435,9 +520,10 @@ public class PartyController {
 		
 		if(search.getCurrentPage() == 0){
 			search.setCurrentPage(1);
-			System.out.println("CurrentPage"+search.getCurrentPage());
 		}
 		search.setPageSize(pageSize);
+		System.out.println("\n<<< /party/getPartyList currentPage\n"+search.getCurrentPage());
+		
 		
 		//Business Logic
 		int dbPartyNo = Integer.parseInt(partyNo);

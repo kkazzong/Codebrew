@@ -88,7 +88,7 @@
 
 <!-- 파티 index -->
 <div><a href = "/party/addParty?userId=${user.userId}">addParty.jsp</a></div>
-	<div><a href = "/party/getParty?partyNo=10000">getParty.jsp</a></div>
+	<div><a href = "/party/getMyPartyList">getMyPartyList.jsp</a></div>
 	<div><a href = "/party/getPartyList">getPartyList.jsp</a></div>
 	</section>
 </body>

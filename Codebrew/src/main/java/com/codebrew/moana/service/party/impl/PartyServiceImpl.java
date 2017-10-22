@@ -83,7 +83,7 @@ public class PartyServiceImpl implements PartyService {
 	public Map<String, Object> getMyPartyList(Search search, String userId) throws Exception {
 		// TODO Auto-generated method stub
 		List<Party> list = partyDAO.getMyPartyList(search, userId);
-		int totalCount = partyDAO.getTotalCount(search);
+		int totalCount = partyDAO.getMyTotalCount(search, userId);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", list );
@@ -119,6 +119,13 @@ public class PartyServiceImpl implements PartyService {
 	public void cancelParty(int partyNo, String userId) throws Exception {
 		// TODO Auto-generated method stub
 		partyDAO.cancelParty(partyNo, userId);
+	}
+	
+	
+	@Override
+	public void deletePartyMember(int partyNo, String userId) throws Exception {
+		// TODO Auto-generated method stub
+		partyDAO.deletePartyMember(partyNo, userId);
 	}
 
 
