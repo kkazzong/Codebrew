@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%-- <%@include file="/data/party/userData.jsp"%>  --%>
-<%-- <%@include file="/data/party/festivalData.jsp"%>  --%>
+<%@include file="/data/party/festivalData.jsp"%> 
    
 <!DOCTYPE html>
 <html>
@@ -96,10 +96,11 @@
 				$("#ticketPriceDiv").css("display", "block");
 				
 				$("#festival.festivalNo").val(0);
+				$("#festivla.festivalName").val("");
 			});
 			
 			$("#afterParty").on("click", function(){
-				$("#partyFlag").val("");
+				$("#partyFlag").val("2");
 				var partyFlag = $("#partyFlag").val();
 				console.log(partyFlag);
 				
@@ -107,6 +108,8 @@
 				$("#ticketCountDiv").css("display", "none");
 				$("#ticketPriceDiv").css("display", "none");
 				
+				$("#festival.festivalNo").val('${festival.festivalNo}');
+				$("#festival.festivalName").val('${festival.festivalName}');
 			});
 		});
 		
@@ -133,6 +136,9 @@
 <body bgcolor="#ffffff" text="#000000">
 
 	
+   	<!-- ToolBar Start /////////////////////////////////////-->
+	<jsp:include page="/toolbar/toolbar.jsp" />
+   	<!-- ToolBar End /////////////////////////////////////-->
    	
    	<!--  화면구성 div Start /////////////////////////////////////-->
 	<div class="container">
@@ -196,7 +202,6 @@
 		    <div class="col-sm-2">
 		      <select name="hour">
 		        <option value="00" selected>00</option>
-		        <option value="00">00</option>
 		        <option value="01">01</option>
 		        <option value="02">02</option>
 		        <option value="03">03</option>
@@ -266,10 +271,10 @@
 		  <div class="form-group" id="ticketPriceDiv">
 		    <label for="ticketPrice" class="col-sm-offset-1 col-sm-3 control-label">티켓가격</label>
 		    <div class="col-sm-2">
-		    	<input type="text" class="form-control" id="ticketPrice" name="ticketPrice" >
+		    	<input type="text" class="form-control" id="ticketPrice" name="ticketPrice" value="0">
 		    </div>
 		    <div class="col-sm-2">
-		    	<input type="radio" class="form-control" id="ticketPriceFree" name="ticketPrice" value="0">무료
+		    	<input type="radio" class="form-control" id="ticketPriceFree" name="ticketPrice" >무료
 		    </div>
 		  </div>
 		  

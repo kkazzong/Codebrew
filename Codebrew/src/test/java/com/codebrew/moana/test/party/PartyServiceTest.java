@@ -49,7 +49,22 @@ public class PartyServiceTest {
 	@Autowired
 	@Qualifier("partyDAOImpl")
 	private PartyDAO partyDAO;
-
+	
+	
+	//@Test
+	public void testAddParty() throws Exception {
+		
+		User user = new User();
+		user.setUserId("user01@naver.com");
+		
+		Party party = new Party();
+		party.setPartyName("파티등록 테스트");
+		party.setUser(user);
+		party.setPartyDate("17/10/30");
+		party.setPartyTime("17시 50분");
+		
+		partyDAO.addParty(party);
+	}
 	//@Test
 	public void testGetParty() throws Exception {
 		
@@ -397,8 +412,8 @@ public class PartyServiceTest {
 	public void testGetPartyMemberList() throws Exception {
 		
 		Search search = new Search();
-	 	search.setCurrentPage(1);
-	 	search.setPageSize(3);
+	 	//search.setCurrentPage(1);
+	 	//search.setPageSize(3);
 	 	//search.setSearchKeyword("쎄리");
 	 	
 		
@@ -436,7 +451,7 @@ public class PartyServiceTest {
 	}
 	
 	
-	@Test
+	//@Test
 	public void testGetGenderRatio() throws Exception {
 		
 		int partyNo = 10000;
@@ -445,5 +460,23 @@ public class PartyServiceTest {
 		
 		//==> console 확인
 	 	System.out.println("testGetGenderRatio() party :: "+party);
+	}
+	
+	@Test
+	public void testGetMyPartyList() throws Exception {
+		
+		String userId = ("user01@naver.com");
+		
+		Search search = new Search();
+		search.setSearchCondition("");
+		search.setSearchKeyword("");
+		search.setCurrentPage(1);
+		search.setPageSize(3);
+		
+		Map<String, Object> map = partyService.getMyPartyList(search, userId);
+		
+		//==> console 확인
+	 	System.out.println("testGetMyPartyList() list :: "+map.get("list"));
+	 	System.out.println("testGetMyPartyList() totalCount :: "+map.get("totalCount"));
 	}
 }

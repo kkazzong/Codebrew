@@ -30,6 +30,9 @@ public interface PartyDAO {
 	// SELECT ONE
 	public int getTotalCount(Search search) throws Exception ;
 	
+	// SELECT ONE
+	public int getMyTotalCount(Search search, String userId) throws Exception ;
+	
 	/////////////////////////////////////////////////////////////////////////
 	
 	// INSERT
@@ -43,5 +46,8 @@ public interface PartyDAO {
 	
 	// DELETE
 	public void cancelParty(int partyNo, String userId) throws Exception ;
+	
+	// UPDATE
+	public void deletePartyMember(int partyNo, String userId) throws Exception ;
 }
 

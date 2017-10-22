@@ -163,8 +163,15 @@
 	<select  id="getPartyList" parameterType="com.codebrew.moana.common.Search" resultMap="partySelectMap">
 	  	SELECT *
 	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
-	  					FROM		(	SELECT p.party_no, p.party_image, f.festival_name, f.festival_no, p.party_name, u.nickname, p.party_date, p.party_time, p.party_place
-										FROM party p, festival f, users u
+	  					FROM	(	SELECT p.party_no, p.party_image,
+	  									   f.festival_name,
+	  									   f.festival_no,
+	  									   p.party_name,
+	  									   u.nickname,
+	  									   p.party_date,
+	  									   p.party_time, 
+	  									   p.party_place
+									FROM party p, festival f, users u
 										
 									    <where>
 									        p.festival_no = f.festival_no(+)
@@ -200,6 +207,56 @@
 	 
 	 <select  id="getMyPartyList" parameterType="map" resultMap="partySelectMap">
 	  	SELECT *
+		FROM (	SELECT inner_table.*, ROWNUM AS row_seq
+		        FROM  party_member pm, (SELECT p.party_no AS party_no,
+		                                       p.party_image,
+		                                       f.festival_no,
+		                                       f.festival_name,
+		                                       p.party_name,
+		                                       u.user_id,
+		                                       u.nickname,
+		                                       p.party_date AS party_date,
+		                                       p.party_time,
+		                                       p.party_place
+		                                FROM party p, festival f, users u
+		                                <where> 
+		                                	p.festival_no = f.festival_no(+)
+		                                	AND p.user_id = u.user_id
+		                                	AND p.delete_flag IS NULL
+			                                <if test="search.searchCondition == '' and search.searchKeyword !=''">
+												AND p.party_name LIKE '%${search.searchKeyword}%'
+											</if>
+											<if test="search.searchCondition != ''">
+											     
+										        <if test="search.searchCondition == 3 and search.searchKeyword =='' ">
+										            AND p.party_date &lt; SYSDATE
+										        </if>
+										        <if test="search.searchCondition == 3 and search.searchKeyword !='' ">
+										            AND p.party_date &lt; SYSDATE
+										            AND p.party_name LIKE '%${search.searchKeyword}%'
+										        </if>
+										        <if test="search.searchCondition == 4 and search.searchKeyword =='' ">
+										            AND p.party_date >= SYSDATE
+										        </if>
+										        <if test="search.searchCondition == 4 and search.searchKeyword !='' ">
+										            AND p.party_date >= SYSDATE
+										            AND p.party_name LIKE '%${search.searchKeyword}%'
+										        </if>
+											    
+											</if>
+		                                </where>
+		                                ) inner_table
+		        <where>
+		        	pm.party_no = inner_table.party_no
+			        AND pm.user_id = #{userId:VARCHAR}
+			        AND ROWNUM &lt;= #{search.endRowNum:NUMERIC}
+		        </where>
+		        ORDER BY inner_table.party_date ASC)
+		 <where>
+		 	row_seq BETWEEN #{search.startRowNum:NUMERIC} AND #{search.endRowNum:NUMERIC}
+		 </where>
+	  	
+	  	<!-- SELECT *
 	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
 	  					FROM		(	SELECT p.party_no, p.party_image, f.festival_name, p.party_name, u.nickname, p.party_date, p.party_time, p.party_place
 										FROM party p, festival f, users u
@@ -208,7 +265,7 @@
 									        p.festival_no = f.festival_no(+)
 									        AND p.user_id = u.user_id
 									    	AND p.delete_flag IS NULL
-									    	AND u.userId = #{userId}
+									    	AND u.user_id = #{userId}
 										<if test="searchCondition == ''">
 											AND p.party_name LIKE '%${searchKeyword}%'
 										</if>
@@ -234,7 +291,7 @@
 										</where>
 										ORDER BY p.party_date DESC  ) inner_table
 						WHERE ROWNUM &lt;= #{endRowNum} )
-		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 	
+		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}  -->	
 	 </select>
 	 
 	 
@@ -273,6 +330,61 @@
 	 </select>
 	 
 	 
+	 <select  id="getMyTotalCount"  parameterType="map"	 resultType="int">
+	  	SELECT COUNT(*)
+	  	FROM(	SELECT *
+		FROM (	SELECT inner_table.*, ROWNUM AS row_seq
+		        FROM  party_member pm, (SELECT p.party_no AS party_no,
+		                                       p.party_image,
+		                                       f.festival_no,
+		                                       f.festival_name,
+		                                       p.party_name,
+		                                       u.user_id,
+		                                       u.nickname,
+		                                       p.party_date AS party_date,
+		                                       p.party_time,
+		                                       p.party_place
+		                                FROM party p, festival f, users u
+		                                <where> 
+		                                	p.festival_no = f.festival_no(+)
+		                                	AND p.user_id = u.user_id
+		                                	AND p.delete_flag IS NULL
+			                                <if test="search.searchCondition == '' and search.searchKeyword !=''">
+												AND p.party_name LIKE '%${search.searchKeyword}%'
+											</if>
+											<if test="search.searchCondition != ''">
+											     
+										        <if test="search.searchCondition == 3 and search.searchKeyword =='' ">
+										            AND p.party_date &lt; SYSDATE
+										        </if>
+										        <if test="search.searchCondition == 3 and search.searchKeyword !='' ">
+										            AND p.party_date &lt; SYSDATE
+										            AND p.party_name LIKE '%${search.searchKeyword}%'
+										        </if>
+										        <if test="search.searchCondition == 4 and search.searchKeyword =='' ">
+										            AND p.party_date >= SYSDATE
+										        </if>
+										        <if test="search.searchCondition == 4 and search.searchKeyword !='' ">
+										            AND p.party_date >= SYSDATE
+										            AND p.party_name LIKE '%${search.searchKeyword}%'
+										        </if>
+											    
+											</if>
+		                                </where>
+		                                ) inner_table
+		        <where>
+		        	pm.party_no = inner_table.party_no
+			        AND pm.user_id = #{userId:VARCHAR}
+			        AND ROWNUM &lt;= #{search.endRowNum:NUMERIC}
+		        </where>
+		        ORDER BY inner_table.party_date ASC)
+		 <where>
+		 	row_seq BETWEEN #{search.startRowNum:NUMERIC} AND #{search.endRowNum:NUMERIC}
+		 </where>
+		 ) countTable			
+	 </select>
+	 
+	 
 	 <insert id="joinParty" parameterType="partyMember">
 		INSERT
 		INTO party_member(member_no, party_no, user_id, role, age, gender)
@@ -291,7 +403,16 @@
 		WHERE party_no = #{partyNo}
 		AND user_id = #{userId}
 	</delete>
-
+	
+	
+	<update id="deletePartyMember" parameterType="map">
+		UPDATE party_member
+		<set>
+			delete_flag = 'del' 
+		</set>
+		WHERE party_no = #{partyNo}
+		AND user_id = #{userId}
+	</update>
 	
 	<select  id="getPartyMemberList" parameterType="map" resultMap="partyMemberSelectMap">
 	  	SELECT *
@@ -309,9 +430,14 @@
 									        </if>
 									    
 										</where>
+										<if test="search.endRowNum == 0">
+										ORDER BY pm.role DESC  ) inner_table)
+										</if>
+										<if test="search.endRowNum != 0">
 										ORDER BY pm.role DESC  ) inner_table
 						WHERE ROWNUM &lt;= #{search.endRowNum} )
-		WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum} 	
+		WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum}
+		</if>
 	 </select>
 	 
 	 

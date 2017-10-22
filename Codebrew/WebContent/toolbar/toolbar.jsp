@@ -183,6 +183,20 @@
 			});
 			
    		});
+		
+		
+  		///////파티관리////////
+   		$(function(){
+   			
+		 	$("a:contains('파티등록')").on("click" , function() {
+				self.location = "/party/addParty"
+			}); 
+		 	
+			$("a[href='#']:contains('파티목록')").bind('click', function(){
+				self.location = "/party/getPartyList";
+			});
+			
+   		});
    		
 	</script>  
 

@@ -1,14 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="EUC-KR"%>
+    pageEncoding="UTF-8"%>
 <%@ page import="com.codebrew.moana.service.domain.*" %>
 <%
 	
 	Festival festival = new Festival();
-	festival.setFestivalNo(2510119);
-	festival.setFestivalName("¹Ìµå³ªÀÕ ÇÒ·ÎÀ© ÆÄÆ¼ 2017 : ¸ó½ºÅÍ ½ÃÆ¼ 2017");
-	festival.setAddr("¼­¿ïÆ¯º°½Ã ±¤Áø±¸ ¾ÆÂ÷»ê·Î 200");
-	festival.setStartDate("20171013");
-	festival.setEndDate("20171029");
+	festival.setFestivalNo(2510028);
+	festival.setFestivalName("ìƒí™œë¬¸í™”ì£¼ê°„(ì•„í‹°íŒŸì¹´ë‹ˆë°œ) 2017");
+	festival.setAddr("ì„œìš¸íŠ¹ë³„ì‹œ ì„±ë™êµ¬ ëšì„¬ë¡œ 273");
+	festival.setStartDate("20171021");
+	festival.setEndDate("20171104");
 	
 	request.setAttribute("festival", festival);
 	

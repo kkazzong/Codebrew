@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@include file="/data/party/userData.jsp"%> 
+<%-- <%@include file="/data/party/userData.jsp"%>  --%>
 
 <!--  ///////////////////////// JSTL  ////////////////////////// -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -143,11 +143,19 @@
 			});
 		});
 		
+	
 		
 	</script>
 	
+	<!--  ///////////////////////// CSS ////////////////////////// -->
+	
+	
 </head>
 <body>
+	<!-- ToolBar Start /////////////////////////////////////-->
+	<jsp:include page="/toolbar/toolbar.jsp" />
+   	<!-- ToolBar End /////////////////////////////////////-->
+   	
 
 	<!--  화면구성 div Start /////////////////////////////////////-->
 	<div class="container">
@@ -209,7 +217,7 @@
 					<c:set var="i" value="0"/>
 					<c:forEach var="partyMember" items="${list}">
 						<c:set var="i" value="${i+1}"/>
-						<c:if test="${sessionScope.user.userId == partyMember.user.userId }">
+						<c:if test="${user.userId == partyMember.user.userId }">
 							<!-- <button type="button" class="btn btn-primary">파티참여취소</button> -->
 							<!-- Button trigger modal -->
 							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
@@ -257,8 +265,8 @@
 				</div>
 				
 				<hr/>
-				
-				<div class="row">
+				<c:if test="${ empty party.festival.festivalNo }">
+				<div class="row" id="ticketPriceDiv">
 					<div class="col-xs-4 col-md-2 ">
 						<strong>파티 티켓 가격</strong>
 					</div>
@@ -266,7 +274,19 @@
 				</div>
 				
 				<hr />
-
+				</c:if>
+				
+				<c:if test="${ ticket.ticketPrice == 0 }">
+				<div class="row" id="ticketPriceDiv">
+					<div class="col-xs-4 col-md-2 ">
+						<strong>파티 티켓 가격</strong>
+					</div>
+					<div class="col-xs-8 col-md-4">0</div>&nbsp;원
+				</div>
+				
+				<hr />
+				</c:if>
+				
 				<div class="row">
 					<div class="col-xs-4 col-md-2">
 						<strong>파티설명</strong>
@@ -338,16 +358,18 @@
 						<%-- <c:if test="${ ! empty party.user.userId && party.user.userId==sessionScope.user.userId }">
 							<button type="button" class="btn btn-primary">파티삭제</button>
 						</c:if> --%>
-						<c:if test="${ empty party.festival.festivalNo && ! empty party.user.userId && party.user.userId!=user.userId }">
+						<c:if test="${ empty party.festival.festivalNo && party.user.userId!=user.userId }">
 							<button type="button" class="btn btn-primary">파티티켓구매</button>
 						</c:if>
 						
 						<c:set var="i" value="0" />
 						<c:forEach var="partyMember" items="${list}">
 							<c:set var="i" value="${ i+1 }" />
-							<c:if test="${ !empty party.festival.festivalNo } && ${ partyMember.user.userId!=user.userId } && ${ party.user.userId!=user.userId } ">
+							<c:if test="${ !empty party.festival.festivalNo }">
+								<c:if test="${ partyMember.user.userId!=user.userId } && ${ party.user.userId!=user.userId } ">
 								<button type="button" class="btn btn-primary">애프터파티 참여</button>
 								<c:set var="break" value="true" />
+								</c:if>
 							</c:if>
 							<c:if test="${ partyMember.user.userId==user.userId && party.user.userId!=user.userId }">
 								<button type="button" class="btn btn-primary">파티참여취소</button>

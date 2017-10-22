@@ -1,16 +1,18 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@include file="/data/party/userData.jsp"%>
+
 <!DOCTYPE html>
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-	<title>index È­¸é</title>
+	<title>index í™”ë©´</title>
 	
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script>
 		
 		/* $(function() {
-			//==> DOM Object GET 3°¡Áö ¹æ¹ı ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+			//==> DOM Object GET 3ê°€ì§€ ë°©ë²• ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			 $( "a[href='#' ]" ).on("click" , function() {
 					self.location = "/Codebrew/party/addParty?userId=user01"
 				});
@@ -18,11 +20,11 @@
 	</script>
 </head>
 <body>
-	¿©±âÀÖÀ½ ÇÏÀÌÆÛ¸µÅ©
+	ì—¬ê¸°ìˆìŒ í•˜ì´í¼ë§í¬
 	<div><a href = "/party/addParty?userId=user01@naver.com">addParty.jsp</a></div>
 	<div><a href = "/party/getParty?partyNo=10000">getParty.jsp</a></div>
 	<div><a href = "/party/getPartyList">getPartyList.jsp</a></div>
-	<div><a href = "/party/getMyPartyList?user">getMyPartyList.jsp</a></div>
+	<div><a href = "/party/getMyPartyList">getMyPartyList.jsp</a></div>
 	<div><a href = "http://127.0.0.1:8080/view/party/Sample.jsp">Sample.jsp</a></div>
 	<div><a href = "http://127.0.0.1:8080/view/party/addr.jsp">addr.jsp</a></div>
 	

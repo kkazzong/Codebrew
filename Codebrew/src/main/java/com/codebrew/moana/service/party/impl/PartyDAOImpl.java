@@ -84,7 +84,7 @@ public class PartyDAOImpl implements PartyDAO {
 		// TODO Auto-generated method stub
 		Map<String , Object>  map = new HashMap<String, Object>();
 		
-		map.put("partyNo", userId);
+		map.put("userId", userId);
 		map.put("search", search);
 		
 		return sqlSession.selectList("PartyMapper.getMyPartyList", map);
@@ -97,6 +97,18 @@ public class PartyDAOImpl implements PartyDAO {
 		return sqlSession.selectOne("PartyMapper.getTotalCount", search);
 	}
 
+	
+	@Override
+	public int getMyTotalCount(Search search, String userId) throws Exception {
+		// TODO Auto-generated method stub
+		Map<String , Object>  map = new HashMap<String, Object>();
+		
+		map.put("userId", userId);
+		map.put("search", search);
+		
+		return sqlSession.selectOne("PartyMapper.getMyTotalCount", map);
+	}
+	
 	///////////////////////////////////////////////////////////////////////////
 
 	@Override
@@ -144,7 +156,16 @@ public class PartyDAOImpl implements PartyDAO {
 	}
 
 
-	
+	@Override
+	public void deletePartyMember(int partyNo, String userId) throws Exception {
+		// TODO Auto-generated method stub
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("partyNo", partyNo);
+		map.put("userId", userId);
+		
+		sqlSession.delete("PartyMapper.deletePartyMember", map);
+	}
 	
 	
 
