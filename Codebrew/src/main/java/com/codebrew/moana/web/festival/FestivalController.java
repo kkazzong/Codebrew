@@ -51,6 +51,28 @@ public class FestivalController {
 
 	@Value("#{imageRepositoryProperties['fileRoot']}")
 	String fileRoot;
+	
+	@RequestMapping(value = "deleteFestival")
+	public ModelAndView deleteFestival(@ModelAttribute("page") Page page,@ModelAttribute("search") Search search,@RequestParam("festivalNo") int festivalNo, @RequestParam("deleteFlag") String deleteFlag ) throws Exception {
+		
+		System.out.println("deleteFlag들어옴...");
+		
+		Festival festival = new Festival();
+
+		festival.setFestivalNo(festivalNo);
+
+		festival = festivalService.getFestivalDB(festivalNo);
+		
+		festival.setDeleteFlag("1");
+		
+		festivalService.deleteFestival(festival);
+		
+		ModelAndView modelAndView = new ModelAndView();
+
+		modelAndView.setViewName("forward:/festival/getFestivalListDB");
+
+		return modelAndView;
+	}
 
 	@RequestMapping(value = "addFestivalView", method = RequestMethod.GET)
 	public ModelAndView addFestivalView(@RequestParam("festivalNo") int festivalNo) throws Exception {
