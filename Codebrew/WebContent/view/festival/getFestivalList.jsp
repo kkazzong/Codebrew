@@ -119,11 +119,7 @@
 				</div>
 				
 				
-				<%--  <div class="form-group">
-				    <label class="sr-only" for="searchKeyword">검색어</label>
-				    <input type="text" class="form-control" id="searchKeyword" name="searchKeyword"  placeholder="검색어"
-				    			 value="${! empty search.searchKeyword ? search.searchKeyword : '' }"  >
-				  </div> --%>
+				<%-- <jsp:include page="/view/festival/searchKeywordList.jsp"></jsp:include>	 --%>
 
 		<button type="button" class="btn btn-default">검색</button>
 		

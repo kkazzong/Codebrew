@@ -242,6 +242,8 @@ public class FestivalController {
 
 				festival.setFestivalNo(festivalNo);
 				festival.setDeleteFlag(null);
+				
+				
 
 				festival = festivalService.getFestivalDB(festivalNo);
 
@@ -344,15 +346,17 @@ public class FestivalController {
 	}
 
 	@RequestMapping(value = "updateFestivalView", method = RequestMethod.GET)
-	public ModelAndView updateFestivalView(@RequestParam("festivalNo") int festivalNo) throws Exception {
+	public ModelAndView updateFestivalView(@RequestParam("festivalNo") int festivalNo
+			,@RequestParam("isNull") boolean isNull) throws Exception {
 
-		System.out.println("/addView");
+		System.out.println("/updateView");
 
 		Festival festival = new Festival();
 
 		festival.setFestivalNo(festivalNo);
 
 		festival = festivalService.getFestivalDB(festivalNo);
+		festival.setIsNull(isNull);
 
 		Ticket ticket = ticketService.getTicket(festivalNo, "1");
 		festival.setTicketCount(ticket.getTicketCount());

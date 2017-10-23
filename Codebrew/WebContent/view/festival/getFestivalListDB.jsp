@@ -54,6 +54,22 @@
 			self.location = "/festival/getFestivalDB?festivalNo=" + festivalNo;
 		});
 	});
+	
+$(function(){
+		
+		$("input:text[name='searchKeyword']").on('keydown',function(event){
+			
+			if(event.keyCode ==13){
+				/* alert("dpsxj") */
+				event.preventDefault();
+				$( "button:contains('검색')" ).click();
+			}
+		});
+	
+	});
+	
+	
+	
 </script>
 
 </head>

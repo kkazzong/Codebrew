@@ -137,7 +137,7 @@ $(function() {
 		
 		$(function() {
 			$("button:contains('재등록')").on("click", function() {
-			self.location = "/festival/updateFestivalView?festivalNo="+${festival.festivalNo};
+			self.location = "/festival/updateFestivalView?festivalNo="+${festival.festivalNo}+"&isNull="+${festival.isNull};
 		});
 	});
 			
@@ -363,6 +363,8 @@ $(function(){
 	<input type = "hidden" class="form-control" id="role" name="role" value= "${user.role }">
 	<input type = "hidden" class="form-control" id="nickname" name="userId" value= "${user.nickname }">
 	
+	<!-- festival isNull check -->
+	<input type = "hidden" class="form-control" id="isNull" name="isNull" value= "${festival.isNull }">
 	
 	
 	

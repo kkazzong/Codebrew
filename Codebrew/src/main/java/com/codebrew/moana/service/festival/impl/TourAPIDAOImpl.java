@@ -202,75 +202,68 @@ public class TourAPIDAOImpl implements FestivalDAO {
 
 		JSONObject jsonobj15 = (JSONObject) jsonobj14.get("item");
 
-		if (jsonobj5.get("firstimage") != null || jsonobj5.get("firstimage2") != null) {
-
-			System.out.println("json......" + jsonobj15);
-
-			if (jsonobj15.get("eventstartdate") == null || jsonobj15.get("eventstartdate") == "") {
-				festival.setStartDate("제공정보없음");
-			} else {
-				festival.setStartDate(jsonobj15.get("eventstartdate").toString()); // 시작일
-			}
-
-			if (jsonobj15.get("eventenddate") == null || jsonobj15.get("eventenddate") == "") {
-				festival.setEndDate("제공정보없음");
-			} else {
-				festival.setEndDate(jsonobj15.get("eventenddate").toString()); // 종료일
-			}
-
-			if (jsonobj15.get("agelimit") == null || jsonobj15.get("agelimit") == "") {
-				festival.setAgeLimit("제공정보없음");
-			} else {
-				festival.setAgeLimit(jsonobj15.get("agelimit").toString());// 연령제한
-			}
-
-			if (jsonobj15.get("bookingplace") == null || jsonobj15.get("bookingplace") == "") {
-				festival.setBookingPlace("제공정보없음");
-			} else {
-				festival.setBookingPlace(jsonobj15.get("bookingplace").toString()); // 예매처
-			}
-
-			if (jsonobj15.get("discountinfofestival") == null || jsonobj15.get("discountinfofestival") == "") {
-				festival.setDiscount("제공정보없음");
-			} else {
-				festival.setDiscount(jsonobj15.get("discountinfofestival").toString());
-			}
-
-			if (jsonobj15.get("playtime") == null || jsonobj15.get("playtime") == "") {
-				festival.setPlayTime("제공정보없음");
-			} else {
-				festival.setPlayTime(jsonobj15.get("playtime").toString());
-			}
-
-			if (jsonobj15.get("spendtimefestival") == null || jsonobj15.get("spendtimefestival") == "") {
-				festival.setSpendTimeFestival("제공정보없음");
-			} else {
-				festival.setSpendTimeFestival(jsonobj15.get("spendtimefestival").toString());
-			}
-
-			if (jsonobj15.get("subevent") == null || jsonobj15.get("subevent") == "") {
-				festival.setSubEvent("제공정보없음");
-			} else {
-				festival.setSubEvent(jsonobj15.get("subevent").toString());
-			}
-
-			if (jsonobj15.get("program") == null || jsonobj15.get("program") == "") {
-				festival.setProgram("제공정보없음");
-			} else {
-				festival.setProgram(jsonobj15.get("program").toString());
-			}
-
-			if (jsonobj15.get("usetimefestival") == null || jsonobj15.get("usetimefestival") == "") {
-				festival.setUseTimeFestival("제공정보없음");
-			} else {
-				festival.setUseTimeFestival(jsonobj15.get("usetimefestival").toString());
-			}
-
-			this.festival = festival;
-
+		if (jsonobj15.get("eventstartdate") == null || jsonobj15.get("eventstartdate") == "") {
+			festival.setStartDate("제공정보없음");
+		} else {
+			festival.setStartDate(jsonobj15.get("eventstartdate").toString()); // 시작일
 		}
 
-		System.out.println("get 할때 readCount 는 머지..? : " + festival.getReadCount());
+		if (jsonobj15.get("eventenddate") == null || jsonobj15.get("eventenddate") == "") {
+			festival.setEndDate("제공정보없음");
+		} else {
+			festival.setEndDate(jsonobj15.get("eventenddate").toString()); // 종료일
+		}
+
+		if (jsonobj15.get("agelimit") == null || jsonobj15.get("agelimit") == "") {
+			festival.setAgeLimit("제공정보없음");
+		} else {
+			festival.setAgeLimit(jsonobj15.get("agelimit").toString());// 연령제한
+		}
+
+		if (jsonobj15.get("bookingplace") == null || jsonobj15.get("bookingplace") == "") {
+			festival.setBookingPlace("제공정보없음");
+		} else {
+			festival.setBookingPlace(jsonobj15.get("bookingplace").toString()); // 예매처
+		}
+
+		if (jsonobj15.get("discountinfofestival") == null || jsonobj15.get("discountinfofestival") == "") {
+			festival.setDiscount("제공정보없음");
+		} else {
+			festival.setDiscount(jsonobj15.get("discountinfofestival").toString());
+		}
+
+		if (jsonobj15.get("playtime") == null || jsonobj15.get("playtime") == "") {
+			festival.setPlayTime("제공정보없음");
+		} else {
+			festival.setPlayTime(jsonobj15.get("playtime").toString());
+		}
+
+		if (jsonobj15.get("spendtimefestival") == null || jsonobj15.get("spendtimefestival") == "") {
+			festival.setSpendTimeFestival("제공정보없음");
+		} else {
+			festival.setSpendTimeFestival(jsonobj15.get("spendtimefestival").toString());
+		}
+
+		if (jsonobj15.get("subevent") == null || jsonobj15.get("subevent") == "") {
+			festival.setSubEvent("제공정보없음");
+		} else {
+			festival.setSubEvent(jsonobj15.get("subevent").toString());
+		}
+
+		if (jsonobj15.get("program") == null || jsonobj15.get("program") == "") {
+			festival.setProgram("제공정보없음");
+		} else {
+			festival.setProgram(jsonobj15.get("program").toString());
+		}
+
+		if (jsonobj15.get("usetimefestival") == null || jsonobj15.get("usetimefestival") == "") {
+			festival.setUseTimeFestival("제공정보없음");
+		} else {
+			festival.setUseTimeFestival(jsonobj15.get("usetimefestival").toString());
+		}
+
+		this.festival = festival;
+
 		return festival;
 	}
 
@@ -350,13 +343,6 @@ public class TourAPIDAOImpl implements FestivalDAO {
 			} else {
 				festival.setFestivalImage(jsonobj5.get("firstimage").toString()); // 원본사진
 			}
-
-			// if (jsonobj5.get("readcount") == null ||
-			// jsonobj5.get("readcount") == "") {
-			// festival.setReadCount("제공정보없음");
-			// } else {
-			// festival.setReadCount(jsonobj5.get("readcount").toString());
-			// }
 
 			if (jsonobj5.get("addr1") == null || jsonobj5.get("addr1") == "") {
 				festival.setAddr("제공정보없음");
@@ -499,18 +485,17 @@ public class TourAPIDAOImpl implements FestivalDAO {
 
 				Festival festival = new Festival();
 
-				if (jsonobj5.get("firstimage") == null || jsonobj5.get("firstimage") == "") {
+				if (jsonobj5.get("content") == null || jsonobj5.get("firstimage") == "") {
 					festival.setFestivalImage("../images/uploadFiles/no.png");
 				} else {
 					festival.setFestivalImage(jsonobj5.get("firstimage").toString()); // 원본사진
 				}
 
-				// if (jsonobj5.get("readcount") == null ||
-				// jsonobj5.get("readcount") == "") {
-				// festival.setReadCount("제공정보없음");
-				// } else {
-				// festival.setReadCount(jsonobj5.get("readcount").toString());
-				// }
+				if (jsonobj5.get("firstimage") == null || jsonobj5.get("firstimage") == "") {
+					festival.setFestivalImage("../images/uploadFiles/no.png");
+				} else {
+					festival.setFestivalImage(jsonobj5.get("firstimage").toString()); // 원본사진
+				}
 
 				if (jsonobj5.get("addr1") == null || jsonobj5.get("addr1") == "") {
 					festival.setAddr("제공정보없음");
@@ -560,26 +545,61 @@ public class TourAPIDAOImpl implements FestivalDAO {
 					festival.setOrgPhone(jsonobj5.get("tel").toString()); // 전화번호
 				}
 
-				if (jsonobj5.get("eventstartdate") == null || jsonobj5.get("eventstartdate") == "") {
-
-					getFestival(this.festival.getFestivalNo());
-
-					festival.setStartDate("제공정보없음");
-
-				} else {
-					festival.setStartDate(jsonobj5.get("eventstartdate").toString()); // 시작일
-				}
-
-				if (jsonobj5.get("eventenddate") == null || jsonobj5.get("eventenddate") == "") {
-					festival.setEndDate("제공정보없음");
-				} else {
-					festival.setEndDate(jsonobj5.get("eventenddate").toString()); // 종료일
-				}
-
 				if (jsonobj5.get("sigungucode") == null) {
 					festival.setSigunguCode("제공정보없음");
 				} else {
 					festival.setSigunguCode(jsonobj5.get("sigungucode").toString()); // 시군구코드
+				}
+
+				StringBuilder urlBuilder3 = new StringBuilder(
+						"http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailIntro");
+				urlBuilder3.append("?" + URLEncoder.encode("ServiceKey", "UTF-8")
+						+ "=hOlSrH9rpwUcpck4Zl2Wnewju3LzLtgYgAqtW%2FVCRaCJ4BMFUxYFO%2FkzQYu7hbohWd4Z8PWeG9gWgteLzsZqVQ%3D%3D&_type=json");
+
+				urlBuilder3.append("&" + URLEncoder.encode("contentId", "UTF-8") + "=" + jsonobj5.get("contentid"));
+				urlBuilder3.append("&" + URLEncoder.encode("contentTypeId", "UTF-8") + "=15");
+				urlBuilder3.append("&" + URLEncoder.encode("MobileOS", "UTF-8") + "=ETC");
+				urlBuilder3.append("&" + URLEncoder.encode("MobileApp", "UTF-8") + "=TourAPI3.0_Guide");
+
+				URL url3 = new URL(urlBuilder3.toString());
+				HttpURLConnection conn3 = (HttpURLConnection) url3.openConnection();
+				conn3.setRequestMethod("GET");
+				conn3.setRequestProperty("Content-type", "application/json");
+				System.out.println("Response code: " + conn3.getResponseCode());
+				BufferedReader rd3;
+				if (conn3.getResponseCode() >= 200 && conn3.getResponseCode() <= 300) {
+					rd3 = new BufferedReader(new InputStreamReader(conn3.getInputStream(), "UTF-8"));
+				} else {
+					rd3 = new BufferedReader(new InputStreamReader(conn3.getErrorStream(), "UTF-8"));
+				}
+				StringBuilder sb3 = new StringBuilder();
+				String line3;
+				while ((line3 = rd3.readLine()) != null) {
+					sb3.append(line3);
+				}
+				rd3.close();
+				conn3.disconnect();
+
+				JSONObject jsonobj11 = (JSONObject) JSONValue.parse(sb3.toString());
+
+				JSONObject jsonobj12 = (JSONObject) jsonobj11.get("response");
+
+				JSONObject jsonobj13 = (JSONObject) jsonobj12.get("body");
+
+				JSONObject jsonobj14 = (JSONObject) jsonobj13.get("items");
+
+				JSONObject jsonobj15 = (JSONObject) jsonobj14.get("item");
+
+				if (jsonobj15.get("eventstartdate") == null || jsonobj15.get("eventstartdate") == "") {
+					festival.setStartDate("제공정보없음");
+				} else {
+					festival.setStartDate(jsonobj15.get("eventstartdate").toString()); // 시작일
+				}
+
+				if (jsonobj15.get("eventenddate") == null || jsonobj15.get("eventenddate") == "") {
+					festival.setEndDate("제공정보없음");
+				} else {
+					festival.setEndDate(jsonobj15.get("eventenddate").toString()); // 종료일
 				}
 
 				this.festival = festival;

@@ -185,7 +185,6 @@
 						</div> <span> ${festival.festivalName } </span> <br /></td>
 				</tr>
 			</table>
-
 			<div>축제기간 ${festival.startDate } ~ ${festival.endDate }</div>
 			<br />
 			<br />
