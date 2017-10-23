@@ -37,10 +37,12 @@ public class LogonCheckInterceptor extends HandlerInterceptorAdapter {
 			String uri = request.getRequestURI();
 			
 			//로그인상태에서 갈필요 필요 없는 uri
-			if(		uri.indexOf("addUser") != -1 ||	uri.indexOf("login") != -1 		|| 
-					uri.indexOf("checkDuplication") != -1 ){
+			if(		uri.indexOf("addUser") != -1 ||	uri.indexOf("login") != -1 		  || 
+					uri.indexOf("findPwd") != -1 || uri.indexOf("confirmUser") != -1  || 
+					uri.indexOf("findUser") != -1 || uri.indexOf("json/confirmUser") != -1 ||
+					uri.indexOf("json/checkNickname") != -1 || uri.indexOf("json/checkUserId") != -1){
 				request.getRequestDispatcher("/index.jsp").forward(request, response);
-				System.out.println("[ 로그인 상태임 불피요한 요구.... ]");
+				System.out.println("[ 로그인 상태임 불필요한 요구.... ]");
 				System.out.println("[ LogonCheckInterceptor end........]\n");
 				return false;
 			}
@@ -52,8 +54,10 @@ public class LogonCheckInterceptor extends HandlerInterceptorAdapter {
 			
 			String uri = request.getRequestURI();
 			
-			if(		uri.indexOf("addUser") != -1 ||	uri.indexOf("login") != -1 		|| 
-					uri.indexOf("checkDuplication") != -1 ){
+			if(		uri.indexOf("addUser") != -1 ||	uri.indexOf("login") != -1 		  || 
+					uri.indexOf("findPwd") != -1 || uri.indexOf("confirmUser") != -1  || 
+					uri.indexOf("findUser") != -1||uri.indexOf("json/confirmUser") != -1 ||
+					uri.indexOf("json/checkNickname") != -1 || uri.indexOf("json/checkUserId") != -1){
 				System.out.println("[로그인 시도 상태 .... ]");
 				System.out.println("[ LogonCheckInterceptor end........]\n");
 				return true;

@@ -68,6 +68,40 @@
 <!--주영이가 써보았다.  -->
 <a href="/user/login">로그인</a>
 
+<br>
+<br>
+
+<a href="/user/logout">로그아웃</a>
+
+<br>
+<br>
+
+<a href="/user/updateUser?userId=${user.userId}">회원정보 수정</a>
+
+<br>
+<br>
+
+<a href="/user/getUserList">회원리스트</a>
+
+<br>
+<br>
+
+<a href="/user/findUser">아이디찾기,비밀번호찾기</a>
+
+<br>
+<br>
+
+<a href="/user/confirmUser">본인인증(회원가입하기전에 거쳐야함)</a>
+
+<br>
+<br>
+
+<a href="/user/withdrawUser?userId=${user.userId }">회원탈퇴</a>
+
+
+
+
+
 <!-- 가정이가 또 써보았다 -->
 <br>
 <br>
