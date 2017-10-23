@@ -20,6 +20,7 @@
 		<typeAlias alias="review" type="com.codebrew.moana.service.domain.Review" />
 		<typeAlias alias="reply" type="com.codebrew.moana.service.domain.Reply" />
 		<typeAlias alias="image" type="com.codebrew.moana.service.domain.Image" />
+		<typeAlias alias="video" type="com.codebrew.moana.service.domain.Video" />
 		<typeAlias alias="hashtag" type="com.codebrew.moana.service.domain.Hashtag" />
 		<typeAlias alias="good" type="com.codebrew.moana.service.domain.Good" />
 		<typeAlias alias="party" type="com.codebrew.moana.service.domain.Party" />

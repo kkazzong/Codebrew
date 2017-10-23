@@ -1,5 +1,6 @@
 package com.codebrew.moana.service.review.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import com.codebrew.moana.service.domain.Hashtag;
 import com.codebrew.moana.service.domain.Image;
 import com.codebrew.moana.service.domain.Review;
 import com.codebrew.moana.service.domain.User;
+import com.codebrew.moana.service.domain.Video;
 import com.codebrew.moana.service.review.ReviewDAO;
 import com.codebrew.moana.service.review.ReviewService;
 
@@ -41,22 +43,28 @@ public class ReviewServiceImpl implements ReviewService {
 		
 		reviewDAO.addReview(review);
 		
-		if(review.getReviewImage() != null && review.getReviewImage().size() != 0) { //이미지 올렸을 때
-			for(Image image : review.getReviewImage()) {
+		if(review.getReviewImageList() != null && review.getReviewImageList().size() != 0) { //이미지 올렸을 때
+			for(Image reviewImage : review.getReviewImageList()) {
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("reviewNo", review.getReviewNo()); //reviewNo
-				map.put("reviewImage", image);
-				System.out.println("\n\n\nokokok\n\n\n"+map.get("reviewImage"));
+				map.put("reviewImage", reviewImage);
 				reviewDAO.uploadReviewImage(map);
 			}
 		}
-		if(review.getReviewHashtag() != null && review.getReviewHashtag().size() != 0){ //해시태그 올렸을 때
-			for(Hashtag hashtag : review.getReviewHashtag()){
+		if(review.getReviewHashtagList() != null && review.getReviewHashtagList().size() != 0){ //해시태그 올렸을 때
+			for(Hashtag reviewHashtag : review.getReviewHashtagList()){
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("reviewNo", review.getReviewNo());
-				map.put("reviewHashtag", hashtag);
-				System.out.println("\n\n\nokokok\n\n\n"+map.get("reviewHashtag"));
+				map.put("reviewHashtag", reviewHashtag);
 				reviewDAO.uploadReviewHashtag(map);
+			}
+		}
+		if(review.getReviewVideoList() != null && review.getReviewVideoList().size() != 0){
+			for(Video reviewVideo : review.getReviewVideoList()){
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("reviewNo", review.getReviewNo());
+				map.put("reviewVideo", reviewVideo);
+				reviewDAO.uploadReviewVideo(map);
 			}
 		}
 			
@@ -80,11 +88,18 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override//5
 	public Map<String, Object> getReviewList(Search search) throws Exception {
-		List<Review> list = reviewDAO.getReviewList(search);
+		
+		List<Review> reviewList = reviewDAO.getReviewList(search);
 		int totalCount = reviewDAO.getTotalCount(search);
 		
+		List<Image> reviewImageList;
+		for(Review review : reviewList){ // list에 존재하는  review를 하나씩 꺼내보면....
+			int reviewNo = review.getReviewNo(); //0부터 n번째 review의 review number를 받아서 reviewNo로 지정하여...
+			reviewImageList = review.getReviewImageList();
+		}
+		
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("list", list);
+		map.put("list", reviewList);
 		map.put("totalCount", new Integer(totalCount));
 		
 		return map;
@@ -140,6 +155,11 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override //13
 	public List<Hashtag> getReviewHashtag(int reviewNo) throws Exception {
 		return reviewDAO.getReviewHashtag(reviewNo);
+	}
+	
+	@Override //13
+	public List<Video> getReviewVideo(int reviewNo) throws Exception {
+		return reviewDAO.getReviewVideo(reviewNo);
 	}
 
 }

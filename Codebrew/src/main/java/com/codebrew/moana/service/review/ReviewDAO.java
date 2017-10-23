@@ -8,6 +8,7 @@ import com.codebrew.moana.service.domain.Hashtag;
 import com.codebrew.moana.service.domain.Image;
 import com.codebrew.moana.service.domain.Review;
 import com.codebrew.moana.service.domain.User;
+import com.codebrew.moana.service.domain.Video;
 
 //==> 후기관리 CRUD : DAO interface
 //TTL Method : 14 EA
@@ -64,8 +65,15 @@ public interface ReviewDAO {
 	public void uploadReviewHashtag(Map<String, Object> map) throws Exception;
 	
 	//15
+	public void uploadReviewVideo(Map<String, Object> map) throws Exception;
+	
+	//15
 	public List<Image> getReviewImage(int reviewNo) throws Exception;
 	
 	//16
 	public List<Hashtag> getReviewHashtag(int reviewNo) throws Exception;
+	
+	//17
+	public List<Video> getReviewVideo(int reviewNo) throws Exception;
+	
 }
