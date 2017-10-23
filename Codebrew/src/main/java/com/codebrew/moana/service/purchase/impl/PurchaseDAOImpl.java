@@ -193,7 +193,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			map.put("item_name", purchase.getItemName()); //축제명or파티명
 			map.put("approval_url", "http://127.0.0.1:8080/purchase/approvePayment");
 			map.put("fail_url", "http://127.0.0.1:8080/kakaoPay/failKakaoPay.jsp");
-			map.put("cancel_url", "http://127.0.0.1:8080/kakaoPay/cancelKakaoPay.jsp");
+			map.put("cancel_url", "http://127.0.0.1:8080/purchase/cancelPayment");
 			/*map.put("approval_url", "http://192.168.0.7:8080/purchase/approvePayment");
 			map.put("fail_url", "http://192.168.0.7:8080/kakaoPay/failKakaoPay.jsp");
 			map.put("cancel_url", "http://192.168.0.7:8080/kakaoPay/cancelKakaoPay.jsp");*/
