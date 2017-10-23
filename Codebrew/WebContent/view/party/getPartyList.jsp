@@ -96,8 +96,8 @@
 					$("#searchKeyword").val("");
 				}
 				$("#searchCondition").val("5");
-				fncGetList(1);
-			}); */
+				self.location="/party/getPartyList?festivalNo=2510028";
+			}); */ 
 		});
 		
 		//=============    전체 파티 목록  Event  처리 		=============

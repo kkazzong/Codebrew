@@ -95,8 +95,12 @@
 				$("#ticketCountDiv").css("display", "block");
 				$("#ticketPriceDiv").css("display", "block");
 				
-				$("#festival.festivalNo").val(0);
-				$("#festivla.festivalName").val("");
+				$("#festivalNo").val(0);
+				$("#festivalName").val("");
+				var festivalNo = $("#festivalNo").val();
+				var festivalName = $("#festivalName").val();
+				
+				console.log("#party 버튼 클릭 ==> "+festivalNo+" :: "+festivalName);
 			});
 			
 			$("#afterParty").on("click", function(){
@@ -108,8 +112,13 @@
 				$("#ticketCountDiv").css("display", "none");
 				$("#ticketPriceDiv").css("display", "none");
 				
-				$("#festival.festivalNo").val('${festival.festivalNo}');
-				$("#festival.festivalName").val('${festival.festivalName}');
+				
+				$("#festivalNo").val("${festival.festivalNo}");
+				$("#festivalName").val("${festival.festivalName}");
+				var festivalNo = $("#festivalNo").val();
+				var festivalName = $("#festivalName").val();
+				
+				console.log("#afterParty 버튼 클릭 ==> "+festivalNo+" :: "+festivalName);
 			});
 		});
 		
@@ -159,26 +168,22 @@
 		  <div class="form-group">
 		    <label for="partyFlag" class="col-sm-offset-1 col-sm-3 control-label">파티구분</label>
 		    <div class="col-sm-2">
-		    	<%-- 파티<input type="radio" class="form-control" id="partyFlag" name="partyFlag" value="1" ${ empty festival.festivalNo ? "checked" : "" }/> --%>
 		    	<button type="button" class="btn btn-primary" name="party" id="party">파티</button>
 		    	<button type="button" class="btn btn-primary" name="party" id="afterParty">애프터파티</button>
-		    	<!-- <a class="btn btn-primary btn" href="#" role="button" id="party">파티</a> -->
-		    	<!-- <a class="btn btn-primary btn" href="#" role="button" id="afterParty">애프터파티</a> -->
+		    	
 		    	<input type="hidden" class="form-control" id="partyFlag" name="partyFlag"/>
 		    </div>
-		    <%-- <div class="col-sm-2">
-		    	애프터파티<input type="radio" class="form-control" id="partyFlag" name="partyFlag" value="2" ${ empty festival.festivalNo ? "" : "checked" }/>
-		    </div> --%>
+		 
 		    
 		  </div>
 		  		
 		  <div class="form-group" id="festivalNameDiv">
 		    <label for="festivalName" class="col-sm-offset-1 col-sm-3 control-label">축제명</label>
 		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="festival.festivalName" name="festival.festivalName" value="${festival.festivalName }" />
-		      <!-- <input type="text" readonly="readonly" class="form-control" id="festival.festivalName" name="festival.festivalName" placeholder="축제를 검색해주세요."> -->
-		      <%-- <input type="hidden" class="form-control" id="festival.festivalNo" name="festival.festivalNo" value="${festival.festivalNo }" /> --%>
-		      <input type="hidden" class="form-control" id="festival.festivalNo" name="festival.festivalNo" value=0 />
+		      <!-- <input type="text" class="form-control" id="festivalName" name="festival.festivalName" value="" /> -->
+		      <input type="text" readonly="readonly" class="form-control" id="festivalName" name="festival.festivalName" value="${ festival.festivalName }">
+		      <input type="hidden" class="form-control" id="festivalNo" name="festival.festivalNo" value=0 />
+		      
 		      <button type="button" class="btn btn-primary" name="searchFestival" >축제검색</button>
 		    </div>
 		  </div>

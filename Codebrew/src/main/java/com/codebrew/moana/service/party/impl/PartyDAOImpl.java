@@ -39,29 +39,29 @@ public class PartyDAOImpl implements PartyDAO {
 
 	///Method///
 	@Override
-	public void addParty(Party party) throws Exception {
+	public int addParty(Party party) throws Exception {
 		// TODO Auto-generated method stub
-		sqlSession.insert("PartyMapper.addParty", party);
+		return sqlSession.insert("PartyMapper.addParty", party);
 	}
 
 	
 	@Override
 	public Party getParty(int partyNo, String partyFlag) throws Exception{
 		// TODO Auto-generated method stub
-		Map<String, Object> map = new HashMap<String, Object>();
+		/*Map<String, Object> map = new HashMap<String, Object>();
 	
 		map.put("partyNo", partyNo);
 		map.put("partyFlag", partyFlag);
-		System.out.println("getPartyDAO :: map :: "+ map.get("partyNo") +" :: "+ map.get("partyFlag"));
+		System.out.println("getPartyDAO :: map :: "+ map.get("partyNo") +" :: "+ map.get("partyFlag"));*/
 		
-		return sqlSession.selectOne("PartyMapper.getParty", map);
+		return sqlSession.selectOne("PartyMapper.getParty", partyNo);
 	}
 
 
 	@Override
-	public void updateParty(Party party) throws Exception {
+	public int updateParty(Party party) throws Exception {
 		// TODO Auto-generated method stub
-		sqlSession.update("PartyMapper.updateParty", party);
+		return sqlSession.update("PartyMapper.updateParty", party);
 	}
 
 
@@ -112,9 +112,9 @@ public class PartyDAOImpl implements PartyDAO {
 	///////////////////////////////////////////////////////////////////////////
 
 	@Override
-	public void joinParty(PartyMember partyMember) throws Exception {
+	public int joinParty(PartyMember partyMember) throws Exception {
 		// TODO Auto-generated method stub
-		sqlSession.insert("PartyMapper.joinParty", partyMember);
+		return sqlSession.insert("PartyMapper.joinParty", partyMember);
 	}
 
 	@Override
