@@ -1,7 +1,5 @@
-<%@ page contentType="text/html; charset=EUC-KR" %>
-<%@ page pageEncoding="EUC-KR"%>
-
-<!--  ///////////////////////// JSTL  ////////////////////////// -->
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
@@ -10,9 +8,9 @@
 <html lang="ko">
 	
 <head>
-	<meta charset="EUC-KR">
+	<meta charset="UTF-8">
 	
-	<!-- ÂüÁ¶ : http://getbootstrap.com/css/   ÂüÁ¶ -->
+	<!-- ì°¸ì¡° : http://getbootstrap.com/css/   ì°¸ì¡° -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	
 	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
@@ -35,27 +33,40 @@
         }
     </style>
     
+    	
+	<!-- ToolBar Start /////////////////////////////////////-->
+	<jsp:include page="/toolbar/toolbar.jsp" />
+   	<!-- ToolBar End /////////////////////////////////////-->
+    
      <!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
 	
-		//============= "¼öÁ¤"  Event ¿¬°á =============
+		//============= "ìˆ˜ì •"  Event ì—°ê²° =============
 		 $(function() {
-			//==> DOM Object GET 3°¡Áö ¹æ¹ı ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+			//==> DOM Object GET 3ê°€ì§€ ë°©ë²• ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			$( "button.btn.btn-primary" ).on("click" , function() {
 				fncUpdateUser();
 			});
 		});	
 		
 		
-		//============= "Ãë¼Ò"  Event Ã³¸® ¹×  ¿¬°á =============
+		//============= "ì·¨ì†Œ"  Event ì²˜ë¦¬ ë°  ì—°ê²° =============
 		$(function() {
-			//==> DOM Object GET 3°¡Áö ¹æ¹ı ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+			//==> DOM Object GET 3ê°€ì§€ ë°©ë²• ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			$("a[href='#' ]").on("click" , function() {
-				$("form")[0].reset();
+				
+				self.location = "/index.jsp"
+				
+				//$("form")[0].reset();
+				//history.go(-1);
 			});
 		});	
 		
-		//=============ÀÌ¸ŞÀÏ" À¯È¿¼ºCheck  Event Ã³¸® =============
+		
+		
+			 
+		
+		//=============ì´ë©”ì¼" ìœ íš¨ì„±Check  Event ì²˜ë¦¬ =============
 		 $(function() {
 			 
 			 $("input[name='email']").on("change" , function() {
@@ -63,7 +74,7 @@
 				 var email=$("input[name='email']").val();
 			    
 				 if(email != "" && (email.indexOf('@') < 1 || email.indexOf('.') == -1) ){
-			    	alert("ÀÌ¸ŞÀÏ Çü½ÄÀÌ ¾Æ´Õ´Ï´Ù.");
+			    	alert("ì´ë©”ì¼ í˜•ì‹ì´ ì•„ë‹™ë‹ˆë‹¤.");
 			     }
 			});
 			 
@@ -74,7 +85,7 @@
 			var name=$("input[name='userName']").val();
 			
 			if(name == null || name.length <1){
-				alert("ÀÌ¸§Àº  ¹İµå½Ã ÀÔ·ÂÇÏ¼Å¾ß ÇÕ´Ï´Ù.");
+				alert("ì´ë¦„ì€  ë°˜ë“œì‹œ ì…ë ¥í•˜ì…”ì•¼ í•©ë‹ˆë‹¤.");
 				return;
 			}
 				
@@ -92,6 +103,41 @@
 			$("form").attr("method" , "POST").attr("action" , "/user/updateUser").submit();
 		}
 	
+		
+		//ì•„ì´ë””ì¤‘ë³µì²´í¬ ì—°ìŠµ
+		
+		$(function(){
+			$(".btn:contains('ë¹„ë°€ë²ˆí˜¸ì°¾ê¸°')").on("click",function(){
+				
+				var userId=$("input[name='userId']").val();
+				//$(this).val();
+				alert(userId);
+			
+				$.ajax({
+					type:"POST",
+					url:"/userRest/json/checkUserId",
+					heasers : {
+						"Accept" : "application/json;charset=UTF-8",
+						"Content_Type" : "application/json"
+					}
+					
+					
+				})
+				
+				
+			}
+			
+			
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	</script>
 	
 </head>
@@ -102,93 +148,107 @@
 	<jsp:include page="/toolbar/toolbar.jsp" />
    	<!-- ToolBar End /////////////////////////////////////-->
 	
-	<!--  È­¸é±¸¼º div Start /////////////////////////////////////-->
+	<!--  í™”ë©´êµ¬ì„± div Start /////////////////////////////////////-->
 	<div class="container">
 	
 		<div class="page-header text-center">
-	       <h3 class=" text-info">È¸¿øÁ¤º¸¼öÁ¤</h3>
-	       <h5 class="text-muted">³» Á¤º¸¸¦ <strong class="text-danger">ÃÖ½ÅÁ¤º¸·Î °ü¸®</strong>ÇØ ÁÖ¼¼¿ä.</h5>
+	       <h3 class=" text-info">íšŒì›ì •ë³´ìˆ˜ì •</h3>
+	       <h5 class="text-muted">ë‚´ ì •ë³´ë¥¼ <strong class="text-danger">ìµœì‹ ì •ë³´ë¡œ ê´€ë¦¬</strong>í•´ ì£¼ì„¸ìš”.</h5>
 	    </div>
 	    
 	    <!-- form Start /////////////////////////////////////-->
 		<form class="form-horizontal">
 		
 		  <div class="form-group">
-		    <label for="userId" class="col-sm-offset-1 col-sm-3 control-label">¾Æ ÀÌ µğ</label>
+		    <label for="userId" class="col-sm-offset-1 col-sm-3 control-label">ì•„ ì´ ë””</label>
 		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="userId" name="userId" value="${user.userId }" placeholder="Áßº¹È®ÀÎÇÏ¼¼¿ä"  readonly>
+		      <input type="text" class="form-control" id="userId" name="userId" value="${user.userId }" placeholder="ì¤‘ë³µí™•ì¸í•˜ì„¸ìš”"  readonly>
 		       <span id="helpBlock" class="help-block">
-		      	<strong class="text-danger">¾ÆÀÌµğ´Â ¼öÁ¤ºÒ°¡</strong>
+		      	<strong class="text-danger">ì•„ì´ë””ëŠ” ìˆ˜ì •ë¶ˆê°€</strong>
 		      </span>
 		    </div>
 		  </div>
 		
 		  <div class="form-group">
-		    <label for="password" class="col-sm-offset-1 col-sm-3 control-label">ºñ¹Ğ¹øÈ£</label>
+		    <label for="password" class="col-sm-offset-1 col-sm-3 control-label">ë¹„ë°€ë²ˆí˜¸</label>
 		    <div class="col-sm-4">
-		      <input type="password" class="form-control" id="password" name="password" placeholder="º¯°æºñ¹Ğ¹øÈ£">
+		      <input type="password" class="form-control" id="password" name="password" placeholder="ë³€ê²½ë¹„ë°€ë²ˆí˜¸">
 		    </div>
 		  </div>
 		  
 		  <div class="form-group">
-		    <label for="password2" class="col-sm-offset-1 col-sm-3 control-label">ºñ¹Ğ¹øÈ£ È®ÀÎ</label>
+		    <label for="passwordCheck" class="col-sm-offset-1 col-sm-3 control-label">ë¹„ë°€ë²ˆí˜¸ í™•ì¸</label>
 		    <div class="col-sm-4">
-		      <input type="password" class="form-control" id="password2" name="password2" placeholder="º¯°æºñ¹Ğ¹øÈ£ È®ÀÎ">
+		      <input type="password" class="form-control" id="passwordCheck" name="passwordCheck" placeholder="ë³€ê²½ë¹„ë°€ë²ˆí˜¸ í™•ì¸">
 		    </div>
 		  </div>
 		  
+		   <input type="hidden" name="role" value="${user.role}">
+		    <input type="hidden" name="age" value="${user.age}">
+		     <input type="hidden" name="regDate" value="${user.regDate}">
+		      <input type="hidden" name="locationFlag" value="${user.locationFlag}">
+		   
+		  
 		  <div class="form-group">
-		    <label for="userName" class="col-sm-offset-1 col-sm-3 control-label">ÀÌ¸§</label>
+		    <label for="nickname" class="col-sm-offset-1 col-sm-3 control-label">ë‹‰ë„¤ì„</label>
 		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="userName" name="userName" value="${user.userName}" placeholder="º¯°æÈ¸¿øÀÌ¸§">
+		      <input type="text" class="form-control" id="nickname" name="nickname" value="${user.nickname}" placeholder="ë³€ê²½íšŒì›ì´ë¦„">
 		    </div>
 		  </div>
 		  
-		  <div class="form-group">
-		    <label for="ssn" class="col-sm-offset-1 col-sm-3 control-label">ÁÖ¼Ò</label>
-		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="addr" name="addr"  value="${user.addr}" placeholder="º¯°æÁÖ¼Ò">
-		    </div>
-		  </div>
-		  
-		  <div class="form-group">
-		    <label for="ssn" class="col-sm-offset-1 col-sm-3 control-label">ÈŞ´ëÀüÈ­¹øÈ£</label>
-		     <div class="col-sm-2">
-		      <select class="form-control" name="phone1" id="phone1">
-				  	<option value="010" ${ ! empty user.phone1 && user.phone1 == "010" ? "selected" : ""  } >010</option>
-					<option value="011" ${ ! empty user.phone1 && user.phone1 == "011" ? "selected" : ""  } >011</option>
-					<option value="016" ${ ! empty user.phone1 && user.phone1 == "016" ? "selected" : ""  } >016</option>
-					<option value="018" ${ ! empty user.phone1 && user.phone1 == "018" ? "selected" : ""  } >018</option>
-					<option value="019" ${ ! empty user.phone1 && user.phone1 == "019" ? "selected" : ""  } >019</option>
-				</select>
-		    </div>
-		    <div class="col-sm-2">
-		      <input type="text" class="form-control" id="phone2" name="phone2" value="${ ! empty user.phone2 ? user.phone2 : ''}"  placeholder="º¯°æ¹øÈ£">
-		    </div>
-		    <div class="col-sm-2">
-		      <input type="text" class="form-control" id="phone3" name="phone3" value="${ ! empty user.phone3 ? user.phone3 : ''}"   placeholder="º¯°æ¹øÈ£">
-		    </div>
-		    <input type="hidden" name="phone"  />
-		  </div>
 		  
 		   <div class="form-group">
-		    <label for="ssn" class="col-sm-offset-1 col-sm-3 control-label">ÀÌ¸ŞÀÏ</label>
+		    <label for="userName" class="col-sm-offset-1 col-sm-3 control-label">ì´ë¦„</label>
 		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="email" name="email" value="${user.email}" placeholder="º¯°æÀÌ¸ŞÀÏ">
+		      <input type="text" class="form-control" id="userName" name="userName" value="${user.userName}" placeholder="ë³€ê²½íšŒì›ì´ë¦„">
 		    </div>
 		  </div>
+		  
+		  
+		  <div class="form-group">
+		    <label for="gender" class="col-sm-offset-1 col-sm-3 control-label">ì„±ë³„</label>
+		    <div class="col-sm-4">
+		      <input type="text" class="form-control" id="gender" name="gender"  value="${user.gender}"  placeholder="${user.gender}" readonly>
+		    </div>
+		  </div>
+		  
+		  
+		  <div class="form-group">
+		    <label for="profileImage" class="col-sm-offset-1 col-sm-3 control-label">í”„ë¡œí•„ì‚¬ì§„</label>
+		    <div class="col-sm-4">
+		      <input type="file" class="form-control" id="profileImage" name="profileImage"  value="${user.profileImage}"  placeholder="ì‚¬ì§„ì„ ì˜¬ë ¤ì£¼ì„¸ìš”" >
+		    </div>
+		  </div>
+		  
+		 
+		   <div class="form-group">
+		    <label for="age" class="col-sm-offset-1 col-sm-3 control-label">ë‚˜ì´</label>
+		    <div class="col-sm-4">
+		      <input type="text" class="form-control" id="age" name="age" value="${user.age}" placeholder="${user.age}">
+		    </div>
+		  </div>
+		  
+		     <div class="form-group">
+		    <label for="phone" class="col-sm-offset-1 col-sm-3 control-label">íœ´ëŒ€í°ë²ˆí˜¸</label>
+		    <div class="col-sm-4">
+		      <input type="text" class="form-control" id="phone" name="phone" value="${user.phone}" placeholder="${user.phone}">
+		    </div>
+		  </div>
+		  
+		  
+		  
 		  
 		  <div class="form-group">
 		    <div class="col-sm-offset-4  col-sm-4 text-center">
-		      <button type="button" class="btn btn-primary"  >¼ö &nbsp;Á¤</button>
-			  <a class="btn btn-primary btn" href="#" role="button">Ãë &nbsp;¼Ò</a>
+		      <button type="button" class="btn btn-primary"  >ìˆ˜ &nbsp;ì •</button>
+			  <a class="btn btn-primary btn" href="#" role="button">ì¸ë±ìŠ¤í™”ë©´ìœ¼ë¡œ</a>
 		    </div>
 		  </div>
 		</form>
 		<!-- form Start /////////////////////////////////////-->
 	    
  	</div>
-	<!--  È­¸é±¸¼º div Start /////////////////////////////////////-->
+	<!--  í™”ë©´êµ¬ì„± div Start /////////////////////////////////////-->
  	
 </body>
 

@@ -1,9 +1,14 @@
 package com.codebrew.moana.web.user;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
+import com.codebrew.moana.service.domain.Auth;
 import com.codebrew.moana.service.domain.User;
 import com.codebrew.moana.service.user.UserService;
 
@@ -56,7 +63,7 @@ public class UserRestController {
 	
 	}
 	
-
+    //회원정보수정, 회원가입시 닉네임중복체크
 	@RequestMapping(value="json/checkNickname", method=RequestMethod.POST)
 	public boolean checkNickname(@RequestParam("nickname")String nickname)throws Exception{
 		
@@ -67,6 +74,7 @@ public class UserRestController {
 		return result;
 	}
 	
+    //비밀번호찾을때 존재하지 않은 아이디임을 알려주는 아이디중복체크
 	@RequestMapping(value="json/checkUserId", method=RequestMethod.POST)
 	public boolean checkUserId(@RequestParam("userId")String userId)throws Exception{
 		
@@ -78,8 +86,32 @@ public class UserRestController {
 		
 	}
 	
+	
+	@RequestMapping(value="/json/findUserId", method=RequestMethod.POST)
+	public Map<String, String> findUserId(@RequestBody User user)throws Exception{
+		
+		/*@RequestParam("userName")String userName,
+        @RequestParam("phone")String phone
+		*/
+		
+		System.out.println("/userRest/json/findUserId : POST ");
+		
+		user=userService.findUserId(user); 
+		//json 데이터를 받을때는 string 으로 리턴값을 하면 value값밖에 리턴이 안되기 때문에
+		//map 형식으로 담거나. 도메인으로 리턴해야함(도메인은 코드하우스잭슨이 알아서 name:value로 넘겨줌)
+	     
+		String userId=user.getUserId() ;
+		
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userId", userId);
+		return map;
+		
+	}
+	
+	//위치동의
 	@RequestMapping(value="json/locateUser", method=RequestMethod.POST)
-	public User locateUser(@RequestBody User user, HttpSession session)throws Exception{
+	public User locateUser(@RequestParam(value="locationFlag", defaultValue="n")String locationFlag,
+                           @RequestBody User user, HttpSession session)throws Exception{
 		
 		System.out.println("/userRest/json/locateUser : POST");
 		
@@ -92,4 +124,38 @@ public class UserRestController {
 		
 		return user;
   }
+	
+	
+/*	//임시비밀번호보내기
+	@RequestMapping(value="json/findPwd", method=RequestMethod.POST)
+	public void findPwd(@RequestBody User user)throws Exception{
+		
+		System.out.println("/userRest/json/findPwd : POST");
+		
+		userService.findPwd(user);
+		//리턴할 필요없을거 같음
+	
+	}*/
+	
+	
+	
+	//진짜 본인인증-메일로 보내고 인증번호받아오기
+	@RequestMapping(value="json/confirmUser", method=RequestMethod.POST)
+	public Auth confirmUser(@RequestBody Auth auth, Model model)throws Exception{
+		
+		System.out.println("/userRest/json/confirmUser : POST");
+		
+		 auth=userService.confirmUser(auth);
+		 
+		 //모델과 뷰 연결
+		 //model.addAttribute("auth", auth);///???????????????????????
+		 
+	
+		  return auth;
+	}
+	
+	
+	
+	
+	
 }

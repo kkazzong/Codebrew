@@ -31,6 +31,8 @@ public interface UserDAO {
 	    
 		//토탈카운트
 		public int getTotalCount (Search search)throws Exception;
-        
+       
+		//랜덤 비밀번호 생성
+		public String randomNumber(int number) throws Exception;
 		
 }

@@ -274,7 +274,7 @@ public class UserServiceTest {
 	}
 
 	//@Test// 비밀번호찾기, 인증번호-완료
-	public void TestRandomNumber() throws Exception {
+	/*public void TestRandomNumber() throws Exception {
 		
 		String uuid=userService.randomNumber(5);
 		
@@ -282,5 +282,5 @@ public class UserServiceTest {
 		
 		Assert.assertNotNull("값이 들어왔습니다.", userService.randomNumber(5));
 	}
-
+*/
 }

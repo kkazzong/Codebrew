@@ -3,6 +3,7 @@ package com.codebrew.moana.service.user;
 import java.util.Map;
 
 import com.codebrew.moana.common.Search;
+import com.codebrew.moana.service.domain.Auth;
 import com.codebrew.moana.service.domain.User;
 
 public interface UserService {
@@ -31,9 +32,10 @@ public interface UserService {
 	//아이디찾기
 	public User findUserId(User user)throws Exception;
 	
-	//비밀번호찾기, 인증번호
-	public String randomNumber(int number)throws Exception;
+	//비밀번호찾기
+	public void findPwd(User user)throws Exception;
 	
-
-		
-	}
+	//본인인증
+	public Auth confirmUser(Auth auth)throws Exception;
+	
+}
