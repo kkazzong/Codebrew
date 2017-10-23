@@ -23,9 +23,9 @@
 	
 	<!-- Bootstrap Dropdown Hover CSS -->
    <link href="/css/animate.min.css" rel="stylesheet">
-   <link href="/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
+   <link href="../resources/javascript/bootstrap-dropdownhover.min.css" rel="stylesheet">
     <!-- Bootstrap Dropdown Hover JS -->
-   <script src="/javascript/bootstrap-dropdownhover.min.js"></script>
+   <script src="../resources/javascript/bootstrap-dropdownhover.min.js"></script>
 	
 	
 	<!-- jQuery UI toolTip 사용 CSS-->
@@ -46,12 +46,12 @@
 	<script type="text/javascript">
 	
 	<!--  // 검색 / page 두가지 경우 모두 Form 전송을 위해 JavaScript 이용 --> 
-	function fncGetUserList(currentPage) {
+	function fncGetList(currentPage) {
 		$("#currentPage").val(currentPage)
-	   	$("form").attr("method" , "POST").attr("action" , "/product/listProduct").submit();
+	   	$("form").attr("method" , "POST").attr("action" , "/review/getReviewList").submit();
 	}
 	
-	//=====> "검색", prodName link Event 연결 및 처리
+	//=====> "검색", reviewTitle link Event 연결 및 처리
 	$(function(){
 		
 		//==> 검색 Event 연결처리부분
@@ -60,21 +60,21 @@
 		$("button.btn.btn-default").on("click", function(){
 			//Debug..
 			//alert($("button.btn.btn-default")).html();
-			fncGetUserList(1);
+			fncGetList(1);
 		});
 		
-		
-		//==> prodName LINK : mouserover Event 연결처리
+		/* 
+		//==> reviewName LINK : mouserover Event 연결처리
 		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 		//==> 3 과 1 방법 조합 : $(".className tagName:filter함수") 사용함.
 		$( "td:nth-child(2)" ).on("mouseover", function(){
 			
-			var prodNo = $("input:hidden[name='prodNo']", $(this)).val();
-			//alert("prodNo :: "+prodNo);
+			var reviewNo = $("input:hidden[name='reviewNo']", $(this)).val();
+			//alert("reviewNo :: "+reviewNo);
 			
 			$.ajax(
 					{
-						url : "/product/json/getProduct/"+prodNo ,
+						url : "/review/json/getReview/"+reviewNo ,
 						method : "GET" ,
 						dataType : "json" ,
 						headers : {
@@ -89,7 +89,7 @@
 						//alert("JSONData.fileName : \n"+JSONData);
 						
 						var displayValue = "<h5>"
-											+"상품번호 : "+JSONData.prodNo+"<br/>"
+											+"상품번호 : "+JSONData.reviewNo+"<br/>"
 											+"<div style='width: 200px; height: 200px; overflow: hidden'>"
 											+"<img src='../images/uploadFiles/"+JSONData.fileName+"' style='max-width: 100%; height: auto'><br/>"
 											+"</div>"
@@ -97,19 +97,19 @@
 						//Debug...	
 						//alert(displayValue);
 						$("h5").remove();
-						$( "#"+prodNo+"" ).html(displayValue);
+						$( "#"+reviewNo+"" ).html(displayValue);
 						
 					}
 				});
 		});
+		 */
 		
-		
-		//==> prodName LINK : Click Event 연결처리
+		//==> reviewTitle LINK : Click Event 연결처리
 		$( "td:nth-child(2)" ).on("click" , function() {
 			
 			//Debug..
-			//alert(  $("input:hidden[name='prodNo']",$(this)).val() );
-			//self.location ="/product/getProduct?prodNo="+prodNo; //$(this).text().trim()
+			//alert(  $("input:hidden[name='reviewNo']",$(this)).val() );
+			//self.location ="/review/getReview?reviewNo="+reviewNo; //$(this).text().trim()
 			//alert($('.hidden_link', $(this)).text());
 			self.location=$('.hidden_link', $(this)).text();
 		});
@@ -121,15 +121,15 @@
 		$( "td:contains('배송하기')" ).on("click" , function() {
 			
 			//Debug..
-			//alert(  $("input:hidden[name='prodNo']",$(this)).val() );
-			//self.location ="/product/getProduct?prodNo="+prodNo; //$(this).text().trim()
+			//alert(  $("input:hidden[name='reviewNo']",$(this)).val() );
+			//self.location ="/review/getReview?reviewNo="+reviewNo; //$(this).text().trim()
 			//alert($('.hidden_link', $(this)).text());
 			self.location=$('.hidden_link', $(this)).text();
 		
 		});
 		
 		
-		//==> UI 수정 추가부분  :  prodName LINK Event End User 에게 보일수 있도록 
+		//==> UI 수정 추가부분  :  reviewTitle LINK Event End User 에게 보일수 있도록 
 		$( ".ct_list_pop td:nth-child(2)" ).css("color" , "red");
 		$("h7").css("color" , "red");
 		$( ".ct_list_pop td:nth-child(7)" ).css("color" , "blue");
@@ -158,7 +158,7 @@
    		
    		
    		<div class="page-header text-info">
-   			<h3>상품목록조회</h3>
+   			<h3>후기목록조회</h3>
    		</div>
    		
    		<!--  table 위쪽 검색 Start -->
@@ -175,8 +175,9 @@
    					<input name="menu" value="${param.menu }" type="hidden"/>
    					<div class="form-group">
    						<select class="form-control" name="searchCondition">
-   							<option value="0" ${! empty search.searchCondition && search.searchCondition==0 ? "selected" : "" }>상품NO</option>
-   							<option value="1" ${! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>상품명</option>
+   							<option value="0" ${! empty search.searchCondition && search.searchCondition==0 ? "selected" : "" }>축제이름</option>
+   							<option value="1" ${! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>축제장소</option>
+   							<option value="2" ${! empty search.searchCondition && search.searchCondition==2 ? "selected" : "" }>해시태그</option>
    						</select>
    					</div>
    					
@@ -203,70 +204,67 @@
    		
    			<thead>
    				<tr>
-   					<th align="center">NO</th>
    					<th align="left">
-   						상품명
-   						<c:if test="${param.menu=='manage' }">
-   							<h7>(prodName click:상품수정)</h7>
+   						축제명
+   					</th>
+   					<th align="left">
+   						후기명
+   						<%-- <c:if test="${param.menu=='manage' }">
+   							<h7>(reviewTitle click:상품수정)</h7>
    						</c:if>
    						<c:if test="${param.menu=='search' }">
-   							<h7>(prodName click:상품상세)</h7>
-   						</c:if>
+   							<h7>(reviewTitle click:상품상세)</h7>
+   						</c:if> --%>
    					</th>
-   					<th align="left">가격</th>
-   					<th align="left">등록일</th>
-   					<th align="left">현재상태(재고여부)</th>
+   					<th align="left">
+   						축제장소
+   					</th>
+   					<th align="left">
+   						해시태그
+   					</th>
+   					<th align="left">
+   						이미지
+   					</th>
    				</tr>
    			</thead>
    			
    			<tbody>
    			
    				<c:set var="i" value="0"/>
-   				<c:forEach var="product" items="${list }">
+   				<c:forEach var="review" items="${list }">
    					<c:set var="i" value="${i+1 }"/>
    					<tr class="ct_list_pop">
-   						<td align="center">${i }</td>
-   							<td align="left">
-	   							${product.prodName }
-								<input type="hidden" name="prodNo" value=${product.prodNo }>
-		   						<c:if test="${param.menu=='manage' }">
-   									<span style="display: none" class="hidden_link">/product/updateProductView?prodNo=${product.prodNo }&menu=${param.menu }</span>
-   								</c:if>
-		   						<c:if test="${param.menu=='search' }">
-		   							<span style="display: none" class="hidden_link">/product/getProduct?prodNo=${product.prodNo }&menu=${param.menu }</span>
-		   						</c:if>
-	   						</td>
-   						<td align="left">${product.price }</td>
-   						<td align="left">${product.regDate }</td>
-   						<td></td>
-   						<c:if test="${product.proTranCode == null}">
-	   						<td align="left">
-	   							판매중
-	   						</td>
-	   					</c:if>
-	   					<c:if test="${product.proTranCode == '1  '}">
-	   						<td align="left">
-	   							구매완료
-	   							<c:if test="${param.menu=='manage' }">
-	   								배송하기
-	   								<span style="display: none" class="hidden_link">/purchase/updateTranCode?prodNo=${product.prodNo }&tranCode=2</span>
-	   							</c:if>
-	   						</td>
-	   					</c:if>
-	   					<c:if test="${product.proTranCode == '2  '}">
-	   						<td align="left">
-	   							배송중
-	   						</td>
-	   					</c:if>
-	   					<c:if test="${product.proTranCode == '3  '}">
-	   						<td align="left">
-	   							배송완료
-	   						</td>
-	   					</c:if>
-	   					<td align="left">
-							<div id= "${product.prodNo}">미리보기</div>
-							<input type="hidden" value="${product.prodNo}">
-						</td>
+   						<td align="left">
+   							${review.festivalName }
+   						</td>
+  						<td align="left">
+   							${review.reviewTitle }
+   							<input type="hidden" name="reviewNo" value=${review.reviewNo }>
+								<span style="display: none" class="hidden_link">/review/getReview?reviewNo=${review.reviewNo }</span>
+	   						<%-- <c:if test="${param.menu=='manage' }">
+  									<span style="display: none" class="hidden_link">/review/updateReview?reviewNo=${review.reviewNo }&menu=${param.menu }</span>
+  								</c:if>
+	   						<c:if test="${param.menu=='search' }">
+	   							<span style="display: none" class="hidden_link">/review/getReview?reviewNo=${review.reviewNo }&menu=${param.menu }</span>
+	   						</c:if> --%>
+   						</td>
+   						<td align="left">
+   							${review.addr }
+   						</td>
+   						<td align="left">
+   							<c:set var="i" value="0"/>
+					  			<c:forEach var="listH" items="${review.reviewHashtagList }">
+						   			<div class="col-xs-8 col-md-4">
+						   				#${listH.hashtagDetail }
+						   			</div>
+					   			</c:forEach>
+   						</td>
+   						<td align="left">
+   							<c:set var="i" value="0"/>
+				   				<c:forEach var="listI" items="${review.reviewImageList}">
+				   					<img src="/resources/uploadFile/${listI.reviewImage}" width="300">
+				   				</c:forEach> 
+   						</td>
 	   				</tr>
    				</c:forEach>
    			
@@ -277,6 +275,10 @@
    	
    	</div>
    	<!-- 화면구성 div End -->
+   	
+	<!-- PageNavigation Start... -->
+	<jsp:include page="../../common/pageNavigator_new.jsp"/>
+	<!-- PageNavigation End... -->
 
 
 </body>

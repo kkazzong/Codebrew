@@ -8,6 +8,7 @@ import com.codebrew.moana.service.domain.Hashtag;
 import com.codebrew.moana.service.domain.Image;
 import com.codebrew.moana.service.domain.Review;
 import com.codebrew.moana.service.domain.User;
+import com.codebrew.moana.service.domain.Video;
 
 //==> 후기관리 CRUD : Service interface
 //TTL Method : 11 EA
@@ -51,5 +52,8 @@ public interface ReviewService {
 	
 	//13
 	public List<Hashtag> getReviewHashtag(int reviewNo) throws Exception;
+	
+	//14
+	public List<Video> getReviewVideo(int reviewNo) throws Exception;
 	
 }

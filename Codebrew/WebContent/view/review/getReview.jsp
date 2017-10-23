@@ -51,9 +51,9 @@
 		});
 		
 		 $( "button.btn.btn-primary:contains('심사목록보기')" ).on("click" , function() {
-				//Debug..
-				//alert(  $( "td.ct_btn01:contains('심사목록보기')" ).html() );
-				self.location = "/review/getCheckReviewList?reviewNo=${review.reviewNo}"
+			//Debug..
+			//alert(  $( "td.ct_btn01:contains('심사목록보기')" ).html() );
+			self.location = "/review/getCheckReviewList?reviewNo=${review.reviewNo}"
 		});
 		
 		 $( "button.btn.btn-primary:contains('수정')" ).on("click" , function() {
@@ -63,15 +63,15 @@
 		});
 		 
 		 $( "button.btn.btn-primary:contains('통과(등록)')" ).on("click" , function() {
-				//Debug..
-				//alert(  $( "td.ct_btn01:contains('통과(등록)')" ).html() );
-				self.location = "/review/addPurchaseView?prodNo=${product.prodNo}";
+			//Debug..
+			//alert(  $( "td.ct_btn01:contains('통과(등록)')" ).html() );
+			self.location = "/review/addPurchaseView?prodNo=${product.prodNo}";
 		});
 		 
 		 $( "button.btn.btn-primary:contains('반려(미등록)')" ).on("click" , function() {
-				//Debug..
-				//alert(  $( "td.ct_btn01:contains('반려(미등록)')" ).html() );
-				self.location = "/review/addPurchaseView?prodNo=${product.prodNo}";
+			//Debug..
+			//alert(  $( "td.ct_btn01:contains('반려(미등록)')" ).html() );
+			self.location = "/review/addPurchaseView?prodNo=${product.prodNo}";
 		});
 		 
 		 $( "button.btn.btn-primary:contains('이전')" ).on("click" , function() {
@@ -133,7 +133,7 @@
    		
    		<div class="row">
    			<div class="col-xs-4 col-md-2"><strong>작성자</strong></div>
-   			<div class="col-xs-8 col-md-4">${review.writerId }</div>
+   			<div class="col-xs-8 col-md-4">${review.userId }</div>
    		</div>
    		
    		<hr/>
@@ -148,7 +148,8 @@
    		
    		<div class="row">
    			<div class="col-xs-4 col-md-2"><strong>축제위치</strong></div>
-   			<div class="col-xs-8 col-md-4">${festival.addr }</div>
+   			<%-- <div class="col-xs-8 col-md-4">${festival.addr }</div> --%>
+   			<div class="col-xs-8 col-md-4">${review.addr }</div>
    		</div>
    		
    		<hr/>
@@ -168,10 +169,10 @@
    		<hr/>
    		
    		<div class="row">
-   			<div class="col-xs-4 col-md-2" style="height:300px;text-align:left;line-height:300px;"><strong>사진</strong></div>
+   			<div class="col-xs-4 col-md-2" style="width:300px;height:300px;text-align:left;line-height:300px;"><strong>사진</strong></div>
    			<div class="col-xs-8 col-md-4">
    				<c:set var="i" value="0"/>
-   				<c:forEach var="listI" items="${review.reviewImage}">
+   				<c:forEach var="listI" items="${review.reviewImageList}">
    					<img src="/resources/uploadFile/${listI.reviewImage}" width="300">
    				</c:forEach>
    			</div>
@@ -187,8 +188,16 @@
    		<hr/>
    		
    		<div class="row">
-   			<div class="col-xs-4 col-md-2"><strong>동영상</strong></div>
-   			<div class="col-xs-8 col-md-4">${review.reviewVideo }</div>
+   			<div class="col-xs-4 col-md-2" style="height:300px;text-align:left;line-height:300px;"><strong>동영상</strong></div>
+   			<div class="col-xs-8 col-md-4">
+   				<c:set var="i" value="0"/>
+	  			<c:forEach var="listV" items="${review.reviewVideoList}">
+		   			<div class="col-xs-8 col-md-4">
+		   				<video width="320" height="240" controls>
+		   					<source src="/resources/uploadFile/${listV.reviewVideo}" type="video/mp4"></video>
+		   			</div>
+	   			</c:forEach>
+   			</div>
    		</div>
    		
    		<hr/>
@@ -196,7 +205,7 @@
    		<div class="row">
    			<div class="col-xs-4 col-md-2"><strong>해시태그</strong></div>
 	   			<c:set var="i" value="0"/>
-	  			<c:forEach var="listH" items="${review.reviewHashtag }">
+	  			<c:forEach var="listH" items="${review.reviewHashtagList }">
 		   			<div class="col-xs-8 col-md-4">
 		   				${listH.hashtagDetail }
 		   			</div>
@@ -216,31 +225,37 @@
    		<hr/>
    		
    		<div class="row"> <!-- 관리자, 해당유저, 일반유저(비회원 포함) : 3가지 경우 -->
-	   		<c:if test="${sessionScope.user.userId == review.writerId}">
+   		
+   			<!-- admin이 아닌경우(회원, 비회원) -->
+	   		<c:if test="${sessionScoepe.user.role != 'a' && sessionScope.user.userId == review.userId}">
 	   			<center>
 	   				<button type="button" class="btn btn-primary">수정하기</button>
-	   				<button type="button" class="btn pull-center btn-primary">이전</button>
 	   			</center>
+			</c:if>
+	   		<c:if test="${sessionScope.user.role != 'a'}">
+	   			<center>
+		   			<button type="button" class="btn pull-center btn-primary">목록보기</button>
+	   			</center>
+	   		</c:if>
+	   		
+	   		<!-- admin인 경우 -->
+	   		<c:if test="${sessionScope.user.role == 'a' && (review.checkCode != '1' || review.checkCode != '11')}">
+	   			<center>
+	   				<button type="button" class="btn btn-primary">수정하기</button>
+		   		</center>
+	   		</c:if>
+	   		<c:if test="${sessionScope.user.role == 'a' && (review.checkCode == '1' || review.checkCode == '11')}">
+	   			<center>
+		   			<button type="button" class="btn pull-center btn-primary">통과(등록)</button>
+		   			<button type="button" class="btn pull-center btn-primary">반려(미등록)</button>
+		   		</center>
 	   		</c:if>
 	   		<c:if test="${sessionScope.user.role == 'a'}">
 	   			<center>
-	   				<button type="button" class="btn btn-primary">수정하기</button>
-		   			<button type="button" class="btn pull-center btn-primary">통과(등록)</button>
-		   			<button type="button" class="btn pull-center btn-primary">반려(미등록)</button>
-	   				<button type="button" class="btn pull-center btn-primary">이전</button>
-	   				<button type="button" class="btn pull-center btn-primary">심사목록보기</button>
+		   			<button type="button" class="btn pull-center btn-primary">심사목록보기</button>
+		   			<button type="button" class="btn pull-center btn-primary">목록보기</button>
 		   		</center>
 	   		</c:if>
-	   		<c:if test="${sessionScope.user.userId != review.writerId}">
-	   			<center>
-		   			<button type="button" class="btn pull-center btn-primary">이전</button>
-	   			</center>
-			</c:if>
-			<c:if test="${sessionScope.user.role != writer.role}">
-	   			<center>
-		   			<button type="button" class="btn pull-center btn-primary">이전</button>
-	   			</center>
-			</c:if>
    	   	</div>
    	   	
    	</div>

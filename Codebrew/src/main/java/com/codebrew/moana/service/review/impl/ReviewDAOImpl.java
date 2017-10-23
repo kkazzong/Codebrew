@@ -13,6 +13,7 @@ import com.codebrew.moana.service.domain.Hashtag;
 import com.codebrew.moana.service.domain.Image;
 import com.codebrew.moana.service.domain.Review;
 import com.codebrew.moana.service.domain.User;
+import com.codebrew.moana.service.domain.Video;
 import com.codebrew.moana.service.review.ReviewDAO;
 
 @Repository("reviewDAOImpl")
@@ -117,18 +118,31 @@ public class ReviewDAOImpl implements ReviewDAO {
 		System.out.println("DAO :: uploadReviewHashtag");
 		sqlSession.insert("ReviewMapper.uploadReviewHashtag", map);
 	}
+
 	
 	@Override //15
+	public void uploadReviewVideo(Map<String, Object> map) throws Exception {
+		System.out.println("DAO :: uploadReviewVideo");
+		sqlSession.insert("ReviewMapper.uploadReviewVideo", map);
+	}
+	
+	@Override //16
 	public List<Image> getReviewImage(int reviewNo) throws Exception {
 		System.out.println("DAO :: getReviewImage");
 		return sqlSession.selectList("ReviewMapper.getReviewImage", reviewNo);
 	}
 	
-	@Override //16
+	@Override //17
 	public List<Hashtag> getReviewHashtag(int reviewNo) throws Exception {
-		System.out.println("DAT :: getReviewHashtag");
+		System.out.println("DAO :: getReviewHashtag");
 		return sqlSession.selectList("ReviewMapper.getReviewHashtag", reviewNo);
 	}
-	
+
+
+	@Override //18
+	public List<Video> getReviewVideo(int reviewNo) throws Exception {
+		System.out.println("DAO :: getReviewVideo");
+		return sqlSession.selectList("ReviewMapper.getReviewVideo", reviewNo);
+	}
 	
 }

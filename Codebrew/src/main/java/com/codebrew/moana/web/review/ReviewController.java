@@ -28,6 +28,7 @@ import com.codebrew.moana.service.domain.Hashtag;
 import com.codebrew.moana.service.domain.Image;
 import com.codebrew.moana.service.domain.Review;
 import com.codebrew.moana.service.domain.User;
+import com.codebrew.moana.service.domain.Video;
 import com.codebrew.moana.service.festival.FestivalService;
 import com.codebrew.moana.service.review.ReviewService;
 import com.codebrew.moana.service.user.UserService;
@@ -79,16 +80,21 @@ public class ReviewController {
 	@RequestMapping(value="addReview", method=RequestMethod.POST)
 	public ModelAndView addReview(HttpSession session,
 									@ModelAttribute("review") Review review, 
-									@RequestParam("uploadReviewImage") List<MultipartFile> uploadReviewImage, 
-									@RequestParam("uploadReviewVideo") List<MultipartFile> uploadReviewVideo, 
-									@RequestParam("uploadHashtag") String uploadHashtag) throws Exception{
+									@RequestParam("uploadReviewImageList") List<MultipartFile> uploadReviewImage, 
+									@RequestParam("uploadReviewVideoList") List<MultipartFile> uploadReviewVideo, 
+									@RequestParam("uploadHashtagList") String uploadHashtag) throws Exception{
 		
 //		@RequestParam("uploadReviewVideo") MultipartHttpServletRequest reviewVideo
 		
 		System.out.println("addReview processing...");
 		
+		/*
+		 * upload Image List List<multipartFile> 
+		 */
 		String filePath1 = "C:\\Users\\Admin\\git\\Codebrew\\Codebrew\\WebContent\\resources\\uploadFile\\"; // 실제 directory 경로로 파일을 영구적으로 저장하기 위함이다.
 		String filePath2 = session.getServletContext().getRealPath("/")+"\\resources\\uploadFile\\"; //실제 folder가 아닌 tomcat의 임시 서버로서 add후 바로 get을 했을때 이미지를 볼 수 있도록 한다.
+		
+		System.out.println("\n\n\nfilePath :: \n"+filePath2);
 		
 		if(uploadReviewImage != null && uploadReviewImage.size() > 0){
 			
@@ -118,7 +124,7 @@ public class ReviewController {
 					int readcount = 0;
 					  
 					while((readcount=fis.read(buffer)) != -1) {
-					fos.write(buffer, 0, readcount);				// 파일 복사 
+						fos.write(buffer, 0, readcount);				// 파일 복사 
 					}
 				} catch(Exception e) {
 					e.printStackTrace();
@@ -126,10 +132,56 @@ public class ReviewController {
 					fis.close();
 					fos.close();
 				}
-
 			}
-			review.setReviewImage(uploadImageList);
+			review.setReviewImageList(uploadImageList);
 		}
+		
+		/*
+		 * upload Video <multipartFile> 
+		 */
+		if(uploadReviewVideo != null && uploadReviewVideo.size() > 0){
+			
+			List<Video> uploadVideoList = new ArrayList<Video>();
+			for(MultipartFile multipartFile : uploadReviewVideo){
+				Video eachVideo = new Video();
+				String fileName = UUID.randomUUID().toString()+System.currentTimeMillis()+multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."), multipartFile.getOriginalFilename().length());
+				eachVideo.setReviewVideo(fileName); //각각의 이미지 fileName을 setting
+				
+				uploadVideoList.add(eachVideo); //생성한 list에 setting이 끝난 각각의 video 객체를 넣어줌
+				File file1 = new File(filePath1+fileName); // 1st Path : 실제 존재하는 uploadFile 경로+fileName
+				//File file1 = new File(filePath1, fileName);
+				File file2 = new File(filePath2+fileName); // 2nd Path : Tomcat의 temporary folder 경로+fileName
+				//File file2 = new File(filePath2, fileName);
+				
+				System.out.println("\n\n\n\n\nmultipartFile"+multipartFile);
+				multipartFile.transferTo(file2);
+				
+				FileInputStream fis = null;
+				FileOutputStream fos = null; 
+
+				try {
+					fis = new FileInputStream(file2);	// 원본파일
+					fos = new FileOutputStream(file1);	// 복사위치
+					   
+					byte[] buffer = new byte[1024];
+					int readcount = 0;
+					  
+					while((readcount=fis.read(buffer)) != -1) {
+						fos.write(buffer, 0, readcount);				// 파일 복사 
+					}
+				} catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+					fis.close();
+					fos.close();
+				}
+			}
+			review.setReviewVideoList(uploadVideoList);
+		}
+		
+		/*
+		 * upload Hashtag List List<String> 
+		 */
 		if(uploadHashtag != null){
 			
 			List<Hashtag> uploadHashtagList = new ArrayList<Hashtag>();
@@ -138,8 +190,10 @@ public class ReviewController {
 				eachHashtag.setHashtagDetail(splitedHashtag.replaceAll("#", ""));
 				uploadHashtagList.add(eachHashtag);
 			}
-			review.setReviewHashtag(uploadHashtagList);
+			review.setReviewHashtagList(uploadHashtagList);
 		}
+		
+		System.out.println("\n\n\n\n\n=====okokokokok=====\n\n\n\n\n");
 		
 		review = reviewService.addReview(review);
 		
@@ -158,12 +212,12 @@ public class ReviewController {
 		
 		//Business Logic
 		Review review = reviewService.getReview(reviewNo);
-		User user = userService.getUser(review.getWriterId());
+		User user = userService.getUser(review.getUserId());
 		Festival festival = festivalService.getFestival(review.getFestivalNo());
 		
 		// Model 과 View 연결
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("writer", user);
+		modelAndView.addObject("user", user);
 		modelAndView.addObject("festival", festival);
 		modelAndView.addObject("review", review);
 		modelAndView.setViewName("/view/review/getReview.jsp");
@@ -190,7 +244,7 @@ public class ReviewController {
 		return modelAndView;
 	}
 	
-	@RequestMapping(value="getReviewList", method = RequestMethod.POST)
+	@RequestMapping(value="getReviewList")
 	public ModelAndView getReviewList( @ModelAttribute("search") Search search, 
 									@ModelAttribute("review") Review review) throws Exception{
 		
@@ -236,10 +290,10 @@ public class ReviewController {
 		search.setPageSize(pageSize);
 		
 		// Business logic 수행
-		User writer = (User)(session.getAttribute("user"));
-		String writerId = writer.getUserId();
+		User user = (User)(session.getAttribute("user"));
+		String userId = user.getUserId();
 		
-		Map<String, Object> map = reviewService.getMyReviewList(search, writerId);
+		Map<String, Object> map = reviewService.getMyReviewList(search, userId);
 		
 		Page resultPage = new Page(search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
 		System.out.println(resultPage);
@@ -249,7 +303,7 @@ public class ReviewController {
 		modelAndView.addObject("list", map.get("list"));
 		modelAndView.addObject("resultPage", resultPage);
 		modelAndView.addObject("search", search);
-		modelAndView.addObject("writerId", writerId);
+		modelAndView.addObject("userId", userId);
 		
 		modelAndView.setViewName("/view/review/getMyReviewList.jsp");
 		

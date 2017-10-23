@@ -58,10 +58,14 @@
 		           
 		          <!-- 후기관리 DrowDown  -->
 		          <li class="dropdown">
-		             <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-		                 <span>Review</span>
-		              </a>
-		           </li>
+		             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+		             	<span>Review</span>
+		             	<span class="caret"></span>
+		             </a>
+		             <ul class="dropdown-menu">
+						<li><a href="#">후기목록</a></li>
+		             </ul>
+		          </li>
 	                 
 	              <!-- 구매관리 DrowDown -->
 	              <li class="dropdown">
@@ -176,6 +180,14 @@
    		$(function(){
 			$( "a:contains('Review')" ).on("click" , function() {
 				//self.location = "/review/getReviewList";
+			});
+   		});
+  		
+  		
+ 		//////축제관리//////
+   		$(function(){
+			$( "a:contains('후기목록')" ).on("click" , function() {
+				self.location = "/review/getReviewList";
 			});
    		});
    		

@@ -47,11 +47,10 @@ public class ReviewServiceTest {
 	public void testaddReview() throws Exception{
 
 		Review review = new Review();
-		review.setWriterId("user02@naver.com");
+		review.setUserId("user02@naver.com");
 		review.setFestivalNo(141918);
 		review.setReviewTitle("review_title_test1");
 		review.setReviewFestivalRating(5);
-		review.setReviewVideo("review_video_test1");
 		review.setReviewDetail("review_detail_test1");
 		
 		Image image1 = new Image();
@@ -63,7 +62,7 @@ public class ReviewServiceTest {
 		imageList.add(image1);
 		imageList.add(image2);
 		
-		review.setReviewImage(imageList);
+		review.setReviewImageList(imageList);
 		
 		Hashtag hashtag1 = new Hashtag();
 		hashtag1.setHashtagDetail("testHashtag1");
@@ -74,7 +73,7 @@ public class ReviewServiceTest {
 		hashtagList.add(hashtag1);
 		hashtagList.add(hashtag2);
 		
-		review.setReviewHashtag(hashtagList);
+		review.setReviewHashtagList(hashtagList);
 		
 		Review returnReview = reviewService.addReview(review);
 		
@@ -83,7 +82,7 @@ public class ReviewServiceTest {
 		
 		//check
 		/*Assert.assertEquals(10006, review.getReviewNo()); // DB에 저장되는 prod_no 확인
-		Assert.assertEquals("user02@naver.com", review.getWriterId());
+		Assert.assertEquals("user02@naver.com", review.getUserId());
 		Assert.assertEquals("141918", review.getFestivalNo());
 		Assert.assertEquals("1", review.getCheckCode());
 		Assert.assertEquals("review_title_test1", review.getReviewTitle());
