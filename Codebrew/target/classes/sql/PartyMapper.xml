@@ -196,6 +196,9 @@
 										            AND p.festival_no IS NOT NULL
 										            AND p.party_name LIKE '%${searchKeyword}%'
 										        </if>
+										        <if test="searchCondition == 5 and searchKeyword !='' ">
+										        	AND p.festival_no LIKE '${searchKeyword}'
+										        </if>
 											</if>
 										
 										</where>

@@ -89,6 +89,15 @@
 				$("#searchCondition").val("2");
 				fncGetList(1);
 			});
+			
+			/* $("button:contains('해당 파티')").on("click", function() {
+				if( $("#searchCondition").val() != "5"){
+					console.log("그냥 출력3");
+					$("#searchKeyword").val("");
+				}
+				$("#searchCondition").val("5");
+				fncGetList(1);
+			}); */
 		});
 		
 		//=============    전체 파티 목록  Event  처리 		=============
@@ -145,6 +154,7 @@
 				    <div class="form-select">
 						<button type="button" class="btn btn-default" >파티</button>
 						<button type="button" class="btn btn-default" >애프터 파티</button>
+						<!-- <button type="button" class="btn btn-default" >해당 파티</button> -->
 						<input type="hidden" class="form-control" id="searchCondition" name="searchCondition" value="${ ! empty search.searchCondition ? search.searchCondition : '' }">
 						
 					</div>
