@@ -30,6 +30,7 @@
 <!-- Amchart dataloader plugin -->
 <script src="//www.amcharts.com/lib/3/plugins/dataloader/dataloader.min.js" type="text/javascript"></script>
 
+
 <script type="text/javascript">
 	
 	/////////////////////////////////////////////amChart getData////////////////////////////////////////////////////////
@@ -50,7 +51,7 @@
 			},
 			success : function(JSONData){
 				console.log(JSON.stringify(JSONData));
-				
+				datas.length = 0;				
 				//JSON data 만큼 datas에 push
 				for(var i = 0; i < JSONData.length; i++) {
 					datas.push({
@@ -59,39 +60,13 @@
 						statDate : JSONData[i].statDate
 					});
 				}
-				
+				console.log(datas);
 			}
 		});
-		
-		console.log(datas);
 		return datas;
 	}
 	
 	////////////////////////////////////////amChart////////////////////////////////////////////////////
-	/* AmCharts.addInitHandler(function(chart) {
-	  //check if legend is enabled and custom generateFromData property
-	  //is set before running
-	  if (!chart.legend || !chart.legend.enabled || !chart.legend.generateFromData) {
-	    return;
-	  }
-	  
-	  var categoryField = chart.categoryField;
-	  var legendData =  chart.dataProvider.map(function(datas) {
-		  console.log(datas);
-	    var markerData = {
-	    	  "title": data[categoryField] + ": " + data[chart.graphs[0].valueField]+"원", 
-	  	      "color": data[colorField]
-	    };
-	    if (!markerData.color) {
-	      markerData.color = chart.graphs[0].lineColor;
-	    }
-	    return markerData;
-	  });
-	  
-	  chart.legend.data = legendData;
-	  
-	}, ["serial"]); */
-	
 	//막대차트 - 일단위
 	var chart = AmCharts.makeChart("chartDiv", {
 	    "theme": "light",
@@ -104,7 +79,10 @@
 			"autoMargins" : false,
 			"color" : "#000000"
 		},
-	     "dataProvider" : datas,
+	    "dataProvider" : datas,
+	   /*  "dataLoader" : {
+	    	"url" : "http://127.0.0.1:8080/data/statistics/test.json"
+	    }, */
 	     "mouseWheelZoomEnabled":true, //마우스로 확대, 축소
 	     "dataDateFormat": "YY-MM-DD", //데이터의 날짜 포맷
 		"startDuration": 1,
@@ -194,7 +172,7 @@
 	var chartLine = AmCharts.makeChart("chartLine", {
 	    "type": "serial",
 	    "theme": "light",
-	    "dataProvider": datas,
+	    /* "dataProvider": datas, */
 	    "legend" : {
 	    	"useGraphSettings": true,
 	    	"generateFromData": true,
@@ -310,8 +288,8 @@
 	zoomChart();
 
 	function zoomChart() {
-		console.log(chart.dataProvider.length);
-	    chartLine.zoomToIndexes(chartLine.dataProvider.length - 40, chartLine.dataProvider.length - 1);
+		//console.log(chart.dataProvider.length);
+	    //chartLine.zoomToIndexes(chartLine.dataProvider.length - 40, chartLine.dataProvider.length - 1);
 	} 
 	
 
@@ -320,25 +298,39 @@
 		//차트만들기 default는 월단위
 		var statFlag = $("input:hidden[name='statFlag']").val();
 		
-		if(statFlag == '1') { //일단위
+		//page header 클릭시
+		$(".page-header").on("click", function(){
+			self.location = "/statistics/getStatistics";
+		});
+		
+		/* if(statFlag == '1') { //일단위
 			$("#chartDiv").css("display", "block");
 		} else if(statFlag == '2') { //월단위
 			$("#chartLine").css("display", "block");
 		} else { //분기단위
 			$("#chartPie").css("display", "block");
-		}
-		getChartData(statFlag);
-		
+		} */
+		//getChartData(statFlag);
+		//chartLine.dataProvider = datas;
 		//chartData(statFlag);
 		//chartData(2);
 		//chartData(3);
 
-		$("button").each(function(){}).on("click", function() {
+		/* $("button").each(function(){}).on("click", function(event) {
 			
 			var statFlag = $(this).val();
 			console.log("클릭클릭 val = " + statFlag);
-			self.location = "/statistics/getStatistics?statFlag="+statFlag;
-			
+			//self.location = "/statistics/getStatistics?statFlag="+statFlag;
+			getChartData(statFlag);
+			chartLine.dataProvider = datas;
+			chartLine.validateData();
+			event.preventDefault();	
+			//chartLine.updateData();
+			//amCharts.updateData();
+		}); */
+		
+		$("input").on("click", function(){
+			alert($("input:checked").val());
 		});
 		
 	});
@@ -422,11 +414,29 @@
 		<div class="row">
 			<div class="col-md-offset-3 col-md-6">
 				<div class="row">
-						<div class="col-md-12 btn-group" role="group">
+						<!-- <div class="col-md-12 btn-group" role="group">
 							<button class="btn btn-default btn-lg" type="button" value="1">Daily</button>
 							<button class="btn btn-default btn-lg" type="button" value="2">Monthly</button>
 							<button class="btn btn-default btn-lg" type="button" value="3">Quarter</button>
-						</div>
+						</div> -->
+					<!-- <div class="col-md-12 btn-group" data-toggle="buttons">
+						<label class="btn btn-default active">
+							<input type="radio" name="options" value="daily" autocomplete="off" checked> Daily
+						</label>
+						<label class="btn btn-default">
+							 <input type="radio" name="options" value="monthly" autocomplete="off"> Monthly
+						</label>
+						<label class="btn btn-default">
+							<input type="radio" name="options" value="quarter" autocomplete="off"> Quarterly
+						</label>
+					</div> -->
+					<!-- Tab -->
+					<ul class="nav nav-tabs" role="tablist">
+					    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
+					    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
+					    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
+					    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+					 </ul>
 				</div>
 			</div>
 		</div>		
@@ -438,8 +448,18 @@
 			<div class="col-md-offset-3 col-md-6">
 				<div class="row">
 					<div class="col-md-12">
+						<!-- Tab 내용 -->
+						<div class="tab-content">
+						    <div role="tabpanel" class="tab-pane active" id="home">Home</div>
+						    <div role="tabpanel" class="tab-pane" id="profile">Profile</div>
+						    <div role="tabpanel" class="tab-pane" id="messages">Message</div>
+						    <div role="tabpanel" class="tab-pane" id="settings">Setting</div>
+ 						 </div>
 						<!-- amChart -->
+						<h3>일</h3>
 						<div id="chartDiv"></div>
+						<h3>월</h3>
+						<div id="chartLine"></div>
 					</div>
 				</div>
 			</div>

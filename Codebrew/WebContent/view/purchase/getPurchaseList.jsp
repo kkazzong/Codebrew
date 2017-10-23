@@ -24,6 +24,10 @@
 <!-- Bootstrap Dropdown Hover JS -->
 <script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
 
+<!-- jQuery ui -->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+
 <script type="text/javascript">
 	
 	function fncGetList(currentPage) {
@@ -114,6 +118,52 @@
 			}
 			
 		});
+
+		var purchaseFlag = $("#purchaseFlag").val();
+		if(purchaseFlag = '') {
+			purchaseFlag = null;
+		}
+		var userId = "${user.userId}";
+		//autocomplete
+		$("#searchKeyword").autocomplete({
+			source: function( request, response ) {
+		        $.ajax( {
+		          url: "/purchaseRest/json/getPurchaseList/${user.userId}/1",
+		          method : "POST",
+		          headers : {
+						"Accept" : "application/json",
+						"Content-Type" : "application/json"
+				  },
+		          dataType: "json",
+		          data: JSON.stringify({
+		        	currentPage : "1",
+			        searchKeyword : $("#searchKeyword").val(),
+			        searchCondition : $("#searchCondition").val(),
+		          }),
+		          success: function( JSONData ) {
+		        		  
+		        	console.log("server data =>"+JSON.stringify(JSONData));
+		        	var searchCondition = $("#searchCondition").val();
+		            response($.map(JSONData, function(value, key){
+		            	console.log(value.itemName);
+		            	console.log("key(autocomplete : value)====>"+key);
+		            	//아이디 검색 시
+		            	if(searchCondition == 4) {
+			        		return {
+			        			label : value.user.userId,
+			        			value : value.user.userId //원래는 key,, 선택시를 위해
+			        		}
+		            	} else if(searchCondition == 5) { //티켓명 검색 시
+		            		return {
+		            			label :  value.itemName,
+		            			value : value.itemName
+		            		}
+		            	}
+		        	}));
+		          }
+		        } );
+		    }
+		});
 		
 	});
 </script>
@@ -187,6 +237,8 @@
 			<div class="col-md-6 text-right">
 				<form class="form form-inline" id="searchForm" name="searchForm">
 					<input type="hidden" id="currentPage" name="currentPage" value=""/>
+					<input type="hidden" id="purchaseFlag" name="purchaseFlag" value="${purchaseFlag}"/>
+					<input type="hidden" name="userId" value="${user.userId}">
 					<div class="form-group">
 						<select class="form-control" id="searchCondition" name="searchCondition" class="form-group">
 							<option value="" selected>선택</option>

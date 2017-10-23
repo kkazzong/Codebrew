@@ -198,11 +198,11 @@
 	
  	<!-- jackson core -->
  	<!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-core-asl -->
-	<!-- <dependency>
+	<dependency>
 	    <groupId>org.codehaus.jackson</groupId>
 	    <artifactId>jackson-core-asl</artifactId>
 	    <version>1.9.13</version>
-	</dependency> -->
+	</dependency>
 
 	<!-- jackson mapper --> 
 	<!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-mapper-asl -->
