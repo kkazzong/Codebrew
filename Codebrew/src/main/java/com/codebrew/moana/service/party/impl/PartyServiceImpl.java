@@ -37,10 +37,17 @@ public class PartyServiceImpl implements PartyService {
 	
 	///Method///
 	@Override
-	public void addParty(Party party) throws Exception {
+	public Party addParty(Party party) throws Exception {
 		// TODO Auto-generated method stub
-		partyDAO.addParty(party);
+		int result = partyDAO.addParty(party);
 		
+		int partyNo = party.getPartyNo();
+		
+		if(result == 1) {
+			return partyDAO.getParty(partyNo, "");
+		}else {
+			return null;
+		}
 	}
 
 
@@ -52,9 +59,11 @@ public class PartyServiceImpl implements PartyService {
 
 	
 	@Override
-	public void updateParty(Party party) throws Exception {
+	public Party updateParty(Party party) throws Exception {
 		// TODO Auto-generated method stub
 		partyDAO.updateParty(party);
+		
+		return null;
 	}
 
 
@@ -95,9 +104,25 @@ public class PartyServiceImpl implements PartyService {
 	/////////////////////////////////////////////////////////////////////////////////
 	
 	@Override
-	public void joinParty(PartyMember partyMember) throws Exception {
+	public Map<String, Object> joinParty(PartyMember partyMember) throws Exception {
 		// TODO Auto-generated method stub
-		partyDAO.joinParty(partyMember);
+		int result = partyDAO.joinParty(partyMember);
+		
+		int partyNo = partyMember.getParty().getPartyNo();
+		Search search = new Search();
+		
+		if(result == 1) {
+			List<PartyMember> list = partyDAO.getPartyMemberList(partyNo, search);
+			int currentMemberCount = partyDAO.getCurrentMemberCount(partyNo, search);
+			
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("list", list );
+			map.put("currentMemberCount", currentMemberCount);
+			
+			return map;
+		}else {
+			return null;
+		}
 	}
 
 

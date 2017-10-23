@@ -8,11 +8,11 @@ import com.codebrew.moana.service.domain.PartyMember;
 
 public interface PartyService {
 	
-	public void addParty(Party party) throws Exception;
+	public Party addParty(Party party) throws Exception;
 	
 	public Party getParty(int partyNo, String partyFlag) throws Exception;
 	
-	public void updateParty(Party party) throws Exception;
+	public Party updateParty(Party party) throws Exception;
 	
 	public void deleteParty(int partyNo) throws Exception;
 	
@@ -22,7 +22,7 @@ public interface PartyService {
 	
 	/////////////////////////////////////////////////////////////////////////////
 	
-	public void joinParty(PartyMember partyMember) throws Exception;
+	public Map<String, Object> joinParty(PartyMember partyMember) throws Exception;
 	
 	public Map<String, Object> getPartyMemberList(int partyNo, Search search) throws Exception;
 	
