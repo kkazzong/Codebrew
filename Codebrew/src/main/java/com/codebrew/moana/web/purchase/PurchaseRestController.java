@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codebrew.moana.common.Search;
@@ -94,10 +95,21 @@ public class PurchaseRestController {
 		}
 	}
 	
+	@RequestMapping(value="/json/getPurchaseList/{userId}/{purchaseFlag}")
+	public List<Purchase> getPurchaseList(@PathVariable(value="purchaseFlag") String purchaseFlag, 
+																		@PathVariable(value="userId") String userId,
+																		@RequestBody Search search) {
+		System.out.println("getPurchaseLis REST");
+		if(search.getCurrentPage() == 0) {
+			search.setCurrentPage(1);
+		}
+		search.setPageSize(pageSize);
+		Map<String, Object> map = purchaseService.getPurchaseList(userId, purchaseFlag, search);
+		return (List<Purchase>)map.get("list");
+	}
+	
 	@RequestMapping("/json/getSaleList")
 	public List<Purchase> getSaleList(@RequestBody Search search) {
-		
-		
 		if(search.getCurrentPage() == 0) {
 			search.setCurrentPage(1);
 		}
