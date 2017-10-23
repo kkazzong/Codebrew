@@ -134,6 +134,12 @@ $(function() {
 			self.location = "/festival/updateFestivalView?festivalNo="+${festival.festivalNo};
 		});
 	});
+		
+		$(function() {
+			$("button:contains('재등록')").on("click", function() {
+			self.location = "/festival/updateFestivalView?festivalNo="+${festival.festivalNo};
+		});
+	});
 			
 		 $(function(){
 			 
@@ -188,8 +194,7 @@ $(function(){
 						});
 			 });
 		 });
-	
-			 
+		 
 		</script>		
 	
 </head>
@@ -206,6 +211,11 @@ $(function(){
 	<br/>
 	<br/>
 	
+	<br/>
+	<br/>
+	<c:if test="${festival.isNull==true }">
+		<h1><Strong>삭제되었던 축제입니다.</Strong></h1>
+	</c:if>
 	<br/>
 	<br/>
 	
@@ -298,6 +308,7 @@ $(function(){
 	
 	
 	행사프로그램 : ${festival.program }
+	
 		
 	<br/>
 	<br/>
@@ -346,8 +357,7 @@ $(function(){
 	<input type = "hidden" class="form-control" id="festivalLatitude" name="festivalLatitude" value= "${festival.festivalLatitude }">
 	<input type = "hidden" class="form-control" id="festivalNo" name="festivalNo" value= "${festival.festivalNo }">
 	
-	<!-- user sample  -->
-	
+	<!-- user information  -->
 	<input type = "hidden" class="form-control" id="userId" name="userId" value= "${user.userId }">
 	<input type = "hidden" class="form-control" id="userName" name="userName" value= "${user.userName }">
 	<input type = "hidden" class="form-control" id="role" name="role" value= "${user.role }">
@@ -361,10 +371,20 @@ $(function(){
 		
 		<div class="form-group">
 				<div class="col-sm-offset-4  col-sm-4 text-center">
+
 				
 				<c:if test="${ticket==null }">
-					<button type="button" class="btn btn-primary">등록하기</button>
+					<c:if test="${festival.isNull==true }">
+						<button type="button" class="btn btn-primary">재등록</button>
+					</c:if>
 				</c:if>
+				
+				<c:if test="${ticket==null }">
+					<c:if test="${festival.isNull==false }">
+				<button type="button" class="btn btn-primary">등록하기</button>
+					</c:if>
+				</c:if>
+				
 			
 				<c:if test="${ticket!=null }">
 					<button type="button" class="btn btn-primary">수정하기</button>

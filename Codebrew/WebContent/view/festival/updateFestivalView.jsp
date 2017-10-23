@@ -387,7 +387,13 @@ $(function() {
 
 	<div class="form-group">
 				<div class="col-sm-offset-4  col-sm-4 text-center">
+				<c:if test="${festival.isNull==true }">
+					<button type="button" class="btn btn-primary">재등록</button>
+				</c:if>
+				
+				<c:if test="${festival.isNull==false }">
 					<button type="button" class="btn btn-primary">수정</button>
+				</c:if>
 					<input type = "button" id = "back" name = "back" value = "내용삭제"/>
 				</div>
 			</div>
