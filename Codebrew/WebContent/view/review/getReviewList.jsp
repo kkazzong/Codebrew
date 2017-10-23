@@ -249,7 +249,7 @@
 	   						</c:if> --%>
    						</td>
    						<td align="left">
-   							${review.reviewTitle }
+   							${review.addr }
    						</td>
    						<td align="left">
    							<c:set var="i" value="0"/>

@@ -179,7 +179,7 @@
 
 						 FROM festival
 						 
-						 where end_date &gt;= SYSDATE
+						 where end_date &gt;= TO_CHAR(SYSDATE, 'yyyymmdd')
 						
 						<if test="searchCondition!=null">
 						
@@ -232,7 +232,7 @@
 	  	FROM(	SELECT FESTIVAL_NO , FESTIVAL_NAME 
 						FROM festival
 						
-						where end_date &gt;= SYSDATE
+						where end_date &gt;= TO_CHAR(SYSDATE, 'yyyymmdd')
 						and delete_flag is null
 						
 						<if test="searchCondition != null">

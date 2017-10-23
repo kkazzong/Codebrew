@@ -247,7 +247,7 @@
 		<div class="form-group">
 			<label for="toBeHashtag" class="col-sm-offset-1 col-sm-3 control-label">해시태그를 입력</label>
 			<div class="col-sm-4">
-				<input type="text" class="form-control" id="toBeHashtag" name="toBeHashtag" value="${review.reviewHashtagList}">
+				<input type="text" class="form-control" id="toBeHashtag" name="toBeHashtag">
 				<span id="helpBlock" class="help-block">
 					<strong class="text-danger">해시태그를 입력한 후 스페이스 혹은 엔터 키를 누르세요</strong>
 				</span>
@@ -259,12 +259,14 @@
 		<div class="form-group">
 			<label for="uploadHashtagList" class="col-sm-offset-1 col-sm-3 control-label">등록예정 해시태그</label>
 			<div class="col-sm-4">
-				<c:set var="i" value="0"/>
-	  			<c:forEach var="listH" items="${review.reviewHashtagList }">
-		   			<div class="col-xs-8 col-md-4">
-		   				<input type="text" class="form-control" id="uploadHashtagList" name="uploadHashtagList" value="${listH.hashtagDetail }">
-		   			</div>
-	   			</c:forEach>
+		   		<div class="col-xs-8 col-md-4">
+					<c:set var="i" value="0"/>
+		  			<c:forEach var="listH" items="${review.reviewHashtagList }">
+			   			<div class="col-xs-8 col-md-4">
+			   				<input type="text" class="form-control" id="uploadHashtagList" name="uploadHashtagList">${listH.hashtagDetail }
+			   			</div>
+		   			</c:forEach>
+		  		</div>
 			</div>
 		</div>
 		
