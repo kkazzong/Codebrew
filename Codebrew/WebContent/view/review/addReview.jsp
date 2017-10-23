@@ -61,11 +61,11 @@
 		//Form 유효성 검증
 	 	//var reviewTitle = document.detailForm.reviewTitle.value;
 		//var reviewDetail = document.detailForm.reviewDetail.value;
-		//var reviewImage = document.detailForm.reviewImage.value;
+		//var reviewImageList = document.detailForm.reviewImageList.value;
 		
 		var reviewTitle = $("input[name='reviewTitle']").val();
-		var reviewDetail = $("input[name='reviewTitle']").val();
-		var reviewImage = $("input[name='uploadReviewImage']").val();
+		var reviewDetail = $("textarea[name='reviewDetail']").val();
+		var reviewImageList = $("input[name='uploadReviewImageList']").val();
 		
 		if(reviewTitle == null || reviewTitle.length<1){
 			alert("후기제목은 반드시 입력하여야 합니다.");
@@ -75,7 +75,7 @@
 			alert("후기상세정보는 반드시 입력하여야 합니다.");
 			return;
 		}
-		if(reviewImage == null || reviewImage.length<1){
+		if(reviewImageList == null || reviewImageList.length<1){
 			alert("후기사진는 반드시 1장 이상 등록하여야 합니다.");
 			return;
 		}
@@ -115,13 +115,13 @@
 	
 	$(document).ready(function(){
 		$("input[name=toBeHashtag]").keydown(function(key){
-			if(key.keyCode == 13){ //키 값이 13(enter)면 실행
+			if(key.keyCode == 13 || key.keyCode == 32){ //키 값이 13(enter)면 실행
 				alert("hashtag로 등록됩니다.");
 				console.log($(this).val());	
-				var innerHtml = $("input:text[name=uploadHashtag]").val();
+				var innerHtml = $("input:text[name=uploadHashtagList]").val();
 				innerHtml += "#"+$(this).val()+";";
 				
-				$("input:text[name=uploadHashtag]").val(innerHtml);
+				$("input:text[name=uploadHashtagList]").val(innerHtml);
 				$(this).val("");
 			}
 			
@@ -159,7 +159,7 @@
 			<label for="festivalName" class="col-sm-offset-1 col-sm-3 control-label">축제번호</label>
 			<div class="col-sm-4">
 				<!-- <input type="hidden" id="festivalNo" name="festivalNo" value="638576"/> -->
-				<input type="text" class="form-control" id="festivalNo" name="festivalNo">
+				<input type="text" class="form-control" id="festivalNo" name="festivalNo" value="${festival.festivalNo }">
 			</div>
 		</div>
 		
@@ -175,18 +175,20 @@
 		<hr/>
 		
 		<div class="form-group">
-			<label for="festivalAddr" class="col-sm-offset-1 col-sm-3 control-label">축제위치</label>
+			<label for="addr" class="col-sm-offset-1 col-sm-3 control-label">축제위치</label>
 			<div class="col-sm-4">
-				<input type="text" class="form-control" id="festivalAddr" name="festivalAddr" value="${festival.addr }" >
+				<input type="text" class="form-control" id="addr" name="addr" value="${festival.addr }" >
 			</div>
 		</div>
+		<!-- 위의 3항목은 festival에서 value 받아올 예정 -->
+		
 		
 		<hr/>
 		
 		<div class="form-group">
 			<label for="reviewTitle" class="col-sm-offset-1 col-sm-3 control-label">후기제목</label>
 			<div class="col-sm-4">
-				<input type="text" class="form-control" id="reviewTitle" name="reviewTitle" value="${review.reviewTitle }"/>
+				<input type="text" class="form-control" id="reviewTitle" name="reviewTitle"/>
 			</div>
 		</div>
 		
@@ -195,7 +197,7 @@
 		<div class="form-group">
 			<label for="userId" class="col-sm-offset-1 col-sm-3 control-label">작성자</label>
 			<div class="col-sm-4">
-				<input type="text" class="form-control" id="writerId" name="writerId" value="${sessionScope.user.userId }" readonly/>
+				<input type="text" class="form-control" id="userId" name="userId" value="${sessionScope.user.userId }" readonly/>
 			</div>
 		</div>
 		
@@ -204,23 +206,26 @@
 		<div class="form-group">
 			<label for="reviewFestivalRating" class="col-sm-offset-1 col-sm-3 control-label">축제에대한 작성자의 평점</label>
 			<div class="col-sm-2">
-				<input type="number" class="form-control" id="reviewFestivalRating" name="reviewFestivalRating" value="${review.reviewFestivalRating }" min="1" max="10"> 
+				<input type="number" class="form-control" id="reviewFestivalRating" name="reviewFestivalRating" min="1" max="10"> 
 			</div>
 		</div>
 		
 		<hr/>
 		
 		<div class="form-group">
-			<label for="reviewImage" class="col-sm-offset-1 col-sm-3 control-label">후기사진</label>
+			<label for="reviewImageList" class="col-sm-offset-1 col-sm-3 control-label">후기사진</label>
 			<div class="col-sm-3">
-				<input type="file" class="form-control" id="uploadReviewImage" name="uploadReviewImage" multiple/>
+				<input type="file" class="form-control" id="uploadReviewImageList" name="uploadReviewImageList" multiple/>
 			</div>
 		</div>
 		
 		<div class="form-group">
 			<label for="reviewDetail" class="col-sm-offset-1 col-sm-3 control-label">후기내용</label>
 			<div class="col-sm-4">
-				<textarea rows="5" cols="30" class="form-control" id="reviewDetail" name="reviewDetail">${review.reviewDetail }</textarea>
+				<textarea rows="5" cols="30" class="form-control" id="reviewDetail" name="reviewDetail"></textarea>
+				<span id="helpBlock" class="help-block">
+					<strong class="text-danger">후기내용은 반드시 입력해야 합니다.</strong>
+				</span>
 			</div>
 		</div>
 		
@@ -229,7 +234,7 @@
 		<div class="form-group">
 			<label for="reviewVideo" class="col-sm-offset-1 col-sm-3 control-label">동영상</label>
 			<div class="col-sm-4">
-				<input type="file" class="form-control" id="uploadReviewVideo" name="uploadReviewVideo" multiple/>			
+				<input type="file" class="form-control" id="uploadReviewVideoList" name="uploadReviewVideoList" multiple/>			
 			</div>
 		</div>
 		
@@ -246,9 +251,9 @@
 		<hr/>
 		
 		<div class="form-group">
-			<label for="hashtag" class="col-sm-offset-1 col-sm-3 control-label">등록예정 해시태그</label>
+			<label for="uploadHashtagList" class="col-sm-offset-1 col-sm-3 control-label">등록예정 해시태그</label>
 			<div class="col-sm-4">
-				<input type="text" class="form-control" id="uploadHashtag" name="uploadHashtag" readonly>
+				<input type="text" class="form-control" id="uploadHashtagList" name="uploadHashtagList">
 			</div>
 		</div>
 		

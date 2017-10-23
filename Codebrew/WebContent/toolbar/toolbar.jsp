@@ -148,6 +148,14 @@
 				self.location = "/festival/getFestivalListDB?menu=db";
 			});
    		});
+  		
+  		
+ 		//////축제관리//////
+   		$(function(){
+			$( "a:contains('후기목록')" ).on("click" , function() {
+				self.location = "/review/getReviewList";
+			});
+   		});
    		
   		//////구매관리//////
 		$(function(){
