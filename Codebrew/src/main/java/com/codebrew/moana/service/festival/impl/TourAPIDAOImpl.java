@@ -2,6 +2,7 @@ package com.codebrew.moana.service.festival.impl;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -27,7 +28,7 @@ import com.codebrew.moana.service.festival.FestivalDAO;
 
 @Repository("tourAPIDAOImpl")
 public class TourAPIDAOImpl implements FestivalDAO {
-	
+
 	/// Field
 	@Autowired
 	@Qualifier("sqlSessionTemplate")
@@ -47,10 +48,9 @@ public class TourAPIDAOImpl implements FestivalDAO {
 	public Festival getFestival(int festivalNo) throws Exception {
 
 		StringBuilder urlBuilder2 = new StringBuilder(
-				"http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon"); /* URL */
+				"http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon");
 		urlBuilder2.append("?" + URLEncoder.encode("ServiceKey", "UTF-8")
-				+ "=hOlSrH9rpwUcpck4Zl2Wnewju3LzLtgYgAqtW%2FVCRaCJ4BMFUxYFO%2FkzQYu7hbohWd4Z8PWeG9gWgteLzsZqVQ%3D%3D&_type=json"); /*
-																																	 */
+				+ "=hOlSrH9rpwUcpck4Zl2Wnewju3LzLtgYgAqtW%2FVCRaCJ4BMFUxYFO%2FkzQYu7hbohWd4Z8PWeG9gWgteLzsZqVQ%3D%3D&_type=json");
 
 		urlBuilder2.append("&" + URLEncoder.encode("contentId", "UTF-8") + "=" + festivalNo);
 		urlBuilder2.append("&" + URLEncoder.encode("contentTypeId", "UTF-8") + "=15");
@@ -269,11 +269,10 @@ public class TourAPIDAOImpl implements FestivalDAO {
 			this.festival = festival;
 
 		}
-		
+
 		System.out.println("get 할때 readCount 는 머지..? : " + festival.getReadCount());
 		return festival;
 	}
-
 
 	public Map<String, Object> getFestivalList(Search search) throws Exception {
 
@@ -346,17 +345,18 @@ public class TourAPIDAOImpl implements FestivalDAO {
 			Festival festival = new Festival();
 
 			if (jsonobj5.get("firstimage") == null || jsonobj5.get("firstimage") == "") {
-//				festival.setFestivalImage("no.png");
+				// festival.setFestivalImage("no.png");
 				festival.setFestivalImage(null);
 			} else {
 				festival.setFestivalImage(jsonobj5.get("firstimage").toString()); // 원본사진
 			}
 
-//			if (jsonobj5.get("readcount") == null || jsonobj5.get("readcount") == "") {
-//				festival.setReadCount("제공정보없음");
-//			} else {
-//				festival.setReadCount(jsonobj5.get("readcount").toString());
-//			}
+			// if (jsonobj5.get("readcount") == null ||
+			// jsonobj5.get("readcount") == "") {
+			// festival.setReadCount("제공정보없음");
+			// } else {
+			// festival.setReadCount(jsonobj5.get("readcount").toString());
+			// }
 
 			if (jsonobj5.get("addr1") == null || jsonobj5.get("addr1") == "") {
 				festival.setAddr("제공정보없음");
@@ -435,7 +435,6 @@ public class TourAPIDAOImpl implements FestivalDAO {
 		return map;
 	}
 
-
 	@Override
 	public Map<String, Object> searchKeywordList(Search search) throws Exception {
 		// TODO Auto-generated method stub
@@ -506,11 +505,12 @@ public class TourAPIDAOImpl implements FestivalDAO {
 					festival.setFestivalImage(jsonobj5.get("firstimage").toString()); // 원본사진
 				}
 
-//				if (jsonobj5.get("readcount") == null || jsonobj5.get("readcount") == "") {
-//					festival.setReadCount("제공정보없음");
-//				} else {
-//					festival.setReadCount(jsonobj5.get("readcount").toString());
-//				}
+				// if (jsonobj5.get("readcount") == null ||
+				// jsonobj5.get("readcount") == "") {
+				// festival.setReadCount("제공정보없음");
+				// } else {
+				// festival.setReadCount(jsonobj5.get("readcount").toString());
+				// }
 
 				if (jsonobj5.get("addr1") == null || jsonobj5.get("addr1") == "") {
 					festival.setAddr("제공정보없음");
@@ -606,8 +606,6 @@ public class TourAPIDAOImpl implements FestivalDAO {
 		return map;
 	}
 
-	
-	
 	///////////////////////////////////////////////////////////////
 	@Override
 	public Festival getFestivalDB(int festivalNo) throws Exception {
@@ -650,13 +648,13 @@ public class TourAPIDAOImpl implements FestivalDAO {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	@Override
 	public int getTotalCount(Search search) throws Exception {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
 	@Override
 	public void addFestival(Festival festival) throws Exception {
 		// TODO Auto-generated method stub
@@ -666,7 +664,7 @@ public class TourAPIDAOImpl implements FestivalDAO {
 	@Override
 	public void deleteFestival(Festival festival) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
