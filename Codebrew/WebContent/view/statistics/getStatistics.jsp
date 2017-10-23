@@ -51,7 +51,7 @@
 			},
 			success : function(JSONData){
 				console.log(JSON.stringify(JSONData));
-				datas.length = 0;				
+				datas = [];
 				//JSON data 만큼 datas에 push
 				for(var i = 0; i < JSONData.length; i++) {
 					datas.push({
@@ -275,7 +275,10 @@
 				} 
 			} ]
 		}, 
-		"dataProvider" : datas,
+		"dataProvider" : [{
+			"statDate" : 4,
+			"totalPrice" : 1000
+		}],
 		"valueField" : "totalPrice",
 		"titleField" : "statDate",
 		"export" : {
@@ -303,34 +306,29 @@
 			self.location = "/statistics/getStatistics";
 		});
 		
-		/* if(statFlag == '1') { //일단위
-			$("#chartDiv").css("display", "block");
-		} else if(statFlag == '2') { //월단위
-			$("#chartLine").css("display", "block");
-		} else { //분기단위
-			$("#chartPie").css("display", "block");
-		} */
-		//getChartData(statFlag);
-		//chartLine.dataProvider = datas;
-		//chartData(statFlag);
-		//chartData(2);
-		//chartData(3);
-
-		/* $("button").each(function(){}).on("click", function(event) {
+		getChartData(statFlag);
+		chartData3();
+		// tab 선택시
+		$("li[role='presentation'] > a").on("click", function(){
 			
-			var statFlag = $(this).val();
-			console.log("클릭클릭 val = " + statFlag);
-			//self.location = "/statistics/getStatistics?statFlag="+statFlag;
-			getChartData(statFlag);
-			chartLine.dataProvider = datas;
-			chartLine.validateData();
-			event.preventDefault();	
-			//chartLine.updateData();
-			//amCharts.updateData();
-		}); */
-		
-		$("input").on("click", function(){
-			alert($("input:checked").val());
+			var statFlag = $(this).html().trim();
+			
+			if(statFlag.indexOf('Daily') != -1) {
+				console.log("daily click");
+				getChartData(1);
+				chart.validateData();
+				chartData3();
+			} else if(statFlag.indexOf('Monthly') != -1) {
+				console.log("monthly click");
+				getChartData(2);
+				chartLine.validateData();
+				chartData1();
+			} else if(statFlag.indexOf('Quarterly') != -1) {
+				console.log("quarterly click");
+				getChartData(3);
+				chartData2();
+			} 
+			
 		});
 		
 	});
@@ -400,7 +398,7 @@
 		</div>
 		
 		<!-- 현재날짜, 시각 -->
-		<div class="row">
+		<%-- <div class="row">
 			<div class="col-md-offset-3 col-md-6">
 				<div class="row">
 					<div class="col-md-12">
@@ -408,7 +406,7 @@
 					</div>
 				</div>
 			</div>
-		</div>		
+		</div>		 --%>
 		
 		<!-- 버튼 1: 일단위, 2: 월단위, 3:분기단위 -->
 		<div class="row">
@@ -432,10 +430,15 @@
 					</div> -->
 					<!-- Tab -->
 					<ul class="nav nav-tabs" role="tablist">
-					    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
-					    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
-					    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
-					    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+					    <li role="presentation" class="active">
+					    	<a href="#daily" aria-controls="home" role="tab" data-toggle="tab">Daily</a>
+					    </li>
+					    <li role="presentation">
+					    	<a href="#monthly" aria-controls="profile" role="tab" data-toggle="tab">Monthly</a>
+					    </li>
+					    <li role="presentation">
+					    	<a href="#quarter" aria-controls="messages" role="tab" data-toggle="tab">Quarterly</a>
+					    </li>
 					 </ul>
 				</div>
 			</div>
@@ -450,16 +453,31 @@
 					<div class="col-md-12">
 						<!-- Tab 내용 -->
 						<div class="tab-content">
-						    <div role="tabpanel" class="tab-pane active" id="home">Home</div>
-						    <div role="tabpanel" class="tab-pane" id="profile">Profile</div>
-						    <div role="tabpanel" class="tab-pane" id="messages">Message</div>
-						    <div role="tabpanel" class="tab-pane" id="settings">Setting</div>
+							<!-- 일단위 판매통계 -->
+						    <div role="tabpanel" class="tab-pane active" id="daily">
+						    	<div class="page-header">
+								  <h4>일단위 판매통계</h4>
+								</div>
+								<!-- <div id="chartDiv"></div> -->
+								<jsp:include page="/view/statistics/dailyStatistics.jsp"></jsp:include>
+						    </div>
+						    <!-- 월단위 판매통계 -->
+						    <div role="tabpanel" class="tab-pane" id="monthly">
+						    	<div class="page-header">
+								  <h4>월단위 판매통계</h4>
+								</div>
+								<!-- <div id="chartLine"></div> -->
+								<jsp:include page="/view/statistics/monthlyStatistics.jsp"></jsp:include>
+						    </div>
+						    <!-- 분기단위 판매통계 -->
+						    <div role="tabpanel" class="tab-pane" id="quarter">
+						    	<div class="page-header">
+								  <h4>분기단위 판매통계</h4>
+								</div>
+						    	<!-- <div id="chartPie"></div> --> 
+						    	<jsp:include page="/view/statistics/quarterlyStatistics.jsp"></jsp:include>
+						    </div>
  						 </div>
-						<!-- amChart -->
-						<h3>일</h3>
-						<div id="chartDiv"></div>
-						<h3>월</h3>
-						<div id="chartLine"></div>
 					</div>
 				</div>
 			</div>

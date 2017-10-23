@@ -209,6 +209,15 @@ public class PurchaseController {
 		return modelAndView;
 	}
 	
+	@RequestMapping(value = "cancelPayment")
+	public ModelAndView cancelPayment() throws Exception {
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("redirect:/purchase/cancelPayment.jsp");
+
+		return modelAndView;
+	}
+	
 	@RequestMapping(value = "deletePurchase", method=RequestMethod.POST)
 	public ModelAndView deletePurchase(HttpSession session,
 																	@RequestParam("purchaseNo") int purchaseNo,

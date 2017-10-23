@@ -1,12 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-<title>Insert title here</title>
+<title></title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.js"></script>
+<script type="text/javascript">
+	$(function(){
+		
+		$("button").bind("click", function(){
+			//익스플로러경우 닫기할때 alert창 안뜨게 하기위해..
+			window.open("about:blank", "_self").close();
+		});
+		
+	});
+</script>
 </head>
 <body>
-
+결제가 취소 되었습니다.
+<button type="button">닫기</button>
 </body>
 </html>
