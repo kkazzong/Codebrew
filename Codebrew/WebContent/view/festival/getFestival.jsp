@@ -106,6 +106,12 @@ $(function() {
 		});
 		
 		$(function() {
+			$("button:contains('삭제하기')").on("click", function() {
+			self.location = "/festival/deleteFestival?festivalNo=" + ${festival.festivalNo}+"&deleteFlag=1";
+		});
+	});
+		
+		$(function() {
 				$("button:contains('등록하기')").on("click", function() {
 				self.location = "/festival/addFestivalView?festivalNo=" + ${festival.festivalNo};
 			});
@@ -363,6 +369,8 @@ $(function(){
 				<c:if test="${ticket!=null }">
 					<button type="button" class="btn btn-primary">수정하기</button>
 				</c:if>
+				
+					<button type="button" class="btn btn-primary">삭제하기</button>
 			
 					<input type = "button" id = "back" name = "back" value = "뒤로"/>
 			

@@ -32,6 +32,7 @@ public interface FestivalService {
 	
 	public void appendReadCount(Festival festival) throws Exception;
 	
+	public void deleteFestival(Festival fesitval) throws Exception;
 	
 
 	

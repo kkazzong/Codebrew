@@ -35,4 +35,6 @@ public interface FestivalDAO {
 	
 	public void appendReadCount(Festival festival) throws Exception;
 	
+	public void deleteFestival(Festival festival) throws Exception;
+	
 }

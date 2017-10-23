@@ -108,12 +108,8 @@
 					<option value="" ${ ! empty search.arrange && search.arrange=="" ? "selected" : "" }>>정렬</option>
 					<option value="A" ${ ! empty search.arrange && search.arrange=="A" ? "selected" : "" }>>제목</option>
 					<option value="B" ${ ! empty search.arrange && search.arrange=="B" ? "selected" : "" }>>조회순</option>
-					<option value="C" ${ ! empty search.arrange && search.arrange=="C" ? "selected" : "" }>>수정일순</option>
-					<option value="D" ${ ! empty search.arrange && search.arrange=="D" ? "selected" : "" }>>생성일순</option>
-					<option value="o" ${ ! empty search.arrange && search.arrange=="o" ? "selected" : "" }>>제목2</option>
-					<option value="p" ${ ! empty search.arrange && search.arrange=="p" ? "selected" : "" }>>조회순2</option>
-					<option value="Q" ${ ! empty search.arrange && search.arrange=="Q" ? "selected" : "" }>>수정일순2</option>
-					<option value="R" ${ ! empty search.arrange && search.arrange=="R" ? "selected" : "" }>>생성일순2</option>
+					<option value="C" ${ ! empty search.arrange && search.arrange=="C" ? "selected" : "" }>>최근시작일순</option>
+					<option value="D" ${ ! empty search.arrange && search.arrange=="D" ? "selected" : "" }>>축제종료일순</option>
 				</select>
 				</div>
 				
@@ -137,6 +133,8 @@
 
 		
 		<c:forEach var="festival" items="${list}">
+		
+			<c:if test="${festival.deleteFlag == null }">
 		
 		<br />
 			<table>
@@ -163,10 +161,11 @@
 			</table>
 
 			<div>축제기간 ${festival.startDate } ~ ${festival.endDate }</div>
+			
 			<br />
 			<br />
 		
-			
+			</c:if>
 		</c:forEach>
 		
 		

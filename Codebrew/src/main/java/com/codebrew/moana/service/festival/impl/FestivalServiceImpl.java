@@ -23,9 +23,17 @@ public class FestivalServiceImpl implements FestivalService{
 	@Qualifier("festivalDAOImpl")
 	private FestivalDAO festivalDAO;
 	
+	@Autowired
+	@Qualifier("tourAPIDAOImpl")
+	private FestivalDAO tourAPIDAO;
+	
 	
 	public void setFestivalDAO(FestivalDAO festivalDAO) {
 		this.festivalDAO = festivalDAO;
+	}
+	
+	public void setTourAPIDAO(FestivalDAO tourAPIDAO) {
+		this.tourAPIDAO = tourAPIDAO;
 	}
 	
 	///Constructor
@@ -37,20 +45,20 @@ public class FestivalServiceImpl implements FestivalService{
 	public Festival getFestival(int festivalNo) throws Exception {
 		// TODO Auto-generated method stub
 		
-		return festivalDAO.getFestival(festivalNo);
+		return tourAPIDAO.getFestival(festivalNo);
 		
 	}
 	
 	@Override
 	public Map<String,Object> getFestivalList(Search search) throws Exception {
 		// TODO Auto-generated method stub
-		return festivalDAO.getFestivalList(search);
+		return tourAPIDAO.getFestivalList(search);
 	}
 
 	@Override
 	public Map<String, Object> searchKeywordList(Search search) throws Exception {
 		// TODO Auto-generated method stub
-		return festivalDAO.searchKeywordList(search);
+		return tourAPIDAO.searchKeywordList(search);
 	}
 
 	@Override
@@ -125,6 +133,13 @@ public class FestivalServiceImpl implements FestivalService{
 	public void appendReadCount(Festival festival) throws Exception {
 		// TODO Auto-generated method stub
 		festivalDAO.appendReadCount(festival);
+	}
+
+	@Override
+	public void deleteFestival(Festival festival) throws Exception {
+		// TODO Auto-generated method stub
+		festivalDAO.deleteFestival(festival);
+		
 	}
 	
 	

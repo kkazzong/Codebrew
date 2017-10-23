@@ -174,57 +174,78 @@
 	  					 FESTIVAL_NAME,
 	  					 START_DATE,
 	  					 END_DATE,
-	  					 FESTIVAL_IMAGE
+	  					 FESTIVAL_IMAGE,
+	  					 DELETE_FLAG
 
 						 FROM festival
+						 
+						 where end_date &gt;= SYSDATE
 						
 						<if test="searchCondition!=null">
 						
 							<!-- 지역검색만  -->					
 							<if test="searchCondition != '' and searchKeyword ==''">
-								where area_code = '${searchCondition}'
+								AND area_code = '${searchCondition}'
 							</if>
 							
 							<!-- 검색어만 -->
 							<if test="searchCondition == '' and searchKeyword !=''">
-								where festival_name like '%${searchKeyword}%'
+								AND festival_name like '%${searchKeyword}%'
 							</if>
 							
 							<!-- 지역+검색어 -->
 							
 							<if test="searchCondition != '' and searchKeyword !=''">
-								where area_code = '${searchCondition}'							
+								and area_code = '${searchCondition}'							
 								and festival_name like '%${searchKeyword}%'
 							</if>
 							
 						</if>
 						
-						
-						
-						
+							<if test = 'arrange=="A"'>
+								order by festival_name
+							</if>
+							
+							<if test = 'arrange=="B"'>
+								order by read_count desc
+							</if>
+							
+							<if test = 'arrange=="C"'>
+								order by start_date desc
+							</if>
+							
+							<if test = 'arrange=="D"'>
+								order by end_date
+							</if>
 										
 		) inner_table
 		WHERE ROWNUM &lt;= #{endRowNum} )
 		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
+		
+	
+							
+							
 	 </select>
 	
 	<select  id="getTotalCount"  parameterType="search"	 resultType="int">
 	  	SELECT COUNT(*)
 	  	FROM(	SELECT FESTIVAL_NO , FESTIVAL_NAME 
 						FROM festival
+						
+						where end_date &gt;= SYSDATE
+						and delete_flag is null
+						
 						<if test="searchCondition != null">
-							<where>
 								<if test="searchCondition != '' and searchKeyword =='' ">
-						 			area_code = #{searchCondition}
+						 			and area_code = #{searchCondition}
 								</if>
 								<if test="searchCondition == '' and searchKeyword !='' ">
-						 			FESTIVAL_NAME = #{searchKeyword}
-								</if>
-								<if test="searchCondition != '' and searchKeyword !='' ">
-									area_code = #{searchCondition}
 						 			and FESTIVAL_NAME = #{searchKeyword}
 								</if>
-							</where>
+								<if test="searchCondition != '' and searchKeyword !='' ">
+									and area_code = #{searchCondition}
+						 			and FESTIVAL_NAME = #{searchKeyword}
+								</if>
 						</if> ) countTable						
 	 </select>
 
