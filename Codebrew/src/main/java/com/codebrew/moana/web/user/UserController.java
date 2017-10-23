@@ -1,5 +1,6 @@
 package com.codebrew.moana.web.user;
 
+import java.sql.Date;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -7,10 +8,9 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.codebrew.moana.common.Page;
 import com.codebrew.moana.common.Search;
+import com.codebrew.moana.service.domain.Auth;
 import com.codebrew.moana.service.domain.User;
 import com.codebrew.moana.service.user.UserService;
 
@@ -30,8 +31,7 @@ public class UserController {
 	@Qualifier("userServiceImpl")
 	private UserService userService;
 	
-/*	@Autowired
-	 private JavaMailSender mailSender;*/
+
 	
 	
 	//constructor
@@ -46,6 +46,8 @@ public class UserController {
 	@Value("#{commonProperties['pageSize']}")
 	int pageSize;
     
+	@Value("#{imageRepositoryProperties['profileImageDir']}")
+	String profileImageDir;
 	
 	//로그인 화면
 	@RequestMapping(value="login", method=RequestMethod.GET)
@@ -92,22 +94,40 @@ public class UserController {
 		
 	}
 	
-	//회원가입 화면이동
+	/*//회원가입 화면이동
 	@RequestMapping(value="addUser", method=RequestMethod.GET)
-	public ModelAndView addUser()throws Exception{//페이지이동일뿐이니깐 들어가는 파라미터도 없음
-	
+	public ModelAndView addUser(@ModelAttribute("auth")Auth auth)throws Exception{
+	//auth 정보를 물고 가야되니깐 ${auth.authId} name=userId 지만 Value는  ${auth.authId}임
 		System.out.println("/user/addUser : GET");
 		ModelAndView modelAndView=new ModelAndView();
-		modelAndView.setViewName("redirect:/view/user/addUser.jsp");
+	    modelAndView.addObject("auth", auth);
+		modelAndView.setViewName("forward:/view/user/addUser.jsp");
 		return modelAndView;
 	}
-	
+	*/
 	
 	//진짜 회원가입
 	@RequestMapping(value="addUser", method=RequestMethod.POST)
 	public ModelAndView addUser(@ModelAttribute("user")User user)throws Exception{
-	
+	//도메인으로 넣어줘야 됨->근데 무결성 제약조건...., @ModelAttribute("auth")Auth auth ->이래두 무결성 제약조건
+		
+		//이미 데이터가 들어간거 였음 ㅜㅜ 오라클 껐다켜보기 ㅜㅜ
 	  System.out.println("/user/addUser : POST");
+	  
+	  
+	  //@RequestParam("file") MultipartFile file
+	 /* File UploadFile=new File(profileImageDir,file.getOriginalFilename());
+	  
+	  user.setProfileImage(file.getOriginalFilename());
+	  
+	  file.transferTo(UploadFile);*/
+	 
+	  
+	 // user.setBirth(Date.valueOf("2017-10-16")); //데이트 형식 맞게 넣어주세여
+	  
+	 // user.setUserId(auth.getAuthId());
+	   
+	  System.out.println("authId가 userId로 들어갔나요?"+user);
 	  
 	   userService.addUser(user);
 	   
@@ -115,7 +135,7 @@ public class UserController {
 		modelAndView.setViewName("redirect:/view/user/login.jsp");
 		return modelAndView;
 	}
-	
+	/*
 	//회원정보 조회
 	@RequestMapping(value="getUser", method=RequestMethod.GET)
 	public ModelAndView getUser(@RequestParam("userId") String userId)throws Exception{
@@ -133,13 +153,13 @@ public class UserController {
 		return modelAndView;
 	
 	}
-	
+	*/
 	//회원정보조회 및 수정화면이동
 	@RequestMapping(value="updateUser", method=RequestMethod.GET)
 	public ModelAndView updateUser(@RequestParam("userId") String userId)throws Exception{
 		
 		
-		System.out.println("/user/getUser : GET");
+		System.out.println("/user/updateUser : GET");
 		
 		//비즈니스로직
 		User user=userService.getUser(userId);
@@ -178,7 +198,7 @@ public class UserController {
 		//수정하기전에 들어온 user.getUserId와 session에 있는 userId와 같다면 session에 user setAttribute
 	
 		ModelAndView modelAndView=new ModelAndView();
-		modelAndView.setViewName("redirect:/view/user/getProfile.jsp");
+		modelAndView.setViewName("redirect:/view/user/updateUser.jsp");
 		return modelAndView;
 	}
 	
@@ -272,15 +292,18 @@ public class UserController {
 	
     //회원탈퇴화면이동
 	@RequestMapping(value="withdrawUser", method=RequestMethod.GET)
-	public ModelAndView withdrawUser(@RequestParam("userId")String userId, HttpSession session)throws Exception{
+	public ModelAndView withdrawUser(@RequestParam("userId")String userId)throws Exception{
 		
 		System.out.println("/user/withdrawUser : GET");
 		
 		User user=userService.getUser(userId);
 		
 		ModelAndView modelAndView=new ModelAndView();
+		
+		
+		System.out.println("여기는 어디"+user);
 		modelAndView.addObject("user", user);
-		modelAndView.setViewName("forward:/view/user/withdrawUser.jsp");
+		modelAndView.setViewName("forward:/view/user/withdrawUser.jsp");//유저아이디가지고 이동함
 		return modelAndView;
 		
 		 
@@ -290,25 +313,40 @@ public class UserController {
 	
 	//진짜 회원탈퇴
 	@RequestMapping(value="withdrawUser", method=RequestMethod.POST)
-	public ModelAndView withdrawUser(@ModelAttribute("user")User user, HttpSession session)throws Exception{
+	public ModelAndView withdrawUser(@ModelAttribute("user") User user, //vo는 꼭꼭꼭 @ModelAttribute
+			                       HttpSession session)throws Exception{
+		
+		/*@RequestParam("userId") String userId, 
+        @RequestParam("password") String password,*/
+		
 		
 		System.out.println("/user/withdrawUser : POST");
 		
-	    User dbUser=userService.getUser(user.getUserId());
+	   User dbUser=userService.getUser(user.getUserId());
 		
 		if(user.getPassword().equals(dbUser.getPassword())) {
+			
+			userService.deleteUser(user);
+			
+		
+		}
+		
+		System.out.println("여여기");
 		
 		userService.deleteUser(user);
 		
-		}
+	
 		
 		String sessionId=((User)session.getAttribute("user")).getUserId();
 		
 		if(sessionId.equals(user.getUserId())) {
 			//여기서 user.getUserId는 deleteUser(DB:update)시킨 user임
 			session.setAttribute("user",user);
-			session.invalidate();
 		}
+		
+	
+		session.invalidate();
+		
 		
 		ModelAndView modelAndView=new ModelAndView();
 		modelAndView.setViewName("redirect:/index.jsp");
@@ -316,8 +354,39 @@ public class UserController {
 	}
 	
 	
+	//임시비밀번호보내기
+	@RequestMapping(value="findPwd", method=RequestMethod.POST)
+	public ModelAndView findPwd(@ModelAttribute("user")User user)throws Exception{
+		
+		System.out.println("/user/findPwd : POST");
+		
+		userService.findPwd(user);
+		//리턴할 필요없을거 같음
+		
+		ModelAndView modelAndView=new ModelAndView();
+		modelAndView.setViewName("redirect:/view/user/login.jsp");
+	    return modelAndView;
+	}
 	
 	
+	//진짜 본인인증-확인
+	@RequestMapping(value="confirmUser", method=RequestMethod.POST)
+	public ModelAndView confirmUser(@ModelAttribute("auth")Auth auth)throws Exception{
+		System.out.println("auth에 담긴 정보는?처음처음"+auth);
+		System.out.println("/user/confirmUser : POST");
+		
+		 //auth=userService.confirmUser(auth);
+	
+		 ModelAndView modelAndView=new ModelAndView();
+		 modelAndView.addObject("auth", auth);
+		 //forward 하면 /user/user/confirmUser가 됨 a
+		 
+		 System.out.println("auth에 담긴 정보는?"+auth);//폼을 두개로 나눠서 그런가? auth에 authCode만 담겼었음
+		 modelAndView.setViewName("forward:/view/user/addUser.jsp");//여기서  auth의 정보를 머금고 이동
+		 return modelAndView;
+	}
+	//맨처음 물고 들어간 화면은 주소창이 user/confirmUser 였음
 	
 	
+
 }
