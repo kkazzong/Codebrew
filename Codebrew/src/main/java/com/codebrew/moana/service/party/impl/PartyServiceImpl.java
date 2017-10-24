@@ -207,6 +207,7 @@ public class PartyServiceImpl implements PartyService {
 		party.setMalePercentage(malePercentage);
 		party.setFemaleAgeAverage(femaleAgeAverage);
 		party.setMaleAgeAverage(maleAgeAverage);
+		party.setPartyName(list.get(0).getParty().getPartyName());
 		
 		return party;
 	}

@@ -162,8 +162,14 @@
 				  
 				  <div class="form-group">
 				    <label class="sr-only" for="searchKeyword">검색어</label>
-				    <input type="text" class="form-control" id="searchKeyword" name="searchKeyword" value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
-
+				    
+					<%-- <c:if test="${ !empty search.searchCondition && search.searchCondition == '5' }">
+						<input type="text" class="form-control" id="searchKeyword" name="searchKeyword" value="">
+					</c:if>
+					<c:if test="${ !empty search.searchCondition && search.searchCondition != '5' }">
+					<input type="text" class="form-control" id="searchKeyword" name="searchKeyword" value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
+					</c:if> --%>
+					<input type="text" class="form-control" id="searchKeyword" name="searchKeyword" value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
 				    <button type="button" class="btn btn-default">검색</button>			 
 				  </div>		  
 				  

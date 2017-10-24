@@ -68,6 +68,26 @@
 	       });   
 	    } );
 		
+		
+		$.datepicker.setDefaults({
+	           dateFormat: 'yy-mm-dd',
+	           monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+	           monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+	           dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+	           dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+	           dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+	           showMonthAfterYear: true,
+	           yearSuffix: '년',
+	           changeMonth: true,
+	         changeYear : true,
+	         buttonImageOnly: true,
+	          buttonText: "Select date",
+	          showOn: "button",
+	          buttonImage: "/resources/image/ui/cal.png",
+	          yearRange : "1900:2017"
+	       });
+		
+		
 		//============= "티켓가격 무료"  Event 처리 및  연결 =============
 		$(function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
