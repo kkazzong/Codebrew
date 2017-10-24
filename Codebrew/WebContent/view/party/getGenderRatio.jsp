@@ -15,7 +15,7 @@
 							{ partyNo : $("#partyNo").val() },
 							function(JSONData, status){
 								console.log(status);
-								console.log("JSONData : "+JSONData);
+								console.log("JSONData : "+JSON.stringify(JSONData));
 								
 								console.log("JSONData.femalePercentage : "+JSONData.femalePercentage);
 								console.log("JSONData.femaleAgeAverage : "+JSONData.femaleAgeAverage);

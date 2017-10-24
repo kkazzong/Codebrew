@@ -11,6 +11,8 @@
 				console.log("파티멤버보기 버튼 클릭.....");
 				console.log("partyNo :: "+$("#partyNo").val());
 				
+				var userId = "${user.userId}";
+				console.log("userId :: "+userId);
 				/* var searchCondition = $(".form-control[name=searchCondition]").val();
 				var searchKeyword = $(".form-control[name=searchKeyword]").val(); */
 				
@@ -24,30 +26,45 @@
 						  success : function(JSONData, status){
 							  		console.log(status);
 							 		console.log("JSONData : "+JSON.stringify(JSONData));
-							  		console.log("JSONData.list : "+JSONData.list);
 							  		
 							  		for(i=0 ; i<JSONData.list.length ; i++){
-						  			var html = "<div class='row' id='user'>"
-													+"<input type='hidden' id='userId' name='userId' value='"+JSONData.list[i].user.userId+"'>"
-													+"<span>"
-														+"<img class='rounded-circle' src='/resources/uploadFile/"+JSONData.list[i].user.profileImage+"' width='40' height='40'>"
-													+"</span>"
-													+"<span>"
-													+JSONData.list[i].user.nickname+"&nbsp;"+"( "+JSONData.list[i].user.userId+" )"
-													+"</span>"
-													+"<span>"
-													if(JSONData.list[i].role='host'){
-														+"<strong>host</strong>"	
-													}
-													+"</span>"
-												+"</div>"
-																  			
+							  			console.log("for문 안");
+							  			if (userId == JSONData.list[i].user.userId){
+							  			
+							  				console.log("if문 안");
+								  			var partyMemberList = "<div class='row' id='user'>"
+																	+"<input type='hidden' id='userId' name='userId' value='"+JSONData.list[i].user.userId+"'>"
+																	+"<span>"
+																		+"<img class='rounded-circle' src='/resources/uploadFile/"+JSONData.list[i].user.profileImage+"' width='40' height='40'>"
+																	+"</span>"
+																	+"<span>"
+																	+JSONData.list[i].user.nickname+"&nbsp;"+"( "+JSONData.list[i].user.userId+" )"
+																	+"</span>"
+																	+"<span>"
+																	if(JSONData.list[i].role='host'){
+																		+"<strong>host</strong>"	
+																	}
+																	+"</span>"
+																	+"</div>";
+																	
+											var button = "<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#exampleModal'>"
+														 +"파티멤버보기"
+														 +"</button>";
+														 
+										    console.log(partyMemberList);
+										    console.log(button);
+										    
+										    $("form.form-horizontal-1").html(partyMemberList); 
+								  			//$("#partyMemberListButtonDiv").html(button);
+										    $("#partyMemberListButtonDiv").append(button);
+							  			}						  			
 												
-						  			$("form.form-horizontal-1").html(html); 
+						  			
+						  			
 							  		}			
 							  		
 									var currentMemberCount = "${party.partyMemberLimit} 명 중 "+JSONData.currentMemberCount+" 명 참여중";
-									
+																						
 									$("#currentMemberCountDiv").html(currentMemberCount); 
 							  		
 						  }
@@ -59,13 +76,12 @@
 		
 	</script> 
 	
-	
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
- 	파티멤버보기
-</button>    
+  
 
 <!--  화면구성 div Start /////////////////////////////////////-->
+<!-- Button trigger modal -->
+<div id="partyMemberListButtonDiv"></div>
+
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -75,7 +91,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
         <h1 class="modal-title" id="exampleModalLabel" align="center">파티 멤버</h1>
-        <div><h4 align="center">${ partyMember.party.partyName }</h4></div>
+        <div><h4 align="center">${ party.partyName }</h4></div>
         
       </div>
       <div class="modal-body">

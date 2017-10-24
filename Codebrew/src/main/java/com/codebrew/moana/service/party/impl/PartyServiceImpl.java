@@ -61,9 +61,16 @@ public class PartyServiceImpl implements PartyService {
 	@Override
 	public Party updateParty(Party party) throws Exception {
 		// TODO Auto-generated method stub
-		partyDAO.updateParty(party);
+		int result = partyDAO.updateParty(party);
 		
-		return null;
+		int partyNo = party.getPartyNo();
+		
+		if(result == 1) {
+			return partyDAO.getParty(partyNo, "");
+		}else {
+			return null;
+		}
+	
 	}
 
 

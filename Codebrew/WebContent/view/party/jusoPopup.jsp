@@ -9,7 +9,7 @@
 	//request.setCharacterEncoding("EUC-KR");  //해당시스템의 인코딩타입이 EUC-KR일경우에
 	String inputYn = request.getParameter("inputYn"); 
 	String roadFullAddr = request.getParameter("roadFullAddr"); 
-	String roadAddrPart1 = request.getParameter("roadAddrPart1"); 
+	/* String roadAddrPart1 = request.getParameter("roadAddrPart1"); 
 	String roadAddrPart2 = request.getParameter("roadAddrPart2"); 
 	String engAddr = request.getParameter("engAddr"); 
 	String jibunAddr = request.getParameter("jibunAddr"); 
@@ -18,9 +18,9 @@
 	String admCd    = request.getParameter("admCd");
 	String rnMgtSn = request.getParameter("rnMgtSn");
 	String bdMgtSn  = request.getParameter("bdMgtSn");
-	String detBdNmList  = request.getParameter("detBdNmList");	
+	String detBdNmList  = request.getParameter("detBdNmList"); */	
 	/** 2017년 2월 추가제공 **/
-	String bdNm  = request.getParameter("bdNm");
+	/* String bdNm  = request.getParameter("bdNm");
 	String bdKdcd  = request.getParameter("bdKdcd");
 	String siNm  = request.getParameter("siNm");
 	String sggNm  = request.getParameter("sggNm");
@@ -32,9 +32,9 @@
 	String buldSlno  = request.getParameter("buldSlno");
 	String mtYn  = request.getParameter("mtYn");
 	String lnbrMnnm  = request.getParameter("lnbrMnnm");
-	String lnbrSlno  = request.getParameter("lnbrSlno");
+	String lnbrSlno  = request.getParameter("lnbrSlno"); */
 	/** 2017년 3월 추가제공 **/
-	String emdNo  = request.getParameter("emdNo");
+	/* String emdNo  = request.getParameter("emdNo"); */
 
 %>
 </head>
@@ -55,7 +55,7 @@ function init(){
 		//document.form.action="http://www.juso.go.kr/addrlink/addrMobileLinkUrl.do"; //모바일 웹인 경우, 인터넷망
 		document.form.submit();
 	}else{
-		opener.jusoCallBack("<%=roadFullAddr%>","<%=jibunAddr%>");
+		opener.jusoCallBack("<%=roadFullAddr%>");
 		window.close();
 		}
 }

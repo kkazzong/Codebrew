@@ -215,7 +215,8 @@
 		      <input type="text" readonly="readonly" class="form-control" id="partyPlace" name="partyPlace" value="${ party.partyPlace }">
 		    </div>
 		    <div>
-		      <button type="button" class="btn btn-primary" id="search-partyPlace"  >검색</button> 	
+		      <!-- <button type="button" class="btn btn-primary" id="search-partyPlace"  >검색</button> -->
+		      <%@include file="/view/party/searchAddr.jsp"%> 	
 		    </div>
 		  </div>
 		  
