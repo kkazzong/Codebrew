@@ -59,6 +59,28 @@
 			});
 		});
 	
+			
+		//============= "축제검색"  Event 연결 =============
+		 $(function() {
+			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+			$( "button:contains('축제검색')" ).on("click" , function() {
+				//$("form").attr("method", "POST").attr("action", "/party/addParty").submit();
+				
+				var pop = window.open("/view/festival/getFestivalListDB.jsp","pop","width=570,height=420, scrollbars=yes, resizable=yes"); 
+				
+			});
+			
+			// 애프터 파티의 경우 축제 장소 자동 입력
+			if( "${party.partyPlace}" != null ){
+				
+				var addr = "${festival.addr}";
+				$("#partyPlace").val(addr);
+			
+			}
+				
+		});
+		
+		
 		//============= "DatePicker"  Event 처리 및  연결 =============
 		$( function() {
 	       $( "#datepicker" ).datepicker({
@@ -107,6 +129,9 @@
 		//============= "파티 플래그"  Event 처리 및  연결 =============
 		$(function(){
 			$("#party").on("click", function(){
+				
+				//$("form").reset();
+			
 				$("#partyFlag").val("1");
 				var partyFlag = $("#partyFlag").val();
 				console.log(partyFlag);
@@ -124,6 +149,9 @@
 			});
 			
 			$("#afterParty").on("click", function(){
+				
+				//$("form").reset();
+			
 				$("#partyFlag").val("2");
 				var partyFlag = $("#partyFlag").val();
 				console.log(partyFlag);
@@ -174,9 +202,6 @@
 		<hr/><hr/>
 		<h1 class="bg-primary text-center">파티 등록</h1>
 		
-		<!-- form Start /////////////////////////////////////-->
-		<form class="form-horizontal" enctype="multipart/form-data">
-		
 		  <div class="form-group">
 		    <label for="userId" class="col-sm-offset-1 col-sm-3 control-label">주최자</label>
 		    <div class="col-sm-4">
@@ -185,11 +210,14 @@
 		    </div>
 		  </div>
 		  
+		  <!-- form Start /////////////////////////////////////-->
+		  <form class="form-horizontal" enctype="multipart/form-data">
+		  
 		  <div class="form-group">
 		    <label for="partyFlag" class="col-sm-offset-1 col-sm-3 control-label">파티구분</label>
 		    <div class="col-sm-2">
-		    	<button type="button" class="btn btn-primary" name="party" id="party">파티</button>
-		    	<button type="button" class="btn btn-primary" name="party" id="afterParty">애프터파티</button>
+		    	<button type="reset" class="btn btn-primary" name="party" id="party">파티</button>
+		    	<button type="reset" class="btn btn-primary" name="party" id="afterParty">애프터파티</button>
 		    	
 		    	<input type="hidden" class="form-control" id="partyFlag" name="partyFlag"/>
 		    </div>
@@ -275,7 +303,8 @@
 		    <label for="partyPlace" class="col-sm-offset-1 col-sm-3 control-label">파티장소</label>
 		    <div class="col-sm-4">
 		      <input type="text" class="form-control" id="partyPlace" name="partyPlace" placeholder="파티장소를 검색해주세요.">
-		      <button type="button" class="btn btn-primary" name="searchPartyPlace" >장소검색</button>
+		      <!-- <button type="button" class="btn btn-primary" name="searchPartyPlace" >장소검색</button> -->
+		      <%@include file="/view/party/searchAddr.jsp"%> 
 		    </div>
 		  </div>
 		  

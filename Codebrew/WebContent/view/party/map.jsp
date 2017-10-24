@@ -5,20 +5,23 @@
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0de5c0a0d8c0939d9e305e1dfb812b72&libraries=services"></script>
 <script>
-	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-    mapOption = {
+	var mapContainer = document.getElementById('map'); // 지도를 표시할 div 
+    var mapOption = {
         center: new daum.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
         level: 3 // 지도의 확대 레벨
-    };  
+    	};  
 
 	// 지도를 생성
 	var map = new daum.maps.Map(mapContainer, mapOption); 
 	
 	// 주소-좌표 변환
 	var geocoder = new daum.maps.services.Geocoder();
+	
+	// 파티 도로명 주소
+	var partyPlace = "${ party.partyPlace }";
 
 	// 주소로 좌표를 검색
-	geocoder.addressSearch('서울특별시 서초구 강남대로53길 8', function(result, status) {
+	geocoder.addressSearch(partyPlace, function(result, status) {
 
 	    // 정상적으로 검색이 완료됐으면 
 	     if (status === daum.maps.services.Status.OK) {

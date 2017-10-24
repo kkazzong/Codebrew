@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	
 	<title>파티 상세 조회 화면</title>
 
@@ -30,6 +30,8 @@
 	<!-- Jquery DatePicker -->
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    
+
     
     <!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
@@ -128,7 +130,8 @@
 			});
 		});
 		
-	
+		
+		
 		
 	</script>
 	
@@ -192,23 +195,23 @@
 				</div>
 
 				<hr />
+				
+				<div class="row">
+					<div class="col-xs-4 col-md-2 ">
+						<strong>파티시간</strong>
+					</div>
+					<div class="col-xs-8 col-md-4">${party.partyTime}</div>
+				</div>
+
+				<hr />
 
 				<div class="row">
 					<div class="col-xs-4 col-md-2 ">
 						<strong>파티인원</strong>
 					</div>
 					<div class="col-xs-4 col-md-2" id="currentMemberCountDiv"></div>
-					
-					<c:set var="i" value="0"/>
-					<c:forEach var="partyMember" items="${list}">
-						<c:set var="i" value="${i+1}"/>
-						<c:if test="${user.userId == partyMember.user.userId }">
-						
-							<%@include file="/view/party/getPartyMemberList.jsp"%> 
-					
-						</c:if>
-					</c:forEach>
-					
+	
+					<%@include file="/view/party/getPartyMemberList.jsp"%> 				
 					
 				</div>
 				
@@ -259,7 +262,10 @@
 					<div class="col-xs-4 col-md-2 ">
 						<strong>파티 장소</strong>
 					</div>
-					<div class="col-xs-8 col-md-4">${party.partyPlace}</div>
+					<div class="col-xs-8 col-md-4">${party.partyPlace}
+					
+					<%@include file="/view/party/map.jsp"%> 
+					</div>
 				</div>
 
 				<hr />
@@ -303,6 +309,8 @@
 									</c:if>
 							</c:forEach>
 						</c:if>
+					
+					<!-- <button type="button" class="btn btn-primary">뒤로</button> -->
 						
 					</div>
 				</div>

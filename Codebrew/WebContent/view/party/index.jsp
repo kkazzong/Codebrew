@@ -26,6 +26,7 @@
 	<div><a href = "/party/getPartyList">getPartyList.jsp</a></div>
 	<div><a href = "/party/getMyPartyList">getMyPartyList.jsp</a></div>
 	<div><a href = "http://127.0.0.1:8080/view/party/Sample.jsp">Sample.jsp</a></div>
+	<div><a href = "http://127.0.0.1:8080/view/party/daum.jsp">daum.jsp</a></div>
 	<div><a href = "http://127.0.0.1:8080/view/party/addr.jsp">addr.jsp</a></div>
 	
 </body>
