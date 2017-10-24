@@ -109,12 +109,16 @@ public class PartyController {
 		
 		
 		//Business Logic
+		/* 세션 */
+		User user = (User)session.getAttribute("user");
+		
 		/* 파티 티켓 셋팅 */
 		Ticket ticket = new Ticket();
 		ticket.setTicketPrice(party.getTicketPrice());
 		ticket.setTicketCount(party.getTicketCount());
 		
 		/* 파티 등록 */
+		party.setUser(user);
 		Party dbParty = partyService.addParty(party);
 		//party = partyService.getParty(party.getPartyNo(), party.getPartyFlag());
 		//party 도메인 출력
@@ -130,7 +134,6 @@ public class PartyController {
 		
 		/* 주최자 파티 멤버 셋팅 */
 		PartyMember partyMember = new PartyMember();
-		User user = (User)session.getAttribute("user");
 		partyMember.setParty(party);
 		partyMember.setUser(user);
 		partyMember.setRole("host");
@@ -140,19 +143,21 @@ public class PartyController {
 		//Map<String, Object> map = partyService.getPartyMemberList(party.getPartyNo(), new Search());
 		
 		/*파티 비율 셋팅*/
-		Party partyRatio = partyService.getGenderRatio(dbParty.getPartyNo());
+		/*Party partyRatio = partyService.getGenderRatio(dbParty.getPartyNo());
 		dbParty.setFemalePercentage(partyRatio.getFemalePercentage());
 		dbParty.setFemaleAgeAverage(partyRatio.getFemaleAgeAverage());
 		dbParty.setMalePercentage(partyRatio.getMalePercentage());
-		dbParty.setMaleAgeAverage(partyRatio.getMaleAgeAverage());
+		dbParty.setMaleAgeAverage(partyRatio.getMaleAgeAverage());*/
 		
 		//Model(data) & View(jsp)
 		ModelAndView modelAndView = new ModelAndView();
+		//dbParty.setUser(user);
 		modelAndView.addObject("party", dbParty);
 		modelAndView.addObject("ticket", ticket);
-		modelAndView.addObject("list", map.get("list"));
-		modelAndView.addObject("currentMemberCount", map.get("currentMemberCount"));
-		modelAndView.setViewName("/view/party/getParty.jsp");
+		//modelAndView.addObject("list", map.get("list"));
+		//modelAndView.addObject("currentMemberCount", map.get("currentMemberCount"));
+		//modelAndView.setViewName("/view/party/getParty.jsp");
+		modelAndView.setViewName("redirect:/party/getParty?partyNo="+dbParty.getPartyNo());
 		
 		return modelAndView;
 	}
@@ -372,7 +377,7 @@ public class PartyController {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("party", dbParty);
 		modelAndView.addObject("ticket", ticket);
-		modelAndView.setViewName("forward:/view/party/getParty.jsp");
+		modelAndView.setViewName("redirect:/party/getParty?partyNo="+dbParty.getPartyNo());
 		
 		return modelAndView;
 	}
