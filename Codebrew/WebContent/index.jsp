@@ -98,6 +98,11 @@
 
 <a href="/user/withdrawUser?userId=${user.userId }">회원탈퇴</a>
 
+<br>
+<br>
+
+<a href="/view/festival/writeFestival.jsp">직접등록</a>
+
 
 
 
