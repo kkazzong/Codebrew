@@ -305,6 +305,8 @@
 		      <input type="text" class="form-control" id="partyPlace" name="partyPlace" placeholder="파티장소를 검색해주세요.">
 		      <!-- <button type="button" class="btn btn-primary" name="searchPartyPlace" >장소검색</button> -->
 		      <%@include file="/view/party/searchAddr.jsp"%> 
+		      <input type="text" class="form-control" id="entX" name="entX">
+		      <input type="text" class="form-control" id="entY" name="entY" >
 		    </div>
 		  </div>
 		  
