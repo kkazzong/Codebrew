@@ -119,25 +119,10 @@
 			});
 		});
 		
-		//============= "참여자목록보기"  Event 처리 및  연결 =============
-		/* $(function(){
-			$("button:contains('참여자목록보기')").on("click", function() {
-				self.location="/party/getPartyMemberList?partyNo=${party.partyNo}";
-		
-			});
-		}); */
-		
-		//============= "확인"  Event 처리 및  연결 =============
-		/* $(function(){
-			$("button:contains('확인')").on("click", function() {
-				self.location="/party/getGenderRatio?partyNo=${party.partyNo}";
-		
-			});
-		}); */
 		
 		//============= "주최자"  Event 처리 및  연결 =============
 		$(function(){
-			$("div.host").on("click", function() {
+			$("p.host").on("click", function() {
 				self.location="/user/getProfile/"+"${party.user.userId}";
 		
 			});
@@ -168,11 +153,11 @@
 		<hr />
 
 		<div class="container">
-			<div class="host">
+			<div>
 				<h2 class="text-center">${ party.partyName }</h2>
 				<div>
 					<%-- <p><img class="rounded-circle" src="/resources/image/uploadFile/${ party.user.profileImage }" alt="Generic placeholder image" width="40" height="40"></p> --%>
-					<p>파티 호스트 &nbsp;<img class="rounded-circle" src="/resources/uploadFile/${party.partyImage}" alt="Generic placeholder image" width="40" height="40">
+					<p class="host">파티 호스트 &nbsp;<img class="rounded-circle" src="/resources/uploadFile/${party.partyImage}" alt="Generic placeholder image" width="40" height="40">
 					${ party.user.nickname }</p>
 					<%-- <p>파티 호스트 &nbsp;<img class="rounded-circle" src="/resources/uploadFile/${ party.user.profileImage }" alt="Generic placeholder image" width="40" height="40">
 					${ party.user.nickname }</p> --%>
@@ -212,52 +197,15 @@
 					<div class="col-xs-4 col-md-2 ">
 						<strong>파티인원</strong>
 					</div>
-					<div class="col-xs-4 col-md-2">${party.partyMemberLimit} 명 중 ${currentMemberCount} 명 참여중</div>
+					<div class="col-xs-4 col-md-2" id="currentMemberCountDiv"></div>
 					
 					<c:set var="i" value="0"/>
 					<c:forEach var="partyMember" items="${list}">
 						<c:set var="i" value="${i+1}"/>
 						<c:if test="${user.userId == partyMember.user.userId }">
-							<!-- <button type="button" class="btn btn-primary">파티참여취소</button> -->
-							<!-- Button trigger modal -->
-							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-							  파티멤버보기
-							</button>
-							
-							<%@include file="/view/party/getPartyMemberList.jsp"%> 
-							
-							<%-- <!-- Modal -->
-							<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-							  <div class="modal-dialog" role="document">
-							    <div class="modal-content">
-							      <div class="modal-header">
-							        <h5 class="modal-title" id="exampleModalLabel">파티 멤버 목록</h5>
-							        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							          <span aria-hidden="true">&times;</span>
-							        </button>
-							      </div>
-							      <div class="modal-body">
-							        <form class="form-horizontal" enctype="multipart/form-data">
-										${ partyMember.party.partyNo }
-										<c:set var="i" value="0"/>
-										<c:forEach var="partyMember" items="${list}">
-											<div class="row">
-												<img class="rounded-circle" src="/resources/image/uploadFile/${ partyMember.user.profileImage }" alt="Generic placeholder image" width="40" height="40">
-												${ partyMember.user.userId }
-												<c:if test="${partyMember.role =='host' }">
-													<strong>host</strong>
-												</c:if>
-											</div>
-										</c:forEach>
-									</form>
-							      </div>
-							      <div class="modal-footer">
-							        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-							      </div>
-							    </div>
-							  </div>
-							</div> --%>
 						
+							<%@include file="/view/party/getPartyMemberList.jsp"%> 
+					
 						</c:if>
 					</c:forEach>
 					
@@ -301,44 +249,8 @@
 				<div class="jumbotron">
 					<p>당신은 현재 참여중인 참여자의 성별비율을 볼 수 있습니다.....당신은 궁금합니다.....코코넛을 사용해 확인하시겠습니까?</p>
 				
-					<!-- Button trigger modal -->
-					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal2">
-					  확인하기
-					</button>
-					
 					<%@include file="/view/party/getGenderRatio.jsp"%> 
-					<!-- Modal -->
-					<%-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-					  <div class="modal-dialog" role="document">
-					    <div class="modal-content">
-					      <div class="modal-header">
-					        <h5 class="modal-title" id="exampleModalLabel">파티 성별 비율</h5>
-					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					          <span aria-hidden="true">&times;</span>
-					        </button>
-					      </div>
-					      <div class="modal-body">
-					        <form class="form-horizontal" enctype="multipart/form-data">
-								${ partyMember.partyNo }
-								<c:set var="i" value="0"/>
-								<c:forEach var="partyMember" items="${list}">
-									<div class="row">
-										<img class="rounded-circle" src="/resources/uploadFile/${ partyMember.user.profileImage }" alt="Generic placeholder image" width="40" height="40">
-										${ partyMember.user.userId }
-										<c:if test="${partyMember.role =='host' }">
-											<strong>host</strong>
-										</c:if>
-									</div>
-								</c:forEach>
-							</form>
-					      </div>
-					      <div class="modal-footer">
-					        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-					      </div>
-					    </div>
-					  </div>
-					</div> --%>
-				
+					
 				</div>
 
 				<hr />
@@ -354,30 +266,43 @@
 
 				<div class="row">
 					<div class="col-md-12 text-center">
-						<c:if test="${ ! empty party.user.userId && party.user.userId==user.userId }">
-							<button type="button" class="btn btn-primary">파티수정</button>
+						<c:if test="${ ! empty party.user.userId }">
+					
+							<c:if test="${ party.user.userId==user.userId }">
+						
+								<button type="button" class="btn btn-primary">파티수정</button>
+							</c:if>
 						</c:if>
 						<%-- <c:if test="${ ! empty party.user.userId && party.user.userId==sessionScope.user.userId }">
 							<button type="button" class="btn btn-primary">파티삭제</button>
 						</c:if> --%>
-						<c:if test="${ empty party.festival.festivalNo && party.user.userId!=user.userId }">
-							<button type="button" class="btn btn-primary">파티티켓구매</button>
+						
+						<!-- 파티 -->
+ 						<c:if test="${ empty party.festival.festivalNo }">
+					
+							<c:if test="${ party.user.userId!=user.userId }">
+						
+								<button type="button" class="btn btn-primary">파티티켓구매</button>
+							</c:if>
 						</c:if>
 						
-						<c:set var="i" value="0" />
-						<c:forEach var="partyMember" items="${list}">
-							<c:set var="i" value="${ i+1 }" />
-							<c:if test="${ !empty party.festival.festivalNo }">
-								<c:if test="${ partyMember.user.userId!=user.userId } && ${ party.user.userId!=user.userId } ">
-								<button type="button" class="btn btn-primary">애프터파티 참여</button>
-								<c:set var="break" value="true" />
-								</c:if>
-							</c:if>
-							<c:if test="${ partyMember.user.userId==user.userId && party.user.userId!=user.userId }">
-								<button type="button" class="btn btn-primary">파티참여취소</button>
-								<c:set var="break" value="true" />
-							</c:if>
-						</c:forEach>
+						<!-- 애프터 파티 -->
+						<c:if test="${ !empty party.festival.festivalNo }">
+							
+							<c:set var="i" value="0" />
+							<c:forEach var="partyMember" items="${list}">
+								<c:set var="i" value="${ i+1 }" />
+						
+									<c:if test="${ partyMember.user.userId != user.userId }">
+										<button type="button" class="btn btn-primary">애프터파티 참여</button>
+									</c:if>
+								
+									<c:if test="${ partyMember.user.userId==user.userId && party.user.userId!=user.userId }">
+										<button type="button" class="btn btn-primary">파티참여취소</button>
+		
+									</c:if>
+							</c:forEach>
+						</c:if>
 						
 					</div>
 				</div>

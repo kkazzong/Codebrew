@@ -26,12 +26,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.codebrew.moana.common.Page;
+import com.codebrew.moana.common.Search;
+import com.codebrew.moana.service.domain.Party;
 import com.codebrew.moana.service.party.PartyService;
-
-
 
 
 @RestController
@@ -44,12 +47,6 @@ public class PartyRestController {
 	private PartyService partyService;
 	
 	
-	///Constructor///
-	public PartyRestController() {
-		// TODO Auto-generated constructor stub
-		System.out.println(this.getClass()+"Default Constructor Call");
-	}
-	
 	@Value("#{commonProperties['pageUnit']}")
 	//@Value("#{commonProperties['pageUnit'] ?: 3}")
 	int pageUnit;
@@ -59,183 +56,101 @@ public class PartyRestController {
 	int pageSize;
 	
 	
-	
-	/*@RequestMapping( value="json/addProduct", method=RequestMethod.GET )
-	public String addProduct(){
-		
-		System.out.println(">>> /product/json/addProduct GET start <<<");
-
-		return "forward:/product/addProductView.jsp";
+	///Constructor///
+	public PartyRestController() {
+		// TODO Auto-generated constructor stub
+		System.out.println(this.getClass()+"Default Constructor Call");
 	}
 	
-	@RequestMapping( value="json/addProduct", method=RequestMethod.POST )
-	public Product addProduct( HttpServletRequest request, @RequestBody Product product) throws Exception{
-		
-		System.out.println(">>> /product/json/addProduct :: POST start <<<");
 
-		MultipartFile uploadFile = product.getUploadFile();
+	///Method///
+	@RequestMapping( value="json/getGenderRatio", method=RequestMethod.GET)
+	public Party getGenderRatio(@RequestParam("partyNo") String partyNo) throws Exception {
 		
-		if(uploadFile != null){
-			String fileName = uploadFile.getOriginalFilename();
-			System.out.println("uploaded file name :: "+fileName);
-			
-			String fileDirectory = request.getServletContext().getInitParameter("fileDirectory");
-			System.out.println("uploaded file Directory :: "+fileDirectory);
+		System.out.println("\n>>> /partyRest/json/getGenderRatio :: GET start <<<");
 
-//			File file = new File("C:\\Users\\Seri\\git\\07.Model2MVCShop\\07.Model2MVCShop(URI,pattern)\\WebContent\\images\\uploadFiles\\"+fileName);
-			
-			if(fileName != null && !fileName.equals("")){
-				fileName = System.currentTimeMillis()+"_"+fileName;
-				
-				File file = new File(fileDirectory+fileName);
-				uploadFile.transferTo(file);
-				product.setFileName(fileName);
-			}
-			
-		}
+		//partyNo 파라미터 출력
+		System.out.println(">>> /partyRest/json/getGenderRatio partyNo 파라미터 \n"+partyNo);
 		
-		System.out.println("addProduct product :: "+product);
-
-		productService.addProduct(product);	
 		
-		return productService.getProductByName(product.getProdName());
+		//Business Logic
+		int dbPartyNo = Integer.parseInt(partyNo);
+		
+		Party party = partyService.getGenderRatio(dbPartyNo);
+		//party 도메인 출력
+		System.out.println("\n<<< /partyRest/json/getGenderRatio party 도메인  \n"+party);
+		
+		
+		return party;
 	}
 	
 	
-	@RequestMapping( value="json/listProduct/{menu}", method=RequestMethod.GET)
-	public Map listProduct( @PathVariable String menu, Model model) throws Exception{
+	
+	/*@RequestMapping( value="json/getPartyMemberList", method=RequestMethod.POST)
+	public Map<String, Object> getPartyMemberList(@PathVariable String partyNo, @ModelAttribute("search") Search search) throws Exception {
 		
-		System.out.println(">>> /product/listProduct :: GET start <<<");
+		System.out.println("\n>>> /party/json/getPartyMemberList :: POST start <<<");
 
-		Search search = new Search();
-				
+		//partyNo 파라미터 출력
+		System.out.println(">>> /party/json/getPartyMemberList :: POST :: partyNo 파라미터 \n"+partyNo);
+		//search 파라미터 도메인 출력
+		//System.out.println(">>> /party/json/getPartyMemberList :: POST :: search 도메인 파라미터 \n"+search);
+		
+		
 		if(search.getCurrentPage() == 0){
 			search.setCurrentPage(1);
 		}
 		search.setPageSize(pageSize);
 		
-		// Business Logic ����
-		Map<String, Object> map = productService.getProductList(search);
+		System.out.println("\n<<< /party/json/getPartyList :: POST :: search 도메인\n"+search);
+		
+		
+		//Business Logic
+		int dbPartyNo = Integer.parseInt(partyNo);
+		Map<String, Object> map = partyService.getPartyMemberList(dbPartyNo, search);
 		
 		Page resultPage = new Page(search.getCurrentPage(),((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
-		System.out.println(resultPage);
-		
-		// Model �� View ����
-		model.addAttribute("list", map.get("list"));
-		model.addAttribute("resultPage", resultPage);
-		model.addAttribute("search", search);
-		model.addAttribute("menu", menu);
 		
 		
-		return map;
-	}
-	
-	
-	@RequestMapping( value="json/listProduct/{menu}", method=RequestMethod.POST)
-	public Map listProduct( @ModelAttribute("search") Search search, @PathVariable String menu, Model model) throws Exception{
+		//Model(data) & View(jsp)
+		//ModelAndView modelAndView = new ModelAndView();
+		//modelAndView.addObject("list", map.get("list"));
+		//modelAndView.addObject("resultPage", resultPage);
+		//modelAndView.addObject("search", search);
 		
-		System.out.println(">>> /product/listProduct:: POST start <<<");
-		System.out.println("listProduct search :: "+search);
-		System.out.println(menu );
-		if(search.getCurrentPage() == 0){
-			search.setCurrentPage(1);
-		}
-		search.setPageSize(pageSize);
-		
-		// Business Logic ����
-		Map<String, Object> map = productService.getProductList(search);
-		
-		Page resultPage = new Page(search.getCurrentPage(),((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
-		System.out.println(resultPage);
-		
-		// Model �� View ����
-		model.addAttribute("list", map.get("list"));
-		model.addAttribute("resultPage", resultPage);
-		model.addAttribute("search", search);
-		model.addAttribute("menu", menu);
-		
-		return map;
-	}
-	
-	
-	@RequestMapping("json/getProduct/{prodNo}")
-	public Product getProduct( @PathVariable String prodNo) throws Exception{
-		
-		System.out.println(">>> /product/getProduct:: GET start <<<");
-		
-		// Business Logic ����
-		int prodNoInt = Integer.parseInt(prodNo);
-		//Product product = productService.getProduct(prodNoInt);
-		
-		// Model �� View ����
-		model.addAttribute("product", product);
-		model.addAttribute("menu", menu);
-		
-		if(menu.equals("manage")){
-			return "forward:/product/updateProductView.jsp";
-		}else if(menu.equals("search")){
-			return "forward:/product/getProduct.jsp";
-		}else{
-			return null;
-		}
-		Product product = productService.getProduct(prodNoInt);
-		System.out.println("Ȯ�� :: "+product);
-		
-		return product;
-	}
-	
-	
-	@RequestMapping( value="json/updateProduct/{prodNo}", method=RequestMethod.GET)
-	public Product updateProduct( @PathVariable String prodNo, Model model) throws Exception{
-		
-		System.out.println(">>> /product/updateProduct:: GET start <<<");
-		
-		int prodNoInt = Integer.parseInt(prodNo);
-		
-		// Business Logic ����
-		Product product = productService.getProduct(prodNoInt);
-		
-		// Model �� View ����
-		model.addAttribute("product", product);
-
-		return product;
-	}
-	
-	
-	@RequestMapping( value="json/updateProduct", method=RequestMethod.POST)
-	public Product updateProduct( HttpServletRequest request, @RequestBody Product product) throws Exception{
-		
-		System.out.println(">>> /product/updateProduct:: POST start <<<");
-		
-		MultipartFile uploadFile = product.getUploadFile();
-		
-		if(uploadFile != null){
-			String fileName = uploadFile.getOriginalFilename();
-			System.out.println("uploaded file name :: "+fileName);
-			
-			String fileDirectory = request.getServletContext().getInitParameter("fileDirectory");
-			System.out.println("uploaded file Directory :: "+fileDirectory);
-			
-			if(fileName != null && !fileName.equals("")){
-				fileName = System.currentTimeMillis()+"_"+fileName;
 				
-				File file = new File(fileDirectory+fileName);
-				uploadFile.transferTo(file);
-				product.setFileName(fileName);
-			}
-			
-		}
-						
-		// Business Logic ����
-		productService.updateProduct(product);
-		Product product01 = productService.getProduct(product.getProdNo());
-		// Model �� View ����
-		model.addAttribute("product", product);
-		model.addAttribute("menu", "manage");
-		
-		return product01;
+		return map;
 	}*/
 	
+	@RequestMapping( value="json/getPartyMemberList/{partyNo}", method=RequestMethod.GET)
+	public Map<String, Object> getPartyMemberList(@PathVariable String partyNo) throws Exception {
+		
+		System.out.println("\n>>> /party/json/getPartyMemberList :: GET start <<<");
+
+		//partyNo 파라미터 출력
+		System.out.println(">>> /party/json/getPartyMemberList :: GET :: partyNo 파라미터 \n"+partyNo);
+		//search 파라미터 도메인 출력
+		//System.out.println(">>> /party/json/getPartyMemberList :: GET :: search 도메인 파라미터 \n"+search);
+		
+		
+		Search search = new Search();
+		
+		//Business Logic
+		int dbPartyNo = Integer.parseInt(partyNo);
+		Map<String, Object> map = partyService.getPartyMemberList(dbPartyNo, search);
+		
+		//Page resultPage = new Page(search.getCurrentPage(),((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+		
+		
+		//Model(data) & View(jsp)
+		//ModelAndView modelAndView = new ModelAndView();
+		//modelAndView.addObject("list", map.get("list"));
+		//modelAndView.addObject("resultPage", resultPage);
+		//modelAndView.addObject("search", search);
+		
+				
+		return map;
+	}
 	
 	
 }

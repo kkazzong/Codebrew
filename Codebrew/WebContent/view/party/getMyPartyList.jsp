@@ -107,52 +107,73 @@
 		
 		//=============    파티 삭제  Event  처리 		=============
 		$(function(){
-			$("button:contains('삭제')").on("click", function() {
-				self.location="/party/deleteParty";
+			$("button:contains('파티 삭제')").on("click", function() {
+				var partyNo = $( "input[name=partyNo]", $(this) ).val();
+				self.location="/party/deleteParty?partyNo=";
 		
 			});
 		});
 		
 		
-		//=============    참여취소  Event  처리 		=============
+		//=============    파티 참여 취소  Event  처리 		=============
 		$(function(){
-			$("button:contains('참여취소')").on("click", function() {
-				var partyNo = $( "input[name=partyNo]", $(this) ).val();
+			$("button:contains('파티 참여 취소')").on("click", function() {
+				/* var partyNo = $( "input[name=partyNo]", $(this) ).val(); */
+				var partyNo = $(this).val();
+				console.log("파티 참여 취소 :: partyNo :: "+partyNo);
 				self.location="/party/cancelParty?partyNo="+partyNo;
 		
 			});
 		});
 		
 		
+		//=============    티켓 구매 취소  Event  처리 		=============
+		$(function(){
+			$("button:contains('티켓 구매 취소')").on("click", function() {
+				var partyNo = $( "input[name=partyNo]", $(this) ).val();
+				self.location="/purchase/cancelPurchase";
+		
+			});
+		});
+		
+		
 		//=============    현재 시간  Event  처리 		=============
-		 function time(){
+		 /* function time(){
 		
 		    var today = new Date();
-		    var y = today.getYear();
-		    var m = today.getMonth();
+		    var y = today.getFullYear();
+		    console.log("y = "+y);
+		    var m = today.getMonth()+1;
+		    console.log("m = "+m);
 		    var d = today.getDate();
+		    console.log("d = "+d);
 		    m = checkTime(m);
 		    d = checkTime(d);
 		    
 		    var t = setTimeout(time, 500);
-		    
+		    console.log(y + "/" + m + "/" + d);
 		    return y + "/" + m + "/" + d;
 		}
 		
 		function checkTime(i){
 		
 		    if (i < 10) {i = "0" + i}; // 숫자가 10보다 작을 경우 앞에 0을 붙여줌
+		    console.log("i = "+i);
 		    return i;
 		} 
 
+		*/
+		/*
 		$(function compareTime(){
 			
 			var partyDate = $( "partyDate", $(this) ).text();
 			var now = time();
+			console.log("partyDate = "+partyDate);
+			console.log("now = "+now);
 			//var parPartyDate = Date.parse(partyDate);
 			var result = now - partyDate;
-			
-			/* var result = time().compareTo(partyDate); */
+			console.log("now - partyDate = "+result)
+			/* var result = time().compareTo(partyDate); 
 			var deleteButton = "<button type='button' class='btn btn-default' >삭제</button>";
 			var cancelButton = "<button type='button' class='btn btn-default' >참여취소</button>";
 
@@ -162,7 +183,7 @@
 			}else{
 				$(".caption").append(cancelButton);
 			}
-		});
+		}); */
 		
 	</script>
 	
@@ -237,13 +258,44 @@
 							<div class="caption">
 								<h3 class="thumbnail_festivalName">${ !empty party.festival.festivalName ? party.festival.festivalName : '' }	
 								</h3>
-								<h3 class="thumbnail_partyName">${ party.partyName }
-									<input type="hidden" id="partyNo" name="partyNo" value="${party.partyNo }"/>
-								</h3>
+								<h3 class="thumbnail_partyName">${ party.partyName }</h3>
 								<p>${ party.user.nickname }</p>
 								<p id = partyDate>${ party.partyDate }</p>
 								<p>${ party.partyPlace }</p>
+								<p>
 								
+								<c:if test="${ !empty search.searchCondition }">
+									<c:if test="${ party.user.userId != user.userId }">
+										<c:choose>
+											<c:when test="${ search.searchCondition == '3' }">
+												<button type="button" class="btn btn-primary" value="${party.partyNo }">파티 삭제</button>
+											</c:when>
+											<c:when test="${ search.searchCondition == '4' }">
+												<c:if test="${ empty party.festival.festivalNo }">
+													<button type="button" class="btn btn-primary" value="${party.partyNo }">티켓 구매 취소</button>
+												</c:if>
+												<c:if test="${ !empty party.festival.festivalNo }">
+													<button type="button" class="btn btn-primary" value="${party.partyNo }">파티 참여 취소</button>
+												</c:if>
+											</c:when>
+										</c:choose>
+									</c:if>	
+								</c:if>
+								<%-- <c:if test="${ !empty search.searchCondition && search.searchCondition == '3' }">
+									<button type="button" class="btn btn-primary" value="${party.partyNo }">파티 삭제</button>
+	
+								</c:if>
+								<c:if test="${ !empty search.searchCondition && search.searchCondition == '4' }">
+									<c:if test="${ empty party.festival.festivalNo }">
+										<button type="button" class="btn btn-primary" value="${party.partyNo }">티켓 구매 취소</button>
+										
+									</c:if>
+									<c:if test="${ !empty party.festival.festivalNo }">
+										<button type="button" class="btn btn-primary" value="${party.partyNo }">파티 참여 취소</button>
+										
+									</c:if>
+								</c:if> --%>
+								</p>
 							</div>
 						</div>
 					</div>
