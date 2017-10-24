@@ -7,30 +7,30 @@
 <mapper namespace="ReplyMapper">
 
 	<resultMap id="replySelectMap" type="reply">
-	
 		<result property="replyNo" column="reply_no" jdbcType="NUMERIC"/>
+		<result property="userId" column="user_id" jdbcType="VARCHAR"/>
 		<result property="reviewNo" column="review_no" jdbcType="NUMERIC"/>
 		<result property="replyDetail" column="reply_detail" jdbcType="VARCHAR"/>
 		<result property="replyRegDate" column="reply_reg_date" jdbcType="DATE"/>
-				
-		<association property="user"  javaType="user"> <!-- Reply domain has user domain object  -->
-			<id property="userId" column="user_id" jdbcType="VARCHAR"/> <!-- reply Table has the user_id column -->
-			<result property="userName" column="user_name" jdbcType="VARCHAR"/>
-			<result property="password" column="password" jdbcType="VARCHAR"/>
-			<result property="profileImage" column="profile_image" jdbcType="VARCHAR"/>
-			<result property="role" column="role" jdbcType="VARCHAR"/>
-			<result property="phone" column="phone" jdbcType="VARCHAR"/>
-			<result property="gender" column="gender" jdbcType="VARCHAR"/>
-			<result property="birth" column="age" jdbcType="NUMERIC"/>
-			<result property="locationFlag" column="location_flag" jdbcType="VARCHAR"/>
-			<result property="nickname" column="nickname" jdbcType="VARCHAR"/>
-			<result property="userRegDate" column="user_reg_date" jdbcType="DATE"/>
-			<result property="coconutCount" column="coconut_count" jdbcType="NUMERIC"/>
-		</association>
-	
 	</resultMap>
 	
-	<insert id="addReply" parameterType="reply">
+	<resultMap id="reviewSelectMap" type="review">
+		<result property="reviewNo" column="review_no" jdbcType="NUMERIC"/>
+		<result property="userId" column="user_id" jdbcType="VARCHAR"/>
+		<result property="festivalNo" column="festival_no" jdbcType="NUMERIC"/>
+		<result property="festivalName" column="festival_name" jdbcType="VARCHAR"/>
+		<result property="addr" column="addr" jdbcType="VARCHAR"/>
+		<result property="checkCode" column="check_code" jdbcType="VARCHAR"/>
+		<result property="reviewTitle" column="review_title" jdbcType="VARCHAR"/>
+		<result property="goodCount" column="good_count" jdbcType="NUMERIC"/>
+		<result property="reviewFestivalRating" column="review_festival_rating" jdbcType="NUMERIC"/>
+		<result property="reviewDetail" column="review_detail" jdbcType="VARCHAR"/>
+		<result property="reviewHashtag" column="review_hashtag" jdbcType="VARCHAR"/>
+		<result property="reviewRegDate" column="review_reg_date" jdbcType="DATE"/>
+	</resultMap>
+
+	
+	<insert id="addReply" parameterType="reply" useGeneratedKeys="true" keyProperty="replyNo" keyColumn="reply_no">
 		INSERT 
 		INTO reply (
 					reply_no, 
@@ -41,8 +41,8 @@
 					)
 		VALUES (
 				seq_reply_reply_no.NEXTVAL, 
-				#{user.userId:VARCHAR}, 
-				#{review.reviewNo:NUMERIC}, 
+				#{userId:VARCHAR}, 
+				#{reviewNo:NUMERIC}, 
 				#{replyDetail:VARCHAR}, 
 				SYSDATE
 				)
@@ -64,7 +64,7 @@
 			reply_detail = #{replyDetail:VARCHAR}, 
 			reply_reg_date = SYSDATE 
 		WHERE reply_no = #{replyNo:NUMERIC} 
-		AND user_id = #{user.userId:VARCHAR} 
+		AND user_id = #{userId:VARCHAR} 
 		AND review_no = #{review.reviewNo:NUMERIC}
 	</update>
 	
@@ -83,13 +83,13 @@
 		SELECT * 
 		FROM ( SELECT inner_table.*, ROWNUM AS row_seq
 						FROM ( SELECT
-									reply_no, 
-									user_id, 
-									review_no, 
-									reply_detail, 
-									reply_reg_date
-									FROM reply 
-									WHERE user_id = #{userId}
+									rp.reply_no, 
+									rp.user_id, 
+									rp.review_no, 
+									rp.reply_detail, 
+									rp.reply_reg_date
+									FROM reply rp 
+									WHERE rp.user_id = #{userId}
 									ORDER BY reply_reg_date ) inner_table
 						WHERE ROWNUM <![CDATA[<=]]> #{search.currentPage}*#{search.pageSize} )
   		WHERE row_seq BETWEEN (#{search.currentPage}-1)*#{search.pageSize}+1
@@ -103,13 +103,12 @@
 		FROM ( SELECT inner_table.*, ROWNUM AS row_seq
 					FROM (	SELECT 
 									rp.reply_no, 
-									u.user_id, 
+									rp.user_id, 
 									rp.review_no, 
 									rp.reply_detail, 
 									rp.reply_reg_date
-							FROM reply rp, users u 
-							WHERE rp.user_id = u.user_id 
-							AND rp.user_id = #{userId} 
+							FROM reply rp 
+							AND rp.review_no = #{reviewNo} 
 							ORDER BY rp.reply_no ) inner_table
 					WHERE ROWNUM <![CDATA[<=]]> #{search.currentPage}*#{search.pageSize} ) 
   		WHERE row_seq BETWEEN (#{search.currentPage}-1)*#{search.pageSize}+1 
@@ -145,25 +144,25 @@
 	</select> -->
 	
 	<!-- SQL : SELECT ROW Count -->
-	<select  id="getTotalCount"  parameterType="search"	 resultType="int">
+	<select  id="getTotalCount" parameterType="search"	 resultType="int">
 	  	SELECT COUNT(*) 
 	  	FROM(	SELECT 
-		  				reply_no , 
-		  				user_id, 
-		  				review_no, 
-		  				reply_detail, 
-		  				reply_reg_date, 
-						FROM reply 
+		  				rp.reply_no, 
+		  				rp.user_id, 
+		  				rp.review_no, 
+		  				rp.reply_detail, 
+		  				rp.reply_reg_date, 
+						FROM reply rp 
 						<if test="searchCondition != null">
 							<where>
 								<if test="searchCondition == 0 and searchKeyword !='' ">
-						 			reply_no like '%${searchKeyword}%'
+						 			rp.reply_no like '%${searchKeyword}%'
 								</if>
 								<if test="searchCondition == 1 and searchKeyword !='' ">
-						 			reply_detail like '%${searchKeyword}%'
+						 			rp.reply_detail like '%${searchKeyword}%'
 								</if>
 								<if test="searchCondition == 2 and searchKeyword !='' ">
-						 			user_id like '%${searchKeyword}%'
+						 			rp.user_id like '%${searchKeyword}%'
 								</if>
 							</where>
 						</if> ) countTable	

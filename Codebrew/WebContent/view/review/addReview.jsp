@@ -111,6 +111,8 @@
 		$("input:text[name='festivalNo']").on("keydown", function(){
 			console.log($(this).val());
 		});
+		
+		
 	});
 	
 	$(document).ready(function(){
@@ -118,29 +120,23 @@
 			if(key.keyCode == 13 || key.keyCode == 32){ //키 값이 13(enter)면 실행
 				alert("hashtag로 등록됩니다.");
 				console.log($(this).val());	
-				var innerHtml = $("input:text[name=uploadHashtagList]").val();
+				var innerHtml = $("input:text[name=reviewHashtag]").val();
 				innerHtml += "#"+$(this).val()+";";
 				
-				$("input:text[name=uploadHashtagList]").val(innerHtml);
+				$("input:text[name=reviewHashtag]").val(innerHtml);
 				$(this).val("");
 			}
 			
 		});
 	});
 	
+	
+	
 	</script>
 	
 </head>
 
 <body>
-
-<!-- ////////// ToolBar Start ////////// -->
-<!-- <div class="navbar navbar-default">
-	<div class="container">
-		<a class="navbar-brand" href="/index.jsp"><strong>MOANA addReview</strong></a>
-	</div>
-</div> -->
-<!-- ////////// ToolBar End ////////// -->
 
 	<!-- ToolBar Start /////////////////////////////////////-->
 	<jsp:include page="../../toolbar/toolbar.jsp" />
@@ -158,7 +154,6 @@
 		<div class="form-group">
 			<label for="festivalName" class="col-sm-offset-1 col-sm-3 control-label">축제번호</label>
 			<div class="col-sm-4">
-				<!-- <input type="hidden" id="festivalNo" name="festivalNo" value="638576"/> -->
 				<input type="text" class="form-control" id="festivalNo" name="festivalNo" value="${festival.festivalNo }">
 			</div>
 		</div>
@@ -234,7 +229,7 @@
 		<div class="form-group">
 			<label for="reviewVideo" class="col-sm-offset-1 col-sm-3 control-label">동영상</label>
 			<div class="col-sm-4">
-				<input type="file" class="form-control" id="uploadReviewVideoList" name="uploadReviewVideoList" multiple/>			
+				<input type="file" class="form-control" id="uploadReviewVideoList" name="uploadReviewVideoList" />			
 			</div>
 		</div>
 		
@@ -251,9 +246,10 @@
 		<hr/>
 		
 		<div class="form-group">
-			<label for="uploadHashtagList" class="col-sm-offset-1 col-sm-3 control-label">등록예정 해시태그</label>
+			<label for="reviewHashtag" class="col-sm-offset-1 col-sm-3 control-label">등록예정 해시태그</label>
 			<div class="col-sm-4">
-				<input type="text" class="form-control" id="uploadHashtagList" name="uploadHashtagList">
+				<input type="text" class="form-control" id="reviewHashtag" name="reviewHashtag">
+				<button type="button" class="btn btn-primary">삭제</button>
 			</div>
 		</div>
 		

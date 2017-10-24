@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.codebrew.moana.common.Search;
-import com.codebrew.moana.service.domain.Hashtag;
 import com.codebrew.moana.service.domain.Image;
 import com.codebrew.moana.service.domain.Review;
 import com.codebrew.moana.service.domain.User;
@@ -51,14 +50,6 @@ public class ReviewServiceImpl implements ReviewService {
 				reviewDAO.uploadReviewImage(map);
 			}
 		}
-		if(review.getReviewHashtagList() != null && review.getReviewHashtagList().size() != 0){ //해시태그 올렸을 때
-			for(Hashtag reviewHashtag : review.getReviewHashtagList()){
-				Map<String, Object> map = new HashMap<String, Object>();
-				map.put("reviewNo", review.getReviewNo());
-				map.put("reviewHashtag", reviewHashtag);
-				reviewDAO.uploadReviewHashtag(map);
-			}
-		}
 		if(review.getReviewVideoList() != null && review.getReviewVideoList().size() != 0){
 			for(Video reviewVideo : review.getReviewVideoList()){
 				Map<String, Object> map = new HashMap<String, Object>();
@@ -94,7 +85,7 @@ public class ReviewServiceImpl implements ReviewService {
 		
 		List<Image> reviewImageList;
 		for(Review review : reviewList){ // list에 존재하는  review를 하나씩 꺼내보면....
-			int reviewNo = review.getReviewNo(); //0부터 n번째 review의 review number를 받아서 reviewNo로 지정하여...
+//			int reviewNo = review.getReviewNo(); //0부터 n번째 review의 review number를 받아서 reviewNo로 지정하여...
 			reviewImageList = review.getReviewImageList();
 		}
 		
@@ -152,12 +143,7 @@ public class ReviewServiceImpl implements ReviewService {
 		return reviewDAO.getReviewImage(reviewNo);
 	}
 	
-	@Override //13
-	public List<Hashtag> getReviewHashtag(int reviewNo) throws Exception {
-		return reviewDAO.getReviewHashtag(reviewNo);
-	}
-	
-	@Override //13
+	@Override //14
 	public List<Video> getReviewVideo(int reviewNo) throws Exception {
 		return reviewDAO.getReviewVideo(reviewNo);
 	}

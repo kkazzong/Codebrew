@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.codebrew.moana.common.Search;
-import com.codebrew.moana.service.domain.Hashtag;
 import com.codebrew.moana.service.domain.Image;
 import com.codebrew.moana.service.domain.Review;
 import com.codebrew.moana.service.domain.User;
@@ -133,13 +132,6 @@ public class ReviewDAOImpl implements ReviewDAO {
 	}
 	
 	@Override //17
-	public List<Hashtag> getReviewHashtag(int reviewNo) throws Exception {
-		System.out.println("DAO :: getReviewHashtag");
-		return sqlSession.selectList("ReviewMapper.getReviewHashtag", reviewNo);
-	}
-
-
-	@Override //18
 	public List<Video> getReviewVideo(int reviewNo) throws Exception {
 		System.out.println("DAO :: getReviewVideo");
 		return sqlSession.selectList("ReviewMapper.getReviewVideo", reviewNo);

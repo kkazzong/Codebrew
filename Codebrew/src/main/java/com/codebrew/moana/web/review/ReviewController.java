@@ -24,7 +24,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.codebrew.moana.common.Page;
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Festival;
-import com.codebrew.moana.service.domain.Hashtag;
 import com.codebrew.moana.service.domain.Image;
 import com.codebrew.moana.service.domain.Review;
 import com.codebrew.moana.service.domain.User;
@@ -81,8 +80,7 @@ public class ReviewController {
 	public ModelAndView addReview(HttpSession session,
 									@ModelAttribute("review") Review review, 
 									@RequestParam("uploadReviewImageList") List<MultipartFile> uploadReviewImage, 
-									@RequestParam("uploadReviewVideoList") List<MultipartFile> uploadReviewVideo, 
-									@RequestParam("uploadHashtagList") String uploadHashtag) throws Exception{
+									@RequestParam("uploadReviewVideoList") List<MultipartFile> uploadReviewVideo) throws Exception{
 		
 //		@RequestParam("uploadReviewVideo") MultipartHttpServletRequest reviewVideo
 		
@@ -179,20 +177,6 @@ public class ReviewController {
 			review.setReviewVideoList(uploadVideoList);
 		}
 		
-		/*
-		 * upload Hashtag List List<String> 
-		 */
-		if(uploadHashtag != null){
-			
-			List<Hashtag> uploadHashtagList = new ArrayList<Hashtag>();
-			for(String splitedHashtag : uploadHashtag.split(";")){
-				Hashtag eachHashtag = new Hashtag();
-				eachHashtag.setHashtagDetail(splitedHashtag.replaceAll("#", ""));
-				uploadHashtagList.add(eachHashtag);
-			}
-			review.setReviewHashtagList(uploadHashtagList);
-		}
-		
 		System.out.println("\n\n\n\n\n=====okokokokok=====\n\n\n\n\n");
 		
 		review = reviewService.addReview(review);
@@ -205,7 +189,7 @@ public class ReviewController {
 	}
 	
 	
-	@RequestMapping(value="getReview", method = RequestMethod.GET)
+	@RequestMapping(value="getReview", method = {RequestMethod.GET, RequestMethod.POST})
 	public ModelAndView getReview( @RequestParam("reviewNo") int reviewNo) throws Exception {
 		
 		System.out.println("/view/review/getReview");
