@@ -18,17 +18,6 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
-	
-	<!-- Bootstrap Dropdown Hover CSS -->
-	<!-- 
-	<link href="/css/animate.min.css" rel="stylesheet">
-	<link href="/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
-	 -->
-	 
-	<!-- Bootstrap Dropdown Hover JS -->
-   <!-- 
-   <script src="/javascript/bootstrap-dropdownhover.min.js"></script>
-	 -->
 	 
 	<!--  ///////////////////////// CSS ////////////////////////// -->
 	<style>
@@ -39,6 +28,17 @@
     
     <!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
+	
+	function fncAddReply() {
+		//Form 유효성 검증
+		var replyDetail = $("input[name='replyDetail']").val();
+		
+		if(replyDetail == null || replyDetail.length < 1){
+			alert("댓글내용을 입력한 후에 등록할 수 있습니다.")
+			return;
+		}
+		$("form").attr("method", "POST").attr("action", "/reply/addReply").submit();
+	}
 	
 	//Event 걸어주기
 	$(function() {
@@ -80,7 +80,17 @@
 			history.go(-1);
 		});
 		 
+		 $( "button.btn.btn-primary:contains('댓글등록')" ).on("click" , function() {
+			//Debug..
+			//alert(  $( "td.ct_btn01:contains('댓글등록')" ).html() );
+			fncAddReply();
+		});
+		 
+		 var reviewNo = document.getElementById('reviewNo').getAttribute('value');
+		 console.log(reviewNo);
+	 
 	});
+	
 	
 </script>
 
@@ -94,6 +104,8 @@
    	
    	<!-- 후기상세조회 화면구성 div Start -->
    	<div class="container">
+   		
+   		<input type="hidden" id="reviewNo" name="reviewNo" value="${review.reviewNo }"/>
    	
    		<div class="page-header">
    			<h3 class="text-info">단일후기 상세조회</h3>
@@ -169,11 +181,11 @@
    		<hr/>
    		
    		<div class="row">
-   			<div class="col-xs-4 col-md-2" style="width:300px;height:300px;text-align:left;line-height:300px;"><strong>사진</strong></div>
+   			<div class="col-xs-4 col-md-2" style="width:300px;height:200px;text-align:left;line-height:300px;"><strong>사진</strong></div>
    			<div class="col-xs-8 col-md-4">
    				<c:set var="i" value="0"/>
    				<c:forEach var="listI" items="${review.reviewImageList}">
-   					<img src="/resources/uploadFile/${listI.reviewImage}" width="300">
+   					<img src="/resources/uploadFile/${listI.reviewImage}" width="300" height="200">
    				</c:forEach>
    			</div>
    		</div>
@@ -204,24 +216,16 @@
    		
    		<div class="row">
    			<div class="col-xs-4 col-md-2"><strong>해시태그</strong></div>
-	   			<c:set var="i" value="0"/>
-	  			<c:forEach var="listH" items="${review.reviewHashtagList }">
-		   			<div class="col-xs-8 col-md-4">
-		   				${listH.hashtagDetail }
-		   			</div>
-	   			</c:forEach>
+	   		<div class="col-xs-8 col-md-4">${review.reviewHashtag }</div>	
    		</div>
    		
    		<hr/>
    		
-   		<div class="row">
-   			<div class="col-xs-4 col-md-2"><strong>댓글</strong></div>
-   			<div class="col-xs-8 col-md-4">
-				<input type="text" class="form-control" id="reply" name="reply" value=""/>
-				<span class="btb pull-center btn btn-primary">댓글등록</span>
-			</div>
-   		</div>
-   		
+   		<!-- ToolBar Start /////////////////////////////////////-->
+		<jsp:include page="getReplyList.jsp" >
+			<jsp:param name="reviewNo" value="${review.reviewNo }"/>
+		</jsp:include>
+	   	<!-- ToolBar End /////////////////////////////////////-->
    		<hr/>
    		
    		<div class="row"> <!-- 관리자, 해당유저, 일반유저(비회원 포함) : 3가지 경우 -->

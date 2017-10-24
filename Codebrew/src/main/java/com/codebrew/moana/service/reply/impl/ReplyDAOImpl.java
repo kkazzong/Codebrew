@@ -28,38 +28,44 @@ public class ReplyDAOImpl implements ReplyDAO {
 		this.sqlSession = sqlSession;
 	}
 
-	@Override
+	@Override //1 댓글 작성
 	public void addReply(Reply reply) throws Exception {
+		System.out.println("DAO :: addReply");
 		sqlSession.insert("ReplyMapper.addReply", reply);
 	}
 
-	@Override
+	
+	@Override //2 단일 댓글 조회
 	public Reply getReply(int replyNo) throws Exception {
+		System.out.println("DAO :: getReply");
 		return sqlSession.selectOne("ReplyMapper.getReply", replyNo);
 	}
 
-	@Override
+	
+	@Override //3 댓글 수정
 	public void updateReply(Reply reply) throws Exception {
+		System.out.println("DAO :: updateReply");
 		sqlSession.update("ReplyMapper.updateReply", reply);
 	}
 
-	@Override
+	
+	@Override //4 댓글 삭제
 	public void deleteReply(int replyNo) throws Exception {
+		System.out.println("DAO :: deleteReply");
 		sqlSession.delete("ReplyMapper.deleteReply", replyNo);
 	}
 
-	@Override
-	public List<Reply> getAllReplyList(Search search) throws Exception {
-		return sqlSession.selectList("ReplyMapper.getAllReplyList", search);
-	}
-
-	@Override
+	
+	@Override //5 댓글 목록
 	public List<Reply> getReplyList(Search search) throws Exception {
+		System.out.println("DAO :: getReplyList");
 		return sqlSession.selectList("ReplyMapper.getReplyList", search);
 	}
 	
-	@Override
+	
+	@Override //6
 	public int getTotalCount(Search search) throws Exception{
+		System.out.println("DAO :: getTotalCount");
 		return sqlSession.selectOne("ReplyMapper.getTotalCount", search);
 	}
 

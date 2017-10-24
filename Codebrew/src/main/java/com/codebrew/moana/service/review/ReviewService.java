@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.codebrew.moana.common.Search;
-import com.codebrew.moana.service.domain.Hashtag;
 import com.codebrew.moana.service.domain.Image;
 import com.codebrew.moana.service.domain.Review;
 import com.codebrew.moana.service.domain.User;
@@ -51,9 +50,6 @@ public interface ReviewService {
 	public List<Image> getReviewImage(int reviewNo) throws Exception;
 	
 	//13
-	public List<Hashtag> getReviewHashtag(int reviewNo) throws Exception;
-	
-	//14
 	public List<Video> getReviewVideo(int reviewNo) throws Exception;
 	
 }

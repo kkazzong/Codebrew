@@ -9,7 +9,7 @@ public class Review {
 	private int festivalNo;			 	// festivalNo : from Festival(auto)
 	private String festivalName;		// festivalName : from Festival(auto)
 	private String addr;				// addr :  from Festival(auto)
-	private List<Reply> reply;			// List of the replies
+	private List<Reply> replyList;			// List of the replies
 	private String checkCode;			// Flag : checkCode
 	private String reviewTitle;			
 	private int goodCount;				// how many 'like'
@@ -17,7 +17,7 @@ public class Review {
 	private int reviewFestivalRating;
 	private List<Video> reviewVideoList;
 	private String reviewDetail;
-	private List<Hashtag> reviewHashtagList;
+	private String reviewHashtag;
 	private String reviewRegDate;
 	
 	
@@ -66,12 +66,12 @@ public class Review {
 		this.addr = addr;
 	}
 
-	public List<Reply> getReply() {
-		return reply;
+	public List<Reply> getReplyList() {
+		return replyList;
 	}
 
-	public void setReply(List<Reply> reply) {
-		this.reply = reply;
+	public void setReplyList(List<Reply> replyList) {
+		this.replyList = replyList;
 	}
 
 	public String getCheckCode() {
@@ -131,12 +131,12 @@ public class Review {
 		this.reviewDetail = reviewDetail;
 	}
 
-	public List<Hashtag> getReviewHashtagList() {
-		return reviewHashtagList;
+	public String getReviewHashtag() {
+		return reviewHashtag;
 	}
 
-	public void setReviewHashtagList(List<Hashtag> reviewHashtagList) {
-		this.reviewHashtagList = reviewHashtagList;
+	public void setReviewHashtag(String reviewHashtag) {
+		this.reviewHashtag = reviewHashtag;
 	}
 
 	public String getReviewRegDate() {
@@ -151,12 +151,11 @@ public class Review {
 	@Override
 	public String toString() {
 		return "Review [reviewNo=" + reviewNo + ", userId=" + userId + ", festivalNo=" + festivalNo + ", festivalName="
-				+ festivalName + ", addr=" + addr + ", reply=" + reply + ", checkCode=" + checkCode + ", reviewTitle="
-				+ reviewTitle + ", goodCount=" + goodCount + ", reviewImageList=" + reviewImageList
+				+ festivalName + ", addr=" + addr + ", replyList=" + replyList + ", checkCode=" + checkCode
+				+ ", reviewTitle=" + reviewTitle + ", goodCount=" + goodCount + ", reviewImageList=" + reviewImageList
 				+ ", reviewFestivalRating=" + reviewFestivalRating + ", reviewVideoList=" + reviewVideoList
-				+ ", reviewDetail=" + reviewDetail + ", reviewHashtagList=" + reviewHashtagList + ", reviewRegDate="
+				+ ", reviewDetail=" + reviewDetail + ", reviewHashtag=" + reviewHashtag + ", reviewRegDate="
 				+ reviewRegDate + "]";
 	}
 
-	
 }

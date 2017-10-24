@@ -20,13 +20,9 @@
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 	
-	
 	<!-- Bootstrap Dropdown Hover CSS -->
-   <link href="/css/animate.min.css" rel="stylesheet">
-   <link href="../resources/javascript/bootstrap-dropdownhover.min.css" rel="stylesheet">
-    <!-- Bootstrap Dropdown Hover JS -->
-   <script src="../resources/javascript/bootstrap-dropdownhover.min.js"></script>
-	
+	<link href="/resources/css/animate.min.css" rel="stylesheet">
+	<link href="/resources/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
 	
 	<!-- jQuery UI toolTip 사용 CSS-->
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -154,8 +150,6 @@
    	
    	<!-- 화면구성 div Start -->
    	<div class="container">
-   	
-   		
    		
    		<div class="page-header text-info">
    			<h3>후기목록조회</h3>
@@ -233,6 +227,7 @@
    				<c:set var="i" value="0"/>
    				<c:forEach var="review" items="${list }">
    					<c:set var="i" value="${i+1 }"/>
+   					${i}
    					<tr class="ct_list_pop">
    						<td align="left">
    							${review.festivalName }
@@ -252,17 +247,12 @@
    							${review.addr }
    						</td>
    						<td align="left">
-   							<c:set var="i" value="0"/>
-					  			<c:forEach var="listH" items="${review.reviewHashtagList }">
-						   			<div class="col-xs-8 col-md-4">
-						   				#${listH.hashtagDetail }
-						   			</div>
-					   			</c:forEach>
+   							${review.reviewHashtag }
    						</td>
    						<td align="left">
    							<c:set var="i" value="0"/>
 				   				<c:forEach var="listI" items="${review.reviewImageList}">
-				   					<img src="/resources/uploadFile/${listI.reviewImage}" width="300">
+				   					<img src="/resources/uploadFile/${listI.reviewImage}" width="300" height="200">
 				   				</c:forEach> 
    						</td>
 	   				</tr>

@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.codebrew.moana.service.domain.Hashtag;
 import com.codebrew.moana.service.domain.Image;
+import com.codebrew.moana.service.domain.Reply;
 import com.codebrew.moana.service.domain.Review;
 import com.codebrew.moana.service.reply.ReplyService;
 import com.codebrew.moana.service.review.ReviewService;
@@ -43,7 +43,8 @@ public class ReviewServiceTest {
 	@Qualifier("replyServiceImpl")
 	private ReplyService replyService;
 	
-	@Test
+	/*
+	//@Test
 	public void testaddReview() throws Exception{
 
 		Review review = new Review();
@@ -64,16 +65,6 @@ public class ReviewServiceTest {
 		
 		review.setReviewImageList(imageList);
 		
-		Hashtag hashtag1 = new Hashtag();
-		hashtag1.setHashtagDetail("testHashtag1");
-		Hashtag hashtag2 = new Hashtag();
-		hashtag2.setHashtagDetail("testHashtag2");
-		
-		List<Hashtag> hashtagList = new ArrayList<Hashtag>();
-		hashtagList.add(hashtag1);
-		hashtagList.add(hashtag2);
-		
-		review.setReviewHashtagList(hashtagList);
 		
 		Review returnReview = reviewService.addReview(review);
 		
@@ -81,16 +72,30 @@ public class ReviewServiceTest {
 		//review = reviewService.getReview(10006);
 		
 		//check
-		/*Assert.assertEquals(10006, review.getReviewNo()); // DB에 저장되는 prod_no 확인
+		Assert.assertEquals(10006, review.getReviewNo()); // DB에 저장되는 prod_no 확인
 		Assert.assertEquals("user02@naver.com", review.getUserId());
 		Assert.assertEquals("141918", review.getFestivalNo());
 		Assert.assertEquals("1", review.getCheckCode());
 		Assert.assertEquals("review_title_test1", review.getReviewTitle());
 		Assert.assertEquals(5, review.getReviewFestivalRating());
 		Assert.assertEquals("review_video_test1", review.getReviewVideo());
-		Assert.assertEquals("review_detail_test1", review.getReviewDetail());*/
+		Assert.assertEquals("review_detail_test1", review.getReviewDetail());
 		Assert.assertNotNull(returnReview);
+	}*/
+	
+	@Test
+	public void testAddReply() throws Exception{
 		
+		Reply reply = new Reply();
+		reply.setReplyDetail("testtest");
+		reply.setReplyNo(10001);
+		reply.setReplyRegDate("17/10/24 12:49:34");
+		reply.setReviewNo(10107);
+		reply.setUserId("user02@naver.com");
+		
+		Reply returnReply = replyService.getReply(10001);
+		
+		Assert.assertNotNull(returnReply);
 		
 	}
 	
