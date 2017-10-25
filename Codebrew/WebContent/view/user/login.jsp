@@ -30,9 +30,22 @@
 
 	<!--  ///////////////////////// CSS ////////////////////////// -->
 	<style>
-    	 body >  div.container{ 
-        	border: 3px solid #D6CDB7;
+		body {
+			padding-top : 70px;
+    	}
+       #loginBox { 
+        	border: 3px solid #fbbc05;
             margin-top: 10px;
+        } 
+        #login {
+		    /* position: absolute; */
+		    /* left: 165px; */
+		    /* z-index: 1; */
+		    width: 67px;
+		    height: 67px;
+        }
+        #addUserBtn {
+        	margin-top : 30px;
         }
     </style>
     
@@ -89,24 +102,60 @@
 
 <body>
 
+	<!-- toolbar -->
+	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>
+	
+	<div class="container">
+		<div class="row">
+			<div id="loginBox" class="col-md-offset-3 col-md-6">
+				<!-- 로그인폼 -->
+				<form class="form-horizontal">
+					<h1 class="text-center">로 &nbsp;&nbsp;그 &nbsp;&nbsp;인</h1>
+					<div class="col-md-offset-1 col-md-10">
+						<div class="input-group">
+							<input type="text" class="form-control" name="userId" id="userId"  placeholder="아이디" >
+							<input type="password" class="form-control" name="password" id="password" placeholder="패스워드">
+							<span class="input-group-btn">
+								<button id="login" type="button" class="btn btn-primary btn-block"  >로그인</button>
+							</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-offset-3 col-md-6 text-center">
+						 	<a id="addUserBtn" class="btn btn-default btn btn-block" href="#" role="button">회 &nbsp;원 &nbsp;가 &nbsp;입</a>
+						 </div>
+						 <!-- <div class="col-md-3 text-center">
+						 	<button type="button" class="btn btn-primary btn-block"  >로 &nbsp;그 &nbsp;인</button>
+						</div> -->
+					</div>
+				</form>
+				<!-- 카카오 로그인 -->
+				<div class="col-md-offset-3">
+					<jsp:include page="/api/kakao.jsp" />
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<!-- ToolBar Start /////////////////////////////////////-->
-	<div class="navbar  navbar-default">
+	<!-- <div class="navbar  navbar-default">
         <div class="container">
         	<a class="navbar-brand" href="/index.jsp">Model2 MVC Shop</a>
    		</div>
-   	</div>
+   	</div> -->
    	<!-- ToolBar End /////////////////////////////////////-->	
 	
+	
 	<!--  화면구성 div Start /////////////////////////////////////-->
-	<div class="container">
+	<!-- <div class="container"> -->
 		<!--  row Start /////////////////////////////////////-->
-		<div class="row">
+		<!-- <div class="row"> -->
 		
-			<div class="col-md-6">
+			<!-- <div class="col-md-6">
 					<img src="/images/logo-spring.png" class="img-rounded" width="100%" />
-			</div>
+			</div> -->
 	   	 	
-	 	 	<div class="col-md-6">
+	 	 	<%-- <div class="col-md-6">
 	 	 	
 		 	 	<br/><br/>
 				
@@ -146,10 +195,10 @@
 			
 			</div>
 			
-  	 	</div>
+  	 	</div> --%>
   	 	<!--  row Start /////////////////////////////////////-->
   	 	
- 	</div>
+ 	<!-- </div> -->
  	<!--  화면구성 div end /////////////////////////////////////-->
 
 </body>
