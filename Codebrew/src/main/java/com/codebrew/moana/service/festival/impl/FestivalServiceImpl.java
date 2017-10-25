@@ -141,6 +141,13 @@ public class FestivalServiceImpl implements FestivalService{
 		festivalDAO.deleteFestival(festival);
 		
 	}
+
+	@Override
+	public void writeFestival(Festival festival) throws Exception {
+		// TODO Auto-generated method stub
+		festivalDAO.writeFestival(festival);
+		
+	}
 	
 	
 }

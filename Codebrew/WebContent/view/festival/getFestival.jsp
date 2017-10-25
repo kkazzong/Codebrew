@@ -2,12 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%-- <%@include file="/view/festival/admin.jsp"%> --%>
-
-<%-- <%@include file="/view/festival/user.jsp"%> --%>
-
-
-
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -61,7 +55,7 @@
 		var mapx = ${festival.festivalLongitude}; // 경도
 		var mapy = ${festival.festivalLatitude};	//위도'
 		
-$(function() {
+		$(function() {
 			
 			var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 		   
@@ -242,7 +236,17 @@ $(function(){
 	<br/>
 
 	
-	 <img src = "${festival.festivalImage }" />
+					<c:if test="${festival.festivalImage.contains('http://')==true }">
+					
+						<img src="${festival.festivalImage }" width="300"height="300" />
+					
+					</c:if>
+					
+					<c:if test="${festival.festivalImage.contains('http://')==false }">
+					
+						<img src="../../resources/uploadFile/${festival.festivalImage }" width="300"height="300" />
+					
+					</c:if>
 	 
 	 
 	 
@@ -267,7 +271,6 @@ $(function(){
 	<br/>
 	<br/>
 	
-	 
 	
 	개최장소 : ${festival.addr }
 	

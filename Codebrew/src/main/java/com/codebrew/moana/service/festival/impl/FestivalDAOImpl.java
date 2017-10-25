@@ -100,6 +100,13 @@ public class FestivalDAOImpl implements FestivalDAO {
 		sqlSession.update("FestivalMapper.appendReadCount", festival);
 
 	}
+	
+	@Override
+	public void writeFestival(Festival festival) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.insert("FestivalMapper.writeFestival", festival);
+	}
+		
 
 	
 	///////////////////////////////////////////////////////////////////////

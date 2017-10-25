@@ -37,4 +37,6 @@ public interface FestivalDAO {
 	
 	public void deleteFestival(Festival festival) throws Exception;
 	
+	public void writeFestival(Festival festival) throws Exception ;
+	
 }
