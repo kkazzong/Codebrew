@@ -167,7 +167,7 @@
 				
 				if(statFlag.indexOf('Daily') != -1) {
 					console.log("daily click");
-					//fncDailyChart();
+					fncDailyChart();
 					//getChartData(1);
 					//chart.validateData();
 					//chartData3();
