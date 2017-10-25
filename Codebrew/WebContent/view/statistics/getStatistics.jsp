@@ -46,7 +46,7 @@
 		var datas = [];
 		
 		function fncSearchChartData(statFlag, statDate) {
-			
+			//alert(statDate);
 			$.ajax({
 				
 				url : "/statisticsRest/json/getStatistics",
@@ -61,29 +61,36 @@
 					"Content-Type" : "application/json"
 				},
 				success : function(JSONData, status){
-					
+					alert(status+","+statFlag);
 					console.log(status);
 					console.log(JSON.stringify(JSONData));
 					
 					switch(statFlag) {
 						
-						case 1 : 
+						case 1 :
+						case "1" :
 							dailyChart.destroy();
 							fncDailyChartDrow(JSONData);
+							dailyChart.update();
 							break;
 						
 						case 2 :
+						case "2" :
 							monthlyChart.destroy();
 							fncMonthlyChartDrow(JSONData);
 							break;
 						
 						case 3 :
-							
+						case "3" :
+							alert("분기");
 							quarterChart.destroy();
 							fncQuarterChartDrow(JSONData);
 							break;
 							
 					}
+					
+					$("input:hidden[name='statFlag']").val(JSONData[0].statFlag);
+					
 					//JSON data 만큼 datas에 push
 					/* datas = [];
 					label = [];
@@ -160,6 +167,7 @@
 			//chartData3();
 			dailyChartData();
 			
+			
 			// tab 선택시
 			$("li[role='presentation'] > a").on("click", function(){
 				
@@ -167,18 +175,21 @@
 				
 				if(statFlag.indexOf('Daily') != -1) {
 					console.log("daily click");
+					$("input:hidden[name='statFlag']").val(1);
 					fncDailyChart();
 					//getChartData(1);
 					//chart.validateData();
 					//chartData3();
 				} else if(statFlag.indexOf('Monthly') != -1) {
 					console.log("monthly click");
+					$("input:hidden[name='statFlag']").val(2);
 					monthlyChartData();
 					//getChartData(2);
 					//chartLine.validateData();
 					//chartData1();
 				} else if(statFlag.indexOf('Quarter') != -1) {
 					console.log("quarter click");
+					$("input:hidden[name='statFlag']").val(3);
 					quarterChartData();
 					//getChartData(3);
 					//chartData2();
@@ -248,6 +259,18 @@
 			
 			$("#dailySelect").on("cancel.daterangepicker", function(picker) {
 				$(this).val('');
+			});
+			
+			/// 새로고침 눌렀을때
+			$("#refresh").on("click", function(){
+				
+				//alert("새로고침")
+				var statFlag2 = $("input:hidden[name='statFlag']").val();
+				
+				fncSearchChartData(statFlag2, '');
+				
+				printClock();
+				
 			});
 			
 		});
@@ -366,7 +389,7 @@
 			<div class="col-md-offset-3 col-md-6">
 				<div class="row">
 					<div class="col-md-12">
-						<button class="btn btn-default">
+						<button id="refresh" class="btn btn-default">
 							<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> 
 						</button>
 						<small>최근 새로고침 : <jsp:include page="/view/statistics/clock.jsp"></jsp:include> </small>

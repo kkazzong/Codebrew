@@ -137,14 +137,15 @@
 	
  	$(function() {
  		
- 		//// select 현재 년도 기준으로 100년전까지 생성
+ 		//// select 현재 년도 기준으로 10년전까지 생성
 		var date = new Date();
 		var year = date.getFullYear();
 		var selectValue = $("#year");
 		var optionIndex = 0;
 		
-		for(var i = year; i >= year-100; i--){
-				$("select[name='statDate']").append("<option value="+i+">"+i+"년</option>");                        
+		$("select[name='statDate']").append("<option value="+year+" selected=selected>"+year+"년</option>"); 
+		for(var i = year-1; i >= year-10; i--){
+			$("select[name='statDate']").append("<option value="+i+">"+i+"년</option>");                        
 		}
 		
 	  $("select[name='statDate']").on("change", function(){

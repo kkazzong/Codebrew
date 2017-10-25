@@ -90,7 +90,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			User user = purchase.getUser();
 			partyMember.setAge(user.getAge());
 			partyMember.setGender(user.getGender());
-			partyMember.setRole(user.getRole());
+			partyMember.setRole("guest");
 			partyMember.setUser(user);
 			partyMember.setParty(purchase.getTicket().getParty());
 			partyDAO.joinParty(partyMember);
