@@ -11,32 +11,33 @@
 	<!-- 참조 : http://getbootstrap.com/css/   참조 -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
+	<!-- 이거 필요없을듯...CDN 사용....
+	<link rel="stylesheet" href="/css/admin.css" type="text/css"> -->
+	
 	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	 
-	<!--  ///////////////////////// CSS ////////////////////////// -->
-	<style>
- 		body {
-            padding-top : 50px;
-        }
-	</style>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+	
+	<!-- Bootstrap Dropdown Hover CSS -->
+	<link href="/resources/css/animate.min.css" rel="stylesheet">
+	<link href="/resources/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
 	
 	<!-- jQuery UI toolTip 사용 CSS-->
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<!-- jQuery UI toolTip 사용 JS-->
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  
+	<!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
   	 
-	<!-- Bootstrap Dropdown Hover CSS -->
-	<link href="/resources/css/animate.min.css" rel="stylesheet">
-	<link href="/resources/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
-	
-	<!-- Bootstrap Dropdown Hover JS -->
-	<script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
-	
-	
+	<!--  ///////////////////////// CSS ////////////////////////// -->
+	<style>
+	  body {
+            padding-top : 50px;
+        }
+    </style>
+    
 	<!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
 	
@@ -100,10 +101,29 @@
 		 */
 		
 		//==> reviewTitle LINK : Click Event 연결처리
-		$( "button:contains('조회')" ).on("click" , function() {
-			console.log("조회버튼 클릭 : val = "+$(this).val())
-			self.location="/review/getReview?reviewNo="+$(this).val();
+		$( "td:nth-child(2)" ).on("click" , function() {
+			
+			//Debug..
+			//alert(  $("input:hidden[name='reviewNo']",$(this)).val() );
+			//self.location ="/review/getReview?reviewNo="+reviewNo; //$(this).text().trim()
+			//alert($('.hidden_link', $(this)).text());
+			self.location=$('.hidden_link', $(this)).text();
 		});
+		
+		
+		//==> updateTranCode LINK Event 연결처리
+		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+		//==> 3 과 1 방법 조합 : $(".className tagName:filter함수") 사용함.
+		$( "td:contains('배송하기')" ).on("click" , function() {
+			
+			//Debug..
+			//alert(  $("input:hidden[name='reviewNo']",$(this)).val() );
+			//self.location ="/review/getReview?reviewNo="+reviewNo; //$(this).text().trim()
+			//alert($('.hidden_link', $(this)).text());
+			self.location=$('.hidden_link', $(this)).text();
+		
+		});
+		
 		
 		//==> UI 수정 추가부분  :  reviewTitle LINK Event End User 에게 보일수 있도록 
 		$( ".ct_list_pop td:nth-child(2)" ).css("color" , "red");
@@ -134,20 +154,22 @@
    		<div class="row">
    			<div class="col-md-offset-4 col-md-4">
    				<div class="page-header text-center">
-   					<h3 class="text-info"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 후기목록</h3>
+   					<h3 class="text-info"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>후기목록</h3>
    				</div>
    			</div>
    		</div>
 
-		<!-- 데이터 수 -->
+		<!-- 데이터 수 
 		<div class="row">
 			<div class="col-md-12">
 				<h5>총 : ${resultPage.totalCount} 건</h5>
 				<h5>현재 : ${resultPage.currentPage} 페이지 / 총 : ${resultPage.maxPage} 페이지</h5>
 			</div>
 		</div>
-		
-   		<!-- 검색 Start -->
+		   		-->
+		   		
+		   		
+   		<!--  table 위쪽 검색 Start -->
    		<div class="row">
    		
    			<div class="col-md-6 text-left">
@@ -158,6 +180,7 @@
    			
    			<div class="col-md-6 text-right">
    				<form class="form-inline" name="detailForm">
+   					<input name="menu" value="${param.menu }" type="hidden"/>
    					<div class="form-group">
    						<select class="form-control" name="searchCondition">
    							<option value="0" ${! empty search.searchCondition && search.searchCondition==0 ? "selected" : "" }>축제이름</option>
@@ -176,69 +199,84 @@
    					
    					<!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
    					<input type="hidden" id="currentPage" name="currentPage" value=""/>
+   				
    				</form>
    			</div>
    		
    		</div>
-   		<!-- 검색 End -->
+   		<!--  table 위쪽 검색 End -->
    		
    		
    		<!-- table Start -->
-   		<div class="row">
-   			<c:forEach var="review" items="${list}">
-   				<c:set var="i" value="${i+1}"/>
-   				<div class="col-md-6">
-   					<div class="panel panel-primary">
-   						<div class="panel-heading">
-   							<h3 class="panel-title pull-left">${i}번</h3>
-   							<form id="deleteForm">
-   								<button class="btn btn-default pull-right" type="button" value="${review.reviewNo }">
-   									<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-   								</button>
-   							</form>
-   							<div class="clearfix"></div>
-   						</div>
-   						<div class="panel-body">
-   							
-   							<!-- 후기목록 -->
-   							<c:if test="${!empty review.reviewImageList }">
-   								<img width="100%" height="300" src="/resources/uploadFile/${review.reviewImageList[0].reviewImage}">
-   							</c:if>
-   							<hr>
-   							<div class="col-md-12">
-   								<strong>
-   									${review.festivalName }
-   								</strong>
-   							</div>
-   							<div class="col-md-12">
-   								<small>
-   									<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-   									${review.reviewTitle }
-   								</small>
-   							</div>
-   							<div class="col-md-12">
-   								<small>
-   									<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
-   									${review.addr }
-   								</small>
-   							</div>
-   							<div class="col-md-12">
-   								<small>
-   									<span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
-   									${review.reviewHashtag }
-   								</small>
-   							</div>
-   							<hr>
-   							<div class="row">
-   								<button class="col-md-12 btn btn-default btn-block" type="button" value="${review.reviewNo }">조회</button>
-   							</div>
-   						</div>
-   						
-   					</div>
-   				</div>
-   			</c:forEach>
-   		</div>
+   		<table class="table table-hover table-striped">
    		
+   			<thead>
+   				<tr>
+   					<th align="left">
+   						축제명
+   					</th>
+   					<th align="left">
+   						후기명
+   						<%-- <c:if test="${param.menu=='manage' }">
+   							<h7>(reviewTitle click:상품수정)</h7>
+   						</c:if>
+   						<c:if test="${param.menu=='search' }">
+   							<h7>(reviewTitle click:상품상세)</h7>
+   						</c:if> --%>
+   					</th>
+   					<th align="left">
+   						축제장소
+   					</th>
+   					<th align="left">
+   						해시태그
+   					</th>
+   					<th align="left">
+   						이미지
+   					</th>
+   				</tr>
+   			</thead>
+   			
+   			<tbody>
+   			
+   				<c:set var="i" value="0"/>
+   				<c:forEach var="review" items="${list }">
+   					<c:set var="i" value="${i+1 }"/>
+   					${i}
+   					<tr class="ct_list_pop">
+   						<td align="left">
+   							${review.festivalName }
+   						</td>
+  						<td align="left">
+   							${review.reviewTitle }
+   							<input type="hidden" name="reviewNo" value=${review.reviewNo }>
+								<span style="display: none" class="hidden_link">/review/getReview?reviewNo=${review.reviewNo }</span>
+	   						<%-- <c:if test="${param.menu=='manage' }">
+  									<span style="display: none" class="hidden_link">/review/updateReview?reviewNo=${review.reviewNo }&menu=${param.menu }</span>
+  								</c:if>
+	   						<c:if test="${param.menu=='search' }">
+	   							<span style="display: none" class="hidden_link">/review/getReview?reviewNo=${review.reviewNo }&menu=${param.menu }</span>
+	   						</c:if> --%>
+   						</td>
+   						<td align="left">
+   							${review.addr }
+   						</td>
+   						<td align="left">
+   							${review.reviewHashtag }
+   						</td>
+   						<td align="left">
+   							<c:set var="i" value="0"/>
+				   				<c:forEach var="listI" items="${review.reviewImageList}">
+				   					<img src="/resources/uploadFile/${listI.reviewImage}" width="300" height="200">
+				   				</c:forEach> 
+   						</td>
+	   				</tr>
+   				</c:forEach>
+   			
+   			</tbody>
+   			
+   		</table>
+   		<!-- table End -->
+   	
    	</div>
    	<!-- 화면구성 div End -->
    	
