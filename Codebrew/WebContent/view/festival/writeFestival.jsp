@@ -52,7 +52,7 @@
 	
 	function fncWriteFestival() {
 		
-		var festivalName=$("input[name='festivalName']").val();
+		var festivalName=$("textarea[name='festivalName']").val();
 		
 		if(festivalName == null || festivalName.length <1){
 			alert("축제명은 반드시 한 글자 이상 입력하셔야 합니다.");
