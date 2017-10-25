@@ -44,8 +44,7 @@
 			var festivalNo = $("p", this).text();
 			var festivalname = $("span", this).text();
 
-			 self.location = "/view/party/addParty.jsp?festivalNo=" + festivalNo + "&festivalName="+ festivalName
-					 +"$addr="+${festival.addr};
+			 self.location = "/festivalRest/json/getFestivalDB?festivalNo="+festivalNo;
 			
 		});
 	});
