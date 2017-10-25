@@ -48,6 +48,7 @@
 			});
 		});
 		
+		
 		//============= "파티삭제"  Event 처리 및  연결 =============
 		/* $(function(){
 			$("button:contains('파티삭제')").on("click", function() {
@@ -55,6 +56,7 @@
 		
 			});
 		}); */
+		
 		
 		//============= "파티티켓구매"  Event 처리 및  연결 =============
 		$(function(){
@@ -74,6 +76,7 @@
 			});
 		});
 		
+		
 		//============= "애프터파티 참여"  Event 처리 및  연결 =============
 		$(function(){
 			$("button:contains('애프터파티 참여')").on("click", function() {
@@ -82,7 +85,7 @@
 				
 				if(result) {
 					var partyNo = $("#partyNo").val();
-					console.log("파티티켓구매 :: partyNo :: "+partyNo);
+					console.log("애프터파티 참여 :: partyNo :: "+partyNo);
 					
 					self.location="/party/joinParty?partyNo=${party.partyNo}";
 				} else {
@@ -91,6 +94,7 @@
 				
 			});
 		});
+		
 		
 		//============= "파티참여취소"  Event 처리 및  연결 =============
 		$(function(){
@@ -125,7 +129,7 @@
 		//============= "주최자"  Event 처리 및  연결 =============
 		$(function(){
 			$("p.host").on("click", function() {
-				self.location="/user/getProfile/"+"${party.user.userId}";
+				self.location="/myPage/getMyPage/"+"${party.user.userId}";
 		
 			});
 		});
@@ -136,6 +140,13 @@
 	</script>
 	
 	<!--  ///////////////////////// CSS ////////////////////////// -->
+	<style type="text/css">
+		
+		body {
+	     	padding-top : 70px;
+	    }
+	    
+	</style>
 	
 	
 </head>
@@ -272,20 +283,19 @@
 
 				<div class="row">
 					<div class="col-md-12 text-center">
-						<c:if test="${ ! empty party.user.userId }">
-					
-							<c:if test="${ party.user.userId==user.userId }">
 						
-								<button type="button" class="btn btn-primary">파티수정</button>
-							</c:if>
+						<!-- 파티 & 애프터 파티 -->
+						<c:if test="${ party.user.userId==user.userId }">
+					
+							<button type="button" class="btn btn-primary">파티수정</button>
 						</c:if>
+						
 						<%-- <c:if test="${ ! empty party.user.userId && party.user.userId==sessionScope.user.userId }">
 							<button type="button" class="btn btn-primary">파티삭제</button>
 						</c:if> --%>
 						
 						<!-- 파티 -->
  						<c:if test="${ empty party.festival.festivalNo }">
-					
 							<c:if test="${ party.user.userId!=user.userId }">
 						
 								<button type="button" class="btn btn-primary">파티티켓구매</button>
@@ -293,23 +303,25 @@
 						</c:if>
 						
 						<!-- 애프터 파티 -->
-						<c:if test="${ !empty party.festival.festivalNo }">
-							
+						<%-- <c:if test="${ !empty party.festival.festivalNo }">
+							console.log("애프터 파티 버튼 구간 1");
 							<c:set var="i" value="0" />
 							<c:forEach var="partyMember" items="${list}">
 								<c:set var="i" value="${ i+1 }" />
-						
+								console.log("애프터 파티 버튼 구간 2");
 									<c:if test="${ partyMember.user.userId != user.userId }">
+										console.log("애프터 파티 버튼 구간 3");
 										<button type="button" class="btn btn-primary">애프터파티 참여</button>
 									</c:if>
 								
 									<c:if test="${ partyMember.user.userId==user.userId && party.user.userId!=user.userId }">
+										console.log("애프터 파티 버튼 구간 4");
 										<button type="button" class="btn btn-primary">파티참여취소</button>
 		
 									</c:if>
 							</c:forEach>
-						</c:if>
-					
+						</c:if> --%>
+						<span id="partyButtonDiv"></span>					
 					<!-- <button type="button" class="btn btn-primary">뒤로</button> -->
 						
 					</div>

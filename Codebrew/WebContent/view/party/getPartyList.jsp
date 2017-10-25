@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 	<title>파티 목록 조회</title>
 
@@ -109,12 +109,24 @@
 			});
 		});
 		
+		
+		//=============    전체 파티 목록  Event  처리 		=============
+		$(function(){
+			$("button:contains('애프터파티 등록하러 가기')").on("click", function() {
+				
+				self.location = "/party/addParty?festivalNo=${search.searchKeyword}";
+			});
+		});
+		
+		
 	</script>
+	
 	
 	<!--  ///////////////////////// CSS ////////////////////////// -->
 	<style>
+	
 	  body {
-            padding-top : 50px;
+            padding-top : 70px;
           }
       
       .thumbnail a {
@@ -123,8 +135,10 @@
    		overflow:hidden;
    		margin:auto;
    		vertical-align:middle;
-		}    
+		}  
+		  
     </style>
+    
 </head>
 <body>
 	<!-- ToolBar Start /////////////////////////////////////-->
@@ -134,7 +148,12 @@
 	<!--  화면구성 div Start /////////////////////////////////////-->
 	<div class="container">
 	  <div class="page-header text-info">
-   		   <h2 align="center" id="title">파티 목록</h2>
+   		   <h2 align="center" id="title">파티 리스트</h2>
+   		   
+   		   <c:if test="${ search.searchCondition == '5' }">
+   		   		<button type="button" class="btn btn-default" >애프터파티 등록하러 가기</button>
+   		   </c:if>
+   		   
 	  </div>
 	  
 	  <!-- table 위쪽 검색 Start /////////////////////////////////////-->
@@ -163,13 +182,13 @@
 				  <div class="form-group">
 				    <label class="sr-only" for="searchKeyword">검색어</label>
 				    
-					<%-- <c:if test="${ !empty search.searchCondition && search.searchCondition == '5' }">
+					<c:if test="${ !empty search.searchCondition && search.searchCondition == '5' }">
 						<input type="text" class="form-control" id="searchKeyword" name="searchKeyword" value="">
 					</c:if>
-					<c:if test="${ !empty search.searchCondition && search.searchCondition != '5' }">
+					<c:if test="${ search.searchCondition != '5' }">
 					<input type="text" class="form-control" id="searchKeyword" name="searchKeyword" value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
-					</c:if> --%>
-					<input type="text" class="form-control" id="searchKeyword" name="searchKeyword" value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
+					</c:if>
+					<%-- <input type="text" class="form-control" id="searchKeyword" name="searchKeyword" value="${! empty search.searchKeyword ? search.searchKeyword : '' }"> --%>
 				    <button type="button" class="btn btn-default">검색</button>			 
 				  </div>		  
 				  

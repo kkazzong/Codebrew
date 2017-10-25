@@ -138,7 +138,7 @@
 	<update id="updateParty" parameterType="party">
 		UPDATE party
 		<set>
-			<if test="festival != null">festival_no = #{festival.festivalNo}, </if>
+			<if test="festival.festivalNo != 0">festival_no = #{festival.festivalNo}, </if>
 			<if test="partyName != null">party_name = #{partyName}, </if>
 			<if test="partyDate != null">party_date = #{partyDate}, </if>
 			<if test="partyTime != null">party_time = #{partyTime}, </if>
@@ -177,6 +177,7 @@
 									        p.festival_no = f.festival_no(+)
 									        AND p.user_id = u.user_id
 									    	AND p.delete_flag IS NULL
+									    	AND p.party_date >= SYSDATE
 									    	
 											<if test="searchCondition == ''">
 												AND p.party_name LIKE '%${searchKeyword}%'
@@ -306,6 +307,7 @@
 			        p.festival_no = f.festival_no(+)
 			        AND p.user_id = u.user_id
 					AND p.delete_flag IS NULL
+					AND p.party_date >= SYSDATE
 					
 					<if test="searchCondition == ''">
 						AND p.party_name LIKE '%${searchKeyword}%'

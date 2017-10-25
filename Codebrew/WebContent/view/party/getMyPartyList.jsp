@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>My파티 목록 조회</title>
 
 	<!-- 참조 : http://getbootstrap.com/css/   참조 -->
@@ -106,35 +106,35 @@
 		
 		
 		//=============    파티 삭제  Event  처리 		=============
-		$(function(){
+		/* $(function(){
 			$("button:contains('파티 삭제')").on("click", function() {
 				var partyNo = $( "input[name=partyNo]", $(this) ).val();
 				self.location="/party/deleteParty?partyNo=";
 		
 			});
-		});
+		}); */
 		
 		
 		//=============    파티 참여 취소  Event  처리 		=============
-		$(function(){
+		/* $(function(){
 			$("button:contains('파티 참여 취소')").on("click", function() {
-				/* var partyNo = $( "input[name=partyNo]", $(this) ).val(); */
+				
 				var partyNo = $(this).val();
 				console.log("파티 참여 취소 :: partyNo :: "+partyNo);
 				self.location="/party/cancelParty?partyNo="+partyNo;
 		
 			});
-		});
+		}); */
 		
 		
 		//=============    티켓 구매 취소  Event  처리 		=============
-		$(function(){
+		/* $(function(){
 			$("button:contains('티켓 구매 취소')").on("click", function() {
 				var partyNo = $( "input[name=partyNo]", $(this) ).val();
 				self.location="/purchase/cancelPurchase";
 		
 			});
-		});
+		}); */
 		
 		
 		//=============    현재 시간  Event  처리 		=============
@@ -186,6 +186,16 @@
 		}); */
 		
 	</script>
+	
+	
+	<!--  ///////////////////////// CSS ////////////////////////// -->
+	<style type="text/css">
+		
+		body {
+	     	padding-top : 70px;
+	    }
+	    
+	</style>
 	
 </head>
 <!-- <body onload="startTime()"> -->
@@ -264,7 +274,7 @@
 								<p>${ party.partyPlace }</p>
 								<p>
 								
-								<c:if test="${ !empty search.searchCondition }">
+								<%-- <c:if test="${ !empty search.searchCondition }">
 									<c:if test="${ party.user.userId != user.userId }">
 										<c:choose>
 											<c:when test="${ search.searchCondition == '3' }">
@@ -280,7 +290,7 @@
 											</c:when>
 										</c:choose>
 									</c:if>	
-								</c:if>
+								</c:if> --%>
 								<%-- <c:if test="${ !empty search.searchCondition && search.searchCondition == '3' }">
 									<button type="button" class="btn btn-primary" value="${party.partyNo }">파티 삭제</button>
 	
