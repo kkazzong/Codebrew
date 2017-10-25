@@ -34,6 +34,8 @@ public interface FestivalService {
 	
 	public void deleteFestival(Festival fesitval) throws Exception;
 	
+	public void writeFestival (Festival festival) throws Exception;
+	
 
 	
 }

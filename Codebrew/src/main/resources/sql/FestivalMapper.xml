@@ -32,6 +32,68 @@
 		<result property="deleteFlag" column="DELETE_FLAG" jdbcType="VARCHAR" />
 		<result property="festivalImage" column="FESTIVAL_IMAGE" jdbcType="VARCHAR" />
 </resultMap>
+
+
+	<insert id="writeFestival" parameterType="festival" useGeneratedKeys="true" keyProperty="festivalNo" keyColumn="festival_no">
+		INSERT INTO festival (
+		
+		FESTIVAL_NO,
+		FESTIVAL_NAME,
+		CONTENT_TYPE_ID,
+		READ_COUNT,
+		FESTIVAL_LONGITUDE,
+		FESTIVAL_LATITUDE,
+		ADDR,
+		AREA_CODE,
+		SIGUNGU_CODE,
+		ORG_PHONE,
+		START_DATE,
+		END_DATE,
+		FESTIVAL_DETAIL,
+		FESTIVAL_OVERVIEW,
+		AGE_LIMIT,
+		BOOKING_PLACE,
+		DISCOUNT,
+		PLAY_TIME,
+		SPEND_TIME_FESTIVAL,
+		SUB_EVENT,
+		PROGRAM,
+		USE_TIME_FESTIVAL,
+		DELETE_FLAG,
+		FESTIVAL_IMAGE
+		
+		)
+		
+		VALUES (
+		
+		seq_festival_festival_no.nextval,
+		#{festivalName:VARCHAR},
+		#{contentTypeId:VARCHAR},
+		#{readCount:NUMERIC},
+		#{festivalLongitude:VARCHAR},
+		#{festivalLatitude:VARCHAR},
+		#{addr:VARCHAR},
+		#{areaCode:VARCHAR},
+		#{sigunguCode:VARCHAR},
+		#{orgPhone:VARCHAR},
+		#{startDate:VARCHAR},
+		#{endDate:VARCHAR},
+		#{festivalDetail:VARCHAR},
+		#{festivalOverview:VARCHAR},
+		#{ageLimit:VARCHAR},
+		#{bookingPlace:VARCHAR},
+		#{discount:VARCHAR},
+		#{playTime:VARCHAR},
+		#{spendTimeFestival:VARCHAR},
+		#{subEvent:VARCHAR},
+		#{program:VARCHAR},
+		#{useTimeFestival:VARCHAR},
+		#{deleteFlag:VARCHAR},
+		#{festivalImage:VARCHAR}
+		
+		
+		)
+	</insert>
 		
 		<update id="appendReadCount" parameterType="festival">
 		UPDATE festival

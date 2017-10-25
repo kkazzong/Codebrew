@@ -687,4 +687,10 @@ public class TourAPIDAOImpl implements FestivalDAO {
 
 	}
 
+	@Override
+	public void writeFestival(Festival festival) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

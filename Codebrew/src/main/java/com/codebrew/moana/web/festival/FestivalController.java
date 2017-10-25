@@ -51,6 +51,119 @@ public class FestivalController {
 
 	@Value("#{imageRepositoryProperties['fileRoot']}")
 	String fileRoot;
+	
+	@RequestMapping(value = "writeFestival")
+	public ModelAndView writeFestival(@ModelAttribute("festival") Festival festival,
+			@RequestParam("file") MultipartFile file) throws Exception {
+
+		System.out.println("/write");
+		
+		String areaCode = festival.getAddr();
+		
+		String a[] = areaCode.split(" ");
+		
+		switch(a[0]){
+		
+		case "서울" : areaCode="1";
+		break;
+		
+		case "인천" : areaCode="2";
+		break;
+		
+		case "대전" : areaCode="3";
+		break;
+		
+		case "대구" : areaCode="4";
+		break;
+		
+		case "광주" : areaCode="5";
+		break;
+		
+		case "부산" : areaCode="6";
+		break;
+		
+		case "울산" : areaCode="7";
+		break;
+		
+		case "세종" : areaCode="8";
+		break;
+		
+		case "경기" : areaCode="31";
+		break;
+		
+		case "강원" : areaCode="32";
+		break;
+		
+		case "충북" : areaCode="33";
+		break;
+		
+		case "충남" : areaCode="34";
+		break;
+		
+		case "경북" : areaCode="35";
+		break;
+		
+		case "경남" : areaCode="36";
+		break;
+		
+		case "전북" : areaCode="37";
+		break;
+		
+		case "전남" : areaCode="38";
+		break;
+		
+		case "제주" : areaCode="39";
+		break;
+				
+		}
+		
+		festival.setAreaCode(areaCode);
+
+		ModelAndView modelAndView = new ModelAndView();
+		
+		System.out.println(1);
+
+		if (file.getSize() > 0) {
+
+			System.out.println("size=0 으로 들어옴!! ");
+
+			File UploadedFile = new File(fileRoot, file.getOriginalFilename());
+
+			festival.setFestivalImage(file.getOriginalFilename());
+
+			file.transferTo(UploadedFile);
+			
+			festivalService.writeFestival(festival);
+			
+			System.out.println("writeFestival: " + festival);
+
+			modelAndView.setViewName("forward:/view/festival/addFestival.jsp");
+			modelAndView.addObject(festival);
+
+		} else {
+
+			System.out.println("else로 들어옴!! ");
+			
+			festival.setFestivalImage("no.png");
+			festivalService.writeFestival(festival);
+			System.out.println("writeFestival: " + festival);
+
+			modelAndView.setViewName("forward:/view/festival/addFestival.jsp");
+			modelAndView.addObject(festival);
+
+		}
+
+		Ticket ticket = new Ticket();
+		ticket.setFestival(festival);
+		ticket.setTicketPrice(festival.getTicketPrice());
+		ticket.setTicketCount(festival.getTicketCount());
+
+		ticketService.addTicket(ticket);
+		
+		System.out.println("최festival.......: " + festival);
+
+		return modelAndView;
+	}
 
 	@RequestMapping(value = "deleteFestival")
 	public ModelAndView deleteFestival(@ModelAttribute("page") Page page, @ModelAttribute("search") Search search,
