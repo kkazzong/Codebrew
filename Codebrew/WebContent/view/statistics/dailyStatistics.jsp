@@ -40,7 +40,7 @@
 	
 	var colors = [];
 	function getRandomColor(count) {
-		
+		alert("랜덤컬러"+count);
 	    var letters = '0123456789ABCDEF'.split('');
 	    var color = '#';
 	    for(var i = count; i > 0; i--) {
@@ -66,7 +66,17 @@
 			label[i] = JSONData[i].statDate+"";
 		}
 		
-		colors = getRandomColor(JSONData.length);
+		//// 색깔 랜덤~~
+		var letters = '0123456789ABCDEF'.split('');
+	    var count = JSONData.length;
+	    for(var i = count; i > 0; i--){
+		    var color = '#';
+		    for (var j = 0; j < 6; j++ ) {
+		        color += letters[Math.floor(Math.random() * 16)];
+		    }
+		    colors[i] = color;
+	    }
+		
 		
 		dailyChartData = {
 			labels : label,	
