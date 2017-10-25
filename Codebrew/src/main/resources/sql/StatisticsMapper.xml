@@ -28,9 +28,42 @@
 		SUM(purchase_price) AS total_price,
 		SUM(purchase_count) AS total_count
 		FROM purchase
-		WHERE tran_code = '1'
-		AND purchase_price >= 0
-		<!-- AND purchase_date >= TO_DATE(SYSDATE - 7) -->
+		<where>
+			tran_code = '1'
+			AND purchase_price >= 0
+			<if test="startDate == null and endDate == null">
+				AND purchase_date >= TO_DATE(SYSDATE - 7)
+			</if>
+			<if test="startDate != null and endDate != null">
+				AND purchase_date BETWEEN TO_DATE(#{startDate}, 'yyyy-mm-dd') AND TO_DATE(#{endDate}, 'yyyy-mm-dd')
+			</if>
+		</where>
+		GROUP BY to_char(purchase_date,'yyyy-mm-dd')
+		ORDER BY 1
+	</select>
+	
+	<select id="getDailyTotalSaleAmountStat2" parameterType="statistics" resultMap="selectStatisticsMap">
+		SELECT
+		to_char(purchase_date,'yyyy-mm-dd') AS stat_date,
+		SUM(purchase_price) AS total_price,
+		SUM(purchase_count) AS total_count
+		FROM purchase
+		<where>
+			tran_code = '1'
+			AND purchase_price >= 0
+			<!-- default는 일주일 -->
+			<if test="startDate == null and endDate == null">
+				AND purchase_date >= TO_DATE(SYSDATE - 7)
+			</if>
+			<!-- 어제 혹은 오늘  -->
+			<if test="startDate != null and endDate == null">
+				AND TO_CHAR(purchase_date, 'yyyy-mm-dd') = #{startDate}
+			</if>
+			<!-- startDate, endDate 다른범위 -->
+			<if test="startDate != null and endDate != null">
+				AND purchase_date BETWEEN TO_DATE(#{startDate}, 'yyyy-mm-dd') AND TO_DATE(#{endDate}, 'yyyy-mm-dd')
+			</if>
+		</where>
 		GROUP BY to_char(purchase_date,'yyyy-mm-dd')
 		ORDER BY 1
 	</select>
@@ -52,6 +85,28 @@
 					) vt
 	</select>
 	
+	<select id="getMonthlyTotalSaleAmountStat2" parameterType="statistics"  resultMap="selectStatisticsMap">
+		SELECT
+		vt.purchase_date AS stat_date,
+		vt.purchase_price AS total_price,
+		vt.purchase_count AS total_count
+		FROM (
+					SELECT
+					to_char(purchase_date, 'yyyy-mm') AS purchase_date,
+					SUM(purchase_price) AS purchase_price,
+					SUM(purchase_count) AS purchase_count
+					FROM purchase
+					<where>
+          				to_char(purchase_date, 'yyyy') = to_char(SYSDATE, 'yyyy')  
+						<if test="startDate != null and endDate != null">
+		          			AND to_char(purchase_date,'yyyy-mm') BETWEEN #{startDate} AND #{endDate}
+						</if>          				
+					</where>
+					GROUP BY to_char(purchase_date, 'yyyy-mm')
+					ORDER BY purchase_date
+					) vt
+	</select>
+	
 	<select id="getQuarterTotalSaleAmountStat" resultMap="selectStatisticsMap">
 		SELECT
 		TO_CHAR(purchase_date, 'q') AS stat_date,
@@ -59,6 +114,24 @@
 		SUM(purchase_count) AS total_count
 		FROM purchase
     	WHERE to_char(purchase_date, 'yyyy') = to_char(SYSDATE, 'yyyy')
+		GROUP BY TO_CHAR(purchase_date, 'q')
+		ORDER BY stat_date
+	</select>
+	
+	<select id="getQuarterTotalSaleAmountStat2" parameterType="statistics" resultMap="selectStatisticsMap">
+		SELECT
+		TO_CHAR(purchase_date, 'q') AS stat_date,
+		SUM(purchase_price) AS total_price,
+		SUM(purchase_count) AS total_count
+		FROM purchase
+		<where>
+			<if test="startDate == null and endDate == null">
+				to_char(purchase_date, 'yyyy') = to_char(SYSDATE, 'yyyy')
+			</if>
+			<if test="startDate != null">
+				to_char(purchase_date, 'yyyy') = #{startDate}
+			</if>
+		</where>
 		GROUP BY TO_CHAR(purchase_date, 'q')
 		ORDER BY stat_date
 	</select>

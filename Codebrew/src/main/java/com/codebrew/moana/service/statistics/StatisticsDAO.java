@@ -6,6 +6,9 @@ import com.codebrew.moana.service.domain.Statistics;
 
 public interface StatisticsDAO {
 	public List<Statistics> getDailyTotalSaleAmountStat() throws Exception;
+	public List<Statistics> getDailyTotalSaleAmountStat(Statistics statistics) throws Exception;
 	public List<Statistics> getMonthlyTotalSaleAmountStat() throws Exception;
+	public List<Statistics> getMonthlyTotalSaleAmountStat(Statistics statistics) throws Exception;
 	public List<Statistics> getQuarterTotalSaleAmountStat() throws Exception;
+	public List<Statistics> getQuarterTotalSaleAmountStat(Statistics statistics) throws Exception;
 }

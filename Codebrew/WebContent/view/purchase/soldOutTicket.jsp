@@ -7,7 +7,7 @@
 <title>Sold Out</title>
 </head>
 <body>
-	<img alt="soldout" src="../../resources/uploadFile/soldout.gif">
+	<img alt="soldout" src="../../resources/image/ui/soldout.gif">
 	<h1>품절잉데</h1>
 </body>
 </html>

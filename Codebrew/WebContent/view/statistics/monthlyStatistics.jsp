@@ -180,6 +180,37 @@
 		});
 	}
 	
+	$(function(){
+	
+		//datepicker 설정
+		$.datepicker.setDefaults({
+	        dateFormat: 'yy-mm',
+	        monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+	        monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+	        dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+	        dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+	        dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+	        showMonthAfterYear: true,
+	        yearSuffix: '년',
+	        changeMonth: true,
+			changeYear : true,
+			closeText : "선택",
+			showButtonPanel : true,
+			onChangeMonthYear : function(year, month, inst) {
+				
+			},
+			onSelect : function(dateText) {
+				
+			},
+			onClose : function() {
+				
+			}
+    	}); 
+		
+		$("#monthStartDate, #monthEndDate").datepicker();
+		
+	})
+	
 	
 	
 </script>
@@ -189,6 +220,25 @@
 		height: 500px;
 		/* display: none; */
 	}
+	table.ui-datepicker-calendar { display:none; }
 </style>
 <!-- <div id="chartLine"></div> -->
-<canvas id="myChart" ></canvas>
+	
+						<form class="form form-inline">
+							<div class="form-group">
+								<label for="월별 선택">월별 선택</label>
+								<div class="input-group">
+									<input id="monthStartDate" class="form-control" type="text" name="startDate">
+									<div class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar"></span>
+									</div>
+									<input id="monthEndDate" class="form-control" type="text" name="endDate">
+									<div class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar"></span>
+									</div>
+								</div>
+							</div>
+						</form>
+					
+		
+		<canvas id="myChart" ></canvas>

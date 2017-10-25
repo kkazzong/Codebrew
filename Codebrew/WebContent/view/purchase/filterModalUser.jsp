@@ -21,12 +21,27 @@
 			</select>
 		-->
 		<div class="row">
-			<div class="col-md-offset-4 col-md-4">
+			<div class="col-md-12">
 				<div class="page-header text-center">
-					<h4 class="text-info">정렬</h4>
+					<h4 class="text-info">필터</h4>
 				</div>
 			</div>
 		</div>
+		<!-- 기간 -->
+		<!-- <div class="row">
+			<div class="col-md-12">
+				<form class="form form-inline">
+					<div class="input-group">
+						<input id="dailySelect" class="form-control" type="text" name="statDate" placeholder="조회 기간 선택">
+						<span class="input-group-btn">	
+							<button class="btn btn-primary btn-block" type="button">
+								<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+							</button>
+						</span>
+					</div>
+				</form>
+			</div>
+		</div> -->
 		<div class="row">
 			<div class="col-md-12 text-center">
 				<div class="btn-group-vertical" role="group">
@@ -36,27 +51,6 @@
 				</div>
 			</div>
 		</div>
-		<hr>
-		<div class="row">
-			<div class="col-md-12 text-center">
-				<div class="btn-group-vertical" role="group">
-					<label class="control-label" for="countSort">결제일시</label>
-					<button class="btn btn-default" type="button" value="3">결제일시▲ </button>
-					<button class="btn btn-default" type="button" value="4">결제일시▼ </button>
-				</div>
-			</div>
-		</div>
-		<hr>
-		<div class="row">
-			<div class="col-md-12 text-center">
-				<div class="btn-group-vertical" role="group">
-					<label class="control-label" for="idSort">결제금액</label>
-					<button class="btn btn-default" type="button" value="5">결제금액▲ </button>
-					<button class="btn btn-default" type="button" value="6">결제금액▼ </button>
-				</div>
-			</div>
-		</div>
-		<hr>
     </div>
   </div>
 </div>

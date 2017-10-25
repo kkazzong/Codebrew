@@ -8,7 +8,7 @@
 	.image {
 		width : 100%;
 		height : 300px;
-		background : url('/resources/uploadFile/noresult.jpg') no-repeat center center;
+		background : url('/resources/image/ui/noresult.jpg') no-repeat center center;
 		opacity: 0.7;
 	}
 	.image .text {

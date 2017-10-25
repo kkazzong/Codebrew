@@ -183,5 +183,32 @@
 		/* display: none; */
 	}
 </style>
-<canvas id="dailyChart"></canvas>
+
+		<!-- 기간별 검색 -->
+		<div class="row">
+			<div class="col-md-offset-3 col-md-6">
+				<div class="row">
+					<div class="col-md-12">
+						<form class="form form-inline">
+							<div class="form-group">
+								<label for="기간 선택">기간 선택</label>
+								<!-- <input class="form-control" type="text" name="startDate">
+								<input class="form-control" type="text" name="endDate"> -->
+								<div class="input-group">
+									<input id="dailySelect" class="form-control" type="text" name="statDate">
+									<div class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar"></span>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<button class="btn btn-default" type="button">조회하기</button>
+							</div>
+						</form>
+					</div>
+				</div>			
+			</div>
+		</div>
+		
+		<canvas id="dailyChart"></canvas>
 <!-- <div id="chartDiv"></div> -->

@@ -22,12 +22,12 @@
 			currentSeconds = '<span style="color:#de1951;">' + currentSeconds
 					+ '</span>'
 		}
-		var innerHTML = "<span class='glyphicon glyphicon-time'></span>  " + calendar + " "+ currentHours + ":" + currentMinute +
-		":" + currentSeconds +" <span style='font-size:20px;'>" + amPm+ "</span>"; //날짜를 출력해 줌
+		var innerHTML = calendar + " "+ currentHours + ":" + currentMinute +
+		":" + currentSeconds +" <span style='font-size:10px;'>" + amPm+ "</span>"; //날짜를 출력해 줌
 		
 		$("#clock").html(innerHTML);
 
-		setTimeout("printClock()", 1000); // 1초마다 printClock() 함수 호출
+		//setTimeout("printClock()", 1000); // 1초마다 printClock() 함수 호출
 	}
 
 	function addZeros(num, digit) { // 자릿수 맞춰주기
@@ -47,14 +47,14 @@
 </script>
 <style type="text/css">
 	#clock {
-		border : 1px solid #dedede;
+		/* border : 1px solid #dedede;
 		width : 100%;
-		height : 50px;
-		line-height : 50px;
-		color : #666;
-		font-size : 20px;
+		height : 50px; */
+		/* line-height : 50px;
+		color : #666; */
+		font-size : 10px;
 		text-align : center;
 	}
 </style>
-<div id="clock"></div>
+<span id="clock"></span>
 

@@ -60,14 +60,10 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 	
 	@Value("#{imageRepositoryProperties['qrCode']}")
 	private String qrCodePath;
-	
 
-	private Purchase purchase;
-	public static final String ISO_8601_24H_FULL_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
 
 	//Constructor
 	public PurchaseDAOImpl() {
-		// TODO Auto-generated constructor stub
 		System.out.println(this.getClass());
 	}
 
@@ -77,11 +73,9 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 		String flag = purchase.getTicket().getTicketFlag();
 		System.out.println("@@@@@@@@@@"+flag);
 		
-			
 		// 기본티켓, 무료티켓일때
 		if (purchase.getTicket().getTicketFlag() == null || purchase.getTicket().getTicketFlag().equals("free")) {
 
-			System.out.println("@@@@@@@요기서 에러..?");
 			// 원래 티켓 수량
 			int originTicketCount = purchase.getTicket().getTicketCount();
 
@@ -91,8 +85,6 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			// 원래수량 - 구매수량 으로 티켓수량 업데이트
 			ticketDAO.updateTicketCount(purchase.getTicket());
 		}
-		purchase.setQrCode(this.createQRCode(path));
-		
 		if(purchase.getPurchaseFlag().equals("2")) {
 			PartyMember partyMember = new PartyMember();
 			User user = purchase.getUser();
@@ -103,8 +95,9 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			partyMember.setParty(purchase.getTicket().getParty());
 			partyDAO.joinParty(partyMember);
 		}
-		
-		return sqlSession.insert("PurchaseMapper.addPurchase", purchase);
+		sqlSession.insert("PurchaseMapper.addPurchase", purchase);
+		purchase.setQrCode(this.createQRCode(path, purchase.getPurchaseNo()));
+		return sqlSession.update("PurchaseMapper.updateQrCode", purchase);
 	}
 
 	@Override
@@ -133,9 +126,6 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 				list = sqlSession.selectList("PurchaseMapper.getPurchaseList", map);
 				break;
 		}
-		/*for(Purchase purchase : list) {
-			purchase.setPurchaseFlag(purchaseFlag);
-		}*/
 		return list;
 	}
 
@@ -169,290 +159,9 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 		return sqlSession.update("PurchaseMapper.updatePurchaseDeleteFlag", purchaseNo);
 	}
 
-	@Override
-	public Purchase readyPayment(Purchase purchase) {
-
-		System.out.println("[KakaoPayDAOImpl] : " + purchase);
-
-		String kakaoPayOpenAPIURL = "https://kapi.kakao.com/v1/payment/ready";
-
-		try {
-
-			URL url = new URL(kakaoPayOpenAPIURL);
-			HttpURLConnection con = (HttpURLConnection) url.openConnection();
-			con.setRequestMethod("POST");
-			con.setRequestProperty("Authorization", "KakaoAK d724824032139f17d0d222f4abd50495");
-			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-			con.setRequestProperty("charset", "utf-8");
-			con.setDoOutput(true);
-
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("cid", "TC0ONETIME");
-			map.put("partner_order_id", "partner_order_id");
-			map.put("partner_user_id", "partner_user_id");
-			map.put("item_name", purchase.getItemName()); //축제명or파티명
-			map.put("approval_url", "http://127.0.0.1:8080/purchase/approvePayment");
-			map.put("fail_url", "http://127.0.0.1:8080/kakaoPay/failKakaoPay.jsp");
-			map.put("cancel_url", "http://127.0.0.1:8080/purchase/cancelPayment");
-			/*map.put("approval_url", "http://192.168.0.7:8080/purchase/approvePayment");
-			map.put("fail_url", "http://192.168.0.7:8080/kakaoPay/failKakaoPay.jsp");
-			map.put("cancel_url", "http://192.168.0.7:8080/kakaoPay/cancelKakaoPay.jsp");*/
-			//map.put("user_phone_number", "01030343783");
-			map.put("quantity", new Integer(purchase.getPurchaseCount()));
-			map.put("total_amount", new Integer(purchase.getPurchasePrice()));
-			map.put("tax_free_amount", new Integer(0));
-
-			Writer writer = new OutputStreamWriter(con.getOutputStream());
-			writer.write(mapToParams(map));
-			writer.flush();
-
-			int responseCode = con.getResponseCode();
-
-			BufferedReader br = null;
-
-			if (responseCode == 200) {
-				br = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
-			} else { 
-				br = new BufferedReader(new InputStreamReader(con.getErrorStream(), "UTF-8"));
-			}
-
-			JSONObject jsonObject = (JSONObject) JSONValue.parse(br);
-			System.out.println("mapping json : " + jsonObject);
-
-			purchase.setTid(jsonObject.get("tid").toString());
-			purchase.setPaymentNo(jsonObject.get("tid").toString());
-			purchase.setNextRedirectPcUrl(jsonObject.get("next_redirect_pc_url").toString());
-			purchase.setNextRedirectMobileUrl(jsonObject.get("next_redirect_mobile_url").toString());
-			this.setPurchase(purchase);
-
-			System.out.println("binding purchase : " + purchase);
-
-			// ObjectMapper objectMapper = new ObjectMapper();
-			// String json = objectMapper.writeValueAsString(kakaoPay);
-			// System.out.println("json���� ���� : " + json);
-			br.close();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return purchase;
-	}
-
-	@Override
-	public Purchase approvePayment(String pgToken) {
-
-		String kakaoPayOpenAPIURL = "https://kapi.kakao.com/v1/payment/approve";
-		// Purchase purchase = null;
-		Purchase purchase = this.getPurchaseDomain();
-		System.out.println("approve purchase : " + purchase);
-		try {
-			URL url = new URL(kakaoPayOpenAPIURL);
-			HttpURLConnection con = (HttpURLConnection) url.openConnection();
-			con.setRequestMethod("POST");
-			con.setRequestProperty("Authorization", "KakaoAK d724824032139f17d0d222f4abd50495");
-			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-			con.setRequestProperty("charset", "utf-8");
-			con.setDoOutput(true);
-
-			// purchase = new Purchase();
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("cid", "TC0ONETIME");
-			map.put("tid", this.purchase.getTid());
-			map.put("partner_order_id", "partner_order_id");
-			map.put("partner_user_id", "partner_user_id");
-			map.put("pg_token", pgToken);
-
-			Writer writer = new OutputStreamWriter(con.getOutputStream());
-			writer.write(mapToParams(map));
-			writer.flush();
-
-			// Response Code GET
-			int responseCode = con.getResponseCode();
-
-			BufferedReader br = null;
-
-			if (responseCode == 200) {
-				br = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
-			} else { // ���� �߻�
-				br = new BufferedReader(new InputStreamReader(con.getErrorStream(), "UTF-8"));
-			}
-
-			JSONObject jsonObject = (JSONObject) JSONValue.parse(br);
-			System.out.println("mapping�� ���̽�  : " + jsonObject);
-
-			purchase.setAid(jsonObject.get("aid").toString());
-			purchase.setPaymentNo(jsonObject.get("tid").toString());
-			purchase.setTid(jsonObject.get("tid").toString());
-			purchase.setCid(jsonObject.get("cid").toString());
-			purchase.setPartnetOrderId(jsonObject.get("partner_order_id").toString());
-			purchase.setPartnerUserId(jsonObject.get("partner_user_id").toString());
-			purchase.setPaymentMethodType(jsonObject.get("payment_method_type").toString());
-			purchase.setItemName(jsonObject.get("item_name").toString());
-			purchase.setPurchaseCount(new Integer(jsonObject.get("quantity").toString()));
-
-			Map amount = new HashMap();
-			amount = (Map) jsonObject.get("amount");
-			purchase.setPurchasePrice(new Integer(amount.get("total").toString()));
-
-			long unixSeconds = 1372339860;
-			Date date = new Date(unixSeconds * 1000L);
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-			// GMT
-			sdf.setTimeZone(TimeZone.getTimeZone("GMT+9"));
-			date = sdf.parse(jsonObject.get("approved_at").toString());
-			String formattedDate = sdf.format(date);
-			formattedDate = formattedDate.replaceAll("T", " ");
-			System.out.println(formattedDate);
-			System.out.println(date.toString());
-
-			SimpleDateFormat origin = new SimpleDateFormat(ISO_8601_24H_FULL_FORMAT);
-			// SimpleDateFormat origin = new SimpleDateFormat("yyyy-MM-dd");
-			// SimpleDateFormat origin2 = new SimpleDateFormat("HH:mm:ss");
-			// Date date = origin.parse(jsonObject.get("approved_at").toString());
-			// Date date2 = origin2.parse(jsonObject.get("approved_at").toString());
-			purchase.setPurchaseDate(formattedDate);
-			// purchase.setPurchaseDate(jsonObject.get("approved_at").toString());
-			System.out.println(date.toString());
-			// System.out.println(date2.getTime());
-
-			//purchase.setQrCode(this.createQRCode());
-
-			switch (purchase.getPurchaseFlag()) {
-			case "1": //festival
-				// purchase.setFestival(this.getPurchaseDomain().getFestival());
-				break;
-			case "2": //party
-				// purchase.setParty(this.getPurchaseDomain().getParty());
-				break;
-			}
-			// kakaoPay.setApproved_at(new Date(jsonObject.get("approved_at").toString()));
-			// this.setPurchase(purchase);
-
-			System.out.println("binding purchase : " + purchase);
-
-			// ObjectMapper objectMapper = new ObjectMapper();
-			// String json = objectMapper.writeValueAsString(kakaoPay);
-			// System.out.println("json���� ���� : " + json);
-			br.close();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return purchase;
-	}
-
-	@Override
-	public int cancelPayment(Purchase purchase) {
-
-		System.out.println("[cancelPayment] : ");
-
-		String kakaoPayOpenAPIURL = "https://kapi.kakao.com/v1/payment/cancel";
-		System.out.println(purchase);
-		int updatePurchaseResult = 0;
-		try {
-
-			URL url = new URL(kakaoPayOpenAPIURL);
-			HttpURLConnection con = (HttpURLConnection) url.openConnection();
-			con.setRequestMethod("POST");
-			con.setRequestProperty("Authorization", "KakaoAK d724824032139f17d0d222f4abd50495");
-			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-			con.setRequestProperty("charset", "utf-8");
-			con.setDoOutput(true);
-
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("cid", "TC0ONETIME");
-			map.put("tid", purchase.getPaymentNo());
-			map.put("cancel_amount", new Integer(purchase.getPurchasePrice()));
-			map.put("cancel_tax_free_amount", new Integer(0));
-
-			Writer writer = new OutputStreamWriter(con.getOutputStream());
-			writer.write(mapToParams(map));
-			writer.flush();
-
-			int responseCode = con.getResponseCode();
-
-			BufferedReader br = null;
-
-			if (responseCode == 200) {
-				br = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
-			} else { // 
-				br = new BufferedReader(new InputStreamReader(con.getErrorStream(), "UTF-8"));
-			}
-
-			JSONObject jsonObject = (JSONObject) JSONValue.parse(br);
-			System.out.println("mapping json  : " + jsonObject);
-
-			if (jsonObject.get("status").equals("CANCEL_PAYMENT")) {
-				System.out.println("결제취소");
-				purchase.setTranCode("2"); //2 : 결제취소
-			}
-			purchase.setAid(jsonObject.get("aid").toString());
-			purchase.setPaymentNo(jsonObject.get("tid").toString());
-			purchase.setCid(jsonObject.get("cid").toString());
-			purchase.setPartnetOrderId(jsonObject.get("partner_order_id").toString());
-			purchase.setPartnerUserId(jsonObject.get("partner_user_id").toString());
-			purchase.setPaymentMethodType(jsonObject.get("payment_method_type").toString());
-			purchase.setItemName(jsonObject.get("item_name").toString());
-			purchase.setPurchaseCount(new Integer(jsonObject.get("quantity").toString()));
-
-			Map amount = new HashMap();
-			amount = (Map) jsonObject.get("amount");
-			purchase.setPurchasePrice(new Integer(amount.get("total").toString()));
-
-			SimpleDateFormat origin = new SimpleDateFormat(ISO_8601_24H_FULL_FORMAT);
-			Date date = origin.parse(jsonObject.get("canceled_at").toString()); // 결제취소시각
-			purchase.setPurchaseDate(date.toString());
-			// purchase.setPurchaseDate(jsonObject.get("canceled_at").toString());
-			System.out.println(origin);
-			System.out.println(date.toString());
-
-			System.out.println("binding purchase: " + purchase);
-
-			// ObjectMapper objectMapper = new ObjectMapper();
-			// String json = objectMapper.writeValueAsString(kakaoPay);
-			// System.out.println("json���� ���� : " + json);
-			br.close();
-			
-			purchase.setTranCode("2");
-			
-			updatePurchaseResult = this.updatePurchaseTranCode(purchase);
-			/*if(updatePurchaseResult == 1) {
-				
-				Ticket ticket =  ticketDAO.getTicketByTicketNo(purchase.getTicket().getTicketNo());
-				int plusCount = ticket.getTicketCount() + purchase.getPurchaseCount();
-				ticket.setTicketCount(plusCount);
-			
-				int updateTicketResult = ticketDAO.updateTicketCount(ticket);
-				if(updateTicketResult == 1) {
-					cancelResult = 1;
-					if(purchase.getPurchaseFlag().equals("2")) {
-						partyDAO.cancelParty(ticket.getParty().getPartyNo(), purchase.getUser().getUserId());
-					}
-				} else {
-					cancelResult = 0;
-				}
-			}*/
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return updatePurchaseResult;
-	}
-	
-	@Override
-	public int getTotalCount(String userId, Search search) {
-		System.out.println(search);
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("search", search);
-		map.put("userId", userId);
-		return sqlSession.selectOne("PurchaseMapper.getTotalCount", map);
-	}
-
 	//create qrcode image
 	@Override
-	public QRCode createQRCode(String path) {
+	public QRCode createQRCode(String path, int purchaseNo) {
 		QRCode qrCode = null;
 		try {
 			File file = null;
@@ -465,7 +174,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			if (!file.exists()) {
 				file.mkdirs();
 			}
-			String url = "http://127.0.0.1:8080/view/purchase/getPurchase.jsp";
+			String url = "http://127.0.0.1:8080/purchase/getPurchase?purchaseNo="+purchaseNo;
 			qrCode = new QRCode();
 			qrCode.setQrCodeResult(url);
 			//code
@@ -499,34 +208,31 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 		}
 		return qrCode;
 	}
-
-	// getter, setter
-	public void setPurchase(Purchase purchase) {
-		this.purchase = purchase;
+	
+	@Override
+	public int getTotalCount(String userId, Search search) {
+		System.out.println(search);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("search", search);
+		map.put("userId", userId);
+		return sqlSession.selectOne("PurchaseMapper.getTotalCount", map);
 	}
 
-	public Purchase getPurchaseDomain() {
-		return this.purchase;
+	
+	// Method(KakaoPay)
+	@Override
+	public Purchase readyPayment(Purchase purchase) {
+		return null;
 	}
 
-	public void setSqlSession(SqlSession sqlSession) {
-		this.sqlSession = sqlSession;
+	@Override
+	public Purchase approvePayment(String pgToken) {
+		return null;
 	}
 
-	//map To Params
-	public static String mapToParams(Map<String, Object> map) {
-		StringBuilder paramBuilder = new StringBuilder();
-		for (String key : map.keySet()) {
-			paramBuilder.append(paramBuilder.length() > 0 ? "&" : "");
-			try {
-				paramBuilder.append(String.format("%s=%s", URLEncoder.encode(key, "UTF-8"),
-						URLEncoder.encode(map.get(key).toString(), "UTF-8")));
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return paramBuilder.toString();
+	@Override
+	public int cancelPayment(Purchase purchase) {
+		return 0;
 	}
 
 }

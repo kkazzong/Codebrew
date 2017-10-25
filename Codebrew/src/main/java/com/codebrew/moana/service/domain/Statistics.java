@@ -8,6 +8,8 @@ public class Statistics {
 	private int totalCount; // 총판매수량
 	private String statFlag; // 통계플래그 [1:일단위,2:월단위,3:분기단위]
 	private String statDate; // 날짜
+	private String startDate; // 조회시 시작날짜
+	private String endDate; // 조회시 끝 날짜
 
 	// Constructor
 	public Statistics() {
@@ -54,10 +56,27 @@ public class Statistics {
 		this.statDate = statDate;
 	}
 
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
 	@Override
 	public String toString() {
 		return "Statistics [purchase=" + purchase + ", totalPrice=" + totalPrice + ", totalCount=" + totalCount
-				+ ", statFlag=" + statFlag + ", statDate=" + statDate + "]";
+				+ ", statFlag=" + statFlag + ", statDate=" + statDate + ", startDate=" + startDate + ", endDate="
+				+ endDate + "]";
 	}
 
 }

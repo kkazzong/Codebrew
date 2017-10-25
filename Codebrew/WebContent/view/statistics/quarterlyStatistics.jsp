@@ -117,6 +117,33 @@
 		});
 	}
 	
+ 	$(function() {
+ 		
+		var date = new Date();
+
+		var year = date.getFullYear();
+
+		var selectValue = $("#year");
+
+		var optionIndex = 0;
+		
+
+		for(var i = year; i >= year-100; i--){
+				console.log(i);
+				$("select[name='statDate']").append("<option value="+i+">"+i+"년</option>");                        
+
+		}
+		
+	  $("select[name='statDate']").on("change", function(){
+		  alert($(this).val());
+			fncSearchChartData(3, $(this).val());
+		});
+		
+ 	});
+
+
+
+	
 </script>
 <style type="text/css">
 	#chartPie {
@@ -125,4 +152,16 @@
 		/* display: none; */
 	}
 </style>
-<canvas id="quater" ></canvas>
+
+	<form class="form form-inline">
+		<div class="form-group">
+			<label for="년도 선택">년도 선택</label>
+			<div class="input-group">
+				<select class="form-control" name="statDate">
+					<option>년도선택</option>
+				</select>
+			</div>
+		</div>
+	</form>
+	
+	<canvas id="quater" ></canvas>

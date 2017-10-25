@@ -30,11 +30,40 @@
 <!-- Amchart dataloader plugin -->
 <script src="//www.amcharts.com/lib/3/plugins/dataloader/dataloader.min.js" type="text/javascript"></script>
 
+<!-- jQuery ui -->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+
+<!-- Include Required Prerequisites -->
+<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<!-- Include Date Range Picker -->
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
 
 <script type="text/javascript">
 	
 	/////////////////////////////////////////////amChart getData////////////////////////////////////////////////////////
 	var datas = [];
+	
+	function fncSearchChartData(statFlag, statDate) {
+		
+		$.ajax({
+			url : "/statisticsRest/json/getStatistics",
+			method : "POST",
+			data : JSON.stringify({
+				statFlag : statFlag,
+				statDate : statDate
+			}),
+			dataType : "json",
+			headers : {
+				"Accept" : "application/json",
+				"Content-Type" : "application/json"
+			},
+			success : function(JSONData, status){
+				alert(status);
+			}
+		});
+	}
 	
 	function getChartData(statFlag) {
 		
@@ -43,7 +72,7 @@
 		
 		$.ajax({
 			url : "/statisticsRest/json/getStatistics/"+statFlag,
-			method : "get",
+			method : "GET",
 			dataType : "json",
 			headers : {
 				"Accept" : "application/json"//,
@@ -331,6 +360,70 @@
 			
 		});
 		
+		//datepicker 설정
+		/* $.datepicker.setDefaults({
+	        dateFormat: 'yy-mm-dd',
+	        monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+	        monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+	        dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+	        dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+	        dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+	        showMonthAfterYear: true,
+	        yearSuffix: '년',
+	        changeMonth: true,
+			changeYear : true,
+			buttonImageOnly: true,
+		    buttonText: "Select date",
+		    showOn: "button",
+		    buttonImage: "/resources/image/ui/cal.png",
+		    yearRange : "1990:2017"
+    	}); */
+		
+		/* $("input:text").each(function(){}).datepicker().bind('change', function(){
+			$(this).val($(this).datepicker().val());
+		}); */
+		
+		//daterangepicker
+		$("#dailySelect").daterangepicker({
+			/* autoApply: true, */
+		    dateLimit: {
+		        months : 1
+		    },
+			locale: {
+				format : "YYYY-MM-DD",
+			    daysOfWeek : ['일', '월', '화', '수', '목', '금', '토'],
+			    monthNames : ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+			    firstDay : 1,
+			    cancelLabel: "취소",
+			    applyLabel : "적용"
+			 },
+			 minDate : "1990-01-01",
+			 showDropdowns: true,
+			 applyClass: "btn-primary",
+			 ranges: {
+		           '오늘': [moment(), moment()],
+		           '어제': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+		           '지난 7일': [moment().subtract(6, 'days'), moment()],
+		           '지난 30일': [moment().subtract(29, 'days'), moment()],
+		           '이번 달': [moment().startOf('month'), moment().endOf('month')],
+		           '저번 달': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+		      },
+			  function(start, end, label) {
+		    	console.log(start)
+		    	alert("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+		      }
+		});
+		
+		//날짜 골랐을때
+		$("#dailySelect").on("apply.daterangepicker", function(picker) {
+			console.log($(this).val());
+			fncSearchChartData(1);
+		});
+		
+		$("#dailySelect").on("cancel.daterangepicker", function(picker) {
+			$(this).val('');
+		});
+		
 	});
 </script>
 <style type="text/css">
@@ -372,6 +465,11 @@
 	.amcharts-pie-slice:hover {
 		transform: scale(1.1);
 		filter: url(#shadow);
+	}
+	
+	.ui-datepicker-trigger {
+		width : 20px;
+		height : 20px;
 	}
 	
 	/* div {
@@ -446,6 +544,45 @@
 		
 		<input type="hidden" name="statFlag" value="${statistics.statFlag}">
 		
+		<!-- <!-- 기간별 검색 
+		<div class="row">
+			<div class="col-md-offset-3 col-md-6">
+				<div class="row">
+					<div class="col-md-12">
+						<form class="form form-inline">
+							<div class="form-group">
+								<label for="기간 선택">기간 선택</label>
+								<input class="form-control" type="text" name="startDate">
+								<input class="form-control" type="text" name="endDate">
+								<div class="input-group">
+									<input class="form-control" type="text" name="statDate">
+									<div class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar"></span>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<button class="btn btn-default" type="button">조회하기</button>
+							</div>
+						</form>
+					</div>
+				</div>			
+			</div>
+		</div> -->
+		
+		<div class="row">
+			<div class="col-md-offset-3 col-md-6">
+				<div class="row">
+					<div class="col-md-12">
+						<button class="btn btn-default">
+							<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> 
+						</button>
+						<small>최근 새로고침 : <jsp:include page="/view/statistics/clock.jsp"></jsp:include> </small>
+					</div>
+				</div>			
+			</div>
+		</div>
+		
 		<!-- 통계차트 -->
 		<div class="row">
 			<div class="col-md-offset-3 col-md-6">
@@ -456,7 +593,6 @@
 							<!-- 일단위 판매통계 -->
 						    <div role="tabpanel" class="tab-pane active" id="daily">
 						    	<div class="page-header">
-								  <h4>일단위 판매통계</h4>
 								</div>
 								<!-- <div id="chartDiv"></div> -->
 								<jsp:include page="/view/statistics/dailyStatistics.jsp"></jsp:include>
@@ -464,7 +600,6 @@
 						    <!-- 월단위 판매통계 -->
 						    <div role="tabpanel" class="tab-pane" id="monthly">
 						    	<div class="page-header">
-								  <h4>월단위 판매통계</h4>
 								</div>
 								<!-- <div id="chartLine"></div> -->
 								<jsp:include page="/view/statistics/monthlyStatistics.jsp"></jsp:include>
@@ -472,7 +607,6 @@
 						    <!-- 분기단위 판매통계 -->
 						    <div role="tabpanel" class="tab-pane" id="quarter">
 						    	<div class="page-header">
-								  <h4>분기단위 판매통계</h4>
 								</div>
 						    	<!-- <div id="chartPie"></div> --> 
 						    	<jsp:include page="/view/statistics/quarterlyStatistics.jsp"></jsp:include>

@@ -28,12 +28,50 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
 
+<!-- Include Required Prerequisites -->
+<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<!-- Include Date Range Picker -->
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+
 <script type="text/javascript">
 	
 	function fncGetList(currentPage) {
 		console.log("페이지클릭 : "+currentPage);
-		$("#currentPage").val(currentPage);
-		$("#searchForm").attr("method", "POST").attr("action", "/purchase/getPurchaseList").submit();
+		var startDate = $("#startDate").val();
+		if(startDate != null && startDate != '') {
+			alert("데이트서치");
+			$("#currentPageDate").val(currentPage);
+			$("#dateSearchForm").attr("method", "POST").attr("action", "/purchase/getPurchaseList").submit();
+		} else {
+			$("#currentPage").val(currentPage);
+			alert("서치키워드 + "+$("#searchKeyword").val());
+			if($("#searchKeyword").val() != null && $("#searchKeyword").val() != '') {
+				$("input:hidden[name='searchCondition']").val(5);
+			}
+			alert($("#searchForm").serialize());
+			$("#searchForm").attr("method", "POST").attr("action", "/purchase/getPurchaseList").submit();
+		}
+	}
+	
+	function fncSearchDate() {
+		$("#currentPageDate").val("1");
+		$("#dateSearchForm").attr("method", "POST").attr("action", "/purchase/getPurchaseList").submit();
+	}
+	
+	function fncSortList(arrange) {
+		//alert(arrange);
+		//$("#currentPageSort").val("1");
+		//$("input:hidden[name='arrange']").val(arrange);
+		//alert($("#sortForm").serialize());
+		//$("#sortForm").attr("method", "POST").attr("action", "/purchase/getPurchaseList").submit();
+		$("#searchKeyword").val('');
+		if(arrange == 1 || arrange == 2) {
+			alert("축제파티티켓 정렬");
+			$("input:hidden[name='searchCondition']").val(arrange);
+			alert($("#searchCondition").val());
+			fncGetList(1);
+		}
 	}
 
 	$(function(){
@@ -45,8 +83,13 @@
 			self.location = "/purchase/getPurchaseList?userId="+userId;
 		})
 		
+		
+		
 		//enter key 검색
-		$("#searchKeyword").on("keydown", function(event){
+		$("#searchKeyword").on("click", function(){
+			$("#startDate").val('');
+			$("#endDate").val('');
+		}).on("keydown", function(event){
 			
 			if(event.keyCode == '13') {
 				if($("#searchKeyword").val() == '') {
@@ -61,7 +104,18 @@
 		});
 		
 		//검색버튼
-		$(".btn:contains('검색')").on("click", function(){
+		/* $(".btn:contains('검색')").on("click", function(){
+			
+			if($("#searchKeyword").val() == '') {
+				alert("검색어를 입력해주세요");
+				return;
+			}
+			fncGetList(1);
+			
+		}); */
+		
+		//검색버튼
+		$("#search").on("click", function(){
 			
 			if($("#searchKeyword").val() == '') {
 				alert("검색어를 입력해주세요");
@@ -88,6 +142,14 @@
 			console.log("조회버튼 클릭 : val = "+$(this).val());
 			self.location = "/purchase/getPurchase?purchaseNo="+$(this).val();
 		});
+		
+		
+		//조회(판넬 클릭시)
+		$(".panel-body").on("click", function(){
+			console.log($(this).find("input:hidden[name='purchaseNo']").val());
+			var purchaseNo = $(this).find("input:hidden[name='purchaseNo']").val()
+			self.location = "/purchase/getPurchase?purchaseNo="+purchaseNo;
+		})
 		
 		/* $(".btn:contains('마이티켓')").on("click", function(){
 			console.log("마이티켓 클릭");
@@ -124,6 +186,7 @@
 			purchaseFlag = null;
 		}
 		var userId = "${user.userId}";
+		
 		//autocomplete
 		$("#searchKeyword").autocomplete({
 			source: function( request, response ) {
@@ -163,6 +226,56 @@
 		          }
 		        } );
 		    }
+		});
+		
+		//판넬 높이 조절
+		var maxHeight = -1;
+
+		$('.panel').each(function() {
+			maxHeight = maxHeight > $(this).height() ? maxHeight : $(this).height();
+		});
+
+		$('.panel').each(function() {
+			 $(this).height(maxHeight);
+		});
+		
+		
+		//날짜 검색 버튼 
+		$("#dateRange").on("click", function() {
+			alert($("#dailySelect").val());
+			if($("#startDate").val() == '' || $("#startDate").val() == null) {
+				alert("조회 기간을 선택해주세요");
+				return;
+			}
+			fncSearchDate();
+		})
+		
+		//datepicker 설정
+		$.datepicker.setDefaults({
+	        dateFormat: 'yy-mm-dd',
+	        monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+	        monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+	        dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+	        dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+	        dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+	        showMonthAfterYear: true,
+	        yearSuffix: '년',
+	        changeMonth: true,
+			changeYear : true,
+			buttonImageOnly: true,
+		    yearRange : "1990:2017"
+    	});
+		
+		//datepicker로 선택시, searchkeyword는 지워지고 ~~
+		$("#startDate, #endDate").each(function(){}).datepicker().on('change', function(){
+			$(this).val($(this).datepicker().val());
+		}).on("click", function(){
+			$("#searchKeyword").val('');
+		});
+		
+		//modal에서 클릭한 버튼
+		$(".modal-content .btn").each(function(){}).on("click", function(){
+			fncSortList($(this).val());
 		});
 		
 	});
@@ -205,7 +318,7 @@
 		
 		<!-- page header -->
 		<div class="row">
-			<div class="col-md-offset-4 col-md-4">
+			<div class="col-md-12">
 				<div class="page-header text-center">
 					<h3 class="text-info"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span> 마이티켓</h3>
 				</div>
@@ -215,43 +328,57 @@
 		<!-- 데이터 수 -->
 		<div class="row">
 			<div class="col-md-12">
-				<h5>총 : ${resultPage.totalCount} 건</h5>
-				<h5>현재 : ${resultPage.currentPage} 페이지 / 총 : ${resultPage.maxPage} 페이지</h5>
+				<h5>총 : ${resultPage.totalCount} 건 (${resultPage.currentPage} / ${resultPage.maxPage})</h5>
 			</div>
 		</div>
 		
 		<!-- 정렬 -->
 		<div class="row">
-			<div class="col-md-6 ">
+			<div class="col-md-2">
 				<form class="form form-inline" id="sortForm" name="sortForm">
 					<input type="hidden" id="currentPageSort" name="currentPage" value=""/>
 					<input type="hidden" name="arrange" 
 								value="${!empty search.arrange ? search.arrange : ''}">
 					<div class="form-group">
-						<button class="btn btn-default" data-toggle="modal" 
-									 data-target=".bs-example-modal-sm" type="button">필터</button>
+						<button id="filter" class="btn btn-default" data-toggle="modal" 
+									 data-target=".bs-example-modal-sm" type="button">
+						<span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
+						</button>
+					</div>
+				</form>
+			</div>
+			<!-- 기간 -->
+			<div class="col-md-6">
+				<form class="form form-inline" id="dateSearchForm" name="dateSearchForm">
+					<div class="form-group">
+						<input type="hidden" id="currentPageDate" name="currentPage" value=""/>
+						<input type="hidden" id="searchCondition" name="searchCondition" value="6">
+						<%-- <input class="col-md-3 form-control form-inline" type="text" id="startDate" name="startDate" value="${!empty search.startDate ? search.startDate : ''}" placeholder="조회 기간 선택">
+						<input class="col-md-3 form-control form-inline" type="text" id="endDate" name="endDate" value="${!empty search.endDate ? search.endDate : ''}" placeholder="조회 기간 선택"> --%>
+						<span class="input-group-btn">	
+							<button id="dateRange" class="btn btn-primary btn-block" type="button">
+								<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+							</button>
+						</span>
 					</div>
 				</form>
 			</div>
 			<!-- 검색 -->
-			<div class="col-md-6 text-right">
+			<div class="col-md-4 text-right">
 				<form class="form form-inline" id="searchForm" name="searchForm">
 					<input type="hidden" id="currentPage" name="currentPage" value=""/>
 					<input type="hidden" id="purchaseFlag" name="purchaseFlag" value="${purchaseFlag}"/>
 					<input type="hidden" name="userId" value="${user.userId}">
-					<div class="form-group">
-						<select class="form-control" id="searchCondition" name="searchCondition" class="form-group">
-							<option value="" selected>선택</option>
-							<option value="5" ${!empty search.searchCondition and search.searchCondition == 5 ? "selected" : "" }>티켓명</option>
-						</select>
-					</div>
-					<div class="form-group">
+					<input type="hidden" id="searchCondition" name="searchCondition" value="${!empty search.searchCondition ? search.searchCondition : ''}">
+					<div class="input-group">
 						<input class="form-control" id="searchKeyword" name="searchKeyword" type="text" 
 									value="${!empty search.searchKeyword ? search.searchKeyword : ''}"
-									placeholder="검색조건 선택">
-					</div>
-					<div class="form-group">
-						<button class="btn btn-primary" type="button">검색</button>
+									placeholder="축제 or 파티 이름으로 검색">
+						<span class="input-group-btn">
+					    	<button id="search" class="btn btn-primary btn-block" type="button">
+					    		<span class="glyphicon glyphicon-search" aria-hidden="true"> 
+					    	</button>
+					    </span>
 					</div>
 				</form>
 			</div>
@@ -283,7 +410,8 @@
 				<div class="col-md-6">
 						<div class="panel panel-primary">
 							<div class="panel-heading">
-								<h3 class="panel-title pull-left">${i} 티켓</h3>
+								<h3 class="panel-title pull-left">${i} ${purchase.itemName}티켓</h3>
+								<!-- 삭제버튼 -->
 								<form id="deleteForm">
 										<input type="hidden" name="purchaseNo" value="${purchase.purchaseNo}">
 										<button class="btn btn-default pull-right" type="button" value="${purchase.purchaseNo}">
@@ -293,8 +421,9 @@
         						<div class="clearfix"></div>
 							</div>
 							<div class="panel-body">
+								<input type="hidden" name="purchaseNo" value="${purchase.purchaseNo}">
 								<!-- 축제티켓 -->
-								<c:if test="${!empty purchase.ticket.festival}">
+								 <c:if test="${!empty purchase.ticket.festival}">
 									<img width="100%" height="300" src="${purchase.ticket.festival.festivalImage}">
 									<hr>
 									<div class="col-md-12">
@@ -370,7 +499,7 @@
 								<hr>
 								<div class="row">
 									<c:if test="${purchase.tranCode == 1}">
-										<button class="col-md-12 btn btn-default btn-block" type="button" value="${purchase.purchaseNo}">조회</button>
+										<%-- <button class="col-md-12 btn btn-default btn-block" type="button" value="${purchase.purchaseNo}">조회</button> --%>
 									</c:if>
 									<%-- <form id="deleteForm">
 										<input type="hidden" name="purchaseNo" value="${purchase.purchaseNo}">

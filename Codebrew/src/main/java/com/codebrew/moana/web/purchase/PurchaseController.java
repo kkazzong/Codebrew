@@ -81,7 +81,7 @@ public class PurchaseController {
 
 			System.out.println("디즈이즈 축제");
 
-			Festival festival = festivalService.getFestival(Integer.parseInt(festivalNo));
+			Festival festival = festivalService.getFestivalDB(Integer.parseInt(festivalNo));
 			ticket = ticketService.getTicket(festival.getFestivalNo(), "1");
 
 			//redirectAttributes.addFlashAttribute("festival", festival.getClass());
@@ -134,24 +134,23 @@ public class PurchaseController {
 
 		return modelAndView;
 	}
+	
+	@RequestMapping(value = "getPurchase", method = RequestMethod.GET)
+	public ModelAndView getPurchase(@RequestParam("purchaseNo") int purchaseNo) {
 
-	@RequestMapping(value = "approvePayment")
-	public ModelAndView approvePurchase(HttpSession session, @RequestParam("pg_token") String pgToken) throws Exception {
+		System.out.println(purchaseNo);
 
-		System.out.println(pgToken);
-		String path = session.getServletContext().getRealPath("/");
-		path += "\\resources\\image\\QRCodeImage";
-		System.out.println(path);
-		Purchase purchase = purchaseService.approvePayment(pgToken, path);
-
+		Purchase purchase = purchaseService.getPurchase(purchaseNo);
+		Ticket ticket = ticketService.getTicketByTicketNo(purchase.getTicket().getTicketNo());
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("purchase", purchase);
-		modelAndView.setViewName("/view/purchase/approvePayment.jsp");
-
+		modelAndView.addObject("ticket", ticket);
+		//modelAndView.setViewName("/view/purchase/getPurchase.jsp");
+		modelAndView.setViewName("/view/purchase/getPurchaseTest.jsp");
 		return modelAndView;
 
 	}
-
+	
 	@RequestMapping(value = "getPurchaseList")
 	public ModelAndView getPurchaseList(HttpSession session,
 																	@ModelAttribute("search") Search search,
@@ -163,7 +162,6 @@ public class PurchaseController {
 		 * if(purchaseFlag == null) { purchaseFlag = "1"; //default is festival }
 		 */
 		System.out.println(purchaseFlag);
-
 		if (search.getCurrentPage() == 0) {
 			search.setCurrentPage(1);
 		}
@@ -184,10 +182,35 @@ public class PurchaseController {
 
 		return modelAndView;
 	}
+	
+	@RequestMapping(value = "getSaleList")
+	public ModelAndView getSaleList(@ModelAttribute("search") Search search) {
 
+		System.out.println(search);
+		
+		if (search.getCurrentPage() == 0) {
+			search.setCurrentPage(1);
+		}
+		search.setPageSize(pageSize);
+		
+		Map<String, Object> map = purchaseService.getSaleList(search);
+
+		Page resultPage = new Page(search.getCurrentPage(), ((Integer) (map.get("totalCount"))).intValue(), pageUnit,
+				pageSize);
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("list", map.get("list"));
+		modelAndView.addObject("resultPage", resultPage);
+		modelAndView.addObject("search", search);
+		modelAndView.setViewName("/view/purchase/getSaleList.jsp");
+
+		return modelAndView;
+	}
+	
 	@RequestMapping(value = "cancelPurchase", method = RequestMethod.GET)
 	public ModelAndView cancelPurchase(HttpSession session, RedirectAttributes redirectAttributes) {
-
+		
+		System.out.println("cancel GET");
 		User user = (User) session.getAttribute("user");
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("redirect:/purchase/getPurchaseList");
@@ -198,22 +221,13 @@ public class PurchaseController {
 	@RequestMapping(value = "cancelPurchase", method = RequestMethod.POST)
 	public ModelAndView cancelPurchase(HttpSession session,
 																		@ModelAttribute("purchase") Purchase purchase) throws Exception {
-
+		System.out.println("cancel POST");
 		User user = (User) session.getAttribute("user");
 		purchase = purchaseService.getPurchase(purchase.getPurchaseNo());
 		purchase.setTranCode("2");
 		purchaseService.cancelPurchase(purchase);
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("redirect:/purchase/getPurchaseList");
-
-		return modelAndView;
-	}
-	
-	@RequestMapping(value = "cancelPayment")
-	public ModelAndView cancelPayment() throws Exception {
-
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("redirect:/purchase/cancelPayment.jsp");
 
 		return modelAndView;
 	}
@@ -240,132 +254,32 @@ public class PurchaseController {
 		
 	}
 
-	@RequestMapping(value = "getSaleList")
-	public ModelAndView getSaleList(@ModelAttribute("search") Search search) {
+	////////////////////////////////////////////////////////////////KakaoPay///////////////////////////////////////////////////////////////////////////
+	
+	@RequestMapping(value = "approvePayment")
+	public ModelAndView approvePayment(HttpSession session,
+																		 @RequestParam("pg_token") String pgToken) throws Exception {
 
-		System.out.println(search);
-		
-		if (search.getCurrentPage() == 0) {
-			search.setCurrentPage(1);
-		}
-		search.setPageSize(pageSize);
-		
-		Map<String, Object> map = purchaseService.getSaleList(search);
+		System.out.println(pgToken);
+		String path = session.getServletContext().getRealPath("/");
+		path += "\\resources\\image\\QRCodeImage";
+		System.out.println(path);
+		Purchase purchase = purchaseService.approvePayment(pgToken, path);
 
-		Page resultPage = new Page(search.getCurrentPage(), ((Integer) (map.get("totalCount"))).intValue(), pageUnit,
-				pageSize);
-
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("list", map.get("list"));
-		modelAndView.addObject("resultPage", resultPage);
-		modelAndView.addObject("search", search);
-		modelAndView.setViewName("/view/purchase/getSaleList.jsp");
-
-		return modelAndView;
-	}
-
-	@RequestMapping(value = "getPurchase", method = RequestMethod.GET)
-	public ModelAndView getPurchase(@RequestParam("purchaseNo") int purchaseNo) {
-
-		System.out.println(purchaseNo);
-
-		Purchase purchase = purchaseService.getPurchase(purchaseNo);
-		Ticket ticket = ticketService.getTicketByTicketNo(purchase.getTicket().getTicketNo());
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("purchase", purchase);
-		modelAndView.addObject("ticket", ticket);
-		modelAndView.setViewName("/view/purchase/getPurchase.jsp");
+		modelAndView.setViewName("/view/purchase/approvePayment.jsp");
 
 		return modelAndView;
 
 	}
 
-	/*
-	 * public ModelAndView addFestival(@ModelAttribute("festival") Festival
-	 * festival) {
-	 * 
-	 * System.out.println("Festival ������ : "+festival);
-	 * 
-	 * festivalService.addFestival(festival); //���� ���� insert
-	 * 
-	 * Ticket �����ο� setting�� ���ֽø� �ʴ� Ticket ticket = new Ticket();
-	 * ticket.setFestival(festival);
-	 * ticket.setTicketPrice(festival.getTicketPrice());
-	 * ticket.setTicketCount(festival.getTicketCount());
-	 * 
-	 * �׷��� ���� addTicket()ȣ�� ���ּ����� ticketService.addTicket(ticket);
-	 * 
-	 * 
-	 * }
-	 * 
-	 * 
-	 * public ModelAndView getFestival(@RequestParam("festivalNo") int festivalNo) {
-	 * 
-	 * Ƽ�ϼ���, Ƽ�ϰ��� get�ϰ� ������ ��ȣ�� �÷��� �����ּ��� Ticket ticket =
-	 * ticketService.getTicket(festivalNo, "1");
-	 * 
-	 * System.out.println("Ƽ�ϵ����� : "+ticket);
-	 * System.out.println("����  = "+ticket.getTicketCount()+", ���� = "+ticket.
-	 * getTicketPrice());
-	 * 
-	 * }
-	 * 
-	 * public ModelAndView updateFestival(@ModelAttribute("festival") Festival
-	 * festival) {
-	 * 
-	 * partyService.updateParty(~~~); //��Ƽ���� update
-	 * 
-	 * Ƽ�ϼ����� ������ Ƽ�ϵ����ο� ��Ƽ� ��������~ Ticket ticket = new Ticket();
-	 * ticket.setFestival(festival);
-	 * ticket.setTicketPrice(festival.getTicketPrice());
-	 * ticket.setTicketCount(festival.getTicketCount());
-	 * 
-	 * Ticket ticket = ticketService.updateTicket(ticket);
-	 * 
-	 * System.out.println("Ƽ�ϵ����� : "+ticket);
-	 * System.out.println("����  = "+ticket.getTicketCount()+", ���� = "+ticket.
-	 * getTicketPrice());
-	 * 
-	 * }
-	 * 
-	 * public ModelAndView addParty(@ModelAttribute("party") Party party) {
-	 * 
-	 * System.out.println("Festival ������ : "+party);
-	 * 
-	 * partyService.addParty(party); //��Ƽ ���� insert
-	 * 
-	 * Ticket �����ο� setting�� ���ֽø� �ʴ� Ticket ticket = new Ticket();
-	 * ticket.setParty(party); ticket.setTicketPrice(party.getTicketPrice());
-	 * ticket.setTicketCount(party.getTicketCount());
-	 * 
-	 * �׷��� ���� addTicket()ȣ�� ���ּ����� ticketService.addTicket(ticket);
-	 * 
-	 * }
-	 * 
-	 * public ModelAndView getParty(@RequestParam("partyNo") int partyNo) {
-	 * 
-	 * Ƽ�ϼ���, Ƽ�ϰ��� get�ϰ� ������ ��ȣ�� �÷��� �����ּ��� Ticket ticket =
-	 * ticketService.getTicket(partyNo, "2");
-	 * 
-	 * System.out.println("Ƽ�ϵ����� : "+ticket);
-	 * System.out.println("����  = "+ticket.getTicketCount()+", ���� = "+ticket.
-	 * getTicketPrice()); }
-	 * 
-	 * 
-	 * public ModelAndView updateParty(@ModelAttribute("party") Party party) {
-	 * 
-	 * partyService.updateParty(~~~); //��Ƽ���� update
-	 * 
-	 * Ƽ�ϼ����� ������ Ƽ�ϵ����ο� ��Ƽ� ��������~ Ticket ticket = new Ticket();
-	 * ticket.setParty(party); ticket.setTicketPrice(party.getTicketPrice());
-	 * ticket.setTicketCount(party.getTicketCount());
-	 * 
-	 * Ticket ticket = ticketService.updateTicket(ticket);
-	 * 
-	 * System.out.println("Ƽ�ϵ����� : "+ticket);
-	 * System.out.println("����  = "+ticket.getTicketCount()+", ���� = "+ticket.
-	 * getTicketPrice());
-	 * 
-	 * }
-	 */
+	@RequestMapping(value = "cancelPayment")
+	public ModelAndView cancelPayment() throws Exception {
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("redirect:/view/purchase/cancelPayment.jsp");
+
+		return modelAndView;
+	}
 }

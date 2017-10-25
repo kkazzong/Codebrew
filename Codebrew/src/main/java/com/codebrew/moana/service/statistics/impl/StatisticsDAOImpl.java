@@ -37,14 +37,30 @@ public class StatisticsDAOImpl implements StatisticsDAO{
 	}
 	
 	@Override
+	public List<Statistics> getDailyTotalSaleAmountStat(Statistics statistics) throws Exception {
+		return sqlSession.selectList("StatisticsMapper.getDailyTotalSaleAmountStat2", statistics);
+	}
+	
+	@Override
 	public List<Statistics> getMonthlyTotalSaleAmountStat() throws Exception {
 		return sqlSession.selectList("StatisticsMapper.getMonthlyTotalSaleAmountStat");
+	}
+	
+	@Override
+	public List<Statistics> getMonthlyTotalSaleAmountStat(Statistics statistics) throws Exception {
+		return sqlSession.selectList("StatisticsMapper.getMonthlyTotalSaleAmountStat2", statistics);
 	}
 	
 	@Override
 	public List<Statistics> getQuarterTotalSaleAmountStat() throws Exception {
 		return sqlSession.selectList("StatisticsMapper.getQuarterTotalSaleAmountStat");
 	}
+	
+	@Override
+	public List<Statistics> getQuarterTotalSaleAmountStat(Statistics statistics) throws Exception {
+		return sqlSession.selectList("StatisticsMapper.getQuarterTotalSaleAmountStat2", statistics);
+	}
+
 	
 	public  void writeJson(List list) {
 		
@@ -82,4 +98,6 @@ public class StatisticsDAOImpl implements StatisticsDAO{
 		}
 		
 	}
+
+	
 }

@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codebrew.moana.service.domain.Statistics;
@@ -23,10 +25,31 @@ public class StatisticsRestController {
 		System.out.println(this.getClass());
 	}
 
-	@RequestMapping(value="json/getStatistics/{statFlag}")
+	
+	@RequestMapping(value="json/getStatistics/{statFlag}", method=RequestMethod.GET)
 	public List<Statistics> getSatistics(@PathVariable("statFlag") String statFlag) throws Exception {
 		
 		List<Statistics> list = statisticsService.getStatistic(statFlag);
+		
+		return list;
+	}
+	
+	@RequestMapping(value="json/getStatistics", method=RequestMethod.POST)
+	public List<Statistics> getSatistics(@RequestBody Statistics statistics) throws Exception {
+		
+		String date = statistics.getStatDate();
+		System.out.println("date->"+date);
+		String[] dates = date.split(" - ");
+		System.out.println("date->"+dates);
+		//어제 혹은 오늘
+		if(dates[0].equals(dates[1])) {
+			statistics.setStartDate(dates[0]);
+		} else {
+			statistics.setStartDate(dates[0]);
+			statistics.setEndDate(dates[1]);
+		}
+		
+		List<Statistics> list = statisticsService.getStatistic(statistics);
 		
 		return list;
 	}

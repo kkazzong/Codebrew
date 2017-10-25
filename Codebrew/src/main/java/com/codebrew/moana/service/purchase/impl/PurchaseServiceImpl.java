@@ -1,19 +1,30 @@
 package com.codebrew.moana.service.purchase.impl;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Purchase;
+import com.codebrew.moana.service.domain.QRCode;
 import com.codebrew.moana.service.domain.Ticket;
 import com.codebrew.moana.service.purchase.PurchaseDAO;
 import com.codebrew.moana.service.purchase.PurchaseService;
 import com.codebrew.moana.service.ticket.TicketDAO;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.client.j2se.MatrixToImageConfig;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 
 @Service("purchaseServiceImpl")
 public class PurchaseServiceImpl implements PurchaseService {
@@ -23,6 +34,10 @@ public class PurchaseServiceImpl implements PurchaseService {
 	@Qualifier("purchaseDAOImpl")
 	private PurchaseDAO purchaseDAO;
 	
+	@Autowired
+	@Qualifier("kakaoAPIDAOImpl")
+	private PurchaseDAO kakaoDAO;
+	
 	//Constructor
 	public PurchaseServiceImpl() {
 		System.out.println(this.getClass());
@@ -31,13 +46,25 @@ public class PurchaseServiceImpl implements PurchaseService {
 	//Mehtod
 	@Override
 	public Purchase readyPayment(Purchase purchase) {
-		return purchaseDAO.readyPayment(purchase);
+		return kakaoDAO.readyPayment(purchase);
 	}
 
 	@Override
 	public Purchase approvePayment(String pgToken, String path) throws Exception {
-		Purchase purchase = purchaseDAO.approvePayment(pgToken);
+		Purchase purchase = kakaoDAO.approvePayment(pgToken);
 		return this.addPurchase(purchase, path);
+	}
+	
+	@Override
+	public int cancelPayment(int purchaseNo) {
+		Purchase purchase = purchaseDAO.getPurchase(purchaseNo);
+		//int result = purchaseDAO.cancelPayment(purchase);
+		int result = kakaoDAO.cancelPayment(purchase);
+		if(result == 1) {
+			return 1;
+		} else {
+			return 0;
+		}
 	}
 
 	@Override
@@ -77,17 +104,6 @@ public class PurchaseServiceImpl implements PurchaseService {
 	}
 	
 	@Override
-	public int cancelPayment(int purchaseNo) {
-		Purchase purchase = purchaseDAO.getPurchase(purchaseNo);
-		int result = purchaseDAO.cancelPayment(purchase);
-		if(result == 1) {
-			return 1;
-		} else {
-			return 0;
-		}
-	}
-	
-	@Override
 	public int cancelPurchase(Purchase purchase) throws Exception {
 		return purchaseDAO.updatePurchaseTranCode(purchase);
 	}
@@ -96,7 +112,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 	public int deletePurchase(int purchaseNo) {
 		return purchaseDAO.deletePurchase(purchaseNo);
 	}
-
+	
 	//getter, setter
 	public void setPurchaseDAO(PurchaseDAO purchaseDAO) {
 		this.purchaseDAO = purchaseDAO;

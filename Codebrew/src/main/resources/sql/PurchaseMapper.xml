@@ -84,6 +84,12 @@
 						#{purchaseFlag:VARCHAR})
 	</insert>
 	
+	<update id="updateQrCode" parameterType="purchase">
+		UPDATE purchase
+		SET qr_code_image = #{qrCode.qrCodeImage:VARCHAR}
+		WHERE purchase_no = #{purchaseNo}
+	</update>
+	
 	<select id="getPurchase" parameterType="int" resultMap="selectPurchaseMap">
 		SELECT
 		pc.purchase_no AS purchase_no,
@@ -141,6 +147,7 @@
 								pc.purchase_count AS purchase_count,
 								pc.purchase_price AS purchase_price,
 								pc.tran_code AS tran_code,
+								pc.purchase_flag AS purchase_flag,
 								pc.item_name AS item_name
 								FROM users u, festival f, ticket t, purchase pc
 								WHERE
@@ -173,6 +180,7 @@
 								pc.purchase_count AS purchase_count,
 								pc.purchase_price AS purchase_price,
 								pc.tran_code AS tran_code,
+								pc.purchase_flag AS purchase_flag,
 								pc.item_name AS item_name
 								FROM users u, party p, ticket t, purchase pc
 								WHERE
@@ -204,6 +212,7 @@
 								p.party_image AS party_image,
 								pc.purchase_no AS purchase_no,
 								pc.payment_no AS payment_no,
+								pc.purchase_flag AS purchase_flag,
 								pc.item_name AS item_name,
 								TO_CHAR(pc.purchase_date, 'yy-mm-dd hh24:mi:ss') AS purchase_date,
 								pc.purchase_count AS purchase_count,
@@ -218,9 +227,26 @@
 								AND u.user_id = #{userId}
 								<if test="search.searchCondition != null">
 									<choose>
+										<!-- 축제티켓검색 -->
+									  	<when test="search.searchCondition == 1">
+											AND pc.purchase_flag = 1
+										</when>
+										<!-- 파티티켓 -->
+										<when test="search.searchCondition == 2">
+											AND pc.purchase_flag = 2
+										</when>
 										<!-- 티켓명검색 -->
 										<when test="search.searchCondition == 5">
 											AND pc.item_name LIKE '%${search.searchKeyword}%'
+										</when>
+										<!-- 날짜별 검색 -->
+										<when test="search.searchCondition == 6">
+											<if test="search.endDate == null">
+												AND TO_CHAR(pc.purchase_date, 'yyyy-mm-dd') = #{search.startDate}
+											</if>
+											<if test="search.endDate != null">
+												AND TO_CHAR(pc.purchase_date, 'yyyy-mm-dd') BETWEEN #{search.startDate} AND #{search.endDate}
+											</if>
 										</when>
 									</choose>
 								</if>
@@ -371,6 +397,15 @@
 					<!-- 티켓명 검색 -->
 					<when test="search.searchCondition == 5">
 						AND item_name LIKE '%${search.searchKeyword}%'
+					</when>
+					<!-- 날짜별 검색 -->
+					<when test="search.searchCondition == 6">
+						<if test="search.endDate == null">
+							AND TO_CHAR(purchase_date, 'yyyy-mm-dd') = #{search.startDate}
+						</if>
+						<if test="search.endDate != null">
+							AND TO_CHAR(purchase_date, 'yyyy-mm-dd') BETWEEN #{search.startDate} AND #{search.endDate}
+						</if>
 					</when>
 				</choose>
 			  </if>
