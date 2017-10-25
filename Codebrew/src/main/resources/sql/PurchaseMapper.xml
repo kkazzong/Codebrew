@@ -113,7 +113,7 @@
 		pc.payment_method_type AS payment_method_type,
 		pc.purchase_flag AS purchase_flag,
 		pc.item_name AS item_name,
-		TO_CHAR(pc.purchase_date, 'yy-mm-dd hh24:mm:ss') AS purchase_date,
+		TO_CHAR(pc.purchase_date, 'yyyy-mm-dd hh24:mm:ss') AS purchase_date,
 		pc.purchase_price AS purchase_price,
 		pc.purchase_count AS purchase_count,
 		pc.tran_code AS tran_code,
@@ -214,7 +214,7 @@
 								pc.payment_no AS payment_no,
 								pc.purchase_flag AS purchase_flag,
 								pc.item_name AS item_name,
-								TO_CHAR(pc.purchase_date, 'yy-mm-dd hh24:mi:ss') AS purchase_date,
+								TO_CHAR(pc.purchase_date, 'yyyy-mm-dd hh24:mi:ss') AS purchase_date,
 								pc.purchase_count AS purchase_count,
 								pc.purchase_price AS purchase_price,
 								pc.tran_code AS tran_code
@@ -294,7 +294,7 @@
 								t.ticket_flag AS ticket_flag,
 								pc.purchase_no AS purchase_no,
 								pc.item_name AS item_name,
-								TO_CHAR(pc.purchase_date, 'yy-mm-dd hh24:mi:ss') AS purchase_date,
+								TO_CHAR(pc.purchase_date, 'yyyy-mm-dd hh24:mi:ss') AS purchase_date,
 								pc.purchase_count AS purchase_count,
 								pc.purchase_price AS purchase_price,
 								pc.tran_code AS tran_code

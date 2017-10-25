@@ -4,7 +4,9 @@
 <%-- <%@ include file="/data/purchaseData.jsp" %> --%>
 <%-- <%@ include file="/data/purchase/sessionData.jsp" %> --%>
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:og="http://ogp.me/ns#"
+      xmlns:fb="http://www.facebook.com/2008/fbml">
 <head>
 <title>getPurchase</title>
 <meta charset="UTF-8">
@@ -136,7 +138,7 @@
 	//var referNo = ${ticket.festival.festivalNo}; 
 	
 	var referNo = $("input:hidden[name='purchaseFlag']").val();
-	
+	//alert(referNo);
 	/* if(${ticket.festival} != null) {
 		referNo = ${ticket.festival.festivalNo};
 	} else if(${ticket.party} != null) {
@@ -149,11 +151,12 @@
 	
 	imageUrl = ip+"/resources/uploadFile/${ticket.party.partyImage}";
 	
-	if(referNo == 1) {
+	if(referNo.indexOf("1") != -1) {
 		referNo = "${ticket.festival.festivalNo}";
 	} else {
 		referNo = "${ticket.party.partyNo}";
 	}
+	//alert("referNo+"+referNo);
 	
 	var festivalUrl = ip+"/festival/getFestivalDB?festivalNo="+referNo;
 	var festivalPurUrl = ip+'/purchase/addPurchase?festivalNo='+referNo;
@@ -219,6 +222,9 @@
 	}
 	
 	$(function(){
+		
+		var referNo2 = $("input:hidden[name='purchaseFlag']").val();
+		alert(referNo2);
 		
 		//확인 버튼
 		$("button:contains('확인')").on("click", function(){
@@ -326,7 +332,12 @@
 					<div class="panel-body">
 						<!-- 축제티켓 -->
 						<c:if test="${!empty ticket.festival}">
-						<img width="100%" height="300" src="${ticket.festival.festivalImage}">
+						<c:if test="${ticket.festival.festivalImage.contains('http://')}">
+										<img width="100%" height="300" src="${ticket.festival.festivalImage}">
+									</c:if>
+									<c:if test="${!ticket.festival.festivalImage.contains('http://')}">
+										<img width="100%" height="300" src="/resources/uploadFile/${ticket.festival.festivalImage}">
+									</c:if>
 						<hr>
 						<div class="col-md-12">
 							<strong>

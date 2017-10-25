@@ -36,7 +36,7 @@
     }
     
 </style>
-<title>Insert title here</title>
+<title>Moana</title>
 </head>
 <body>
 	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	

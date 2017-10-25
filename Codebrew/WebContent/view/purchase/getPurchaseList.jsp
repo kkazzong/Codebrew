@@ -174,7 +174,7 @@
 						//self.location = "/purchase/deletePurchase";
 					}
 				}); */
-				$("#deleteForm").attr("method", "post").attr("action", "/purchase/deletePurchase").submit();
+				$(this).parents("#deleteForm").attr("method", "post").attr("action", "/purchase/deletePurchase").submit();
 			} else {
 				return;
 			}
@@ -287,6 +287,9 @@
     .panel {
 		margin-top : 50px;
     }
+    .panel-primary>.panel-heading {
+    	background-color: #000000;
+    }
     /* div {
 		border : 3px solid #D6CDB7;
 		margin0top : 10px;
@@ -353,8 +356,8 @@
 					<div class="form-group">
 						<input type="hidden" id="currentPageDate" name="currentPage" value=""/>
 						<input type="hidden" id="searchCondition" name="searchCondition" value="6">
-						<%-- <input class="col-md-3 form-control form-inline" type="text" id="startDate" name="startDate" value="${!empty search.startDate ? search.startDate : ''}" placeholder="조회 기간 선택">
-						<input class="col-md-3 form-control form-inline" type="text" id="endDate" name="endDate" value="${!empty search.endDate ? search.endDate : ''}" placeholder="조회 기간 선택"> --%>
+						<input class="col-md-3 form-control form-inline" type="text" id="startDate" name="startDate" value="${!empty search.startDate ? search.startDate : ''}" placeholder="조회 기간 선택">
+						<input class="col-md-3 form-control form-inline" type="text" id="endDate" name="endDate" value="${!empty search.endDate ? search.endDate : ''}" placeholder="조회 기간 선택">
 						<span class="input-group-btn">	
 							<button id="dateRange" class="btn btn-primary btn-block" type="button">
 								<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
@@ -424,24 +427,24 @@
 								<input type="hidden" name="purchaseNo" value="${purchase.purchaseNo}">
 								<!-- 축제티켓 -->
 								 <c:if test="${!empty purchase.ticket.festival}">
-									<img width="100%" height="300" src="${purchase.ticket.festival.festivalImage}">
+								 	<c:if test="${purchase.ticket.festival.festivalImage.contains('http://')}">
+										<img width="100%" height="300" src="${purchase.ticket.festival.festivalImage}">
+									</c:if>
+									<c:if test="${!purchase.ticket.festival.festivalImage.contains('http://')}">
+										<img width="100%" height="300" src="/resources/uploadFile/${purchase.ticket.festival.festivalImage}">
+									</c:if>
 									<hr>
 									<div class="col-md-12">
-										<strong>
+										<span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
 											${purchase.ticket.festival.festivalName}
-										</strong>
 									</div>
 									<div class="col-md-12">
-										<small>
 											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
 											 ${purchase.ticket.festival.startDate} ~ ${purchase.ticket.festival.endDate}
-										</small>
 									</div>
 									<div class="col-md-12">
-										<small>
 											<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
-										 	${purchase.ticket.festival.addr}
-										 </small>
+										 	${purchase.ticket.festival.addr}<br>
 									</div>
 								</c:if>
 								<!-- 파티티켓 -->
@@ -449,33 +452,29 @@
 									<img width="100%" height="300" src="/resources/uploadFile/${purchase.ticket.party.partyImage}">
 									<hr>
 									<div class="col-md-12">
-										<strong>
 											${purchase.ticket.party.partyName}
-										</strong>
 									</div>
 									<div class="col-md-12">
-										<small>
 											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
 											${purchase.ticket.party.partyDate}
-										</small>
 									</div>
 									<div class="col-md-12">
-										<small>
-											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+											<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
 											${purchase.ticket.party.partyTime}
-										</small>
 									</div>
 									<div class="col-md-12">
-										<small>
 											<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
 											${purchase.ticket.party.partyPlace}
-										</small>
 									</div>
 								</c:if>
 								<br>
 								<div class="row">
 									<div class="col-xs-4 col-md-6"><strong>결제번호</strong></div>
 									<div class="col-xs-8 col-md-6">${purchase.paymentNo}</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-4 col-md-6"><strong>구매날짜</strong></div>
+									<div class="col-xs-8 col-md-6">${purchase.purchaseDate}</div>
 								</div>
 								<div class="row">
 									<div class="col-xs-4 col-md-6"><strong>구매수량</strong></div>
