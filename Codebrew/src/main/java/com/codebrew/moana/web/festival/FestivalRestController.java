@@ -1,21 +1,19 @@
 package com.codebrew.moana.web.festival;
 
-import java.io.File;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
+import com.codebrew.moana.service.domain.Festival;
+import com.codebrew.moana.service.domain.Ticket;
 import com.codebrew.moana.service.domain.Zzim;
 import com.codebrew.moana.service.festival.FestivalService;
+import com.codebrew.moana.service.ticket.TicketService;
 
 @RestController
 @RequestMapping("/festivalRest/*")
@@ -24,6 +22,10 @@ public class FestivalRestController {
 	@Autowired
 	@Qualifier("festivalServiceImpl")
 	private FestivalService festivalService;
+	
+	@Autowired
+	@Qualifier("ticketServiceImpl")
+	private TicketService ticketService;
 
 	public FestivalRestController() {
 		// TODO Auto-generated constructor stub
@@ -104,5 +106,34 @@ public class FestivalRestController {
 		return returnZzim;
 
 	}
+	
+	@RequestMapping(value = "json/getFestivalDB")
+	public Festival getFestivalDB(@RequestParam("festivalNo") int festivalNo)
+			throws Exception {
+
+		System.out.println("getFestivalDB..............");
+
+		try {
+
+			Festival festival = festivalService.getFestivalDB(festivalNo);
+
+			Ticket ticket = ticketService.getTicket(festivalNo, "1");
+
+			festival.setTicketCount(ticket.getTicketCount());
+			festival.setTicketPrice(ticket.getTicketPrice());
+
+			return festival;
+
+		} catch (Exception e) {
+
+			Festival festival = festivalService.getFestivalDB(festivalNo);
+
+			return festival;
+
+		}
+
+	}
+	
+	
 
 }
