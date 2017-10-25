@@ -3,481 +3,273 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<title>getStatistics</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<!-- Bootstrap, jQuery CDN -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-<!-- Bootstrap Dropdown Hover CSS -->
-<link href="/resources/css/animate.min.css" rel="stylesheet">
-<link href="/resources/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
-
-<!-- Bootstrap Dropdown Hover JS -->
-<script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
-
-<!-- chart.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js" type="text/javascript"></script>
-
-<!-- Amchart Resources -->
-<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
-<script src="https://www.amcharts.com/lib/3/serial.js"></script>
-<!-- Amchart pie chart -->
-<script src="https://www.amcharts.com/lib/3/pie.js"></script>
-<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
-<!-- Amchart dataloader plugin -->
-<script src="//www.amcharts.com/lib/3/plugins/dataloader/dataloader.min.js" type="text/javascript"></script>
-
-<!-- jQuery ui -->
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
-
-<!-- Include Required Prerequisites -->
-<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<!-- Include Date Range Picker -->
-<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
-<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
-
-<script type="text/javascript">
+	<title>getStatistics</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<!-- Bootstrap, jQuery CDN -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	
-	/////////////////////////////////////////////amChart getData////////////////////////////////////////////////////////
-	var datas = [];
+	<!-- Bootstrap Dropdown Hover CSS -->
+	<link href="/resources/css/animate.min.css" rel="stylesheet">
+	<link href="/resources/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
 	
-	function fncSearchChartData(statFlag, statDate) {
-		
-		$.ajax({
-			url : "/statisticsRest/json/getStatistics",
-			method : "POST",
-			data : JSON.stringify({
-				statFlag : statFlag,
-				statDate : statDate
-			}),
-			dataType : "json",
-			headers : {
-				"Accept" : "application/json",
-				"Content-Type" : "application/json"
-			},
-			success : function(JSONData, status){
-				alert(status);
-			}
-		});
-	}
+	<!-- Bootstrap Dropdown Hover JS -->
+	<script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
 	
-	function getChartData(statFlag) {
+	<!-- chart.js -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js" type="text/javascript"></script>
+	
+	<!-- Amchart Resources -->
+	<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+	<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+	<!-- Amchart pie chart -->
+	<script src="https://www.amcharts.com/lib/3/pie.js"></script>
+	<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+	<!-- Amchart dataloader plugin -->
+	<script src="//www.amcharts.com/lib/3/plugins/dataloader/dataloader.min.js" type="text/javascript"></script>
+	
+	<!-- jQuery ui -->
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+	
+	<!-- Include Required Prerequisites -->
+	<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+	<!-- Include Date Range Picker -->
+	<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+
+	<script type="text/javascript">
 		
-		//var statFlag2 = $("input:hidden[name='statFlag']").val();
-		console.log("amChart data ajax");
+		/////////////////////////////////////////////amChart getData////////////////////////////////////////////////////////
+		var datas = [];
 		
-		$.ajax({
-			url : "/statisticsRest/json/getStatistics/"+statFlag,
-			method : "GET",
-			dataType : "json",
-			headers : {
-				"Accept" : "application/json"//,
-			//"Content-Type" : "application/json"
-			},
-			success : function(JSONData){
-				console.log(JSON.stringify(JSONData));
-				datas = [];
-				//JSON data 만큼 datas에 push
-				for(var i = 0; i < JSONData.length; i++) {
-					datas.push({
-						totalPrice : JSONData[i].totalPrice,
-						totalCount : JSONData[i].totalCount,
-						statDate : JSONData[i].statDate
-					});
+		function fncSearchChartData(statFlag, statDate) {
+			
+			$.ajax({
+				
+				url : "/statisticsRest/json/getStatistics",
+				method : "POST",
+				data : JSON.stringify({
+					statFlag : statFlag,
+					statDate : statDate
+				}),
+				dataType : "json",
+				headers : {
+					"Accept" : "application/json",
+					"Content-Type" : "application/json"
+				},
+				success : function(JSONData, status){
+					
+					console.log(status);
+					console.log(JSON.stringify(JSONData));
+					
+					switch(statFlag) {
+						
+						case 1 : 
+							dailyChart.destroy();
+							fncDailyChartDrow(JSONData);
+							break;
+						
+						case 2 :
+							monthlyChart.destroy();
+							fncMonthlyChartDrow(JSONData);
+							break;
+						
+						case 3 :
+							
+							quarterChart.destroy();
+							fncQuarterChartDrow(JSONData);
+							break;
+							
+					}
+					//JSON data 만큼 datas에 push
+					/* datas = [];
+					label = [];
+					
+					for(var i = 0; i < JSONData.length; i++) {
+						datas[i] = JSONData[i].totalPrice;
+						label[i] = JSONData[i].statDate+"";
+					}
+					
+					dailyChartData = {
+						labels : label,	
+						datasets : [{
+							label : "판매금액",	
+							data : datas
+						}]	
+					};
+					
+					console.log("날짜 조회 후 다시 차트그리기 데이터 ");
+					console.log(dailyChartData);
+					
+					//원래 차트 destroy후 차트그리기 call
+					dailyChart.destroy();
+					fncDailyChart(); */
+					
 				}
-				console.log(datas);
-			}
-		});
-		return datas;
-	}
-	
-	////////////////////////////////////////amChart////////////////////////////////////////////////////
-	//막대차트 - 일단위
-	var chart = AmCharts.makeChart("chartDiv", {
-	    "theme": "light",
-	    "type": "serial",
-	    "legend" : {
-	    	"useGraphSettings": true,
-	    	"generateFromData": true,
-			"position" : "bottom",
-			"marginRight" : 100,
-			"autoMargins" : false,
-			"color" : "#000000"
-		},
-	    "dataProvider" : datas,
-	   /*  "dataLoader" : {
-	    	"url" : "http://127.0.0.1:8080/data/statistics/test.json"
-	    }, */
-	     "mouseWheelZoomEnabled":true, //마우스로 확대, 축소
-	     "dataDateFormat": "YY-MM-DD", //데이터의 날짜 포맷
-		"startDuration": 1,
-	    "valueAxes": [{
-	    	"id" : "priceAxis",
-	        "position": "left",
-	        "title": "총판매금액",
-	        "titleRotation" : 0 //타이틀 90도 회전
-	    }, {
-	    	"id" : "countAxis",
-	    	"position" : "right",
-	    	"title" : "총판매수량",
-	    	"titleRotation" : 0 
-	    }],
-	    "graphs": [{
-	    	"id": "gp",
-	    	"balloonText": "[[category]]: <b>[[value]]원</b>",
-	        "fillColorsField": "color",
-	        "fillAlphas": 0.8,
-	        "lineAlpha": 0,
-	        "type": "column",
-	        "title" : "총판매금액",
-	        "valueField": "totalPrice",
-	        "valueAxis" : "priceAxis"
-	    }, {
-	    	"id": "gc",
-	    	"bullet": "round",
-	    	"lineThickness" : 2,
-	    	"lineColor" : "#000000",
-	        "bulletBorderAlpha": 1,
-	        "bulletBorderThickness": 1,
-	        "bulletColor" : "#FFFFFF",
-	        "balloonText": "[[value]]장",
-	        "useLineColorForBulletBorder": true,
-	        "title" : "총판매수량",
-	        "fillAlpha": 0,
-	        "valueField": "totalCount",
-	        "valueAxis" : "countAxis"
-	    }],
-	    "chartScrollbar": { //가로축 스크롤(날짜)
-	        "graph": "gc",
-	        "oppositeAxis":false,
-	        "offset":30,
-	        "scrollbarHeight": 80,
-	        "backgroundAlpha": 0,
-	        "selectedBackgroundAlpha": 0.1,
-	        "selectedBackgroundColor": "#888888",
-	        "graphFillAlpha": 0,
-	        "graphLineAlpha": 0.5,
-	        "selectedGraphFillAlpha": 0,
-	        "selectedGraphLineAlpha": 1,
-	        "autoGridCount":true,
-	        "color":"#AAAAAA"
-	    },
-	    "depth3D": 20,
-		"angle": 30,
-	    "chartCursor": { //차트 위에 나타나는 커서
-	        "categoryBalloonEnabled": false,
-	        "cursorAlpha": 0,
-	        "zoomable": false,
-	        "pan": true,
-	        "valueLineEnabled": true,
-	        "valueLineBalloonEnabled": true,
-	        "cursorAlpha":1,
-	        "cursorColor":"#258cbb",
-	        "limitToGraph":"gp",
-	        "valueLineAlpha":0.2,
-	        "valueZoomable":true
-	    },
-	   /*  "valueScrollbar":{
-		      "oppositeAxis":false,
-		      "offset":50,
-		      "scrollbarHeight":10
-		}, */
-	    "categoryField": "statDate",
-	    "categoryAxis": {
-	        "gridPosition": "start",
-	        "labelRotation": 0
-	    },
-	    "export": {
-	    	"enabled": true
-	     }
-	}); 
-	
-	
-	//월단위
-	var chartLine = AmCharts.makeChart("chartLine", {
-	    "type": "serial",
-	    "theme": "light",
-	    /* "dataProvider": datas, */
-	    "legend" : {
-	    	"useGraphSettings": true,
-	    	"generateFromData": true,
-			"position" : "right",
-			"marginRight" : 100,
-			"autoMargins" : false
-		},
-	    "marginRight": 40,
-	    "marginLeft": 40,
-	    "autoMarginOffset": 20,
-	    "mouseWheelZoomEnabled":true,
-	    "valueAxes": [{
-	        "id": "v1",
-	        "axisAlpha": 0,
-	        "position": "left",
-	        "ignoreAxisWidth":true
-	    }],
-	    "balloon": {
-	        "borderThickness": 1,
-	        "shadowAlpha": 0
-	    },
-	    "graphs": [{
-	        "id": "g1",
-	        "balloon":{
-	          "drop":true,
-	          "adjustBorderColor":false,
-	          "color":"#ffffff"
-	        },
-	        "bullet": "round",
-	        "bulletBorderAlpha": 1,
-	        "bulletColor": "#FFFFFF",
-	        "bulletSize": 5,
-	        "hideBulletsCount": 50,
-	        "lineThickness": 2,
-	        "title": "총판매금액",
-	        "useLineColorForBulletBorder": true,
-	        "valueField": "totalPrice",
-	        "balloonText": "<span style='font-size:18px;'>[[value]]</span>"
-	    }],
-	    "chartScrollbar": {
-	        "graph": "g1",
-	        "oppositeAxis":false,
-	        "offset":30,
-	        "scrollbarHeight": 80,
-	        "backgroundAlpha": 0,
-	        "selectedBackgroundAlpha": 0.1,
-	        "selectedBackgroundColor": "#888888",
-	        "graphFillAlpha": 0,
-	        "graphLineAlpha": 0.5,
-	        "selectedGraphFillAlpha": 0,
-	        "selectedGraphLineAlpha": 1,
-	        "autoGridCount":true,
-	        "color":"#AAAAAA"
-	    },
-	    "chartCursor": {
-	        "pan": true,
-	        "valueLineEnabled": true,
-	        "valueLineBalloonEnabled": true,
-	        "cursorAlpha":1,
-	        "cursorColor":"#258cbb",
-	        "limitToGraph":"g1",
-	        "valueLineAlpha":0.2,
-	        "valueZoomable":true
-	    },
-	    "valueScrollbar":{
-	      "oppositeAxis":false,
-	      "offset":50,
-	      "scrollbarHeight":10
-	    },
-	    "categoryField": "statDate",
-	    "categoryAxis": {
-	        "dashLength": 1,
-	        "minorGridEnabled": true
-	    },
-	    "export": {
-	        "enabled": true
-	    }
-	}); 
-	
-	//도넛차트 - 분기단위
-	
-	var chartPie = AmCharts.makeChart("chartPie", {
-		"type" : "pie", //타입은 파이
-		"theme" : "light", //테마는 라이트
-		"startDuration" : 1, //시작 애니메이션
-		"addClassNames" : true,
-		"legend" : {
-			"useGraphSettings": true,
-	    	"generateFromData": true,
-			"position" : "right",
-			"marginRight" : 100,
-			"autoMargins" : false
-		},
-		"innerRadius" : "40%", //동그라미 안의 비율
-		"defs" : {
-			"filter" : [ {
-				"id" : "shadow",
-				"feBlend" : {
-					"mode" : "normal"
-				} 
-			} ]
-		}, 
-		"dataProvider" : [{
-			"statDate" : 4,
-			"totalPrice" : 1000
-		}],
-		"valueField" : "totalPrice",
-		"titleField" : "statDate",
-		"export" : {
-			"enabled" : true
+				
+			});
+			
 		}
-	});
-	
-	chartLine.addListener("rendered", zoomChart);
-
-	zoomChart();
-
-	function zoomChart() {
-		//console.log(chart.dataProvider.length);
-	    //chartLine.zoomToIndexes(chartLine.dataProvider.length - 40, chartLine.dataProvider.length - 1);
-	} 
-	
-
-	$(function() {
-	
-		//차트만들기 default는 월단위
-		var statFlag = $("input:hidden[name='statFlag']").val();
 		
-		//page header 클릭시
-		$(".page-header").on("click", function(){
-			self.location = "/statistics/getStatistics";
-		});
-		
-		getChartData(statFlag);
-		chartData3();
-		// tab 선택시
-		$("li[role='presentation'] > a").on("click", function(){
+		function getChartData(statFlag) {
 			
-			var statFlag = $(this).html().trim();
+			//var statFlag2 = $("input:hidden[name='statFlag']").val();
+			console.log("amChart data ajax");
 			
-			if(statFlag.indexOf('Daily') != -1) {
-				console.log("daily click");
-				getChartData(1);
-				chart.validateData();
-				chartData3();
-			} else if(statFlag.indexOf('Monthly') != -1) {
-				console.log("monthly click");
-				getChartData(2);
-				chartLine.validateData();
-				chartData1();
-			} else if(statFlag.indexOf('Quarterly') != -1) {
-				console.log("quarterly click");
-				getChartData(3);
-				chartData2();
-			} 
+			$.ajax({
+				url : "/statisticsRest/json/getStatistics/"+statFlag,
+				method : "GET",
+				dataType : "json",
+				headers : {
+					"Accept" : "application/json"//,
+				//"Content-Type" : "application/json"
+				},
+				success : function(JSONData){
+					console.log(JSON.stringify(JSONData));
+					datas = [];
+					//JSON data 만큼 datas에 push
+					for(var i = 0; i < JSONData.length; i++) {
+						datas.push({
+							totalPrice : JSONData[i].totalPrice,
+							totalCount : JSONData[i].totalCount,
+							statDate : JSONData[i].statDate
+						});
+					}
+					console.log(datas);
+				}
+			});
+			return datas;
+		}
+		
+		
+	
+		$(function() {
+		
+			//차트만들기 default는 월단위
+			var statFlag = $("input:hidden[name='statFlag']").val();
+			
+			//page header 클릭시
+			$(".page-header").on("click", function(){
+				self.location = "/statistics/getStatistics";
+			});
+			
+			//getChartData(statFlag);
+			//chartData3();
+			dailyChartData();
+			
+			// tab 선택시
+			$("li[role='presentation'] > a").on("click", function(){
+				
+				var statFlag = $(this).html().trim();
+				
+				if(statFlag.indexOf('Daily') != -1) {
+					console.log("daily click");
+					//fncDailyChart();
+					//getChartData(1);
+					//chart.validateData();
+					//chartData3();
+				} else if(statFlag.indexOf('Monthly') != -1) {
+					console.log("monthly click");
+					monthlyChartData();
+					//getChartData(2);
+					//chartLine.validateData();
+					//chartData1();
+				} else if(statFlag.indexOf('Quarter') != -1) {
+					console.log("quarter click");
+					quarterChartData();
+					//getChartData(3);
+					//chartData2();
+				} 
+				
+			});
+			
+			//datepicker 설정
+			/* $.datepicker.setDefaults({
+		        dateFormat: 'yy-mm-dd',
+		        monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+		        monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+		        dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+		        dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+		        dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+		        showMonthAfterYear: true,
+		        yearSuffix: '년',
+		        changeMonth: true,
+				changeYear : true,
+				buttonImageOnly: true,
+			    buttonText: "Select date",
+			    showOn: "button",
+			    buttonImage: "/resources/image/ui/cal.png",
+			    yearRange : "1990:2017"
+	    	}); */
+			
+			/* $("input:text").each(function(){}).datepicker().bind('change', function(){
+				$(this).val($(this).datepicker().val());
+			}); */
+			
+			//daterangepicker
+			$("#dailySelect").daterangepicker({
+				/* autoApply: true, */
+			    dateLimit: {
+			        months : 1
+			    },
+				locale: {
+					format : "YYYY-MM-DD",
+				    daysOfWeek : ['일', '월', '화', '수', '목', '금', '토'],
+				    monthNames : ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+				    firstDay : 1,
+				    cancelLabel: "취소",
+				    applyLabel : "적용"
+				 },
+				 minDate : "1990-01-01",
+				 showDropdowns: true,
+				 applyClass: "btn-primary",
+				 ranges: {
+			           '오늘': [moment(), moment()],
+			           '어제': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+			           '지난 7일': [moment().subtract(6, 'days'), moment()],
+			           '지난 30일': [moment().subtract(29, 'days'), moment()],
+			           '이번 달': [moment().startOf('month'), moment().endOf('month')],
+			           '저번 달': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+			      },
+				  function(start, end, label) {
+			    	console.log(start)
+			    	alert("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+			      }
+			});
+			
+			//날짜 골랐을때
+			$("#dailySelect").on("apply.daterangepicker", function(picker) {
+				console.log($(this).val());
+				fncSearchChartData(1, $(this).val());
+			});
+			
+			$("#dailySelect").on("cancel.daterangepicker", function(picker) {
+				$(this).val('');
+			});
 			
 		});
-		
-		//datepicker 설정
-		/* $.datepicker.setDefaults({
-	        dateFormat: 'yy-mm-dd',
-	        monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-	        monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-	        dayNames: ['일', '월', '화', '수', '목', '금', '토'],
-	        dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
-	        dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
-	        showMonthAfterYear: true,
-	        yearSuffix: '년',
-	        changeMonth: true,
-			changeYear : true,
-			buttonImageOnly: true,
-		    buttonText: "Select date",
-		    showOn: "button",
-		    buttonImage: "/resources/image/ui/cal.png",
-		    yearRange : "1990:2017"
-    	}); */
-		
-		/* $("input:text").each(function(){}).datepicker().bind('change', function(){
-			$(this).val($(this).datepicker().val());
-		}); */
-		
-		//daterangepicker
-		$("#dailySelect").daterangepicker({
-			/* autoApply: true, */
-		    dateLimit: {
-		        months : 1
-		    },
-			locale: {
-				format : "YYYY-MM-DD",
-			    daysOfWeek : ['일', '월', '화', '수', '목', '금', '토'],
-			    monthNames : ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-			    firstDay : 1,
-			    cancelLabel: "취소",
-			    applyLabel : "적용"
-			 },
-			 minDate : "1990-01-01",
-			 showDropdowns: true,
-			 applyClass: "btn-primary",
-			 ranges: {
-		           '오늘': [moment(), moment()],
-		           '어제': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-		           '지난 7일': [moment().subtract(6, 'days'), moment()],
-		           '지난 30일': [moment().subtract(29, 'days'), moment()],
-		           '이번 달': [moment().startOf('month'), moment().endOf('month')],
-		           '저번 달': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-		      },
-			  function(start, end, label) {
-		    	console.log(start)
-		    	alert("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
-		      }
-		});
-		
-		//날짜 골랐을때
-		$("#dailySelect").on("apply.daterangepicker", function(picker) {
-			console.log($(this).val());
-			fncSearchChartData(1);
-		});
-		
-		$("#dailySelect").on("cancel.daterangepicker", function(picker) {
-			$(this).val('');
-		});
-		
-	});
-</script>
-<style type="text/css">
-
-	body {
-		padding-top : 70px;
-    }
-    
-	#chartDiv {
-		width: 100%;
-		height: 500px;
-		/* display: none; */
-	}
+	</script>
+	<style type="text/css">
 	
-	#chartPie {
-		width: 100%;
-		height: 500px;
-		/* display: none; */
-	}
-	
-	 #chartLine {
-		width: 100%;
-		height: 500px;
-		/* display: none; */
-	}
-	
-	.amcharts-pie-slice {
-		transform: scale(1);
-		transform-origin: 50% 50%;
-		transition-duration: 0.3s;
-		transition: all .3s ease-out;
-		-webkit-transition: all .3s ease-out;
-		-moz-transition: all .3s ease-out;
-		-o-transition: all .3s ease-out;
-		cursor: pointer;
-		box-shadow: 0 0 30px 0 #000;
-	}
-	
-	.amcharts-pie-slice:hover {
-		transform: scale(1.1);
-		filter: url(#shadow);
-	}
-	
-	.ui-datepicker-trigger {
-		width : 20px;
-		height : 20px;
-	}
-	
-	/* div {
-		border : 3px solid #D6CDB7;
-		margin0top : 10px;
-	} */
-</style>
+		body {
+			padding-top : 70px;
+	    }
+	    
+		.ui-datepicker-trigger {
+			width : 20px;
+			height : 20px;
+		}
+		
+		/* div {
+			border : 3px solid #D6CDB7;
+			margin0top : 10px;
+		} */
+	</style>
 </head>
+
 <body>
 
 	<!-- 툴바 -->
@@ -535,7 +327,7 @@
 					    	<a href="#monthly" aria-controls="profile" role="tab" data-toggle="tab">Monthly</a>
 					    </li>
 					    <li role="presentation">
-					    	<a href="#quarter" aria-controls="messages" role="tab" data-toggle="tab">Quarterly</a>
+					    	<a href="#quarter" aria-controls="messages" role="tab" data-toggle="tab">Quarter</a>
 					    </li>
 					 </ul>
 				</div>
@@ -609,41 +401,14 @@
 						    	<div class="page-header">
 								</div>
 						    	<!-- <div id="chartPie"></div> --> 
-						    	<jsp:include page="/view/statistics/quarterlyStatistics.jsp"></jsp:include>
+						    	<jsp:include page="/view/statistics/quarterStatistics.jsp"></jsp:include>
 						    </div>
  						 </div>
 					</div>
 				</div>
 			</div>
 		</div>
-	
 	</div>
-	
-	<%-- <input type="hidden" name="statFlag" value="${statistics.statFlag}">
-	<h3>chart.js</h3>
-	<button type="button" value="1">일단위</button>
-	<button type="button" value="2">월단위</button>
-	<button type="button" value="3">분기단위</button>
-	
-	<hr>
-	
-	<div class="chart-container">
-		<canvas id="chartBar"></canvas>
-	</div>
-		
-	<hr>
-	<hr>
-	<hr>
-	<h3>amChart</h3>
-	<button type="button" value="1">일단위</button>
-	<button type="button" value="2">월단위</button>
-	<button type="button" value="3">분기단위</button>
-	
-	<hr>
-	
-	<div id="chartDiv"></div>
-	<div id="chartLine"></div>
-	<div id="chartPie"></div> --%>
 	
 </body>
 </html>

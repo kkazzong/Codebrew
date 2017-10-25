@@ -3,121 +3,23 @@
 
 
 <script type="text/javascript">
-	////////////////////////////////////////amChart////////////////////////////////////////////////////
-	//막대차트 - 일단위
-	var chart = AmCharts.makeChart("chartDiv", {
-	    "theme": "light",
-	    "type": "serial",
-	    "legend" : {
-	    	"useGraphSettings": true,
-	    	"generateFromData": true,
-			"position" : "bottom",
-			"marginRight" : 100,
-			"autoMargins" : false,
-			"color" : "#000000"
-		},
-	    "dataProvider" : datas,
-	   /*  "dataLoader" : {
-	    	"url" : "http://127.0.0.1:8080/data/statistics/test.json"
-	    }, */
-	     "mouseWheelZoomEnabled":true, //마우스로 확대, 축소
-	     "dataDateFormat": "YY-MM-DD", //데이터의 날짜 포맷
-		"startDuration": 1,
-	    "valueAxes": [{
-	    	"id" : "priceAxis",
-	        "position": "left",
-	        "title": "총판매금액",
-	        "titleRotation" : 0 //타이틀 90도 회전
-	    }, {
-	    	"id" : "countAxis",
-	    	"position" : "right",
-	    	"title" : "총판매수량",
-	    	"titleRotation" : 0 
-	    }],
-	    "graphs": [{
-	    	"id": "gp",
-	    	"balloonText": "[[category]]: <b>[[value]]원</b>",
-	        "fillColorsField": "color",
-	        "fillAlphas": 0.8,
-	        "lineAlpha": 0,
-	        "type": "column",
-	        "title" : "총판매금액",
-	        "valueField": "totalPrice",
-	        "valueAxis" : "priceAxis"
-	    }, {
-	    	"id": "gc",
-	    	"bullet": "round",
-	    	"lineThickness" : 2,
-	    	"lineColor" : "#000000",
-	        "bulletBorderAlpha": 1,
-	        "bulletBorderThickness": 1,
-	        "bulletColor" : "#FFFFFF",
-	        "balloonText": "[[value]]장",
-	        "useLineColorForBulletBorder": true,
-	        "title" : "총판매수량",
-	        "fillAlpha": 0,
-	        "valueField": "totalCount",
-	        "valueAxis" : "countAxis"
-	    }],
-	    "chartScrollbar": { //가로축 스크롤(날짜)
-	        "graph": "gc",
-	        "oppositeAxis":false,
-	        "offset":30,
-	        "scrollbarHeight": 80,
-	        "backgroundAlpha": 0,
-	        "selectedBackgroundAlpha": 0.1,
-	        "selectedBackgroundColor": "#888888",
-	        "graphFillAlpha": 0,
-	        "graphLineAlpha": 0.5,
-	        "selectedGraphFillAlpha": 0,
-	        "selectedGraphLineAlpha": 1,
-	        "autoGridCount":true,
-	        "color":"#AAAAAA"
-	    },
-	    "depth3D": 20,
-		"angle": 30,
-	    "chartCursor": { //차트 위에 나타나는 커서
-	        "categoryBalloonEnabled": false,
-	        "cursorAlpha": 0,
-	        "zoomable": false,
-	        "pan": true,
-	        "valueLineEnabled": true,
-	        "valueLineBalloonEnabled": true,
-	        "cursorAlpha":1,
-	        "cursorColor":"#258cbb",
-	        "limitToGraph":"gp",
-	        "valueLineAlpha":0.2,
-	        "valueZoomable":true
-	    },
-	   /*  "valueScrollbar":{
-		      "oppositeAxis":false,
-		      "offset":50,
-		      "scrollbarHeight":10
-		}, */
-	    "categoryField": "statDate",
-	    "categoryAxis": {
-	        "gridPosition": "start",
-	        "labelRotation": 0
-	    },
-	    "export": {
-	    	"enabled": true
-	     }
-	}); 
+
+	///////////////////////////////////////////chart.js이용해 차트그리기/////////////////////////////////////////////////////
 	
+	var dailyChart;
 	
-	
-	
-	var ctx = $("#daily");
-	
-	function makeChart3() {
-		var myChart = new Chart('dailyChart', {
+	function fncDailyChart() {
+		
+		dailyChart = new Chart('dailyChart', {
 		    type: 'bar',
-		    data: chartData3,
+		    data: dailyChartData,
 		    options: {
-		        legend: { display: true },
+		        legend: { 
+		        	display: true 
+		        },
 		        title: {
 		          display: true,
-		          text: 'Sale in 2017'
+		          text: ' 판매통계'
 		        },
 		        scales: {
 		            xAxes: [{
@@ -133,53 +35,110 @@
 		        }
 		     }
 		});
+		
 	}
 	
+	var colors = [];
+	function getRandomColor(count) {
+		
+	    var letters = '0123456789ABCDEF'.split('');
+	    var color = '#';
+	    for(var i = count; i > 0; i--) {
+		    for (var i = 0; i < 6; i++ ) {
+		        color += letters[Math.floor(Math.random() * 16)];
+		    }
+		    colors[i] = color;
+	    }
+	    return colors;
+	    
+	}
+	
+	///////////////////////////////////////////차트 데이터 세팅/////////////////////////////////////////////////////
+	
+	function fncDailyChartDrow(JSONData) {
+		
+		//JSON data 만큼 datas에 push
+		datas = [];
+		label = [];
+		
+		for(var i = 0; i < JSONData.length; i++) {
+			datas[i] = JSONData[i].totalPrice;
+			label[i] = JSONData[i].statDate+"";
+		}
+		
+		colors = getRandomColor(JSONData.length);
+		
+		dailyChartData = {
+			labels : label,	
+			datasets : [{
+				label : "판매금액",	
+				backgroundColor : colors,
+				data : datas
+			}]	
+		};
+		
+		console.log("차트그리기 데이터 ");
+		console.log(dailyChartData);
+		
+		//원래 차트 destroy후 차트그리기 call
+		fncDailyChart();
+		
+	}
+	
+	///////////////////////////////////////////Ajax로 차트 데이터 겟겟/////////////////////////////////////////////////////
+
 	var label = [];
-	var chartData3 = function() {
+	
+	var dailyChartData = function() {
+		
 		$.ajax({
+			
 			url : "/statisticsRest/json/getStatistics/1",
-			method : "get",
+			method : "GET",
 			dataType : "json",
 			headers : {
 				"Accept" : "application/json"//,
 			//"Content-Type" : "application/json"
 			},
 			success : function(JSONData){
-				console.log(JSON.stringify(JSONData));
+				
+				console.log("데일리차트=> "+JSON.stringify(JSONData));
+				
+				fncDailyChartDrow(JSONData);
+				
 				//JSON data 만큼 datas에 push
-				var datas = [];
+				/* var datas = [];
 				
 				for(var i = 0; i < JSONData.length; i++) {
 					datas[i] = JSONData[i].totalPrice;
 					label[i] = JSONData[i].statDate+"";
 				}
-				for(var i = 0; i < datas.length; i++) {
-				}
-				console.log(label);
-				chartData3 = {
+				
+				dailyChartData = {
 					labels : label,	
 					datasets : [{
 						label : "판매금액",	
 						data : datas
 					}]	
 				};
-				console.log("gg");
-				console.log(chartData3);
-				console.log(datas[0].statDate);
-				//var obj = JSON.parse(datas);
-				//console.log(obj);
-				makeChart3();
+				
+				console.log("일별 차트그리기 데이터 ");
+				console.log(dailyChartData);
+				
+				//차트그리기 call
+				fncDailyChart(); */
 			}
+			
 		});
+		
 	}
 	
 	
 </script>
 <style type="text/css">
-	#chartDiv {
+	#dailyChart {
 		width: 100%;
-		height: 500px;
+		height: 100%;
 		/* display: none; */
 	}
 </style>
@@ -210,5 +169,5 @@
 			</div>
 		</div>
 		
+		<!-- 차트도화지 -->
 		<canvas id="dailyChart"></canvas>
-<!-- <div id="chartDiv"></div> -->
