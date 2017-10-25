@@ -99,25 +99,10 @@
 
    	<!-- 화면구성 div Start -->
    	<div class="container">
-   	
-   		
-   		<div class="page-header text-info">
-   			<h3>댓글</h3>
-   		</div>
-   		
-   		<!--  table 위쪽 검색 Start -->
-   		<div class="row">
-   		
-   		
-   			<div class="col-md-6 text-left">
-   				<p class="text-primary">
-   					전체  ${resultPage.totalCount } 건수, 현재 ${resultPage.currentPage}  페이지
-   				</p>
-   			</div>
    			
    			<!-- 'search' is only for 'Admin' menu -->
    			<c:if test="sessionScope.user.role == 'a'">
-	   			<div class="col-md-6 text-right">
+	   			<div class="col-md-offset-4 col-md-4">
 	   				<form class="form-inline" name="detailForm">
 	   					<%-- 
 	   					<input name="menu" value="${param.menu }" type="hidden"/>
@@ -145,28 +130,34 @@
 	   			</div>
    			</c:if>
    		</div>
+   		<!-- 화면구성 div End -->
+   		
+   		
    		<!--  table 위쪽 검색 End -->
    		
+   		<!-- 댓글입력 form Start : 로그인한 사람만 댓글등록가능-->
+   		<c:if test="${!empty sessionScope.user }">
    		<form class="form-horizontal" method="post" name="detailForm">
    			<div class="form-group">
    				<input type="hidden" id="reviewNo" name="reviewNo" value="${review.reviewNo }"/>
-   				<input type="hidden" id="userId" name="userId" value="${sessionScope.user.userId }"/>${sessionScope.user.userId }
+   				<input type="hidden" id="userId" name="userId" value="${sessionScope.user.userId }"/>
+   				<!-- 
    				<label for="replyDetail" class="col-sm-offset-1 col-sm-3 control-label">댓글내용</label>
-   				<div class="col-sm-4">
+   				 -->
+   				<div class="col-md-12">
    					<input type="text" class="form-control" id="replyDetail" name="replyDetail">
    					<button type="button" class="btn btn-primary">댓글등록</button>
    				</div>
    			</div>
    		</form>
+   		</c:if>
+   		<!-- 댓글입력 form End-->
    		
    		<!-- table Start -->
    		<table class="table table-hover table-striped">
    		
    			<thead>
    				<tr>
-   					<th align="left">
-   						댓글번호
-   					</th>
    					<th align="left">
    						댓글내용
    					</th>
@@ -180,46 +171,42 @@
    			</thead>
    			
    			<tbody>
-   			
-   				<c:set var="i" value="0"/>
-   				<c:forEach var="replyList" items="${review.replyList }">
-   					<c:set var="i" value="${i+1}"/>
-   					<tr class="ct_list_pop">
-   						<td align="left">
-   							${replyList.replyNo }
-   						</td>
-  						<td align="left">
-   							${replyList.replyDetail }
-   							<input type="hidden" name="reviewNo" value=${review.reviewNo }>
-							<span style="display: none" class="hidden_link">/review/getReview?reviewNo=${review.reviewNo }</span>
-							<c:if test="${sessionScope.user.role == 'a' || sessionScope.user.userId == reply.userId}">
-					   			<center>
-						   			<button type="button" class="btn pull-center btn-primary">댓글수정</button>
-						   			<button type="button" class="btn pull-center btn-primary">댓글삭제</button>
-						   		</center>
-					   		</c:if>
-   						</td>
-   						<td align="left">
-   							${replyList.userId }
-   						</td>
-   						<td align="left">
-   							${replyList.replyRegDate }
-   						</td>
-	   				</tr>
-   				</c:forEach>
-   			
-   			</tbody>
+   				<c:if test="${!empty review.replyList }">
+	   				<c:set var="i" value="0"/>
+	   				<c:forEach var="replyList" items="${review.replyList }">
+	   					<c:set var="i" value="${i+1}"/>
+	   					<tr class="ct_list_pop">
+	  						<td align="left">
+	   							${replyList.replyDetail }
+	   							<input type="hidden" name="reviewNo" value=${review.reviewNo }>
+								<span style="display: none" class="hidden_link">/review/getReview?reviewNo=${review.reviewNo }</span>
+								<c:if test="${sessionScope.user.role == 'a' || sessionScope.user.userId == reply.userId }">
+						   			<center>
+						   				<!-- <button class="btn btn-default" type="button">확인</button> -->
+							   			<button type="button" class="btn pull-center btn-primary">댓글수정</button>
+							   			<button type="button" class="btn pull-center btn-primary">댓글삭제</button>
+							   		</center>
+						   		</c:if>
+	   						</td>
+	   						<td align="left">
+	   							${replyList.userId }
+	   						</td>
+	   						<td align="left">
+	   							${replyList.replyRegDate }
+	   						</td>
+		   				</tr>
+	   				</c:forEach>
+   				</c:if>
+
+			<!-- PageNavigation Start... -->
+			<jsp:include page="../../common/pageNavigator_new.jsp"/>
+			<!-- PageNavigation End... -->
+
+   			</tbody>   			
    			
    		</table>
    		<!-- table End -->
-   	
-   	</div>
-   	<!-- 화면구성 div End -->
-   	
-	<!-- PageNavigation Start... -->
-	<jsp:include page="../../common/pageNavigator_new.jsp"/>
-	<!-- PageNavigation End... -->
-
+   		
 
 </body>
 </html>

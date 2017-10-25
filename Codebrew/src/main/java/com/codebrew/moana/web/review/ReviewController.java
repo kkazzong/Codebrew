@@ -192,17 +192,15 @@ public class ReviewController {
 	@RequestMapping(value="getReview", method = {RequestMethod.GET, RequestMethod.POST})
 	public ModelAndView getReview( @RequestParam("reviewNo") int reviewNo) throws Exception {
 		
-		System.out.println("/view/review/getReview");
+		System.out.println("/view/review/getReview");		
 		
 		//Business Logic
 		Review review = reviewService.getReview(reviewNo);
-		User user = userService.getUser(review.getUserId());
 		Festival festival = festivalService.getFestival(review.getFestivalNo());
 		
 		// Model 과 View 연결
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("user", user);
-		modelAndView.addObject("festival", festival);
+		//modelAndView.addObject("festival", festival);
 		modelAndView.addObject("review", review);
 		modelAndView.setViewName("/view/review/getReview.jsp");
 		
