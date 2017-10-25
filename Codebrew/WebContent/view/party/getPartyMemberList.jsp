@@ -11,8 +11,8 @@
 				console.log("파티멤버보기 버튼 클릭.....");
 				console.log("partyNo :: "+$("#partyNo").val());
 				
-				var userId = "${user.userId}";
-				console.log("userId :: "+userId);
+				var sessionId = "${user.userId}";
+				console.log("sessionId :: "+sessionId);
 				/* var searchCondition = $(".form-control[name=searchCondition]").val();
 				var searchKeyword = $(".form-control[name=searchKeyword]").val(); */
 				
@@ -29,38 +29,78 @@
 							  		
 							  		for(i=0 ; i<JSONData.list.length ; i++){
 							  			console.log("for문 안");
-							  			if (userId == JSONData.list[i].user.userId){
 							  			
+							  			/* 파티 멤버 리스트 */
+							  			var partyMemberList = "<div class='row' id='userDiv'>"
+															+"<input type='hidden' id='userId' name='userId' value='"+JSONData.list[i].user.userId+"'>"
+															+"<span>"
+																+"<img class='rounded-circle' src='/resources/uploadFile/"+JSONData.list[i].user.profileImage+"' width='40' height='40'>"
+															+"</span>"
+															+"<span>"
+															+JSONData.list[i].user.nickname+"&nbsp;"+"( "+JSONData.list[i].user.userId+" )"
+															+"</span>"
+															+"<span>"
+															//if(JSONData.list[i].role = 'host'){
+																+"<c:if test='"+JSONData.list[i].role+"==host'>"
+																+"<strong>host</strong>"	
+																+"</c:if>"
+															//}
+															+"</span>"
+															+"</div>";
+											
+										$("form.form-horizontal-1").append(partyMemberList); 
+										console.log(partyMemberList);
+										
+										
+							  			if (sessionId == JSONData.list[i].user.userId){
 							  				console.log("if문 안");
-								  			var partyMemberList = "<div class='row' id='user'>"
-																	+"<input type='hidden' id='userId' name='userId' value='"+JSONData.list[i].user.userId+"'>"
-																	+"<span>"
-																		+"<img class='rounded-circle' src='/resources/uploadFile/"+JSONData.list[i].user.profileImage+"' width='40' height='40'>"
-																	+"</span>"
-																	+"<span>"
-																	+JSONData.list[i].user.nickname+"&nbsp;"+"( "+JSONData.list[i].user.userId+" )"
-																	+"</span>"
-																	+"<span>"
-																	if(JSONData.list[i].role='host'){
-																		+"<strong>host</strong>"	
-																	}
-																	+"</span>"
-																	+"</div>";
-																	
-											var button = "<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#exampleModal'>"
+								  			
+							  				/* 파티 멤버 리스트 보기 버튼 */
+											var getPartyMemberList = "<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#exampleModal'>"
 														 +"파티멤버보기"
 														 +"</button>";
 														 
-										    console.log(partyMemberList);
-										    console.log(button);
+										    //$("#partyMemberListButtonDiv").html(button);
+										    $("#partyMemberListButtonDiv").append(getPartyMemberList);
 										    
-										    $("form.form-horizontal-1").html(partyMemberList); 
-								  			//$("#partyMemberListButtonDiv").html(button);
-										    $("#partyMemberListButtonDiv").append(button);
+										    console.log(getPartyMemberList);
+										    
+										    /*파티 참여 취소 버튼 */
+										    if(sessionId != "${party.user.userId}"){
+										    	console.log("if문 안 파티 참여 취소 버튼");
+										    	
+										    	if("${party.festival.festivalNo}" != ""){
+										    		
+										    		/* 애프터 파티 취소 버튼 */
+										    		var cancelParty = "<button type='button' class='btn btn-primary'>파티참여취소</button>";
+										    		
+										    		$("#partyButtonDiv").html(cancelParty);
+										    		
+										    	}else if("${party.festival.festivalNo}" == ""){
+										    		
+										    		/* 파티 취소 버튼 */
+										    		var cancelPurchase = "<button type='button' class='btn btn-primary'>티켓구매취소</button>";
+										    		
+										    		$("#partyButtonDiv").html(cancelPurchase);
+										    	}
+										    }
+										    
+							  			}else if(sessionId != JSONData.list[i].user.userId) {
+							  				console.log("else if문 안");
+							  				if("${party.festival.festivalNo}" != ""){
+							  				//if( ${ !empty party.festival.festivalNo } ){	
+							  					console.log("else if문 안 애프터 파티 참여 버튼");	
+							  					
+							  					/* 애프터 파티 참여 버튼 */
+							  					var joinParty = "<button type='button' class='btn btn-primary'>애프터파티 참여</button>"
+							  					
+							  					$("#partyButtonDiv").html(joinParty);
+							  				}
+							  				
+							  				
+							  				
 							  			}						  			
-												
-						  			
-						  			
+										
 							  		}			
 							  		
 									var currentMemberCount = "${party.partyMemberLimit} 명 중 "+JSONData.currentMemberCount+" 명 참여중";
@@ -71,8 +111,21 @@
 				
 						});
 			/* }); */
+			
+			
 		});
 		
+		
+		
+		//============= "주최자"  Event 처리 및  연결 =============
+		$(function(){
+			$("#userDiv").on("click", function() {
+				self.location="/myPage/getMyPage/"+"${user.userId}";
+		
+			});
+		});
+		
+	
 		
 	</script> 
 	

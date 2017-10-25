@@ -19,10 +19,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.codebrew.moana.common.Page;
 import com.codebrew.moana.common.Search;
+import com.codebrew.moana.service.domain.Festival;
 import com.codebrew.moana.service.domain.Party;
 import com.codebrew.moana.service.domain.PartyMember;
 import com.codebrew.moana.service.domain.Ticket;
 import com.codebrew.moana.service.domain.User;
+import com.codebrew.moana.service.festival.FestivalService;
 import com.codebrew.moana.service.party.PartyService;
 import com.codebrew.moana.service.ticket.TicketService;
 
@@ -41,6 +43,9 @@ public class PartyController {
 	@Qualifier("ticketServiceImpl")
 	private TicketService ticketService;
 	
+	@Autowired
+	@Qualifier("festivalServiceImpl")
+	private FestivalService festivalService;
 	
 	@Value("#{commonProperties['pageUnit']}")
 	//@Value("#{commonProperties['pageUnit'] ?: 3}")
@@ -64,13 +69,27 @@ public class PartyController {
 	
 	///Method///
 	@RequestMapping( value="addParty", method=RequestMethod.GET)
-	public ModelAndView addParty(){
+	public ModelAndView addParty(@RequestParam(value = "festivalNo", required = false) String festivalNo) throws Exception{
 		
 		System.out.println("\n>>> /party/addParty :: GET start <<<");
+		
+		//festivalNo 파라미터 출력
+		System.out.println(">>> /party/addParty :: GET :: festivalNo 파라미터 \n"+festivalNo);
+		
 		
 		//Model(data) & View(jsp)
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("forward:/view/party/addParty.jsp");
+		
+		
+		//Business Logic
+		if( festivalNo != null ) {
+			int dbFestivalNo = Integer.parseInt(festivalNo);
+			Festival festival = festivalService.getFestivalDB(dbFestivalNo);
+		
+			modelAndView.addObject("festival", festival);
+		}
+		
 		
 		return modelAndView;
 	}
@@ -81,7 +100,7 @@ public class PartyController {
 		System.out.println("\n>>> /party/addParty :: POST start <<<");
 		
 		//party 도메인 출력
-		System.out.println(">>> /party/addParty party 도메인 \n"+party);
+		System.out.println(">>> /party/addParty :: POST :: party 도메인 \n"+party);
 		
 		//Party Image Upload
 		MultipartFile uploadfile = party.getUploadFile();
@@ -278,6 +297,16 @@ public class PartyController {
 		//party 도메인 출력
 		System.out.println("\n<<< /party/getParty :: GET :: party 도메인  \n"+party);
 		
+		//partyPlace Parsing
+		String dbPartyPlace = party.getPartyPlace();
+		int index = dbPartyPlace.indexOf(',');
+		
+		if( index != -1) {
+			dbPartyPlace = dbPartyPlace.substring(0, index);
+		}
+		
+		System.out.println("\n<<< /party/getParty :: GET :: psPartyPlace \n"+dbPartyPlace);
+		
 		//Map<String, Object> map = partyService.getPartyMemberList(dbPartyNo, search);
 		
 		/*Page resultPage = new Page(search.getCurrentPage(),((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
@@ -288,6 +317,7 @@ public class PartyController {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("party", party);
 		modelAndView.addObject("ticket", ticket);
+		modelAndView.addObject("psPartyPlace", dbPartyPlace);
 		//modelAndView.addObject("list", map.get("list"));
 		//modelAndView.addObject("currentMemberCount", map.get("currentMemberCount"));
 		modelAndView.setViewName("/view/party/getParty.jsp");

@@ -21,7 +21,7 @@ function jusoCallBack(roadFullAddr, entX, entY){
 
 	// 팝업페이지에서 주소입력한 정보를 받아서, 현 페이지에 정보를 등록합니다.
 		//document.form.roadFullAddr.value = roadFullAddr;
-		var partyPlave = $("#partyPlace").val(roadFullAddr);
+		var partyPlace = $("#partyPlace").val(roadFullAddr);
 		var entX = $("#entX").val(entX);
 		var entY = $("#entY").val(entY);
 		/* document.form.roadAddrPart1.value = roadAddrPart1;

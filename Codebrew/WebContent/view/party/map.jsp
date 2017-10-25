@@ -18,7 +18,10 @@
 	var geocoder = new daum.maps.services.Geocoder();
 	
 	// 파티 도로명 주소
-	var partyPlace = "${ party.partyPlace }";
+	var partyPlace = "${ psPartyPlace }";
+	
+	// 파티 도로명 주소 parsing
+	
 
 	// 주소로 좌표를 검색
 	geocoder.addressSearch(partyPlace, function(result, status) {
@@ -26,7 +29,7 @@
 	    // 정상적으로 검색이 완료됐으면 
 	     if (status === daum.maps.services.Status.OK) {
 	    	 
-			console.log(JSON.stringify(result));
+			console.log("map result :: "+JSON.stringify(result));
 	        var coords = new daum.maps.LatLng(result[0].y, result[0].x);
 	
 	        // 결과값으로 받은 위치를 마커로 표시합니다
@@ -43,12 +46,10 @@
 	
 	        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
 	        map.setCenter(coords);
-   	 } 
-});    
+	   	 } 
+	});    
 	
 	
 	
 </script>
-</body>
-</html>
 

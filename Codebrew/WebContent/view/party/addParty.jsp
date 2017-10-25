@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%-- <%@include file="/data/party/userData.jsp"%>  --%>
-<%@include file="/data/party/festivalData.jsp"%> 
+<%-- <%@include file="/data/party/festivalData.jsp"%>  --%>
    
 <!DOCTYPE html>
 <html>
@@ -28,15 +28,6 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     
 
-	
-	<!--  ///////////////////////// CSS ////////////////////////// -->
-	<style>
-       body > div.container{
-        	border: 3px solid #D6CDB7;
-            margin-top: 10px;
-        }
-    </style>
-    
     
     <!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
@@ -163,10 +154,13 @@
 				
 				$("#festivalNo").val("${festival.festivalNo}");
 				$("#festivalName").val("${festival.festivalName}");
+				$("#partyPlace").val("${festival.addr}");
 				var festivalNo = $("#festivalNo").val();
 				var festivalName = $("#festivalName").val();
+				var festivalAddr = $("#partyPlace").val();
 				
-				console.log("#afterParty 버튼 클릭 ==> "+festivalNo+" :: "+festivalName);
+				//console.log("#afterParty 버튼 클릭 ==> "+festivalNo+" :: "+festivalName);
+				console.log("#afterParty 버튼 클릭 ==> "+festivalNo+" :: "+festivalName+" :: "+festivalAddr);
 			});
 		});
 		
@@ -174,8 +168,14 @@
 		
 	</script>
 
+
 	<!--  ///////////////////////// CSS ////////////////////////// -->
 	<style type="text/css">
+		
+		body {
+	     	padding-top : 70px;
+	    }
+		
 		#festivalNameDiv {
 			display: none;
 		}
@@ -302,11 +302,10 @@
 		  <div class="form-group">
 		    <label for="partyPlace" class="col-sm-offset-1 col-sm-3 control-label">파티장소</label>
 		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="partyPlace" name="partyPlace" placeholder="파티장소를 검색해주세요.">
+		      <input type="text" class="form-control" id="partyPlace" name="partyPlace" placeholder="파티장소를 검색해주세요." value="${ festival.addr }">
 		      <!-- <button type="button" class="btn btn-primary" name="searchPartyPlace" >장소검색</button> -->
 		      <%@include file="/view/party/searchAddr.jsp"%> 
-		      <input type="text" class="form-control" id="entX" name="entX">
-		      <input type="text" class="form-control" id="entY" name="entY" >
+		     
 		    </div>
 		  </div>
 		  
