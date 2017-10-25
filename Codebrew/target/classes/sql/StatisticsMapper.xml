@@ -11,6 +11,7 @@
 		<result property="totalPrice" column="total_price" jdbcType="NUMERIC"/>
 		<result property="totalCount" column="total_count" jdbcType="NUMERIC"/>
 		<result property="statDate"/>
+		<result property="statFlag" column="stat_flag" jdbcType="VARCHAR"/>
 		<association property="purchase" javaType="purchase">
 			<id property="purchaseNo" column="purchase_no" jdbcType="NUMERIC"/>
 			<result property="purchaseMethodType" column="purchase_method_type" jdbcType="VARCHAR"/>
@@ -26,8 +27,12 @@
 		SELECT
 		to_char(purchase_date,'yyyy-mm-dd') AS stat_date,
 		SUM(purchase_price) AS total_price,
-		SUM(purchase_count) AS total_count
-		FROM purchase
+		SUM(purchase_count) AS total_count,
+		vt.stat_flag AS stat_flag
+		FROM purchase, (
+									  SELECT '1' AS stat_flag
+									  FROM dual
+									  ) vt
 		<where>
 			tran_code = '1'
 			AND purchase_price >= 0
@@ -46,8 +51,12 @@
 		SELECT
 		to_char(purchase_date,'yyyy-mm-dd') AS stat_date,
 		SUM(purchase_price) AS total_price,
-		SUM(purchase_count) AS total_count
-		FROM purchase
+		SUM(purchase_count) AS total_count,
+		vt.stat_flag AS stat_flag
+		FROM purchase, (
+									  SELECT '1' AS stat_flag
+									  FROM dual
+									  ) vt
 		<where>
 			tran_code = '1'
 			AND purchase_price >= 0
@@ -72,7 +81,8 @@
 		SELECT
 		vt.purchase_date AS stat_date,
 		vt.purchase_price AS total_price,
-		vt.purchase_count AS total_count
+		vt.purchase_count AS total_count,
+		st.stat_flag AS stat_flag
 		FROM (
 					SELECT
 					to_char(purchase_date, 'yyyy-mm') AS purchase_date,
@@ -82,14 +92,19 @@
           			WHERE to_char(purchase_date, 'yyyy') = to_char(SYSDATE, 'yyyy')  
 					GROUP BY to_char(purchase_date, 'yyyy-mm')
 					ORDER BY purchase_date
-					) vt
+					) vt,
+					(
+					SELECT '2' AS stat_flag
+					FROM dual
+					) st
 	</select>
 	
 	<select id="getMonthlyTotalSaleAmountStat2" parameterType="statistics"  resultMap="selectStatisticsMap">
 		SELECT
 		vt.purchase_date AS stat_date,
 		vt.purchase_price AS total_price,
-		vt.purchase_count AS total_count
+		vt.purchase_count AS total_count,
+		st.stat_flag AS stat_flag
 		FROM (
 					SELECT
 					to_char(purchase_date, 'yyyy-mm') AS purchase_date,
@@ -98,21 +113,32 @@
 					FROM purchase
 					<where>
           				to_char(purchase_date, 'yyyy') = to_char(SYSDATE, 'yyyy')  
+          				<if test="startDate != null and endDate == null">
+		          			AND to_char(purchase_date,'yyyy-mm') = #{startDate}
+						</if> 
 						<if test="startDate != null and endDate != null">
 		          			AND to_char(purchase_date,'yyyy-mm') BETWEEN #{startDate} AND #{endDate}
 						</if>          				
 					</where>
 					GROUP BY to_char(purchase_date, 'yyyy-mm')
 					ORDER BY purchase_date
-					) vt
+					) vt,
+					(
+					SELECT '2' AS stat_flag
+					FROM dual
+					) st
 	</select>
 	
 	<select id="getQuarterTotalSaleAmountStat" resultMap="selectStatisticsMap">
 		SELECT
 		TO_CHAR(purchase_date, 'q') AS stat_date,
 		SUM(purchase_price) AS total_price,
-		SUM(purchase_count) AS total_count
-		FROM purchase
+		SUM(purchase_count) AS total_count,
+		vt.stat_flag AS stat_flag
+		FROM purchase, (
+									 SELECT '3' AS stat_flag
+									 FROM dual
+									 ) vt
     	WHERE to_char(purchase_date, 'yyyy') = to_char(SYSDATE, 'yyyy')
 		GROUP BY TO_CHAR(purchase_date, 'q')
 		ORDER BY stat_date
@@ -122,8 +148,12 @@
 		SELECT
 		TO_CHAR(purchase_date, 'q') AS stat_date,
 		SUM(purchase_price) AS total_price,
-		SUM(purchase_count) AS total_count
-		FROM purchase
+		SUM(purchase_count) AS total_count,
+		vt.stat_flag AS stat_flag
+		FROM purchase, (
+									 SELECT '3' AS stat_flag
+									 FROM dual
+									 ) vt
 		<where>
 			<if test="startDate == null and endDate == null">
 				to_char(purchase_date, 'yyyy') = to_char(SYSDATE, 'yyyy')

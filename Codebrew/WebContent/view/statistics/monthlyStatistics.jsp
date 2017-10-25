@@ -71,7 +71,7 @@
 
 		console.log("월별 차트그리기 데이터 ");
 		console.log(monthlyChartData);
-
+		
 		//차트그리기 call
 		fncMonthlyChart();
 

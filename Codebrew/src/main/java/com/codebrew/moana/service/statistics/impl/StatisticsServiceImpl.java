@@ -59,6 +59,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 				list = statisticsDAO.getQuarterTotalSaleAmountStat(statistics);
 				break;
 		}
+
 		return list;
 	}
 	

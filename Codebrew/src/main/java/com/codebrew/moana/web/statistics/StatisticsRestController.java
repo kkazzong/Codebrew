@@ -37,16 +37,44 @@ public class StatisticsRestController {
 	@RequestMapping(value="json/getStatistics", method=RequestMethod.POST)
 	public List<Statistics> getSatistics(@RequestBody Statistics statistics) throws Exception {
 		
-		String date = statistics.getStatDate();
-		System.out.println("date->"+date);
-		String[] dates = date.split(" - ");
-		System.out.println("date->"+dates);
-		//어제 혹은 오늘
-		if(dates[0].equals(dates[1])) {
-			statistics.setStartDate(dates[0]);
-		} else {
-			statistics.setStartDate(dates[0]);
-			statistics.setEndDate(dates[1]);
+		System.out.println(statistics);
+		
+		if(statistics.getStatDate() != null && statistics.getStatDate() != "") {
+			
+			String date = statistics.getStatDate();
+			System.out.println("date->"+date);
+			String[] dates = date.split(" - ");
+			System.out.println("date->"+dates);
+			
+			switch(statistics.getStatFlag()) {
+			
+			case "1" :
+				//어제 혹은 오늘
+				if(dates[0].equals(dates[1])) {
+					statistics.setStartDate(dates[0]);
+				} else {
+					statistics.setStartDate(dates[0]);
+					statistics.setEndDate(dates[1]);
+				}
+				break;
+				
+			case "2" :
+				System.out.println(dates[0].substring(0, 7));
+				System.out.println(dates[1].substring(0, 7));
+				if((dates[0].substring(0, 7)).compareTo(dates[1].substring(0, 7)) == 0) {
+					System.out.println("이번달이네유");
+					statistics.setStartDate(dates[0].substring(0, 7));
+				} else {
+					statistics.setStartDate(dates[0].substring(0, 7));
+					statistics.setEndDate(dates[1].substring(0, 7));
+				}
+				break;
+				
+			case "3" :
+				statistics.setStartDate(dates[0]);
+				break;
+			}
+			
 		}
 		
 		List<Statistics> list = statisticsService.getStatistic(statistics);

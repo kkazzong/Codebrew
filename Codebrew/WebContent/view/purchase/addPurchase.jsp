@@ -25,6 +25,18 @@
 <!-- Bootstrap Dropdown Hover JS -->
 <script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
 
+<!-- jQuery ui -->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+
+<!-- popup -->
+<!-- Magnific Popup core CSS file -->
+<link rel="stylesheet" href="/resources/css/magnific-popup.css">
+
+<!-- Magnific Popup core JS file -->
+<script src="/resources/javascript/jquery.magnific-popup.min.js"></script>
+
+
 <script type="text/javascript">
 	
 	//수량 선택시 validation check function
@@ -88,12 +100,31 @@
 				
 				console.log(JSON.stringify(data));
 				var url = data.nextRedirectPcUrl;
-				window.open(url,'kakaoPay','toolbar=no,location=center,menubar=no,width=426,height=510');
+				var popupX = (window.screen.width / 2) - (200 / 2);
+				// 만들 팝업창 좌우 크기의 1/2 만큼 보정값으로 빼주었음
+
+				var popupY= (window.screen.height /2) - (300 / 2);
+				// 만들 팝업창 상하 크기의 1/2 만큼 보정값으로 빼주었음
+				window.open(url,'kakaoPay','toolbar=no, directories=no, fullscreen=yes, status=no, location=center,menubar=no,width=426,height=510');
+
 				
 			}
 			
 		});
 		
+	}
+	
+	function wrapWindowByMask(){
+        //화면의 높이와 너비를 구한다.
+        var maskHeight = $(document).height();  
+        var maskWidth = $(window).width();  
+
+        //마스크의 높이와 너비를 화면 것으로 만들어 전체 화면을 채운다.
+        $('#kakaoPayModal').css({'width':maskWidth,'height':maskHeight});  
+
+        //애니메이션 효과
+        $('#kakaoPayModal').fadeIn(1000);      
+        $('#kakaoPayModal').fadeTo("slow",0.8);    
 	}
 	
 	$(function(){
@@ -215,12 +246,30 @@
 		width : 100%;
 		height : 300px
 	}
+	/* #kakaoPayModal {  
+		  position:absolute;  
+		  left:0;
+		  top:0;
+		  z-index:9000;  
+		  background-color:#000;  
+		  display:block;  
+	} */
+	.white-popup {
+	  position: relative;
+	  background: #FFF;
+	  padding: 20px;
+	  width: auto;
+	  max-width: 500px;
+	  margin: 20px auto;
+	}
 </style>
 </head>
 
 <body>
 	
 	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
+	
+	<div id="kakaoPayModal" class="white-popup mfp-hide"></div>
 	
 	<div class="container">
 		
