@@ -3,13 +3,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script> 
+
 
 <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width" />
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 
-<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script> 
 
 </head>
 <body>
@@ -36,15 +36,17 @@
           
           self.location="/user/kakaoLogin?authorize_code="+authorize_code;
           },
+          
         fail: function(err) {
           alert(JSON.stringify(err));
         }
-      });
+          
+      })
       
    
     };
  
-    
+   
     
     
     
@@ -88,21 +90,20 @@
     	})
     	
     }) */
-    
+   
     $(function(){
-    	$("a:contains('카카오 로그아웃')").bind("click",function(){
+    	$("a:contains('kakaoLogout')").on("click", function() {
     		
     		Kakao.Auth.logout(function(data) {
-    			//alert(data);
+    			alert(data);
     			if(data) {
     				alert("카카오로그아웃이 되었습니다.");
     				
     				//$("#profile").html("logout ok")
-    			}
-    		
-    	})
+    			 }		
+    	       })
     		})
-    	})
+     });
     
      
     
@@ -110,7 +111,7 @@
     
 </script>
      <div class="form-group">
-	    <a id="kakao-logout-btn">카카오 로그아웃</a>
+	    <a id="kakao-logout-btn">kakaoLogout</a><!--한글로 쓰면 안 안먹힘..a contains가 잘안먹힘  -->
 	</div> 
 
 

@@ -41,11 +41,10 @@
     }
     
 </style>
-<<<<<<< HEAD
-<title>Moana</title>
-=======
+
+
 	<script type="text/javascript">
-	Kakao.init('9f9b09052da56dddc3bc66e8a1632a69');
+	/* Kakao.init('9f9b09052da56dddc3bc66e8a1632a69');
 	
 	$(function(){
 		
@@ -62,11 +61,11 @@
 		})
 	 })
 	})
-			
+			 */
 	    
 </script>
 <title>Insert title here</title>
->>>>>>> refs/heads/new/jooyoung
+
 </head>
 <body>
 	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
