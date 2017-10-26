@@ -1,3 +1,4 @@
+
  <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
@@ -209,7 +210,7 @@
 							  			
 							  		} //for문 end
 				
-									var currentMemberCount = "${party.partyMemberLimit} 명 중 "+JSONData.currentMemberCount+" 명 참여중";
+									var currentMemberCount = "&nbsp;&nbsp;&nbsp;&nbsp;${party.partyMemberLimit} 명 중 "+JSONData.currentMemberCount+" 명 참여중";
 																						
 									$("#currentMemberCountDiv").html(currentMemberCount); 
 		
@@ -236,7 +237,7 @@
 
 <!--  화면구성 div Start /////////////////////////////////////-->
 <!-- Button trigger modal -->
-<div id="partyMemberListButtonDiv"></div>
+<div class="col-md-offset-4 col-md-4" id="partyMemberListButtonDiv"></div>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

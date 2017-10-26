@@ -27,6 +27,7 @@
 								var html =  "<div><h1 align='center'>"+JSONData.partyName+"</h1></div>"
 											+"<div>여자 비율 "+JSONData.femalePercentage+"%</div>"
 											+"<div>여자 나이 평균 "+JSONData.femaleAgeAverage+"살</div>"
+											+"<hr>"
 											+"<div>남자 비율 "+JSONData.malePercentage+"%</div>"
 											+"<div>남자 나이 평균"+JSONData.maleAgeAverage+"살</div>"
 								
@@ -41,9 +42,11 @@
 <!--  화면구성 div Start /////////////////////////////////////-->
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal2">
-  확인하기
-</button>
+<div class="col-md-offset-4 col-md-4" >
+	<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal2">
+	  확인하기
+	</button>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

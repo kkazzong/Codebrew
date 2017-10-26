@@ -261,12 +261,7 @@
 					<div class="col-md-12">
 						<small><span class="glyphicon glyphicon-star"></span> &nbsp; 파티 설명</small>
 						<br>
-						&nbsp;&nbsp;&nbsp;&nbsp;${party.partyDetail}
-					</div>
-					<div class="col-md-12">
-						<small><span class="glyphicon glyphicon-tags"></span> &nbsp; 티켓 가격</small>
-						<br>
-						&nbsp;&nbsp;&nbsp;&nbsp;￦ ${ticket.ticketPrice}원
+						${party.partyDetail}
 					</div>
 					<div class="col-md-12">
 						<br><br><hr>
@@ -326,7 +321,187 @@
 		</div>
 	</div>
 	
+	
+	
+	
+	
+	
+	<!--  화면구성 div Start /////////////////////////////////////-->
+	<div class="container">
+		<h1 class="bg-primary text-center"> 
+		${ empty party.festival.festivalNo  ? '파티' : '애프터 파티'}
+		<input type="hidden" id="festival.festivalNo" name="festival.festivalNo" value="${ party.festival.festivalNo }"/>
+		<input type="hidden" id="partyFlag" name="partyFlag" value="${ empty party.festival.festivalNo ? '1' : '2' }"/>
+		<input type="hidden" id="partyNo" name="partyNo" value="${ party.partyNo }"/>
+		</h1>
+		<hr />
 
+		<div class="container">
+			<div>
+				<h2 class="text-center">${ party.partyName }</h2>
+				<div>
+					<%-- <p><img class="rounded-circle" src="/resources/image/uploadFile/${ party.user.profileImage }" alt="Generic placeholder image" width="40" height="40"></p> --%>
+					<p class="host">파티 호스트 &nbsp;<img class="rounded-circle" src="/resources/uploadFile/${party.partyImage}" alt="Generic placeholder image" width="40" height="40">
+					${ party.user.nickname }</p>
+					<%-- <p>파티 호스트 &nbsp;<img class="rounded-circle" src="/resources/uploadFile/${ party.user.profileImage }" alt="Generic placeholder image" width="40" height="40">
+					${ party.user.nickname }</p> --%>
+				</div>
+			</div>
+			
+			<div class="text-center">
+				<img src="../../resources/uploadFile/${party.partyImage}" width="800" >
+			</div>
+			
+			<br>
+			
+			<div>
+			
+			<c:if test="${ party.festival != null }">
+				<div class="row">
+					<br />
+					<div class="col-xs-4 col-md-2 ">
+						<strong>축제명</strong>
+					</div>
+					<div class="col-xs-8 col-md-4">${party.festival.festivalName}</div>
+				</div>
+
+				<hr />
+			</c:if>
+			
+				<div class="row">
+					<div class="col-xs-4 col-md-2 ">
+						<strong>파티날짜</strong>
+					</div>
+					<div class="col-xs-8 col-md-4">${party.partyDate}</div>
+				</div>
+
+				<hr />
+				
+				<div class="row">
+					<div class="col-xs-4 col-md-2 ">
+						<strong>파티시간</strong>
+					</div>
+					<div class="col-xs-8 col-md-4">${party.partyTime}</div>
+				</div>
+
+				<hr />
+
+				<div class="row">
+					<div class="col-xs-4 col-md-2 ">
+						<strong>파티인원</strong>
+					</div>
+					<div class="col-xs-4 col-md-2" id="currentMemberCountDiv"></div>
+	
+					<%@include file="/view/party/getPartyMemberList.jsp"%> 				
+					
+				</div>
+				
+				<hr/>
+				<c:if test="${ empty party.festival.festivalNo}">
+					<c:if test="${ !empty ticket.ticketPrice || ticket.ticketPrice == 0 }">
+					<div class="row" id="ticketPriceDiv">
+						<div class="col-xs-4 col-md-2 ">
+							<strong>파티 티켓 가격</strong>
+						</div>
+						<div class="col-xs-8 col-md-4">${ticket.ticketPrice}&nbsp;원</div>
+					</div>
+					
+					<hr />
+					</c:if>
+				</c:if>
+				
+				<%-- <c:if test="${ ticket.ticketPrice == 0 }">
+				<div class="row" id="ticketPriceDiv">
+					<div class="col-xs-4 col-md-2 ">
+						<strong>파티 티켓 가격</strong>
+					</div>
+					<div class="col-xs-8 col-md-4">0</div>&nbsp;원
+				</div>
+				
+				<hr />
+				</c:if> --%>
+				
+				<div class="row">
+					<div class="col-xs-4 col-md-2">
+						<strong>파티설명</strong>
+					</div>
+					<div class="col-xs-8 col-md-4">${party.partyDetail}</div>
+				</div>
+				
+				<hr/>
+
+				<div class="jumbotron">
+					<p>당신은 현재 참여중인 참여자의 성별비율을 볼 수 있습니다.....당신은 궁금합니다.....코코넛을 사용해 확인하시겠습니까?</p>
+				
+					<%@include file="/view/party/getGenderRatio.jsp"%> 
+					
+				</div>
+
+				<hr />
+
+				<div class="row">
+					<div class="col-xs-4 col-md-2 ">
+						<strong>파티 장소</strong>
+					</div>
+					<div class="col-xs-8 col-md-4">${party.partyPlace}
+					
+					<%@include file="/view/party/map.jsp"%> 
+					</div>
+				</div>
+
+				<hr />
+
+				<div class="row">
+					<div class="col-md-offset-4 col-md-4 text-center">
+						
+						<!-- 파티 & 애프터 파티 -->
+						<c:if test="${ party.user.userId==user.userId }">
+					
+							<button type="button" class="btn btn-primary btn-block">파티수정</button>
+						</c:if>
+						
+						<%-- <c:if test="${ ! empty party.user.userId && party.user.userId==sessionScope.user.userId }">
+							<button type="button" class="btn btn-primary">파티삭제</button>
+						</c:if> --%>
+						
+						<!-- 파티 -->
+ 						<%-- <c:if test="${ empty party.festival.festivalNo }">
+							<c:if test="${ party.user.userId!=user.userId }">
+						
+								<button type="button" class="btn btn-primary">파티티켓구매</button>
+							</c:if>
+						</c:if> --%>
+						
+						<!-- 애프터 파티 -->
+						<%-- <c:if test="${ !empty party.festival.festivalNo }">
+							console.log("애프터 파티 버튼 구간 1");
+							<c:set var="i" value="0" />
+							<c:forEach var="partyMember" items="${list}">
+								<c:set var="i" value="${ i+1 }" />
+								console.log("애프터 파티 버튼 구간 2");
+									<c:if test="${ partyMember.user.userId != user.userId }">
+										console.log("애프터 파티 버튼 구간 3");
+										<button type="button" class="btn btn-primary">애프터파티 참여</button>
+									</c:if>
+								
+									<c:if test="${ partyMember.user.userId==user.userId && party.user.userId!=user.userId }">
+										console.log("애프터 파티 버튼 구간 4");
+										<button type="button" class="btn btn-primary">파티참여취소</button>
+		
+									</c:if>
+							</c:forEach>
+						</c:if> --%>
+						<span id="partyButtonDiv"></span>					
+					<!-- <button type="button" class="btn btn-primary">뒤로</button> -->
+						
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+	<!--  화면구성 div end /////////////////////////////////////-->
 
 </body>
 </html>

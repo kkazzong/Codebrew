@@ -41,7 +41,7 @@
 		} 
 		
 		$(function(){
-			$("button[type=button]").bind("click", function() {
+			$("#search").on("click", function() {
 				console.log( $("button[type=button]:contains('검색')").html() );
 				fncGetList(1);
 			});
@@ -210,6 +210,8 @@
 			}
 		}); */
 		
+		
+		
 	</script>
 	
 	
@@ -224,7 +226,11 @@
 			margin-top : 50px;
 	    }
 	    
-		.panel-heading h3 {
+	    .panel-primary>.panel-heading {
+    		background-color: #000000;
+    	}
+	    
+		.panel-heading h2 {
 		    white-space: nowrap;
 		    overflow: hidden;
 		    text-overflow: ellipsis;
@@ -244,43 +250,45 @@
    	
 	<!--  화면구성 div Start /////////////////////////////////////-->
 	<div class="container">
-	  <div class="page-header text-info">
-   		   <h2 align="center" id="title">My 파티 목록</h2>
-	  </div>
+	  <div class="row">
+			<div class="col-md-12">
+				<div class="page-header text-center">
+					<h2 class="text-info">MY파티 리스트</h2>
+				</div>
+			</div>
+		</div>
 	  
 	  <!-- 목록 위 검색 Start /////////////////////////////////////-->
 	    <div class="row">
 	    
-		    <div class="col-md-6 text-left">
-		    	<p class="text-primary">
-		    		전체  ${resultPage.totalCount } 건수
-   		
-		    	</p>
-		    </div>
+		    <!-- 데이터 수 -->
+			<div class="row">
+				<div class="col-md-12">
+					<h5>총 : ${resultPage.totalCount} 건 (${resultPage.currentPage} / ${resultPage.maxPage})</h5>
+				</div>
+			</div>
 		    
-		    <div class="col-md-6 text-right">
-			    <form class="form-inline" name="detailForm">
-			    
-				  <div class="form-group">
-				    <div class="form-select">
-						<button type="button" class="btn btn-default btn-block" >진행중인 파티</button>
-						<button type="button" class="btn btn-default btn-block" >지난 파티</button>
-						<input type="hidden" class="form-control" id="searchCondition" name="searchCondition" value="${ ! empty search.searchCondition ? search.searchCondition : '' }">
+		    <!-- 검색 -->
+			<div class="col-md-12 text-right">
+				<form class="form form-inline" id="searchForm" name="searchForm">
+					
+					<button type="button" class="btn btn-default" >진행중인 파티</button>
+					<button type="button" class="btn btn-default" >지난 파티</button>
+					<input type="hidden" class="form-control" id="searchCondition" name="searchCondition" value="${ ! empty search.searchCondition ? search.searchCondition : '' }">
+					<!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
+					<input type="hidden" id="currentPage" name="currentPage" value=""/>
+					<div class="input-group">
+						<input class="form-control" id="searchKeyword" name="searchKeyword" type="text" 
+									value="${!empty search.searchKeyword ? search.searchKeyword : ''}"
+									placeholder="파티 이름으로 검색">
+						<span class="input-group-btn">
+					    	<button id="search" class="btn btn-primary btn-block" type="button">
+					    		<span class="glyphicon glyphicon-search" aria-hidden="true"></span> 
+					    	</button>
+					    </span>
 					</div>
-				  </div>
-				  
-				  <div class="form-group">
-				    <label class="sr-only" for="searchKeyword">검색어</label>
-				    <input type="text" class="form-control" id="searchKeyword" name="searchKeyword" 
-				    			 value="${! empty search.searchKeyword ? search.searchKeyword : '' }"  >
-				    <button type="button" class="btn btn-default btn-block">검색</button>			 
-				  </div>		  
-				  
-				  <!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
-				  <input type="hidden" id="currentPage" name="currentPage" value=""/>
-				  
 				</form>
-	    	</div>
+			</div>
 	    	
 		</div>
 	  <!-- 목록 위 검색 End /////////////////////////////////////-->
@@ -326,7 +334,7 @@
 									</div>
 									<div class="col-md-12">
 										<small>
-											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+											<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
 											${party.partyTime}
 										</small>
 									</div>
@@ -339,7 +347,7 @@
 									<div class="col-md-12">
 										<small>
 											<c:if test="${ !empty party.festival.festivalName}">
-												<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+												<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
 												${ party.festival.festivalName }
 											</c:if>
 										</small>
