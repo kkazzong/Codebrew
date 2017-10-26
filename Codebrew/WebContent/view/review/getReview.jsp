@@ -46,33 +46,31 @@
 		$("form").attr("method", "POST").attr("action", "/reply/addReply").submit();
 	}
 	
+	
 	//Event 걸어주기
 	$(function() {
-		 $( "button.btn.btn-primary:contains('목록보기')" ).on("click" , function() {
-			 self.location = "/review/getReviewList?menu=manage"
+		 $( "#getReviewList" ).on("click" , function() {
+			 self.location = "/review/getReviewList"
 		});
 		
-		 $( "button.btn.btn-primary:contains('심사목록보기')" ).on("click" , function() {
-			self.location = "/review/getCheckReviewList?reviewNo=${review.reviewNo}"
+		 $( "#getCheckReviewList" ).on("click" , function() {
+			self.location = "/review/getCheckReviewList?role='a'"
 		});
 		
-		 $( "button.btn.btn-primary:contains('수정')" ).on("click" , function() {
+		 $( "#updateReview" ).on("click" , function() {
 			self.location = "/review/updateReview?reviewNo=${review.reviewNo}"
 		});
 		 
-		 $( "button.btn.btn-primary:contains('통과(등록)')" ).on("click" , function() {
+		$( "#passCheckCode" ).on("click" , function() {
+			alert("review.checkCode :: "+"${review.checkCode}");
+			self.location = "/review/passCheckCode?reviewNo=${review.reviewNo }";				
+		});
+		 
+		 $( "#failCheckCode" ).on("click" , function() {
 			self.location = "/review/addPurchaseView?prodNo=${product.prodNo}";
 		});
 		 
-		 $( "button.btn.btn-primary:contains('반려(미등록)')" ).on("click" , function() {
-			self.location = "/review/addPurchaseView?prodNo=${product.prodNo}";
-		});
-		 
-		 $( "button.btn.btn-primary:contains('이전')" ).on("click" , function() {
-			history.go(-1);
-		});
-		 
-		 $( "button.btn.btn-primary:contains('댓글등록')" ).on("click" , function() {
+		$( "#addReply" ).on("click" , function() {
 			fncAddReply();
 		});
 		 
@@ -105,7 +103,8 @@
 		</div>
 		
 		<div class="row">
-			<div class="col-md-offset-3 col-md-6">
+			<!-- <div class="col-md-offset-3 col-md-6"> -->
+			<div class="col-md-12">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<h3 class="panel-title">${review.reviewTitle } 후기제목</h3>
@@ -175,7 +174,7 @@
 									심사중									
 								</c:if>
 								<c:if test="${review.checkCode == '2' || review.checkCode == '22' }">
-									통과		
+									통과
 								</c:if>
 								<c:if test="${review.checkCode == '4' || review.checkCode == '44' }">
 									반려									
@@ -226,35 +225,39 @@
 							</small>
 						</div>
 						<div class="col-md-12">
-							<c:set var="i" value="0"/>
-				  			<c:forEach var="listV" items="${review.reviewVideoList}">
-					   				<video width="320" height="240" controls>
-					   					<source src="/resources/uploadFile/${listV.reviewVideo}" type="video/mp4"></video>
-				   			</c:forEach>
+							<small>
+								<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+									동영상
+							</small>
+							<c:if test="${!empty review.reviewVideoList[0].reviewVideo }">
+								<c:set var="i" value="0"/>
+					  			<c:forEach var="listV" items="${review.reviewVideoList}">
+						   				<!-- 
+						   				<video width="320" height="240" controls>
+						   				 -->
+						   				<video controls >
+						   					<source src="/resources/uploadFile/${listV.reviewVideo}" type="video/mp4"></video>
+					   			</c:forEach>
+				   			</c:if>
+				   			<c:if test="${empty review.reviewVideoList[0].reviewVideo }">
+				   				동영상 없다~
+				   			</c:if>
 						</div>
 						<hr>
-						<div class="col-md-12">
-							<small>
-								<!-- ToolBar Start /////////////////////////////////////-->
-								<jsp:include page="getReplyList.jsp" >
-									<jsp:param name="reviewNo" value="${review.reviewNo }"/>
-								</jsp:include>
-							   	<!-- ToolBar End /////////////////////////////////////-->
-							</small>
-						</div>
 						<div class="col-md-12">
 							<small>
 								<!-- button class 구분 ==>> 회원 : primary, Admin : default -->
 								<!-- admin이 아니면서(일반회원 혹은 비회원이면서) 해당 후기 작성자와 조회한 사람이 동일인일 때, -->
 						   		<c:if test="${sessionScoepe.user.role != 'a' && sessionScope.user.userId == review.userId}">
 						   			<center>
-						   				<button type="button" class="btn btn-primary">수정하기</button>
+						   				<button id = "updateReview" type="button" class="btn btn-primary">수정하기</button>
+						   				<button id = "getReviewList" type="button" class="btn pull-center btn-primary">목록보기</button>
 						   			</center>
 								</c:if>
 								<!-- admin이 아니면서(일반회원 혹은 비회원이면서) 해당 후기 작성자와 조회한 사람이 동일하지 않을 때 ==>> 가장 많은 경우 -->
 						   		<c:if test="${sessionScope.user.role != 'a' && sessionScope.user.userId != review.userId}">
 						   			<center>
-							   			<button type="button" class="btn pull-center btn-primary">목록보기</button>
+							   			<button id = "getReviewList" type="button" class="btn pull-center btn-primary">목록보기</button>
 						   			</center>
 						   		</c:if>
 						   		
@@ -262,18 +265,31 @@
 						   		<!-- admin이면서  해당 후기가 등록요청중인 후기 일 때 -->
 						   		<c:if test="${sessionScope.user.role == 'a' && (review.checkCode == '1' || review.checkCode == '11')}">
 						   			<center>
-							   			<button type="button" class="btn pull-center btn-default">통과(등록)</button>
-							   			<button type="button" class="btn pull-center btn-default">반려(미등록)</button>
+							   			<button id="passCheckCode" type="button" class="btn pull-center btn-default">
+							   				통과(등록)
+							   			</button>
+							   			<button id="failCheckCode" type="button" class="btn pull-center btn-default">
+							   				반려(미등록)
+							   			</button>
 							   		</center>
 						   		</c:if>
 						   		<!-- admin이면서  해당 후기가 반려된 후기 혹은 통과된 후기(나머지 심사상태인 후기인 경우) 일 때-->
 						   		<c:if test="${sessionScope.user.role =='a' }">
 						   			<center>
-						   				<button type="button" class="btn btn-default">수정하기</button>
-							   			<button type="button" class="btn pull-center btn-fault">심사목록보기</button>
-							   			<button type="button" class="btn pull-center btn-fault">목록보기</button>
+						   				<button id = "updateReview" type="button" class="btn btn-default">수정하기</button>
+							   			<button id = "getCheckReviewList" type="button" class="btn pull-center btn-fault">심사목록보기</button>
+							   			<button id = "getReviewList" type="button" class="btn pull-center btn-fault">목록보기</button>
 						   			</center>
 						   		</c:if>
+							</small>
+						</div>
+						<div class="col-md-12">
+							<small>
+								<!-- ToolBar Start /////////////////////////////////////-->
+								<jsp:include page="getReplyList.jsp" >
+									<jsp:param name="reviewNo" value="${review.reviewNo }"/>
+								</jsp:include>
+							   	<!-- ToolBar End /////////////////////////////////////-->
 							</small>
 						</div>
 					</div>

@@ -108,8 +108,8 @@
 									rp.reply_detail, 
 									rp.reply_reg_date
 							FROM reply rp 
-							AND rp.review_no = #{reviewNo} 
-							ORDER BY rp.reply_no ) inner_table
+							WHERE rp.review_no = #{reviewNo} 
+							ORDER BY rp.reply_no DESC) inner_table
 					WHERE ROWNUM <![CDATA[<=]]> #{search.currentPage}*#{search.pageSize} ) 
   		WHERE row_seq BETWEEN (#{search.currentPage}-1)*#{search.pageSize}+1 
   		AND #{search.currentPage}*#{search.pageSize}

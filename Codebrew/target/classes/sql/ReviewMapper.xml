@@ -129,25 +129,25 @@
 	</insert>
 	
 	
-	<update id="passCheckCode" parameterType="review">
+	<update id="passCheckCode" parameterType="string">
 		UPDATE review SET
-			<if test="checkCode=='1'">
-				checkCode = '2'			
+			<if test="checkCode==1">
+				check_code = '2'			
 			</if>
-			<if test="checkCode=='11'">
-				checkCode = '22'
+			<if test="checkCode==11">
+				check_code = '22'
 			</if>
 		WHERE review_no=#{reviewNo}
 	</update>
+
 	
-	
-	<update id="failCheckCode" parameterType="review">
+	<update id="failCheckCode" parameterType="string">
 		UPDATE review SET
-			<if test="checkCode=='1'">
-				checkCode = '4'			
+			<if test = "checkCode=='1'">
+				check_code = '4'			
 			</if>
-			<if test="checkCode=='11'">
-				checkCode='44'
+			<if test = "checkCode=='11'">
+				check_code='44'
 			</if>
 		WHERE review_no=#{reviewNo}
 	</update>
@@ -175,10 +175,10 @@
 			i.review_image, 
 			v.review_video 
 		FROM review rv, festival f, 
-			(SELECT image_no, review_no, review_image FROM image WHERE review_no=#{reviewNo}) i, 
-			(SELECT video_no, review_no, review_video FROM video WHERE review_no=#{reviewNo}) v, 
+			(SELECT image_no, review_no, review_image FROM image WHERE review_no=#{reviewNo} ORDER BY review_no DESC) i, 
+			(SELECT video_no, review_no, review_video FROM video WHERE review_no=#{reviewNo} ORDER BY video_no DESC) v, 
 			(SELECT good_no, review_no, user_id FROM good WHERE review_no=#{reviewNo}) g, 
-			(SELECT reply_no, review_no, user_id, reply_detail, reply_reg_date FROM reply WHERE review_no=#{reviewNo}) rp
+			(SELECT reply_no, review_no, user_id, reply_detail, reply_reg_date FROM reply WHERE review_no=#{reviewNo} ORDER BY reply_no DESC) rp
 		WHERE rv.review_no=rp.review_no(+) 
 		AND rv.review_no=i.review_no(+) 
 		AND rv.review_no=v.review_no(+) 
@@ -240,23 +240,30 @@
 	  <select id="getReviewList" parameterType="search" resultMap="reviewSelectMap">
 	  	SELECT *
 	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
-	  					FROM		(	SELECT rv.review_no, rv.festival_name, rv.review_title, rv.addr, rv.review_hashtag, i.review_image
-										FROM review rv, image i
-										<where>
-										rv.review_no = i.review_no 
-											<if test="searchCondition != null ">
-										        <if test="searchCondition == 0 and searchKeyword ==''">
-										            AND rv.festival_name LIKE '%${searchKeyword}%'
-										        </if>
-										        <if test="searchCondition == 1 and searchKeyword !=''">
-										            AND rv.addr LIKE '%${searchKeyword}%'
-										        </if>
-										        <if test="searchCondition == 2 and searchKeyword !=''">
-										        	AND rv.review_hashtag LIKE '%{searchKeyword}%' 
-										        </if>
-											</if>
-										</where>
-										ORDER BY rv.review_reg_date DESC  ) inner_table
+				FROM ( SELECT  rv.review_no, 
+								rv.festival_name, 
+								rv.review_title, 
+								rv.addr, 
+								rv.review_hashtag, 
+								i.review_image
+						FROM review rv, ( SELECT * FROM ( SELECT image.*, row_number() OVER (PARTITION BY review_no ORDER BY image_no ) rnum
+							             FROM image
+							             WHERE 1=1 ) WHERE rnum = 1) i 
+								<where>
+									rv.review_no = i.review_no
+									<if test="searchCondition != null ">
+								        <if test="searchCondition == 0 and searchKeyword !='' ">
+								            AND rv.festival_name LIKE '%${searchKeyword}%'
+								        </if>
+								        <if test="searchCondition == 1 and searchKeyword !='' ">
+								            AND rv.addr LIKE '%${searchKeyword}%'
+								        </if>
+								        <if test="searchCondition == 2 and searchKeyword !='' ">
+								        	AND rv.review_hashtag LIKE '%{searchKeyword}%' 
+								        </if>
+									</if>
+								</where>
+								ORDER BY rv.review_reg_date DESC ) inner_table
 						WHERE ROWNUM &lt;= #{endRowNum} )
 		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 	
 	 </select>
@@ -317,22 +324,22 @@
 	  <select id="getTotalCount" parameterType="search" resultType="int">
 	  	SELECT COUNT(*)
 	  	FROM(	SELECT 	*
-	  			FROM review rv, image i 
-				<where>
-					rv.review_no = i.review_no
+	  			FROM review rv, image i  
+	  			<where>
+				rv.review_no = i.review_no 
 					<if test="searchCondition != null ">
-				        <if test="searchCondition == 0 and searchKeyword ==''">
+				        <if test="searchCondition == 0 and searchKeyword !='' ">
 				            AND rv.festival_name LIKE '%${searchKeyword}%'
 				        </if>
-				        <if test="searchCondition == 1 and searchKeyword !=''">
+				        <if test="searchCondition == 1 and searchKeyword !='' ">
 				            AND rv.addr LIKE '%${searchKeyword}%'
 				        </if>
-				        <if test="searchCondition == 2 and searchKeyword !=''">
+				        <if test="searchCondition == 2 and searchKeyword !='' ">
 				        	AND rv.review_hashtag LIKE '%{searchKeyword}%' 
 				        </if>
 					</if>
-					GROUP BY (rv.review_no) 
-				</where>
+	  			</where>
+				GROUP BY (rv.review_no) 
 			) countTable						
 	 </select>
 	  
