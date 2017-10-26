@@ -47,18 +47,16 @@
 		          <li class="dropdown">
 		             <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
 		                <span>Festival</span>
-		                <c:if test="${sessionScope.user.role == 'a'}">
-		                	<span class="caret"></span>
-		                </c:if>
+		                <span class="caret"></span>
 		              </a>
-		                 <c:if test="${sessionScope.user.role == 'a'}">
 			              <ul class="dropdown-menu">
 							<li><a href="#">축제목록</a></li>
+		                 <c:if test="${sessionScope.user.role == 'a'}">
 			                       <li class="divider"></li>
 			                       <li><a href="#">축제직접등록</a></li>
 			                       <li><a href="#">축제등록</a></li>
-		                   </ul>
 	                       </c:if>  
+		                   </ul>
 		           </li>
 		           
 		          <!-- 파티관리 DrowDown  -->
@@ -203,7 +201,7 @@
    		
   		//////축제관리//////
    		$(function(){
-			$( "a:contains('Festival'), li > a:contains('축제목록')" ).on("click" , function() {
+			$( "li > a:contains('축제목록')" ).on("click" , function() {
 				self.location = "/festival/getFestivalListDB?menu=db";
 			});
 			
@@ -220,7 +218,7 @@
    		$(function(){
 			$( "a:contains('Review')" ).on("click" , function() {
 				//self.location = "/review/getReviewList";
-				self.location = "/review/getReviewList";
+				//self.location = "/review/getReviewList";
 			});
    		});
   		

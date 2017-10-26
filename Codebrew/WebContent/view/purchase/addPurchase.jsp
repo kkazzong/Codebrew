@@ -585,24 +585,39 @@
 									<span class="help-block">
 										결제창이 뜨지 않을 경우, 팝업을 허용한 뒤 다시 시도 해주세요.
 									</span>
-								<div class="col-md-offset-4 col-md-4">
+								<div class="col-md-4">
+									<ul class="list-group">
+									  <li class="list-group-item">
+									카카오페이
 									<button id="kakaoPay" class="btn btn-link btn-block" disabled="disabled" type="button">
-										<img src="../../resources/image/buttonImage/kakaopay.png">
+										 <img width="120" height="60" src="../../resources/image/buttonImage/kakaopay.png">
 									</button>
+										</li>
+									</ul>
 								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-offset-4 col-md-4">
-									<button id="danal" class="btn btn-link btn-block" disabled="disabled" type="button">
-										<img width="120" height="50" src="../../resources/image/buttonImage/danal.jpg">
-									</button>
+							<!-- </div> -->
+							<!-- <div class="row"> -->
+								<div class="col-md-4">
+									<ul class="list-group">
+									  <li class="list-group-item">
+										휴대폰결제
+										<button id="danal" class="thumbnail btn btn-link btn-block" disabled="disabled" type="button">
+											 <img width="120" height="50" src="../../resources/image/buttonImage/danal.jpg">
+										</button>
+									  </li>
+									</ul>
 								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-offset-4 col-md-4">
-									<button id="bank" class="btn btn-link btn-block" disabled="disabled" type="button">
-										<img width="120" height="50" src="../../resources/image/buttonImage/bank.png">
-									</button>
+							<!-- </div>
+							<div class="row"> -->
+								<div class="col-md-4">
+									<ul class="list-group">
+									  <li class="list-group-item">
+										계좌이체
+										<button id="bank" class="btn btn-link btn-block" disabled="disabled" type="button">
+											 <img width="120" height="60" src="../../resources/image/buttonImage/bank.png">
+										</button>
+										</li>
+									</ul>
 								</div>
 							</div>
 							</c:if>
