@@ -103,7 +103,13 @@
 		});
 		
 	    
-	 		
+		//============= 아이디찾기 비밀번호찾기 =============	
+		$( function() {
+			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+			$("#findUser").on("click" , function() {
+				self.location = "/user/findUser"
+			});
+		});
 		
 		
 	
@@ -135,6 +141,12 @@
 					<div class="form-group">
 						<div class="col-md-offset-3 col-md-6 text-center">
 						 	<a id="addUserBtn" class="btn btn-default btn btn-block" href="#" role="button">회 &nbsp;원 &nbsp;가 &nbsp;입</a>
+						 </div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-md-offset-3 col-md-6 text-center">
+						 	<a id="findUser" class="btn btn-default btn btn-block" href="#" role="button">아이디찾기/비밀번호찾기</a>
 						 </div>
 					</div>
 					
