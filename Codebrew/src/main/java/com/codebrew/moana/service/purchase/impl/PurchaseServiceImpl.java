@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.codebrew.moana.common.Search;
+import com.codebrew.moana.service.domain.Bank;
 import com.codebrew.moana.service.domain.Purchase;
 import com.codebrew.moana.service.domain.QRCode;
 import com.codebrew.moana.service.domain.Ticket;
@@ -41,6 +42,11 @@ public class PurchaseServiceImpl implements PurchaseService {
 	@Autowired
 	@Qualifier("iamportAPIDAOImpl")
 	private PurchaseDAO impDAO;
+	
+	@Autowired
+	@Qualifier("kftcAPIDAOImpl")
+	private PurchaseDAO kftcDAO;
+	
 	
 	//Constructor
 	public PurchaseServiceImpl() {
@@ -76,7 +82,26 @@ public class PurchaseServiceImpl implements PurchaseService {
 		Purchase purchase = impDAO.approvePayment((Purchase)map.get("purchase"), map.get("token").toString());
 		return this.addPurchase(purchase, map.get("path").toString());
 	}
+	
+	@Override
+	public Bank readyTransfer(Purchase purchase) {
+		return kftcDAO.readyTransfer(purchase);
+	}
 
+	@Override
+	public Bank transferMoney(Map<String, Object> map) {
+		Purchase purchase = (Purchase)map.get("purchase");
+		//String token = kftcDAO.readyTransfer(purchase);
+		Bank bank = (Bank)map.get("bank");
+		//bank.setToken(token);
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> getTransferResult(Map<String, Object> map) {
+		return null;
+	}
+	
 	@Override
 	public Purchase addPurchase(Purchase purchase, String path) throws Exception{
 		int result = purchaseDAO.addPurchase(purchase, path);

@@ -20,6 +20,7 @@ import org.json.simple.JSONValue;
 import org.springframework.stereotype.Repository;
 
 import com.codebrew.moana.common.Search;
+import com.codebrew.moana.service.domain.Bank;
 import com.codebrew.moana.service.domain.Purchase;
 import com.codebrew.moana.service.domain.QRCode;
 import com.codebrew.moana.service.purchase.PurchaseDAO;
@@ -229,6 +230,24 @@ public class IamportAPIDAOImpl implements PurchaseDAO {
 	@Override
 	public int getTotalCount(String userId, Search search) {
 		return 0;
+	}
+
+	@Override
+	public Bank readyTransfer(Purchase purchase) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Bank transferMoney(Bank bank, Purchase purchase) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> getTransferResult(Bank bank, Purchase purchase) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
