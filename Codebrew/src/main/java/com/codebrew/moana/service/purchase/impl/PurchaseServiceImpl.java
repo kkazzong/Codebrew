@@ -84,22 +84,25 @@ public class PurchaseServiceImpl implements PurchaseService {
 	}
 	
 	@Override
-	public Bank readyTransfer(Purchase purchase) {
+	public Purchase readyTransfer(Purchase purchase) {
 		return kftcDAO.readyTransfer(purchase);
 	}
 
 	@Override
-	public Bank transferMoney(Map<String, Object> map) {
+	public Purchase transferMoney(Map<String, Object> map) {
 		Purchase purchase = (Purchase)map.get("purchase");
 		//String token = kftcDAO.readyTransfer(purchase);
 		Bank bank = (Bank)map.get("bank");
+		return kftcDAO.transferMoney(bank, purchase);
 		//bank.setToken(token);
-		return null;
 	}
 
 	@Override
 	public Map<String, Object> getTransferResult(Map<String, Object> map) {
-		return null;
+		Purchase purchase = (Purchase)map.get("purchase");
+		Bank bank = (Bank)map.get("bank");
+		Map<String, Object> resultMap = kftcDAO.getTransferResult(bank, purchase);
+		return resultMap;
 	}
 	
 	@Override

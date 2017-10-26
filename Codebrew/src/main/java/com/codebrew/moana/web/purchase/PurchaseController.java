@@ -322,16 +322,35 @@ public class PurchaseController {
 																	@ModelAttribute Purchase purchase) {
 		
 		String path = session.getServletContext().getRealPath("/");
-		Bank bank = purchaseService.readyTransfer(purchase);
+		purchase = purchaseService.readyTransfer(purchase);
 		Map<String, Object> map = new HashMap<String, Object>();
 		purchase.setUser((User)session.getAttribute("user"));
 		map.put("purchase", purchase);
-		map.put("bank", bank);
+		//map.put("bank", bank);
 		map.put("path", path);
 		map.put("token", "token");
 		
 		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("purchase", purchase);
+		//modelAndView.addObject("bank", bank);
 		modelAndView.setViewName("/view/purchase/transferMoney.jsp");
+
+		return modelAndView;
+		
+	}
+	
+	@RequestMapping(value = "getTransferResult", method = RequestMethod.POST) 
+	public ModelAndView getTransferResult(HttpSession session,
+																	@ModelAttribute Purchase purchase) {
+		
+		String path = session.getServletContext().getRealPath("/");
+		//Bank bank = purchaseService.readyTransfer(purchase);
+		purchase.setUser((User)session.getAttribute("user"));
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("purchase", purchase);
+		//modelAndView.addObject("bank", bank);
+		modelAndView.setViewName("/view/purchase/getTransferResult.jsp");
 
 		return modelAndView;
 		

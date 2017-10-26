@@ -24,8 +24,6 @@ import com.codebrew.moana.service.domain.Purchase;
 import com.codebrew.moana.service.domain.QRCode;
 import com.codebrew.moana.service.purchase.PurchaseDAO;
 
-import sun.security.krb5.internal.tools.Ktab;
-
 @Repository("kftcAPIDAOImpl")
 public class KftcAPIDAOImpl implements PurchaseDAO {
 
@@ -41,11 +39,13 @@ public class KftcAPIDAOImpl implements PurchaseDAO {
 	
 	//// 계좌이체 준비
 	@Override
-	public Bank readyTransfer(Purchase purchase) {
+	public Purchase readyTransfer(Purchase purchase) {
 		
 		String kftxOpenAPIURL = "https://testapi.open-platform.or.kr/oauth/2.0/token";
+		String bankAccount = "100295421****";
+		String bankName = "우리은행";
 		String token = null;
-		Bank bank = null;
+		//Bank purchase = null;
 		
 		try {
 			
@@ -81,21 +81,23 @@ public class KftcAPIDAOImpl implements PurchaseDAO {
 			
 			System.out.println("토큰요청결과-->"+jsonObject);
 			token = jsonObject.get("access_token").toString();
-			bank = new Bank();
-			bank.setToken(token);
+			//bank = new Bank();
+			purchase.setToken(token);
+			purchase.setBankAccount(bankAccount);
+			purchase.setBankName(bankName);
 			
 		} catch(Exception e) {
 			
 			e.printStackTrace();
 		
 		}
-		return bank;
+		return purchase;
 		
 	}
 	
 	//// 계좌이체 실행
 	@Override
-	public Bank transferMoney(Bank bank, Purchase purchase) {
+	public Purchase transferMoney(Bank bank, Purchase purchase) {
 		
 		String kftxOpenAPIURL = "https://testapi.open-platform.or.kr/v1.0/transfer/deposit2";
 		//Bank bank = null;
@@ -105,7 +107,7 @@ public class KftcAPIDAOImpl implements PurchaseDAO {
 			URL url = new URL(kftxOpenAPIURL);
 			HttpURLConnection con =  (HttpURLConnection)url.openConnection();
 			con.setRequestMethod("POST");
-			con.setRequestProperty("Authorization", "Bearer "+bank.getToken());
+			con.setRequestProperty("Authorization", "Bearer "+purchase.getToken());
 			con.addRequestProperty("Content-Type", "application/json");
 			con.setRequestProperty("charset", "utf-8");
 			con.setDoOutput(true);
@@ -155,8 +157,8 @@ public class KftcAPIDAOImpl implements PurchaseDAO {
 			Map resultMap = new HashMap();
 			resultMap.put("bank_tran_id", (list.get(0)).get("bank_tran_id"));
 			resultMap.put("tran_date", (list.get(0)).get("bank_tran_date"));
-			bank.setTranNo(resultMap.get("bank_tran_id").toString());
-			bank.setTranDate(resultMap.get("tran_date").toString());
+			purchase.setPaymentNo(resultMap.get("bank_tran_id").toString());
+			purchase.setPurchaseDate(resultMap.get("tran_date").toString());
 	    	br.close();
 			
 		} catch(Exception e) {
@@ -164,7 +166,7 @@ public class KftcAPIDAOImpl implements PurchaseDAO {
 			e.printStackTrace();
 		
 		}
-		return bank;
+		return purchase;
 		
 	}
 	
@@ -182,7 +184,7 @@ public class KftcAPIDAOImpl implements PurchaseDAO {
 			URL url = new URL(kftxOpenAPIURL);
 			HttpURLConnection con =  (HttpURLConnection)url.openConnection();
 			con.setRequestMethod("POST");
-			con.setRequestProperty("Authorization", "Bearer "+bank.getToken());
+			con.setRequestProperty("Authorization", "Bearer "+purchase.getToken());
 			con.addRequestProperty("Content-Type", "application/json");
 			con.setRequestProperty("charset", "utf-8");
 			con.setDoOutput(true);
@@ -194,8 +196,8 @@ public class KftcAPIDAOImpl implements PurchaseDAO {
 			
 			JSONObject jsonObject2 = new JSONObject();
 			jsonObject2.put("tran_no", "1");
-			jsonObject2.put("org_bank_tran_id", bank.getTranNo());
-			jsonObject2.put("org_bank_tran_date", bank.getTranDate());
+			jsonObject2.put("org_bank_tran_id", purchase.getPaymentNo());
+			jsonObject2.put("org_bank_tran_date", purchase.getPurchaseDate());
 			jsonObject2.put("org_tran_amt", "500");
 			JSONArray array = new JSONArray();
 			array.add(jsonObject2);
@@ -219,7 +221,7 @@ public class KftcAPIDAOImpl implements PurchaseDAO {
 			br.close();
 			
 			resultMap = new HashMap<String, Object>();
-			resultMap.put("bank", bank);
+			resultMap.put("bank", purchase);
 			resultMap.put("purchase", purchase);
 			
 		} catch (Exception e) {

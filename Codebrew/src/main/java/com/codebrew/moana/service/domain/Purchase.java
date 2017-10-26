@@ -25,6 +25,11 @@ public class Purchase {
 	private String partnetOrderId;
 	private String partnerUserId;
 	private String token; //iamport 토큰
+	private String bankAccount;
+	private String bankName;
+	private String userAccount;
+	private String userBankName;
+	private String userName;
 
 	// Constructor
 	public Purchase() {
@@ -192,6 +197,46 @@ public class Purchase {
 		this.token = token;
 	}
 
+	public String getBankAccount() {
+		return bankAccount;
+	}
+
+	public void setBankAccount(String bankAccount) {
+		this.bankAccount = bankAccount;
+	}
+
+	public String getBankName() {
+		return bankName;
+	}
+
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
+
+	public String getUserAccount() {
+		return userAccount;
+	}
+
+	public void setUserAccount(String userAccount) {
+		this.userAccount = userAccount;
+	}
+
+	public String getUserBankName() {
+		return userBankName;
+	}
+
+	public void setUserBankName(String userBankName) {
+		this.userBankName = userBankName;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 	@Override
 	public String toString() {
 		return "Purchase [purchaseNo=" + purchaseNo + ", paymentNo=" + paymentNo + ", user=" + user + ", ticket="
@@ -200,8 +245,9 @@ public class Purchase {
 				+ ", tranCode=" + tranCode + ", qrCode=" + qrCode + ", purchaseFlag=" + purchaseFlag + ", tid=" + tid
 				+ ", nextRedirectPcUrl=" + nextRedirectPcUrl + ", nextRedirectMobileUrl=" + nextRedirectMobileUrl
 				+ ", aid=" + aid + ", cid=" + cid + ", partnetOrderId=" + partnetOrderId + ", partnerUserId="
-				+ partnerUserId + ", token=" + token + "]";
+				+ partnerUserId + ", token=" + token + ", bankAccount=" + bankAccount + ", bankName=" + bankName
+				+ ", userAccount=" + userAccount + ", userBankName=" + userBankName + ", userName=" + userName + "]";
 	}
-	
+
 
 }

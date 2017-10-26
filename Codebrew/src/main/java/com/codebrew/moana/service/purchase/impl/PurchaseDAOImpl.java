@@ -245,13 +245,13 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 	}
 
 	@Override
-	public Bank readyTransfer(Purchase purchase) {
+	public Purchase readyTransfer(Purchase purchase) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Bank transferMoney(Bank bank, Purchase purchase) {
+	public Purchase transferMoney(Bank bank, Purchase purchase) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -129,6 +129,7 @@
 		innerHtml += "<input type='hidden' name='ticket.ticketNo' value='"+ticketNo+"'>";
 		innerHtml += "<input type='hidden' name='ticket.ticketCount' value='"+ticketCount+"'>";
 		innerHtml += "<input type='hidden' name='user.userId' value='"+userId+"'>";
+		innerHtml += "<input type='hidden' name='itemName' value='"+name+"'>";
 		innerHtml += "</form>";
 		
 		$("body").append(innerHtml);
