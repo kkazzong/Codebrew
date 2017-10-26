@@ -66,7 +66,7 @@ public class ReplyController {
 		replyService.addReply(reply);
 		
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("reviewNo", reviewNo);
+		//modelAndView.addObject("reviewNo", reviewNo);
 		modelAndView.addObject("reply", reply);
 		modelAndView.setViewName("/review/getReview?reviewNo="+reviewNo);
 		

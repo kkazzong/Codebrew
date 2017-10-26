@@ -50,7 +50,6 @@
 	function fucAddReply(){
 		
 		//Form 유효성 검증 : 빈 내용 X
-		
 		var replyDetail = $("input[name='replyDetail']").val();
 	
 		if(replyDetail == null || replyDetail.length<1){
@@ -67,13 +66,13 @@
 		//==> 검색 Event 연결처리부분
 		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2. $(#id) : 3.$(.className)
 		//==> 1과 3 방법 조합 : $("tagName.className:filter함수") 사용함.
-		$("button.btn.btn-default").on("click", function(){
+		$("#searchReply").on("click", function(){
 			//Debug..
 			//alert($("button.btn.btn-default")).html();
 			fncGetList(1);
 		});
 		
-		$("button.btn.btn-primary:contains('댓글등록')").on("click", function(){
+		$("#addReply").on("click", function(){
 			//Debug..
 			//alert($("button.btn.btn-primary")).html();
 			fncAddReply();
@@ -121,7 +120,7 @@
 	   								value="${! empty search.searchKeyword ? search.searchKeyword : '' }" >
 	   					</div>
 	   					
-	   					<button type="button" class="btn btn-default">검색</button>
+	   					<button type="button" id = "searchReply" class="btn btn-default">검색</button>
 	   					
 	   					<!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
 	   					<input type="hidden" id="currentPage" name="currentPage" value=""/>
@@ -146,7 +145,7 @@
    				 -->
    				<div class="col-md-12">
    					<input type="text" class="form-control" id="replyDetail" name="replyDetail">
-   					<button type="button" class="btn btn-primary">댓글등록</button>
+   					<button type="button" id = "addReply" class="btn btn-primary">댓글등록</button>
    				</div>
    			</div>
    		</form>
@@ -180,13 +179,20 @@
 	   							${replyList.replyDetail }
 	   							<input type="hidden" name="reviewNo" value=${review.reviewNo }>
 								<span style="display: none" class="hidden_link">/review/getReview?reviewNo=${review.reviewNo }</span>
-								<c:if test="${sessionScope.user.role == 'a' || sessionScope.user.userId == reply.userId }">
-						   			<center>
-						   				<!-- <button class="btn btn-default" type="button">확인</button> -->
-							   			<button type="button" class="btn pull-center btn-primary">댓글수정</button>
-							   			<button type="button" class="btn pull-center btn-primary">댓글삭제</button>
+								<c:if test="${!empty sessionScope.user}" >
+									<c:if test="${sessionScope.user.role == 'a' || sessionScope.user.userId == replyList.userId }">
+							   			<center>
+								   			<button type="button" id="updateReply" class="btn pull-center btn-primary">댓글수정</button>
+								   			<button type="button" id="deleteReply" class="btn pull-center btn-primary">댓글삭제</button>
+								   		</center>
+							   		</c:if>
+							   	</c:if>
+							   	<%-- 
+							   	<c:if test="${empty sessionScope.user }">
+							   		<center>
 							   		</center>
-						   		</c:if>
+							   	</c:if>
+	   							 --%>
 	   						</td>
 	   						<td align="left">
 	   							${replyList.userId }
@@ -198,9 +204,9 @@
 	   				</c:forEach>
    				</c:if>
 
-			<!-- PageNavigation Start... -->
-			<jsp:include page="../../common/pageNavigator_new.jsp"/>
-			<!-- PageNavigation End... -->
+			<!-- PageNavigation Start -->
+			<%-- <jsp:include page="../../common/pageNavigator_new.jsp"/> --%> 
+			<!-- PageNavigation End -->
 
    			</tbody>   			
    			
