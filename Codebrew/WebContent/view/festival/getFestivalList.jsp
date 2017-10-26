@@ -53,7 +53,9 @@
 
 	$(function() {
 
-		$("td:nth-child(1)").on("click", function() {
+		/* $("td:nth-child(1)").on("click", function() { */
+			
+			$(".panel-body").on("click", function() {
 
 			var festivalNo = $("p", this).text();
 
@@ -61,13 +63,23 @@
 		});
 	});
 </script>
-
+<style type="text/css">
+body {
+		padding-top : 70px;
+    }
+</style>
 </head>
 <body>
 
 <jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
 
-
+ <div class="container">
+  <div class="row">
+  	<div class="col-md-12">
+  		<div class="page-header text-center">
+					<h3 class="text-info">축제등록</h3>
+				</div>
+  	</div>
 	<form>
 
 		전체 게시물 수 : ${resultPage.totalCount }
@@ -118,10 +130,8 @@
 				</select>
 				</div>
 				
-				
-				<%-- <jsp:include page="/view/festival/searchKeywordList.jsp"></jsp:include>	 --%>
 
-		<button type="button" class="btn btn-default">검색</button>
+		<button type="button" class="btn btn-default btn-block">검색</button>
 		
 		<br/>
 		<br/>
@@ -131,9 +141,62 @@
 		<br/>
 		<br/>
 		
-
+		<div class="row">
+			<c:forEach var="festival" items="${list}">
+				<c:set var="i" value="${i+1}"></c:set>
+				
+				<div class="col-md-6">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<h3 class="panel-title pull-left">${i} ${festival.festivalName}</h3>
+								<br/>
+        						<div class="clearfix"></div>
+							</div>
+							
+							<div class="panel-body">
+								<c:if test="${festival.festivalImage == null }"> 
+						
+									<img src="../resources/uploadFile/no.png" width="100%" height="300"/>
+									<br/>
+						
+								</c:if>
+					
+								<c:if test="${festival.festivalImage != null }">
+					
+									<img src="${festival.festivalImage }" width="100%" height="300" />
+									<br/>
+						
+								</c:if>
+									<br/>
+									<div id="festivalNo" style="display: none">
+										<p>${festival.festivalNo }</p>
+									</div> 
+									
+									<%-- <span> ${festival.festivalName } </span> --%>
+									 
+									<br />
+									
+									<div class="col-md-12">
+											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+											 <Strong>${festival.startDate} ~ ${festival.endDate}</Strong>
+									</div>
+							</div>
+						</div>
+				</div>
+			</c:forEach>
+		</div>
 		
-		<c:forEach var="festival" items="${list}">
+		
+			<input type = hidden id="currentPage" name = "currentPage" value = ${i } />
+			
+			<jsp:include page="../../common/pageNavigator.jsp"/>
+		
+		
+		
+		
+		
+		<!-- 되는거 -->
+		<%-- <c:forEach var="festival" items="${list}">
 		
 		<br />
 			<table>
@@ -167,17 +230,20 @@
 		
 			
 		</c:forEach>
-		
+		 
 		
 			
 			<input type = hidden id="currentPage" name = "currentPage" value = ${i } />
 			
 			<jsp:include page="../../common/pageNavigator.jsp"/>
 			
+			--%>
+			
 
 
 	</form>
-
+	</div>
+</div>
 
 </body>
 </html>

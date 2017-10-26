@@ -18,10 +18,16 @@
 <script type="text/javascript">
 	$(function(){
 		
+		var payType = "${purchase.paymentMethodType}";
+		
 		$("button").bind("click", function(){
-			opener.parent.location="/purchase/getPurchaseList?userId=${user.userId}";
-			//익스플로러경우 닫기할때 alert창 안뜨게 하기위해..
-			window.open("about:blank", "_self").close();
+			if(payType == 'phone') {
+				self.location = "/purchase/getPurchaseList?userId=${user.userId}";
+			} else {
+				opener.parent.location="/purchase/getPurchaseList?userId=${user.userId}";
+				//익스플로러경우 닫기할때 alert창 안뜨게 하기위해..
+				window.open("about:blank", "_self").close();
+			}
 		});
 		
 	});

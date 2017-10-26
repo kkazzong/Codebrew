@@ -238,11 +238,16 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", userName=" + userName + ", password=" + password
-				+ ", profileImage=" + profileImage + ", role=" + role + ", phone=" + phone + ", gender=" + gender
-				+ ", birth=" + birth + ", locationFlag=" + locationFlag + ", nickname=" + nickname + ", regDate="
-				+ regDate + ", coconutCount=" + coconutCount + "]";
+		return "User [userId=" + userId + ", userName=" + userName + ", password=" + password + ", profileImage="
+				+ profileImage + ", role=" + role + ", phone=" + phone + ", gender=" + gender + ", birth=" + birth
+				+ ", age=" + age + ", locationFlag=" + locationFlag + ", nickname=" + nickname + ", regDate=" + regDate
+				+ ", coconutCount=" + coconutCount + "]";
 	}
+
+
+
+
+	
 
 
 

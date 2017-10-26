@@ -44,9 +44,9 @@
 		</if>
 		coconut_count,
 		user_reg_date)
-	VALUES( #{userId},
-			#{userName},
-			#{password},
+	VALUES( #{userId:VARCHAR},
+			#{userName:VARCHAR},
+			#{password:VARCHAR},
 			#{nickname:VARCHAR},
 			'u',
 			#{phone:VARCHAR},
@@ -87,6 +87,7 @@
 	nickname= #{nickname:VARCHAR},
 	gender=#{gender:VARCHAR},
 	phone=#{phone:VARCHAR},
+	age=#{age:VARCHAR},
 	<if test="profileImage != null">
 	profile_image=#{profileImage:VARCHAR},
 	</if>

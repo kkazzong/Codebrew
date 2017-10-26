@@ -19,6 +19,7 @@
 	<util:properties id="commonProperties" location="classpath:common/common.properties"/>
 	<util:properties id="imageRepositoryProperties" location="classpath:common/imageRepository.properties"/>
 	<util:properties id="sendMailProperties" location="classpath:common/sendMail.properties"/>
+	<util:properties id="keyProperties" location="classpath:common/key.properties"/>
 			
 		
 		

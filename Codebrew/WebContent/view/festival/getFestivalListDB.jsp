@@ -46,7 +46,8 @@
 
 	$(function() {
 
-		$("td:nth-child(1)").on("click", function() {
+		/* $("td:nth-child(1)").on("click", function() { */
+			$(".panel-body").on("click", function() {
 
 			var festivalNo = $("p", this).text();
 
@@ -72,15 +73,30 @@ $(function(){
 	
 </script>
 
+<style type="text/css">
+body {
+		padding-top : 70px;
+    }
+   </style>
+
 </head>
 <body>
 
-
-
+	<div class="container">
+	
+  	<div class="row">
+  	
+  	<div class="col-md-12">
+  	
+  		<div class="page-header text-center">
+					<h3 class="text-info">축제정보</h3>
+				</div>
 
 	<form>
 	
 	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>
+	
+
 	
 		<br/>
 		<br/>
@@ -136,19 +152,78 @@ $(function(){
 				    			 value="${! empty search.searchKeyword ? search.searchKeyword : '' }"  >
 				  </div>
 
-		<button type="button" class="btn btn-default">검색</button>
+		<button type="button" class="btn btn-default btn-block">검색</button>
 		
 		<br/>
 		<br/>
 		
-		<!-- <button type="button" class="btn btn-default">축제명으로 찾기</button>
-		
-		<br/>
-		<br/> -->
 		
 
+		<div class="row">
 		
 		<c:forEach var="festival" items="${list}">
+		
+			<c:if test="${festival.deleteFlag == null }">
+			
+			<div class="col-md-6">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<h3 class="panel-title pull-left">${i} ${festival.festivalName}</h3>
+								<br/>
+        						<div class="clearfix"></div>
+							</div>
+							
+					<div class="panel-body">
+							
+					<c:if test="${festival.festivalImage.contains('http://')==true }">
+					
+					<img src="${festival.festivalImage }" width="100%"height="300" />
+					
+					</c:if>
+					
+					<c:if test="${festival.festivalImage.contains('http://')==false }">
+					
+					<img src="../../resources/uploadFile/${festival.festivalImage }" width="100%"height="300" />
+					
+					</c:if>
+					
+					<br/>
+									<div id="festivalNo" style="display: none">
+										<p>${festival.festivalNo }</p>
+									</div> 
+						<br />
+									
+									<div class="col-md-12">
+											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+											 <Strong>${festival.startDate} ~ ${festival.endDate}</Strong>
+									</div>
+							</div>
+						</div>
+				</div>	
+			
+			
+			</c:if>
+			
+			</c:forEach>
+		</div>
+		
+		
+		
+		
+		<input type = hidden id="currentPage" name = "currentPage" value = ${i } />
+			
+			<jsp:include page="../../common/pageNavigator.jsp"/>
+			
+				</form>
+	</div>
+	</div>
+	</div>
+	</body>
+</html>
+		
+		
+		
+		<%-- <c:forEach var="festival" items="${list}">
 		
 			<c:if test="${festival.deleteFlag == null }">
 		
@@ -191,9 +266,9 @@ $(function(){
 			<jsp:include page="../../common/pageNavigator.jsp"/>
 			
 
+ --%>
 
-	</form>
 
 
-</body>
-</html>
+<!-- </body>
+</html> -->

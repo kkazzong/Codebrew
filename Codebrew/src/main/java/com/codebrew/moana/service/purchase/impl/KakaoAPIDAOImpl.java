@@ -325,6 +325,12 @@ public class KakaoAPIDAOImpl implements PurchaseDAO {
 	public void setPurchase(Purchase purchase) {
 		this.purchase = purchase;
 	}
+
+	@Override
+	public Purchase approvePayment(Purchase purchase, String token) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 

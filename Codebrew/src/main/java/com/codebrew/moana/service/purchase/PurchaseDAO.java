@@ -13,6 +13,7 @@ public interface PurchaseDAO {
 	public Purchase readyPayment(Purchase purchase);
 	public Purchase approvePayment(String pgToken);
 	public int cancelPayment(Purchase purchase);
+	public Purchase approvePayment(Purchase purchase, String token); //imp
 	public int addPurchase(Purchase purchase, String path) throws Exception; 
 	public Purchase getPurchase(int purchaseNo);
 	public List<Purchase> getPurchaseList(String userId, String purchaseFlag, Search search);

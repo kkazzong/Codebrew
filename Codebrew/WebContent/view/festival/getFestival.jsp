@@ -213,6 +213,33 @@ $(function(){
 	<br/>
 	<br/>
 	
+	<br/>
+	<br/>
+	<c:forEach var = "weather" items="${list }">
+		<c:if test="${weather.category=='SKY' && weather.fcstValue<='2' }">
+			<img src="../../resources/image/weather/sun.gif" width="300"height="300" />
+		</c:if>
+		
+		<c:if test="${weather.category=='SKY' && weather.fcstValue>'2' && weather.fcstValue<='8'}">
+			<img src="../../resources/image/weather/Mcloud.gif" width="300"height="300" />
+		</c:if>
+		
+		<c:if test="${weather.category=='PTY' && weather.fcstValue=='1'}">
+			<img src="../../resources/image/weather/rain.gif" width="300"height="300" />
+		</c:if>
+		
+		<c:if test="${weather.category=='PTY' && weather.fcstValue=='2'}">
+			<img src="../../resources/image/weather/rainAsnow.gif" width="300"height="300" />
+		</c:if>
+		<c:if test="${weather.category=='PTY' && weather.fcstValue=='3'}">
+			<img src="../../resources/image/weather/snow.gif" width="300"height="300" />
+		</c:if>
+		
+	</c:forEach>
+	
+	<br/>
+	<br/>
+	
 	조회수 : ${festival.readCount }
 	
 	<br/>

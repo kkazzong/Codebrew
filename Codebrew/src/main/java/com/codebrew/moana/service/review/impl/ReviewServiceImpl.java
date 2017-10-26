@@ -1,6 +1,5 @@
 package com.codebrew.moana.service.review.impl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,17 +79,11 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override//5
 	public Map<String, Object> getReviewList(Search search) throws Exception {
 		
-		List<Review> reviewList = reviewDAO.getReviewList(search);
+		List<Review> list = reviewDAO.getReviewList(search);
 		int totalCount = reviewDAO.getTotalCount(search);
 		
-		List<Image> reviewImageList;
-		for(Review review : reviewList){ // list에 존재하는  review를 하나씩 꺼내보면....
-//			int reviewNo = review.getReviewNo(); //0부터 n번째 review의 review number를 받아서 reviewNo로 지정하여...
-			reviewImageList = review.getReviewImageList();
-		}
-		
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("list", reviewList);
+		map.put("list", list);
 		map.put("totalCount", new Integer(totalCount));
 		
 		return map;
@@ -98,6 +91,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override //6
 	public Map<String, Object> getMyReviewList(Search search, String userId) throws Exception {
+		
 		List<Review> list = reviewDAO.getMyReviewList(search);
 		int totalCount = reviewDAO.getTotalCount(search);
 		
@@ -109,6 +103,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override //7
 	public Map<String, Object> getCheckReviewList(Search search, String checkCode) throws Exception {
+		
 		List<Review> list = reviewDAO.getCheckReviewList(search);
 		int totalCount = reviewDAO.getTotalCount(search);
 		

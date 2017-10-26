@@ -43,7 +43,7 @@
 	<!--  // 검색 / page 두가지 경우 모두 Form 전송을 위해 JavaScript 이용 --> 
 	function fncGetList(currentPage) {
 		$("#currentPage").val(currentPage)
-	   	$("form").attr("method" , "POST").attr("action" , "/review/getReviewList").submit();
+	   	$("form[name='detailForm']").attr("method" , "POST").attr("action" , "/review/getReviewList").submit();
 	}
 	
 	//=====> "검색", reviewTitle link Event 연결 및 처리
@@ -53,15 +53,13 @@
 		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2. $(#id) : 3.$(.className)
 		//==> 1과 3 방법 조합 : $("tagName.className:filter함수") 사용함.
 		$("button.btn.btn-default").on("click", function(){
+			alert("검색버튼 클릭 : val = "+$("#searchKeyword").val());
 			//Debug..
 			//alert($("button.btn.btn-default")).html();
 			fncGetList(1);
 		});
 		
 		/* 
-		//==> reviewName LINK : mouserover Event 연결처리
-		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-		//==> 3 과 1 방법 조합 : $(".className tagName:filter함수") 사용함.
 		$( "td:nth-child(2)" ).on("mouseover", function(){
 			
 			var reviewNo = $("input:hidden[name='reviewNo']", $(this)).val();
@@ -157,8 +155,10 @@
    			</div>
    			
    			<div class="col-md-6 text-right">
+   			
    				<form class="form-inline" name="detailForm">
    					<div class="form-group">
+   					<label class="sr-only" for="searchCondition"></label>
    						<select class="form-control" name="searchCondition">
    							<option value="0" ${! empty search.searchCondition && search.searchCondition==0 ? "selected" : "" }>축제이름</option>
    							<option value="1" ${! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>축제장소</option>
@@ -169,7 +169,7 @@
    					<div class="form-group">
    						<label class="sr-only" for="searchKeyword">검색어</label>
    						<input type="text" class="form-control" id="searchKeyword" name="searchKeyword" placeholder="검색어" 
-   								value="${! empty search.searchKeyword ? search.searchKeyword : '' }" >
+   						value="${! empty search.searchKeyword ? search.searchKeyword : '' }" >
    					</div>
    					
    					<button type="button" class="btn btn-default">검색</button>
@@ -177,8 +177,8 @@
    					<!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
    					<input type="hidden" id="currentPage" name="currentPage" value=""/>
    				</form>
+   				
    			</div>
-   		
    		</div>
    		<!-- 검색 End -->
    		
@@ -190,7 +190,7 @@
    				<div class="col-md-6">
    					<div class="panel panel-primary">
    						<div class="panel-heading">
-   							<h3 class="panel-title pull-left">${i}번</h3>
+   							<h3 class="panel-title pull-left">${i}번 : ${review.festivalName }</h3>
    							<form id="deleteForm">
    								<button class="btn btn-default pull-right" type="button" value="${review.reviewNo }">
    									<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
@@ -230,7 +230,7 @@
    							</div>
    							<hr>
    							<div class="row">
-   								<button class="col-md-12 btn btn-default btn-block" type="button" value="${review.reviewNo }">조회</button>
+   								<button class="col-md-12 btn primary btn-block" type="button" value="${review.reviewNo }">조회</button>
    							</div>
    						</div>
    						

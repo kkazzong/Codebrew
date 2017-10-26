@@ -258,18 +258,28 @@ public class PurchaseController {
 	
 	@RequestMapping(value = "approvePayment")
 	public ModelAndView approvePayment(HttpSession session,
-																		 @RequestParam("pg_token") String pgToken) throws Exception {
+																		 @RequestParam(value="pg_token", required=false) String pgToken,
+																		 @RequestParam(value="purchaseNo", required=false) String purchaseNo) throws Exception {
 
 		System.out.println(pgToken);
-		String path = session.getServletContext().getRealPath("/");
-		path += "\\resources\\image\\QRCodeImage";
-		System.out.println(path);
-		Purchase purchase = purchaseService.approvePayment(pgToken, path);
+		
+		Purchase purchase = null;
+		if(pgToken != null) { //kakaoPay
+			
+			String path = session.getServletContext().getRealPath("/");
+			path += "\\resources\\image\\QRCodeImage";
+			System.out.println(path);
+			purchase = purchaseService.approvePayment(pgToken, path);
 
+		} else {
+			purchase = purchaseService.getPurchase(Integer.parseInt(purchaseNo));
+		}
+		
+		//kakaoPay, iamport(phone결제)
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("purchase", purchase);
 		modelAndView.setViewName("/view/purchase/approvePayment.jsp");
-
+		
 		return modelAndView;
 
 	}

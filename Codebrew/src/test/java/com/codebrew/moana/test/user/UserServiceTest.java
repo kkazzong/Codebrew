@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
+import org.codehaus.jackson.JsonNode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,7 +106,7 @@ public class UserServiceTest {
 	
 	}
 	
-	@Test //탈퇴한 회원은 안불러오기
+	//@Test //탈퇴한 회원은 안불러오기
     public void testGetUserNotInDeleteUser() throws Exception {
 
 			User user = new User();
@@ -283,4 +284,19 @@ public class UserServiceTest {
 		Assert.assertNotNull("값이 들어왔습니다.", userService.randomNumber(5));
 	}
 */
+	@Test //카카오에서 정보 받아오기
+	public void TestGetCode()throws Exception{
+		
+		User user=new User();
+		
+		user=userService.getCode("D4N5guftedco6F8irx-uun5bd6pKB0xFyzMcGQo8BVUAAAFfUvilDQ");
+		
+		System.out.println(user);
+		
+		 Assert.assertEquals("howto_love@naver.com",user.getUserId());
+		 Assert.assertEquals("이주영",user.getUserName());
+		 Assert.assertEquals(31,user.getAge());
+		 Assert.assertEquals("f",user.getGender());
+	}
+	
 }

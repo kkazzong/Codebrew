@@ -22,7 +22,10 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	
-<!-- 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script> -->
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script> 
+
+	<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width" />
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 	
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 
@@ -82,20 +85,35 @@
 				$("form").attr("method","POST").attr("action","/user/login").submit();
 			});
 		});	
-	    //.attr("target","_parent")
+	   
 		
-		//============= 회원원가입화면이동 =============
+	    
+	  
+	    
+	    
+	    
+	    
+	
+		//============= 회원가입화면이동 =============
 		$( function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			$("a[href='#' ]").on("click" , function() {
-				self.location = "/user/addUser"
+				self.location = "/user/confirmUser"
+			});
+		});
+		
+	    
+		//============= 아이디찾기 비밀번호찾기 =============	
+		$( function() {
+			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+			$("#findUser").on("click" , function() {
+				self.location = "/user/findUser"
 			});
 		});
 		
 		
-		
-  
-		
+	
+		  
 	</script>		
 	
 </head>
@@ -124,15 +142,22 @@
 						<div class="col-md-offset-3 col-md-6 text-center">
 						 	<a id="addUserBtn" class="btn btn-default btn btn-block" href="#" role="button">회 &nbsp;원 &nbsp;가 &nbsp;입</a>
 						 </div>
-						 <!-- <div class="col-md-3 text-center">
-						 	<button type="button" class="btn btn-primary btn-block"  >로 &nbsp;그 &nbsp;인</button>
-						</div> -->
 					</div>
+					
+					<div class="form-group">
+						<div class="col-md-offset-3 col-md-6 text-center">
+						 	<a id="findUser" class="btn btn-default btn btn-block" href="#" role="button">아이디찾기/비밀번호찾기</a>
+						 </div>
+					</div>
+					
+					
+					<div class="col-md-offset-3">
+					<jsp:include page="/api/kakaoLogin.jsp" />
+				</div>
+				
 				</form>
 				<!-- 카카오 로그인 -->
-				<div class="col-md-offset-3">
-					<jsp:include page="/api/kakao.jsp" />
-				</div>
+			
 			</div>
 		</div>
 	</div>
@@ -151,9 +176,12 @@
 		<!--  row Start /////////////////////////////////////-->
 		<!-- <div class="row"> -->
 		
+
 			<!-- <div class="col-md-6">
 					<img src="/images/logo-spring.png" class="img-rounded" width="100%" />
 			</div> -->
+
+
 	   	 	
 	 	 	<%-- <div class="col-md-6">
 	 	 	
@@ -184,8 +212,10 @@
 					      <a class="btn btn-primary btn" href="#" role="button">회 &nbsp;원 &nbsp;가 &nbsp;입</a>
 					    </div>
 					   
+            	      
+	
 
-				<jsp:include page="/api/kakao.jsp" />
+			<jsp:include page="/api/kakaoLogin.jsp" /> 
 
 					    
 					  </div>

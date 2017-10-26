@@ -26,20 +26,20 @@
 	    			url: '/v1/user/me',
 	       			success: function(res) {
 		        		console.log("ressssss :: " + res);
-		           		var Id= res.id;  
+		           	    var Id= res.id;  
                         var nickName=res.properties.nickname;
                         var userId=res.kaccount_email;
                         var image=res.properties.profile_image;
-		           	/* 	var tempId = userId.replace(".", ","); */
+		           	var tempId = userId.replace(".", ","); 
 		           		console.log("userId :: " + Id);
 		           		console.log("nickName :: " + nickName);
 		           		console.log("email :: " + userId);
 		           		console.log("image :: "+ image);
-		           		
+ 		
 		           /* $("#image").append($("<img/>",{"src":+image})); */  
 		           		
 		           	/* 	console.log("tempId :: " + tempId); */
-		    /*        	$.ajax(
+		          	/* $.ajax(
 		            		{
 		                   		url : "/user/checkUserId/"+userId,
 		                      	method : "GET",
@@ -61,7 +61,7 @@
 		                       	  		location.reload();
 		                         	}
 		                      	}
-		                }); */
+		                });  */
 	       			}
 	    		
 	      		}); 
@@ -85,6 +85,24 @@
 	});
 	} 
 	
+	 https://accounts.kakao.com/login?continue=https%3A%2F%2Fkauth.kakao.com%2Foauth%2Fauthorize%3Fredirect_uri%3Dkakaojs%26response_type%3Dcode%26state%3Dy68aordrj4n%26client_id%3D8a0eb548cc8e4502f32642ba5c48cb47
+	
+	  /*    // 사용할 앱의 JavaScript 키를 설정해 주세요.
+	     Kakao.init('8a0eb548cc8e4502f32642ba5c48cb47');
+	     // 카카오 로그인 버튼을 생성합니다.
+	     Kakao.Auth.createLoginButton({
+	       container: '#kakao-login-btn',
+	       success: function(authObj) {
+	         alert(JSON.stringify(authObj));
+	       },
+	       fail: function(err) {
+	          alert(JSON.stringify(err));
+	       }
+	     });
+	
+	 
+	 
+	  */
 		/* $(document).ready(function() {
 			Kakao.init("9f9b09052da56dddc3bc66e8a1632a69");
 			function getKakaotalkUserProfile(){
@@ -137,7 +155,7 @@
 	</script>
 </head>
 <body>
-	<div class="form-group">
+	             <div class="form-group">
 	                  	  	<a id="kakao-login-btn" href="javascript:loginWithKakao()">
 								<img src="//mud-kage.kakao.com/14/dn/btqbjxsO6vP/KPiGpdnsubSq3a0PHEGUK1/o.jpg" width="50%"/>
 							</a>

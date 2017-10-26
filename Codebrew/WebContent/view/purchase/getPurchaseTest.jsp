@@ -132,45 +132,26 @@
 	
 	var ticketPrice = ${ticket.ticketPrice};
 	var itemName = "${purchase.itemName}";
-	var imageUrl = "${ticket.festival.festivalImage}";
-	var pimageUrl = "${ticket.party.partyImage}";
 	var ip = "http://192.168.0.4:8080";
-	//var referNo = ${ticket.festival.festivalNo}; 
-	
-	var referNo = $("input:hidden[name='purchaseFlag']").val();
-	//alert(referNo);
-	/* if(${ticket.festival} != null) {
-		referNo = ${ticket.festival.festivalNo};
-	} else if(${ticket.party} != null) {
-		referNo = ${ticket.party.partyNo};
-	} */
-	
-	/* if(!imageUrl.includes('http://')) {
-		imageUrl = ip+"/resources/uploadFile/${ticket.festival.festivalImage}";
-	}  */
-	
-	imageUrl = ip+"/resources/uploadFile/${ticket.party.partyImage}";
-	
-	if(referNo.indexOf("1") != -1) {
-		referNo = "${ticket.festival.festivalNo}";
-	} else {
-		referNo = "${ticket.party.partyNo}";
-	}
-	//alert("referNo+"+referNo);
-	
-	var festivalUrl = ip+"/festival/getFestivalDB?festivalNo="+referNo;
-	var festivalPurUrl = ip+'/purchase/addPurchase?festivalNo='+referNo;
-	var partyUrl = ip+"/party/getParty?partyNo="+referNo;
-	var partyPurUrl = ip+'/purchase/addPurchase?partyNo='+referNo;
+	var referNo = "${purchase.purchaseFlag}";
+	var imageUrl = "";
 	var url = "";
 	var purl = "";
-	if(referNo == 1) {
-		url = festivalUrl;
-		purl = festivalPurUrl;
+	
+	if(referNo == "1") {
+		if("${ticket.festival.festivalImage}".indexOf("http://") != -1) {
+			imageUrl = "${ticket.festival.festivalImage}";
+		} else {
+			imageUrl = ip+"/resources/uploadFile/${ticket.festival.festivalImage}";
+		}
+		url = ip+"/festival/getFestivalDB?festivalNo=${ticket.festival.festivalNo}";
+		purl = ip+"/purchase/addPurchase?festivalNo=${ticket.festival.festivalNo}";
 	} else {
-		url = partyUrl;
-		purl = partyPurUrl;
+		imageUrl = ip+"/resources/uploadFile/${ticket.party.partyImage}";
+		url = ip+"/party/getParty?partyNo=${ticket.party.partyNo}";
+		purl = ip+"/purchase/addPurchase?partyNo=${ticket.party.partyNo}";
 	}
+	
 	
 	console.log(imageUrl+","+url+","+purl);
 	

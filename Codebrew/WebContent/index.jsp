@@ -14,6 +14,8 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width" />
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <!-- Bootstrap Dropdown Hover CSS -->
@@ -22,6 +24,9 @@
 
 <!-- Bootstrap Dropdown Hover JS -->
 <script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
+
+
+
 <style type="text/css">
 	body {
 		padding-top : 70px;
@@ -36,7 +41,31 @@
     }
     
 </style>
-<title>Moana</title>
+
+
+	<script type="text/javascript">
+	/* Kakao.init('9f9b09052da56dddc3bc66e8a1632a69');
+	
+	$(function(){
+		
+	$("a:contains('카카오로그아웃')").on("click",function(){
+		 
+		 
+		Kakao.Auth.logout(function(data) {
+		 alert(data);
+		 if(data){
+			 alert("카카오로그아웃이 되었습니다.");
+		 }else{
+			self.location="/user/logout"; 
+		 }
+		})
+	 })
+	})
+			 */
+	    
+</script>
+<title>Insert title here</title>
+
 </head>
 <body>
 	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
@@ -74,8 +103,10 @@
 
 <a href="/user/logout">로그아웃</a>
 
+
 <br>
 <br>
+
 
 <a href="/user/updateUser?userId=${user.userId}">회원정보 수정</a>
 
@@ -87,22 +118,19 @@
 <br>
 <br>
 
-<a href="/user/findUser">아이디찾기,비밀번호찾기</a>
-
-<br>
-<br>
-
-<a href="/user/confirmUser">본인인증(회원가입하기전에 거쳐야함)</a>
-
-<br>
-<br>
-
 <a href="/user/withdrawUser?userId=${user.userId }">회원탈퇴</a>
 
 <br>
 <br>
 
+
 <a href="/view/festival/writeFestival.jsp">직접등록</a>
+
+<br>
+<br>
+
+<a href="/view/festival/weather.jsp">날씨</a>
+
 
 
 

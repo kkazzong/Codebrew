@@ -182,7 +182,7 @@
 		      <input type="password" class="form-control" id="passwordCheck" name="passwordCheck" placeholder="변경비밀번호 확인">
 		    </div>
 		  </div>
-		  
+		  <input type="hidden" name="coconutCount" value="${user.coconutCount}">
 		   <input type="hidden" name="role" value="${user.role}">
 		    <input type="hidden" name="age" value="${user.age}">
 		     <input type="hidden" name="regDate" value="${user.regDate}">
@@ -205,13 +205,17 @@
 		  </div>
 		  
 		  
-		  <div class="form-group">
+		    <div class="form-group">
 		    <label for="gender" class="col-sm-offset-1 col-sm-3 control-label">성별</label>
-		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="gender" name="gender"  value="${user.gender}"  placeholder="${user.gender}" readonly>
-		    </div>
+		    
+		    <span class="col-sm-2">
+		    <input type="radio" class="form-control" id="gender" name="gender" value="m" >남자
+		    </span>
+		     <span class="col-sm-2">
+	        <input type="radio" class="form-control" id="gender" name="gender" value="f" >여자
+		  </span>
+		    
 		  </div>
-		  
 		  
 		  <div class="form-group">
 		    <label for="profileImage" class="col-sm-offset-1 col-sm-3 control-label">프로필사진</label>

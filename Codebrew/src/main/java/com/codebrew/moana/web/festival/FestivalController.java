@@ -3,6 +3,7 @@ package com.codebrew.moana.web.festival;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,7 @@ import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Festival;
 import com.codebrew.moana.service.domain.Ticket;
 import com.codebrew.moana.service.domain.User;
+import com.codebrew.moana.service.domain.Weather;
 import com.codebrew.moana.service.domain.Zzim;
 import com.codebrew.moana.service.festival.FestivalService;
 import com.codebrew.moana.service.ticket.TicketService;
@@ -51,6 +53,27 @@ public class FestivalController {
 
 	@Value("#{imageRepositoryProperties['fileRoot']}")
 	String fileRoot;
+	
+	@RequestMapping(value = "weather")
+	public ModelAndView weather(@RequestParam("festivalLongitude") String festivalLongitude,
+			@RequestParam("festivalLatitude") String festivalLatitude)throws Exception {
+
+		System.out.println("weather");
+		
+		String[] festivalLat = festivalLatitude.split(".");
+		String[] festivalLon = festivalLongitude.split(".");
+		
+		Map<String,Object> map = festivalService.weather(festivalLat[0],festivalLon[0]);
+
+
+		ModelAndView modelAndView = new ModelAndView();
+		
+		modelAndView.addObject("list",map.get("list"));
+
+		modelAndView.setViewName("forward:/view/festival/weather.jsp");
+
+		return modelAndView;
+	}
 	
 	@RequestMapping(value = "writeFestival")
 	public ModelAndView writeFestival(@ModelAttribute("festival") Festival festival,
@@ -418,6 +441,21 @@ public class FestivalController {
 			User user = (User) session.getAttribute("user");
 
 			Festival festival = festivalService.getFestivalDB(festivalNo);
+			
+			int a = festival.getFestivalLatitude().indexOf(".");
+			
+			int b = festival.getFestivalLongitude().indexOf(".");
+			
+			String festivalLat = festival.getFestivalLatitude().substring(0,a);
+			String festivalLon = festival.getFestivalLongitude().substring(0,b);
+			
+			
+			System.out.println("festivallat...." + festivalLat);
+			System.out.println("festivallon...." + festivalLon);
+			
+			Map<String,Object> map = festivalService.weather(festivalLat,festivalLon);
+			
+			
 
 			festival.setReadCount(festival.getReadCount() + 1);
 
@@ -434,12 +472,17 @@ public class FestivalController {
 
 			festival.setTicketCount(ticket.getTicketCount());
 			festival.setTicketPrice(ticket.getTicketPrice());
-
+			
 			ModelAndView modelAndView = new ModelAndView();
 
 			modelAndView.addObject("festival", festival);
 			modelAndView.addObject("returnZzim", returnZzim);
 			modelAndView.addObject("ticket", ticket);
+			
+			
+			System.out.println("map확인........" + map.get("list"));
+			
+			modelAndView.addObject("list", map.get("list"));
 
 			modelAndView.setViewName("forward:/view/festival/getFestival.jsp");
 

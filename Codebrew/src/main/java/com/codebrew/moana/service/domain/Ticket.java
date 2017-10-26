@@ -9,6 +9,7 @@ public class Ticket {
 	private int ticketPrice; // 티켓가격
 	private int ticketCount; // 티켓수량
 	private String ticketFlag; // 티켓플래그[null : 기본티켓 , nolimit : 무제한티켓 , free : 무료티켓]
+	private String ticketName;
 
 	// Constructor
 	public Ticket() {
@@ -63,10 +64,20 @@ public class Ticket {
 		this.ticketFlag = ticketFlag;
 	}
 
+	public String getTicketName() {
+		return ticketName;
+	}
+
+	public void setTicketName(String ticketName) {
+		this.ticketName = ticketName;
+	}
+
 	@Override
 	public String toString() {
 		return "Ticket [festival=" + festival + ", party=" + party + ", ticketNo=" + ticketNo + ", ticketPrice="
-				+ ticketPrice + ", ticketCount=" + ticketCount + ", ticketFlag=" + ticketFlag + "]";
+				+ ticketPrice + ", ticketCount=" + ticketCount + ", ticketFlag=" + ticketFlag + ", ticketName="
+				+ ticketName + "]";
 	}
+
 
 }
