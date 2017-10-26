@@ -22,7 +22,10 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	
-<!-- 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script> -->
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script> 
+
+	<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width" />
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 	
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 
@@ -84,6 +87,13 @@
 		});	
 	    //.attr("target","_parent")
 		
+	    
+	  
+	    
+	    
+	    
+	    
+	
 		//============= 회원원가입화면이동 =============
 		$( function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
@@ -92,10 +102,12 @@
 			});
 		});
 		
+	    
+	 		
 		
 		
-  
-		
+	
+		  
 	</script>		
 	
 </head>
@@ -151,9 +163,12 @@
 		<!--  row Start /////////////////////////////////////-->
 		<!-- <div class="row"> -->
 		
+
 			<!-- <div class="col-md-6">
 					<img src="/images/logo-spring.png" class="img-rounded" width="100%" />
 			</div> -->
+
+
 	   	 	
 	 	 	<%-- <div class="col-md-6">
 	 	 	
@@ -184,8 +199,10 @@
 					      <a class="btn btn-primary btn" href="#" role="button">회 &nbsp;원 &nbsp;가 &nbsp;입</a>
 					    </div>
 					   
+            	      
+	
 
-				<jsp:include page="/api/kakao.jsp" />
+			<jsp:include page="/api/kakaoLogin.jsp" /> 
 
 					    
 					  </div>

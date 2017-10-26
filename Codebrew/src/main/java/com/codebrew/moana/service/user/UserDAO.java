@@ -3,6 +3,8 @@ package com.codebrew.moana.service.user;
 import java.util.List;
 import java.util.Map;
 
+import org.codehaus.jackson.JsonNode;
+
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.User;
 
@@ -34,5 +36,8 @@ public interface UserDAO {
        
 		//랜덤 비밀번호 생성
 		public String randomNumber(int number) throws Exception;
+        
+		//카카오로그인
+		public User getCode(String authorize_code) throws Exception;
 		
 }
