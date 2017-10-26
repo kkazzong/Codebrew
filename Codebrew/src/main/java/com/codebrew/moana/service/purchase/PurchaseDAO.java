@@ -18,8 +18,8 @@ public interface PurchaseDAO {
 	
 	public Purchase approvePayment(Purchase purchase, String token); //imp
 	
-	public Bank readyTransfer(Purchase purchase); //kftc
-	public Bank transferMoney(Bank bank, Purchase purchase);
+	public Purchase readyTransfer(Purchase purchase); //kftc
+	public Purchase transferMoney(Bank bank, Purchase purchase);
 	public Map<String, Object> getTransferResult(Bank bank, Purchase purchase);
 	
 	public int addPurchase(Purchase purchase, String path) throws Exception; 

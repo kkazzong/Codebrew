@@ -14,8 +14,8 @@ public interface PurchaseService {
 	
 	public Purchase approvePayment(Map<String, Object> map) throws Exception;
 	
-	public Bank readyTransfer(Purchase purchase); //kftc
-	public Bank transferMoney(Map<String, Object> map);
+	public Purchase readyTransfer(Purchase purchase); //kftc
+	public Purchase transferMoney(Map<String, Object> map);
 	public Map<String, Object> getTransferResult(Map<String, Object> map);
 	
 	public Purchase addPurchase(Purchase purchase, String path) throws Exception;

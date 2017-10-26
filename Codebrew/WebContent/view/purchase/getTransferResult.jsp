@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<title>transferMoney</title>
+<title>getTransferResult</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -26,96 +26,14 @@
 
 <script type="text/javascript">
 	
-	var bankName = "${purchase.bankName}";
-	var bankAccount = "${purchase.bankAccount}";
-	var itemName = "${purchase.itemName}";
-	var purchaseCount = "${purchase.purchaseCount}";
-	var purchasePrice = "${purchase.purchasePrice}";
-	var purchaseFlag = "${purchase.purchaseFlag}";
-	var ticketNo = ${purchase.ticket.ticketNo};
-	var ticketCount = ${purchase.ticket.ticketCount};
-	var userId = "${user.userId}";
-	var token = "${purchase.token}";
-	
-	
-	function fncGetTransferResult() {
-		alert("폼서브밋");
-		$("form[name='transferForm']").attr("method","POST").attr("action","/purchase/getTransferResult").submit();
-	}
-	
-	////계쫘이체 결제준비 호출 function
-	function fncTransferMoney(){
-		
-		var userName = $("input:text[name='userName']").val();
-		var userAccount = $("input:text[name='userAccount']").val();
-		var userBankName = $("input:text[name='userBankName']").val();
-		
-		alert(userName+","+userAccount+","+userBankName);
-		
-		$.ajax({
-			
-			url : "/purchaseRest/json/transfer/transferMoney",
-			method : "POST",
-			headers : {
-				"Accept" : "application/json",
-				"Content-Type" : "application/json"
-			},
-			data : JSON.stringify({
-				bankName : bankName,
-				bankAccount : bankAccount,
-				userName : userName,
-				token : token,
-				userAccount : userAccount,
-				userBankName : userBankName,
-				purchaseCount : purchaseCount,
-				purchasePrice : purchasePrice,
-				purchaseFlag : purchaseFlag,
-				user : {
-					userId : userId
-				},
-				ticket : {
-					ticketNo : ticketNo,
-					ticketCount : ticketCount
-				}
-			}), 
-			dataType : "json",
-			success : function(data){
-				
-				console.log(JSON.stringify(data));
-				//$("#transferForm").attr("method","POST").attr("action","/purchase/getTransferResult").submit();
-				fncGetTransferResult();
-			}
-			
-		});
-		
-	}
 	
 	$(function(){
 		
-		//fncReadyTransfer();
-		
 		//이체
-		$(".btn:contains('이체')").on("click", function(){
-			
-			if(confirm("계좌이체를 하시겠습니까?")) {
-				fncTransferMoney();
-				//$("#transferForm").attr("method", "POST").attr("action", "/purchase/transferMoney").submit();
-			} else {
-				return;
-			}
-			
+		$(".btn:contains('확인')").on("click", function(){
+				self.location = "/purchase/getPurchaseList";						
 		});
 		
-		//취소
-		$(".btn:contains('취소')").on("click", function(){
-			
-			if(confirm("계좌이체를 취소 하시겠습니까?")) {
-				history.go(-1);
-			} else {
-				return;
-			}
-			
-		});
 		
 	});
 
@@ -142,7 +60,7 @@
 		<div class="row">
 			<div class="col-md-offset-4 col-md-4">
 				<div class="page-header text-center">
-					<h3 class="text-info"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span> 계좌이체</h3>
+					<h3 class="text-info"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span> 이체결과확인</h3>
 				</div>
 			</div>
 		</div>
@@ -159,44 +77,34 @@
 						<form class="form form-horizontal" aria-hidden="true" name="transferForm">
 							<div class="form-group">
 								<label class="control-label" for="accountHolder">티켓명</label>
-								<input class="form-control" name="itemName" type="text" 
-											value="${purchase.itemName}" readonly>
+								${purchase.itemName}
 							</div>
 							<div class="form-group">
 								<label class="control-label" for="accountHolder">예금주명</label>
-								<input class="form-control" name="userName" type="text" 
-											placeholder="예금주명 입력">
+								${purchase.userName}
 							</div>
 							<div class="form-group">
 								<label for="accountHolder">출금은행</label>
-								<input class="form-control" name="userBankName" type="text" 
-											placeholder="출금은행 선택">
+								${purchase.userBankName}
 							</div>
 							<div class="form-group">
 								<label for="accountHolder">출금계좌</label>
-								<input class="form-control" name="userAccount" type="text" 
-											placeholder="계좌번호 입력">
+								${purchase.bankAccount}
 							</div>
 							<div class="form-group">
 								<label for="accountHolder">입금은행</label>
-								<input class="form-control" name="bankName" type="text" 
-											value="${purchase.bankName}" placeholder="은행" readonly>
+								${purchase.bankName}"
 							</div>
 							<div class="form-group">
 								<label for="accountHolder">입금계좌</label>
-								<input class="form-control" name="bankAccount" type="text" 
-											value="${purchase.bankAccount}" placeholder="계쫘" readonly>
+								${purchase.bankAccount}
 							</div>
 							<div class="form-group">
 								<label for="accountHolder">이체금액</label>
-								<input class="form-control" name="purchasePrice" type="text" 
-											value="${purchase.purchasePrice}" placeholder="이체 금액" readonly>
+								${purchase.purchasePrice}
 							</div>
-							<div class="col-md-6 ">
-								<button class="btn btn-default btn-block" type="button">취소</button>
-							</div>
-							<div class="col-md-6 ">
-								<button class="btn btn-primary btn-block" type="button">이체</button>
+							<div class="col-md-offset-3 col-md-6 ">
+								<button class="btn btn-primary btn-block" type="button">확인</button>
 							</div>
 						</form>
 					</div>
