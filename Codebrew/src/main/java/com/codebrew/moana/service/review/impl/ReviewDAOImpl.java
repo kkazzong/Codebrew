@@ -78,21 +78,12 @@ public class ReviewDAOImpl implements ReviewDAO {
 	@Override //8
 	public void passCheckCode(Review review) throws Exception {
 		System.out.println("reviewDAO :: passCheckCode");
-		
-		//test
-		System.out.println("\n\n\nreviewDAO :: passCheckCode"+review+"\n\n\n");
-		
-		
 		sqlSession.update("ReviewMapper.passCheckCode", review);
 	}
 	
 	@Override //9
 	public void failCheckCode(Review review) throws Exception {
 		System.out.println("reviewDAO :: failCheckCode");
-		
-		//test
-		System.out.println("\n\n\nreviewDAO :: failCheckCode"+review+"\n\n\n");
-		
 		sqlSession.update("ReviewMapper.failCheckCode", review);
 	}
 	
