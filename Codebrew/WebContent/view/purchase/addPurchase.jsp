@@ -36,10 +36,85 @@
 <!-- Magnific Popup core JS file -->
 <script src="/resources/javascript/jquery.magnific-popup.min.js"></script>
 
+<!-- 아임포트 -->
+<script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 
 <script type="text/javascript">
+
+	//// 아임포트 변수 초기화
+	var IMP = window.IMP; // 생략가능
+	IMP.init('imp74820381'); // 'iamport' 대신 부여받은 "가맹점 식별코드"를 사용
 	
-	//수량 선택시 validation check function
+	//// 아임포트 휴대폰결제
+	function fncPhonePay(selectedCount, purchasePrice, purchaseFlag) {
+		
+		alert("핸드폰 결제"+selectedCount+","+purchasePrice+","+purchaseFlag);
+		var ticketNo = ${ticket.ticketNo};
+		var userId = "${user.userId}";
+		var ticketCount = ${ticket.ticketCount};
+		var name = "${ticket.ticketName}";
+		
+		IMP.request_pay({
+		    pg : 'danal', // version 1.1.0부터 지원.
+		    pay_method : 'phone',
+		    merchant_uid : 'codebrew_moana_' + new Date().getTime(),
+		    name : name,
+		    amount : purchasePrice,
+		    /* buyer_email : 'iamport@siot.do', */
+		    buyer_name : userId,
+		    buyer_tel : "${user.phone}",
+		  /*   buyer_addr : '',
+		    buyer_postcode : '123-456', */
+		    m_redirect_url : 'http://127.0.0.1:8080/purchase/approvePurchase'
+		}, function(rsp) {
+		    if ( rsp.success ) {
+		    	
+		    	$.ajax({
+		    		
+		    		url : "/purchaseRest/json/iamport/approvePayment",
+		    		method : "POST",
+		    		headers : {
+		    			"Accept" : "application/json",
+		    			"Content-Type" : "application/json"
+		    		},
+		    		data : JSON.stringify({
+		    			aid : rsp.imp_uid, //아이엠포트 고유번호
+		    			cid : rsp.merchant_uid, //아이엠포트 가맹점 고유번호
+		    			purchaseCount : selectedCount,
+						purchasePrice : purchasePrice,
+						purchaseFlag : purchaseFlag,
+						user : {
+							userId : userId
+						},
+						ticket : {
+							ticketNo : ticketNo,
+							ticketCount : ticketCount
+						}
+		    		}),
+		    		dataType : "json",
+		    		success : function(JSONData){
+		    			
+		    			console.log(JSONData);
+		    			self.location = "/purchase/approvePayment?purchaseNo="+JSONData.purchaseNo;
+		    		}
+		    		
+		    	});
+		    	
+		        var msg = '결제가 완료되었습니다.';
+		        msg += '고유ID : ' + rsp.imp_uid;
+		        msg += '상점 거래ID : ' + rsp.merchant_uid;
+		        msg += '결제 금액 : ' + rsp.paid_amount;
+		        msg += '카드 승인번호 : ' + rsp.apply_num;
+		    } else {
+		        var msg = '결제에 실패하였습니다.';
+		        msg += '에러내용 : ' + rsp.error_msg;
+		    }
+		    console.log(msg);
+		});
+		
+	}
+	
+	//// 수량 선택시 validation check function
 	function fncCheckPurchase(ticketPrice, selectedCount, purchasePrice) {
 		
 		console.log("수량선택 : "+selectedCount+"개 선택");
@@ -60,10 +135,11 @@
 		$("#purchasePrice").html(purchasePrice); //결제금액
 		
 		$("#kakaoPay").removeAttr("disabled"); //카카오페이 버튼 활성화
+		$("#danal").removeAttr("disabled"); //핸드폰 결제 활성화
 		
 	}
 	
-	//카카오페이 결제준비 호출 function
+	//// 카카오페이 결제준비 호출 function
 	function fncPayment(selectedCount, purchasePrice, purchaseFlag){
 
 		var ticketNo = $("input:hidden[name='ticketNo']").val();
@@ -100,10 +176,10 @@
 				
 				console.log(JSON.stringify(data));
 				var url = data.nextRedirectPcUrl;
-				var popupX = (window.screen.width / 2) - (200 / 2);
+				//var popupX = (window.screen.width / 2) - (200 / 2);
 				// 만들 팝업창 좌우 크기의 1/2 만큼 보정값으로 빼주었음
 
-				var popupY= (window.screen.height /2) - (300 / 2);
+				//var popupY= (window.screen.height /2) - (300 / 2);
 				// 만들 팝업창 상하 크기의 1/2 만큼 보정값으로 빼주었음
 				window.open(url,'kakaoPay','toolbar=no, directories=no, fullscreen=yes, status=no, location=center,menubar=no,width=426,height=510');
 
@@ -154,6 +230,13 @@
 		$("#kakaoPay").on("click",function(){
 			
 			fncPayment(selectedCount, purchasePrice, purchaseFlag);
+			
+		});
+		
+		//핸드폰 결제 클릭 시
+		$("#danal").on("click",function(){
+			
+			fncPhonePay(selectedCount, purchasePrice, purchaseFlag);
 			
 		});
 		
@@ -298,6 +381,7 @@
 					<input type="hidden" name="user.userId" value="${user.userId}">
 					<input type="hidden" name="purchaseCount" value="">
 					<input type="hidden" name="purchasePrice" value="">
+					<input type="hidden" name="ticketName" value="${ticket.ticketName}">
 					<!-- 축제정보 -->
 					<c:if test="${!empty festival}">
 						<input type="hidden" name="festival.festivalName" value="${festival.festivalName}">
@@ -434,11 +518,18 @@
 							<c:if test="${empty ticket.ticketFlag or ticket.ticketFlag == 'nolimit'}">
 							<div class="row">
 									<span class="help-block">
-										카카오페이 결제창이 뜨지 않을 경우, 팝업을 허용한 뒤 다시 시도 해주세요.
+										결제창이 뜨지 않을 경우, 팝업을 허용한 뒤 다시 시도 해주세요.
 									</span>
 								<div class="col-md-offset-4 col-md-4">
 									<button id="kakaoPay" class="btn btn-link btn-block" disabled="disabled" type="button">
 										<img src="../../resources/image/buttonImage/kakaopay.png">
+									</button>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-offset-4 col-md-4">
+									<button id="danal" class="btn btn-link btn-block" disabled="disabled" type="button">
+										<img width="120" height="50" src="../../resources/image/buttonImage/danal.jpg">
 									</button>
 								</div>
 							</div>

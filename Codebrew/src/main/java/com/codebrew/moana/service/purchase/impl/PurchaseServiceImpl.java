@@ -38,6 +38,10 @@ public class PurchaseServiceImpl implements PurchaseService {
 	@Qualifier("kakaoAPIDAOImpl")
 	private PurchaseDAO kakaoDAO;
 	
+	@Autowired
+	@Qualifier("iamportAPIDAOImpl")
+	private PurchaseDAO impDAO;
+	
 	//Constructor
 	public PurchaseServiceImpl() {
 		System.out.println(this.getClass());
@@ -65,6 +69,12 @@ public class PurchaseServiceImpl implements PurchaseService {
 		} else {
 			return 0;
 		}
+	}
+	
+	@Override
+	public Purchase approvePayment(Map<String, Object> map) throws Exception {
+		Purchase purchase = impDAO.approvePayment((Purchase)map.get("purchase"), map.get("token").toString());
+		return this.addPurchase(purchase, map.get("path").toString());
 	}
 
 	@Override
