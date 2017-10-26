@@ -49,12 +49,13 @@
 	
 	//Event 걸어주기
 	$(function() {
-		 $( "#getReviewList" ).on("click" , function() {
+		
+		 $( "#getReviewList" ).on("click" , function() { //ok
 			 self.location = "/review/getReviewList"
 		});
 		
 		 $( "#getCheckReviewList" ).on("click" , function() {
-			self.location = "/review/getCheckReviewList?role='a'"
+			self.location = "/review/getCheckReviewList?role=${session.user.role}"
 		});
 		
 		 $( "#updateReview" ).on("click" , function() {
@@ -62,17 +63,20 @@
 		});
 		 
 		$( "#passCheckCode" ).on("click" , function() {
-			alert("review.checkCode :: "+"${review.checkCode}");
 			self.location = "/review/passCheckCode?reviewNo=${review.reviewNo }";				
 		});
 		 
 		 $( "#failCheckCode" ).on("click" , function() {
-			self.location = "/review/addPurchaseView?prodNo=${product.prodNo}";
+			self.location = "/review/failCheckCode?reviewNo=${review.reviewNo }";
 		});
 		 
 		$( "#addReply" ).on("click" , function() {
 			fncAddReply();
 		});
+		
+		$( "#addGood" ).on("click", function() { //수정중
+			self.location = "/review/addGood";
+		}); 
 		 
 		 /* var reviewNo = document.getElementById('reviewNo').getAttribute('value');
 		 console.log(reviewNo); */
@@ -210,6 +214,7 @@
 							<small>
 								<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
 									좋아요 : ${review.goodCount }
+								<button id = "addGood" type="button" class="btn btn-success">Good!</button>
 							</small>
 						</div>
 						<div class="col-md-12">
@@ -251,13 +256,13 @@
 						   		<c:if test="${sessionScoepe.user.role != 'a' && sessionScope.user.userId == review.userId}">
 						   			<center>
 						   				<button id = "updateReview" type="button" class="btn btn-primary">수정하기</button>
-						   				<button id = "getReviewList" type="button" class="btn pull-center btn-primary">목록보기</button>
+						   				<button id = "getReviewList" type="button" class="btn btn-primary">목록보기</button>
 						   			</center>
 								</c:if>
 								<!-- admin이 아니면서(일반회원 혹은 비회원이면서) 해당 후기 작성자와 조회한 사람이 동일하지 않을 때 ==>> 가장 많은 경우 -->
 						   		<c:if test="${sessionScope.user.role != 'a' && sessionScope.user.userId != review.userId}">
 						   			<center>
-							   			<button id = "getReviewList" type="button" class="btn pull-center btn-primary">목록보기</button>
+							   			<button id = "getReviewList" type="button" class="btn btn-primary">목록보기</button>
 						   			</center>
 						   		</c:if>
 						   		
@@ -265,10 +270,10 @@
 						   		<!-- admin이면서  해당 후기가 등록요청중인 후기 일 때 -->
 						   		<c:if test="${sessionScope.user.role == 'a' && (review.checkCode == '1' || review.checkCode == '11')}">
 						   			<center>
-							   			<button id="passCheckCode" type="button" class="btn pull-center btn-default">
+							   			<button id="passCheckCode" type="button" class="btn btn-success">
 							   				통과(등록)
 							   			</button>
-							   			<button id="failCheckCode" type="button" class="btn pull-center btn-default">
+							   			<button id="failCheckCode" type="button" class="btn btn-warning">
 							   				반려(미등록)
 							   			</button>
 							   		</center>
@@ -276,9 +281,9 @@
 						   		<!-- admin이면서  해당 후기가 반려된 후기 혹은 통과된 후기(나머지 심사상태인 후기인 경우) 일 때-->
 						   		<c:if test="${sessionScope.user.role =='a' }">
 						   			<center>
-						   				<button id = "updateReview" type="button" class="btn btn-default">수정하기</button>
-							   			<button id = "getCheckReviewList" type="button" class="btn pull-center btn-fault">심사목록보기</button>
-							   			<button id = "getReviewList" type="button" class="btn pull-center btn-fault">목록보기</button>
+						   				<button id = "updateReview" type="button" class="btn btn-info">수정하기</button>
+							   			<button id = "getCheckReviewList" type="button" class="btn btn-info">심사목록보기</button>
+							   			<button id = "getReviewList" type="button" class="btn btn-info">목록보기</button>
 						   			</center>
 						   		</c:if>
 							</small>
