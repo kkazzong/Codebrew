@@ -132,7 +132,7 @@
 	
 	var ticketPrice = ${ticket.ticketPrice};
 	var itemName = "${purchase.itemName}";
-	var ip = "http://192.168.0.4:8080";
+	var ip = "http://192.168.1.237:8080";
 	var referNo = "${purchase.purchaseFlag}";
 	var imageUrl = "";
 	var url = "";

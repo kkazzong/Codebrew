@@ -46,8 +46,19 @@
 	              <!-- 축제관리 DrowDown  -->
 		          <li class="dropdown">
 		             <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-		                 Festival
+		                <span>Festival</span>
+		                <c:if test="${sessionScope.user.role == 'a'}">
+		                	<span class="caret"></span>
+		                </c:if>
 		              </a>
+		                 <c:if test="${sessionScope.user.role == 'a'}">
+			              <ul class="dropdown-menu">
+							<li><a href="#">축제목록</a></li>
+			                       <li class="divider"></li>
+			                       <li><a href="#">축제직접등록</a></li>
+			                       <li><a href="#">축제등록</a></li>
+		                   </ul>
+	                       </c:if>  
 		           </li>
 		           
 		          <!-- 파티관리 DrowDown  -->
@@ -59,8 +70,8 @@
 		              <ul class="dropdown-menu">
 		                  <li><a href="#">파티등록</a></li>
 		                  <li><a href="#">파티목록</a></li>
-		                  <li><a href="#">애프터파티</a></li>
-		                  <li><a href="#">아모르파티</a></li>
+		                  <!-- <li><a href="#">애프터파티</a></li>
+		                  <li><a href="#">아모르파티</a></li> -->
 		               </ul>
 		           </li>
 		           
@@ -71,7 +82,12 @@
 		             	<span class="caret"></span>
 		             </a>
 		             <ul class="dropdown-menu">
+						<li><a href="#">후기등록</a></li>
 						<li><a href="#">후기목록</a></li>
+						<c:if test="${sessionScope.user.role == 'a'}">
+		                       <li class="divider"></li>
+		                       <li><a href="#">후기심사목록</a></li>
+	                     </c:if> 
 		             </ul>
 		          </li>
 	                 
@@ -100,7 +116,9 @@
 			                </a>
 			                <ul class="dropdown-menu">
 			                    <li><a href="#">회원목록</a></li>
+			                    <li class="divider"></li>
 			                    <li><a href="#">축제등록</a></li>
+			                    <li class="divider"></li>
 			                    <li><a href="#">후기심사목록</a></li>
 			                    <!-- <li><a href="#">티켓판매목록</a></li>
 			                    <li><a href="#">판매통계</a></li> -->
@@ -113,6 +131,12 @@
 	             
 	             <ul class="nav navbar-nav navbar-right">
 	             	<c:if test="${!empty user}">
+		             	<!-- 마이페이지 -->
+		             	<li class="dropdown">
+			             <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+			                 <span>MyPage</span>
+			              </a>
+			           </li>
 		             	<li><a href="#">${user.nickname}님</a></li>
 		             	<li><a href="#">로그아웃</a></li>
 	             	</c:if>
@@ -179,8 +203,16 @@
    		
   		//////축제관리//////
    		$(function(){
-			$( "a:contains('Festival')" ).on("click" , function() {
+			$( "a:contains('Festival'), li > a:contains('축제목록')" ).on("click" , function() {
 				self.location = "/festival/getFestivalListDB?menu=db";
+			});
+			
+			$("li > a:contains('축제등록')").bind('click', function(){
+				self.location = "/festival/getFestivalList?pageNo=1";
+			});
+			
+			$("li > a:contains('축제직접등록')").bind('click', function(){
+				self.location = "/view/festival/writeFestival.jsp";
 			});
    		});
   		
@@ -188,14 +220,19 @@
    		$(function(){
 			$( "a:contains('Review')" ).on("click" , function() {
 				//self.location = "/review/getReviewList";
+				self.location = "/review/getReviewList";
 			});
    		});
   		
   		
- 		//////축제관리//////
+ 		//////후기관리//////
    		$(function(){
 			$( "a:contains('후기목록')" ).on("click" , function() {
 				self.location = "/review/getReviewList";
+			});
+			
+			$("li > a:contains('후기등록')").bind('click', function(){
+				self.location = "/review/addReview";
 			});
    		});
    		

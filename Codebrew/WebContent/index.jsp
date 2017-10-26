@@ -35,7 +35,7 @@
     section {
     	background: url(/resources/image/toolbarImage/bg2.jpg) no-repeat center center;
 		width: 100%;
-	   	height: 100%;
+	   	height: 500px;
 	   background-size: 100%;
 	   opacity: 0.7;
     }
@@ -165,30 +165,30 @@
 	
 	
 <!-- <a href="/festival/ListFestival"> 축제리스트 (api사용) </a> -->
-<a href="/festival/getFestivalList?pageNo=1"> 축제리스트 (api사용) 관리자 </a>
+<!-- <a href="/festival/getFestivalList?pageNo=1"> 축제리스트 (api사용) 관리자 </a>
 
 <br/>
-<br/>
+<br/> -->
 
 <!-- <a href="/festival/getFestivalListDB"> 축제리스트 (서버DB) 회원 / 비회원 </a> -->
 
-<a href="/festival/getFestivalListDB?menu=db"> 축제리스트 (서버DB) 회원 / 비회원 </a>
+<!-- <a href="/festival/getFestivalListDB?menu=db"> 축제리스트 (서버DB) 회원 / 비회원 </a> -->
 
 <!-- 가정이가 써보았다 -->
-<br>
+<%-- <br>
 <br>
 <c:if test="${user.role == 'a'}">
 <a href="/purchase/getSaleList"> 판매목록 (관리자only) </a>
 </c:if>
 <br>
-<br>
+<br> --%>
 
-<a href="/purchase/getPurchaseList"> my티켓 </a>
+<!-- <a href="/purchase/getPurchaseList"> my티켓 </a>
 
 <br>
-<br>
+<br> -->
 <!--주영이가 써보았다.  -->
-<a href="/user/login">로그인</a>
+<%-- <a href="/user/login">로그인</a>
 
 <br>
 <br>
@@ -221,7 +221,7 @@
 <br>
 <br>
 
-<a href="/view/festival/weather.jsp">날씨</a>
+<a href="/view/festival/weather.jsp">날씨</a> --%>
 
 
 
@@ -229,7 +229,7 @@
 
 
 <!-- 가정이가 또 써보았다 -->
-<br>
+<%-- <br>
 <br>
 <c:if test="${!empty user}">
  현재 로그인한 userId : ${user.userId} <br>
@@ -241,15 +241,15 @@
 </c:if>
 <h5>jsp에서 dropdown cdn추가하고 툴바.jsp include(index.jsp참고하세염)</h5>
 <br>
-<br>
+<br> --%>
 <!--후기등록 테스트중 -->
-<a href="/review/addReview">후기등록</a>
+<!-- <a href="/review/addReview">후기등록</a> -->
 
 
 <!-- 파티 index -->
-<div>
+<!-- <div>
 	<div><a href = "/party/getMyPartyList">My 파티 리스트</a></div>
-</div>	
+</div>	 -->
 	</section>
 </body>
 </html>
