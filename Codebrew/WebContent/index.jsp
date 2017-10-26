@@ -103,6 +103,11 @@
 
 <a href="/view/festival/writeFestival.jsp">직접등록</a>
 
+<br>
+<br>
+
+<a href="/view/festival/weather.jsp">날씨</a>
+
 
 
 
