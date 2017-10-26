@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.servlet.ModelAndView;
 
 import com.codebrew.moana.service.domain.Auth;
 import com.codebrew.moana.service.domain.User;
@@ -36,7 +36,7 @@ public class UserRestController {
 		System.out.println(this.getClass());
 	}
 	
-	//api로 로그인할때 필요한 getUser()
+	/*//api로 로그인할때 필요한 getUser()
 	@RequestMapping(value="json/getUser/{userId}", method=RequestMethod.GET)
 	public User getUser(@PathVariable String userId)throws Exception{
 		
@@ -44,9 +44,9 @@ public class UserRestController {
 		
 		return userService.getUser(userId);
 		
-	}
+	}*/
 	
-	//api로그인할때 필요한 login() 폼으로 받을거니깐 post
+	/*//api로그인할때 필요한 login() 폼으로 받을거니깐 post
 	@RequestMapping(value="json/login", method=RequestMethod.POST)
 	public User login(@RequestBody User user, HttpSession session)throws Exception{
 	
@@ -61,8 +61,15 @@ public class UserRestController {
 		
 		return dbUser;
 	
-	}
+	}*/
+	/*@RequestMapping(value="json/logout", method=RequestMethod.GET)
+	public void logout(HttpSession session)throws Exception{
+		System.out.println("/userRest/json/logout : GET");
+		
+		session.invalidate();
 	
+	}
+	*/
     //회원정보수정, 회원가입시 닉네임중복체크
 	@RequestMapping(value="json/checkNickname", method=RequestMethod.POST)
 	public boolean checkNickname(@RequestParam("nickname")String nickname)throws Exception{
@@ -86,7 +93,7 @@ public class UserRestController {
 		
 	}
 	
-	
+	//회원 아이디 찾기
 	@RequestMapping(value="/json/findUserId", method=RequestMethod.POST)
 	public Map<String, String> findUserId(@RequestBody User user)throws Exception{
 		
@@ -154,8 +161,40 @@ public class UserRestController {
 		  return auth;
 	}
 	
+	/*@RequestMapping(value = "kakaoLogin", method = RequestMethod.GET)
+	public User kakaoLogin(@RequestParam(value="authorize_code") String authorize_Code,
+			HttpSession session) throws Exception {
+
+		
+		System.out.println("/userRest/user/kakaoLogin : GET ");
+
+		User user=new User();
+		
+		User dbUser = userService.getUser(user.getUserId());
+
+		
+
+		if (user.getUserId().equals(dbUser.getUserId())) {
+			session.setAttribute("user", dbUser);
+			//modelAndView.setViewName("redirect:/index.jsp");
+
+		} else {
+
+			User kakaoUser = userService.getCode(authorize_Code);
+			userService.addUser(kakaoUser);
+			session.setAttribute("user", kakaoUser);
+			
+		}
+			
+
+			//modelAndView.addObject("user", addExtraUser);
+
+			//modelAndView.setViewName("forward:view/user/addExtraUser.jsp");
+		
+         return user;
 	
-	
+	}
+	*/
 	
 	
 }

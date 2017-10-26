@@ -2,6 +2,8 @@ package com.codebrew.moana.service.user;
 
 import java.util.Map;
 
+import org.codehaus.jackson.JsonNode;
+
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Auth;
 import com.codebrew.moana.service.domain.User;
@@ -37,5 +39,8 @@ public interface UserService {
 	
 	//본인인증
 	public Auth confirmUser(Auth auth)throws Exception;
+    
+	//카카오로그인할때 정보가지고 올거
+	public User getCode(String authorize_code) throws Exception;
 	
 }

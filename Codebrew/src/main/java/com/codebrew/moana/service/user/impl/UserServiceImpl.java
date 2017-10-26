@@ -3,13 +3,10 @@ package com.codebrew.moana.service.user.impl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpSession;
 
+import org.codehaus.jackson.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Auth;
 import com.codebrew.moana.service.domain.User;
+
 import com.codebrew.moana.service.user.UserDAO;
 import com.codebrew.moana.service.user.UserService;
 
@@ -32,6 +30,15 @@ public class UserServiceImpl implements UserService{
 	public void setUserDAO(UserDAO userDAO) {
 		this.userDAO=userDAO;
 	}
+	
+	@Autowired
+	@Qualifier("kakaoLoginDAOImpl") 
+	private UserDAO kakaoLoginDAO;//UserDAO kakaoLoginDAO=new KakaoDAOImpl();
+	public void setKaKaoLoginDAO(UserDAO kakaoLoginDAO) {
+		this.kakaoLoginDAO=kakaoLoginDAO;
+	}
+	
+	
 	
 	
 	@Autowired
@@ -83,7 +90,7 @@ public class UserServiceImpl implements UserService{
 		    messageHelper.setFrom(setFrom);
 		    messageHelper.setTo(user.getUserId());
 		    messageHelper.setSubject(subject);
-		    messageHelper.setText(contentAdd);
+		    messageHelper.setText(user.getUserName()+contentAdd);
 		    
 		    mailSender.send(message);
 		}catch(Exception e) {
@@ -279,9 +286,51 @@ public class UserServiceImpl implements UserService{
 		return userDAO.findUserId(user);
 	}
 
-
+	//카카오로그인
+	@Override
+	public User getCode(String authorize_code) throws Exception {
+		// TODO Auto-generated method stub
+		//return userDAO.getCode(authorize_code);//userDAO는 변수명이었음
+		return kakaoLoginDAO.getCode(authorize_code);
+	}
 
 	
+	
+	
+	
+	/*public User getCode(String authorize_code) throws Exception{
+		
+		
+		JsonNode userInfo=userDAO.getCode(authorize_code);
+		
+		System.out.println(userInfo);
+		
+		
+		
+		//get 정보 빼내기
+		//String id=userInfo.path("id").asText();
+		String kakaoId=userInfo.path("kaccount_email").asText();
+		
+		JsonNode properties=userInfo.path("properties");
+		
+		String nickname=properties.path("nickname").asText();
+		String gender=properties.path("gender").asText();
+		String age=properties.path("age").asText();
+		String profileImage=properties.path("profileImage").asText();
+		
+		User user=new User();
+		user.setUserId(kakaoId);
+		user.setUserName(nickname);
+		user.setAge(Integer.parseInt(age));
+		user.setGender(gender);
+		user.setProfileImage(profileImage);
+		
+		
+		return user;
+		
+	}
+
+	*/
 
 	
 }

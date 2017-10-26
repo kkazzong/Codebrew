@@ -152,12 +152,26 @@
 	       $( "#datepicker" ).datepicker({
 	    	   changeMonth: true, 
 	           changeYear: true,
-		       dateFormat: "yy-mm-dd" 
+		       dateFormat: 'yy-mm-dd',
+		       monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+		       monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+		       dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+		       dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+		       dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+		       showMonthAfterYear: true,
+		       yearSuffix: '년',
+		       changeMonth: true,
+		       changeYear : true,
+		       buttonImageOnly: true,
+		       buttonText: "Select date",
+		       showOn: "button",
+		       buttonImage: "/resources/image/ui/cal.png",
+		       yearRange : "1970:2017"
 	       });   
 	    });
 		
 		
-		//ajax 아이디 중복확인
+		//ajax 닉네임 중복확인
 		$(function(){
 			
 			$("input:text[name='nickname']").on("keyup",function(){
@@ -215,7 +229,7 @@
 		    <label for="userId" class="col-sm-offset-1 col-sm-3 control-label">아 이 디</label>
 		    <div class="col-sm-4">
 		  
-		      <input type="text" class="form-control" id="userId" name="userId" value="${auth.authId}">  
+		      <input type="text" class="form-control" id="userId" name="userId" value="${auth.authId}" readonly>  
 		    </div>
 		 </div>
 		  

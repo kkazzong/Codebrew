@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.apache.ibatis.session.SqlSession;
+import org.codehaus.jackson.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -14,7 +15,7 @@ import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.User;
 import com.codebrew.moana.service.user.UserDAO;
 
-@Repository
+@Repository("userDAOImpl")
 public class UserDAOImpl implements UserDAO {
 
 //field (has a)
@@ -101,5 +102,13 @@ public class UserDAOImpl implements UserDAO {
 	
 	}
 
+	//카카오로그인
+	public User getCode(String authorize_code) throws Exception{
+		
+	  return null;
+	}
+
+
+	
 	
 }
