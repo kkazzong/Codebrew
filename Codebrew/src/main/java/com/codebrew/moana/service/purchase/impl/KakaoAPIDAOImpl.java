@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.codebrew.moana.common.Search;
+import com.codebrew.moana.service.domain.Bank;
 import com.codebrew.moana.service.domain.Purchase;
 import com.codebrew.moana.service.domain.QRCode;
 import com.codebrew.moana.service.purchase.PurchaseDAO;
@@ -328,6 +329,24 @@ public class KakaoAPIDAOImpl implements PurchaseDAO {
 
 	@Override
 	public Purchase approvePayment(Purchase purchase, String token) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Bank readyTransfer(Purchase purchase) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Bank transferMoney(Bank bank, Purchase purchase) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> getTransferResult(Bank bank, Purchase purchase) {
 		// TODO Auto-generated method stub
 		return null;
 	}
