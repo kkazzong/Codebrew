@@ -40,6 +40,36 @@
 	   opacity: 0.7;
     }
     
+     
+		
+	.title {
+		color: white;
+	}
+	
+	/* .main .search-main input[type=text] {
+		
+		width: 83%;
+	    height: 41px;
+	    padding-left: 10px;
+	    float: left;
+	    margin-top: 2px;
+	    margin-left: 2px;
+	}
+	
+	.main .search-main {
+	    background-color: #556180;
+	    width: 100%;
+	    height: 45px;
+	    margin-bottom: 76px;
+	    position: relative;
+	}
+
+	.main .search-main img {
+	    width: 40px;
+	    margin-top: 2px;
+
+	}
+ */
 </style>
 
 
@@ -69,9 +99,71 @@
 </head>
 <body>
 	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
+
 	
 	<!-- 배경 이미지 -->
 	<section>
+	
+	
+	<!-- Title -->
+	<!-- <div class="main-wrapper">
+		
+		<div class="main">
+		<div class="main">
+	        <div class="container">
+	            <div class="col-md-12">
+	                <div class="col-md-6 col-md-offset-3 padding-none">
+	                    <div class="text-center white">
+	                       
+	                        <div class="title">
+	                        	<h1>MOANA</h1>
+	                            <h1>이번 주말에 모아나ㅋ</h1>
+	                        </div>
+	
+	                        <div class="sub-title-container">
+	
+	                            <div class="search-main">
+	                                
+	                                <form class="form-inline" name="detailForm">
+	                                	
+										  
+										  <div class="form-group">
+										    <label class="sr-only" for="searchKeyword">검색어</label>
+										    
+											<input type="text" class="form-control" id="search" placeholder="ex) 할로윈">
+											<input type="text" placeholder="ex) 할로윈">
+										    <a id="search" class="click" type="button">
+		                                        <img src="/resources/image/buttonImage/btn_nav_search_white@3x.png">
+		                                    </a>		 
+										  </div>
+	                               	</form>
+	                                
+	                             
+	                                </div>
+	                            </div>
+	                        
+	
+	                        <script>
+	                            $("#search").click(function () {
+	                                var query = $(".search-main input").val();
+	                                if (!query) {
+	                                    alert("검색어를 입력해주세요.");
+	                                } else {
+	                                    location.href = "/search/" + query;
+	                                }
+	                            })
+	                        </script>
+	
+	                        
+	
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div> -->
+	
+	
 <!-- <a href="/festival/ListFestival"> 축제리스트 (api사용) </a> -->
 <a href="/festival/getFestivalList?pageNo=1"> 축제리스트 (api사용) 관리자 </a>
 
@@ -155,9 +247,9 @@
 
 
 <!-- 파티 index -->
-<div><a href = "/party/addParty?userId=${user.userId}">addParty.jsp</a></div>
-	<div><a href = "/party/getMyPartyList">getMyPartyList.jsp</a></div>
-	<div><a href = "/party/getPartyList">getPartyList.jsp</a></div>
+<div>
+	<div><a href = "/party/getMyPartyList">My 파티 리스트</a></div>
+</div>	
 	</section>
 </body>
 </html>

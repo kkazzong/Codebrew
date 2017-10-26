@@ -1,3 +1,4 @@
+
  <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
@@ -31,6 +32,41 @@
 							  			console.log("for문 안");
 							  			
 							  			/* 파티 멤버 리스트 */
+							  			/* var partyMemberList = "<div class='col-md-6'>"
+																+ "<div class='panel panel-primary'>"
+																+ "<div class='panel-heading'>"
+																	+ "<h3 class='panel-title pull-left'>"
+																	+ "<img class='rounded-circle' src='/resources/uploadFile/${party.partyImage}' width='40' height='40'>"
+																	+ "&nbsp; ${ party.user.nickname }</h3>"
+																	+ "</div>"
+																	+ "<div class='panel-body'>"
+																						
+																		+"<input type='hidden' name='partyNo' value='${party.partyNo}'>"
+																		+ "<img width='100%' height='300' src='/resources/uploadFile/${party.partyImage}'>"
+																		
+																		+ "<div class='col-md-12'>"
+																			+ "<h4>"
+																				+ "<strong>"
+																					+ "${party.partyName}"
+																				+ "</strong>"
+																				+ "</h4>"
+																		+ "</div>"
+																		+ "<hr>"
+																		+ "<div class='col-md-12'>"
+																			+ "<small>"
+																				+ "<span class='glyphicon glyphicon-calendar' aria-hidden='true'></span>"
+																					+ "${party.partyDate}"
+																			+ "</small>"
+																		+ "</div>"
+																	+ "</div>"
+																+ "</div>"
+															+ "</div>"; */
+																	
+															
+							  			
+							  			
+							  			
+							  			
 							  			var partyMemberList = "<div class='row' id='userDiv'>"
 															+"<input type='hidden' id='userId' name='userId' value='"+JSONData.list[i].user.userId+"'>"
 															+"<span>"
@@ -46,17 +82,18 @@
 																+"</c:if>"
 															//}
 															+"</span>"
-															+"</div>";
+															+"</div>"
+															+"<hr/>";
 											
 										$("form.form-horizontal-1").append(partyMemberList); 
 										console.log(partyMemberList);
 										
 										
 							  			if (sessionId == JSONData.list[i].user.userId){
-							  				console.log("if문 안");
+							  				console.log("if문 안 파티 멤버 리스트 보기 버튼");
 								  			
 							  				/* 파티 멤버 리스트 보기 버튼 */
-											var getPartyMemberList = "<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#exampleModal'>"
+											var getPartyMemberList = "<button type='button' class='btn btn-primary btn-block' data-toggle='modal' data-target='#exampleModal'>"
 														 +"파티멤버보기"
 														 +"</button>";
 														 
@@ -64,55 +101,122 @@
 										    $("#partyMemberListButtonDiv").append(getPartyMemberList);
 										    
 										    console.log(getPartyMemberList);
-										    
-										    /*파티 참여 취소 버튼 */
-										    if(sessionId != "${party.user.userId}"){
-										    	console.log("if문 안 파티 참여 취소 버튼");
-										    	
-										    	if("${party.festival.festivalNo}" != ""){
-										    		
-										    		/* 애프터 파티 취소 버튼 */
-										    		var cancelParty = "<button type='button' class='btn btn-primary'>파티참여취소</button>";
-										    		
-										    		$("#partyButtonDiv").html(cancelParty);
-										    		
-										    	}else if("${party.festival.festivalNo}" == ""){
-										    		
-										    		/* 파티 취소 버튼 */
-										    		var cancelPurchase = "<button type='button' class='btn btn-primary'>티켓구매취소</button>";
-										    		
-										    		$("#partyButtonDiv").html(cancelPurchase);
-										    	}
-										    }
-										    
-							  			}else if(sessionId != JSONData.list[i].user.userId) {
-							  				console.log("else if문 안");
+										 
+							  			}
+							  			
+							  			if(sessionId != "${party.user.userId}"){
+							  				/* 애프터 파티 */
 							  				if("${party.festival.festivalNo}" != ""){
-							  				//if( ${ !empty party.festival.festivalNo } ){	
-							  					console.log("else if문 안 애프터 파티 참여 버튼");	
+										   		
+							  					if(sessionId != JSONData.list[i].user.userId){
+							  							
+							  						console.log("애프터 파티 참여 버튼");	
+									  					
+									  				/* 애프터 파티 참여 버튼 */
+									  				var joinParty = "<button type='button' class='btn btn-primary btn-block' id='afterPartyBtn'>애프터파티 참여</button>"
+									  					
+									  				$("#partyButtonDiv").html(joinParty).on("click", function() {
+									  					//alert("참여");
+									  					self.location="/party/joinParty?partyNo=${party.partyNo}";
+									  					
+								  						/* var result = confirm("애프터 파티에 참여하시겠습니까?");
+								  						
+								  						if(result) {
+								  							var partyNo = $("#partyNo").val();
+								  							console.log("애프터파티 참여 :: partyNo :: "+partyNo);
+								  							
+								  							self.location="/party/joinParty?partyNo=${party.partyNo}";
+								  						} else {
+								  							return;
+								  						} */
+									  						
+								  					});
+							  						
+						  						}else if(sessionId == JSONData.list[i].user.userId){
+							  						
+						  							console.log("애프터 파티 참여 취소 버튼");
+						  							
+							  						/* 애프터 파티 취소 버튼 */
+										    		var cancelParty = "<button type='button' class='btn btn-primary btn-block'>파티참여취소</button>";
+										    		
+										    		$("#partyButtonDiv").html(cancelParty).on("click", function() {
+														
+										    			self.location="/partyRest/json/cancelParty/${party.partyNo}";
+										    			
+										    			/* var result = confirm("파티참여를 취소하시겠습니까?");
+														
+														if(result) {
+															
+															var partyNo = $("#partyNo").val();
+															console.log("파티참여취소 :: partyNo :: "+partyNo);
+														
+															var festivalNo = $("#festival.festivalNo").val();
+															console.log("파티참여취소 :: festivalNo :: "+festivalNo);
+															
+															self.location="/party/cancelParty?partyNo=${party.partyNo}";
+													
+														} */
+													});
 							  					
-							  					/* 애프터 파티 참여 버튼 */
-							  					var joinParty = "<button type='button' class='btn btn-primary'>애프터파티 참여</button>"
-							  					
-							  					$("#partyButtonDiv").html(joinParty);
-							  				}
-							  				
-							  				
-							  				
-							  			}						  			
-										
-							  		}			
-							  		
-									var currentMemberCount = "${party.partyMemberLimit} 명 중 "+JSONData.currentMemberCount+" 명 참여중";
+							  					}
+										    	    
+										    /* 파티 */		
+										    }else if("${party.festival.festivalNo}" == ""){
+										    		
+										    	if(sessionId != JSONData.list[i].user.userId){	
+										    		
+										    		console.log("파티 티켓 구매 버튼");
+										    		
+										    		/* 파티 티켓 구매 버튼 */
+										    		var purchaseTicket = "<button type='button' class='btn btn-primary btn-block'>파티티켓구매</button>"
+										    		
+									    			$("#partyButtonDiv").html(purchaseTicket).on("click", function() {
+														
+									    				self.location="/purchase/addPurchase?partyNo=${party.partyNo}";
+									    				
+									    				/* var result = confirm("파티 티켓을 구매하시겠습니까?");
+														
+														if(result) {
+															var partyNo = $("#partyNo").val();
+															console.log("파티티켓구매 :: partyNo :: "+partyNo);
+															
+															self.location="/purchase/addPurchase?partyNo=${party.partyNo}";
+														} else {
+															return;
+														} */
+													
+													});
+										    		
+										    	}else if(sessionId == JSONData.list[i].user.userId){
+										    		
+										    		console.log("파티 참여 취소 버튼");
+										    		
+										    		/* 파티 참여 취소 버튼 */
+										    		var cancelPurchase = "<button type='button' class='btn btn-primary btn-block'>티켓구매취소</button>";
+										    		
+										    		$("#partyButtonDiv").html(cancelPurchase).on("click", function() {
+														
+															var partyNo = $("#partyNo").val();
+															console.log("파티참여취소 :: partyNo :: "+partyNo);
+														
+															self.location="/purchase/getPurchaseList";
+														
+													});
+										    	}
+										    	
+										    } //else if문 end
+										    
+							  			}  
+							  			
+							  		} //for문 end
+				
+									var currentMemberCount = "&nbsp;&nbsp;&nbsp;&nbsp;${party.partyMemberLimit} 명 중 "+JSONData.currentMemberCount+" 명 참여중";
 																						
 									$("#currentMemberCountDiv").html(currentMemberCount); 
-							  		
-						  }
-				
-						});
-			/* }); */
-			
-			
+		
+							} // success function end
+						}); // ajax end
+						
 		});
 		
 		
@@ -133,7 +237,7 @@
 
 <!--  화면구성 div Start /////////////////////////////////////-->
 <!-- Button trigger modal -->
-<div id="partyMemberListButtonDiv"></div>
+<div class="col-md-offset-4 col-md-4" id="partyMemberListButtonDiv"></div>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

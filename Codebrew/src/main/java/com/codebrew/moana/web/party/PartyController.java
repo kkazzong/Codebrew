@@ -88,6 +88,7 @@ public class PartyController {
 			Festival festival = festivalService.getFestivalDB(dbFestivalNo);
 		
 			modelAndView.addObject("festival", festival);
+			modelAndView.setViewName("forward:/view/party/addAfterParty.jsp");
 		}
 		
 		
@@ -153,12 +154,12 @@ public class PartyController {
 		
 		/* 주최자 파티 멤버 셋팅 */
 		PartyMember partyMember = new PartyMember();
-		partyMember.setParty(party);
+		partyMember.setParty(dbParty);
 		partyMember.setUser(user);
 		partyMember.setRole("host");
 		
 		/* 주최자 파티 멤버 등록 */
-		Map<String, Object> map = partyService.joinParty(partyMember);
+		partyService.joinParty(partyMember);
 		//Map<String, Object> map = partyService.getPartyMemberList(party.getPartyNo(), new Search());
 		
 		/*파티 비율 셋팅*/
@@ -203,19 +204,22 @@ public class PartyController {
 		
 		
 		//Business Logic
-		Map<String, Object> map = partyService.joinParty(partyMember);
+		//Map<String, Object> map = partyService.joinParty(partyMember);
+		Party dbParty = partyService.joinParty(partyMember);
+		
 		
 		//Model(data) & View(jsp)
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("list", map.get("list"));
-		modelAndView.addObject("currentMemberCount", map.get("currentMemberCount"));
-		modelAndView.setViewName("/view/party/getParty.jsp");
+		//modelAndView.addObject("list", map.get("list"));
+		//modelAndView.addObject("currentMemberCount", map.get("currentMemberCount"));
+		modelAndView.addObject("party", dbParty);
+		modelAndView.setViewName("redirect:/party/getParty?partyNo="+dbParty.getPartyNo());
 		
 		return modelAndView;
 	}
 	
 	
-	@RequestMapping( value="cancelParty", method=RequestMethod.GET )
+	/*@RequestMapping( value="cancelParty", method=RequestMethod.GET )
 	public ModelAndView cancelParty(@RequestParam("partyNo") String partyNo, HttpSession session) throws Exception {
 		
 		System.out.println("\n>>> /party/cancelParty :: GET start <<<");
@@ -236,7 +240,7 @@ public class PartyController {
 		modelAndView.setViewName("/view/party/getParty.jsp");
 		
 		return modelAndView;
-	}
+	}*/
 	
 	
 	@RequestMapping( value="deletePartyMember", method=RequestMethod.GET )

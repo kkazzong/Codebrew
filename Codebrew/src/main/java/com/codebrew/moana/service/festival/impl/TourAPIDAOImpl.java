@@ -67,6 +67,8 @@ public class TourAPIDAOImpl implements FestivalDAO {
 	Date dt = new Date();
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 	int currentDate = Integer.parseInt(sdf.format(dt).toString());
+	
+	String inTime   = new java.text.SimpleDateFormat("HH").format(new java.util.Date())+"00";
 
 	public void setSqlSession(SqlSession sqlSession) {
 		this.sqlSession = sqlSession;
@@ -524,8 +526,11 @@ public class TourAPIDAOImpl implements FestivalDAO {
 		System.out.println("weatherDAO........" + festivalLon + " / " + festivalLat);
 
 		StringBuilder urlBuilder = new StringBuilder(weatherURL + forecastSpaceDataBasicForm);
-		urlBuilder.append(
-				"&base_date=" + currentDate + "&nx=" + festivalLon + "&ny=" + festivalLat + "&_type=json");
+		urlBuilder.append("&base_date=" + currentDate 
+								+ "&nx=" + festivalLat 
+									+ "&ny=" + festivalLon
+										+ "&base_time=0500"
+											+ "&_type=json");
 
 		StringBuilder sb = TourAPIDAOImpl.sendGetURL(urlBuilder);
 		

@@ -55,11 +55,9 @@ public class ReviewController {
 	}
 	
 	@Value("#{commonProperties['pageUnit']}")
-	//@Value("#{commonProperties['pageUnit'] ?: 3}")
 	int pageUnit;
 	
 	@Value("#{commonProperties['pageSize']}")
-	//@Value("#{commonProperties['pageSize'] ?: 2}")
 	int pageSize;
 	
 
@@ -80,14 +78,15 @@ public class ReviewController {
 	public ModelAndView addReview(HttpSession session,
 									@ModelAttribute("review") Review review, 
 									@RequestParam("uploadReviewImageList") List<MultipartFile> uploadReviewImage, 
-									@RequestParam("uploadReviewVideoList") List<MultipartFile> uploadReviewVideo) throws Exception{
+									@RequestParam("uploadReviewVideoList") List<MultipartFile> uploadReviewVideo) 
+									throws Exception {
 		
 //		@RequestParam("uploadReviewVideo") MultipartHttpServletRequest reviewVideo
 		
 		System.out.println("addReview processing...");
 		
 		/*
-		 * upload Image List List<multipartFile> 
+		 * upload Image List List<multipartFile> : view에서 javaScript로 사진을 무조건 1장이상 올리게 했기 때문에 조건절 간단하게 써줌
 		 */
 		String filePath1 = "C:\\Users\\Admin\\git\\Codebrew\\Codebrew\\WebContent\\resources\\uploadFile\\"; // 실제 directory 경로로 파일을 영구적으로 저장하기 위함이다.
 		String filePath2 = session.getServletContext().getRealPath("/")+"\\resources\\uploadFile\\"; //실제 folder가 아닌 tomcat의 임시 서버로서 add후 바로 get을 했을때 이미지를 볼 수 있도록 한다.
@@ -108,7 +107,7 @@ public class ReviewController {
 				File file2 = new File(filePath2+fileName); // 2nd Path : Tomcat의 temporary folder 경로+fileName
 				//File file2 = new File(filePath2, fileName);
 				
-				System.out.println("\n\n\n\n\nmultipartFile"+multipartFile);
+				System.out.println("\n\n\n\n\nmultipartFile :: Image :: "+multipartFile+"\n\n\n\n\n");
 				multipartFile.transferTo(file2);
 				
 				FileInputStream fis = null;
@@ -135,9 +134,9 @@ public class ReviewController {
 		}
 		
 		/*
-		 * upload Video <multipartFile> 
+		 * upload Video <multipartFile> : 동영상은 선택적으로 올릴수 있기 때문에 조건절 복잡 : 나중을 위하여 List로 받음(jsp상 multiple은 아니다)
 		 */
-		if(uploadReviewVideo != null && uploadReviewVideo.size() > 0){
+		if(uploadReviewVideo.get(0).getOriginalFilename() != "" && uploadReviewVideo != null && uploadReviewVideo.size() > 0){
 			
 			List<Video> uploadVideoList = new ArrayList<Video>();
 			for(MultipartFile multipartFile : uploadReviewVideo){
@@ -151,7 +150,7 @@ public class ReviewController {
 				File file2 = new File(filePath2+fileName); // 2nd Path : Tomcat의 temporary folder 경로+fileName
 				//File file2 = new File(filePath2, fileName);
 				
-				System.out.println("\n\n\n\n\nmultipartFile"+multipartFile);
+				System.out.println("\n\n\n\n\nmultipartFile :: Video :: "+multipartFile+"\n\n\n\n\n");
 				multipartFile.transferTo(file2);
 				
 				FileInputStream fis = null;
@@ -196,7 +195,7 @@ public class ReviewController {
 		
 		//Business Logic
 		Review review = reviewService.getReview(reviewNo);
-		Festival festival = festivalService.getFestival(review.getFestivalNo());
+		//Festival festival = festivalService.getFestival(review.getFestivalNo());
 		
 		// Model 과 View 연결
 		ModelAndView modelAndView = new ModelAndView();
@@ -227,12 +226,13 @@ public class ReviewController {
 	}
 	
 	@RequestMapping(value="getReviewList")
-	public ModelAndView getReviewList( @ModelAttribute("search") Search search, 
-									@ModelAttribute("review") Review review) throws Exception{
+	public ModelAndView getReviewList( @ModelAttribute("search") Search search) throws Exception{
+		
 		
 		/*
 		 * 매개변수 Model type : model 삭제함.
 		 * 매개변수 HttpServletRequest type : request 삭제함.
+		 * @ModelAttribute("review") Review review 삭제함
 		 */
 		
 		System.out.println("/view/review/getReviewList");
@@ -295,7 +295,7 @@ public class ReviewController {
 	@RequestMapping(value="getCheckReviewList")
 	public ModelAndView getCheckReviewList( @ModelAttribute("search") Search search,
 											@ModelAttribute("review") Review review)
-											throws Exception{
+											throws Exception {
 		
 		/*
 		 * 매개변수 HttpSession Type : session 삭제
@@ -325,6 +325,26 @@ public class ReviewController {
 		}
 		return modelAndView;
 		
+	}
+	
+	@RequestMapping(value="passCheckCode", method=RequestMethod.GET)
+	public ModelAndView passCheckCode(@RequestParam("reviewNo") int reviewNo) throws Exception {
+		
+		System.out.println("review/passCheckCode");
+		
+		//아래2행 지울것 : 테스트용
+		System.out.println("\n\n\nController passCheckCode reviewNo :: "+reviewNo+"\n\n\n");
+		System.out.println("\n\n\nController passCheckCode review :: "+reviewService.getReview(reviewNo)+"\n\n\n");
+		
+		Review returnReview = reviewService.getReview(reviewNo); // review 객체를 method로 생성하여 받음
+		reviewService.passCheckCode(returnReview);
+		returnReview = reviewService.getReview(reviewNo);
+		
+		//Business Logic수행
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject(returnReview);
+		modelAndView.setViewName("/view/review/getReview.jsp");
+		return modelAndView;
 	}
 
 }

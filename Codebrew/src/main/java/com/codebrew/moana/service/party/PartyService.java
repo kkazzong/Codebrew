@@ -22,11 +22,11 @@ public interface PartyService {
 	
 	/////////////////////////////////////////////////////////////////////////////
 	
-	public Map<String, Object> joinParty(PartyMember partyMember) throws Exception;
+	public Party joinParty(PartyMember partyMember) throws Exception;
 	
 	public Map<String, Object> getPartyMemberList(int partyNo, Search search) throws Exception;
 	
-	public void cancelParty(int partyNo, String userId) throws Exception;
+	public Party cancelParty(int partyNo, String userId) throws Exception;
 	
 	public void deletePartyMember(int partyNo, String userId) throws Exception;
 	

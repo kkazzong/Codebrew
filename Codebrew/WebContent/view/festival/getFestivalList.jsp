@@ -156,14 +156,14 @@ body {
 							<div class="panel-body">
 								<c:if test="${festival.festivalImage == null }"> 
 						
-									<img src="../resources/uploadFile/no.png" width="300" height="300"/>
+									<img src="../resources/uploadFile/no.png" width="100%" height="300"/>
 									<br/>
 						
 								</c:if>
 					
 								<c:if test="${festival.festivalImage != null }">
 					
-									<img src="${festival.festivalImage }" width="300" height="300" />
+									<img src="${festival.festivalImage }" width="100%" height="300" />
 									<br/>
 						
 								</c:if>

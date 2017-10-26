@@ -32,11 +32,59 @@
     <!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
 		
+	
+		function fncUpdateParty() {
+			
+			var partyName=$("input[name='partyName']").val();
+			var partyDate=$("input[name='partyDate']").val();
+			var partyDetail=$("textarea[name='partyDetail']").val();
+			var partyMemberLimit=$("input[name='partyMemberLimit']").val();
+			var ticketCount=$("input[name='ticketCount']").val();
+			
+			var checkNum = /\d/g;
+			
+			if(partyName == null || partyName.length <1){
+				alert("파티이름은 반드시 입력하셔야 합니다.");
+				return;
+			}
+			if(partyName.length >60){
+				alert("파티이름은 60자 이내로 입력해주세요.");
+				return;
+			}
+			if(partyDate == null || partyDate.length <1){
+				alert("파티날짜는  반드시 입력하셔야 합니다.");
+				return;
+			}
+			if(partyDetail == null || partyDetail.length <1){
+				alert("파티설명은  반드시 입력하셔야 합니다.");
+				return;
+			}
+			if(partyDetail.length >500){
+				alert("파티설명은 500자 이내로 입력해주세요.");
+				return;
+			}
+			if(partyMemberLimit == null || partyMemberLimit.length <1){
+				alert("파티 인원은  반드시 입력하셔야 합니다.");
+				return;
+			}
+			if(checkNum.test(partyMemberLimit) == false){
+				alert("파티 인원은 반드시 숫자로 입력하셔야 합니다.");
+				return;
+			}
+			if( ticketCount > partyMemberLimit ) {				
+				alert("티켓 수량은 파티 인원수 이상 입력하실 수 없습니다.");
+				return;
+			}
+				
+			
+			$("form").attr("method" , "POST").attr("action" , "/party/updateParty").attr("enctype","multipart/form-data").submit();
+		}
+	
 		//============= "수정"  Event 연결 =============
 		 $(function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			$( "button:contains('수정')" ).on("click" , function() {
-				$("form").attr("method" , "POST").attr("action" , "/party/updateParty").attr("enctype","multipart/form-data").submit();
+				fncUpdateParty();
 			});
 		});	
 		
@@ -56,7 +104,7 @@
 			$( "button:contains('축제검색')" ).on("click" , function() {
 				//$("form").attr("method", "POST").attr("action", "/party/addParty").submit();
 				
-				var pop = window.open("/view/festival/getFestivalListDB.jsp","pop","width=570,height=420, scrollbars=yes, resizable=yes"); 
+				var pop = window.open("/view/festival/popupListDB.jsp","pop","width=570,height=420, scrollbars=yes, resizable=yes"); 
 				
 			});
 			
@@ -74,9 +122,9 @@
 		//============= "DatePicker"  Event 처리 및  연결 =============
 		$(function() {
 	      $( "#datepicker" ).datepicker({
-	   	   changeMonth: true, 
-	          changeYear: true,
-		       dateFormat: "y/mm/dd" 
+	   	  	changeMonth: true, 
+	        changeYear: true,
+		    dateFormat: "y/mm/dd" 
 	      });   
 	    });
 		
@@ -95,7 +143,7 @@
 	         buttonImageOnly: true,
 	          buttonText: "Select date",
 	          showOn: "button",
-	          buttonImage: "/resources/image/ui/cal.png",
+	          buttonImage: "/resources/image/ui/small_cal.jpg",
 	          yearRange : "1990:2017"
 	       });
 		
@@ -190,24 +238,32 @@
    	
 	<!--  화면구성 div Start /////////////////////////////////////-->
 	<div class="container">
-		<hr/>
-		<h1 class="bg-primary text-center">${ empty party.festival.festivalNo  ? '파티 수정' : '애프터 파티 수정'}</h1>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="page-header text-center">
+					<h3 class="text-info"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>${ empty party.festival.festivalNo  ? '파티 수정' : '애프터 파티 수정'}</h3>
+					<small>파티 내용을 수정해주세요.</small>
+				</div>
+			</div>
+		</div>
+		
 		<br>
 		<!-- form Start /////////////////////////////////////-->
 		<form class="form-horizontal">
-		
+			
+		  <div class="text-center">
+				<img src="../../resources/uploadFile/${party.partyImage}" width="50%" >
+				<br><hr>
+		  </div>
+		  	
 		  <div class="form-group">
 		    <label for="host" class="col-sm-offset-1 col-sm-3 control-label">파티 호스트</label>
 		    <div class="col-sm-4">
-		      <img class="rounded-circle" src="/resources/uploadFile/${party.partyImage}" alt="Generic placeholder image" width="40" height="40">
+		      <img class="rounded-circle" src="/resources/uploadFile/${party.partyImage}" width="40" height="40">
 			  ${ party.user.nickname }
 			  <input type="hidden" class="form-control" id="user.userId" name="user.userId" value="${ party.user.userId }" />
 		    </div>
 		   	
-		  </div>
-		  
-		  <div class="text-center">
-				<img src="../../resources/uploadFile/${party.partyImage}" width="800" >
 		  </div>
 		  
 		  <div class="form-group">
@@ -225,8 +281,8 @@
 		      <!-- <input type="text" readonly="readonly" class="form-control" id="festival.festivalName" name="festival.festivalName" placeholder="축제를 검색해주세요."> -->
 		      <input type="hidden" class="form-control" id="festival.festivalNo" name="festival.festivalNo" value=${ !empty party.festival.festivalNo ? party.festival.festivalNo : 0 }>
 		    </div>
-		    <div>
-		      <button type="button" class="btn btn-primary" id="search-festival"  >축제검색</button>
+		    <div class="col-sm-offset-4  col-sm-4 text-center">
+		      <button type="button" class="btn btn-primary btn-block" id="search-festival"  >축제검색</button>
 		    </div>
 		  </div>
 		 <%-- </c:if> --%>
@@ -248,7 +304,7 @@
 		  
 		  <div class="form-group">
 		    <label for="partyName" class="col-sm-offset-1 col-sm-3 control-label">파티시간</label>
-		    <div class="col-sm-2">
+		    <span class="col-sm-1">
 		      <select name="hour">
 		        <option value="00" selected>00</option>
 		        <option value="01">01</option>
@@ -274,17 +330,25 @@
 		        <option value="21">21</option>
 		        <option value="22">22</option>
 		        <option value="23">23</option>
-		      </select>시
-		    </div>
-		    <div class="col-sm-2">
-		      <input type="text" class="form-control" id="minutes" name="minutes"/>분
-		    </div>
+		      </select>
+		    </span><span class="col-sm-1">시</span>
+		    <span class="col-sm-1">
+		      <select name="minutes">
+		        <option value="00" selected>00</option>
+		        <option value="10">10</option>
+		        <option value="20">20</option>
+		        <option value="30">30</option>
+		        <option value="40">40</option>
+		        <option value="50">50</option>
+		      </select>
+		      <!-- <input type="text" class="form-control" id="minutes" name="minutes"/> -->
+		    </span><span class="col-sm-1">분</span> 
 		  </div>
 		  
 		  <div class="form-group">
 		    <label for="partyDetail" class="col-sm-offset-1 col-sm-3 control-label">파티설명</label>
 		    <div class="col-sm-4">
-		      <textarea name = "partyDetail" rows="10" cols="50">${ party.partyDetail }</textarea>
+		      <textarea class="form-control" name = "partyDetail" rows="10" cols="50">${ party.partyDetail }</textarea>
 			</div>
 		  </div>
 		  
@@ -319,14 +383,14 @@
 		      <input type="text" class="form-control" id="ticketPrice" name="ticketPrice" value="${ empty party.festival.festivalNo ? ticket.ticketPrice : 0 }"> 
 			</div>
 			<div class="col-sm-1">
-			   무료<input type="radio" class="form-control" id="ticketPriceFree" name="ticketPrice" value="0">
+			   무료<input type="radio" id="ticketPriceFree" name="ticketPrice" value="0">
 			</div>
 		  </div>
 		 		  
 		  <div class="form-group">
 		    <div class="col-sm-offset-4  col-sm-4 text-center">
-		      <button type="button" class="btn btn-primary"  >수정</button>
-			  <a class="btn btn-primary btn" href="#" role="button">취소</a>
+		      <button type="button" class="btn btn-primary btn-block"  >수정</button>
+			  <a class="btn btn-primary btn btn-block" href="#" role="button">취소</a>
 		    </div>
 		  </div>
 		</form>

@@ -145,14 +145,14 @@ public class PartyDAOImpl implements PartyDAO {
 
 
 	@Override
-	public void cancelParty(int partyNo, String userId) throws Exception {
+	public int cancelParty(int partyNo, String userId) throws Exception {
 		// TODO Auto-generated method stub
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("partyNo", partyNo);
 		map.put("userId", userId);
 		
-		sqlSession.delete("PartyMapper.cancelParty", map);
+		return sqlSession.delete("PartyMapper.cancelParty", map);
 	}
 
 
