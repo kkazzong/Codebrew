@@ -10,6 +10,7 @@ import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import org.apache.commons.fileupload.DiskFileUpload;
@@ -34,6 +35,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.codebrew.moana.common.Page;
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Party;
+import com.codebrew.moana.service.domain.User;
 import com.codebrew.moana.service.party.PartyService;
 
 
@@ -64,8 +66,8 @@ public class PartyRestController {
 	
 
 	///Method///
-	@RequestMapping( value="json/getGenderRatio", method=RequestMethod.GET)
-	public Party getGenderRatio(@RequestParam("partyNo") String partyNo) throws Exception {
+	@RequestMapping( value="json/getGenderRatio/{partyNo}", method=RequestMethod.GET)
+	public Party getGenderRatio(@PathVariable String partyNo) throws Exception {
 		
 		System.out.println("\n>>> /partyRest/json/getGenderRatio :: GET start <<<");
 
@@ -153,5 +155,28 @@ public class PartyRestController {
 	}
 	
 	
+	@RequestMapping( value="json/cancelParty/{partyNo}", method=RequestMethod.GET )
+	public Party cancelParty(@PathVariable String partyNo, HttpSession session) throws Exception {
+		
+		System.out.println("\n>>> /partyRest/json/cancelParty :: GET start <<<");
+		//partyNo 파라미터 출력
+		System.out.println(">>> /partyRest/json/cancelParty :: GET :: partyNo 파라미터 \n"+partyNo);
+		
+		
+		//Business Logic
+		int dbPartyNo = Integer.parseInt(partyNo);
+		User user = (User)session.getAttribute("user");
+		String userId = user.getUserId();
+		
+		Party party = partyService.cancelParty(dbPartyNo, userId);
+		//party 도메인 출력
+		System.out.println("\n<<< /partyRest/json/cancelParty :: GET :: party 도메인  \n"+party);
+
+		//Model(data) & View(jsp)
+		/*ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("/view/party/getParty.jsp");*/
+		
+		return party;
+	}
 }
 

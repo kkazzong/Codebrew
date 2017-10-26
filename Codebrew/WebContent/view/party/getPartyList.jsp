@@ -30,6 +30,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 	
+	
 	<!--  ///////////////////////// JavaScript ////////////////////////// -->
     <script type="text/javascript">
 	
@@ -119,6 +120,29 @@
 		});
 		
 		
+		//=============    판넬  Event  처리 		=============
+		$(function(){	
+			
+			/* 판넬 높이 조절 */
+			var maxHeight = -1;
+	
+			$('.panel').each(function() {
+				maxHeight = maxHeight > $(this).height() ? maxHeight : $(this).height();
+			});
+	
+			$('.panel').each(function() {
+				 $(this).height(maxHeight);
+			});
+			
+			
+			/* 파티 상세 조회 */
+			$(".panel-body").on("click", function(){
+				console.log($(this).find("input:hidden[name='partyNo']").val());
+				var partyNo = $(this).find("input:hidden[name='partyNo']").val()
+				self.location = "/party/getParty?partyNo="+partyNo;
+			})
+		});
+		
 	</script>
 	
 	
@@ -129,13 +153,30 @@
             padding-top : 70px;
           }
       
-      .thumbnail a {
+      /* .thumbnail a {
     	display: block;
    		width:300px; height:200px;
    		overflow:hidden;
    		margin:auto;
    		vertical-align:middle;
-		}  
+		} */ 
+		
+		.panel {
+			margin-top : 50px;
+	    }
+	    
+		.panel-heading h3 {
+		    white-space: nowrap;
+		    overflow: hidden;
+		    text-overflow: ellipsis;
+		    line-height: normal;
+		    width: 75%;
+		    padding-top: 8px;
+		}
+		 
+		.title {
+			color: white;
+		} 
 		  
     </style>
     
@@ -145,18 +186,70 @@
 	<jsp:include page="/toolbar/toolbar.jsp" />
    	<!-- ToolBar End /////////////////////////////////////-->
 
+	
+	<!-- Title -->
+	<div class="main-wrapper">
+		
+		<div class="main" style="background-image: url(/resources/image/ui/partybanner.jpg);">
+		<!-- <div class="main"> -->
+	        <div class="container">
+	            <div class="col-md-12">
+	                <div class="col-md-6 col-md-offset-3 padding-none">
+	                    <div class="text-center white">
+	                        <!-- <ul class="title">
+	                            <li>이번 주말에</li>
+	                            <li>뭐하고 놀지?</li>
+	                        </ul> -->
+	                        <div class="title">
+	                        	<h1>이번 주말에</h1>
+	                            <h1>뭐하고 놀지?</h1>
+	                        </div>
+	
+	                        <div class="sub-title-container">
+	
+	                            <div class="search-main">
+	                                <div class="form-group">
+	                                    <input type="text" placeholder="ex) 할로윈">
+	                                    <a id="search" class="click" type="button">
+	                                        <img src="/resources/image/buttonImage/btn_nav_search_white@3x.png">
+	                                    </a>
+	                                </div>
+	                            </div>
+	                        </div>
+	
+	                        <script>
+	                            $("#search").click(function () {
+	                                var query = $(".search-main input").val();
+	                                if (!query) {
+	                                    alert("검색어를 입력해주세요.");
+	                                } else {
+	                                    location.href = "/search/" + query;
+	                                }
+	                            })
+	                        </script>
+	
+	                        
+	
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	
+	
 	<!--  화면구성 div Start /////////////////////////////////////-->
-	<div class="container">
+	<%-- <div class="container">
 	  <div class="page-header text-info">
    		   <h2 align="center" id="title">파티 리스트</h2>
    		   
    		   <c:if test="${ search.searchCondition == '5' }">
-   		   		<button type="button" class="btn btn-default" >애프터파티 등록하러 가기</button>
+   		   		<button type="button" class="btn btn-default btn-block" >애프터파티 등록하러 가기</button>
    		   </c:if>
    		   
-	  </div>
+	  </div> --%>
 	  
-	  <!-- table 위쪽 검색 Start /////////////////////////////////////-->
+	  <!-- 목록 검색 Start /////////////////////////////////////-->
 	    <div class="row">
 	    
 		    <div class="col-md-6 text-left">
@@ -171,8 +264,8 @@
 			    
 				  <div class="form-group ">
 				    <div class="form-select">
-						<button type="button" class="btn btn-default" >파티</button>
-						<button type="button" class="btn btn-default" >애프터 파티</button>
+						<button type="button" class="btn btn-default btn-block" >파티</button>
+						<button type="button" class="btn btn-default btn-block" >애프터 파티</button>
 						<!-- <button type="button" class="btn btn-default" >해당 파티</button> -->
 						<input type="hidden" class="form-control" id="searchCondition" name="searchCondition" value="${ ! empty search.searchCondition ? search.searchCondition : '' }">
 						
@@ -189,7 +282,7 @@
 					<input type="text" class="form-control" id="searchKeyword" name="searchKeyword" value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
 					</c:if>
 					<%-- <input type="text" class="form-control" id="searchKeyword" name="searchKeyword" value="${! empty search.searchKeyword ? search.searchKeyword : '' }"> --%>
-				    <button type="button" class="btn btn-default">검색</button>			 
+				    <button type="button" class="btn btn-default btn-block">검색</button>			 
 				  </div>		  
 				  
 				  <!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
@@ -199,12 +292,88 @@
 	    	</div>
 	    	
 		</div>
-	  <!-- table 위쪽 검색 End /////////////////////////////////////-->
+	  <!-- 목록 위 검색 End /////////////////////////////////////-->
 	  
 	  <br/>
 	  
-	  <!-- table 목록 조회 Start /////////////////////////////////////-->
-		<div class="container_list">		
+	  <!-- 목록 조회 Start /////////////////////////////////////-->
+	  <div class="row">
+		<c:if test="${empty list}">
+			<%-- <jsp:include page="/view/purchase/noResult.jsp"></jsp:include> --%>
+		</c:if>
+			<c:forEach var="party" items="${list}">
+				<c:set var="i" value="${i+1}"></c:set>
+				<div class="col-md-6">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								
+								<%-- ${ party.user.profileImage} --%>
+								<h3 class="panel-title pull-left">
+								<img class="rounded-circle" src="/resources/uploadFile/${party.partyImage}" width="40" height="40">
+								&nbsp; ${ party.user.nickname }</h3>
+								
+        						<div class="clearfix"></div>
+							</div>
+							<div class="panel-body">
+								<!-- 파티 -->
+								<input type="hidden" name="partyNo" value="${party.partyNo}">
+									<img width="100%" height="300" src="/resources/uploadFile/${party.partyImage}">
+									<!-- <hr> -->
+									<div class="col-md-12">
+										<h4>
+										<strong>
+											${party.partyName}
+										</strong>
+										</h4>
+									</div>
+									<hr>
+									<div class="col-md-12">
+										<small>
+											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+											${party.partyDate}
+										</small>
+									</div>
+									<div class="col-md-12">
+										<small>
+											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+											${party.partyTime}
+										</small>
+									</div>
+									<div class="col-md-12">
+										<small>
+											<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+											${party.partyPlace}
+										</small>
+									</div>
+									<div class="col-md-12">
+										<small>
+											<c:if test="${ !empty party.festival.festivalName}">
+												<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+												${ party.festival.festivalName }
+											</c:if>
+										</small>
+									</div>
+									<br>
+									<div class="col-md-12">
+										<small>
+											<c:if test="${ !empty party.festival.festivalNo}">
+												<strong>#애프터 파티</strong>
+											</c:if>
+											<c:if test="${ empty party.festival.festivalNo}">
+												<strong>#파티</strong>
+											</c:if>
+										</small>
+									</div>
+								
+								<br>
+							</div>
+						</div>
+				</div>
+			</c:forEach>
+		</div>
+		
+		
+		<%-- <div class="container_list">		
 			<div class="row_list">
 				<input type="hidden" id="currentPageList" name="currentPageList" value="${resultPage.currentPage}"/>
 			
@@ -222,20 +391,20 @@
 								<h3 class="thumbnail_festivalName">${ !empty party.festival.festivalName ? party.festival.festivalName : '' }
 								</h3>
 								<h3 class="thumbnail_partyName">${ party.partyName }
-									<%-- <input type="hidden" id="partyNo" name="partyNo" value="${party.partyNo }"/> --%>
+									<input type="hidden" id="partyNo" name="partyNo" value="${party.partyNo }"/>
 								</h3>
 								<p>${ party.user.nickname }</p>
 								<p>${ party.partyDate }</p>
 								<p>${ party.partyPlace }</p>	
 							</div>
-							<%-- <input type="hidden" id="partyNo" name="partyNo" value="${party.partyNo }"/>
-							<input type="hidden" id="partyFlag" name="partyFlag" value="${ empty party.festival.festivalNo ? '1' : '2' }"/> --%>
+							<input type="hidden" id="partyNo" name="partyNo" value="${party.partyNo }"/>
+							<input type="hidden" id="partyFlag" name="partyFlag" value="${ empty party.festival.festivalNo ? '1' : '2' }"/>
 						</div>
 					</div>
 				</c:forEach>
 			</div>
-		</div> 
-		<!-- table 목록 조회 End /////////////////////////////////////-->
+		</div>  --%>
+		<!-- 목록 조회 End /////////////////////////////////////-->
 	  
  	</div>
  	<!--  화면구성 div End /////////////////////////////////////-->

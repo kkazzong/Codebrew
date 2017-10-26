@@ -216,8 +216,8 @@
 		  <div class="form-group">
 		    <label for="partyFlag" class="col-sm-offset-1 col-sm-3 control-label">파티구분</label>
 		    <div class="col-sm-2">
-		    	<button type="reset" class="btn btn-primary" name="party" id="party">파티</button>
-		    	<button type="reset" class="btn btn-primary" name="party" id="afterParty">애프터파티</button>
+		    	<button type="reset" class="btn btn-primary btn-block" name="party" id="party">파티</button>
+		    	<button type="reset" class="btn btn-primary btn-block" name="party" id="afterParty">애프터파티</button>
 		    	
 		    	<input type="hidden" class="form-control" id="partyFlag" name="partyFlag"/>
 		    </div>
@@ -232,7 +232,7 @@
 		      <input type="text" readonly="readonly" class="form-control" id="festivalName" name="festival.festivalName" value="${ festival.festivalName }">
 		      <input type="hidden" class="form-control" id="festivalNo" name="festival.festivalNo" value=0 />
 		      
-		      <button type="button" class="btn btn-primary" name="searchFestival" >축제검색</button>
+		      <button type="button" class="btn btn-primary btn-block" name="searchFestival" >축제검색</button>
 		    </div>
 		  </div>
 		  
@@ -338,8 +338,8 @@
 		 		  
 		  <div class="form-group">
 		    <div class="col-sm-offset-4  col-sm-4 text-center">
-		      <button type="button" class="btn btn-primary" name="addParty" >파티등록</button>
-			  <a class="btn btn-primary btn" href="#" role="button">취소</a>
+		      <button type="button" class="btn btn-primary btn-block" name="addParty" >파티등록</button>
+			  <a class="btn btn-primary btn btn-block" href="#" role="button">취소</a>
 		    </div>
 		  </div>
 		</form>

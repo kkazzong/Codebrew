@@ -59,7 +59,7 @@
 		
 		
 		//============= "파티티켓구매"  Event 처리 및  연결 =============
-		$(function(){
+		/* $(function(){
 			$("button:contains('파티티켓구매')").on("click", function() {
 		
 					var result = confirm("파티 티켓을 구매하시겠습니까?");
@@ -74,13 +74,13 @@
 					}
 				
 			});
-		});
+		}); */
 		
 		
 		//============= "애프터파티 참여"  Event 처리 및  연결 =============
-		$(function(){
-			$("button:contains('애프터파티 참여')").on("click", function() {
-				
+		/* $(function(){
+			$("#afterPartyBtn").on("click", function() {
+				alert("참여");
 				var result = confirm("애프터 파티에 참여하시겠습니까?");
 				
 				if(result) {
@@ -93,7 +93,7 @@
 				}
 				
 			});
-		});
+		}); */
 		
 		
 		//============= "파티참여취소"  Event 처리 및  연결 =============
@@ -287,7 +287,7 @@
 						<!-- 파티 & 애프터 파티 -->
 						<c:if test="${ party.user.userId==user.userId }">
 					
-							<button type="button" class="btn btn-primary">파티수정</button>
+							<button type="button" class="btn btn-primary btn-block">파티수정</button>
 						</c:if>
 						
 						<%-- <c:if test="${ ! empty party.user.userId && party.user.userId==sessionScope.user.userId }">
@@ -295,12 +295,12 @@
 						</c:if> --%>
 						
 						<!-- 파티 -->
- 						<c:if test="${ empty party.festival.festivalNo }">
+ 						<%-- <c:if test="${ empty party.festival.festivalNo }">
 							<c:if test="${ party.user.userId!=user.userId }">
 						
 								<button type="button" class="btn btn-primary">파티티켓구매</button>
 							</c:if>
-						</c:if>
+						</c:if> --%>
 						
 						<!-- 애프터 파티 -->
 						<%-- <c:if test="${ !empty party.festival.festivalNo }">

@@ -226,7 +226,7 @@
 		      <input type="hidden" class="form-control" id="festival.festivalNo" name="festival.festivalNo" value=${ !empty party.festival.festivalNo ? party.festival.festivalNo : 0 }>
 		    </div>
 		    <div>
-		      <button type="button" class="btn btn-primary" id="search-festival"  >축제검색</button>
+		      <button type="button" class="btn btn-primary btn-block" id="search-festival"  >축제검색</button>
 		    </div>
 		  </div>
 		 <%-- </c:if> --%>
@@ -325,8 +325,8 @@
 		 		  
 		  <div class="form-group">
 		    <div class="col-sm-offset-4  col-sm-4 text-center">
-		      <button type="button" class="btn btn-primary"  >수정</button>
-			  <a class="btn btn-primary btn" href="#" role="button">취소</a>
+		      <button type="button" class="btn btn-primary btn-block"  >수정</button>
+			  <a class="btn btn-primary btn btn-block" href="#" role="button">취소</a>
 		    </div>
 		  </div>
 		</form>

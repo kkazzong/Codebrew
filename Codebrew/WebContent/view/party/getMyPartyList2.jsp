@@ -56,20 +56,18 @@
 		
 		
 		//=============    파티상세조회(썸네일)  Event  처리 		=============
-		/* $(function(){
+		$(function(){
 			$("a.thumbnail_image").on("click", function() {
 				
 				var partyNo = $( "input[name=partyNo]", $(this) ).val();
 				var partyFlag = $( "input[name=partyFlag]", $(this) ).val();
 				
 				console.log(partyNo+" / "+partyFlag);
-				//console.log( $( "a.thumbnail_image img", $(this) ).val() );
+				/* console.log( $( "a.thumbnail_image img", $(this) ).val() ); */
 				self.location="/party/getParty?partyNo="+partyNo+"&partyFlag="+partyFlag;
 		
 			});
-		}); 
-		*/
-		
+		});
 		
 		//=============    searchCondition 파티  Event  처리 		=============
 		$(function(){
@@ -106,29 +104,6 @@
 			});
 		});
 		
-		
-		//=============    판넬  Event  처리 		=============
-		$(function(){	
-			
-			/* 판넬 높이 조절 */
-			var maxHeight = -1;
-	
-			$('.panel').each(function() {
-				maxHeight = maxHeight > $(this).height() ? maxHeight : $(this).height();
-			});
-	
-			$('.panel').each(function() {
-				 $(this).height(maxHeight);
-			});
-			
-			
-			/* 파티 상세 조회 */
-			$(".panel-body").on("click", function(){
-				console.log($(this).find("input:hidden[name='partyNo']").val());
-				var partyNo = $(this).find("input:hidden[name='partyNo']").val()
-				self.location = "/party/getParty?partyNo="+partyNo;
-			})
-		});
 		
 		//=============    파티 삭제  Event  처리 		=============
 		/* $(function(){
@@ -263,8 +238,8 @@
 			    
 				  <div class="form-group">
 				    <div class="form-select">
-						<button type="button" class="btn btn-default btn-block" >진행중인 파티</button>
-						<button type="button" class="btn btn-default btn-block" >지난 파티</button>
+						<button type="button" class="btn btn-default" >진행중인 파티</button>
+						<button type="button" class="btn btn-default" >지난 파티</button>
 						<input type="hidden" class="form-control" id="searchCondition" name="searchCondition" value="${ ! empty search.searchCondition ? search.searchCondition : '' }">
 					</div>
 				  </div>
@@ -273,7 +248,7 @@
 				    <label class="sr-only" for="searchKeyword">검색어</label>
 				    <input type="text" class="form-control" id="searchKeyword" name="searchKeyword" 
 				    			 value="${! empty search.searchKeyword ? search.searchKeyword : '' }"  >
-				    <button type="button" class="btn btn-default btn-block">검색</button>			 
+				    <button type="button" class="btn btn-default">검색</button>			 
 				  </div>		  
 				  
 				  <!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
@@ -297,66 +272,102 @@
 				<div class="col-md-6">
 						<div class="panel panel-primary">
 							<div class="panel-heading">
-								
-								<%-- ${ party.user.profileImage} --%>
-								<h3 class="panel-title pull-left">
-								<img class="rounded-circle" src="/resources/uploadFile/${party.partyImage}" alt="Generic placeholder image" width="40" height="40">
-								&nbsp; ${ party.user.nickname }</h3>
-								
+								<h3 class="panel-title pull-left">${i} ${purchase.itemName}티켓</h3>
+								<!-- 삭제버튼 -->
+								<form id="deleteForm">
+										<input type="hidden" name="purchaseNo" value="${purchase.purchaseNo}">
+										<button class="btn btn-default pull-right" type="button" value="${purchase.purchaseNo}">
+											<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+										</button>
+								</form>
         						<div class="clearfix"></div>
 							</div>
 							<div class="panel-body">
-								<!-- 파티 -->
-								<input type="hidden" name="partyNo" value="${party.partyNo}">
-									<img width="100%" height="300" src="/resources/uploadFile/${party.partyImage}">
-									<!-- <hr> -->
-									<div class="col-md-12">
-										<h4>
-										<strong>
-											${party.partyName}
-										</strong>
-										</h4>
-									</div>
+								<input type="hidden" name="purchaseNo" value="${purchase.purchaseNo}">
+								<!-- 축제티켓 -->
+								 <c:if test="${!empty purchase.ticket.festival}">
+									<img width="100%" height="300" src="${purchase.ticket.festival.festivalImage}">
 									<hr>
 									<div class="col-md-12">
-										<small>
-											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-											${party.partyDate}
-										</small>
+										<strong>
+											${purchase.ticket.festival.festivalName}
+										</strong>
 									</div>
 									<div class="col-md-12">
 										<small>
 											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-											${party.partyTime}
+											 ${purchase.ticket.festival.startDate} ~ ${purchase.ticket.festival.endDate}
 										</small>
 									</div>
 									<div class="col-md-12">
 										<small>
 											<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
-											${party.partyPlace}
+										 	${purchase.ticket.festival.addr}
+										 </small>
+									</div>
+								</c:if>
+								<!-- 파티티켓 -->
+								<c:if test="${!empty purchase.ticket.party}">
+									<img width="100%" height="300" src="/resources/uploadFile/${purchase.ticket.party.partyImage}">
+									<hr>
+									<div class="col-md-12">
+										<strong>
+											${purchase.ticket.party.partyName}
+										</strong>
+									</div>
+									<div class="col-md-12">
+										<small>
+											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+											${purchase.ticket.party.partyDate}
 										</small>
 									</div>
 									<div class="col-md-12">
 										<small>
-											<c:if test="${ !empty party.festival.festivalName}">
-												<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
-												${ party.festival.festivalName }
-											</c:if>
+											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+											${purchase.ticket.party.partyTime}
 										</small>
 									</div>
-									<br>
 									<div class="col-md-12">
 										<small>
-											<c:if test="${ !empty party.festival.festivalNo}">
-												<strong>#애프터 파티</strong>
-											</c:if>
-											<c:if test="${ empty party.festival.festivalNo}">
-												<strong>#파티</strong>
-											</c:if>
+											<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+											${purchase.ticket.party.partyPlace}
 										</small>
 									</div>
-								
+								</c:if>
 								<br>
+								<div class="row">
+									<div class="col-xs-4 col-md-6"><strong>결제번호</strong></div>
+									<div class="col-xs-8 col-md-6">${purchase.paymentNo}</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-4 col-md-6"><strong>구매수량</strong></div>
+									<div class="col-xs-8 col-md-6">${purchase.purchaseCount} 장</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-4 col-md-6"><strong>결제금액</strong></div>
+									<div class="col-xs-8 col-md-6">${purchase.purchasePrice} 원</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-4 col-md-6"><strong>결제상태</strong></div>
+									<div class="col-xs-8 col-md-6">
+										<c:if test="${purchase.tranCode == 1}">
+											결제완료
+										</c:if>
+										<c:if test="${purchase.tranCode == 2}">
+											결제취소
+										</c:if>
+									</div>
+								</div>
+								<hr>
+								<div class="row">
+									<c:if test="${purchase.tranCode == 1}">
+										<%-- <button class="col-md-12 btn btn-default btn-block" type="button" value="${purchase.purchaseNo}">조회</button> --%>
+									</c:if>
+									<%-- <form id="deleteForm">
+										<input type="hidden" name="purchaseNo" value="${purchase.purchaseNo}">
+										<button class="btn btn-default" type="button" value="${purchase.purchaseNo}">삭제</button>
+									</form> --%>
+								</div>
 							</div>
 						</div>
 				</div>
@@ -366,7 +377,7 @@
 		
 		
 		
-		<%-- <div class="container_list">		
+		<div class="container_list">		
 			<div class="row_list">
 				<input type="hidden" id="currentPageList" name="currentPageList" value="${resultPage.currentPage}"/>
 				
@@ -390,7 +401,7 @@
 								<p>${ party.partyPlace }</p>
 								<p>
 								
-								<c:if test="${ !empty search.searchCondition }">
+								<%-- <c:if test="${ !empty search.searchCondition }">
 									<c:if test="${ party.user.userId != user.userId }">
 										<c:choose>
 											<c:when test="${ search.searchCondition == '3' }">
@@ -406,8 +417,8 @@
 											</c:when>
 										</c:choose>
 									</c:if>	
-								</c:if>
-								<c:if test="${ !empty search.searchCondition && search.searchCondition == '3' }">
+								</c:if> --%>
+								<%-- <c:if test="${ !empty search.searchCondition && search.searchCondition == '3' }">
 									<button type="button" class="btn btn-primary" value="${party.partyNo }">파티 삭제</button>
 	
 								</c:if>
@@ -420,14 +431,14 @@
 										<button type="button" class="btn btn-primary" value="${party.partyNo }">파티 참여 취소</button>
 										
 									</c:if>
-								</c:if>
+								</c:if> --%>
 								</p>
 							</div>
 						</div>
 					</div>
 				</c:forEach>
 			</div>
-		</div>  --%>
+		</div> 
 		<!-- 목록 조회 End /////////////////////////////////////-->
 	  
  	</div>
