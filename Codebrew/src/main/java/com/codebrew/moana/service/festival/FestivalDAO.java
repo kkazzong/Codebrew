@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Festival;
-import com.codebrew.moana.service.domain.Zzim;
+import com.codebrew.moana.service.domain.Weather;
 import com.codebrew.moana.service.domain.Zzim;
 
 public interface FestivalDAO {
@@ -38,5 +38,7 @@ public interface FestivalDAO {
 	public void deleteFestival(Festival festival) throws Exception;
 	
 	public void writeFestival(Festival festival) throws Exception ;
+	
+	public Map<String,Object> weather(String festivalLat, String festivalLong) throws Exception ;
 	
 }

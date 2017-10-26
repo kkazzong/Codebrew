@@ -1,5 +1,7 @@
 package com.codebrew.moana.service.domain;
 
+import java.util.List;
+
 public class Festival {
 
 	private int festivalNo;// .
@@ -34,10 +36,13 @@ public class Festival {
 	private boolean isNull;
 
 	private String deleteFlag;
-
+	
 	public Festival() {
 
 	}
+	
+	
+
 
 	public int getReadCount() {
 		return readCount;
@@ -274,7 +279,7 @@ public class Festival {
 				+ ", discount=" + discount + ", playTime=" + playTime + ", spendTimeFestival=" + spendTimeFestival
 				+ ", subEvent=" + subEvent + ", program=" + program + ", useTimeFestival=" + useTimeFestival
 				+ ", ticketPrice=" + ticketPrice + ", ticketCount=" + ticketCount + "homepage = " + homepage
-				+ ", isNull=" + isNull + ", deleteFlag=" + deleteFlag + "]";
+				+ ", isNull=" + isNull + ", deleteFlag=" + deleteFlag +"]";
 	}
 
 }

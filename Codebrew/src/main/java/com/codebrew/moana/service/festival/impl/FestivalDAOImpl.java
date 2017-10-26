@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Festival;
+import com.codebrew.moana.service.domain.Weather;
 import com.codebrew.moana.service.domain.Zzim;
 import com.codebrew.moana.service.festival.FestivalDAO;
 
@@ -124,6 +125,12 @@ public class FestivalDAOImpl implements FestivalDAO {
 
 	@Override
 	public Map<String, Object> searchKeywordList(Search search) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String,Object> weather(String festivalLat, String festivalLon) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
