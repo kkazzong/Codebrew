@@ -221,11 +221,18 @@ $(function(){
 		</c:if>
 		
 		<c:if test="${weather.category=='SKY' && weather.fcstValue>'2' && weather.fcstValue<='8'}">
-			<img src="../../resources/image/weather/sun_cloud.gif" width="300"height="300" />
+			<img src="../../resources/image/weather/Mcloud.gif" width="300"height="300" />
 		</c:if>
 		
 		<c:if test="${weather.category=='PTY' && weather.fcstValue=='1'}">
-			<img src="../../resources/image/weather/rain2.gif" width="300"height="300" />
+			<img src="../../resources/image/weather/rain.gif" width="300"height="300" />
+		</c:if>
+		
+		<c:if test="${weather.category=='PTY' && weather.fcstValue=='2'}">
+			<img src="../../resources/image/weather/rainAsnow.gif" width="300"height="300" />
+		</c:if>
+		<c:if test="${weather.category=='PTY' && weather.fcstValue=='3'}">
+			<img src="../../resources/image/weather/snow.gif" width="300"height="300" />
 		</c:if>
 		
 	</c:forEach>
