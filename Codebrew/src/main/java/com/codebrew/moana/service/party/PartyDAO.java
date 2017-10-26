@@ -45,7 +45,7 @@ public interface PartyDAO {
 	public int getCurrentMemberCount(int partyNo, Search search) throws Exception ;
 	
 	// DELETE
-	public void cancelParty(int partyNo, String userId) throws Exception ;
+	public int cancelParty(int partyNo, String userId) throws Exception ;
 	
 	// UPDATE
 	public void deletePartyMember(int partyNo, String userId) throws Exception ;

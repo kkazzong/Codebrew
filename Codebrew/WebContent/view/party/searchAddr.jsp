@@ -56,7 +56,7 @@ function jusoCallBack(roadFullAddr, entX, entY){
 </script>
 
 
-<input type="button" class="btn btn-primary" onClick="goPopup();" value="검색"/>
+<input type="button" class="btn btn-primary btn-block" onClick="goPopup();" value="검색"/>
 
 <!-- <form name="form" id="form" method="post">
 

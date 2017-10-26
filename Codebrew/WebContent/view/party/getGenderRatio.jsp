@@ -10,9 +10,10 @@
 			$("button:contains('확인하기')").on("click", function() {
 				//self.location="/partyRest/json/getGenderRatio/${party.partyNo}";
 				console.log("파티 비율 확인하기 버튼 클릭.....");
-				console.log("partyNo :: "+$("#partyNo").val());
-				$.getJSON( "/partyRest/json/getGenderRatio",
-							{ partyNo : $("#partyNo").val() },
+				var partyNo = $("#partyNo").val();
+				console.log("partyNo :: "+partyNo);
+				$.getJSON( "/partyRest/json/getGenderRatio/"+partyNo,
+							//{ partyNo : $("#partyNo").val() },
 							function(JSONData, status){
 								console.log(status);
 								console.log("JSONData : "+JSON.stringify(JSONData));
@@ -40,7 +41,7 @@
 <!--  화면구성 div Start /////////////////////////////////////-->
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal2">
+<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal2">
   확인하기
 </button>
 
