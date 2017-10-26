@@ -1,14 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
-<%-- <%@ include file="/data/purchaseData.jsp" %> --%>
-<%-- <%@ include file="/data/purchase/userData.jsp" %> --%>
-<%-- <%@ include file="/data/purchase/sessionData.jsp" %> --%>
+    
+<!--  ///////////////////////// JSTL  ////////////////////////// -->
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
-
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 	<title>파티 목록 조회</title>
 
@@ -30,7 +29,8 @@
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-
+	
+	
 	<!--  ///////////////////////// JavaScript ////////////////////////// -->
     <script type="text/javascript">
 	
@@ -113,7 +113,7 @@
 		});
 		
 		
-		//=============    애프터파티 등록하러 가기  Event  처리 		=============
+		//=============    전체 파티 목록  Event  처리 		=============
 		$(function(){
 			$("button:contains('애프터파티 등록하러 가기')").on("click", function() {
 				
@@ -147,88 +147,80 @@
 		
 	</script>
 	
-<style type="text/css">
-	body {
-		padding-top : 70px;
-    }
+	
+	<!--  ///////////////////////// CSS ////////////////////////// -->
+	<style>
+	
+		body {
+	            padding-top : 70px;
+	    }
+	   
+			
+		.panel {
+			margin-top : 50px;
+	    }
+	    
+		.panel-heading h3 {
+		    white-space: nowrap;
+		    overflow: hidden;
+		    text-overflow: ellipsis;
+		    line-height: normal;
+		    width: 75%;
+		    padding-top: 8px;
+		}
+		 
+		.main {
+			/* background-image: url(/resources/image/ui/partybanner.jpg); */
+			background-color: #556180;
+			/* background-size: 100% 100%; */
+		} 
+		
+		.title {
+			color: white;
+		} 
+		
+		/* .main .search-main input[type=text] {
+		
+			width: 83%;
+		    height: 41px;
+		    padding-left: 10px;
+		    float: left;
+		    margin-top: 2px;
+		    margin-left: 2px;
+		} */
+		
+		/* .main .search-main {
+		    background-color: black;
+		    width: 100%;
+		    height: 45px;
+		    margin-bottom: 76px;
+		    position: relative;
+		} */
+	
+		.main .search-main img {
+		    width: 40px;
+		    margin-top: 2px; 
+	
+		}  
+		
+		
+    </style>
     
-    .panel {
-		margin-top : 50px;
-    }
-    
-    .panel-primary>.panel-heading {
-    	background-color: #000000;
-    }
-   
-	.panel-heading h3 {
-	    white-space: nowrap;
-	    overflow: hidden;
-	    text-overflow: ellipsis;
-	    line-height: normal;
-	    width: 75%;
-	    padding-top: 8px;
-	}
-	
-	#main {
-		 background-image: url(/resources/image/ui/party_banner.jpg); 
-		 width: 100%;
-		 height : 500px;
-	     /* height: 100%; */ 
-		 background-size: 100%; 
-		 opacity: 1.0;
-		 /* background-color: #556180; */
-	} 
-	
-	.title {
-		color: white;
-		text-shadow:1px 1px 1px black;
-	} 
-	
-	.text-center white {
-		/* height: 500px; */
-		top: 25%;
-		position: relative;
-		text-align: center;
-	}
-	
-	/* .main .search-main input[type=text] {
-	
-		width: 83%;
-	    height: 41px;
-	    padding-left: 10px;
-	    float: left;
-	    margin-top: 2px;
-	    margin-left: 2px;
-	} */
-	
-	/* .main .search-main {
-	    background-color: black;
-	    width: 100%;
-	    height: 45px;
-	    margin-bottom: 76px;
-	    position: relative;
-	} */
-
-	.search-main img {
-	    width: 40px;
-	    margin-top: 2px; 
-
-	}
-	
-</style>
 </head>
 <body>
-
 	<!-- ToolBar Start /////////////////////////////////////-->
 	<jsp:include page="/toolbar/toolbar.jsp" />
    	<!-- ToolBar End /////////////////////////////////////-->
-   	
+
 	<div class="container">
-	
-		<!-- page header -->
-		<div class="row" id="main">
-			<div class="col-md-12">
-				<div class="col-md-6 col-md-offset-3 padding-none">
+	<!-- Title -->
+	<div class="main-wrapper">
+		
+		<div class="main">
+		<!-- <div class="main"> -->
+	        
+	            <div class="col-md-12">
+	                <div class="col-md-6 col-md-offset-3 padding-none">
 	                    <div class="text-center white">
 	                        <!-- <ul class="title">
 	                            <li>이번 주말에</li>
@@ -246,15 +238,11 @@
 	                                <form class="form-inline" name="detailForm">
 	                                	<div class="form-group ">
 										    <div class="form-select">
-										    	<div class="col-md-6 control-label">
-												<span class="col-sm-offset-2 col-sm-3 control-label"><button type="button" class="btn btn-default" >파티</button></span>
-												<span class="col-sm-offset-2 col-sm-3 control-label"><button type="button" class="btn btn-default" >애프터 파티</button></span>
-												</div>
+												<button type="button" class="btn btn-default btn-block" >파티</button>
+												<button type="button" class="btn btn-default btn-block" >애프터 파티</button>
 												<!-- <button type="button" class="btn btn-default" >해당 파티</button> -->
-												<div class="col-md-6 control-label">
-												<span class="col-sm-offset-2"><input type="hidden" class="form-control" id="searchCondition" name="searchCondition" value="${ ! empty search.searchCondition ? search.searchCondition : '' }"></span>
-												<input type="hidden" id="currentPage" name="currentPage" value=""/>
-												</div>
+												<input type="hidden" class="form-control" id="searchCondition" name="searchCondition" value="${ ! empty search.searchCondition ? search.searchCondition : '' }">
+												
 											</div>
 										  </div>
 										  
@@ -265,7 +253,7 @@
 												<input type="text" class="form-control" id="searchKeyword" name="searchKeyword" value="">
 											</c:if>
 											<c:if test="${ search.searchCondition != '5' }">
-												<input type="text" class="form-control" id="searchKeyword" name="searchKeyword" value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
+											<input type="text" class="form-control" id="searchKeyword" name="searchKeyword" value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
 											</c:if>
 											<%-- <input type="text" class="form-control" id="searchKeyword" name="searchKeyword" value="${! empty search.searchKeyword ? search.searchKeyword : '' }"> --%>
 										    <!-- <button type="button" class="btn btn-default btn-block">검색</button>	 -->
@@ -285,33 +273,72 @@
 	
 	                    </div>
 	                </div>
-			</div>
-		</div>
-		
-		<!-- 데이터 수 -->
-		<div class="row">
-			<div class="col-md-12">
-				<h5>총  ${resultPage.totalCount} 건 (${resultPage.currentPage} 페이지 / ${resultPage.maxPage} 페이지)</h5>
-			</div>
-		</div>
-		
-		<!-- 정렬 -->
-		<div class="row">
-			<div class="col-md-2">
-				
-				<div class="form-group">
-					<c:if test="${ search.searchCondition == '5' }">
-						<button type="button" class="btn btn-default" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-						&nbsp;애프터파티 등록하러 가기</button>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	
+	
+	<!--  화면구성 div Start /////////////////////////////////////-->
+	 <div class="container_list">
+	  <div class="page-header text-info">
+   		   <!-- <h2 align="center" id="title">파티 리스트</h2> -->
+   		   <div class="text-right">
+	   		   <c:if test="${ search.searchCondition == '5' }">
+	   		   		<button type="button" class="btn btn-primary" >애프터파티 등록하러 가기</button>
+	   		   </c:if>
+   		   </div>
+   		   
+   		   <div class="text-right">
+		    	전체  ${resultPage.totalCount } 건
+   		   </div>
+   		   
+   		   
+	  </div>
+	  
+	  <!-- 목록 검색 Start /////////////////////////////////////-->
+	    <div class="row">
+	    
+		    
+		    
+		    <div class="col-md-6 text-right">
+			    <%-- <form class="form-inline" name="detailForm">
+			    
+				  <div class="form-group ">
+				    <div class="form-select">
+						<button type="button" class="btn btn-default btn-block" >파티</button>
+						<button type="button" class="btn btn-default btn-block" >애프터 파티</button>
+						<!-- <button type="button" class="btn btn-default" >해당 파티</button> -->
+						<input type="hidden" class="form-control" id="searchCondition" name="searchCondition" value="${ ! empty search.searchCondition ? search.searchCondition : '' }">
+						
+					</div>
+				  </div>
+				  
+				  <div class="form-group">
+				    <label class="sr-only" for="searchKeyword">검색어</label>
+				    
+					<c:if test="${ !empty search.searchCondition && search.searchCondition == '5' }">
+						<input type="text" class="form-control" id="searchKeyword" name="searchKeyword" value="">
 					</c:if>
-				</div>
-			
-			</div>
+					<c:if test="${ search.searchCondition != '5' }">
+					<input type="text" class="form-control" id="searchKeyword" name="searchKeyword" value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
+					</c:if>
+					<input type="text" class="form-control" id="searchKeyword" name="searchKeyword" value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
+				    <button type="button" class="btn btn-default btn-block">검색</button>			 
+				  </div> 		  
+				  
+				  <!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
+				  <input type="hidden" id="currentPage" name="currentPage" value=""/>
+				  
+				</form>--%>
+	    	</div>
+	    	
 		</div>
-		
-		
-		
-		<!-- 목록 조회 Start /////////////////////////////////////-->
+	  <!-- 목록 위 검색 End /////////////////////////////////////-->
+	  
+	  <br/>
+	  
+	  <!-- 목록 조회 Start /////////////////////////////////////-->
 	  <div class="row">
 		<c:if test="${empty list}">
 			<%-- <jsp:include page="/view/purchase/noResult.jsp"></jsp:include> --%>
@@ -386,15 +413,46 @@
 				</div>
 			</c:forEach>
 		</div>
+		
+		
+		<%-- <div class="container_list">		
+			<div class="row_list">
+				<input type="hidden" id="currentPageList" name="currentPageList" value="${resultPage.currentPage}"/>
+			
+				<c:set var="i" value="0" />
+				<c:forEach var="party" items="${list}">
+					<c:set var="i" value="${ i+1 }" />
+					<div id="partyBlock" class="col-sm-6 col-md-4" >
+						<div class="thumbnail">
+							<a href="#" class="thumbnail_image">
+								<img src="../../resources/uploadFile/${party.partyImage}" width="250" height="350"> 
+								<input type="hidden" id="partyNo" name="partyNo" value="${party.partyNo }"/>
+								<input type="hidden" id="partyFlag" name="partyFlag" value="${ empty party.festival.festivalNo ? '1' : '2' }"/>
+							</a> 
+							<div class="caption">
+								<h3 class="thumbnail_festivalName">${ !empty party.festival.festivalName ? party.festival.festivalName : '' }
+								</h3>
+								<h3 class="thumbnail_partyName">${ party.partyName }
+									<input type="hidden" id="partyNo" name="partyNo" value="${party.partyNo }"/>
+								</h3>
+								<p>${ party.user.nickname }</p>
+								<p>${ party.partyDate }</p>
+								<p>${ party.partyPlace }</p>	
+							</div>
+							<input type="hidden" id="partyNo" name="partyNo" value="${party.partyNo }"/>
+							<input type="hidden" id="partyFlag" name="partyFlag" value="${ empty party.festival.festivalNo ? '1' : '2' }"/>
+						</div>
+					</div>
+				</c:forEach>
+			</div>
+		</div>  --%>
 		<!-- 목록 조회 End /////////////////////////////////////-->
-		
-		
-		<!-- 내가 만든 페이지네비게이터 -->
-		<jsp:include page="../../common/pageNavigator_new.jsp"/>
-		<%-- <jsp:include page="../../common/pageNavigator.jsp"/> --%>
-		
-	</div>
-
-	
+	  
+ 	</div>
+ 	<!--  화면구성 div End /////////////////////////////////////-->
+ 	
+ 	<!-- PageNavigation Start... -->
+	<jsp:include page="../../common/pageNavigator_new.jsp"/>
+	<!-- PageNavigation End... -->
 </body>
 </html>
