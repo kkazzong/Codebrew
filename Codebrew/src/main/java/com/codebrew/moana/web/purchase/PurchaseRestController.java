@@ -208,4 +208,19 @@ public class PurchaseRestController {
 		purchaseService.cancelPayment(purchaseNo);
 	}
 	
+	//////////////////////////////////////////////////////iamport///////////////////////////////////////////////////////////////
+	
+	@RequestMapping(value="/json/iamport/approvePayment", method=RequestMethod.POST)
+	public Purchase approvePayment(HttpSession session,
+																@RequestBody Purchase purchase) throws Exception {
+		String path = session.getServletContext().getRealPath("/");
+		Map<String, Object> map = new HashMap<String, Object>();
+		purchase.setUser((User)session.getAttribute("user"));
+		map.put("purchase", purchase);
+		map.put("path", path);
+		map.put("token", "token");
+		return purchaseService.approvePayment(map);
+		
+	}
+	
 }

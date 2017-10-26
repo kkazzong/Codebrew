@@ -72,13 +72,15 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 	public int addPurchase(Purchase purchase, String path) throws Exception {
 		String flag = purchase.getTicket().getTicketFlag();
 		System.out.println("@@@@@@@@@@"+flag);
-		
+		Ticket ticket = null;
 		// 기본티켓, 무료티켓일때
 		if (purchase.getTicket().getTicketFlag() == null || purchase.getTicket().getTicketFlag().equals("free")) {
 
 			// 원래 티켓 수량
-			int originTicketCount = purchase.getTicket().getTicketCount();
-
+			//int originTicketCount = purchase.getTicket().getTicketCount();
+			ticket = ticketDAO.getTicketByTicketNo(purchase.getTicket().getTicketNo());
+			int originTicketCount =ticket.getTicketCount();
+			
 			// 구매할 티켓 수량
 			int purchaseTicketCount = purchase.getPurchaseCount();
 			purchase.getTicket().setTicketCount(originTicketCount - purchaseTicketCount);
@@ -92,7 +94,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			partyMember.setGender(user.getGender());
 			partyMember.setRole("guest");
 			partyMember.setUser(user);
-			partyMember.setParty(purchase.getTicket().getParty());
+			partyMember.setParty(ticket.getParty());
 			partyDAO.joinParty(partyMember);
 		}
 		sqlSession.insert("PurchaseMapper.addPurchase", purchase);
@@ -233,6 +235,12 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 	@Override
 	public int cancelPayment(Purchase purchase) {
 		return 0;
+	}
+
+	@Override
+	public Purchase approvePayment(Purchase purchase, String token) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

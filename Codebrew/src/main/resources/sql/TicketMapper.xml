@@ -11,6 +11,7 @@
 		<result property="ticketPrice" column="ticket_price" jdbcType="NUMERIC"/>
 		<result property="ticketCount" column="ticket_count" jdbcType="NUMERIC"/>
 		<result property="ticketFlag" column="ticket_flag" jdbcType="VARCHAR"/>
+		<result property="ticketName" column="ticket_name" jdbcType="VARCHAR"/>
 		
 		<association property="festival" javaType="com.codebrew.moana.service.domain.Festival">
 			<id property="festivalNo" column="festival_no" jdbcType="NUMERIC"/>
@@ -63,6 +64,8 @@
 	<select id="getTicketByTicketNo" parameterType="ticket" resultMap="selectTicketMap">
 		SELECT
 		t.ticket_no AS ticket_no,
+		<!-- p.party_name AS ticket_name,
+		f.festival_name AS ticket_name, -->
 		f.festival_no AS festival_no,
 		f.festival_name AS festival_name,
 		f.addr AS addr,
@@ -89,6 +92,7 @@
 		SELECT
 		t.ticket_no AS ticket_no,
 		<if test="festival != null">
+		f.festival_name AS ticket_name,
 		f.festival_no AS festival_no,
 		f.festival_name AS festival_name,
 		f.addr AS addr,
@@ -97,6 +101,7 @@
 		f.festival_image AS festival_image,
 		</if>
 		<if test="party != null">
+		p.party_name AS ticket_name,
 		p.party_no AS party_no,
 		p.party_name AS party_name,
 		p.party_place AS party_place,
