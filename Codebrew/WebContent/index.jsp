@@ -33,18 +33,24 @@
     }
     
     section {
-    	background: url(/resources/image/toolbarImage/bg2.jpg) no-repeat center center;
+    	/* background: url(/resources/image/toolbarImage/bg2.jpg) no-repeat center center; */
+    	background: url(/resources/image/ui/main.gif) no-repeat center center;
 		width: 100%;
 	   	height: 500px;
 	   background-size: 100%;
-	   opacity: 0.7;
+	   opacity: 0.8;
     }
     
+    #box {
+		padding-top: 187px;
+		text-align: center;
+	}
      
 		
 	.title {
-		color: white;
-	}
+		color: black;
+		text-shadow:1px 1px 1px black;
+	} 
 	
 	/* .main .search-main input[type=text] {
 		
@@ -94,8 +100,8 @@
 			 */
 	    
 </script>
-<title>Insert title here</title>
-
+<title>Moana</title>
+<!-- 타이틀 수정하지마세용 -->
 </head>
 <body>
 	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
@@ -104,6 +110,30 @@
 	<!-- 배경 이미지 -->
 	<section>
 	
+	<div class="row">
+		<div class="col-md-12 text-center">
+			<div class="title">
+			</div>
+		</div>
+	</div>
+	
+	<div id="box" class="row">
+		<div class="col-md-12 text-center">
+			<div class="col-md-offset-4 col-md-4">
+				<form class="form form-inline">
+					<div class="form-group">
+						<input class="form-control input-lg" type="text" placeholder="축제명 or 파티명 검색">
+					</div>
+					<div class="form-group">
+						 <button class="btn btn-primary btn-block" type="button">검색</button> 
+						<!-- <a id="search" class="click" type="button">
+		                      <img src="/resources/image/buttonImage/btn_nav_search_white@3x.png">
+		                </a>	 -->
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 	
 	<!-- Title -->
 	<!-- <div class="main-wrapper">

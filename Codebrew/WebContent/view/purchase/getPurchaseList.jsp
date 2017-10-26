@@ -40,16 +40,16 @@
 		console.log("페이지클릭 : "+currentPage);
 		var startDate = $("#startDate").val();
 		if(startDate != null && startDate != '') {
-			alert("데이트서치");
+			//alert("데이트서치");
 			$("#currentPageDate").val(currentPage);
 			$("#dateSearchForm").attr("method", "POST").attr("action", "/purchase/getPurchaseList").submit();
 		} else {
 			$("#currentPage").val(currentPage);
-			alert("서치키워드 + "+$("#searchKeyword").val());
+			//alert("서치키워드 + "+$("#searchKeyword").val());
 			if($("#searchKeyword").val() != null && $("#searchKeyword").val() != '') {
 				$("input:hidden[name='searchCondition']").val(5);
 			}
-			alert($("#searchForm").serialize());
+			//alert($("#searchForm").serialize());
 			$("#searchForm").attr("method", "POST").attr("action", "/purchase/getPurchaseList").submit();
 		}
 	}
@@ -60,16 +60,16 @@
 	}
 	
 	function fncSortList(arrange) {
-		//alert(arrange);
+		////alert(arrange);
 		//$("#currentPageSort").val("1");
 		//$("input:hidden[name='arrange']").val(arrange);
-		//alert($("#sortForm").serialize());
+		////alert($("#sortForm").serialize());
 		//$("#sortForm").attr("method", "POST").attr("action", "/purchase/getPurchaseList").submit();
 		$("#searchKeyword").val('');
 		if(arrange == 1 || arrange == 2) {
-			alert("축제파티티켓 정렬");
+			//alert("축제파티티켓 정렬");
 			$("input:hidden[name='searchCondition']").val(arrange);
-			alert($("#searchCondition").val());
+			//alert($("#searchCondition").val());
 			fncGetList(1);
 		}
 	}
@@ -94,7 +94,7 @@
 			if(event.keyCode == '13') {
 				if($("#searchKeyword").val() == '') {
 					event.preventDefault();
-					alert("검색어를 입력해주세요");
+					//alert("검색어를 입력해주세요");
 					return;
 				}
 				event.preventDefault();
@@ -107,7 +107,7 @@
 		/* $(".btn:contains('검색')").on("click", function(){
 			
 			if($("#searchKeyword").val() == '') {
-				alert("검색어를 입력해주세요");
+				//alert("검색어를 입력해주세요");
 				return;
 			}
 			fncGetList(1);
@@ -118,7 +118,7 @@
 		$("#search").on("click", function(){
 			
 			if($("#searchKeyword").val() == '') {
-				alert("검색어를 입력해주세요");
+				//alert("검색어를 입력해주세요");
 				return;
 			}
 			fncGetList(1);
@@ -242,9 +242,9 @@
 		
 		//날짜 검색 버튼 
 		$("#dateRange").on("click", function() {
-			alert($("#dailySelect").val());
+			//alert($("#dailySelect").val());
 			if($("#startDate").val() == '' || $("#startDate").val() == null) {
-				alert("조회 기간을 선택해주세요");
+				//alert("조회 기간을 선택해주세요");
 				return;
 			}
 			fncSearchDate();
