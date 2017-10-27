@@ -155,8 +155,8 @@
 								AND pc.ticket_no = t.ticket_no
 								AND t.festival_no = f.festival_no
 								AND pc.delete_flag IS NULL
-								AND u.user_id = #{userId}
-								ORDER BY pc.purchase_date) inner_table
+								AND u.user_id = #{userId} 
+								ORDER BY pc.purchase_no DESC) inner_table
 					WHERE ROWNUM &lt;= #{search.endRowNum})
 		WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum}
 	</select>
@@ -189,7 +189,7 @@
 								AND t.party_no = p.party_no
 								AND pc.delete_flag IS NULL
 								AND u.user_id = #{userId}
-								ORDER BY pc.purchase_date) inner_table
+								ORDER BY pc.purchase_no DESC) inner_table
 					WHERE ROWNUM &lt;= #{search.endRowNum})
 		WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum}
 	</select>
@@ -279,7 +279,7 @@
 									</choose>
 								</if>
 								<if test="arrange == null">
-									ORDER BY pc.purchase_date
+									ORDER BY pc.purchase_no DESC
 								</if>) inner_table
      				 WHERE ROWNUM &lt;= #{search.endRowNum})
 		WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum}
@@ -348,7 +348,7 @@
 									</choose>
 								</if>
 								<if test="arrange == null">
-									ORDER BY pc.purchase_date
+									ORDER BY pc.purchase_no DESC
 								</if>) inner_table
      				 WHERE ROWNUM &lt;= #{endRowNum})
 		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}
