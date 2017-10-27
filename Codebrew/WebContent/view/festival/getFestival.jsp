@@ -134,14 +134,26 @@
 			self.location = "/festival/updateFestivalView?festivalNo="+${festival.festivalNo}+"&isNull="+${festival.isNull};
 		});
 	});
-			
+
+		 var id = "";
+		 var tag="";
+		 var tag2="";
+		 var met="";
+
 		 $(function(){
 			 
-			 $("p:contains('♡')").on("click", function() {
+			 $( '#tag' ).on("click", function() {
+				 
+				 
+					 if(${returnZzim==null}){
+						 met = "addZzim";
+					 }else{
+						 met = "deleteZzim";
+					 }
 				 		
 					$.ajax( 
 							{
-								url : "/festivalRest/json/addZzim/${user.userId}/${festival.festivalNo}",
+								url : "/festivalRest/json/"+met+"/${user.userId}/${festival.festivalNo}",
 								method : "GET" ,
 								dataType : "json" ,
 								headers : {
@@ -149,45 +161,25 @@
 									"Content-Type" : "application/json"
 								},
 								success : function(JSONData , status) {
-	
-											var displayValue = "<p>♥</p>";
-								
-									$(this).remove();
-									$("p").html(displayValue);
-									location.reload();
-								
+									
+									 if($("#tag").attr("class")=="glyphicon glyphicon-heart"){
+										 tag = "glyphicon glyphicon-heart-empty";
+										 tag2 = "glyphicon glyphicon-heart";
+									 }else{
+										 tag = "glyphicon glyphicon-heart";
+										 tag2 = "glyphicon glyphicon-heart-empty";
+									 }
+									$( "#tag" ).removeClass(tag2);
+									$( "#tag" ).addClass(tag);
+
 								}
 						});
+					
+					
 			 });
-		 });
+		 }); 
 		 
-$(function(){
-			 
-			 $("p:contains('♥')").on("click", function() {
-				 		
-					$.ajax( 
-							{
-								url : "/festivalRest/json/deleteZzim/${user.userId}/${festival.festivalNo}",
-								method : "GET" ,
-								dataType : "json" ,
-								headers : {
-									"Accept" : "application/json",
-									"Content-Type" : "application/json"
-								},
-								
-								success : function(JSONData , status) {
-	
-											var displayValue = "<p>♡</p>";
-									
-									$(this).remove();
-									$("p").html(displayValue);
-									
-									location.reload();
-								
-								}
-						});
-			 });
-		 });
+		 
 		 
 		</script>		
 	
@@ -256,37 +248,37 @@ $(function(){
 		${weather.description }
 	</c:if>
 	
-	<c:if test="${weather.main == 'Extreme' && festival.weather.id =='900' }">
+	<c:if test="${weather.main == 'Extreme' && weather.id =='900' }">
 		<img src = "../../resources/image/weather/tornado.gif"><br/>
 		${weather.description }
 	</c:if>
 	
-	<c:if test="${weather.main == 'Extreme' && festival.weather.id =='901' }">
+	<c:if test="${weather.main == 'Extreme' && weather.id =='901' }">
 		<img src = "../../resources/image/weather/tropicalStorm.gif"><br/>
 		${weather.description }
 	</c:if>
 	
-	<c:if test="${weather.main == 'Extreme' && festival.weather.id =='902' }">
+	<c:if test="${weather.main == 'Extreme' && weather.id =='902' }">
 		<img src = "../../resources/image/weather/hurricane.gif"><br/>
 		${weather.description }
 	</c:if>
 	
-	<c:if test="${weather.main == 'Extreme' && festival.weather.id =='903' }">
+	<c:if test="${weather.main == 'Extreme' && weather.id =='903' }">
 		<img src = "../../resources/image/weather/cold.gif"><br/>
 		${weather.description }
 	</c:if>
 	
-	<c:if test="${weather.main == 'Extreme' && festival.weather.id =='904' }">
+	<c:if test="${weather.main == 'Extreme' && weather.id =='904' }">
 		<img src = "../../resources/image/weather/hot.gif"><br/>
 		${weather.description }
 	</c:if>
 	
-	<c:if test="${weather.main == 'Extreme' && festival.weather.id =='905' }">
+	<c:if test="${weather.main == 'Extreme' && weather.id =='905' }">
 		<img src = "../../resources/image/weather/windy.gif"><br/>
 		${weather.description }
 	</c:if>
 	
-	<c:if test="${weather.main == 'Extreme' && festival.weather.id =='906' }">
+	<c:if test="${weather.main == 'Extreme' && weather.id =='906' }">
 		<img src = "../../resources/image/weather/hail.gif"><br/>
 		${weather.description }
 	</c:if>
@@ -329,20 +321,19 @@ $(function(){
 						<img src="../../resources/uploadFile/${festival.festivalImage }" width="300"height="300" />
 					
 					</c:if>
+					
+						 	
 	 
-	 
-	 
+	<br/>
 	 <c:if test="${returnZzim == null }">
-		<p>♡</p>
+		<h1><span class="glyphicon glyphicon-heart-empty" aria-hidden="true" id="tag"></span></h1>
+		
 	</c:if>
 	
 	<c:if test="${returnZzim != null }">
-		<p>♥</p>
+		<h1><span class="glyphicon glyphicon-heart" aria-hidden="true" id="tag"></span></h1>
 	</c:if>
 	
-	
-	
-	 
 	 	
 	<br/>
 	<br/>
