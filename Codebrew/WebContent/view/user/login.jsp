@@ -118,9 +118,9 @@
 	     */
 	    
 		/* //입력한 아이디랑 비밀번호가 같은지 알려주는 ajax */
-		 $(function(){
+		/*  $(function(){
 				
-				$("input:password[name='password']").on("keyup",function(){
+				$("input:password[name='password']").on("keyup",function(){//띄었을때
 					
 					var userId=$("input[name='userId']").val();
 					var password=$("input[name='password']").val();
@@ -138,7 +138,7 @@
 						userId : userId,//보내는 정보				
 					    }), */
 					    
-					    
+					 /*    
 						data :{userId:userId},//요청과 함께 서버에 보내는 string 또는 map
 						dataType:"json",//서버에서 받는 데이터형식
 					    success: function(JSONData,status){
@@ -155,8 +155,8 @@
 					    }
 					});		
 				});						
-		 }); 
-		
+		 });  
+		 */
 	    
 	    
 	    

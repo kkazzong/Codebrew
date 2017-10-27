@@ -108,6 +108,12 @@ public class UserDAOImpl implements UserDAO {
 	  return null;
 	}
 
+	@Override
+	public void updateCoconut(User user)throws Exception{
+		
+		sqlSession.update("UserMapper.updateCoconut", user);
+		
+	}
 
 	
 	

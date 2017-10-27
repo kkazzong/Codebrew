@@ -19,7 +19,7 @@ public interface UserDAO {
 		//회원리스트
 		public List<User> getUserList(Search search)throws Exception;
 		
-		//회원정보수정,위치정보동의, 타계정회원가입, 코코넛지급
+		//회원정보수정,위치정보동의, 타계정회원가입
 		public void updateUser(User user)throws Exception;
 		
 		//회원탈퇴
@@ -39,5 +39,8 @@ public interface UserDAO {
         
 		//카카오로그인
 		public User getCode(String authorize_code) throws Exception;
+        
+		//코코넛 수량 업데이트
+		public void updateCoconut(User user) throws Exception;
 		
 }

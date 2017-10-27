@@ -286,5 +286,11 @@ public class KakaoLoginDAOImpl implements UserDAO {
 		return null;
 	}
 
+	
+	@Override
+	public void updateCoconut(User user)throws Exception{
+		// TODO Auto-generated method stub
+		
+	}
 
 }
