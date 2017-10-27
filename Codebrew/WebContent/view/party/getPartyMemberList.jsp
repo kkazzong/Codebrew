@@ -70,7 +70,7 @@
 							  			var partyMemberList = "<div class='row' id='userDiv'>"
 															+"<input type='hidden' id='userId' name='userId' value='"+JSONData.list[i].user.userId+"'>"
 															+"<span>"
-																+"<img class='rounded-circle' src='/resources/uploadFile/"+JSONData.list[i].user.profileImage+"' width='40' height='40'>"
+																+"<img class='img-circle' src='/resources/uploadFile/"+JSONData.list[i].user.profileImage+"' width='50' height='50'>"
 															+"</span>"
 															+"<span>"
 															+JSONData.list[i].user.nickname+"&nbsp;"+"( "+JSONData.list[i].user.userId+" )"
@@ -108,7 +108,7 @@
 							  				/* 애프터 파티 */
 							  				if("${party.festival.festivalNo}" != ""){
 										   		
-							  					if(sessionId != JSONData.list[i].user.userId){
+							  					//if(sessionId != JSONData.list[i].user.userId){
 							  							
 							  						console.log("애프터 파티 참여 버튼");	
 									  					
@@ -132,8 +132,8 @@
 									  						
 								  					});
 							  						
-						  						}else if(sessionId == JSONData.list[i].user.userId){
-							  						
+						  						//}else if(sessionId == JSONData.list[i].user.userId){
+							  					if(sessionId == JSONData.list[i].user.userId){	
 						  							console.log("애프터 파티 참여 취소 버튼");
 						  							
 							  						/* 애프터 파티 취소 버튼 */
@@ -157,6 +157,8 @@
 													
 														} */
 													});
+										    		
+										    		return;
 							  					
 							  					}
 										    	    

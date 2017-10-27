@@ -154,10 +154,27 @@
 		//============= "티켓가격 무료"  Event 처리 및  연결 =============
 		$(function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			$("#ticketPriceFree").on("click" , function() {
+			$("#ticketPriceFree").click(function() {
+				//alert("무료");
+				$("#ticketPriceFree").attr("disabled","disabled");
+				$("#ticketPriceNoFree").removeAttr("disabled");
+				
 				$("#ticketPrice").val(0);
+				$("#ticketPrice").attr("readonly","readonly");
+				
 			});
+				
+			$('#ticketPriceNoFree').click(function() {
+				//alert("유료");
+				$("#ticketPriceNoFree").attr("disabled","disabled");
+				$("#ticketPriceFree").removeAttr("disabled");
+				
+			    $("#ticketPrice").removeAttr("readonly");
+			});
+			
 		});
+		
+		
 	
 		//============= "티켓수량"  Event 처리 및  연결 =============
 		$(function(){
@@ -172,6 +189,8 @@
 			$("#party").on("click", function(){
 				
 				//$("form").reset();
+				$("#party").attr("disabled","disabled");
+				$("#afterParty").removeAttr("disabled");
 				
 			
 				$("#partyFlag").val("1");
@@ -193,7 +212,9 @@
 			$("#afterParty").on("click", function(){
 				
 				//$("form").reset();
-			
+				$("#afterParty").attr("disabled","disabled");
+				$("#party").removeAttr("disabled");
+				
 				$("#partyFlag").val("2");
 				var partyFlag = $("#partyFlag").val();
 				console.log(partyFlag);
@@ -216,9 +237,10 @@
 		});
 		
 		
+		
 		//============= "사진 미리보기"  Event 처리 및  연결 =============
 		
-		$(function() {
+		/* $(function() {
             $("#uploadFile").on('change', function(){
                 readURL(this);
             });
@@ -234,7 +256,7 @@
 
               reader.readAsDataURL(input.files[0]);
             }
-        }
+        } */
 
 			
 			/* $('#uploadFile').on('change', function() {
@@ -403,7 +425,7 @@
 		  <div class="form-group">
 		    <label for="host" class="col-sm-offset-1 col-sm-3 control-label">파티 호스트</label>
 		    <div class="col-sm-4">
-		      <img class="rounded-circle" src="/resources/uploadFile/${party.user.profileImage}" width="40" height="40">
+		      <img class="img-circle" src="/resources/uploadFile/${party.user.profileImage}" width="50" height="50">
 			  ${ party.user.nickname }
 			  <input type="hidden" class="form-control" id="user.userId" name="user.userId" value="${ party.user.userId }" />
 		    </div>
@@ -417,8 +439,9 @@
 		  
 		  <div class="form-group">
 		    <label for="partyFlag" class="col-sm-offset-1 col-sm-3 control-label">파티구분</label>
+		    
 		    <div class="col-sm-2">
-		    	<button type="button" class="btn btn-primary btn-block" name="party" id="party">파티</button>
+		    	<button type="button" class="btn btn-primary btn-block" name="party" id="party" disabled>파티</button>
 		    </div>
 		    <div class="col-sm-2">
 		    	<button type="button" class="btn btn-primary btn-block" name="party" id="afterParty">애프터파티</button>
@@ -547,11 +570,11 @@
 		        <input type="file" name="image" id="image" />
 		    </p>
 		  </div> -->
-		  <div id="image_preview">
+		  <!-- <div id="image_preview">
 		    <img src="#" />
 		    <br />
-		    <!-- <a href="#">Remove</a> -->
-		  </div>
+		    <a href="#">Remove</a>
+		  </div> -->
 				  
 		  
 		  <div class="form-group" id="ticketCountDiv">
@@ -563,19 +586,33 @@
 		  
 		  <div class="form-group" id="ticketPriceDiv">
 		    <label for="ticketPrice" class="col-sm-offset-1 col-sm-3 control-label">티켓가격</label>
-		    <div class="col-sm-2">
-		    	<input type="text" class="form-control" id="ticketPrice" name="ticketPrice" value="0">
+		    <div class="col-sm-4">
+		    	<div class="input-group">
+		    		<input type="text" readonly="readonly" class="form-control" id="ticketPrice" name="ticketPrice" value="0" >
+		    		<span class = "input-group-btn">
+			  			<button type="button" class="btn btn-primary" name="ticketPriceFlag" id="ticketPriceFree" disabled>무료</button>
+			 			<button type="button" class="btn btn-primary" name="ticketPriceFlag" id="ticketPriceNoFree">유료</button>
+			 		</span>
+				</div>
+			</div>
+	 	  </div>
+			
+	<!-- 	    <div class="btn-group col-sm-2" data-toggle="buttons">
+			  <label class="btn btn-default active">
+			    <input type="radio" name="ticketPriceFlag" id="ticketPriceNoFree" autocomplete="off" checked> 유료
+			  </label>
+			  <label class="btn btn-default">
+			    <input type="radio" name="ticketPriceFlag" id="ticketPriceFree" autocomplete="off"> 무료
+			  </label>
 		    </div>
-		    <div class="col-sm-2">
-		    	<input type="checkbox" id="ticketPriceFree" name="ticketPrice" >무료
-		    </div>
-		  </div>
+		  </div> -->
 		  
 		  
 		  	  	
 		 		  
 		  <div class="form-group">
-		    <div class="col-sm-offset-4  col-sm-4 text-center">
+		  	<div class="col-sm-offset-4  col-sm-4 text-center">
+		  	<br><br>
 		      <button type="button" class="btn btn-primary btn-block" name="addParty" >파티등록</button>
 			  <a class="btn btn-primary btn btn-block" href="#" role="button">취소</a>
 		    </div>

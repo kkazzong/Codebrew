@@ -237,7 +237,7 @@
 						<%-- <p><img class="rounded-circle" src="/resources/image/uploadFile/${ party.user.profileImage }" alt="Generic placeholder image" width="40" height="40"></p> --%>
 						<div>
 							&nbsp;&nbsp;&nbsp;&nbsp;
-							<img class="rounded-circle" src="/resources/uploadFile/${party.partyImage}" alt="Generic placeholder image" width="40" height="40">
+							<img class="img-circle" src="/resources/uploadFile/${party.user.profileImage}" width="50" height="50">
 							${ party.user.nickname }
 						</div>
 					</div>

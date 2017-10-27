@@ -322,7 +322,7 @@
 								
 								<%-- ${ party.user.profileImage} --%>
 								<h3 class="panel-title pull-left">
-								<img class="rounded-circle" src="/resources/uploadFile/${party.partyImage}" width="40" height="40">
+								<img class="img-circle" src="/resources/uploadFile/${party.partyImage}" width="50" height="50">
 								&nbsp; ${ party.user.nickname }</h3>
 								
         						<div class="clearfix"></div>

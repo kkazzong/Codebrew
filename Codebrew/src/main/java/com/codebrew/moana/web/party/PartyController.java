@@ -88,6 +88,7 @@ public class PartyController {
 			Festival festival = festivalService.getFestivalDB(dbFestivalNo);
 		
 			modelAndView.addObject("festival", festival);
+			
 			modelAndView.setViewName("forward:/view/party/addAfterParty.jsp");
 		}
 		
