@@ -95,7 +95,7 @@
     	$("a:contains('kakaoLogout')").on("click", function() {
     		
     		Kakao.Auth.logout(function(data) {
-    			alert(data);
+    			//alert(data);
     			if(data) {
     				alert("카카오로그아웃이 되었습니다.");
     				

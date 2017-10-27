@@ -103,7 +103,7 @@ public class KakaoLoginDAOImpl implements UserDAO {
 		
 		user.setProfileImage(properties.path("profile_image").asText());
 		//user.setAge(properties.path("age").asInt());
-		user.setAge(Integer.parseInt((properties.path("age").asText())));
+		//user.setAge(Integer.parseInt((properties.path("age").asText())));//java.lang.NumberFormatException: For input string: "" 에러남
 		user.setGender(properties.path("gender").asText());
 		//user.setPhone(properties.path("phone").asText());
 		
