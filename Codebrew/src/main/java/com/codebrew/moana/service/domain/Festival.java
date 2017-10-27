@@ -1,6 +1,6 @@
 package com.codebrew.moana.service.domain;
 
-import java.util.List;
+import java.util.Date;
 
 public class Festival {
 
@@ -37,12 +37,21 @@ public class Festival {
 
 	private String deleteFlag;
 	
+	private String regDate;
+
 	public Festival() {
 
 	}
-	
-	
 
+	public String getRegDate() {
+		return regDate;
+	}
+
+
+
+	public void setRegDate(String regDate) {
+		this.regDate = regDate;
+	}
 
 	public int getReadCount() {
 		return readCount;
@@ -279,7 +288,7 @@ public class Festival {
 				+ ", discount=" + discount + ", playTime=" + playTime + ", spendTimeFestival=" + spendTimeFestival
 				+ ", subEvent=" + subEvent + ", program=" + program + ", useTimeFestival=" + useTimeFestival
 				+ ", ticketPrice=" + ticketPrice + ", ticketCount=" + ticketCount + "homepage = " + homepage
-				+ ", isNull=" + isNull + ", deleteFlag=" + deleteFlag +"]";
+				+ ", isNull=" + isNull + ", deleteFlag=" + deleteFlag + " regDate=" + regDate + "]";
 	}
 
 }

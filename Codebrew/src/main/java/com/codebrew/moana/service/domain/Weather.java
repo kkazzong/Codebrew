@@ -1,93 +1,59 @@
 package com.codebrew.moana.service.domain;
 
 public class Weather {
-	
-	private String baseDate;
-	private String baseTime;
-	private String fcstDate;
-	private String fcstTime;
-	private String category;
-	private String fcstValue;
-	private String nx;
-	private String ny;
-	
+
+	private String icon;
+	private String description;
+	private String main;
+	private String id;
+
 	public Weather() {
 		super();
 	}
 
-	public String getBaseDate() {
-		return baseDate;
+	public Weather(String icon, String description, String main, String id) {
+		super();
+		this.icon = icon;
+		this.description = description;
+		this.main = main;
+		this.id = id;
 	}
 
-	public void setBaseDate(String baseDate) {
-		this.baseDate = baseDate;
+	public String getIcon() {
+		return icon;
 	}
 
-	public String getBaseTime() {
-		return baseTime;
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
 
-	public void setBaseTime(String baseTime) {
-		this.baseTime = baseTime;
+	public String getDescription() {
+		return description;
 	}
 
-	public String getFcstDate() {
-		return fcstDate;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public void setFcstDate(String fcstDate) {
-		this.fcstDate = fcstDate;
+	public String getMain() {
+		return main;
 	}
 
-	public String getFcstTime() {
-		return fcstTime;
+	public void setMain(String main) {
+		this.main = main;
 	}
 
-	public void setFcstTime(String fcstTime) {
-		this.fcstTime = fcstTime;
+	public String getId() {
+		return id;
 	}
 
-	public String getCategory() {
-		return category;
-	}
-
-	public void setCategory(String category) {
-		this.category = category;
-	}
-
-	public String getFcstValue() {
-		return fcstValue;
-	}
-
-	public void setFcstValue(String fcstValue) {
-		this.fcstValue = fcstValue;
-	}
-
-	public String getNx() {
-		return nx;
-	}
-
-	public void setNx(String nx) {
-		this.nx = nx;
-	}
-
-	public String getNy() {
-		return ny;
-	}
-
-	public void setNy(String ny) {
-		this.ny = ny;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	@Override
 	public String toString() {
-		return "Weather [baseDate=" + baseDate + ", baseTime=" + baseTime + ", fcstDate=" + fcstDate + ", fcstTime="
-				+ fcstTime + ", category=" + category + ", fcstValue=" + fcstValue + ", nx=" + nx + ", ny=" + ny + "]";
+		return "Weather [icon=" + icon + ", description=" + description + ", main=" + main + ", id=" + id + "]";
 	}
-	
-	
-	
-	
-	
 
 }

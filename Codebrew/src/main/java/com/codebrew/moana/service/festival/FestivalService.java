@@ -37,7 +37,7 @@ public interface FestivalService {
 	
 	public void writeFestival (Festival festival) throws Exception;
 	
-	public Map<String,Object> weather (String festivalLat, String festivalLon) throws Exception;
+	public Weather weather (String festivalLat, String festivalLon) throws Exception;
 	
 
 	

@@ -215,27 +215,82 @@ $(function(){
 	
 	<br/>
 	<br/>
-	<c:forEach var = "weather" items="${list }">
-		<c:if test="${weather.category=='SKY' && weather.fcstValue<='2' }">
-			<img src="../../resources/image/weather/sun.gif" width="300"height="300" />
-		</c:if>
-		
-		<c:if test="${weather.category=='SKY' && weather.fcstValue>'2' && weather.fcstValue<='8'}">
-			<img src="../../resources/image/weather/Mcloud.gif" width="300"height="300" />
-		</c:if>
-		
-		<c:if test="${weather.category=='PTY' && weather.fcstValue=='1'}">
-			<img src="../../resources/image/weather/rain.gif" width="300"height="300" />
-		</c:if>
-		
-		<c:if test="${weather.category=='PTY' && weather.fcstValue=='2'}">
-			<img src="../../resources/image/weather/rainAsnow.gif" width="300"height="300" />
-		</c:if>
-		<c:if test="${weather.category=='PTY' && weather.fcstValue=='3'}">
-			<img src="../../resources/image/weather/snow.gif" width="300"height="300" />
-		</c:if>
-		
-	</c:forEach>
+	<h3>현재날씨</h3>
+	<c:if test="${weather.main == 'Thunderstorm' }">
+		<img src = "http://openweathermap.org/img/w/11d.png"><br/>
+		${weather.description }
+	</c:if>
+	
+	<c:if test="${weather.main == 'Drizzle' }">
+		<img src = "http://openweathermap.org/img/w/09d.png"><br/>
+		${weather.description }
+	</c:if>
+	
+	<c:if test="${weather.main == 'Rain' }">
+		<img src = "http://openweathermap.org/img/w/10d.png"><br/>
+		${weather.description }
+	</c:if>
+	
+	<c:if test="${weather.main == 'Snow' }">
+		<img src = "http://openweathermap.org/img/w/13d.png"><br/>
+		${weather.description }
+	</c:if>
+	
+	<c:if test="${weather.main == 'Atmosphere' }">
+		<img src = "http://openweathermap.org/img/w/50d.png"><br/>
+		${weather.description }
+	</c:if>
+	
+	<c:if test="${weather.main == 'Clear' }">
+		<img src = "http://openweathermap.org/img/w/01d.png"><br/>
+		${weather.description }
+	</c:if>
+	
+	<c:if test="${weather.main == 'Clouds' }">
+		<img src = "http://openweathermap.org/img/w/03d.png"><br/>
+		${weather.description }
+	</c:if>
+	
+	<c:if test="${weather.main == 'Haze' }">
+		<img src = "http://openweathermap.org/img/w/50d.png"><br/>
+		${weather.description }
+	</c:if>
+	
+	<c:if test="${weather.main == 'Extreme' && festival.weather.id =='900' }">
+		<img src = "../../resources/image/weather/tornado.gif"><br/>
+		${weather.description }
+	</c:if>
+	
+	<c:if test="${weather.main == 'Extreme' && festival.weather.id =='901' }">
+		<img src = "../../resources/image/weather/tropicalStorm.gif"><br/>
+		${weather.description }
+	</c:if>
+	
+	<c:if test="${weather.main == 'Extreme' && festival.weather.id =='902' }">
+		<img src = "../../resources/image/weather/hurricane.gif"><br/>
+		${weather.description }
+	</c:if>
+	
+	<c:if test="${weather.main == 'Extreme' && festival.weather.id =='903' }">
+		<img src = "../../resources/image/weather/cold.gif"><br/>
+		${weather.description }
+	</c:if>
+	
+	<c:if test="${weather.main == 'Extreme' && festival.weather.id =='904' }">
+		<img src = "../../resources/image/weather/hot.gif"><br/>
+		${weather.description }
+	</c:if>
+	
+	<c:if test="${weather.main == 'Extreme' && festival.weather.id =='905' }">
+		<img src = "../../resources/image/weather/windy.gif"><br/>
+		${weather.description }
+	</c:if>
+	
+	<c:if test="${weather.main == 'Extreme' && festival.weather.id =='906' }">
+		<img src = "../../resources/image/weather/hail.gif"><br/>
+		${weather.description }
+	</c:if>
+	
 	
 	<br/>
 	<br/>
