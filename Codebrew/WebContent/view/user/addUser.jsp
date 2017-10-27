@@ -45,12 +45,7 @@
     }
 </style>
 	<!--  ///////////////////////// CSS ////////////////////////// -->
-	 <style>
-       body > div.container{
-        	border: 3px solid #D6CDB7;
-            margin-top: 10px;
-        }
-    </style> <!--네모칸  -->
+	
     
      <!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
@@ -58,7 +53,7 @@
 		//============= "가입"  Event 연결 =============
 		 $(function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			$( "button.btn.btn-primary" ).on("click" , function() {
+			$( "#addUser" ).on("click" , function() {
 				fncAddUser();
 			});
 		});	
@@ -67,7 +62,7 @@
 		//============= "취소"  Event 처리 및  연결 =============
 		$(function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			$("a[href='#' ]").on("click" , function() {
+			$("#cancel").on("click" , function() {
 				$("form")[0].reset();
 			});
 		});	
@@ -75,14 +70,14 @@
 		
 		function fncAddUser() {
 			
-			var id=$("input[name='userId']").val();
+			var nickname=$("input[name='nickname']").val();
 			var pw=$("input[name='password']").val();
 			var pw_confirm=$("input[name='passwordCheck']").val();
 			var name=$("input[name='userName']").val();
 			
 			
-			if(id == null || id.length <1){
-				alert("아이디는 반드시 입력하셔야 합니다.");
+			if(nickname == null || nickname.length <1){
+				alert("닉네임은 반드시 입력하셔야 합니다.");
 				return;
 			}
 			if(pw == null || pw.length <1){
@@ -104,49 +99,45 @@
 				return;
 			}
 				
-		/* 	var value = "";	
-			if( $("input:text[name='phone2']").val() != ""  &&  $("input:text[name='phone3']").val() != "") {
-				var value = $("option:selected").val() + "-" 
-									+ $("input[name='phone2']").val() + "-" 
-									+ $("input[name='phone3']").val();
-			}
-
-			$("input:hidden[name='phone']").val( value ); */
+	       
 			
 			$("form").attr("method" , "POST").attr("action" , "/user/addUser").submit();
 		}
 		
+		
+		
+		/*  $(function() {
+				//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+				$( "#gender" ).on("change", function() {
+					
+					$("#addUser").removeAttr("disabled");//가입버튼 활성화
+						
+				});
+			});	
+			 */
+		
 
-	/* 	//==>"이메일" 유효성Check  Event 처리 및 연결
+		
+		
+		//==>"이메일" 유효성Check  Event 처리 및 연결
 		 $(function() {
 			 
-			 $("input[name='email']").on("change" , function() {
+			 $("input[name='userId']").on("change" , function() {
 				
-				 var email=$("input[name='email']").val();
+				 var userId=$("input[name='userId']").val();
 			    
-				 if(email != "" && (email.indexOf('@') < 1 || email.indexOf('.') == -1) ){
+				 if(userId != "" && (userId.indexOf('@') < 1 || userId.indexOf('.') == -1) ){
 			    	alert("이메일 형식이 아닙니다.");
 			     }
 			});
 			 
 		});	
-		 */
+	
 		
 	   
-	/* 
+	
 		 
-		//==>"ID중복확인" Event 처리 및 연결
-		 $(function() {
-			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			 $("button.btn.btn-info").on("click" , function() {
-				popWin 
-				= window.open("/user/checkDuplication.jsp",
-											"popWin", 
-											"left=300,top=200,width=780,height=130,marginwidth=0,marginheight=0,"+
-											"scrollbars=no,scrolling=no,menubar=no,resizable=no");
-			});
-		});	
- */
+	
  
 	  $( function() {
 	       $( "#datepicker" ).datepicker({
@@ -168,8 +159,16 @@
 		       buttonImage: "/resources/image/ui/cal.png",
 		       yearRange : "1970:2017"
 	       });   
+	       
+	      
 	    });
 		
+	  
+	
+
+
+
+	  
 		
 		//ajax 닉네임 중복확인
 		$(function(){
@@ -199,13 +198,41 @@
 				});
 			});
 		});
-		
-		
-		
-		
-		
-		
-	</script>		
+			
+	</script>
+	<style type="text/css">
+	body {
+		padding-top : 70px;
+    }
+    .btn {
+		/*링크 클릭시 파란색 안남도록 */
+		text-decoration : none;
+		border : 0;
+		outline : 0;
+	}
+ 
+	.glyphicon {
+		font-size: 20px;
+	}
+	form > img {
+		width : 100%;
+		height : 300px
+	}
+	
+	/* .white-popup {
+	  position: relative;
+	  background: #FFF;
+	  padding: 20px;
+	  width: auto;
+	  max-width: 500px;
+	  margin: 20px auto;
+	}
+	 */
+	
+
+
+</style>
+			
     
 </head>
 
@@ -220,7 +247,14 @@
 	<!--  화면구성 div Start /////////////////////////////////////-->
 	<div class="container">
 	
-		<h1 class="bg-primary text-center">회 원 가 입</h1>
+		<div class="row">
+			<div class="col-md-offset-4 col-md-4">
+				<div class="page-header text-center">
+					<h3 class="text-info"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>회원가입</h3>
+					
+				</div>
+			</div>
+		</div>
 		
 		<!-- form Start /////////////////////////////////////-->
 		<form class="form-horizontal">
@@ -228,10 +262,11 @@
 		  <div class="form-group">
 		    <label for="userId" class="col-sm-offset-1 col-sm-3 control-label">아 이 디</label>
 		    <div class="col-sm-4">
-		  
 		      <input type="text" class="form-control" id="userId" name="userId" value="${auth.authId}" readonly>  
 		    </div>
 		 </div>
+		 
+		 
 		  
 		  <div class="form-group">
 		    <label for="password" class="col-sm-offset-1 col-sm-3 control-label">비밀번호</label>
@@ -280,27 +315,29 @@
 		  <div class="form-group">
 		    <label for="birth" class="col-sm-offset-1 col-sm-3 control-label">생년월일</label>
 		    <div class="col-sm-4">
-		    <input type="text" id="datepicker" class="form-control" readonly="readonly" name="birth" >
+		    <input type="text" id="datepicker" class="form-control"  readonly="readonly" name="birth" >
 		    </div>
 		  </div>
 		  
-		  <div class="form-group">
-		    <label for="gender" class="col-sm-offset-1 col-sm-3 control-label">성별</label>
-		    
-		    <span class="col-sm-2">
-		    <input type="radio" class="form-control" id="gender" name="gender" value="m" >남자
-		    </span>
-		     <span class="col-sm-2">
-	        <input type="radio" class="form-control" id="gender" name="gender" value="f" >여자
-		  </span>
-		    
-		  </div>
+		
+		  
+	<div class="form-group">
+     <label for="gender" class="col-sm-offset-1 col-sm-3 control-label">성별</label>
+	   <span class="col-sm-2">
+         <label><input type="radio" id="gender" name="gender" value="m">남자</label>
+       </span>
+      <span class="col-sm-2">
+         <label><input type="radio" id="gender" name="gender" value="f">여자</label>
+        </span>
+	</div>
+	
 	
 		 
 		  <div class="form-group">
 		    <div class="col-sm-offset-4  col-sm-4 text-center">
-		      <button type="button" class="btn btn-primary"  >가 &nbsp;입</button>
-			  <a class="btn btn-primary btn" href="#" role="button">취&nbsp;소</a>
+		      <button id= "addUser" type="button" class="btn btn-primary btn-block">가 &nbsp;입</button>
+			  <!-- <a class="btn btn-primary btn" href="#" role="button">취&nbsp;소</a>  나중에  disabled="disabled" 연구-->
+		    <button id= "cancel" type="button" class="btn btn-primary btn-block">취&nbsp;소</button>
 		    </div>
 		  </div>
 		</form>

@@ -30,25 +30,17 @@
 </style>
 	
 	<!--  ///////////////////////// CSS ////////////////////////// -->
-	<style>
+<!--<style>
        body > div.container{
         	border: 3px solid #D6CDB7;
             margin-top: 10px;
         }
-    </style>
+    </style>  테두리선-->
     
      <!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
 	
-		//============= "가입"  Event 연결 =============
-	/* 	 $(function() {
-			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			 $( "button.btn.btn-primary" ).on("click" , function() {
-				$("form").attr("method" , "POST").attr("action" , "/user/findPwd").submit(); 
-			});
-		});	 
-		
-		*/
+	
 		//============= "취소"  Event 처리 및  연결 =============
 		$(function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
@@ -57,11 +49,9 @@
 			});
 		});	
 	
-		
-		
-		
-/* 
-		//==>"이메일" 유효성Check  Event 처리 및 연결??????
+	
+
+		//==>"이메일" 유효성Check  Event 처리 및 연결
 		 $(function() {
 			 
 			 $("input[name='userId']").on("change" , function() {
@@ -74,34 +64,17 @@
 			});
 			 
 		});	
-		 */
+		
 	
-	/* 	 
-		//==>"ID중복확인" Event 처리 및 연결
-		 $(function() {
-			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			 $("btn.btn-primary").on("click" , function() {
-				popWin 
-				= window.open("/user/checkDuplication.jsp",
-											"popWin", 
-											"left=300,top=200,width=780,height=130,marginwidth=0,marginheight=0,"+
-											"scrollbars=no,scrolling=no,menubar=no,resizable=no");
-			});
-		});	 */
-		
-		
-		
-		
 	//비밀번호 찾기 event 연결
 	
 	$(function(){
 		$(".btn:contains('비밀번호찾기')").on("click", function(){
-			
+		
 			$("#findPwd").attr("method","POST").attr("action","/user/findPwd").submit();
+			alert("비밀번호를 전송했습니다.");
+		
 		})
-		
-		
-		
 		
 	});
 	
@@ -113,7 +86,7 @@
 				
 				var userName=$("input[name='userName']").val();
 				var phone=$("input[name='phone']").val();
-				alert(userName+","+phone);
+			
 				
 				$.ajax({
 					
@@ -129,9 +102,9 @@
 					}),//보낼정보
 					dataType:"json",//서버에서 받는 데이터형식
 				    success: function(JSONData,status){
-				    	alert(status); //성공하면 success
+				    	//alert(status); //성공하면 success
 				    	console.log(JSON.stringify(JSONData)); //json string 형식으로 변환해주는거
-				    	//console.log(JSONData); //[Object objecㅅ]
+				    	//console.log(JSONData); //[Object object]
 			    	/* if(JSONData == null){
 				    		$("span.col-id-check").html("존재하는 아이디가 없습니다").css("color","blue");
 				    	}else{
@@ -140,20 +113,16 @@
 				    	} */
 				    	//JSONData로 오는건 map으로 오기때문에  userId만 따로 뺌
 				    	if(JSONData.userId == null) {
-				    		alert("존재하는 아이디 없음");
+				    		/* alert("존재하는 아이디 없음"); */
 				    		$("span.col-id-check").html("존재하는 아이디가 없습니다").css("color","red");
 				    	} else {
-				    		alert("아디 존재함");
+				    		/* alert("아디 존재함"); */
 				    		$("span.col-id-check").html("회원님의 아이디는"+JSONData.userId+"입니다").css("color","blue");
-				    	}
-				    	
-				    }
-					
-				});
-						
+				    	}  	
+				    }		
+				});				
 				
-			});
-				
+			});		
 		
 		});
 		
@@ -166,19 +135,21 @@
 
 <body>
 
-	<!-- ToolBar Start /////////////////////////////////////-->
-	
+   <!-- ToolBar Start /////////////////////////////////////-->
+	<jsp:include page="/toolbar/toolbar.jsp" />
    	<!-- ToolBar End /////////////////////////////////////-->
-
-<!-- </hr>흰줄이구나...-->
-		
-		<!-- form Start /////////////////////////////////////-->
 	
-		<div class="container">
-		
-		<h1 class="bg-primary text-center">아이디찾기 비밀번호 찾기</h1>
-		
-		<!-- form Start /////////////////////////////////////-->
+	<!--  화면구성 div Start /////////////////////////////////////-->
+	<div class="container">
+	
+		<div class="row">
+			<div class="col-md-offset-4 col-md-4">
+				<div class="page-header text-center">
+					<h3 class="text-info"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>아이디/비밀번호 찾기</h3>
+					<small class="text-muted">아이디나 비밀번호를 잊으셨나요? </small>
+				</div>
+			</div>
+		</div>
 		
 
 
@@ -201,7 +172,7 @@
 		  
 		    <div class="form-group">
 		    <div class="col-sm-offset-4  col-sm-4 text-center">
-		      <button type="button" class="btn btn-primary"  >아이디찾기</button>
+		      <button type="button" class="btn btn-primary">아이디찾기</button>
 		  </div>
 		  </div>
 		  

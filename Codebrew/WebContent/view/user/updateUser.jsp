@@ -27,13 +27,28 @@
    <script src="/javascript/bootstrap-dropdownhover.min.js"></script>
    
 	<!--  ///////////////////////// CSS ////////////////////////// -->
-	<style>
-		body {
-            padding-top : 50px;
-        }
-    </style>
+    <style type="text/css">
+	body {
+		padding-top : 70px;
+    }
+    .btn {
+		/*링크 클릭시 파란색 안남도록 */
+		text-decoration : none;
+		border : 0;
+		outline : 0;
+	}
+ 
+	.glyphicon {
+		font-size: 20px;
+	}
+	form > img {
+		width : 100%;
+		height : 300px
+	}
+	
     
-    	
+   </style>
+   
 	<!-- ToolBar Start /////////////////////////////////////-->
 	<jsp:include page="/toolbar/toolbar.jsp" />
    	<!-- ToolBar End /////////////////////////////////////-->
@@ -82,60 +97,61 @@
 		
 		///////////////////////////////////////////////////////////////////////
 		function fncUpdateUser() {
-			var name=$("input[name='userName']").val();
+			var pw=$("input[name='password']").val();
+			var pw_confirm=$("input[name='passwordCheck']").val();
 			
-			if(name == null || name.length <1){
-				alert("이름은  반드시 입력하셔야 합니다.");
+			if(pw == null || pw.length <1){
+				alert("패스워드는  반드시 입력하셔야 합니다.");
+				return;
+			}
+			
+			if(pw_confirm == null || pw_confirm.length <1){
+				alert("패스워드 확인은  반드시 입력하셔야 합니다.");
 				return;
 			}
 				
-			var value = "";	
-			if( $("input[name='phone2']").val() != ""  &&  $("input[name='phone3']").val() != "") {
-				var value = $("option:selected").val() + "-" 
-									+ $("input[name='phone2']").val() + "-" 
-									+ $("input[name='phone3']").val();
-			}
 			
-			//Debug...
-			//alert("phone : "+value);
-			$("input:hidden[name='phone']").val( value );
+			if( pw != pw_confirm ) {				
+				alert("비밀번호 확인이 일치하지 않습니다.");
+				$("input:text[name='passwordCheck']").focus();
+				return;
+			}
+		
 				
 			$("form").attr("method" , "POST").attr("action" , "/user/updateUser").submit();
 		}
 	
 		
-		//아이디중복체크 연습
-		
+		//ajax 닉네임 중복확인
 		$(function(){
-			$(".btn:contains('비밀번호찾기')").on("click",function(){
-				
-				var userId=$("input[name='userId']").val();
-				//$(this).val();
-				alert(userId);
 			
+			$("input:text[name='nickname']").on("keyup",function(){
+				var nickname=$(this).val();//getNickname
+				
 				$.ajax({
-					type:"POST",
-					url:"/userRest/json/checkUserId",
-					heasers : {
-						"Accept" : "application/json;charset=UTF-8",
-						"Content_Type" : "application/json"
-					}
-					
-					
-				})
+					type:'POST',
+				    url: '/userRest/json/checkNickname',
+				    data:{nickname:nickname},//보내는 정보
+				    dataType:"json",
+				    success:function(JSONData,status){
+				    	console.log(status);
+				    	console.log("JSONData:"+JSONData);
+				    	
+				    	if(JSONData==true){
+				    		$("span.col-id-check").html("사용가능한 닉네임입니다.").css("color","blue");
+				    		
+				    	}else{
+				    		
+				    		$("span.col-id-check").html("존재하는 닉네임입니다.").css("color","red");
+				    	}
+				    }
 				
 				
-			}
-			
-			
-		}
+				});
+			});
+		});
 		
-		
-		
-		
-		
-		
-		
+				
 		
 		
 	</script>
@@ -151,10 +167,16 @@
 	<!--  화면구성 div Start /////////////////////////////////////-->
 	<div class="container">
 	
-		<div class="page-header text-center">
-	       <h3 class=" text-info">회원정보수정</h3>
-	       <h5 class="text-muted">내 정보를 <strong class="text-danger">최신정보로 관리</strong>해 주세요.</h5>
-	    </div>
+		<div class="row">
+			<div class="col-md-offset-4 col-md-4">
+				<div class="page-header text-center">
+					<h3 class="text-info"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>회원정보수정</h3>
+					<small class="text-muted">내정보를<strong class="text-danger">최신정보로 관리</strong>해주세요 </small>
+				</div>
+			</div>
+		</div>
+	       
+	   
 	    
 	    <!-- form Start /////////////////////////////////////-->
 		<form class="form-horizontal">
@@ -204,18 +226,22 @@
 		    </div>
 		  </div>
 		  
-		  
-		    <div class="form-group">
-		    <label for="gender" class="col-sm-offset-1 col-sm-3 control-label">성별</label>
-		    
-		    <span class="col-sm-2">
-		    <input type="radio" class="form-control" id="gender" name="gender" value="m" >남자
-		    </span>
-		     <span class="col-sm-2">
-	        <input type="radio" class="form-control" id="gender" name="gender" value="f" >여자
-		  </span>
-		    
-		  </div>
+		  		  
+	<div class="form-group">
+    <label for="gender" class="col-sm-offset-1 col-sm-3 control-label">성별</label>
+	 <span class="col-sm-2">
+    <label>
+      <input type="radio" id="gender" name="gender" value="m">남자
+    </label>
+    </span>
+    <span class="col-sm-2">
+    <label>
+      <input type="radio" id="gender" name="gender" value="f"  >여자
+    </label>
+    
+  </span>
+	</div>
+	
 		  
 		  <div class="form-group">
 		    <label for="profileImage" class="col-sm-offset-1 col-sm-3 control-label">프로필사진</label>

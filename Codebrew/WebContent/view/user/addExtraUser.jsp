@@ -24,9 +24,7 @@
 	
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
-	
-	
-	
+		
 	
     <!-- Jquery DatePicker -->
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -65,55 +63,33 @@
 		});	
 		
 		
-		//============= "취소"  Event 처리 및  연결 =============
-	/* 	$(function() {
-			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			$("a[href='#' ]").on("click" , function() {
-				
-				self.location = "/index.jsp"
-				
-				//$("form")[0].reset();
-				//history.go(-1);
-			});
-		});	
-		 */
-		
-		
-			 
-		
-		//=============이메일" 유효성Check  Event 처리 =============
-	/* 	 $(function() {
-			 
-			 $("input[name='email']").on("change" , function() {
-					
-				 var email=$("input[name='email']").val();
-			    
-				 if(email != "" && (email.indexOf('@') < 1 || email.indexOf('.') == -1) ){
-			    	alert("이메일 형식이 아닙니다.");
-			     }
-			});
-			 
-		});	 */
 		
 		///////////////////////////////////////////////////////////////////////
 		function fncAddExtraUser() {
-		/* 	var name=$("input[name='userName']").val();
+			var nickname=$("input[name='nickname']").val();
+			var phone=$("input[name='phone']").val();
+			var birth=$("input[name='birth']").val();
+			var gender=$("input[name='gender']").val();
 			
-			if(name == null || name.length <1){
-				alert("이름은  반드시 입력하셔야 합니다.");
+			if(nickname == null || nickname.length <1){
+				alert("닉네임은  반드시 입력하셔야 합니다.");
 				return;
 			}
 				
-			var value = "";	
-			if( $("input[name='phone2']").val() != ""  &&  $("input[name='phone3']").val() != "") {
-				var value = $("option:selected").val() + "-" 
-									+ $("input[name='phone2']").val() + "-" 
-									+ $("input[name='phone3']").val();
+			if(phone == null || phone.length <1){
+				alert("핸드폰 번호는 반드시 입력하셔야 합니다.");
+				return;
+			}
+		
+			if(birth == null || birth.length <1){
+				alert("생년월일은 반드시 입력하셔야 합니다.");
+				return;
 			}
 			
-			//Debug...
-			//alert("phone : "+value);
-			$("input:hidden[name='phone']").val( value ); */
+			if(gender == null || gender.length <1){
+				alert("생별을 반드시 선택하셔야 합니다.");
+				return;
+			}
 				
 			$("form").attr("method" , "POST").attr("action" , "/user/addExtraUser").submit();
 		}
@@ -173,18 +149,32 @@
 					});
 				});
 			});
-			
-			
-			
-		
-		
-		
-		
-		
-		
-		
-		
+				
 	</script>
+	
+	<style type="text/css">
+	body {
+		padding-top : 70px;
+    }
+    .btn {
+		/*링크 클릭시 파란색 안남도록 */
+		text-decoration : none;
+		border : 0;
+		outline : 0;
+	}
+ 
+	.glyphicon {
+		font-size: 20px;
+	}
+	form > img {
+		width : 100%;
+		height : 300px
+	}
+	
+
+
+</style>
+			
 	
 </head>
 
@@ -197,10 +187,14 @@
 	<!--  화면구성 div Start /////////////////////////////////////-->
 	<div class="container">
 	
-		<div class="page-header text-center">
-	       <h3 class=" text-info">추가정보입력</h3>
-	       
-	    </div>
+		<div class="row">
+			<div class="col-md-offset-4 col-md-4">
+				<div class="page-header text-center">
+					<h3 class="text-info"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>추가정보</h3>
+				     <small class="text-muted">추가정보를  등록해주세요</small>
+				</div>
+			</div>
+		</div>
 	    
 	    <!-- form Start /////////////////////////////////////-->
 		<form class="form-horizontal">
@@ -229,17 +223,16 @@
 		    <span class="col-id-check"></span>
 		  </div>
 		  
-		    <div class="form-group">
-		    <label for="gender" class="col-sm-offset-1 col-sm-3 control-label">성별</label>
-		    
-		    <span class="col-sm-2">
-		    <input type="radio" class="form-control" id="gender" name="gender" value="m" >남자
-		    </span>
-		     <span class="col-sm-2">
-	        <input type="radio" class="form-control" id="gender" name="gender" value="f" >여자
-		  </span>
-		    
-		  </div>
+		   	  
+		<div class="form-group">
+     		<label for="gender" class="col-sm-offset-1 col-sm-3 control-label">성별</label>
+	   			<span class="col-sm-2">
+           			<label><input type="radio" id="gender" name="gender" value="m">남자</label>
+      			 </span>
+     			 <span class="col-sm-2">
+         			<label><input type="radio" id="gender" name="gender" value="f">여자</label>
+       			</span><!--class="form-control"를 빼주면 버튼이 적당해짐   -->
+		</div>
 		  
 		  
 		  <div class="form-group">

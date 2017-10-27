@@ -17,6 +17,7 @@
 	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
+	
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 	
@@ -25,30 +26,41 @@
 
 <style type="text/css">
 	body {
-       padding-top : 50px;
+		padding-top : 70px;
     }
+    .btn {
+		/*링크 클릭시 파란색 안남도록 */
+		text-decoration : none;
+		border : 0;
+		outline : 0;
+	}
+ 
+	.glyphicon {
+		font-size: 20px;
+	}
+	form > img {
+		width : 100%;
+		height : 300px
+	}
+	
+	
+	
+
+
 </style>
 	
 	<!--  ///////////////////////// CSS ////////////////////////// -->
-	<style>
+<!-- 	<style>
        body > div.container{
         	border: 3px solid #D6CDB7;
             margin-top: 10px;
         }
-    </style>
+    </style> 테두리선-->
     
      <!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
 	
-		//============= "가입"  Event 연결 =============
-	/* 	 $(function() {
-			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			 $( "button.btn.btn-primary" ).on("click" , function() {
-				$("form").attr("method" , "POST").attr("action" , "/user/findPwd").submit(); 
-			});
-		});	 
-		
-		*/
+
 		//============= "취소"  Event 처리 및  연결 =============
 		$(function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
@@ -56,39 +68,7 @@
 				$("form")[0].reset();
 			});
 		});	
-	
-		
-		
-		
 
-		//==>"이메일" 유효성Check  Event 처리 및 연결??????
-		 $(function() {
-			 
-			 $("input[name='authId']").on("change" , function() {//change 이벤트는 요소의 값들이 변경될때 이벤트 발생 , 예를 들면 input text가 변화하면  감지함
-				
-				 var authId=$("input[name='authId']").val();
-			    
-				 if(authId != "" && (authId.indexOf('@') < 1 || authId.indexOf('.') == -1) ){
-			    	alert("이메일 형식이 아닙니다.");
-			     }
-			});
-			 
-		});	
-	
-	
-	/* 	 
-		//==>"ID중복확인" Event 처리 및 연결
-		 $(function() {
-			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			 $("btn.btn-primary").on("click" , function() {
-				popWin 
-				= window.open("/user/checkDuplication.jsp",
-											"popWin", 
-											"left=300,top=200,width=780,height=130,marginwidth=0,marginheight=0,"+
-											"scrollbars=no,scrolling=no,menubar=no,resizable=no");
-			});
-		});	 */
-		
 		
 		
 		
@@ -101,15 +81,12 @@
 		 //self.location = "/user/addUser";
 		//self.location = "/user/addUser?authId="+authId;//@@@@@@@@@@@@
 	    $("form").attr("method","POST").attr("action","/user/confirmUser").submit();
-		}) 
-		
-		
-		
+		}) 	
 		
 	});
 		
 		
-		 $(function(){
+     $(function(){
 			
 		$(".btn:contains('인증하기')")	.on("click", function(){
 			
@@ -132,7 +109,7 @@
 				
 			}),
 			
-			dataTpe:"json",
+			dataType:"json",
 			success: function(JSONData,status){
 				alert("인증번호를 전송했습니다.");
 				console.log(JSON.stringify(JSONData));//받는정보
@@ -148,60 +125,61 @@
 		});
 		 
 		
-	/*
 	
-		 //존재하지도 않은 아이디 찾을려고 할때 알려주는 ajax
-	    $(function(){
+	
+		 //이미 가입된 아디로 본인인증을 하려고 할 경우 ajax
+	 /*  $(function(){
 			
-			$(".btn:contains('아이디찾기')").on("click",function(){
-				
-				var userName=$("input[name='userName']").val();
-				var phone=$("input[name='phone']").val();
-				alert(userName+","+phone);
-				
+			$("input:text[name='authId']").on("keyup",function(){
+				var userId=$("input[name='authId']").val();
+				alert("userId : "+userId);
 				$.ajax({
-					
 					type:"POST",
-					url:"/userRest/json/findUserId",
-					headers : {
-						"Accept" : "application/json;charset=UTF-8",
-						"Content-Type" : "application/json"//바디
-					}, 
-					data : JSON.stringify({
-						userName : userName, /* name: $("#name").val() */
-						/*phone: phone
-					}),//보낼정보
-					dataType:"json",//서버에서 받는 데이터형식
-				    success: function(JSONData,status){
-				    	alert(status); //성공하면 success
+					url:"/userRest/json/checkUserId/"+userId,//만약 이런식으로 데이터를 보내면 data:를 안써줘도 됨
+					//pathVariable과 GET POST 방식은 상관이 없다.
+					 /* headers : {
+						/* "Accept" : "application/json;charset=UTF-8", ///utf 설정 빼도 에러
+						"Content-Type" : "application/json"
+					},   */
+					/* data :JSON.stringify({ //이런식으로 쓰면 제이슨으로 간다 그래서 headers 설정이랑 매치해줘야함
+						userId : userId	
+					}, *///{userId:userId} 이런식으로 쓰면 스트링 타입으로 가고
+					/* dataType:"json",//서버에서 받는 데이터형식
+				    //success: function(JSONData,status){
+				    	console.log(status);
 				    	console.log(JSON.stringify(JSONData)); //json string 형식으로 변환해주는거
-				    	//console.log(JSONData); //[Object objecㅅ]
-			    	/* if(JSONData == null){
-				    		$("span.col-id-check").html("존재하는 아이디가 없습니다").css("color","blue");
-				    	}else{
-				    		$("span.col-id-check").html("고객님의 아이디는"+JSONData+"입니다").css("color","red");
-				    		
-				    	} */
-				    	//JSONData로 오는건 map으로 오기때문에  userId만 따로 뺌
-				    	/*if(JSONData.userId == null) {
-				    		alert("존재하는 아이디 없음");
-				    		$("span.col-id-check").html("존재하는 아이디가 없습니다").css("color","red");
-				    	} else {
-				    		alert("아디 존재함");
-				    		$("span.col-id-check").html("회원님의 아이디는"+JSONData.userId+"입니다").css("color","blue");
-				    	}
 				    	
-				    }
+			    	  if(JSONData == false){
+				    		$("span.col-id-check").html("이미 가입된 아이디입니다.").css("color","blue");
+			    	  } //.MissingServletRequestParameterException
+				    }	
+				});		
+			});					
+		});  */ 
+		 
+		
+		 //이미 가입된 아디로 본인인증을 하려고 할 경우 ajax
+		 $(function(){
+				
+				$("input:text[name='authId']").on("keyup",function(){
+					var userId=$("input[name='authId']").val();
 					
-				});
-						
-				
-			});
-				
-		
-		});
-		
-		*/
+					$.ajax({
+						type:"POST",
+						url:"/userRest/json/checkUserId", 
+						data :{userId:userId},//요청과 함께 서버에 보내는 string 또는 map
+						dataType:"json",//서버에서 받는 데이터형식
+					    success: function(JSONData,status){
+					    	console.log(status);
+					    	console.log(JSON.stringify(JSONData)); //json string 형식으로 변환해주는거
+					    	
+				    	  if(JSONData == false){
+					    		$("span.col-id-check").html("이미 가입된 아이디입니다.").css("color","blue");
+				    	  }
+					    }
+					});		
+				});						
+		 }); 
 		
 
 	</script>		
@@ -211,20 +189,21 @@
 <body>
 
 	<!-- ToolBar Start /////////////////////////////////////-->
-	
+	<jsp:include page="/toolbar/toolbar.jsp" />
    	<!-- ToolBar End /////////////////////////////////////-->
 
-<!-- </hr>흰줄이구나...-->
-		
-		<!-- form Start /////////////////////////////////////-->
-	
 		<div class="container">
-		
-		<h1 class="bg-primary text-center">본인인증</h1>
-		
-		<!-- form Start /////////////////////////////////////-->
-		
-
+	
+		<div class="row">
+			<div class="col-md-offset-4 col-md-4">
+				<div class="page-header text-center">
+					<h3 class="text-info"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>본인인증</h3>
+				     <small class="text-muted">본인명의의 이메일로 인증번호를 받은 후 가입할 수 있습니.</small>
+				</div>
+			</div>
+		</div>
+	    
+	    <!-- form Start /////////////////////////////////////-->
 
 		<form class="form-horizontal" >
 		
