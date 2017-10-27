@@ -294,8 +294,12 @@ public class UserServiceImpl implements UserService{
 		return kakaoLoginDAO.getCode(authorize_code);
 	}
 
-	
-	
+	//카카오 수량 업데이트-오버라이드 안하면 인터페이스에 연결이 안됨
+	@Override
+	public void updateCoconut(User user)throws Exception{
+		
+		userDAO.updateCoconut(user);
+	}
 	
 	
 	/*public User getCode(String authorize_code) throws Exception{

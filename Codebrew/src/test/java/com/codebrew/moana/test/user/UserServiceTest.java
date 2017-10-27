@@ -284,7 +284,7 @@ public class UserServiceTest {
 		Assert.assertNotNull("값이 들어왔습니다.", userService.randomNumber(5));
 	}
 */
-	@Test //카카오에서 정보 받아오기
+	//@Test //카카오에서 정보 받아오기
 	public void TestGetCode()throws Exception{
 		
 		User user=new User();
@@ -299,4 +299,18 @@ public class UserServiceTest {
 		 Assert.assertEquals("f",user.getGender());
 	}
 	
+	@Test //코코넛 수량 업데이트
+	public void TestUpdateCoconut() throws Exception{
+		
+		User user= new User();
+		
+		user=userService.getUser("codebrew@naver.com");
+		user.setCoconutCount(13);
+
+		userService.updateCoconut(user);
+		
+		user=userService.getUser("codebrew@naver.com");
+		
+		Assert.assertEquals(13, user.getCoconutCount());
+	}
 }
