@@ -32,41 +32,6 @@
 							  			console.log("for문 안");
 							  			
 							  			/* 파티 멤버 리스트 */
-							  			/* var partyMemberList = "<div class='col-md-6'>"
-																+ "<div class='panel panel-primary'>"
-																+ "<div class='panel-heading'>"
-																	+ "<h3 class='panel-title pull-left'>"
-																	+ "<img class='rounded-circle' src='/resources/uploadFile/${party.partyImage}' width='40' height='40'>"
-																	+ "&nbsp; ${ party.user.nickname }</h3>"
-																	+ "</div>"
-																	+ "<div class='panel-body'>"
-																						
-																		+"<input type='hidden' name='partyNo' value='${party.partyNo}'>"
-																		+ "<img width='100%' height='300' src='/resources/uploadFile/${party.partyImage}'>"
-																		
-																		+ "<div class='col-md-12'>"
-																			+ "<h4>"
-																				+ "<strong>"
-																					+ "${party.partyName}"
-																				+ "</strong>"
-																				+ "</h4>"
-																		+ "</div>"
-																		+ "<hr>"
-																		+ "<div class='col-md-12'>"
-																			+ "<small>"
-																				+ "<span class='glyphicon glyphicon-calendar' aria-hidden='true'></span>"
-																					+ "${party.partyDate}"
-																			+ "</small>"
-																		+ "</div>"
-																	+ "</div>"
-																+ "</div>"
-															+ "</div>"; */
-																	
-															
-							  			
-							  			
-							  			
-							  			
 							  			var partyMemberList = "<div class='row' id='userDiv'>"
 															+"<input type='hidden' id='userId' name='userId' value='"+JSONData.list[i].user.userId+"'>"
 															+"<span>"
@@ -118,19 +83,7 @@
 									  				$("#partyButtonDiv").html(joinParty).on("click", function() {
 									  					//alert("참여");
 									  					self.location="/party/joinParty?partyNo=${party.partyNo}";
-									  					
-								  						/* var result = confirm("애프터 파티에 참여하시겠습니까?");
-								  						
-								  						if(result) {
-								  							var partyNo = $("#partyNo").val();
-								  							console.log("애프터파티 참여 :: partyNo :: "+partyNo);
-								  							
-								  							self.location="/party/joinParty?partyNo=${party.partyNo}";
-								  						} else {
-								  							return;
-								  						} */
-									  						
-								  					});
+									  				});
 							  						
 						  						//}else if(sessionId == JSONData.list[i].user.userId){
 							  					if(sessionId == JSONData.list[i].user.userId){	
@@ -141,21 +94,16 @@
 										    		
 										    		$("#partyButtonDiv").html(cancelParty).on("click", function() {
 														
-										    			self.location="/partyRest/json/cancelParty/${party.partyNo}";
-										    			
-										    			/* var result = confirm("파티참여를 취소하시겠습니까?");
-														
-														if(result) {
-															
-															var partyNo = $("#partyNo").val();
-															console.log("파티참여취소 :: partyNo :: "+partyNo);
-														
-															var festivalNo = $("#festival.festivalNo").val();
-															console.log("파티참여취소 :: festivalNo :: "+festivalNo);
-															
-															self.location="/party/cancelParty?partyNo=${party.partyNo}";
-													
-														} */
+										    			//self.location="/partyRest/json/cancelParty/${party.partyNo}";
+										    			$.ajax(
+																{ url : "/partyRest/json/cancelParty/${party.partyNo}",
+																  method : "GET",
+																  dataType : "json",
+																  success : function(JSONData, status){
+																	  		console.log(status);
+																	 		console.log("JSONData : "+JSON.stringify(JSONData));
+																  }
+																});
 													});
 										    		
 										    		return;
