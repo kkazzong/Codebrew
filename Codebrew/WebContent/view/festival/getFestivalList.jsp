@@ -189,7 +189,7 @@ body {
 		
 			<input type = hidden id="currentPage" name = "currentPage" value = ${i } />
 			
-			<jsp:include page="../../common/pageNavigator.jsp"/>
+			<jsp:include page="../../common/pageNavigator_new.jsp"/>
 		
 		
 		
