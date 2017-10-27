@@ -145,7 +145,7 @@
    				 -->
    				<div class="col-md-12">
    					<input type="text" class="form-control" id="replyDetail" name="replyDetail">
-   					<button type="button" id = "addReply" class="btn btn-primary">댓글등록</button>
+   					<button type="button" id = "addReply" class="btn btn-primary btn-sm">댓글등록</button>
    				</div>
    			</div>
    		</form>
@@ -182,8 +182,8 @@
 								<c:if test="${!empty sessionScope.user}" >
 									<c:if test="${sessionScope.user.role == 'a' || sessionScope.user.userId == replyList.userId }">
 							   			<center>
-								   			<button type="button" id="updateReply" class="btn pull-center btn-primary">댓글수정</button>
-								   			<button type="button" id="deleteReply" class="btn pull-center btn-primary">댓글삭제</button>
+								   			<button type="button" id="updateReply" class="btn btn-primary btn-sm">댓글수정</button>
+								   			<button type="button" id="deleteReply" class="btn btn-primary btn-sm">댓글삭제</button>
 								   		</center>
 							   		</c:if>
 							   	</c:if>

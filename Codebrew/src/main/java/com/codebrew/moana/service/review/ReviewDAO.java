@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.codebrew.moana.common.Search;
+import com.codebrew.moana.service.domain.Good;
 import com.codebrew.moana.service.domain.Image;
 import com.codebrew.moana.service.domain.Review;
 import com.codebrew.moana.service.domain.User;
@@ -22,7 +23,7 @@ public interface ReviewDAO {
 	//3
 	public void updateReview(Review review) throws Exception;
 	
-	//4
+	//4 deleteFlag만 바꿔준다
 	public void deleteReview(int reviewNo) throws Exception;
 	
 	//5
@@ -35,12 +36,12 @@ public interface ReviewDAO {
 	public List<Review> getMyReviewList(Search search) throws Exception;
 	
 	/*
-	 * "1" : 
-	 * "2" : 
-	 * "4" : 
-	 * "11" : 
-	 * "22" : 
-	 * "44" : 
+	 * "1" : 심사대기중
+	 * "2" : 1->2 통과
+	 * "4" : 1->4 반려
+	 * "11" : 업데이트후심사중
+	 * "22" : 11->22 통과
+	 * "44" : 11->44반려
 	 */
 	//8
 	public void passCheckCode(Review review) throws Exception;
@@ -49,10 +50,13 @@ public interface ReviewDAO {
 	public void failCheckCode(Review review) throws Exception;
 	
 	//10
-	public void addGood(User user) throws Exception;
+	public void addGood(String userId, int reviewNo) throws Exception;
 	
 	//11
-	public void deleteGood(int goodNo) throws Exception;
+	public void deleteGood(String userId, int reviewNo) throws Exception;
+	
+	//10-1, 11-1
+	public Good checkGood(String userId, int reviewNo) throws Exception;
 	
 	//12
 	public int getTotalCount(Search search) throws Exception;

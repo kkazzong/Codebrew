@@ -1,5 +1,6 @@
 package com.codebrew.moana.service.review.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,9 +10,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.codebrew.moana.common.Search;
+import com.codebrew.moana.service.domain.Good;
 import com.codebrew.moana.service.domain.Image;
 import com.codebrew.moana.service.domain.Review;
-import com.codebrew.moana.service.domain.User;
 import com.codebrew.moana.service.domain.Video;
 import com.codebrew.moana.service.review.ReviewDAO;
 
@@ -51,10 +52,10 @@ public class ReviewDAOImpl implements ReviewDAO {
 		sqlSession.update("ReviewMapper.updateReview", review);
 	}
 	
-	@Override //4
+	@Override //4 : deleteFlag 만 4로 update 시켜준다
 	public void deleteReview(int reviewNo) throws Exception {
 		System.out.println("reviewDAO :: deleteReview");
-		sqlSession.delete("ReviewMapper.deleteReview", reviewNo);
+		sqlSession.update("ReviewMapper.deleteReview", reviewNo);
 	}
 	@Override //5
 	public List<Review> getReviewList(Search search) throws Exception {
@@ -88,15 +89,30 @@ public class ReviewDAOImpl implements ReviewDAO {
 	}
 	
 	@Override //10
-	public void addGood(User user) throws Exception {
+	public void addGood(String userId, int reviewNo) throws Exception {
 		System.out.println("reviewDAO :: addGood");
-		sqlSession.insert("ReviewMapper.addGood", user);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userId", userId);
+		map.put("reviewNo", reviewNo);
+		sqlSession.insert("ReviewMapper.addGood", map);
 	}
 	
 	@Override //11
-	public void deleteGood(int goodNo) throws Exception {
+	public void deleteGood(String userId, int reviewNo) throws Exception {
 		System.out.println("reviewDAO :: deleteGood");
-		sqlSession.delete("ReviewMapper.deleteGood", goodNo);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userId", userId);
+		map.put("reviewNo", reviewNo);
+		sqlSession.delete("ReviewMapper.deleteGood", map);
+	}
+	
+	@Override
+	public Good checkGood(String userId, int reviewNo) throws Exception {
+		System.out.println("reviewDAO :: checkGood");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userId", userId);
+		map.put("reviewNo", reviewNo);
+		return sqlSession.selectOne("ReviewMapper.checkGood", map);
 	}
 	
 	@Override //12
