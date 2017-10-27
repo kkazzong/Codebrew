@@ -147,7 +147,7 @@
 	         buttonImageOnly: true,
 	          buttonText: "Select date",
 	          showOn: "button",
-	          buttonImage: "/resources/image/ui/cal.png",
+	          buttonImage: "/resources/image/ui/small_cal.jpg",
 	          yearRange : "1900:2017"
 	       });
 		
@@ -334,7 +334,7 @@
 		  <div class="form-group">
 		    <label for="host" class="col-sm-offset-1 col-sm-3 control-label">파티 호스트</label>
 		    <div class="col-sm-4">
-		      <img class="rounded-circle" src="/resources/uploadFile/${party.user.profileImage}" width="40" height="40">
+		      <img class="img-circle" src="/resources/uploadFile/${party.user.profileImage}" width="50" height="50">
 			  ${ party.user.nickname }
 			  <input type="hidden" class="form-control" id="user.userId" name="user.userId" value="${ party.user.userId }" />
 		    </div>

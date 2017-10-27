@@ -151,9 +151,24 @@
 		//============= "티켓가격 무료"  Event 처리 및  연결 =============
 		$(function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			$("#ticketPriceFree").on("click" , function() {
+			$("#ticketPriceFree").click(function() {
+				//alert("무료");
+				$("#ticketPriceFree").attr("disabled","disabled");
+				$("#ticketPriceNoFree").removeAttr("disabled");
+				
 				$("#ticketPrice").val(0);
+				$("#ticketPrice").attr("readonly","readonly");
+				
 			});
+				
+			$('#ticketPriceNoFree').click(function() {
+				//alert("유료");
+				$("#ticketPriceNoFree").attr("disabled","disabled");
+				$("#ticketPriceFree").removeAttr("disabled");
+				
+			    $("#ticketPrice").removeAttr("readonly");
+			});
+			
 		});
 		
 		//============= "티켓수량"  Event 처리 및  연결 =============
@@ -259,7 +274,7 @@
 		  <div class="form-group">
 		    <label for="host" class="col-sm-offset-1 col-sm-3 control-label">파티 호스트</label>
 		    <div class="col-sm-4">
-		      <img class="rounded-circle" src="/resources/uploadFile/${party.partyImage}" width="40" height="40">
+		      <img class="img-circle" src="/resources/uploadFile/${party.user.profileImage}" width="50" height="50">
 			  ${ party.user.nickname }
 			  <input type="hidden" class="form-control" id="user.userId" name="user.userId" value="${ party.user.userId }" />
 		    </div>
@@ -379,13 +394,16 @@
 		  
 		  <div class="form-group" id="ticketPriceDiv">
 		    <label for="ticketPrice" class="col-sm-offset-1 col-sm-3 control-label">티켓가격</label>
-		    <div class="col-sm-2">
-		      <input type="text" class="form-control" id="ticketPrice" name="ticketPrice" value="${ empty party.festival.festivalNo ? ticket.ticketPrice : 0 }"> 
+		    <div class="col-sm-4">
+		    	<div class="input-group">
+		    		<input type="text" readonly="readonly" class="form-control" id="ticketPrice" name="ticketPrice" value="0" >
+		    		<span class = "input-group-btn">
+			  			<button type="button" class="btn btn-primary" name="ticketPriceFlag" id="ticketPriceFree" disabled>무료</button>
+			 			<button type="button" class="btn btn-primary" name="ticketPriceFlag" id="ticketPriceNoFree">유료</button>
+			 		</span>
+				</div>
 			</div>
-			<div class="col-sm-1">
-			   무료<input type="checkbox" id="ticketPriceFree" name="ticketPrice" value="0">
-			</div>
-		  </div>
+	 	  </div>
 		 		  
 		  <div class="form-group">
 		    <div class="col-sm-offset-4  col-sm-4 text-center">
