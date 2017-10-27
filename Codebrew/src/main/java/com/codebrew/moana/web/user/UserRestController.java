@@ -81,9 +81,9 @@ public class UserRestController {
 		return result;
 	}
 	
-    //비밀번호찾을때 존재하지 않은 아이디임을 알려주는 아이디중복체크
-	@RequestMapping(value="json/checkUserId", method=RequestMethod.POST)
-	public boolean checkUserId(@RequestParam("userId")String userId)throws Exception{
+  /*  //비밀번호찾을때 존재하지 않은 아이디임을 알려주는 아이디중복체크
+	@RequestMapping(value="json/checkUserId/{userId:.+}", method=RequestMethod.POST)
+	public boolean checkUserId(@PathVariable("userId") String userId)throws Exception{
 		
 		System.out.println("/userRest/json/checkUserId : POST ");
 		
@@ -91,7 +91,21 @@ public class UserRestController {
 		
 		return result;
 		
-	}
+	}*/
+	
+	   //비밀번호찾을때 존재하지 않은 아이디임을 알려주는 아이디중복체크
+		@RequestMapping(value="json/checkUserId", method=RequestMethod.POST)
+		public boolean checkUserId(@RequestParam("userId")String userId)throws Exception{
+			
+			System.out.println("/userRest/json/checkUserId : POST ");
+			
+			boolean result=userService.checkUserId(userId);
+			
+			return result;
+			
+		}
+		
+	
 	
 	//회원 아이디 찾기
 	@RequestMapping(value="/json/findUserId", method=RequestMethod.POST)
@@ -196,5 +210,5 @@ public class UserRestController {
 	}
 	*/
 	
-	
+	//업데이트 코코넛
 }

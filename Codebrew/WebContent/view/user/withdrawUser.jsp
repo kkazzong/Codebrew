@@ -20,14 +20,7 @@
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 	
-
    
-	<!--  ///////////////////////// CSS ////////////////////////// -->
-	<style>
-		body {
-            padding-top : 50px;
-        }
-    </style>
     
     	
 	<!-- ToolBar Start /////////////////////////////////////-->
@@ -65,50 +58,59 @@
 	
 		 
 	
-	//=============이메일" 유효성Check  Event 처리 =============
-/* 	 $(function() {
-		 
-		 $("input[name='email']").on("change" , function() {
-				
-			 var email=$("input[name='email']").val();
-		    
-			 if(email != "" && (email.indexOf('@') < 1 || email.indexOf('.') == -1) ){
-		    	alert("이메일 형식이 아닙니다.");
-		     }
-		});
-		 
-	});	 */
+
 	
 	///////////////////////////////////////////////////////////////////////
 	function fncWithdrawUser() {
-	/* 	var name=$("input[name='userName']").val();
+		var password=$("input[name='password']").val();
 		
-		if(name == null || name.length <1){
-			alert("이름은  반드시 입력하셔야 합니다.");
+		if(password == null || password.length <1){
+			alert("패스워드를 반드시 입력하셔야 합니다.");
 			return;
 		}
-			
-		var value = "";	
-		if( $("input[name='phone2']").val() != ""  &&  $("input[name='phone3']").val() != "") {
-			var value = $("option:selected").val() + "-" 
-								+ $("input[name='phone2']").val() + "-" 
-								+ $("input[name='phone3']").val();
-		}
-		
-		//Debug...
-		//alert("phone : "+value);
-		$("input:hidden[name='phone']").val( value ); */
 			
 		$("form").attr("method" , "POST").attr("action" , "/user/withdrawUser").submit();
 	}
 
 
 	</script>
+	
+	<style type="text/css">
+	body {
+		padding-top : 70px;
+    }
+    .btn {
+		/*링크 클릭시 파란색 안남도록 */
+		text-decoration : none;
+		border : 0;
+		outline : 0;
+	}
+ 
+	.glyphicon {
+		font-size: 20px;
+	}
+	form > img {
+		width : 100%;
+		height : 300px
+	}
+	
+</style>
+
 </head>
 <body>
 	
 <div class="container">
-	<h2 align="center">회원탈퇴</h2><br>
+	
+	<div class="row">
+			<div class="col-md-offset-4 col-md-4">
+				<div class="page-header text-center">
+					<h3 class="text-info"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>회원탈퇴</h3>
+					
+				</div>
+			</div>
+		</div>
+	
+	
 	
 		<form class="form-horizontal">
 
@@ -127,6 +129,15 @@
 		  	<input type="password" id="password" name="password" class="form-control input-md">
 		  </div>
 		</div>
+		
+		
+		<div class="row">
+			<div class="col-md-offset-4 col-md-4">
+				<label>정말 탈퇴하시겠습니까?</label>
+			</div>
+		</div>
+		
+		
 		
 	  <div class="form-group">
 		    <div class="col-sm-offset-4  col-sm-4 text-center">
