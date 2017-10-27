@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codebrew.moana.common.Search;
+import com.codebrew.moana.service.domain.Bank;
 import com.codebrew.moana.service.domain.Festival;
 import com.codebrew.moana.service.domain.Party;
 import com.codebrew.moana.service.domain.Purchase;
@@ -220,6 +222,75 @@ public class PurchaseRestController {
 		map.put("path", path);
 		map.put("token", "token");
 		return purchaseService.approvePayment(map);
+		
+	}
+	
+	//////////////////////////////////////////////////////KFTC 계좌이체///////////////////////////////////////////////////////////////
+	
+	@RequestMapping(value="/json/transfer/readyTransfer", method=RequestMethod.POST)
+	public Map readyTransfer(HttpSession session,
+															@RequestBody Purchase purchase) throws Exception {
+		
+		String path = session.getServletContext().getRealPath("/");
+		purchase = purchaseService.readyTransfer(purchase);
+		Map<String, Object> map = new HashMap<String, Object>();
+		purchase.setUser((User)session.getAttribute("user"));
+		map.put("purchase", purchase);
+		//map.put("bank", bank);
+		map.put("path", path);
+		map.put("token", "token");
+		return map;
+		
+	}
+	
+	@RequestMapping(value="/json/transfer/transferMoney", method=RequestMethod.POST)
+	public Map transferMoney(HttpSession session,
+													@RequestBody Purchase purchase) throws Exception {
+		
+		String path = session.getServletContext().getRealPath("/");
+		//Bank bank = purchaseService.readyTransfer(purchase);
+		Map<String, Object> map = new HashMap<String, Object>();
+		purchase.setUser((User)session.getAttribute("user"));
+		Bank bank = new Bank();
+		bank.setBankName(purchase.getAid());
+		bank.setBankAccount(purchase.getCid());
+		bank.setUserName(purchase.getTid());
+		bank.setUserAccount(purchase.getPartnetOrderId());
+		bank.setUserBankName(purchase.getPartnerUserId());
+		bank.setToken(purchase.getToken());
+		map.put("purchase", purchase);
+		map.put("bank", bank);
+		map.put("path", path);
+		map.put("token", "token");
+		purchase = purchaseService.transferMoney(map);
+		map.put("bank", bank);
+		return map;
+		
+	}
+	
+	@RequestMapping(value="/json/transfer/getTransferResult", method=RequestMethod.POST)
+	public Map getTransferResult(HttpSession session,
+													@RequestBody Purchase purchase) throws Exception {
+		
+		String path = session.getServletContext().getRealPath("/");
+		//Bank bank = purchaseService.readyTransfer(purchase);
+		Map<String, Object> map = new HashMap<String, Object>();
+		purchase.setUser((User)session.getAttribute("user"));
+		Bank bank = new Bank();
+		bank.setBankName(purchase.getAid());
+		bank.setBankAccount(purchase.getCid());
+		bank.setUserName(purchase.getTid());
+		bank.setUserAccount(purchase.getPartnetOrderId());
+		bank.setUserBankName(purchase.getPartnerUserId());
+		bank.setToken(purchase.getToken());
+		map.put("purchase", purchase);
+		map.put("bank", bank);
+		map.put("path", path);
+		map.put("token", "token");
+		//bank = purchaseService.transferMoney(map);
+		map = purchaseService.getTransferResult(map);
+		
+		return map;
 		
 	}
 	

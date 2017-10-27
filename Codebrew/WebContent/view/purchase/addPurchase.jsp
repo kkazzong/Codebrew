@@ -114,6 +114,76 @@
 		
 	}
 	
+	function fncReadyTransfer(selectedCount, purchasePrice, purchaseFlag) {
+		
+		var ticketNo = ${ticket.ticketNo};
+		var userId = "${user.userId}";
+		var ticketCount = ${ticket.ticketCount};
+		var name = "${ticket.ticketName}";
+		
+		//alert($("#purchaseForm").serialize());
+		var innerHtml = "<form id=transForm>";
+		innerHtml += "<input type='hidden' name='purchaseCount' value='"+selectedCount+"'>";
+		innerHtml += "<input type='hidden' name='purchasePrice' value='"+purchasePrice+"'>";
+		innerHtml += "<input type='hidden' name='purchaseFlag' value='"+purchaseFlag+"'>";
+		innerHtml += "<input type='hidden' name='ticket.ticketNo' value='"+ticketNo+"'>";
+		innerHtml += "<input type='hidden' name='ticket.ticketCount' value='"+ticketCount+"'>";
+		innerHtml += "<input type='hidden' name='user.userId' value='"+userId+"'>";
+		innerHtml += "<input type='hidden' name='itemName' value='"+name+"'>";
+		innerHtml += "</form>";
+		
+		$("body").append(innerHtml);
+		$("#transForm").attr("method", "POST").attr("action", "/purchase/readyTransfer").submit();
+		
+	}
+	
+	/* ////계쫘이체 결제준비 호출 function
+	function fncReadyTransfer(selectedCount, purchasePrice, purchaseFlag){
+
+		var ticketNo = ${ticket.ticketNo};
+		var userId = "${user.userId}";
+		var ticketCount = ${ticket.ticketCount};
+		var name = "${ticket.ticketName}";
+		alert("게자이체");
+		
+		console.log("수량선택한거 : "+selectedCount);
+		if(selectedCount == null || selectedCount == 0) {
+			alert("수량을 선택하세요");
+			return;
+		}
+		
+		$.ajax({
+			
+			url : "/purchaseRest/json/transfer/readyTransfer",
+			method : "POST",
+			headers : {
+				"Accept" : "application/json",
+				"Content-Type" : "application/json"
+			},
+			data : JSON.stringify({
+				purchaseCount : selectedCount,
+				purchasePrice : purchasePrice,
+				purchaseFlag : purchaseFlag,
+				user : {
+					userId : userId
+				},
+				ticket : {
+					ticketNo : ticketNo,
+					ticketCount : ticketCount
+				}
+			}), 
+			dataType : "json",
+			success : function(data){
+				
+				console.log(JSON.stringify(data));
+				self.location = "/purchase/readyTransfer?token="+data.bank.token;
+				
+			}
+			
+		});
+		
+	} */
+	
 	//// 수량 선택시 validation check function
 	function fncCheckPurchase(ticketPrice, selectedCount, purchasePrice) {
 		
@@ -136,6 +206,7 @@
 		
 		$("#kakaoPay").removeAttr("disabled"); //카카오페이 버튼 활성화
 		$("#danal").removeAttr("disabled"); //핸드폰 결제 활성화
+		$("#bank").removeAttr("disabled"); //계좌이체 활성화
 		
 	}
 	
@@ -190,19 +261,6 @@
 		
 	}
 	
-	function wrapWindowByMask(){
-        //화면의 높이와 너비를 구한다.
-        var maskHeight = $(document).height();  
-        var maskWidth = $(window).width();  
-
-        //마스크의 높이와 너비를 화면 것으로 만들어 전체 화면을 채운다.
-        $('#kakaoPayModal').css({'width':maskWidth,'height':maskHeight});  
-
-        //애니메이션 효과
-        $('#kakaoPayModal').fadeIn(1000);      
-        $('#kakaoPayModal').fadeTo("slow",0.8);    
-	}
-	
 	$(function(){
 		
 		var selectedCount; //구매수량
@@ -238,6 +296,13 @@
 			
 			fncPhonePay(selectedCount, purchasePrice, purchaseFlag);
 			
+		});
+		
+		//계좌이체 클릭 시
+		$("#bank").on("click",function(){
+			
+			fncReadyTransfer(selectedCount, purchasePrice, purchaseFlag);
+			//fncReadyTransfer();
 		});
 		
 		//구매하기 클릭 시
@@ -514,27 +579,50 @@
 								</div>
 							</div>
 							
-							<!-- 카카오페이 -->
+							<!-- 카카오페이 & 핸드폰결제 & 계좌이체 -->
 							<c:if test="${empty ticket.ticketFlag or ticket.ticketFlag == 'nolimit'}">
 							<div class="row">
 									<span class="help-block">
 										결제창이 뜨지 않을 경우, 팝업을 허용한 뒤 다시 시도 해주세요.
 									</span>
-								<div class="col-md-offset-4 col-md-4">
+								<div class="col-md-4">
+									<ul class="list-group">
+									  <li class="list-group-item">
+									카카오페이
 									<button id="kakaoPay" class="btn btn-link btn-block" disabled="disabled" type="button">
-										<img src="../../resources/image/buttonImage/kakaopay.png">
+										 <img width="120" height="60" src="../../resources/image/buttonImage/kakaopay.png">
 									</button>
+										</li>
+									</ul>
 								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-offset-4 col-md-4">
-									<button id="danal" class="btn btn-link btn-block" disabled="disabled" type="button">
-										<img width="120" height="50" src="../../resources/image/buttonImage/danal.jpg">
-									</button>
+							<!-- </div> -->
+							<!-- <div class="row"> -->
+								<div class="col-md-4">
+									<ul class="list-group">
+									  <li class="list-group-item">
+										휴대폰결제
+										<button id="danal" class="thumbnail btn btn-link btn-block" disabled="disabled" type="button">
+											 <img width="120" height="50" src="../../resources/image/buttonImage/danal.jpg">
+										</button>
+									  </li>
+									</ul>
+								</div>
+							<!-- </div>
+							<div class="row"> -->
+								<div class="col-md-4">
+									<ul class="list-group">
+									  <li class="list-group-item">
+										계좌이체
+										<button id="bank" class="btn btn-link btn-block" disabled="disabled" type="button">
+											 <img width="120" height="60" src="../../resources/image/buttonImage/bank.png">
+										</button>
+										</li>
+									</ul>
 								</div>
 							</div>
 							</c:if>
 							
+							<!-- 단순구매 -->
 							<c:if test="${ticket.ticketFlag == 'free' and ticket.ticketCount > 0}">
 							<div class="row">
 								<div class="col-md-offset-4 col-md-4">

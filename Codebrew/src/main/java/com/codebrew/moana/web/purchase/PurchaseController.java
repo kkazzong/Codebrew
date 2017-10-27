@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.codebrew.moana.common.Page;
 import com.codebrew.moana.common.Search;
+import com.codebrew.moana.service.domain.Bank;
 import com.codebrew.moana.service.domain.Festival;
 import com.codebrew.moana.service.domain.Party;
 import com.codebrew.moana.service.domain.Purchase;
@@ -292,4 +293,67 @@ public class PurchaseController {
 
 		return modelAndView;
 	}
+	
+	
+	////////////////////////////////////////////////////////////////KFTC 계좌이체///////////////////////////////////////////////////////////////////////////
+	/*@RequestMapping(value = "readyTransfer", method = RequestMethod.GET) 
+	public ModelAndView readyTransfer(@RequestParam("token") String token) {
+		
+		//String path = session.getServletContext().getRealPath("/");
+		Purchase purchase = new Purchase();
+		Bank bank = purchaseService.readyTransfer(purchase);
+		Map<String, Object> map = new HashMap<String, Object>();
+		//.setUser((User)session.getAttribute("user"));
+		map.put("purchase", purchase);
+		map.put("bank", bank);
+		//map.put("path", path);
+		map.put("token", "token");
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("/view/purchase/transferMoney.jsp");
+
+		return modelAndView;
+		
+	}*/
+	
+	
+	@RequestMapping(value = "readyTransfer", method = RequestMethod.POST) 
+	public ModelAndView readyTransfer(HttpSession session,
+																	@ModelAttribute Purchase purchase) {
+		
+		String path = session.getServletContext().getRealPath("/");
+		purchase = purchaseService.readyTransfer(purchase);
+		Map<String, Object> map = new HashMap<String, Object>();
+		purchase.setUser((User)session.getAttribute("user"));
+		map.put("purchase", purchase);
+		//map.put("bank", bank);
+		map.put("path", path);
+		map.put("token", "token");
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("purchase", purchase);
+		//modelAndView.addObject("bank", bank);
+		modelAndView.setViewName("/view/purchase/transferMoney.jsp");
+
+		return modelAndView;
+		
+	}
+	
+	@RequestMapping(value = "getTransferResult", method = RequestMethod.POST) 
+	public ModelAndView getTransferResult(HttpSession session,
+																	@ModelAttribute Purchase purchase) {
+		
+		String path = session.getServletContext().getRealPath("/");
+		//Bank bank = purchaseService.readyTransfer(purchase);
+		purchase.setUser((User)session.getAttribute("user"));
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("purchase", purchase);
+		//modelAndView.addObject("bank", bank);
+		modelAndView.setViewName("/view/purchase/getTransferResult.jsp");
+
+		return modelAndView;
+		
+	}
+	
 }

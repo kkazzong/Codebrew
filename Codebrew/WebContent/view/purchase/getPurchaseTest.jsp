@@ -115,9 +115,9 @@
 		 
 		   FB.ui(share, function(response) { 
 		    	if (response && !response.error_message) {
-		    	      alert("게시완료");
+		    	      //alert("게시완료");
 		    	    } else {
-		    	      alert("띠로리 썸띵롱");
+		    	      //alert("띠로리 썸띵롱");
 		    	    }	
 		    }); 
 		    /* FB.ui(
@@ -132,7 +132,7 @@
 	
 	var ticketPrice = ${ticket.ticketPrice};
 	var itemName = "${purchase.itemName}";
-	var ip = "http://192.168.0.4:8080";
+	var ip = "http://192.168.1.237:8080";
 	var referNo = "${purchase.purchaseFlag}";
 	var imageUrl = "";
 	var url = "";
@@ -205,7 +205,7 @@
 	$(function(){
 		
 		var referNo2 = $("input:hidden[name='purchaseFlag']").val();
-		alert(referNo2);
+		//alert(referNo2);
 		
 		//확인 버튼
 		$("button:contains('확인')").on("click", function(){
@@ -231,7 +231,7 @@
 		$(".btn:contains('구매취소하기')").on("click", function(){
 			
 			if(confirm("정말로 구매를 취소하시겠습니까?")) {
-				alert($("#cancelForm").serialize());
+				//alert($("#cancelForm").serialize());
 				$("#cancelForm").attr("method", "POST").attr("action", "/purchase/cancelPurchase").submit();
 			} else {
 				return;

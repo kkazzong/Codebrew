@@ -33,18 +33,24 @@
     }
     
     section {
-    	background: url(/resources/image/toolbarImage/bg2.jpg) no-repeat center center;
+    	/* background: url(/resources/image/toolbarImage/bg2.jpg) no-repeat center center; */
+    	background: url(/resources/image/ui/main.gif) no-repeat center center;
 		width: 100%;
-	   	height: 100%;
+	   	height: 500px;
 	   background-size: 100%;
-	   opacity: 0.7;
+	   opacity: 0.8;
     }
     
+    #box {
+		padding-top: 187px;
+		text-align: center;
+	}
      
 		
 	.title {
-		color: white;
-	}
+		color: black;
+		text-shadow:1px 1px 1px black;
+	} 
 	
 	/* .main .search-main input[type=text] {
 		
@@ -94,8 +100,8 @@
 			 */
 	    
 </script>
-<title>Insert title here</title>
-
+<title>Moana</title>
+<!-- 타이틀 수정하지마세용 -->
 </head>
 <body>
 	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
@@ -104,6 +110,30 @@
 	<!-- 배경 이미지 -->
 	<section>
 	
+	<div class="row">
+		<div class="col-md-12 text-center">
+			<div class="title">
+			</div>
+		</div>
+	</div>
+	
+	<div id="box" class="row">
+		<div class="col-md-12 text-center">
+			<div class="col-md-offset-4 col-md-4">
+				<form class="form form-inline">
+					<div class="form-group">
+						<input class="form-control input-lg" type="text" placeholder="축제명 or 파티명 검색">
+					</div>
+					<div class="form-group">
+						 <button class="btn btn-primary btn-block" type="button">검색</button> 
+						<!-- <a id="search" class="click" type="button">
+		                      <img src="/resources/image/buttonImage/btn_nav_search_white@3x.png">
+		                </a>	 -->
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 	
 	<!-- Title -->
 	<!-- <div class="main-wrapper">
@@ -165,30 +195,30 @@
 	
 	
 <!-- <a href="/festival/ListFestival"> 축제리스트 (api사용) </a> -->
-<a href="/festival/getFestivalList?pageNo=1"> 축제리스트 (api사용) 관리자 </a>
+<!-- <a href="/festival/getFestivalList?pageNo=1"> 축제리스트 (api사용) 관리자 </a>
 
 <br/>
-<br/>
+<br/> -->
 
 <!-- <a href="/festival/getFestivalListDB"> 축제리스트 (서버DB) 회원 / 비회원 </a> -->
 
-<a href="/festival/getFestivalListDB?menu=db"> 축제리스트 (서버DB) 회원 / 비회원 </a>
+<!-- <a href="/festival/getFestivalListDB?menu=db"> 축제리스트 (서버DB) 회원 / 비회원 </a> -->
 
 <!-- 가정이가 써보았다 -->
-<br>
+<%-- <br>
 <br>
 <c:if test="${user.role == 'a'}">
 <a href="/purchase/getSaleList"> 판매목록 (관리자only) </a>
 </c:if>
 <br>
-<br>
+<br> --%>
 
-<a href="/purchase/getPurchaseList"> my티켓 </a>
+<!-- <a href="/purchase/getPurchaseList"> my티켓 </a>
 
 <br>
-<br>
+<br> -->
 <!--주영이가 써보았다.  -->
-<a href="/user/login">로그인</a>
+<%-- <a href="/user/login">로그인</a>
 
 <br>
 <br>
@@ -221,7 +251,7 @@
 <br>
 <br>
 
-<a href="/view/festival/weather.jsp">날씨</a>
+<a href="/view/festival/weather.jsp">날씨</a> --%>
 
 
 
@@ -229,7 +259,7 @@
 
 
 <!-- 가정이가 또 써보았다 -->
-<br>
+<%-- <br>
 <br>
 <c:if test="${!empty user}">
  현재 로그인한 userId : ${user.userId} <br>
@@ -241,15 +271,15 @@
 </c:if>
 <h5>jsp에서 dropdown cdn추가하고 툴바.jsp include(index.jsp참고하세염)</h5>
 <br>
-<br>
+<br> --%>
 <!--후기등록 테스트중 -->
-<a href="/review/addReview">후기등록</a>
+<!-- <a href="/review/addReview">후기등록</a> -->
 
 
 <!-- 파티 index -->
-<div>
+<!-- <div>
 	<div><a href = "/party/getMyPartyList">My 파티 리스트</a></div>
-</div>	
+</div>	 -->
 	</section>
 </body>
 </html>

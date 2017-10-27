@@ -332,12 +332,24 @@ public class ReviewController {
 		
 		System.out.println("review/passCheckCode");
 		
-		//아래2행 지울것 : 테스트용
-		System.out.println("\n\n\nController passCheckCode reviewNo :: "+reviewNo+"\n\n\n");
-		System.out.println("\n\n\nController passCheckCode review :: "+reviewService.getReview(reviewNo)+"\n\n\n");
-		
 		Review returnReview = reviewService.getReview(reviewNo); // review 객체를 method로 생성하여 받음
 		reviewService.passCheckCode(returnReview);
+		returnReview = reviewService.getReview(reviewNo);
+		
+		//Business Logic수행
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject(returnReview);
+		modelAndView.setViewName("/view/review/getReview.jsp");
+		return modelAndView;
+	}
+	
+	@RequestMapping(value="failCheckCode", method=RequestMethod.GET)
+	public ModelAndView failCheckCode(@RequestParam("reviewNo") int reviewNo) throws Exception {
+		
+		System.out.println("review/failCheckCode");
+		
+		Review returnReview = reviewService.getReview(reviewNo); // review 객체를 method로 생성하여 받음
+		reviewService.failCheckCode(returnReview);
 		returnReview = reviewService.getReview(reviewNo);
 		
 		//Business Logic수행
