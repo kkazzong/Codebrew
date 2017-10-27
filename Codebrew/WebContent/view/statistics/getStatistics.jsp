@@ -46,7 +46,7 @@
 		var datas = [];
 		
 		function fncSearchChartData(statFlag, statDate) {
-			//alert(statDate);
+			////alert(statDate);
 			$.ajax({
 				
 				url : "/statisticsRest/json/getStatistics",
@@ -61,7 +61,7 @@
 					"Content-Type" : "application/json"
 				},
 				success : function(JSONData, status){
-					alert(status+","+statFlag);
+					//alert(status+","+statFlag);
 					console.log(status);
 					console.log(JSON.stringify(JSONData));
 					
@@ -82,7 +82,7 @@
 						
 						case 3 :
 						case "3" :
-							alert("분기");
+							//alert("분기");
 							quarterChart.destroy();
 							fncQuarterChartDrow(JSONData);
 							break;
@@ -247,7 +247,7 @@
 			      },
 				  function(start, end, label) {
 			    	console.log(start)
-			    	alert("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+			    	//alert("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
 			      }
 			});
 			
@@ -264,7 +264,7 @@
 			/// 새로고침 눌렀을때
 			$("#refresh").on("click", function(){
 				
-				//alert("새로고침")
+				////alert("새로고침")
 				var statFlag2 = $("input:hidden[name='statFlag']").val();
 				
 				fncSearchChartData(statFlag2, '');

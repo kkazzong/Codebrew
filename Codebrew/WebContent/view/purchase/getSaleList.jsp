@@ -50,7 +50,7 @@
 		//alert(arrange);
 		$("#currentPageSort").val("1");
 		$("input:hidden[name='arrange']").val(arrange);
-		alert($("#sortForm").serialize());
+		//alert($("#sortForm").serialize());
 		$("#sortForm").attr("method", "POST").attr("action", "/purchase/getSaleList").submit();
 	}
 	

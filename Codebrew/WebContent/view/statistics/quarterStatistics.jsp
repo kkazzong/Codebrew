@@ -149,7 +149,7 @@
 		}
 		
 	  $("select[name='statDate']").on("change", function(){
-		  alert($(this).val());
+		  //alert($(this).val());
 			fncSearchChartData(3, $(this).val());
 		});
 		

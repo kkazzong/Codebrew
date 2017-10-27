@@ -40,7 +40,7 @@
 	
 	var colors = [];
 	function getRandomColor(count) {
-		alert("랜덤컬러"+count);
+		//alert("랜덤컬러"+count);
 	    var letters = '0123456789ABCDEF'.split('');
 	    var color = '#';
 	    for(var i = count; i > 0; i--) {

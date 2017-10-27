@@ -357,7 +357,9 @@
 							</div>
 							<hr>
 							<div class="row">
-								<img class="col-md-offset-3" width="50%" height="50%" src="../../resources/image/QRCodeImage/${purchase.qrCode.qrCodeImage}">
+								<img class="col-md-offset-3" width="50%" height="50%" 
+										onError="this.src='/resources/uploadFile/no.png'"
+										src="../../resources/image/QRCodeImage/${purchase.qrCode.qrCodeImage}">
 							</div>
 							<button class="btn btn-default" type="button">확인</button>
 							<c:if test="${ticket.ticketFlag != 'free' }">

@@ -94,7 +94,7 @@
 			if(event.keyCode == '13') {
 				if($("#searchKeyword").val() == '') {
 					event.preventDefault();
-					//alert("검색어를 입력해주세요");
+					alert("검색어를 입력해주세요");
 					return;
 				}
 				event.preventDefault();
@@ -118,7 +118,7 @@
 		$("#search").on("click", function(){
 			
 			if($("#searchKeyword").val() == '') {
-				//alert("검색어를 입력해주세요");
+				alert("검색어를 입력해주세요");
 				return;
 			}
 			fncGetList(1);
@@ -244,7 +244,7 @@
 		$("#dateRange").on("click", function() {
 			//alert($("#dailySelect").val());
 			if($("#startDate").val() == '' || $("#startDate").val() == null) {
-				//alert("조회 기간을 선택해주세요");
+				alert("조회 기간을 선택해주세요");
 				return;
 			}
 			fncSearchDate();

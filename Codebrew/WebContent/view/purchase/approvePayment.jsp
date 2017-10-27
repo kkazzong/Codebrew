@@ -106,7 +106,9 @@
 						</div>
 						<!-- 큐알코드 -->
 						<div class="row">
-							<img class="col-md-offset-3" width="50%" height="50%" src="../../resources/image/QRCodeImage/${purchase.qrCode.qrCodeImage}">
+							<img class="col-md-offset-3" width="50%" height="50%" 
+							onError="this.src='/resources/uploadFile/no.png'"
+							src="../../resources/image/QRCodeImage/${purchase.qrCode.qrCodeImage}">
 						</div>
 					</div>
 				</div>
