@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Image;
 import com.codebrew.moana.service.domain.Review;
-import com.codebrew.moana.service.domain.User;
 import com.codebrew.moana.service.domain.Video;
 import com.codebrew.moana.service.review.ReviewDAO;
 import com.codebrew.moana.service.review.ReviewService;
@@ -124,13 +123,18 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override //10
-	public void addGood(User user) throws Exception {
-		reviewDAO.addGood(user);
+	public void addGood(String userId, int reviewNo) throws Exception {
+		
+		if(reviewDAO.checkGood(userId, reviewNo) == null){
+			reviewDAO.addGood(userId, reviewNo);
+		}else{
+			reviewDAO.deleteGood(userId, reviewNo);
+		}
 	}
 
 	@Override //11
-	public void deleteGood(int goodNo) throws Exception {
-		reviewDAO.deleteGood(goodNo);
+	public void deleteGood(String userId, int reviewNo) throws Exception {
+		reviewDAO.deleteGood(userId, reviewNo);
 	}
 	
 	@Override //12

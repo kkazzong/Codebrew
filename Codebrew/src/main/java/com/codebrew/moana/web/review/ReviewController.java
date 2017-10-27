@@ -226,7 +226,7 @@ public class ReviewController {
 	}
 	
 	@RequestMapping(value="getReviewList")
-	public ModelAndView getReviewList( @ModelAttribute("search") Search search) throws Exception{
+	public ModelAndView getReviewList( @ModelAttribute("search") Search search ) throws Exception{
 		
 		
 		/*
@@ -356,6 +356,41 @@ public class ReviewController {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject(returnReview);
 		modelAndView.setViewName("/view/review/getReview.jsp");
+		return modelAndView;
+	}
+	
+	@RequestMapping(value="addGood", method=RequestMethod.GET)
+	public ModelAndView addGood(@RequestParam("reviewNo") int reviewNo, 
+								@RequestParam("userId") String userId) throws Exception {
+		
+		System.out.println("review/addGood");
+		
+		reviewService.addGood(userId, reviewNo);
+		Review returnReview = reviewService.getReview(reviewNo);
+		
+		//Business Logic수행
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject(returnReview);
+		modelAndView.setViewName("/view/review/getReview.jsp");
+		return modelAndView;
+	}
+	
+	@RequestMapping(value="deleteReview", method=RequestMethod.POST)
+	public ModelAndView deleteReview( @RequestParam("deleteReviewNo") int reviewNo, 
+									@ModelAttribute("search") Search search) throws Exception {
+		
+		System.out.println("review/deleteReview");
+		
+		//test
+		System.out.println("\n\n\n ReviewController search :: "+search+"\n\n\n");
+		System.out.println("\n\n\n ReviewController reviewNo :: "+reviewNo+"\n\n\n");
+		
+		reviewService.deleteReview(reviewNo);
+		
+		//Business Logic수행
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("/view/review/getReviewList.jsp");
+		
 		return modelAndView;
 	}
 

@@ -75,7 +75,7 @@
 		});
 		
 		$( "#addGood" ).on("click", function() { //수정중
-			self.location = "/review/addGood";
+			self.location = "/review/addGood?userId=${sessionScope.user.userId}&reviewNo=${review.reviewNo}";
 		}); 
 		 
 		 /* var reviewNo = document.getElementById('reviewNo').getAttribute('value');
@@ -111,7 +111,7 @@
 			<div class="col-md-12">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-						<h3 class="panel-title">${review.reviewTitle } 후기제목</h3>
+						<h3 class="panel-title">후기제목 : ${review.reviewTitle }</h3>
 					</div>
 					<div class="panel-body">
 						<%-- 
@@ -172,8 +172,8 @@
 						<c:if test="${sessionScope.user.userId == review.userId || sessionScope.user.role == 'a'}">
 						<div class="col-md-12">
 							<small>
+								<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
 								후기상태 : 
-								<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
 								<c:if test="${review.checkCode == '1' || review.checkCode == '11' }">
 									심사중									
 								</c:if>
@@ -188,13 +188,13 @@
 						</c:if>
 						<div class="col-md-12">
 							<small>
-								<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+								<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
 									작성일시 : ${review.reviewRegDate }
 							</small>
 						</div>
 						<div class="col-md-12">
 							<small>
-								<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+								<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 									작성자 : ${review.userId }
 							</small>
 						</div>
@@ -206,32 +206,34 @@
 						</div>
 						<div class="col-md-12">
 							<small>
-								<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+								<span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span>
 									축제평점 : ${review.reviewFestivalRating }
 							</small>
 						</div>
 						<div class="col-md-12">
 							<small>
-								<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+								<span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
 									좋아요 : ${review.goodCount }
-								<button id = "addGood" type="button" class="btn btn-success">Good!</button>
+								<c:if test="${!empty sessionScope.user }">
+									<span class = "glyphicon glyphicon-thumbs-up" id = "addGood" role="button"></span>
+								</c:if>
 							</small>
 						</div>
 						<div class="col-md-12">
 							<small>
-								<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+								<span class="glyphicon glyphicon-book" aria-hidden="true"></span>
 									후기내용 : ${review.reviewDetail }
 							</small>
 						</div>
 						<div class="col-md-12">
 							<small>
-								<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+								<span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
 									해시태그 : ${review.reviewHashtag }
 							</small>
 						</div>
 						<div class="col-md-12">
 							<small>
-								<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+								<span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span>
 									동영상
 							</small>
 							<c:if test="${!empty review.reviewVideoList[0].reviewVideo }">

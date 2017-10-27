@@ -52,7 +52,7 @@
 		//==> 검색 Event 연결처리부분
 		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2. $(#id) : 3.$(.className)
 		//==> 1과 3 방법 조합 : $("tagName.className:filter함수") 사용함.
-		$("button.btn.btn-default").on("click", function(){
+		$("#searchReviewList").on("click", function(){
 			alert("검색버튼 클릭 : val = "+$("#searchKeyword").val());
 			//Debug..
 			//alert($("button.btn.btn-default")).html();
@@ -97,9 +97,10 @@
 		});
 		 */
 		
+		
 		//==> reviewTitle LINK : Click Event 연결처리
 		$( "button:contains('조회')" ).on("click" , function() {
-			console.log("조회버튼 클릭 : val = "+$(this).val())
+			//alert("조회버튼 클릭 : val = "+$(this).val());
 			self.location="/review/getReview?reviewNo="+$(this).val();
 		});
 		
@@ -172,7 +173,7 @@
    						value="${! empty search.searchKeyword ? search.searchKeyword : '' }" >
    					</div>
    					
-   					<button type="button" class="btn btn-default">검색</button>
+   					<button id = "searchReviewList" type="button" class="btn btn-default">검색</button>
    					
    					<!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
    					<input type="hidden" id="currentPage" name="currentPage" value=""/>
@@ -191,8 +192,8 @@
    					<div class="panel panel-primary">
    						<div class="panel-heading">
    							<h3 class="panel-title pull-left">${i}번 : ${review.festivalName }</h3>
-   							<form id="deleteForm">
-   								<button class="btn btn-default pull-right" type="button" value="${review.reviewNo }">
+   							<form name="deleteForm">
+   								<button id = "deleteReview" class="btn btn-default pull-right" type="button" value="${review.reviewNo }">
    									<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
    								</button>
    							</form>
@@ -230,7 +231,7 @@
    							</div>
    							<hr>
    							<div class="row">
-   								<button class="col-md-12 btn primary btn-block" type="button" value="${review.reviewNo }">조회</button>
+   								<button id="getReview" class="col-md-12 btn primary btn-block" type="button" value="${review.reviewNo }">조회</button>
    							</div>
    						</div>
    						

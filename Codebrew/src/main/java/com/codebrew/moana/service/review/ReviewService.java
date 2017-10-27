@@ -41,10 +41,10 @@ public interface ReviewService {
 	public void failCheckCode(Review review) throws Exception;
 	
 	//10
-	public void addGood(User user) throws Exception;
+	public void addGood(String userId, int reviewNo) throws Exception;
 	
 	//11
-	public void deleteGood(int goodNo) throws Exception;
+	public void deleteGood(String userId, int reviewNo) throws Exception;
 	
 	//12
 	public List<Image> getReviewImage(int reviewNo) throws Exception;
