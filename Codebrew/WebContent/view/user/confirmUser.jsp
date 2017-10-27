@@ -80,7 +80,7 @@
 		 //var authId=$("input[name='authId']").val();
 		 //self.location = "/user/addUser";
 		//self.location = "/user/addUser?authId="+authId;//@@@@@@@@@@@@
-	    //$("form").attr("method","POST").attr("action","/user/confirmUser").submit();
+	    $("form").attr("method","POST").attr("action","/user/confirmUser").submit();
 		}) 	
 		
 	});
@@ -92,7 +92,7 @@
 		$(".btn:contains('인증하기')")	.on("click", function(){
 			
 			var authId=$("input[name='authId']").val();
-			var authCode=$("input[name='auchCode']").val();
+			//var authCode=$("input[name='auchCode']").val();
 			
 			alert(authId);
 			
@@ -115,7 +115,7 @@
 				alert("인증번호를 전송했습니다.");
 				console.log(JSON.stringify(JSONData));//받는정보
 				
-				authCode = JSONData.authCode;
+				var authCode = JSONData.authCode;
 				/* if(authCode != JSONData.authCode){
 					$("span.col-id-checkAuthCode").html("인증번호를 다시 확인해주세요").css("color","red");
 				}else{
@@ -132,7 +132,7 @@
 			
 		});
 		 
-     
+    /*  
      $(function(){
     	 $(".btn:contains('확인')").on("click", function(event){
     		 
@@ -148,15 +148,15 @@
 					$("span.col-id-checkAuthCode").remove();
 					$("form").attr("method","POST").attr("action","/user/confirmUser").submit();
 				}
-    		 
+    		  */
     		 /* $.ajax({
     			type:"POST",
     			url:"userRest/json/confirmUser",
     			
     		 }) */
     		 
-    	 });
-     });
+    /* 	 });
+     }); */
      /* if(authCode != JSONData.authCode){
 			$("span.col-id-checkAuthCode").html("인증번호를 다시 확인해주세요").css("color","red");
 		}else{

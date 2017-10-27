@@ -117,7 +117,7 @@
 		 }); 
 	     */
 	    
-		//입력한 아이디랑 비밀번호가 같은지 알려주는 ajax
+		/* //입력한 아이디랑 비밀번호가 같은지 알려주는 ajax */
 		 $(function(){
 				
 				$("input:password[name='password']").on("keyup",function(){
