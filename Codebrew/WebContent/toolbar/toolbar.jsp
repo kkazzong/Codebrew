@@ -66,6 +66,7 @@
 		                 <span class="caret"></span>
 		              </a>
 		              <ul class="dropdown-menu">
+		                  <li><a href="#">my파티</a></li>
 		                  <li><a href="#">파티등록</a></li>
 		                  <li><a href="#">파티목록</a></li>
 		                  <!-- <li><a href="#">애프터파티</a></li>
@@ -206,7 +207,7 @@
 			});
 			
 			$("li > a:contains('축제등록')").bind('click', function(){
-				self.location = "/festival/getFestivalList?pageNo=1";
+				self.location = "/festival/getFestivalList";
 			});
 			
 			$("li > a:contains('축제직접등록')").bind('click', function(){
@@ -253,6 +254,10 @@
   		
 		//////파티관리//////
 		$(function(){
+			
+			$("li > a:contains('my파티')").bind('click', function(){
+				self.location = "/party/getMyPartyList";
+			});
 			
 			$("li > a:contains('파티등록')").bind('click', function(){
 				self.location = "/party/addParty";
