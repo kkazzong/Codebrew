@@ -179,6 +179,9 @@ body {
 									<div class="col-md-12">
 											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
 											 <Strong>${festival.startDate} ~ ${festival.endDate}</Strong>
+											 <br/>
+											 <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+											 <Strong>${festival.addr } </Strong>
 									</div>
 							</div>
 						</div>

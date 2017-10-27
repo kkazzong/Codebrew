@@ -63,12 +63,12 @@ public class FestivalController {
 		String[] festivalLat = festivalLatitude.split(".");
 		String[] festivalLon = festivalLongitude.split(".");
 		
-		Map<String,Object> map = festivalService.weather(festivalLat[0],festivalLon[0]);
+		Weather weather = festivalService.weather(festivalLat[0],festivalLon[0]);
 
 
 		ModelAndView modelAndView = new ModelAndView();
 		
-		modelAndView.addObject("list",map.get("list"));
+		modelAndView.addObject("weather",weather);
 
 		modelAndView.setViewName("forward:/view/festival/weather.jsp");
 
@@ -442,21 +442,10 @@ public class FestivalController {
 
 			Festival festival = festivalService.getFestivalDB(festivalNo);
 			
-			int a = festival.getFestivalLatitude().indexOf(".");
+			System.out.println("lat" + festival.getFestivalLatitude()+ "\n" + "lon" + festival.getFestivalLongitude());
 			
-			int b = festival.getFestivalLongitude().indexOf(".");
+			Weather weather = festivalService.weather(festival.getFestivalLatitude(),festival.getFestivalLongitude());
 			
-			String festivalLat = festival.getFestivalLatitude().substring(0,a);
-			String festivalLon = festival.getFestivalLongitude().substring(0,b);
-			
-			
-			System.out.println("festivallat...." + festivalLat);
-			System.out.println("festivallon...." + festivalLon);
-			
-			Map<String,Object> map = festivalService.weather(festivalLat,festivalLon);
-			
-			
-
 			festival.setReadCount(festival.getReadCount() + 1);
 
 			festivalService.appendReadCount(festival);
@@ -478,11 +467,8 @@ public class FestivalController {
 			modelAndView.addObject("festival", festival);
 			modelAndView.addObject("returnZzim", returnZzim);
 			modelAndView.addObject("ticket", ticket);
+			modelAndView.addObject("weather", weather);
 			
-			
-			System.out.println("map확인........" + map.get("list"));
-			
-			modelAndView.addObject("list", map.get("list"));
 
 			modelAndView.setViewName("forward:/view/festival/getFestival.jsp");
 

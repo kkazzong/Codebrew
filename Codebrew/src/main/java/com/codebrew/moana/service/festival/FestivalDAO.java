@@ -39,6 +39,6 @@ public interface FestivalDAO {
 	
 	public void writeFestival(Festival festival) throws Exception ;
 	
-	public Map<String,Object> weather(String festivalLat, String festivalLong) throws Exception ;
+	public Weather weather(String festivalLat, String festivalLong) throws Exception ;
 	
 }

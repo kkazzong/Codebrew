@@ -130,7 +130,7 @@ public class FestivalDAOImpl implements FestivalDAO {
 	}
 
 	@Override
-	public Map<String,Object> weather(String festivalLat, String festivalLon) throws Exception {
+	public Weather weather(String festivalLat, String festivalLon) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
