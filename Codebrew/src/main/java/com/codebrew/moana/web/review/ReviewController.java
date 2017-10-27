@@ -3,11 +3,16 @@ package com.codebrew.moana.web.review;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -389,9 +394,72 @@ public class ReviewController {
 		
 		//Business Logic수행
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("/view/review/getReviewList.jsp");
+		modelAndView.setViewName("/review/getReviewList");
 		
 		return modelAndView;
+	}
+	
+	/*
+	 * 아래의 Controller는 ckEditor를 이용한 이미지 업로드
+	 */
+	@RequestMapping(value="imageUpload")
+	public void imageUpload(HttpServletRequest request, HttpServletResponse response, @RequestParam("upload") MultipartFile upload) throws Exception{
+		
+		System.out.println(upload.getOriginalFilename());
+		String fileName="upload.getOriginalFilename()";
+		String path=request.getServletContext().getRealPath("/")+"\\resources\\uploadFile\\";
+		
+		File file=new File(path+fileName);
+		String cknp=request.getParameter("CKEditorFuncNum");
+		upload.transferTo(file);
+		
+		response.getWriter().println("<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction("
+    			+ cknp
+    			+ ",'"
+                + "/resources/uploadFile/"+fileName
+                + "','이미지를 업로드 하였습니다.'"
+                + ")</script>");
+		response.getWriter().flush();
+		/*
+		OutputStream out = null;
+		PrintWriter printWriter = null;
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("text/html;charset=utf-8");
+		
+		try{
+			String fileName = upload.getOriginalFilename();
+			byte[] bytes = upload.getBytes();
+			String uploadPath = "C:\\Users\\Admin\\git\\Codebrew\\Codebrew\\WebContent\\resources\\uploadFile\\"+fileName;
+			
+			out = new FileOutputStream(new File(uploadPath));
+			out.write(bytes);
+			String callback = request.getParameter("CKEditorFuncNum");
+			
+			printWriter = response.getWriter();
+			String fileUrl = "imageUpload\\"+fileName; 
+			
+			printWriter.println("<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction("
+                    			+ callback
+                    			+ ",'"
+			                    + fileUrl
+			                    + "','이미지를 업로드 하였습니다.'"
+			                    + ")</script>");
+			printWriter.flush();
+		} catch(IOException e) {
+			e.printStackTrace();
+		} finally {
+			try{
+				if (out != null){
+					out.close();
+				}
+				if(printWriter != null){
+					printWriter.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return;*/
 	}
 
 }

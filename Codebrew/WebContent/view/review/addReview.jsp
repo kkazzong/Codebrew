@@ -19,6 +19,11 @@
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	
+	<!-- 아래 테스트 중 -->
+	<script type = "text/javascript" src="../../resources/javascript/ckeditor/ckeditor.js"></script>
+	
+	
 	<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
 	<!-- <script src="js/vendor/jquery.ui.widget.js"></script> -->
 	<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
@@ -147,22 +152,22 @@
 	
 	// 다중 이미지 미리보기 and 삭제
 	// 이미지 정보를 담을 배열
+	/* 
 	var sel_files = [];
 	
 	$(document).ready(function(){
 		$("#uploadReviewImageList").on("change", handleImgsFilesSelect);
 	});
 	
-	/* function fileUploadAction() {
+	function fileUploadAction() {
 		console.log("fileUploadAction");
 		$("#uploadReviewImageList").trigger('click"');
-	} */
+	} 
 	
 	
 	function handleImgsFilesSelect(e){
 		
-		//이미지 정보 초기화 : handler event 발생시 기존 이미지 정보들 모두 초기화
-		sel_files = [];
+		sel_files = []; //이미지 정보 초기화 : handler event 발생시 기존 이미지 정보들 모두 초기화
 		$(".imgs_wrap").empty();
 		
 		var files = e.target.files;
@@ -195,7 +200,34 @@
 		$(img_id).remove();
 		console.log(sel_files);
 	}
-	
+	 */
+	 
+	/* 테스트중 ckeditor */
+	/* 
+	$(function(){
+        
+        CKEDITOR.replace( 'ckeditor', {//해당 이름으로 된 textarea에 에디터를 적용
+            width:'100%',
+            height:'400px',
+            filebrowserImageUploadUrl: '/review/imageUpload' //여기 경로로 파일을 전달하여 업로드 시킨다.
+        });
+         
+         
+        CKEDITOR.on('dialogDefinition', function( ev ){
+            var dialogName = ev.data.name;
+            var dialogDefinition = ev.data.definition;
+          
+            switch (dialogName) {
+                case 'image': //Image Properties dialog
+                    //dialogDefinition.removeContents('info');
+                    dialogDefinition.removeContents('Link');
+                    dialogDefinition.removeContents('advanced');
+                    break;
+            }
+        });
+    });
+	 */
+	 
 	</script>
 	
 </head>
@@ -227,7 +259,7 @@
 		<!-- in the form group, should be there the hidden prodNo? -->
 		<div class="form-group">
 			<label for="festivalName" class="col-sm-offset-1 col-sm-3 control-label">축제번호</label>
-			<div class="col-sm-4">
+			<div class="col-md-4">
 				<input type="text" class="form-control" id="festivalNo" name="festivalNo" value="${festival.festivalNo }">
 			</div>
 		</div>
@@ -236,7 +268,7 @@
 		
 		<div class="form-group">
 			<label for="festivalName" class="col-sm-offset-1 col-sm-3 control-label">축제명</label>
-			<div class="col-sm-4">
+			<div class="col-md-4">
 				<input type="text" class="form-control" id="festivalName" name="festivalName" value="${festival.festivalName}" >
 			</div>
 		</div>
@@ -274,7 +306,7 @@
 		
 		<div class="form-group">
 			<label for="reviewFestivalRating" class="col-sm-offset-1 col-sm-3 control-label">축제에대한 작성자의 평점</label>
-			<div class="col-sm-2">
+			<div class="col-sm-1">
 				<input type="number" class="form-control" id="reviewFestivalRating" name="reviewFestivalRating" min="1" max="10"> 
 			</div>
 		</div>
@@ -283,10 +315,7 @@
 		
 		<div class="form-group">
 			<label for="reviewImageList" class="col-sm-offset-1 col-sm-3 control-label">후기사진</label>
-			<div class="col-sm-3">
-			<!-- 
-				<a href="javascript:" onclick="fileUploadAction();" class="my_button">파일업로드</a>
-				 -->
+			<div class="col-sm-4">
 				<input type="file" class="form-control" id="uploadReviewImageList" name="uploadReviewImageList" multiple/>
 			</div>
 			<div class="imgs_wrap">
@@ -295,9 +324,12 @@
 		</div>
 		
 		<div class="form-group">
-			<label for="reviewDetail" class="col-sm-offset-1 col-sm-3 control-label">후기내용</label>
-			<div class="col-sm-4">
+			<label for="reviewDetail" class="col-sm-1 control-label">후기내용</label>
+			<div class="col-sm-10">
+				 
 				<textarea rows="5" cols="30" class="form-control" id="reviewDetail" name="reviewDetail"></textarea>
+				 
+				<!-- <textarea rows="5" cols="30" class="ckeditor" id="ckeditor"></textarea> ckEditor 사용-->
 				<span id="helpBlock" class="help-block">
 					<strong class="text-danger">후기내용은 반드시 입력해야 합니다.</strong>
 				</span>

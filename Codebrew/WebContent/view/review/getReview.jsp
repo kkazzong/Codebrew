@@ -134,11 +134,11 @@
 							<div class="carousel-inner" role="listbox">
 							<c:set var="i" value="0"/>
 								<div class="item active">
-									<img src="/resources/uploadFile/${review.reviewImageList[0].reviewImage }">
+									<img src="/resources/uploadFile/${review.reviewImageList[0].reviewImage }" width="100%" height="600">
 								</div>
 							<c:forEach var="imageList" begin="1" items="${review.reviewImageList }">
 								<div class="item">
-									<img src="/resources/uploadFile/${imageList.reviewImage }">
+									<img src="/resources/uploadFile/${imageList.reviewImage }" width="100%" height="600">
 								</div>
 							</c:forEach>
 							</div>
