@@ -567,7 +567,7 @@
 		    	<input type="text" class="form-control" id="ticketPrice" name="ticketPrice" value="0">
 		    </div>
 		    <div class="col-sm-2">
-		    	<input type="radio" id="ticketPriceFree" name="ticketPrice" >무료
+		    	<input type="checkbox" id="ticketPriceFree" name="ticketPrice" >무료
 		    </div>
 		  </div>
 		  

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<div id="map" style="width:350px;height:350px;"></div>
+<div id="map" style="width:570px;height:350px;"></div>
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0de5c0a0d8c0939d9e305e1dfb812b72&libraries=services"></script>
 <script>

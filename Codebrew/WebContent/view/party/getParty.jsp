@@ -263,11 +263,13 @@
 						<br>
 						&nbsp;&nbsp;&nbsp;&nbsp;${party.partyDetail}
 					</div>
-					<div class="col-md-12">
-						<small><span class="glyphicon glyphicon-tags"></span> &nbsp; 티켓 가격</small>
-						<br>
-						&nbsp;&nbsp;&nbsp;&nbsp;￦ ${ticket.ticketPrice}원
-					</div>
+					<c:if test="${ empty party.festival.festivalNo}">
+						<div class="col-md-12">
+							<small><span class="glyphicon glyphicon-tags"></span> &nbsp; 티켓 가격</small>
+							<br>
+							&nbsp;&nbsp;&nbsp;&nbsp;￦ ${ticket.ticketPrice}원
+						</div>
+					</c:if>
 					<div class="col-md-12">
 						<br><br><hr>
 						<div>${party.partyPlace}
@@ -318,13 +320,11 @@
 						<span id="partyButtonDiv"></span>					
 					<!-- <button type="button" class="btn btn-primary">뒤로</button> -->
 					</div>	
-												
-						
-					
 				</div>
 			</div>
 		</div>
 	</div>
+</div>
 	
 
 

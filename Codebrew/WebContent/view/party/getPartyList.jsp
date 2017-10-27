@@ -185,10 +185,10 @@
 	} 
 	
 	.text-center white {
-		/* height: 500px; */
-		top: 25%;
+		line-height: 500px; 
+		/* top: 25%;
 		position: relative;
-		text-align: center;
+		text-align: center; */
 	}
 	
 	/* .main .search-main input[type=text] {
@@ -228,7 +228,7 @@
 		<!-- page header -->
 		<div class="row" id="main">
 			<div class="col-md-12">
-				<div class="col-md-6 col-md-offset-3 padding-none">
+				<div>
 	                    <div class="text-center white">
 	                        <!-- <ul class="title">
 	                            <li>이번 주말에</li>
@@ -245,19 +245,17 @@
 	                                
 	                                <form class="form-inline" name="detailForm">
 	                                	<div class="form-group ">
-										    <div class="form-select">
-										    	<div class="col-md-6 control-label">
-												<span class="col-sm-offset-2 col-sm-3 control-label"><button type="button" class="btn btn-default" >파티</button></span>
-												<span class="col-sm-offset-2 col-sm-3 control-label"><button type="button" class="btn btn-default" >애프터 파티</button></span>
-												</div>
-												<!-- <button type="button" class="btn btn-default" >해당 파티</button> -->
-												<div class="col-md-6 control-label">
-												<span class="col-sm-offset-2"><input type="hidden" class="form-control" id="searchCondition" name="searchCondition" value="${ ! empty search.searchCondition ? search.searchCondition : '' }"></span>
+										    <!-- <div class="form-select"> -->
+										    	<div class="col-md-12 control-label">
+												<span class="col-md-3 control-label"><button type="button" class="btn btn-default" >파티</button></span>
+												<span class="col-md-6 control-label"><button type="button" class="btn btn-default" >애프터 파티</button></span>
+												<input type="hidden" class="form-control" id="searchCondition" name="searchCondition" value="${ ! empty search.searchCondition ? search.searchCondition : '' }">
 												<input type="hidden" id="currentPage" name="currentPage" value=""/>
 												</div>
-											</div>
+												
+											<!-- </div> -->
 										  </div>
-										  
+										  <br>
 										  <div class="form-group">
 										    <label class="sr-only" for="searchKeyword">검색어</label>
 										    

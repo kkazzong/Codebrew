@@ -383,7 +383,7 @@
 		      <input type="text" class="form-control" id="ticketPrice" name="ticketPrice" value="${ empty party.festival.festivalNo ? ticket.ticketPrice : 0 }"> 
 			</div>
 			<div class="col-sm-1">
-			   무료<input type="radio" id="ticketPriceFree" name="ticketPrice" value="0">
+			   무료<input type="checkbox" id="ticketPriceFree" name="ticketPrice" value="0">
 			</div>
 		  </div>
 		 		  
