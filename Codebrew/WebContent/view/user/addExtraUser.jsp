@@ -114,7 +114,7 @@
 			       buttonImageOnly: true,
 			       buttonText: "Select date",
 			       showOn: "button",
-			       buttonImage: "/resources/image/ui/cal.png",
+			       buttonImage: "/resources/image/ui/small_cal.jpg",
 			       yearRange : "1970:2017"
 		       });   
 		    });

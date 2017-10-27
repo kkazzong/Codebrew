@@ -36,15 +36,15 @@ public class UserRestController {
 		System.out.println(this.getClass());
 	}
 	
-	/*//api로 로그인할때 필요한 getUser()
-	@RequestMapping(value="json/getUser/{userId}", method=RequestMethod.GET)
-	public User getUser(@PathVariable String userId)throws Exception{
+    //입력한 아이디와 비밀번호가 맞는지 알려주려고 만든 거
+	@RequestMapping(value="json/getUser", method=RequestMethod.POST)
+	public User getUser(@RequestParam("userId")String userId)throws Exception{
 		
 		System.out.println("/user/json/getUser : GET");
 		
 		return userService.getUser(userId);
 		
-	}*/
+	}
 	
 	/*//api로그인할때 필요한 login() 폼으로 받을거니깐 post
 	@RequestMapping(value="json/login", method=RequestMethod.POST)
@@ -93,7 +93,7 @@ public class UserRestController {
 		
 	}*/
 	
-	   //비밀번호찾을때 존재하지 않은 아이디임을 알려주는 아이디중복체크
+	  //비밀번호찾을때 존재하지 않은 아이디임을 알려주는 아이디중복체크
 		@RequestMapping(value="json/checkUserId", method=RequestMethod.POST)
 		public boolean checkUserId(@RequestParam("userId")String userId)throws Exception{
 			
@@ -103,9 +103,22 @@ public class UserRestController {
 			
 			return result;
 			
-		}
+		} 
 		
-	
+		
+		
+	/*	//아이디와 비밀번호와 맞는지 알려주는 메소드
+		@RequestMapping(value="json/checkPassword", method=RequestMethod.POST)
+		public boolean checkPassword(@RequestParam("userId")String userId)throws Exception{
+			
+			System.out.println("/userRest/json/checkUserId : POST ");
+			
+			boolean result=userService.checkUserId(userId);
+			
+			return result;
+			
+		}*/
+		 
 	
 	//회원 아이디 찾기
 	@RequestMapping(value="/json/findUserId", method=RequestMethod.POST)

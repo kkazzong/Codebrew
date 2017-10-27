@@ -132,10 +132,15 @@
 	<!--  화면구성 div Start /////////////////////////////////////-->
 	<div class="container">
 	
-		<div class="page-header text-info">
-	       <h3>회원목록조회</h3>
-	    </div>
-	    
+			<!-- page header -->
+		<div class="row">
+			<div class="col-md-offset-4 col-md-4">
+				<div class="page-header text-center">
+					<h3 class="text-info"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>회원목록</h3>
+				</div>
+			</div>
+		</div>
+		
 	    <!-- table 위쪽 검색 Start /////////////////////////////////////-->
 	    <div class="row">
 	    

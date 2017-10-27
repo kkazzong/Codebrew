@@ -80,18 +80,19 @@
 		 //var authId=$("input[name='authId']").val();
 		 //self.location = "/user/addUser";
 		//self.location = "/user/addUser?authId="+authId;//@@@@@@@@@@@@
-	    $("form").attr("method","POST").attr("action","/user/confirmUser").submit();
+	    //$("form").attr("method","POST").attr("action","/user/confirmUser").submit();
 		}) 	
 		
 	});
 		
-		
+	var authCode = ""; //인증번호 전역변수.. 전역변수를 지정하면 메소드 안을 실행하고 나서 바뀐 값으로 또 쓸수 있다.
+	
      $(function(){
 			
 		$(".btn:contains('인증하기')")	.on("click", function(){
 			
 			var authId=$("input[name='authId']").val();
-			//var authCode=$("input[name='auchCode']").val();
+			var authCode=$("input[name='auchCode']").val();
 			
 			alert(authId);
 			
@@ -113,6 +114,13 @@
 			success: function(JSONData,status){
 				alert("인증번호를 전송했습니다.");
 				console.log(JSON.stringify(JSONData));//받는정보
+				
+				authCode = JSONData.authCode;
+				/* if(authCode != JSONData.authCode){
+					$("span.col-id-checkAuthCode").html("인증번호를 다시 확인해주세요").css("color","red");
+				}else{
+					$("span.col-id-checkAuthCode").remove();
+				} */
 				//{"authId":"skale83@naver.com","authCode":"c067bf517dcf47aab5fff3cc3d22f79e"}
 			//콘솔에 이렇게 옴
 			
@@ -124,8 +132,37 @@
 			
 		});
 		 
-		
-	
+     
+     $(function(){
+    	 $(".btn:contains('확인')").on("click", function(event){
+    		 
+    		 var authId=$("input[name='authId']").val();
+    		 var authCodeUser=$("input[name='authCode']").val();
+    		 
+    		 
+    		 if(authCode != authCodeUser){
+					$("span.col-id-checkAuthCode").html("인증번호를 다시 확인해주세요").css("color","red");
+					//event.preventDefault();
+					return;
+				}else{
+					$("span.col-id-checkAuthCode").remove();
+					$("form").attr("method","POST").attr("action","/user/confirmUser").submit();
+				}
+    		 
+    		 /* $.ajax({
+    			type:"POST",
+    			url:"userRest/json/confirmUser",
+    			
+    		 }) */
+    		 
+    	 });
+     });
+     /* if(authCode != JSONData.authCode){
+			$("span.col-id-checkAuthCode").html("인증번호를 다시 확인해주세요").css("color","red");
+		}else{
+			$("span.col-id-checkAuthCode").remove();
+		}
+	 */
 	
 		 //이미 가입된 아디로 본인인증을 하려고 할 경우 ajax
 	 /*  $(function(){
@@ -175,6 +212,8 @@
 					    	
 				    	  if(JSONData == false){
 					    		$("span.col-id-check").html("이미 가입된 아이디입니다.").css("color","blue");
+				    	  }else{
+				    		  $("span.col-id-check").remove();
 				    	  }
 					    }
 					});		
@@ -221,7 +260,7 @@
 		  </div>
 		</div>
 		  
-		  <span class="col-id-check"></span>
+		  
 		  
 	  
 		  	
@@ -247,7 +286,7 @@
 		  
 		  </div>
 		  
-		  
+		  <span class="col-id-checkAuthCode"></span>
 		
 		</form>
 		
