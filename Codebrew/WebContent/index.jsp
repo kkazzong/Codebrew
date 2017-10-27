@@ -44,24 +44,7 @@
 
 
 	<script type="text/javascript">
-	/* Kakao.init('9f9b09052da56dddc3bc66e8a1632a69');
-	
-	$(function(){
-		
-	$("a:contains('카카오로그아웃')").on("click",function(){
-		 
-		 
-		Kakao.Auth.logout(function(data) {
-		 alert(data);
-		 if(data){
-			 alert("카카오로그아웃이 되었습니다.");
-		 }else{
-			self.location="/user/logout"; 
-		 }
-		})
-	 })
-	})
-			 */
+
 	    
 </script>
 <title>Insert title here</title>
@@ -123,11 +106,27 @@
 <br>
 <br>
 
+<a href="/view/user/addUser.jsp">회원가입 ui 확인용</a>
+<br>
+<br>
+
 
 <a href="/view/festival/writeFestival.jsp">직접등록</a>
 
+<br>
+<br>
+<!--유아이 수정용 주소  -->
+<a href="/view/user/addExtraUser.jsp">추가정보 입력 ui</a>
 
+<br>
+<br>
 
+<a href="/view/user/findUser.jsp">아이디찾기/비밀번호 찾기 ui 확인용</a>
+
+<br>
+<br>
+
+<a href="/view/user/confirmUser.jsp">본인인증UI용</a>
 
 
 

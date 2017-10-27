@@ -40,7 +40,7 @@ public class LogonCheckInterceptor extends HandlerInterceptorAdapter {
 			if(		uri.indexOf("addUser") != -1 ||	uri.indexOf("login") != -1 		  || 
 					uri.indexOf("findPwd") != -1 || uri.indexOf("confirmUser") != -1  || 
 					uri.indexOf("findUser") != -1 || uri.indexOf("json/confirmUser") != -1 ||
-					uri.indexOf("json/checkUserId") != -1 ||
+					uri.indexOf("json/checkUserId") != -1 || uri.indexOf("json/findUserId") != -1 ||
 					uri.indexOf("kakaoLogin") != -1){
 				request.getRequestDispatcher("/index.jsp").forward(request, response);
 				System.out.println("[ 로그인 상태임 불필요한 요구.... ]");
@@ -59,7 +59,7 @@ public class LogonCheckInterceptor extends HandlerInterceptorAdapter {
 					uri.indexOf("findPwd") != -1 || uri.indexOf("confirmUser") != -1  || 
 					uri.indexOf("findUser") != -1||uri.indexOf("json/confirmUser") != -1 ||
 					uri.indexOf("json/checkNickname") != -1 || uri.indexOf("json/checkUserId") != -1||
-					uri.indexOf("kakaoLogin") != -1){
+					uri.indexOf("kakaoLogin") != -1 ||  uri.indexOf("json/checkUserId") != -1){
 				System.out.println("[로그인 시도 상태 .... ]");
 				System.out.println("[ LogonCheckInterceptor end........]\n");
 				return true;
