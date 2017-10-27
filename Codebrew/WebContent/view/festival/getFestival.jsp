@@ -125,7 +125,7 @@
 		
 		$(function() {
 			$("button:contains('수정하기')").on("click", function() {
-			self.location = "/festival/updateFestivalView?festivalNo="+${festival.festivalNo};
+			self.location = "/festival/updateFestivalView?festivalNo="+${festival.festivalNo}+"&isNull="+${festival.isNull};
 		});
 	});
 		
@@ -420,9 +420,10 @@ $(function(){
 			
 				<c:if test="${ticket!=null }">
 					<button type="button" class="btn btn-primary">수정하기</button>
+					<button type="button" class="btn btn-primary">삭제하기</button>
 				</c:if>
 				
-					<button type="button" class="btn btn-primary">삭제하기</button>
+					
 			
 					<input type = "button" id = "back" name = "back" value = "뒤로"/>
 			
