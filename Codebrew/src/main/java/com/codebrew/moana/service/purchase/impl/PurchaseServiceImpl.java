@@ -142,6 +142,11 @@ public class PurchaseServiceImpl implements PurchaseService {
 	}
 	
 	@Override
+	public int getPurchaseNo(String userId, int partyNo) {
+		return purchaseDAO.getPurchaseNo(userId, partyNo);
+	}
+	
+	@Override
 	public int cancelPurchase(Purchase purchase) throws Exception {
 		return purchaseDAO.updatePurchaseTranCode(purchase);
 	}

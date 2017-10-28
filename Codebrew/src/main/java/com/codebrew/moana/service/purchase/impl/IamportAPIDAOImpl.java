@@ -250,4 +250,10 @@ public class IamportAPIDAOImpl implements PurchaseDAO {
 		return null;
 	}
 
+	@Override
+	public int getPurchaseNo(String userId, int partyNo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

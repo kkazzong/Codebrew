@@ -412,4 +412,14 @@
 			</where>
 		) countTable
 	</select>
+	
+	<select id="getPurchaseNo" parameterType="map" resultMap="selectPurchaseMap">
+		SELECT pc.purchase_no AS purchase_no
+		FROM ticket t, purchase pc
+		WHERE t.ticket_no = pc.ticket_no
+		AND pc.user_id = #{userId}
+		AND t.party_no = #{partyNo}
+	</select>
+	
+	
 </mapper>

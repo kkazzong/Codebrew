@@ -24,6 +24,7 @@ public interface PurchaseDAO {
 	
 	public int addPurchase(Purchase purchase, String path) throws Exception; 
 	public Purchase getPurchase(int purchaseNo);
+	public int getPurchaseNo(String userId, int partyNo);
 	public List<Purchase> getPurchaseList(String userId, String purchaseFlag, Search search);
 	public List<Purchase> getSaleList(Search search);
 	public int updatePurchaseTranCode(Purchase purchase) throws Exception;

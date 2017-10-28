@@ -312,4 +312,11 @@ public class KftcAPIDAOImpl implements PurchaseDAO {
 		return 0;
 	}
 
+
+	@Override
+	public int getPurchaseNo(String userId, int partyNo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

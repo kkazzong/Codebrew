@@ -107,6 +107,15 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 	public Purchase getPurchase(int purchaseNo) {
 		return sqlSession.selectOne("PurchaseMapper.getPurchase", purchaseNo);
 	}
+	
+	@Override
+	public int getPurchaseNo(String userId, int partyNo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userId", userId);
+		map.put("partyNo", partyNo);
+		Purchase purchase =  sqlSession.selectOne("PurchaseMapper.getPurchaseNo", map);
+		return purchase.getPurchaseNo();
+	}
 
 	@Override
 	public List<Purchase> getPurchaseList(String userId, String purchaseFlag, Search search) {
@@ -261,5 +270,6 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }

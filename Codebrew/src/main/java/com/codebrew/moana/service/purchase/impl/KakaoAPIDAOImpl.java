@@ -350,6 +350,12 @@ public class KakaoAPIDAOImpl implements PurchaseDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public int getPurchaseNo(String userId, int partyNo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 	
 
