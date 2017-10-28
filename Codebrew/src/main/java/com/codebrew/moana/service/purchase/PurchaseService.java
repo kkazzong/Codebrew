@@ -20,6 +20,7 @@ public interface PurchaseService {
 	
 	public Purchase addPurchase(Purchase purchase, String path) throws Exception;
 	public Purchase getPurchase(int purchaseNo);
+	public int getPurchaseNo(String userId, int partyNo);
 	public Map<String, Object> getPurchaseList(String userId, String purchaseFlag, Search search);
 	public Map<String, Object> getSaleList(Search search);
 	public int cancelPurchase(Purchase purchase) throws Exception;

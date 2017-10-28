@@ -91,6 +91,7 @@ public class PurchaseRestController {
 		}
 		
 		String path = session.getServletContext().getRealPath("/");
+		path += "\\resources\\image\\QRCodeImage";
 		purchase.setTicket(ticket);
 		//purchase.setUser((User)session.getAttribute("user"));
 		purchase = purchaseService.addPurchase(purchase, path);
@@ -105,6 +106,15 @@ public class PurchaseRestController {
 		Ticket ticket = ticketService.getTicketByTicketNo(purchase.getTicket().getTicketNo());
 		purchase.setTicket(ticket);
 		return purchase;
+	}
+	
+	@RequestMapping("/json/getPurchaseNo/{userId}/{partyNo}")
+	public Map getPurchase(@PathVariable("userId") String userId,
+														@PathVariable("partyNo") String partyNo) {
+		int purchaseNo = purchaseService.getPurchaseNo(userId, Integer.parseInt(partyNo));
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("purchaseNo", purchaseNo);
+		return map;
 	}
 	
 	@RequestMapping(value="/json/getPurchaseList/{userId}/{purchaseFlag}", method=RequestMethod.POST)

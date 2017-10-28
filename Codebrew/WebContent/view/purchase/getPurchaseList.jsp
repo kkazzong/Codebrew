@@ -73,7 +73,8 @@
 			fncGetList(1);
 		}
 	}
-
+	
+	
 	$(function(){
 		
 		var userId = $("input:hidden[name='userId']").val();
@@ -310,7 +311,7 @@
 	
 	<!-- 모달 -->
 	<jsp:include page="/view/purchase/filterModalUser.jsp"></jsp:include>
-	
+	<button id="partyButtonDiv" type="button">파티</button>
 	<div class="container">
 	
 		<!-- <div class="row">
