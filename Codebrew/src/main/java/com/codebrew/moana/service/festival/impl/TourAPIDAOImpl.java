@@ -54,11 +54,11 @@ public class TourAPIDAOImpl implements FestivalDAO {
 	@Value("#{keyProperties['searchKeywordBasicForm']}")
 	String searchKeywordBasicForm;
 
-	@Value("#{keyProperties['weatherURL']}")
-	String weatherURL;
+	@Value("#{keyProperties['openWeatherMapURL']}")
+	String openWeatherMapURL;
 
-	@Value("#{keyProperties['forecastSpaceDataBasicForm']}")
-	String forecastSpaceDataBasicForm;
+	@Value("#{keyProperties['openWeatherMapKey']}")
+	String openWeatherMapKey;
 
 	private Festival festival;
 	
@@ -67,8 +67,6 @@ public class TourAPIDAOImpl implements FestivalDAO {
 	Date dt = new Date();
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 	int currentDate = Integer.parseInt(sdf.format(dt).toString());
-	
-	String inTime   = new java.text.SimpleDateFormat("HH").format(new java.util.Date())+"00";
 
 	public void setSqlSession(SqlSession sqlSession) {
 		this.sqlSession = sqlSession;
@@ -521,53 +519,42 @@ public class TourAPIDAOImpl implements FestivalDAO {
 		return map;
 	}
 
-	public Map<String,Object> weather(String festivalLat, String festivalLon) throws Exception {
+	public Weather weather(String festivalLat, String festivalLon) throws Exception {
 		
 		System.out.println("weatherDAO........" + festivalLon + " / " + festivalLat);
 
-		StringBuilder urlBuilder = new StringBuilder(weatherURL + forecastSpaceDataBasicForm);
-		urlBuilder.append("&base_date=" + currentDate 
-								+ "&nx=" + festivalLat 
-									+ "&ny=" + festivalLon
-										+ "&base_time=0500"
-											+ "&_type=json");
+		//"http://api.openweathermap.org/data/2.5/weather?lat=35.8585245260&lon=129.2156751589&lang=kr&APPID="+key;
+		
+		StringBuilder urlBuilder = new StringBuilder("http://api.openweathermap.org/data/2.5/weather?");
+		urlBuilder.append("lat=" +  festivalLat 
+							+ "&lon=" + festivalLon 
+								+ "&lang=kr" 
+									+ "&APPID=" + openWeatherMapKey);
 
 		StringBuilder sb = TourAPIDAOImpl.sendGetURL(urlBuilder);
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-
-		List<Weather> list = new ArrayList<Weather>();
-		
-		
 
 		JSONObject jsonobj = (JSONObject) JSONValue.parse(sb.toString());
-		JSONObject jsonobj2 = (JSONObject) jsonobj.get("response");
-		JSONObject jsonobj3 = (JSONObject) jsonobj2.get("body");
-		JSONObject jsonobj4 = (JSONObject) jsonobj3.get("items");
-		JSONArray jsonarray = (JSONArray) jsonobj4.get("item");
 		
-		System.out.println("jsonobj 확인.........." + jsonarray);
-
+		System.out.println("jsonobj..........." + jsonobj);
+		
+		JSONArray jsonarray = (JSONArray) jsonobj.get("weather");
+		System.out.println("weather에서 jsonobj............."+ jsonarray);
+		
 		for (int i = 0; i < jsonarray.size(); i++) {
 
-			JSONObject jsonobj5 = (JSONObject) jsonarray.get(i);
+			JSONObject jsonobj2 = (JSONObject) jsonarray.get(i);
 			
-			Weather weather = new Weather();
-			ObjectMapper objectMapper = new ObjectMapper();
-			weather = objectMapper.readValue(jsonobj5.toString(), Weather.class);
-			
-			System.out.println("DAO에서 weather.........." + weather);
-			
-			this.weather=weather;
-			
-			list.add(weather);
-			
-			map.put("list", list);
-
+		Weather weather = new Weather();
+		ObjectMapper objectMapper = new ObjectMapper();
+		weather = objectMapper.readValue(jsonobj2.toString(), Weather.class);
+		this.weather=weather;
+		return weather;
+		
 		}
+			
+		System.out.println("DAO에서 weather.........." + weather);
 		
-		
-		return map;
+		return weather;
 
 	}
 

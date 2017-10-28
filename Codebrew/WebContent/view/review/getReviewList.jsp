@@ -46,6 +46,11 @@
 	   	$("form[name='detailForm']").attr("method" , "POST").attr("action" , "/review/getReviewList").submit();
 	}
 	
+	//테스트미완
+	function fncDeleteListFromList() {
+		$("#form[name='deleteForm']").attr("method", "POST").attr("action", "/review/deleteReview").submit();
+	}
+	
 	//=====> "검색", reviewTitle link Event 연결 및 처리
 	$(function(){
 		
@@ -102,6 +107,12 @@
 		$( "button:contains('조회')" ).on("click" , function() {
 			//alert("조회버튼 클릭 : val = "+$(this).val());
 			self.location="/review/getReview?reviewNo="+$(this).val();
+		});
+		 
+		 //테스트미완
+		$( "#deleteReview" ).on("click", function(){
+			//alert("휴지통버튼 클릭 : val = "+$(this).val());
+			self.location="/revoew/deleteReview";
 		});
 		
 		//==> UI 수정 추가부분  :  reviewTitle LINK Event End User 에게 보일수 있도록 
@@ -193,9 +204,11 @@
    						<div class="panel-heading">
    							<h3 class="panel-title pull-left">${i}번 : ${review.festivalName }</h3>
    							<form name="deleteForm">
+   								<c:if test = "${sessionScope.user.role == 'a' }">
    								<button id = "deleteReview" class="btn btn-default pull-right" type="button" value="${review.reviewNo }">
    									<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
    								</button>
+   								</c:if>
    							</form>
    							<div class="clearfix"></div>
    						</div>

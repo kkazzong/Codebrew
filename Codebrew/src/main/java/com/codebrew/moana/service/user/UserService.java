@@ -19,7 +19,7 @@ public interface UserService {
 	//회원리스트
 	public Map<String,Object> getUserList(Search search)throws Exception;
 	
-	//회원정보수정, 위치정보동의, 타계정 회원가입, 코코넛지급
+	//회원정보수정, 위치정보동의, 타계정 회원가입
 	public void updateUser(User user)throws Exception;
 	
 	//회원탈퇴
@@ -43,4 +43,7 @@ public interface UserService {
 	//카카오로그인할때 정보가지고 올거
 	public User getCode(String authorize_code) throws Exception;
 	
+	//코코넛수량 업데이트
+    public void updateCoconut(User user)throws Exception;
+
 }

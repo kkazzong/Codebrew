@@ -39,8 +39,8 @@
 		<if test="profileImage != null"><!--null이면 건너 뛰고 defaultValue가 들어간다 -->
 			profile_image,
 		</if>
-		<if test="locationFlag !=null">
-		    location_flag,
+		<if test="locationFlag != null">
+				#{location_flag:VARCHAR},
 		</if>
 		coconut_count,
 		user_reg_date)
@@ -56,7 +56,7 @@
 				#{profileImage:VARCHAR},
 			</if>
 			<if test="locationFlag != null">
-				#{locationFlag:VARCHAR},
+				#{location_flag:VARCHAR},
 			</if>
 			'10',<!--가입하면 코코넛 10개 무료지급  -->
 			SYSDATE)
@@ -91,10 +91,10 @@
 	<if test="profileImage != null">
 	profile_image=#{profileImage:VARCHAR},
 	</if>
-	password=#{password:VARCHAR},
-	<if test="locationFlag !=null">
+	<if test="locationFlag != null">
 	location_flag=#{locationFlag:VARCHAR},
 	</if>
+	password=#{password:VARCHAR},
 	coconut_count=#{coconutCount:NUMERIC}
 	</set>
 	
@@ -139,7 +139,7 @@
 	SELECT COUNT(*)
 	FROM(SELECT user_id, user_name, nickname, phone, gender, age, coconut_count, user_reg_date
 	FROM users
-	<if test="searchCondition !=null">
+	<if test="searchCondition != null">
 	<where>
 	<if test="searchCondition == 1 and searchKeyword != '' ">
 	user_id like '%'|| #{searchKeyword} || '%'
@@ -183,6 +183,17 @@
 	where user_id = #{userId}
     </update>
 
+
+   <!--코코넛 업데이트  -->
+   <update id="updateCoconut" parameterType="string">
+   UPDATE users
+   
+   <set>
+   coconut_count = #{coconutCount}
+   </set>
+   
+   where user_id = #{userId}
+   </update>
 
 
 
