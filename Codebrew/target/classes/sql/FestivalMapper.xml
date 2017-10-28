@@ -31,7 +31,6 @@
 		<result property="useTimeFestival" column="USE_TIME_FESTIVAL" jdbcType="VARCHAR" />
 		<result property="deleteFlag" column="DELETE_FLAG" jdbcType="VARCHAR" />
 		<result property="festivalImage" column="FESTIVAL_IMAGE" jdbcType="VARCHAR" />
-		<result property="regDate" column="REG_DATE" jdbcType="DATE" />
 </resultMap>
 
 
@@ -61,8 +60,7 @@
 		PROGRAM,
 		USE_TIME_FESTIVAL,
 		DELETE_FLAG,
-		FESTIVAL_IMAGE,
-		REG_DATE
+		FESTIVAL_IMAGE
 		
 		)
 		
@@ -91,10 +89,7 @@
 		#{program:VARCHAR},
 		#{useTimeFestival:VARCHAR},
 		#{deleteFlag:VARCHAR},
-		#{festivalImage:VARCHAR},
-		<!-- TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS') -->
-		SYSDATE
-		<!-- TO_DATE(SYSDATE,'yyyy/mm/dd hh24:mi:ss') -->
+		#{festivalImage:VARCHAR}
 		
 		
 		)
@@ -136,9 +131,6 @@
 			USE_TIME_FESTIVAL = #{useTimeFestival:VARCHAR},
 			DELETE_FLAG = #{deleteFlag:VARCHAR},
 			FESTIVAL_IMAGE = #{festivalImage:VARCHAR},
-			<!-- REG_DATE=TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS') -->
-			SYSDATE
-			<!-- TO_DATE(SYSDATE,'yyyy/mm/dd hh24:mi:ss') -->
 			
 		</set>
 		WHERE FESTIVAL_NO =#{festivalNo:NUMERIC}
@@ -169,8 +161,7 @@
 		PROGRAM,
 		USE_TIME_FESTIVAL,
 		DELETE_FLAG,
-		FESTIVAL_IMAGE,
-		REG_DATE
+		FESTIVAL_IMAGE
 		 FROM festival
 		 WHERE FESTIVAL_NO = #{VALUE}
 	</select>
@@ -201,8 +192,7 @@
 		PROGRAM,
 		USE_TIME_FESTIVAL,
 		DELETE_FLAG,
-		FESTIVAL_IMAGE,
-		REG_DATE
+		FESTIVAL_IMAGE
 		
 		)
 		
@@ -231,10 +221,7 @@
 		#{program:VARCHAR},
 		#{useTimeFestival:VARCHAR},
 		#{deleteFlag:VARCHAR},
-		#{festivalImage:VARCHAR},
-		<!-- TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS') -->
-		SYSDATE
-		<!-- TO_DATE(SYSDATE,'yyyy/mm/dd hh24:mi:ss') -->
+		#{festivalImage:VARCHAR}
 		
 		
 		)
@@ -250,9 +237,7 @@
 	  					 START_DATE,
 	  					 END_DATE,
 	  					 FESTIVAL_IMAGE,
-	  					 DELETE_FLAG,
-	  					 ADDR,
-	  					 REG_DATE
+	  					 DELETE_FLAG
 
 						 FROM festival
 						 
@@ -278,14 +263,6 @@
 							</if>
 							
 						</if>
-						
-							<if test = 'arrange==null'>
-								order by reg_date desc
-							</if>
-							
-							<if test = 'arrange==""'>
-								order by reg_date desc
-							</if>
 						
 							<if test = 'arrange=="A"'>
 								order by festival_name
