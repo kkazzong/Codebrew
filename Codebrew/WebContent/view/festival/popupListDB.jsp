@@ -2,10 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<%-- <%@include file="/view/festival/admin.jsp"%> --%>
-
-<%-- <%@include file="/view/festival/user.jsp"%> --%>
-
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -27,7 +23,7 @@
 	   
 	    $("#currentPage").val(currentPage)
 	   
-	   $("form").attr("method" , "POST").attr("action" , "/festival/getFestivalListDB").submit();
+	   $("form").attr("method" , "POST").attr("action" , "/festival/getFestivalListDB?menu=pop").submit();
 	   
 	}  
    
@@ -39,12 +35,11 @@
 
 	$(function() {
 
-		$("td:nth-child(1)").on("click", function() {
+		$(".panel-body").on("click", function() {
 
 			var festivalNo = $("p", this).text();
-			var festivalname = $("span", this).text();
 
-			 self.location = "/festivalRest/json/getFestivalDB?festivalNo="+festivalNo;
+			 self.location = "/festivalRest/json/getFestivalDB?menu=pop&festivalNo="+festivalNo;
 			
 		});
 	});
@@ -54,7 +49,6 @@ $(function(){
 		$("input:text[name='searchKeyword']").on('keydown',function(event){
 			
 			if(event.keyCode ==13){
-				/* alert("dpsxj") */
 				event.preventDefault();
 				$( "button:contains('검색')" ).click();
 			}
@@ -68,19 +62,20 @@ $(function(){
 
 </head>
 <body>
-
-<h1><Strong>popupListDB 임당 신사임당</Strong></h1>
+	<div class="container">
+	
+  	<div class="row">
+  	
+  	<div class="col-md-12">
+  	
+  		<div class="page-header text-center">
+					<h3 class="text-info">popupListDB 임당 신사임당</h3>
+				</div>
 
 
 	<form>
 	
-	
-		<br/>
-		<br/>
-		<br/>
-
-
-		전체 게시물 수 : ${resultPage.totalCount }
+	전체 게시물 수 : ${resultPage.totalCount }
 		<br/>
 		현재 페이지 : ${resultPage.currentPage }
 		
@@ -129,65 +124,74 @@ $(function(){
 				    			 value="${! empty search.searchKeyword ? search.searchKeyword : '' }"  >
 				  </div>
 
-		<button type="button" class="btn btn-default">검색</button>
+		<button type="button" class="btn btn-default btn-block">검색</button>
 		
 		<br/>
 		<br/>
+		
 		
 
+		<div class="row">
 		
 		<c:forEach var="festival" items="${list}">
 		
 			<c:if test="${festival.deleteFlag == null }">
-		
-		<br />
-			<table>
-				<tr>
-					<td>
-					
+			
+			<div class="col-md-6">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<h3 class="panel-title pull-left">${i} ${festival.festivalName}</h3>
+								<br/>
+        						<div class="clearfix"></div>
+							</div>
+							
+					<div class="panel-body">
+							
 					<c:if test="${festival.festivalImage.contains('http://')==true }">
 					
-					<img src="${festival.festivalImage }" width="300"height="300" />
+					<img src="${festival.festivalImage }" width="100%"height="300" />
 					
 					</c:if>
 					
 					<c:if test="${festival.festivalImage.contains('http://')==false }">
 					
-					<img src="../../resources/uploadFile/${festival.festivalImage }" width="300"height="300" />
+					<img src="../../resources/uploadFile/${festival.festivalImage }" width="100%"height="300" />
 					
 					</c:if>
 					
-					 <br />
-						<div id="festivalNo" style="display: none">
-							<p>${festival.festivalNo }</p>
+					<br/>
+									<div id="festivalNo" style="display: none">
+										<p>${festival.festivalNo }</p>
+									</div> 
+						<br />
+									
+									<div class="col-md-12">
+											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+											 <Strong>${festival.startDate} ~ ${festival.endDate}</Strong>
+											 <br/>
+											 <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+											 <Strong>${festival.addr } </Strong>
+									</div>
+							</div>
 						</div>
-						
-						 <span> ${festival.festivalName } </span> 
-						 
-						 <br />
-						 
-						 </td>
-				</tr>
-			</table>
-
-			<div>축제기간 ${festival.startDate } ~ ${festival.endDate }</div>
+				</div>	
 			
-			<br />
-			<br />
-		
+			
 			</c:if>
-		</c:forEach>
+			
+			</c:forEach>
+		</div>
 		
 		
-			<input type = hidden id="addr" name = "addr" value = "${festival.addr }" />
-			<input type = hidden id="currentPage" name = "currentPage" value = ${i } />
+		
+		
+		<input type = hidden id="currentPage" name = "currentPage" value = ${i } />
 			
-			<jsp:include page="../../common/pageNavigator.jsp"/>
+			<jsp:include page="../../common/pageNavigator_new.jsp"/>
 			
-
-
-	</form>
-
-
-</body>
+				</form>
+	</div>
+	</div>
+	</div>
+	</body>
 </html>
