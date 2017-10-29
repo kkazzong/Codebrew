@@ -279,6 +279,8 @@
 <!-- <div>
 	<div><a href = "/party/getMyPartyList">My 파티 리스트</a></div>
 </div>	 -->
+
+<!-- <a href="/festival/getFestivalListDB?menu=pop">popup</a> -->
 	</section>
 </body>
 </html>

@@ -1,16 +1,29 @@
 package com.codebrew.moana.web.festival;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.codebrew.moana.common.Page;
+import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Festival;
 import com.codebrew.moana.service.domain.Ticket;
+import com.codebrew.moana.service.domain.User;
+import com.codebrew.moana.service.domain.Weather;
 import com.codebrew.moana.service.domain.Zzim;
 import com.codebrew.moana.service.festival.FestivalService;
 import com.codebrew.moana.service.ticket.TicketService;
@@ -18,11 +31,11 @@ import com.codebrew.moana.service.ticket.TicketService;
 @RestController
 @RequestMapping("/festivalRest/*")
 public class FestivalRestController {
-	
+
 	@Autowired
 	@Qualifier("festivalServiceImpl")
 	private FestivalService festivalService;
-	
+
 	@Autowired
 	@Qualifier("ticketServiceImpl")
 	private TicketService ticketService;
@@ -31,7 +44,7 @@ public class FestivalRestController {
 		// TODO Auto-generated constructor stub
 		System.out.println(this.getClass());
 	}
-	
+
 	@Value("#{commonProperties['pageUnit']}")
 	int pageUnit;
 	@Value("#{commonProperties['pageSize']}")
@@ -39,65 +52,66 @@ public class FestivalRestController {
 
 	@Value("#{imageRepositoryProperties['fileRoot']}")
 	String fileRoot;
-	
+
 	@RequestMapping(value = "/json/addZzim/{userId}/{festivalNo}")
-	public Zzim addZzim(@PathVariable("userId") String userId, @PathVariable("festivalNo") int festivalNo) throws Exception{
-		
+	public Zzim addZzim(@PathVariable("userId") String userId, @PathVariable("festivalNo") int festivalNo)
+			throws Exception {
+
 		System.out.println("json/addZzim........");
-		System.out.println("festivalNo : "+festivalNo);
-		System.out.println("userId : "+userId);
-		
+		System.out.println("festivalNo : " + festivalNo);
+		System.out.println("userId : " + userId);
+
 		Zzim returnZzim = new Zzim(userId, festivalNo);
-		
-		if(festivalService.getZzim(returnZzim)==null){
-			
+
+		if (festivalService.getZzim(returnZzim) == null) {
+
 			System.out.println("addZzim 댐");
-			
+
 			festivalService.addZzim(returnZzim);
-			
+
 			return returnZzim;
-			
-		}else{
-			
+
+		} else {
+
 			System.out.println("deleteZzim~~~~~~~~~~~");
-			
+
 			festivalService.deleteZzim(returnZzim);
-			
+
 			returnZzim = null;
-			
+
 			return returnZzim;
-			
+
 		}
-		
-		}
-	
+
+	}
+
 	@RequestMapping(value = "/json/deleteZzim/{userId}/{festivalNo}")
-	public Zzim deleteZzim(@PathVariable("userId") String userId, @PathVariable("festivalNo") int festivalNo ) throws Exception{
-		
+	public Zzim deleteZzim(@PathVariable("userId") String userId, @PathVariable("festivalNo") int festivalNo)
+			throws Exception {
+
 		System.out.println("json/deleteZzim........");
-		
+
 		System.out.println("deleteZzim userId........." + userId + "," + festivalNo);
-		
-		
-		Zzim returnZzim = new Zzim(userId,festivalNo);
-		
-		festivalService.deleteZzim(returnZzim); 
-		
-//		returnZzim=null;
-		
+
+		Zzim returnZzim = new Zzim(userId, festivalNo);
+
+		festivalService.deleteZzim(returnZzim);
+
+		// returnZzim=null;
+
 		System.out.println("returnZzim 확인 : " + returnZzim);
-				
+
 		return returnZzim;
-		
-		}
-	
+
+	}
+
 	@RequestMapping(value = "json/getZzim", method = RequestMethod.GET)
 	public Zzim getZzim(@RequestParam String userId, @RequestParam int festivalNo) throws Exception {
 
 		System.out.println("getZzim........");
 
 		Zzim zzim = new Zzim();
-		
+
 		zzim.setUserId(userId);
 		zzim.setFestivalNo(festivalNo);
 
@@ -106,34 +120,16 @@ public class FestivalRestController {
 		return returnZzim;
 
 	}
-	
+
 	@RequestMapping(value = "json/getFestivalDB")
-	public Festival getFestivalDB(@RequestParam("festivalNo") int festivalNo)
-			throws Exception {
+	public Festival getFestivalDB(@RequestParam("festivalNo") int festivalNo) throws Exception {
 
-		System.out.println("getFestivalDB..............");
+		Festival festival = festivalService.getFestivalDB(festivalNo);
+		
+		System.out.println("restful getFestivalDB Check..." + festival);
 
-		try {
-
-			Festival festival = festivalService.getFestivalDB(festivalNo);
-
-			Ticket ticket = ticketService.getTicket(festivalNo, "1");
-
-			festival.setTicketCount(ticket.getTicketCount());
-			festival.setTicketPrice(ticket.getTicketPrice());
-
-			return festival;
-
-		} catch (Exception e) {
-
-			Festival festival = festivalService.getFestivalDB(festivalNo);
-
-			return festival;
-
-		}
+		return festival;
 
 	}
-	
-	
 
 }

@@ -402,11 +402,13 @@ public class FestivalController {
 
 	@RequestMapping(value = "getFestivalListDB")
 
-	public ModelAndView getFestivalListDB(@ModelAttribute("search") Search search, @ModelAttribute("page") Page page)
-			throws Exception {
+	public ModelAndView getFestivalListDB(@ModelAttribute("search") Search search, @ModelAttribute("page") Page page
+			,@RequestParam("menu") String menu) throws Exception {
 
 		System.out.println("search 확인 : " + search);
 
+		
+		
 		if (search.getCurrentPage() == 0) {
 			search.setCurrentPage(1);
 		}
@@ -422,10 +424,22 @@ public class FestivalController {
 		modelAndView.addObject("search", search);
 		modelAndView.addObject("list", map.get("list"));
 		modelAndView.addObject("resultPage", resultPage);
-
-		modelAndView.setViewName("forward:/view/festival/getFestivalListDB.jsp");
+		
+		if(menu.equals("pop")==false){
+			modelAndView.setViewName("forward:/view/festival/getFestivalListDB.jsp");
+		}else{
+			modelAndView.setViewName("forward:/view/festival/popupListDB.jsp");
+		}
 
 		return modelAndView;
+		
+		
+		
+
+			
+
+			
+		
 
 	}
 
