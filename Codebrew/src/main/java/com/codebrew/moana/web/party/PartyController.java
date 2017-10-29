@@ -1,8 +1,13 @@
 package com.codebrew.moana.web.party;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.net.URL;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -104,26 +109,28 @@ public class PartyController {
 		//party 도메인 출력
 		System.out.println(">>> /party/addParty :: POST :: party 도메인 \n"+party);
 		
-		//Party Image Upload
-		MultipartFile uploadfile = party.getUploadFile();
 		
-		if(uploadfile != null){
-			String partyImage = uploadfile.getOriginalFilename();
-			System.out.println("uploaded file name :: "+partyImage);
-			
-			String fileDirectory = partyImageDir;
-			System.out.println("uploaded file Directory :: "+fileDirectory);
-			
-			if(partyImage != null && !partyImage.equals("")){
-				partyImage = System.currentTimeMillis()+"_"+partyImage;
+		//Party Image Upload
+				MultipartFile uploadfile = party.getUploadFile();
 				
-				File file = new File(fileDirectory+partyImage);
-				uploadfile.transferTo(file);
-				
-				party.setPartyImage(partyImage);
-			}
-			
-		}
+				if(uploadfile != null){
+					String partyImage = uploadfile.getOriginalFilename();
+					System.out.println("uploaded file name :: "+partyImage);
+					
+					String fileDirectory = partyImageDir;
+					System.out.println("uploaded file Directory :: "+fileDirectory);
+					
+					if(partyImage != null && !partyImage.equals("")){
+						partyImage = System.currentTimeMillis()+"_"+partyImage;
+						
+						File file = new File(fileDirectory+partyImage);
+						uploadfile.transferTo(file);
+						
+						party.setPartyImage(partyImage);
+					}
+				}
+		
+		
 		
 		//partyTime = hour + minutes
 		party.setPartyTime(party.getHour()+"시 "+party.getMinutes()+"분");
@@ -244,25 +251,40 @@ public class PartyController {
 	}*/
 	
 	
-	@RequestMapping( value="deletePartyMember", method=RequestMethod.GET )
-	public ModelAndView deletePartyMember(@RequestParam("partyNo") String partyNo, HttpSession session) throws Exception {
+	@RequestMapping( value="deletePartyMember", method=RequestMethod.POST )
+	public ModelAndView deletePartyMember(@ModelAttribute("partyNo") String partyNo, HttpSession session) throws Exception {
 		
-		System.out.println("\n>>> /party/deletePartyMember :: GET start <<<");
+		System.out.println("\n>>> /party/deletePartyMember :: POST start <<<");
 		//partyNo 파라미터 출력
-		System.out.println(">>> /party/deletePartyMember :: GET :: partyNo 파라미터 \n"+partyNo);
+		System.out.println(">>> /party/deletePartyMember :: POST :: partyNo 파라미터 \n"+partyNo);
 		
+		Search search = new Search();
+		
+		if(search.getCurrentPage() == 0){
+			search.setCurrentPage(1);
+		}
+		search.setPageSize(pageSize);
+		search.setSearchCondition("4");
+		
+		System.out.println("\n<<< /party/deletePartyMember :: POST :: search\n"+search);
 		
 		//Business Logic
 		int dbPartyNo = Integer.parseInt(partyNo);
 		User user = (User)session.getAttribute("user");
 		String userId = user.getUserId();
 		
-		partyService.cancelParty(dbPartyNo, userId);
+		partyService.deletePartyMember(dbPartyNo, userId);
+		Map<String,Object> map = partyService.getMyPartyList(search, userId);
 		
-
+		Page resultPage = new Page(search.getCurrentPage(),((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+		
+		
 		//Model(data) & View(jsp)
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("/view/party/getMyPartyList.jsp");
+		modelAndView.addObject("list", map.get("list"));
+		modelAndView.addObject("resultPage", resultPage);
+		modelAndView.addObject("search", search);
+		modelAndView.setViewName("forward:/view/party/getMyPartyList.jsp");
 		
 		return modelAndView;
 	}
@@ -570,7 +592,7 @@ public class PartyController {
 	}
 	
 	
-	/*@RequestMapping( value="getPartyMemberList", method=RequestMethod.GET)
+	@RequestMapping( value="getPartyMemberList", method=RequestMethod.GET)
 	public ModelAndView getPartyMemberList(@RequestParam("partyNo") String partyNo) throws Exception {
 		
 		System.out.println("\n>>> /party/getPartyMemberList :: GET start <<<");
@@ -603,7 +625,7 @@ public class PartyController {
 		//modelAndView.setViewName("forward:/view/party/getPartyMemberList.jsp");
 				
 		return modelAndView;
-	}*/
+	}
 	
 	
 	/*@RequestMapping( value="getGenderRatio", method=RequestMethod.GET)

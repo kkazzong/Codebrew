@@ -257,7 +257,7 @@
 							<%@include file="/view/party/getGenderRatio.jsp"%> 
 						</div>
 					</div>	
-					<hr>
+					<hr><br>
 					<div class="col-md-12">
 						<small><span class="glyphicon glyphicon-star"></span> &nbsp; 파티 설명</small>
 						<br>
@@ -265,6 +265,7 @@
 					</div>
 					<c:if test="${ empty party.festival.festivalNo}">
 						<div class="col-md-12">
+							<br>
 							<small><span class="glyphicon glyphicon-tags"></span> &nbsp; 티켓 가격</small>
 							<br>
 							&nbsp;&nbsp;&nbsp;&nbsp;￦ ${ticket.ticketPrice}원

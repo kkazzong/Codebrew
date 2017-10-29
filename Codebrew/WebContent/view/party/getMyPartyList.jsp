@@ -127,7 +127,19 @@
 				console.log($(this).find("input:hidden[name='partyNo']").val());
 				var partyNo = $(this).find("input:hidden[name='partyNo']").val()
 				self.location = "/party/getParty?partyNo="+partyNo;
-			})
+			});
+			
+			/* 파티 삭제 */
+			$(".pull-right").each(function(){}).on("click", function(){
+				
+				if(confirm("파티목록에서 삭제하시겠습니까?")) {
+					$(this).parents("#deleteForm").attr("method", "post").attr("action", "/party/deletePartyMember").submit();
+				} else {
+					return;
+				}
+				
+			});
+			
 		});
 		
 		//=============    파티 삭제  Event  처리 		=============
@@ -311,12 +323,20 @@
 								<img class="img-circle" src="/resources/uploadFile/${party.user.profileImage}" width="50" height="50">
 								&nbsp; ${ party.user.nickname }</h3>
 								
-        						<div class="clearfix"></div>
+        						<!-- 삭제버튼 -->
+								<form id="deleteForm">
+										<input type="hidden" name="partyNo" value="${party.partyNo}">
+										
+										<button class="btn btn-default pull-right" type="button" value="${party.partyNo}">
+											<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+										</button>
+								</form>
+								<div class="clearfix"></div>
 							</div>
 							<div class="panel-body">
 								<!-- 파티 -->
 								<input type="hidden" name="partyNo" value="${party.partyNo}">
-									<img width="100%" height="300" src="/resources/uploadFile/${party.partyImage}">
+									<img width="100%" height="100%" src="/resources/uploadFile/${party.partyImage}">
 									<!-- <hr> -->
 									<div class="col-md-12">
 										<h4>
@@ -371,71 +391,7 @@
 			</c:forEach>
 		</div>
 		
-		
-		
-		
-		<%-- <div class="container_list">		
-			<div class="row_list">
-				<input type="hidden" id="currentPageList" name="currentPageList" value="${resultPage.currentPage}"/>
-				
-				<div id="clock"></div>
-				
-				<c:set var="i" value="0" />
-				<c:forEach var="party" items="${list}">
-					<c:set var="i" value="${ i+1 }" />
-					<div id="partyBlock" class="col-sm-6 col-md-4" >
-						<div class="thumbnail">
-							<a href="#" class="thumbnail_image">
-								<img src="../../resources/uploadFile/${party.partyImage}" width="300" height="350"> 
-								<input type="hidden" id="partyNo" name="partyNo" value="${party.partyNo }"/>
-							</a> 
-							<div class="caption">
-								<h3 class="thumbnail_festivalName">${ !empty party.festival.festivalName ? party.festival.festivalName : '' }	
-								</h3>
-								<h3 class="thumbnail_partyName">${ party.partyName }</h3>
-								<p>${ party.user.nickname }</p>
-								<p id = partyDate>${ party.partyDate }</p>
-								<p>${ party.partyPlace }</p>
-								<p>
-								
-								<c:if test="${ !empty search.searchCondition }">
-									<c:if test="${ party.user.userId != user.userId }">
-										<c:choose>
-											<c:when test="${ search.searchCondition == '3' }">
-												<button type="button" class="btn btn-primary" value="${party.partyNo }">파티 삭제</button>
-											</c:when>
-											<c:when test="${ search.searchCondition == '4' }">
-												<c:if test="${ empty party.festival.festivalNo }">
-													<button type="button" class="btn btn-primary" value="${party.partyNo }">티켓 구매 취소</button>
-												</c:if>
-												<c:if test="${ !empty party.festival.festivalNo }">
-													<button type="button" class="btn btn-primary" value="${party.partyNo }">파티 참여 취소</button>
-												</c:if>
-											</c:when>
-										</c:choose>
-									</c:if>	
-								</c:if>
-								<c:if test="${ !empty search.searchCondition && search.searchCondition == '3' }">
-									<button type="button" class="btn btn-primary" value="${party.partyNo }">파티 삭제</button>
 	
-								</c:if>
-								<c:if test="${ !empty search.searchCondition && search.searchCondition == '4' }">
-									<c:if test="${ empty party.festival.festivalNo }">
-										<button type="button" class="btn btn-primary" value="${party.partyNo }">티켓 구매 취소</button>
-										
-									</c:if>
-									<c:if test="${ !empty party.festival.festivalNo }">
-										<button type="button" class="btn btn-primary" value="${party.partyNo }">파티 참여 취소</button>
-										
-									</c:if>
-								</c:if>
-								</p>
-							</div>
-						</div>
-					</div>
-				</c:forEach>
-			</div>
-		</div>  --%>
 		<!-- 목록 조회 End /////////////////////////////////////-->
 	  
  	</div>
