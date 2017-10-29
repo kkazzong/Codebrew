@@ -248,6 +248,11 @@
 		${weather.description }
 	</c:if>
 	
+	<c:if test="${weather.main == 'Mist' }">
+		<img src = "http://openweathermap.org/img/w/50n.png"><br/>
+		${weather.description }
+	</c:if>
+	
 	<c:if test="${weather.main == 'Extreme' && weather.id =='900' }">
 		<img src = "../../resources/image/weather/tornado.gif"><br/>
 		${weather.description }
