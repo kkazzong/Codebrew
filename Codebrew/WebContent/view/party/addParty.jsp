@@ -39,6 +39,7 @@
 			var partyDetail=$("textarea[name='partyDetail']").val();
 			var partyMemberLimit=$("input[name='partyMemberLimit']").val();
 			var ticketCount=$("input[name='ticketCount']").val();
+			var ticketPrice=$("input[name='ticketPrice']").val();
 			
 			var checkNum = /\d/g;
 			
@@ -62,16 +63,28 @@
 				alert("파티설명은 500자 이내로 입력해주세요.");
 				return;
 			}
-			if(partyMemberLimit == null || partyMemberLimit.length <1){
+			/* if(partyMemberLimit == null || partyMemberLimit.length <1){
 				alert("파티 인원은  반드시 입력하셔야 합니다.");
 				return;
-			}
+			} 
 			if(checkNum.test(partyMemberLimit) == false){
 				alert("파티 인원은 반드시 숫자로 입력하셔야 합니다.");
 				return;
 			}
-			if( ticketCount > partyMemberLimit ) {				
+			if(ticketCount > partyMemberLimit) {				
 				alert("티켓 수량은 파티 인원수 이상 입력하실 수 없습니다.");
+				return;
+			}*/
+			if(ticketCount != 0 && checkNum.test(ticketCount) == false){
+				alert("티켓 수량은 반드시 숫자로 입력하셔야 합니다.");
+				return;
+			}
+			if(ticketPrice != 0 && checkNum.test(ticketPrice) == false){
+				alert("티켓 가격은 반드시 숫자로 입력하셔야 합니다.");
+				return;
+			}
+			if(ticketCount == 0 && ticketPrice == 0){
+				alert("티켓 수량이 무제한인 경우 티켓 가격을 반드시 입력하셔야 합니다.");
 				return;
 			}
 				
@@ -151,41 +164,54 @@
 	       });
 		
 		
-		//============= "티켓가격 무료"  Event 처리 및  연결 =============
+		//============= "티켓"  Event 처리 및  연결 =============
 		$(function() {
-			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			$("#ticketPriceFree").click(function() {
+			//무료 티켓 선택시
+			$("#freeTicket").click(function() {
 				//alert("무료");
-				$("#ticketPriceFree").attr("disabled","disabled");
-				$("#ticketPriceNoFree").removeAttr("disabled");
+				$("#freeTicket").attr("disabled","disabled");
+				$("#noFreeTicket").removeAttr("disabled");
 				
 				$("#ticketPrice").val(0);
 				$("#ticketPrice").attr("readonly","readonly");
 				
-			});
+				$("#noLimitDiv").css("display", "none");
 				
-			$('#ticketPriceNoFree').click(function() {
-				//alert("유료");
-				$("#ticketPriceNoFree").attr("disabled","disabled");
-				$("#ticketPriceFree").removeAttr("disabled");
-				
-			    $("#ticketPrice").removeAttr("readonly");
 			});
 			
+			//유료 티켓 선택시
+			$("#noFreeTicket").click(function() {
+				//alert("유료");
+				$("#noFreeTicket").attr("disabled","disabled");
+				$("#freeTicket").removeAttr("disabled");
+				
+			    $("#ticketPrice").removeAttr("readonly");
+			    
+			    $("#noLimitDiv").css("display", "block");
+				
+			});
+			
+			//무제한 티켓 선택시
+			$("#noLimit").click(function(){
+				$("#ticketCount").val(0);
+				
+			});
 		});
 		
 		
 	
 		//============= "티켓수량"  Event 처리 및  연결 =============
-		$(function(){
+		/* $(function(){
 			$("#partyMemberLimit").on("keyup", function(){
 				var ticketCount = $("#partyMemberLimit").val();
 				$("#ticketCount").val(ticketCount);
 			});
-		});
+		}); */
 		
 		//============= "파티 플래그"  Event 처리 및  연결 =============
 		$(function(){
+			
+			//파티 선택시
 			$("#party").on("click", function(){
 				
 				//$("form").reset();
@@ -209,6 +235,7 @@
 				console.log("#party 버튼 클릭 ==> "+festivalNo+" :: "+festivalName);
 			});
 			
+			//애프터 파티 선택시
 			$("#afterParty").on("click", function(){
 				
 				//$("form").reset();
@@ -234,6 +261,8 @@
 				//console.log("#afterParty 버튼 클릭 ==> "+festivalNo+" :: "+festivalName);
 				console.log("#afterParty 버튼 클릭 ==> "+festivalNo+" :: "+festivalName+" :: "+festivalAddr);
 			});
+			
+			
 		});
 		
 		
@@ -395,6 +424,10 @@
 		#ticketPriceDiv {
 			display: block;
 		}
+		
+		#noLimitDiv {
+			display: none;
+		}
 	</style>
 		
 </head>
@@ -448,8 +481,7 @@
 		    	
 		    	<input type="hidden" class="form-control" id="partyFlag" name="partyFlag"/>
 		    </div>
-		 
-		  </div>
+		 </div>
 		  
 		  <!-- <div class="form-group" data-toggle="buttons">
 		  	  <label for="partyFlag" class="col-sm-offset-1 col-sm-3 control-label">파티구분</label>
@@ -538,12 +570,12 @@
 			</div>
 		  </div>
 		  
-		  <div class="form-group">
+		  <!-- <div class="form-group">
 		    <label for="partyMemberlimit" class="col-sm-offset-1 col-sm-3 control-label">파티인원</label>
 		    <div class="col-sm-4">
 		      <input type="text" class="form-control" id="partyMemberLimit" name="partyMemberLimit">
 			</div>
-		  </div>
+		  </div> -->
 		 		 	  
 		   <div class="form-group">
 		    <label for="partyPlace" class="col-sm-offset-1 col-sm-3 control-label">파티장소(선택입력)</label>
@@ -577,14 +609,35 @@
 		  </div> -->
 				  
 		  
+		  <div class="form-group">
+		    <label for="partyFlag" class="col-sm-offset-1 col-sm-3 control-label">티켓</label>
+		    
+		    <div class="col-sm-2">
+		    	<button type="button" class="btn btn-primary btn-block" name="ticketPriceFlag" id="freeTicket" disabled>무료티켓</button>
+		    </div>
+		    <div class="col-sm-2">
+		    	<button type="button" class="btn btn-primary btn-block" name="ticketPriceFlag" id="noFreeTicket">유료티켓</button>
+		    </div>
+		 </div>
+		  
 		  <div class="form-group" id="ticketCountDiv">
 		    <label for="ticketCount" class="col-sm-offset-1 col-sm-3 control-label">티켓수량</label>
-		    <div class="col-sm-4">
+		    <div class="col-sm-2">
 		      <input type="text" class="form-control" id="ticketCount" name="ticketCount" >
+		    </div>
+		    <div class="col-sm-2" id="noLimitDiv">
+		      <button type="button" class="btn btn-primary btn-block" name="noLimit" id="noLimit">무제한</button>
 		    </div>
 		  </div>
 		  
 		  <div class="form-group" id="ticketPriceDiv">
+		    <label for="ticketPrice" class="col-sm-offset-1 col-sm-3 control-label">티켓가격</label>
+		    <div class="col-sm-2">
+		    	<input type="text" readonly="readonly" class="form-control" id="ticketPrice" name="ticketPrice" value="0" >
+		    </div>
+	 	  </div>
+		  
+		  <!-- <div class="form-group" id="ticketPriceDiv">
 		    <label for="ticketPrice" class="col-sm-offset-1 col-sm-3 control-label">티켓가격</label>
 		    <div class="col-sm-4">
 		    	<div class="input-group">
@@ -595,7 +648,7 @@
 			 		</span>
 				</div>
 			</div>
-	 	  </div>
+	 	  </div> -->
 			
 	<!-- 	    <div class="btn-group col-sm-2" data-toggle="buttons">
 			  <label class="btn btn-default active">

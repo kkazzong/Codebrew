@@ -322,7 +322,7 @@
 								
 								<%-- ${ party.user.profileImage} --%>
 								<h3 class="panel-title pull-left">
-								<img class="img-circle" src="/resources/uploadFile/${party.partyImage}" width="50" height="50">
+								<img class="img-circle" src="/resources/uploadFile/${party.user.profileImage}" width="50" height="50">
 								&nbsp; ${ party.user.nickname }</h3>
 								
         						<div class="clearfix"></div>
@@ -330,7 +330,7 @@
 							<div class="panel-body">
 								<!-- 파티 -->
 								<input type="hidden" name="partyNo" value="${party.partyNo}">
-									<img width="100%" height="300" src="/resources/uploadFile/${party.partyImage}">
+									<img width="100%" height="100%" src="/resources/uploadFile/${party.partyImage}">
 									
 									<div class="col-md-12">
 										<h4>
