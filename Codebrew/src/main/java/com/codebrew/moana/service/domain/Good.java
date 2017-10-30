@@ -8,6 +8,12 @@ public class Good {
 	
 	
 	public Good(){}
+	
+	public Good(int reviewNo, String userId){
+		super();
+		this.reviewNo = reviewNo;
+		this.userId = userId;
+	}
 
 
 	public int getGoodNo() {
