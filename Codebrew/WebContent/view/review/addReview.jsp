@@ -137,7 +137,7 @@
 	// 해시태그 등록
 	$(document).ready(function(){
 		$("input[name=toBeHashtag]").keydown(function(key){
-			if(key.keyCode == 13 || key.keyCode == 32){ //키 값이 13(enter)면 실행
+			if(key.keyCode == 13 || key.keyCode == 32){ //키 값이 13(enter)면 실행, 32(space)
 				alert("hashtag로 등록됩니다.");
 				console.log($(this).val());	
 				var innerHtml = $("input:text[name=reviewHashtag]").val();
@@ -148,11 +148,19 @@
 			}
 			
 		});
+		
+		$("#reviewDetail").keydown(function(key){
+			if(key.keyCode == 13){
+				alert("enter 입력 : 한줄 개행");
+				var innerReviewDetail = $("input:text[name=reviewDetail]").val();
+				innerReviewDetail += "\n";
+			}
+		})
 	});
 	
 	// 다중 이미지 미리보기 and 삭제
 	// 이미지 정보를 담을 배열
-	/* 
+	
 	var sel_files = [];
 	
 	$(document).ready(function(){
@@ -200,7 +208,7 @@
 		$(img_id).remove();
 		console.log(sel_files);
 	}
-	 */
+	
 	 
 	/* 테스트중 ckeditor */
 	/* 
