@@ -2,6 +2,7 @@ package com.codebrew.moana.web.festival;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -54,96 +55,202 @@ public class FestivalController {
 	@Value("#{imageRepositoryProperties['fileRoot']}")
 	String fileRoot;
 	
-	@RequestMapping(value = "weather")
-	public ModelAndView weather(@RequestParam("festivalLongitude") String festivalLongitude,
-			@RequestParam("festivalLatitude") String festivalLatitude)throws Exception {
+	@RequestMapping(value = "getMyZzimList")
+	public ModelAndView getMyZzimList(@ModelAttribute("search") Search search,
+			@ModelAttribute("page") Page page, HttpServletRequest request) throws Exception {
 
-		System.out.println("weather");
 		
-		String[] festivalLat = festivalLatitude.split(".");
-		String[] festivalLon = festivalLongitude.split(".");
+		System.out.println("getzzim............" + search);
 		
-		Weather weather = festivalService.weather(festivalLat[0],festivalLon[0]);
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
+		
+		System.out.println("세션"+user);
+		
+		if (search.getCurrentPage() == 0) {
+			search.setCurrentPage(1);
+		}
+		search.setPageSize(pageSize);
 
+		Zzim zzim = new Zzim();
+		zzim.setUserId(user.getUserId());
+		
+		Map<String, Object> map = festivalService.getMyZzimList(search, user.getUserId());
+		
+		List<Festival> list = new ArrayList<Festival>();
+		
+		int listSize = ((List<Zzim>) map.get("list")).size();
+		
+		for(int i =0; i<listSize ; i++){
+			
+			System.out.println("listSize......." +  listSize);
+			
+			Zzim returnZzim = ((List<Zzim>) map.get("list")).get(i);
+			
+			Festival festival = festivalService.getFestivalDB(returnZzim.getFestivalNo());
+			
+			list.add(festival);
+			
+		}
+		
+		
+		Page resultPage = new Page(search.getCurrentPage(), ((Integer) map.get("totalCount")).intValue(), pageUnit,
+				pageSize);
 
 		ModelAndView modelAndView = new ModelAndView();
+
+		modelAndView.setViewName("forward:/view/festival/getMyZzimList.jsp");
 		
-		modelAndView.addObject("weather",weather);
+		modelAndView.addObject("search", search);
+		modelAndView.addObject("list", list);
+		modelAndView.addObject("resultPage", resultPage);
+
+		return modelAndView;
+
+
+	}
+	
+	@RequestMapping(value = "getFestivalListDB")
+
+	public ModelAndView getFestivalListDB(@ModelAttribute("search") Search search, @ModelAttribute("page") Page page,
+			@RequestParam("menu") String menu) throws Exception {
+
+		System.out.println("search 확인 : " + search);
+		
+		System.out.println("menu 확인........" + menu);
+
+		if (search.getCurrentPage() == 0) {
+			search.setCurrentPage(1);
+		}
+		search.setPageSize(pageSize);
+
+		Map<String, Object> map = festivalService.getFestivalListDB(search);
+
+		Page resultPage = new Page(search.getCurrentPage(), ((Integer) map.get("totalCount")).intValue(), pageUnit,
+				pageSize);
+
+		ModelAndView modelAndView = new ModelAndView();
+
+		modelAndView.addObject("search", search);
+		modelAndView.addObject("list", map.get("list"));
+		modelAndView.addObject("resultPage", resultPage);
+
+		if (menu.equals("db")) {
+			modelAndView.setViewName("forward:/view/festival/getFestivalListDB.jsp");
+		} else {
+			modelAndView.setViewName("forward:/view/festival/popupListDB.jsp");
+		}
+
+		return modelAndView;
+
+	}
+
+	@RequestMapping(value = "weather")
+	public ModelAndView weather(@RequestParam("festivalLongitude") String festivalLongitude,
+			@RequestParam("festivalLatitude") String festivalLatitude) throws Exception {
+
+		System.out.println("weather");
+
+		String[] festivalLat = festivalLatitude.split(".");
+		String[] festivalLon = festivalLongitude.split(".");
+
+		Weather weather = festivalService.weather(festivalLat[0], festivalLon[0]);
+
+		ModelAndView modelAndView = new ModelAndView();
+
+		modelAndView.addObject("weather", weather);
 
 		modelAndView.setViewName("forward:/view/festival/weather.jsp");
 
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = "writeFestival")
 	public ModelAndView writeFestival(@ModelAttribute("festival") Festival festival,
 			@RequestParam("file") MultipartFile file) throws Exception {
 
 		System.out.println("/write");
-		
+
 		String areaCode = festival.getAddr();
-		
+
 		String a[] = areaCode.split(" ");
-		
-		switch(a[0]){
-		
-		case "서울" : areaCode="1";
-		break;
-		
-		case "인천" : areaCode="2";
-		break;
-		
-		case "대전" : areaCode="3";
-		break;
-		
-		case "대구" : areaCode="4";
-		break;
-		
-		case "광주" : areaCode="5";
-		break;
-		
-		case "부산" : areaCode="6";
-		break;
-		
-		case "울산" : areaCode="7";
-		break;
-		
-		case "세종" : areaCode="8";
-		break;
-		
-		case "경기" : areaCode="31";
-		break;
-		
-		case "강원" : areaCode="32";
-		break;
-		
-		case "충북" : areaCode="33";
-		break;
-		
-		case "충남" : areaCode="34";
-		break;
-		
-		case "경북" : areaCode="35";
-		break;
-		
-		case "경남" : areaCode="36";
-		break;
-		
-		case "전북" : areaCode="37";
-		break;
-		
-		case "전남" : areaCode="38";
-		break;
-		
-		case "제주" : areaCode="39";
-		break;
-				
+
+		switch (a[0]) {
+
+		case "서울":
+			areaCode = "1";
+			break;
+
+		case "인천":
+			areaCode = "2";
+			break;
+
+		case "대전":
+			areaCode = "3";
+			break;
+
+		case "대구":
+			areaCode = "4";
+			break;
+
+		case "광주":
+			areaCode = "5";
+			break;
+
+		case "부산":
+			areaCode = "6";
+			break;
+
+		case "울산":
+			areaCode = "7";
+			break;
+
+		case "세종":
+			areaCode = "8";
+			break;
+
+		case "경기":
+			areaCode = "31";
+			break;
+
+		case "강원":
+			areaCode = "32";
+			break;
+
+		case "충북":
+			areaCode = "33";
+			break;
+
+		case "충남":
+			areaCode = "34";
+			break;
+
+		case "경북":
+			areaCode = "35";
+			break;
+
+		case "경남":
+			areaCode = "36";
+			break;
+
+		case "전북":
+			areaCode = "37";
+			break;
+
+		case "전남":
+			areaCode = "38";
+			break;
+
+		case "제주":
+			areaCode = "39";
+			break;
+
 		}
-		
+
 		festival.setAreaCode(areaCode);
 
 		ModelAndView modelAndView = new ModelAndView();
-		
+
 		System.out.println(1);
 
 		if (file.getSize() > 0) {
@@ -155,9 +262,9 @@ public class FestivalController {
 			festival.setFestivalImage(file.getOriginalFilename());
 
 			file.transferTo(UploadedFile);
-			
+
 			festivalService.writeFestival(festival);
-			
+
 			System.out.println("writeFestival: " + festival);
 
 			modelAndView.setViewName("forward:/view/festival/addFestival.jsp");
@@ -166,7 +273,7 @@ public class FestivalController {
 		} else {
 
 			System.out.println("else로 들어옴!! ");
-			
+
 			festival.setFestivalImage("no.png");
 			festivalService.writeFestival(festival);
 			System.out.println("writeFestival: " + festival);
@@ -182,7 +289,7 @@ public class FestivalController {
 		ticket.setTicketCount(festival.getTicketCount());
 
 		ticketService.addTicket(ticket);
-		
+
 		System.out.println("최festival.......: " + festival);
 
 		return modelAndView;
@@ -207,7 +314,7 @@ public class FestivalController {
 
 		ModelAndView modelAndView = new ModelAndView();
 
-		modelAndView.setViewName("forward:/festival/getFestivalListDB");
+		modelAndView.setViewName("forward:/festival/getFestivalListDB?menu=db");
 
 		return modelAndView;
 	}
@@ -318,7 +425,12 @@ public class FestivalController {
 
 	public ModelAndView getFestivalList(@ModelAttribute("search") Search search, @ModelAttribute("page") Page page)
 			throws Exception {
+		
+		ModelAndView modelAndView = new ModelAndView();
 
+		
+		try{
+			
 		if (search.getCurrentPage() == 0) {
 			search.setCurrentPage(1);
 		}
@@ -334,7 +446,7 @@ public class FestivalController {
 		Page resultPage = new Page(search.getCurrentPage(), ((Integer) map.get("totalCount")).intValue(), pageUnit,
 				pageSize);
 
-		ModelAndView modelAndView = new ModelAndView();
+		
 
 		modelAndView.addObject("list", map.get("list"));
 		modelAndView.addObject("resultPage", resultPage);
@@ -343,6 +455,12 @@ public class FestivalController {
 		modelAndView.setViewName("forward:/view/festival/getFestivalList.jsp");
 
 		return modelAndView;
+		}catch(Exception e){
+			
+			modelAndView.setViewName("forward:/view/festival/nullFestival.jsp");
+			
+			return modelAndView;
+		}
 
 	}
 
@@ -378,8 +496,6 @@ public class FestivalController {
 
 				festival.setFestivalNo(festivalNo);
 				festival.setDeleteFlag(null);
-				
-				
 
 				festival = festivalService.getFestivalDB(festivalNo);
 
@@ -400,49 +516,6 @@ public class FestivalController {
 
 	}
 
-	@RequestMapping(value = "getFestivalListDB")
-
-	public ModelAndView getFestivalListDB(@ModelAttribute("search") Search search, @ModelAttribute("page") Page page
-			,@RequestParam("menu") String menu) throws Exception {
-
-		System.out.println("search 확인 : " + search);
-
-		
-		
-		if (search.getCurrentPage() == 0) {
-			search.setCurrentPage(1);
-		}
-		search.setPageSize(pageSize);
-
-		Map<String, Object> map = festivalService.getFestivalListDB(search);
-
-		Page resultPage = new Page(search.getCurrentPage(), ((Integer) map.get("totalCount")).intValue(), pageUnit,
-				pageSize);
-
-		ModelAndView modelAndView = new ModelAndView();
-
-		modelAndView.addObject("search", search);
-		modelAndView.addObject("list", map.get("list"));
-		modelAndView.addObject("resultPage", resultPage);
-		
-		if(menu.equals("pop")==false){
-			modelAndView.setViewName("forward:/view/festival/getFestivalListDB.jsp");
-		}else{
-			modelAndView.setViewName("forward:/view/festival/popupListDB.jsp");
-		}
-
-		return modelAndView;
-		
-		
-		
-
-			
-
-			
-		
-
-	}
-
 	@RequestMapping(value = "getFestivalDB")
 	public ModelAndView getFestivalDB(@RequestParam("festivalNo") int festivalNo, HttpServletRequest request)
 			throws Exception {
@@ -455,11 +528,11 @@ public class FestivalController {
 			User user = (User) session.getAttribute("user");
 
 			Festival festival = festivalService.getFestivalDB(festivalNo);
-			
-			System.out.println("lat" + festival.getFestivalLatitude()+ "\n" + "lon" + festival.getFestivalLongitude());
-			
-			Weather weather = festivalService.weather(festival.getFestivalLatitude(),festival.getFestivalLongitude());
-			
+
+			System.out.println("lat" + festival.getFestivalLatitude() + "\n" + "lon" + festival.getFestivalLongitude());
+
+			Weather weather = festivalService.weather(festival.getFestivalLatitude(), festival.getFestivalLongitude());
+
 			festival.setReadCount(festival.getReadCount() + 1);
 
 			festivalService.appendReadCount(festival);
@@ -475,14 +548,13 @@ public class FestivalController {
 
 			festival.setTicketCount(ticket.getTicketCount());
 			festival.setTicketPrice(ticket.getTicketPrice());
-			
+
 			ModelAndView modelAndView = new ModelAndView();
 
 			modelAndView.addObject("festival", festival);
 			modelAndView.addObject("returnZzim", returnZzim);
 			modelAndView.addObject("ticket", ticket);
 			modelAndView.addObject("weather", weather);
-			
 
 			modelAndView.setViewName("forward:/view/festival/getFestival.jsp");
 
@@ -502,8 +574,8 @@ public class FestivalController {
 	}
 
 	@RequestMapping(value = "updateFestivalView", method = RequestMethod.GET)
-	public ModelAndView updateFestivalView(@RequestParam("festivalNo") int festivalNo
-			,@RequestParam("isNull") boolean isNull) throws Exception {
+	public ModelAndView updateFestivalView(@RequestParam("festivalNo") int festivalNo,
+			@RequestParam("isNull") boolean isNull) throws Exception {
 
 		System.out.println("/updateView");
 

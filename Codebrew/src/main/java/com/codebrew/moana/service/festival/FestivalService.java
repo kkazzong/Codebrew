@@ -1,9 +1,11 @@
 package com.codebrew.moana.service.festival;
 
+import java.util.List;
 import java.util.Map;
 
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Festival;
+import com.codebrew.moana.service.domain.Location;
 import com.codebrew.moana.service.domain.Weather;
 import com.codebrew.moana.service.domain.Zzim;
 
@@ -29,6 +31,8 @@ public interface FestivalService {
 	
 	public Zzim getZzim(Zzim zzim) throws Exception;
 	
+	public Map<String,Object> getMyZzimList(Search search , String userId) throws Exception;
+	
 	public void updateFestival(Festival festival) throws Exception;
 	
 	public void appendReadCount(Festival festival) throws Exception;
@@ -38,6 +42,8 @@ public interface FestivalService {
 	public void writeFestival (Festival festival) throws Exception;
 	
 	public Weather weather (String festivalLat, String festivalLon) throws Exception;
+	
+	public Map<String,Object> getAreaCode() throws Exception;
 	
 
 	

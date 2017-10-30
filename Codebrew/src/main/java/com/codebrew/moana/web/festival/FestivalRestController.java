@@ -1,29 +1,18 @@
 package com.codebrew.moana.web.festival;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.codebrew.moana.common.Page;
-import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Festival;
-import com.codebrew.moana.service.domain.Ticket;
-import com.codebrew.moana.service.domain.User;
-import com.codebrew.moana.service.domain.Weather;
 import com.codebrew.moana.service.domain.Zzim;
 import com.codebrew.moana.service.festival.FestivalService;
 import com.codebrew.moana.service.ticket.TicketService;
@@ -52,6 +41,24 @@ public class FestivalRestController {
 
 	@Value("#{imageRepositoryProperties['fileRoot']}")
 	String fileRoot;
+	
+	@RequestMapping(value = "/json/getAreaCode")
+	public Map<String, Object> getAreaCode () throws Exception {
+
+		System.out.println("json/getAreaCode........");
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		
+			map = festivalService.getAreaCode();
+			
+			System.out.println("레스트에서 map....." + map);
+			
+			return map;
+
+
+		}
+
+
 
 	@RequestMapping(value = "/json/addZzim/{userId}/{festivalNo}")
 	public Zzim addZzim(@PathVariable("userId") String userId, @PathVariable("festivalNo") int festivalNo)

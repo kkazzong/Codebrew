@@ -34,7 +34,7 @@
 	   
 	    $("#currentPage").val(currentPage)
 	   
-	   $("form").attr("method" , "POST").attr("action" , "/festival/getFestivalListDB").submit();
+	   $("form").attr("method" , "POST").attr("action" , "/festival/getFestivalListDB?menu=db").submit();
 	   
 	}  
    
@@ -46,7 +46,6 @@
 
 	$(function() {
 
-		/* $("td:nth-child(1)").on("click", function() { */
 			$(".panel-body").on("click", function() {
 
 			var festivalNo = $("p", this).text();

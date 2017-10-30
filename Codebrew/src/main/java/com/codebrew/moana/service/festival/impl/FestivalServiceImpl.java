@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Festival;
+import com.codebrew.moana.service.domain.Location;
 import com.codebrew.moana.service.domain.Weather;
 import com.codebrew.moana.service.domain.Zzim;
 import com.codebrew.moana.service.festival.FestivalDAO;
@@ -156,6 +157,30 @@ public class FestivalServiceImpl implements FestivalService{
 		return tourAPIDAO.weather(festivalLat,festivalLon);
 		
 	}
-	
+
+	@Override
+	public Map<String,Object> getMyZzimList(Search search,String userId) throws Exception {
+		// TODO Auto-generated method stub
+		
+		List<Zzim> list = festivalDAO.getMyZzimList(search,userId);
+		int totalCount = festivalDAO.getTotalCountZzim(search,userId);
+		
+		System.out.println("서비스임플에서 list......" + list);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		map.put("totalCount", new Integer(totalCount));
+		
+		return map;
+	}
+
+	@Override
+	public Map<String,Object> getAreaCode() throws Exception {
+		// TODO Auto-generated method stub
+		
+		Map<String, Object> map = tourAPIDAO.getAreaCode();
+		
+		return map;
+	}
 	
 }

@@ -2,6 +2,10 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<%-- <%@include file="/view/festival/admin.jsp"%> --%>
+
+<%-- <%@include file="/view/festival/user.jsp"%> --%>
+
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -30,7 +34,7 @@
 	   
 	    $("#currentPage").val(currentPage)
 	   
-	   $("form").attr("method" , "GET").attr("action" , "/festival/getFestivalList").submit();
+	   $("form").attr("method" , "POST").attr("action" , "/festival/getMyZzimList").submit();
 	   
 	}  
    
@@ -39,90 +43,69 @@
 			fncGetList(1);
 		});
 });
-   
-   $(function(){
-		 $( "button:contains('축제명으로 찾기')" ).on("click" , function() {
-			 
-			 self.location = "/view/festival/searchKeywordList.jsp";
-		});
-});
-   
-   
-
 
 	$(function() {
-			
+
+		/* $("td:nth-child(1)").on("click", function() { */
 			$(".panel-body").on("click", function() {
 
 			var festivalNo = $("p", this).text();
-
-			self.location = "/festival/getFestival?festivalNo=" + festivalNo;
+			self.location = "/festival/getFestivalDB?menu=db&festivalNo="+festivalNo;
 		});
 	});
 	
-	/* 
+$(function(){
 		
-		$(function(){
+		$("input:text[name='searchKeyword']").on('keydown',function(event){
 			
-			$("#searchCondition").on("click", function () {
-				
-			console.log("누름");
-			
-			$.ajax( 
-					{
-						url : "/festivalRest/json/getAreaCode",
-						method : "GET" ,
-						data : JSON.stringify({
-			    		}),
-						dataType : "json" ,
-						headers : {
-							"Accept" : "application/json",
-							"Content-Type" : "application/json"
-						},
-						success : function(JSONData , status) {
-							
-							alert("json...." + JSONData);
-							var value = 
-							
-							"<h1>"+JSONData.get("list")+"</h1>";
-							
-							$("#searchCondition").append(value);
-							
-						}
-							
-				
+			if(event.keyCode ==13){
+				/* alert("dpsxj") */
+				event.preventDefault();
+				$( "button:contains('검색')" ).click();
+			}
 		});
-		});
-		}); */
-			
+	
+	});
+	
+	
+	
 </script>
+
 <style type="text/css">
 body {
 		padding-top : 70px;
     }
-</style>
+   </style>
+
 </head>
 <body>
 
-<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
-
- <div class="container">
-  <div class="row">
+	<div class="container">
+	
+  	<div class="row">
+  	
   	<div class="col-md-12">
+  	
   		<div class="page-header text-center">
-					<h3 class="text-info">축제등록</h3>
+					<h3 class="text-info">마이찜</h3>
 				</div>
-  	</div>
+
 	<form>
+	
+	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>
+	
+
+	
+		<br/>
+		<br/>
+		<br/>
+
 
 		전체 게시물 수 : ${resultPage.totalCount }
 		<br/>
 		현재 페이지 : ${resultPage.currentPage }
 		
-		<br/>
-		<br/>
-		<br/>
-			    지역검색
+		 지역검색
 				  <div class="form-group">
 				    <select class="form-control" name="searchCondition" >
 					<option value="" ${ ! empty search.searchCondition && search.searchCondition=="" ? "selected" : "" }>전체지역</option>
@@ -146,92 +129,64 @@ body {
 					
 				</select>
 				</div>
-			<!-- 	//arrange A = 제목 , B = 조회순 , C = 수정일순, D = 생성일순,
-		/			/대표이미지 정렬추가 ( o = 제목순 , p = 조회순 , Q = 수정일순, R = 생성일순) -->
 				정렬
 				  <div class="form-group">
 				    <select class="form-control" name="arrange" >
 					<option value="" ${ ! empty search.arrange && search.arrange=="" ? "selected" : "" }>>정렬</option>
 					<option value="A" ${ ! empty search.arrange && search.arrange=="A" ? "selected" : "" }>>제목</option>
 					<option value="B" ${ ! empty search.arrange && search.arrange=="B" ? "selected" : "" }>>조회순</option>
-					<option value="C" ${ ! empty search.arrange && search.arrange=="C" ? "selected" : "" }>>수정일순</option>
-					<option value="D" ${ ! empty search.arrange && search.arrange=="D" ? "selected" : "" }>>생성일순</option>
-					<option value="o" ${ ! empty search.arrange && search.arrange=="o" ? "selected" : "" }>>제목2</option>
-					<option value="p" ${ ! empty search.arrange && search.arrange=="p" ? "selected" : "" }>>조회순2</option>
-					<option value="Q" ${ ! empty search.arrange && search.arrange=="Q" ? "selected" : "" }>>수정일순2</option>
-					<option value="R" ${ ! empty search.arrange && search.arrange=="R" ? "selected" : "" }>>생성일순2</option>
+					<option value="C" ${ ! empty search.arrange && search.arrange=="C" ? "selected" : "" }>>최근시작일순</option>
+					<option value="D" ${ ! empty search.arrange && search.arrange=="D" ? "selected" : "" }>>축제종료일순</option>
 				</select>
 				</div>
+		
 				
 				
-				
-				<!-- -------------------------------------------- -->
-			<%-- 	
-				  지역검색
-				  <div class="form-group">
-				    <select class="form-control" name="searchCondition" id="searchCondition" >
-					<!-- <option value="" >>지역선택</option> -->
-					
-				</select>
-				</div>
-			<!-- 	//arrange A = 제목 , B = 조회순 , C = 수정일순, D = 생성일순,
-		/			/대표이미지 정렬추가 ( o = 제목순 , p = 조회순 , Q = 수정일순, R = 생성일순) -->
-				정렬
-				  <div class="form-group">
-				    <select class="form-control" name="arrange" >
-					<option value="R" ${ ! empty search.arrange && search.arrange=="R" ? "selected" : "" }>>생성일순2</option>
-				</select>
-				</div> --%>
-				
-				<!-- --------------------------------------------------------------- --> 
-				
-				
-				
+				 <div class="form-group">
+				    <label class="sr-only" for="searchKeyword">검색어</label>
+				    <input type="text" class="form-control" id="searchKeyword" name="searchKeyword"  placeholder="검색어"
+				    			 value="${! empty search.searchKeyword ? search.searchKeyword : '' }"  >
+				  </div>
+				  
 
 		<button type="button" class="btn btn-default btn-block">검색</button>
 		
 		<br/>
 		<br/>
 		
-		<button type="button" class="btn btn-default">축제명으로 찾기</button>
 		
-		<br/>
-		<br/>
-		
+
 		<div class="row">
-			<c:forEach var="festival" items="${list}">
-				<c:set var="i" value="${i+1}"></c:set>
-				
-				<div class="col-md-6">
+		
+		<c:forEach var="festival" items="${list}">
+		
+			<div class="col-md-6">
 						<div class="panel panel-primary">
 							<div class="panel-heading">
-								<h3 class="panel-title pull-left">${i} ${festival.festivalName}</h3>
+								<h3 class="panel-title pull-left">${festival.festivalName}</h3>
 								<br/>
         						<div class="clearfix"></div>
 							</div>
 							
-							<div class="panel-body">
-								<c:if test="${festival.festivalImage == null }"> 
-						
-									<img src="../resources/uploadFile/no.png" width="100%" height="300"/>
-									<br/>
-						
-								</c:if>
+					<div class="panel-body">
+							
+					<c:if test="${festival.festivalImage.contains('http://')==true }">
 					
-								<c:if test="${festival.festivalImage != null }">
+					<img src="${festival.festivalImage }" width="100%"height="300" />
 					
-									<img src="${festival.festivalImage }" width="100%" height="300" />
-									<br/>
-						
-								</c:if>
-									<br/>
+					</c:if>
+					
+					<c:if test="${festival.festivalImage.contains('http://')==false }">
+					
+					<img src="../../resources/uploadFile/${festival.festivalImage }" width="100%"height="300" />
+					
+					</c:if>
+					
+					<br/>
 									<div id="festivalNo" style="display: none">
 										<p>${festival.festivalNo }</p>
 									</div> 
-									
-									<%-- <span> ${festival.festivalName } </span> --%>
-									 
-									<br />
+						<br />
 									
 									<div class="col-md-12">
 											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
@@ -242,42 +197,48 @@ body {
 									</div>
 							</div>
 						</div>
-				</div>
+			 	</div>	
+			
 			</c:forEach>
 		</div>
 		
 		
-			<input type = hidden id="currentPage" name = "currentPage" value = ${i } />
+		
+		<input type = hidden id="currentPage" name = "currentPage" value = ${i } />
 			
 			<jsp:include page="../../common/pageNavigator_new.jsp"/>
+			
+				</form>
+	</div>
+	</div>
+	</div>
+	</body>
+</html>
 		
 		
 		
-		
-		
-		<!-- 되는거 -->
 		<%-- <c:forEach var="festival" items="${list}">
+		
+			<c:if test="${festival.deleteFlag == null }">
 		
 		<br />
 			<table>
-				<tr> 
+				<tr>
 					<td>
 					
-					<c:if test="${festival.festivalImage == null }"> 
-						
-						<img src="../resources/uploadFile/no.png" width="300" height="300"/>
-						
+					<c:if test="${festival.festivalImage.contains('http://')==true }">
+					
+					<img src="${festival.festivalImage }" width="300"height="300" />
+					
 					</c:if>
 					
-					<c:if test="${festival.festivalImage != null }">
+					<c:if test="${festival.festivalImage.contains('http://')==false }">
 					
-						<img src="${festival.festivalImage }" width="300" height="300" />
-						
+					<img src="../../resources/uploadFile/${festival.festivalImage }" width="300"height="300" />
+					
 					</c:if>
-					
 					
 					 <br />
-					
 						<div id="festivalNo" style="display: none">
 							<p>${festival.festivalNo }</p>
 						</div> <span> ${festival.festivalName } </span> <br /></td>
@@ -285,25 +246,23 @@ body {
 			</table>
 
 			<div>축제기간 ${festival.startDate } ~ ${festival.endDate }</div>
+			
 			<br />
 			<br />
 		
-			
+			</c:if>
 		</c:forEach>
-		 
+		
 		
 			
 			<input type = hidden id="currentPage" name = "currentPage" value = ${i } />
 			
 			<jsp:include page="../../common/pageNavigator.jsp"/>
 			
-			--%>
-			
+
+ --%>
 
 
-	</form>
-	</div>
-</div>
 
-</body>
-</html>
+<!-- </body>
+</html> -->
