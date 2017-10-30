@@ -6,13 +6,34 @@
 <!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript"> 
 	
+		var sessionId = "${user.userId}";
+	
+		function fncGetPurchaseNo(sessionId, partyNo) {
+			
+			console.log("purchaseNo얻기"+sessionId+","+partyNo);
+			$.ajax({
+				
+				url : "/purchaseRest/json/getPurchaseNo/"+sessionId+"/"+partyNo,
+				method : "GET",
+				dataType : "json",
+				success : function(JSONData, status) {
+					
+					console.log("purchaseNo--->"+JSON.stringify(JSONData));
+					purchaseNo = JSONData.purchaseNo;
+					
+				}
+				
+			});
+			
+		}
+	
+		
 		//============= "파티멤버보기"  Event 처리 및  연결 =============
 		$(function(){
 			/* $("button:contains('파티멤버보기')").on("click", function() { */
 				console.log("파티멤버보기 버튼 클릭.....");
 				console.log("partyNo :: "+$("#partyNo").val());
 				
-				var sessionId = "${user.userId}";
 				console.log("sessionId :: "+sessionId);
 				/* var searchCondition = $(".form-control[name=searchCondition]").val();
 				var searchKeyword = $(".form-control[name=searchKeyword]").val(); */
@@ -144,14 +165,32 @@
 										    		/* 파티 참여 취소 버튼 */
 										    		var cancelPurchase = "<button type='button' class='btn btn-primary btn-block'>티켓구매취소</button>";
 										    		
-										    		$("#partyButtonDiv").html(cancelPurchase).on("click", function() {
+										    		/* $("#partyButtonDiv").html(cancelPurchase).on("click", function() {
 														
 															var partyNo = $("#partyNo").val();
 															console.log("파티참여취소 :: partyNo :: "+partyNo);
 														
 															self.location="/purchase/getPurchaseList";
 														
-													});
+													}); */
+										    		
+										    		
+										    		//$(function(){
+										    			
+										    			//var sessionId = "${user.userId}";
+										    			var partyNo = $("#partyNo").val();
+										    			//var partyNo = 10087; //일단 테스트를 위해
+										    			
+										    			/// ajax 호출 함수
+										    			fncGetPurchaseNo(sessionId, partyNo);
+										    			
+										    			/// 파티참여취소 버튼 클릭 시 바로 getPurchase로 이동
+										    			$("#partyButtonDiv").html(cancelPurchase).on("click", function(){
+										    				self.location = "/purchase/getPurchase?purchaseNo="+purchaseNo;
+										    			});
+										    		//});
+										    		
+										    		
 										    	}
 										    	
 										    } //else if문 end

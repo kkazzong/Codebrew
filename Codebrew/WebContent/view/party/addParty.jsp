@@ -120,7 +120,7 @@
 			$( "button:contains('축제검색')" ).on("click" , function() {
 				//$("form").attr("method", "POST").attr("action", "/party/addParty").submit();
 				
-				var pop = window.open("/view/festival/popupListDB.jsp","pop","width=570,height=420, scrollbars=yes, resizable=yes"); 
+				var pop = window.open("/festival/getFestivalListDB?menu=pop","pop","width=570,height=420, scrollbars=yes, resizable=yes"); 
 				
 			});
 			

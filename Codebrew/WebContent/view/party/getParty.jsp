@@ -97,7 +97,7 @@
 		
 		
 		//============= "파티참여취소"  Event 처리 및  연결 =============
-		$(function(){
+		/* $(function(){
 			$("button:contains('파티참여취소')").on("click", function() {
 				
 				var result = confirm("파티참여를 취소하시겠습니까?");
@@ -123,7 +123,7 @@
 				
 		
 			});
-		});
+		}); */
 		
 		
 		//============= "주최자"  Event 처리 및  연결 =============
@@ -134,6 +134,41 @@
 			});
 		});
 		
+		
+		//============= "티켓환불"  Event 처리 및  연결 =============
+		/* function fncGetPurchaseNo(sessionId, partyNo) {
+			
+			console.log("purchaseNo얻기"+sessionId+","+partyNo);
+			$.ajax({
+				
+				url : "/purchaseRest/json/getPurchaseNo/"+sessionId+"/"+partyNo,
+				method : "GET",
+				dataType : "json",
+				success : function(JSONData, status) {
+					
+					console.log("purchaseNo--->"+JSON.stringify(JSONData));
+					purchaseNo = JSONData.purchaseNo;
+					
+				}
+				
+			});
+			
+		}
+		
+		$(function(){
+			
+			var sessionId = "${user.userId}";
+			var partyNo = $("#partyNo").val();
+			//var partyNo = 10087; //일단 테스트를 위해
+			
+			/// ajax 호출 함수
+			fncGetPurchaseNo(sessionId, partyNo);
+			
+			/// 파티참여취소 버튼 클릭 시 바로 getPurchase로 이동
+			$("#partyButtonDiv").on("click", function(){
+				self.location = "/purchase/getPurchase?purchaseNo="+purchaseNo;
+			});
+		}); */
 		
 		
 		
