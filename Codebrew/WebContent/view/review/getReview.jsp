@@ -74,12 +74,38 @@
 			fncAddReply();
 		});
 		
+		/* 
 		$( "#addGood" ).on("click", function() { //수정중
 			self.location = "/review/addGood?userId=${sessionScope.user.userId}&reviewNo=${review.reviewNo}";
 		}); 
+		 */
 		 
-		 /* var reviewNo = document.getElementById('reviewNo').getAttribute('value');
-		 console.log(reviewNo); */
+		/* var reviewNo = document.getElementById('reviewNo').getAttribute('value');
+		console.log(reviewNo); */
+		
+		//db에는 처리 잘 됨 그런데 화면이...		
+		$(function(){
+			
+			$("#addGood").on("click", function(){
+				$.ajax(
+						{
+							url : "/reviewRest/json/addGood/${sessionScope.user.userId}/${review.reviewNo}", 
+							method : "GET", 
+							dataType : "json", 
+							headers : {
+								"Accept" : "application/json", 
+								"Content-Type" : "application/json"
+							}, 
+							success : function(JSONData, status){
+								//alert("김성경천재");
+								$("#goodCount").html(JSONData.goodCount);
+							}
+						}		
+				
+				)
+			})
+			
+		});
 	 
 	});
 	
@@ -213,7 +239,7 @@
 						<div class="col-md-12">
 							<small>
 								<span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
-									좋아요 : ${review.goodCount }
+									좋아요 : <span id="goodCount">${review.goodCount }</span>
 								<c:if test="${!empty sessionScope.user }">
 									<span class = "glyphicon glyphicon-thumbs-up" id = "addGood" role="button"></span>
 								</c:if>

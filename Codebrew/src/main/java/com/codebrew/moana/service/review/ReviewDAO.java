@@ -30,10 +30,10 @@ public interface ReviewDAO {
 	public List<Review> getReviewList(Search search) throws Exception;
 	
 	//6
-	public List<Review> getCheckReviewList(Search search) throws Exception;
+	public List<Review> getMyReviewList(Search search, String userId) throws Exception;
 	
 	//7
-	public List<Review> getMyReviewList(Search search) throws Exception;
+	public List<Review> getCheckReviewList(Search search) throws Exception;
 	
 	/*
 	 * "1" : 심사대기중
@@ -50,30 +50,36 @@ public interface ReviewDAO {
 	public void failCheckCode(Review review) throws Exception;
 	
 	//10
-	public void addGood(String userId, int reviewNo) throws Exception;
+	public void addGood(Good good) throws Exception;
 	
 	//11
-	public void deleteGood(String userId, int reviewNo) throws Exception;
+	public void deleteGood(Good good) throws Exception;
 	
 	//10-1, 11-1
-	public Good checkGood(String userId, int reviewNo) throws Exception;
+	public Good checkGood(Good good) throws Exception;
 	
 	//12
 	public int getTotalCount(Search search) throws Exception;
 	
 	//13
-	public void uploadReviewImage(Map<String, Object> map) throws Exception;
+	public int getMyReviewTotalCount(Search search, String userId) throws Exception;
 	
 	//14
-	public void uploadReviewHashtag(Map<String, Object> map) throws Exception;
+	public int getCheckReviewTotalCount(Search search) throws Exception;
 	
 	//15
-	public void uploadReviewVideo(Map<String, Object> map) throws Exception;
-	
-	//15
-	public List<Image> getReviewImage(int reviewNo) throws Exception;
+	public void uploadReviewImage(Map<String, Object> map) throws Exception;
 	
 	//16
+	public void uploadReviewHashtag(Map<String, Object> map) throws Exception;
+	
+	//17
+	public void uploadReviewVideo(Map<String, Object> map) throws Exception;
+	
+	//18
+	public List<Image> getReviewImage(int reviewNo) throws Exception;
+	
+	//19
 	public List<Video> getReviewVideo(int reviewNo) throws Exception;
 	
 }

@@ -59,7 +59,6 @@ public class ReviewDAOImpl implements ReviewDAO {
 	}
 	@Override //5
 	public List<Review> getReviewList(Search search) throws Exception {
-		
 		System.out.println("reviewDAO :: getReviewList");
 		return sqlSession.selectList("ReviewMapper.getReviewList", search);
 	}
@@ -71,9 +70,12 @@ public class ReviewDAOImpl implements ReviewDAO {
 	}
 	
 	@Override //7
-	public List<Review> getMyReviewList(Search search) throws Exception {
+	public List<Review> getMyReviewList(Search search, String userId) throws Exception {
 		System.out.println("reviewDAO :: getMyReviewList");
-		return sqlSession.selectList("ReviewMapper.getMyReviewList", search);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("search", search);
+		map.put("userId", userId);
+		return sqlSession.selectList("ReviewMapper.getMyReviewList", map);
 	}
 	
 	@Override //8
@@ -89,30 +91,21 @@ public class ReviewDAOImpl implements ReviewDAO {
 	}
 	
 	@Override //10
-	public void addGood(String userId, int reviewNo) throws Exception {
+	public void addGood(Good good) throws Exception {
 		System.out.println("reviewDAO :: addGood");
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("userId", userId);
-		map.put("reviewNo", reviewNo);
-		sqlSession.insert("ReviewMapper.addGood", map);
+		sqlSession.insert("ReviewMapper.addGood", good);
 	}
 	
 	@Override //11
-	public void deleteGood(String userId, int reviewNo) throws Exception {
+	public void deleteGood(Good good) throws Exception {
 		System.out.println("reviewDAO :: deleteGood");
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("userId", userId);
-		map.put("reviewNo", reviewNo);
-		sqlSession.delete("ReviewMapper.deleteGood", map);
+		sqlSession.delete("ReviewMapper.deleteGood", good);
 	}
 	
-	@Override
-	public Good checkGood(String userId, int reviewNo) throws Exception {
+	@Override //10-1, 11-1
+	public Good checkGood(Good good) throws Exception {
 		System.out.println("reviewDAO :: checkGood");
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("userId", userId);
-		map.put("reviewNo", reviewNo);
-		return sqlSession.selectOne("ReviewMapper.checkGood", map);
+		return sqlSession.selectOne("ReviewMapper.checkGood", good);
 	}
 	
 	@Override //12
@@ -122,31 +115,45 @@ public class ReviewDAOImpl implements ReviewDAO {
 	}
 	
 	@Override //13
+	public int getMyReviewTotalCount(Search search, String userId) throws Exception {
+		System.out.println("reviewDAO :: getMyReviewTotalCount");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("search", search);
+		map.put("userId", userId);
+		return sqlSession.selectOne("ReviewMapper.getMyReviewTotalCount", map);
+	}
+	
+	@Override //14
+	public int getCheckReviewTotalCount(Search search) throws Exception {
+		System.out.println("reviewDAO :: getCheckReviewTotalCount");
+		return sqlSession.selectOne("ReviewMapper.getCheckReviewTotalCount", search);
+	}
+	
+	@Override //15
 	public void uploadReviewImage(Map<String, Object> map) throws Exception {
 		System.out.println("reviewDAO :: uploadReviewImage");
 		sqlSession.insert("ReviewMapper.uploadReviewImage", map);
 	}
 	
-	@Override //14
+	@Override //16
 	public void uploadReviewHashtag(Map<String, Object> map) throws Exception {
 		System.out.println("reviewDAO :: uploadReviewHashtag");
 		sqlSession.insert("ReviewMapper.uploadReviewHashtag", map);
 	}
 
-	
-	@Override //15
+	@Override //17
 	public void uploadReviewVideo(Map<String, Object> map) throws Exception {
 		System.out.println("reviewDAO :: uploadReviewVideo");
 		sqlSession.insert("ReviewMapper.uploadReviewVideo", map);
 	}
 	
-	@Override //16
+	@Override //18
 	public List<Image> getReviewImage(int reviewNo) throws Exception {
 		System.out.println("reviewDAO :: getReviewImage");
 		return sqlSession.selectList("ReviewMapper.getReviewImage", reviewNo);
 	}
 	
-	@Override //17
+	@Override //19
 	public List<Video> getReviewVideo(int reviewNo) throws Exception {
 		System.out.println("reviewDAO :: getReviewVideo");
 		return sqlSession.selectList("ReviewMapper.getReviewVideo", reviewNo);

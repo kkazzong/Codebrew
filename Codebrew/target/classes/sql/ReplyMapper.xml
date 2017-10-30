@@ -29,7 +29,7 @@
 		<result property="reviewRegDate" column="review_reg_date" jdbcType="DATE"/>
 	</resultMap>
 
-	
+	<!-- 1 -->
 	<insert id="addReply" parameterType="reply" useGeneratedKeys="true" keyProperty="replyNo" keyColumn="reply_no">
 		INSERT 
 		INTO reply (
@@ -48,6 +48,7 @@
 				)
 	</insert>
 	
+	<!-- 2 -->
 	<select id="getReply" parameterType="int" resultMap="replySelectMap">
 		SELECT
 			rp.reply_no, 
@@ -59,6 +60,7 @@
 		WHERE rp.reply_no = #{replyNo:NUMERIC}
 	</select>
 	
+	<!-- 3 -->
 	<update id="updateReply" parameterType="reply">
 		UPDATE reply SET
 			reply_detail = #{replyDetail:VARCHAR}, 
@@ -68,6 +70,7 @@
 		AND review_no = #{review.reviewNo:NUMERIC}
 	</update>
 	
+	<!-- 4 -->
 	<delete id="deleteReply" parameterType="int">
 		DELETE
 		FROM reply
@@ -79,6 +82,26 @@
 	<!-- admin 경우 : SELECT * FROM WHERE user_id like '%' -->
 	<!-- 보통의 경우에 reply list는 review에 종속적이다 -->
 
+	<!-- for 'normal user' menu -->
+	<!-- 5 -->
+	<select id="getReplyList" parameterType="map" resultMap="replySelectMap">
+		SELECT *
+		FROM ( SELECT inner_table.*, ROWNUM AS row_seq
+					FROM (	SELECT 
+									rp.reply_no, 
+									rp.user_id, 
+									rp.review_no, 
+									rp.reply_detail, 
+									rp.reply_reg_date
+							FROM reply rp 
+							WHERE rp.review_no = #{reviewNo} 
+							ORDER BY rp.reply_no DESC) inner_table
+					WHERE ROWNUM <![CDATA[<=]]> #{search.currentPage}*#{search.pageSize} ) 
+  		WHERE row_seq BETWEEN (#{search.currentPage}-1)*#{search.pageSize}+1 
+  		AND #{search.currentPage}*#{search.pageSize}
+	</select>
+	
+	<!-- 6 -->
 	<select id="getAllReplyList" parameterType="map" resultMap="replySelectMap">
 		SELECT * 
 		FROM ( SELECT inner_table.*, ROWNUM AS row_seq
@@ -97,24 +120,6 @@
 	</select>
 
 	 
-	<!-- for 'normal user' menu -->
-	<select id="getReplyList" parameterType="map" resultMap="replySelectMap">
-		SELECT *
-		FROM ( SELECT inner_table.*, ROWNUM AS row_seq
-					FROM (	SELECT 
-									rp.reply_no, 
-									rp.user_id, 
-									rp.review_no, 
-									rp.reply_detail, 
-									rp.reply_reg_date
-							FROM reply rp 
-							WHERE rp.review_no = #{reviewNo} 
-							ORDER BY rp.reply_no DESC) inner_table
-					WHERE ROWNUM <![CDATA[<=]]> #{search.currentPage}*#{search.pageSize} ) 
-  		WHERE row_seq BETWEEN (#{search.currentPage}-1)*#{search.pageSize}+1 
-  		AND #{search.currentPage}*#{search.pageSize}
-	</select>
-	
 	<!-- only for 'admin' menu -->
 	<!-- <select id="getAllReplyList" parameterType="search" resultMap="replySelectMap">
 		SELECT * 
@@ -144,6 +149,7 @@
 	</select> -->
 	
 	<!-- SQL : SELECT ROW Count -->
+	<!-- 7 -->
 	<select  id="getTotalCount" parameterType="search"	 resultType="int">
 	  	SELECT COUNT(*) 
 	  	FROM(	SELECT 
@@ -165,7 +171,7 @@
 						 			rp.user_id like '%${searchKeyword}%'
 								</if>
 							</where>
-						</if> ) countTable	
+						</if> ) countTable
 	</select>
 
 </mapper>

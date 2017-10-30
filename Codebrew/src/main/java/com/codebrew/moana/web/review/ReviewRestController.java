@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.codebrew.moana.common.Page;
 import com.codebrew.moana.common.Search;
+import com.codebrew.moana.service.domain.Good;
 import com.codebrew.moana.service.domain.Image;
 import com.codebrew.moana.service.domain.Review;
 import com.codebrew.moana.service.review.ReviewService;
@@ -120,6 +121,30 @@ public class ReviewRestController {
 		
 		return map;
 		
+	}
+	
+	//완료는 : Good을 리턴하는 것이 아니라 review를 리턴해야...해당 화면에 Review 객체에 대한 정보를 보내줄 수 있다.
+	@RequestMapping(value = "json/addGood/{userId}/{reviewNo}")
+	public Review addGood(@PathVariable("userId") String userId, 
+						@PathVariable("reviewNo") int reviewNo)
+						throws Exception {
+		
+		System.out.println("Review RestController :: addGood");
+		
+		System.out.println("\n\nreviewNo :: "+reviewNo+"\n\n");
+		System.out.println("\n\nuserId :: "+userId+"\n\n");
+		
+		Good returnGood = new Good(reviewNo, userId);
+		
+		if(reviewService.checkGood(returnGood) == null || reviewService.checkGood(returnGood).equals("")){
+			System.out.println("좋아요 + 1");
+			reviewService.addGood(returnGood);
+			return reviewService.getReview(reviewNo);
+		}else{
+			System.out.println("좋아요 - 1");
+			reviewService.deleteGood(returnGood);
+			return reviewService.getReview(reviewNo);
+		}
 	}
 		
 }
