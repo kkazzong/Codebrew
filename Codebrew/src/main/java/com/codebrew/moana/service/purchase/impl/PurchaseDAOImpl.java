@@ -89,13 +89,14 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			ticketDAO.updateTicketCount(purchase.getTicket());
 		}
 		if(purchase.getPurchaseFlag().equals("2")) {
+			System.out.println("@@@@@@@@@파티티켓구매!!!!!@@@@@@@@@");
 			PartyMember partyMember = new PartyMember();
 			User user = purchase.getUser();
 			partyMember.setAge(user.getAge());
 			partyMember.setGender(user.getGender());
 			partyMember.setRole("guest");
 			partyMember.setUser(user);
-			partyMember.setParty(ticket.getParty());
+			partyMember.setParty(purchase.getTicket().getParty());
 			partyDAO.joinParty(partyMember);
 		}
 		sqlSession.insert("PurchaseMapper.addPurchase", purchase);

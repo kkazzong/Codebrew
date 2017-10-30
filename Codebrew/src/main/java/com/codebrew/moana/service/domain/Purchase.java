@@ -239,14 +239,15 @@ public class Purchase {
 
 	@Override
 	public String toString() {
-		return "Purchase [purchaseNo=" + purchaseNo + ", paymentNo=" + paymentNo + ", user=" + user + ", ticket="
-				+ ticket + ", itemName=" + itemName + ", purchasePrice=" + purchasePrice + ", purchaseCount="
-				+ purchaseCount + ", purchaseDate=" + purchaseDate + ", paymentMethodType=" + paymentMethodType
-				+ ", tranCode=" + tranCode + ", qrCode=" + qrCode + ", purchaseFlag=" + purchaseFlag + ", tid=" + tid
+		return "% % % PURCHASE % % % [purchaseNo(구매번호)=" + purchaseNo + ", paymentNo(결제번호)=" + paymentNo + ", itemName(구매명)=" + itemName
+				+ ", purchasePrice(결제금액)=" + purchasePrice + ", purchaseCount(결제수량)=" + purchaseCount + ", purchaseDate(결제일시)=" + purchaseDate 
+				+ ", paymentMethodType(결제수단)=" + paymentMethodType + ", tranCode(결제코드)=" + tranCode 
+				+ ", purchaseFlag(구매플래그)=" + purchaseFlag + ", tid(결제고유번호)=" + tid
 				+ ", nextRedirectPcUrl=" + nextRedirectPcUrl + ", nextRedirectMobileUrl=" + nextRedirectMobileUrl
 				+ ", aid=" + aid + ", cid=" + cid + ", partnetOrderId=" + partnetOrderId + ", partnerUserId="
 				+ partnerUserId + ", token=" + token + ", bankAccount=" + bankAccount + ", bankName=" + bankName
-				+ ", userAccount=" + userAccount + ", userBankName=" + userBankName + ", userName=" + userName + "]";
+				+ ", userAccount=" + userAccount + ", userBankName=" + userBankName + ", userName=" + userName 
+				+ ", <<<user>>>  =" + user + ", <<<ticket>>> =" + ticket + ", <<<qrCode>>> =" + qrCode+ "]";
 	}
 
 
