@@ -63,7 +63,6 @@
 		DELETE_FLAG,
 		FESTIVAL_IMAGE,
 		REG_DATE
-		
 		)
 		
 		VALUES (
@@ -92,11 +91,7 @@
 		#{useTimeFestival:VARCHAR},
 		#{deleteFlag:VARCHAR},
 		#{festivalImage:VARCHAR},
-		<!-- TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS') -->
 		SYSDATE
-		<!-- TO_DATE(SYSDATE,'yyyy/mm/dd hh24:mi:ss') -->
-		
-		
 		)
 	</insert>
 		
@@ -136,9 +131,7 @@
 			USE_TIME_FESTIVAL = #{useTimeFestival:VARCHAR},
 			DELETE_FLAG = #{deleteFlag:VARCHAR},
 			FESTIVAL_IMAGE = #{festivalImage:VARCHAR},
-			<!-- REG_DATE=TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS') -->
-			SYSDATE
-			<!-- TO_DATE(SYSDATE,'yyyy/mm/dd hh24:mi:ss') -->
+			REG_DATE = SYSDATE
 			
 		</set>
 		WHERE FESTIVAL_NO =#{festivalNo:NUMERIC}
@@ -232,9 +225,7 @@
 		#{useTimeFestival:VARCHAR},
 		#{deleteFlag:VARCHAR},
 		#{festivalImage:VARCHAR},
-		<!-- TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS') -->
 		SYSDATE
-		<!-- TO_DATE(SYSDATE,'yyyy/mm/dd hh24:mi:ss') -->
 		
 		
 		)
@@ -257,7 +248,7 @@
 						 FROM festival
 						 
 						 where end_date &gt;= TO_CHAR(SYSDATE, 'yyyymmdd')
-						
+							and delete_flag is null
 						<if test="searchCondition!=null">
 						
 							<!-- 지역검색만  -->					
@@ -314,23 +305,27 @@
 	
 	<select  id="getTotalCount"  parameterType="search"	 resultType="int">
 	  	SELECT COUNT(*)
-	  	FROM(	SELECT FESTIVAL_NO , FESTIVAL_NAME 
+	  	FROM(	SELECT FESTIVAL_NO , FESTIVAL_NAME , END_DATE
 						FROM festival
 						
 						where end_date &gt;= TO_CHAR(SYSDATE, 'yyyymmdd')
 						and delete_flag is null
 						
 						<if test="searchCondition != null">
+						
 								<if test="searchCondition != '' and searchKeyword =='' ">
-						 			and area_code = #{searchCondition}
+						 			and area_code = ${searchCondition}
 								</if>
+								
 								<if test="searchCondition == '' and searchKeyword !='' ">
-						 			and FESTIVAL_NAME = #{searchKeyword}
+						 			and FESTIVAL_NAME like '%${searchKeyword}%'
 								</if>
+								
 								<if test="searchCondition != '' and searchKeyword !='' ">
-									and area_code = #{searchCondition}
-						 			and FESTIVAL_NAME = #{searchKeyword}
+									and area_code = ${searchCondition}
+						 			and FESTIVAL_NAME like '%${searchKeyword}%'
 								</if>
+								
 						</if> ) countTable						
 	 </select>
 

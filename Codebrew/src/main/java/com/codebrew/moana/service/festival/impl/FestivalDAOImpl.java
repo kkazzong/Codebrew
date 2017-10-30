@@ -1,5 +1,6 @@
 package com.codebrew.moana.service.festival.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Repository;
 
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Festival;
+import com.codebrew.moana.service.domain.Location;
+import com.codebrew.moana.service.domain.Purchase;
 import com.codebrew.moana.service.domain.Weather;
 import com.codebrew.moana.service.domain.Zzim;
 import com.codebrew.moana.service.festival.FestivalDAO;
@@ -54,6 +57,7 @@ public class FestivalDAOImpl implements FestivalDAO {
 
 		return sqlSession.selectOne("FestivalMapper.getTotalCount", search);
 	}
+	
 
 	@Override
 	public Festival getFestivalDB(int festivalNo) throws Exception {
@@ -107,6 +111,32 @@ public class FestivalDAOImpl implements FestivalDAO {
 		// TODO Auto-generated method stub
 		sqlSession.insert("FestivalMapper.writeFestival", festival);
 	}
+	
+	@Override
+	public List<Zzim> getMyZzimList(Search search, String userId) throws Exception {
+		// TODO Auto-generated method stub
+		Map<String,Object> map = new HashMap<String,Object>();
+		
+		map.put("search", search);
+		map.put("userId", userId);
+		
+		List<Zzim> list =sqlSession.selectList("ZzimMapper.getMyZzimList", map);
+		
+		return list;
+		
+		
+	}
+	
+	public int getTotalCountZzim(Search search,String userId) throws Exception {
+		// TODO Auto-generated method stub
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		
+		map.put("search",search);
+		map.put("userId", userId);
+		
+		return  sqlSession.selectOne("ZzimMapper.getTotalCountZzim", map);
+	}
 		
 
 	
@@ -134,5 +164,12 @@ public class FestivalDAOImpl implements FestivalDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public Map<String, Object> getAreaCode() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 
 }

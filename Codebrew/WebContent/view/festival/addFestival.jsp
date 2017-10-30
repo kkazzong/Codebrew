@@ -93,7 +93,7 @@ $(function() {
 		$(function() {
 			$("button[type='button']").on("click", function() {
 				
-				self.location = "/festival/getFestivalListDB";
+				self.location = "/festival/getFestivalListDB?menu=db";
 
 				//$('form').attr("method","GET").attr("action", "/festival/addFestivalView").submit();
 			});

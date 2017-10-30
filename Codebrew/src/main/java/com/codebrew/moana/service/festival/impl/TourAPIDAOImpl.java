@@ -24,6 +24,7 @@ import org.springframework.stereotype.Repository;
 
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Festival;
+import com.codebrew.moana.service.domain.Location;
 import com.codebrew.moana.service.domain.Weather;
 import com.codebrew.moana.service.domain.Zzim;
 import com.codebrew.moana.service.festival.FestivalDAO;
@@ -63,6 +64,8 @@ public class TourAPIDAOImpl implements FestivalDAO {
 	private Festival festival;
 	
 	private Weather weather;
+	
+	private Location location;
 
 	Date dt = new Date();
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
@@ -101,6 +104,69 @@ public class TourAPIDAOImpl implements FestivalDAO {
 
 		return sb;
 
+	}
+	
+	public Map<String,Object> getAreaCode() throws Exception{
+		
+		List<Location> list = new ArrayList<Location>();
+		Map<String,Object> map = new HashMap<String,Object>();
+		
+		StringBuilder urlBuilder = new StringBuilder(tourURL + "areaCode?ServiceKey=" + tourKey);
+
+		StringBuilder sb = TourAPIDAOImpl.sendGetURL(urlBuilder);
+
+		JSONObject jsonobj = (JSONObject) JSONValue.parse(sb.toString());
+		JSONObject jsonobj2 = (JSONObject) jsonobj.get("response");
+		JSONObject jsonobj3 = (JSONObject) jsonobj2.get("body");
+		JSONObject jsonobj4 = (JSONObject) jsonobj3.get("items");
+		JSONArray jsonarray = (JSONArray) jsonobj4.get("item");
+
+		for (int i = 0; i < jsonarray.size(); i++) {
+
+			JSONObject jsonobj5 = (JSONObject) jsonarray.get(i);
+			
+			Location location = new Location();
+			ObjectMapper objectMapper = new ObjectMapper();
+			location = objectMapper.readValue(jsonobj5.toString(), Location.class);
+			this.location=location;
+			list.add(location);
+			map.put("list", list);
+			
+			}
+		return map;
+		
+	}
+	
+		public Map<String, Object> getSigunguCode(String areaCode) throws Exception{
+			
+		Map<String,Object> map = new HashMap<String,Object>();
+		List<Location> list = new ArrayList<Location>();
+			
+		StringBuilder urlBuilder = new StringBuilder(tourURL + "areaCode?ServiceKey=" + tourKey);
+		urlBuilder.append("&areaCode=" + areaCode );
+
+		StringBuilder sb = TourAPIDAOImpl.sendGetURL(urlBuilder);
+
+		JSONObject jsonobj = (JSONObject) JSONValue.parse(sb.toString());
+		JSONObject jsonobj2 = (JSONObject) jsonobj.get("response");
+		JSONObject jsonobj3 = (JSONObject) jsonobj2.get("body");
+		JSONObject jsonobj4 = (JSONObject) jsonobj3.get("items");
+		JSONArray jsonarray = (JSONArray) jsonobj4.get("item");
+
+		for (int i = 0; i < jsonarray.size(); i++) {
+
+			JSONObject jsonobj5 = (JSONObject) jsonarray.get(i);
+			
+			Location location = new Location();
+			ObjectMapper objectMapper = new ObjectMapper();
+			location = objectMapper.readValue(jsonobj5.toString(), Location.class);
+			this.location=location;
+			list.add(location);
+			map.put("list", list);
+			
+		}
+		
+		return map;
 	}
 
 	public Festival getFestival(int festivalNo) throws Exception {
@@ -623,6 +689,18 @@ public class TourAPIDAOImpl implements FestivalDAO {
 	public void writeFestival(Festival festival) throws Exception {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public List<Zzim> getMyZzimList(Search saerch, String userId) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getTotalCountZzim(Search search, String userId) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
