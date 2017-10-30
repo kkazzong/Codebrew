@@ -63,18 +63,6 @@
 				alert("파티설명은 500자 이내로 입력해주세요.");
 				return;
 			}
-			/* if(partyMemberLimit == null || partyMemberLimit.length <1){
-				alert("파티 인원은  반드시 입력하셔야 합니다.");
-				return;
-			} 
-			if(checkNum.test(partyMemberLimit) == false){
-				alert("파티 인원은 반드시 숫자로 입력하셔야 합니다.");
-				return;
-			}
-			if(ticketCount > partyMemberLimit) {				
-				alert("티켓 수량은 파티 인원수 이상 입력하실 수 없습니다.");
-				return;
-			}*/
 			if(ticketCount != 0 && checkNum.test(ticketCount) == false){
 				alert("티켓 수량은 반드시 숫자로 입력하셔야 합니다.");
 				return;
@@ -98,7 +86,6 @@
 		 $(function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			$( "button:contains('파티등록')" ).on("click" , function() {
-				//$("form").attr("method", "POST").attr("action", "/party/addParty").submit();
 				fncAddParty();
 			});
 		});	
@@ -106,8 +93,6 @@
 		
 		//============= "취소"  Event 처리 및  연결 =============
 		$(function() {
-			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			/* $("a[href='#']").on("click" , function() { */
 			$("a:contains('취소')").on("click" , function() {	
 				history.go(-1);
 			});
@@ -116,9 +101,8 @@
 			
 		//============= "축제검색"  Event 연결 =============
 		 $(function() {
-			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+			
 			$( "button:contains('축제검색')" ).on("click" , function() {
-				//$("form").attr("method", "POST").attr("action", "/party/addParty").submit();
 				
 				var pop = window.open("/festival/getFestivalListDB?menu=pop","pop","width=570,height=420, scrollbars=yes, resizable=yes"); 
 				
@@ -224,8 +208,7 @@
 				console.log(partyFlag);
 				
 				$("#festivalNameDiv").css("display", "none");
-				$("#ticketCountDiv").css("display", "block");
-				$("#ticketPriceDiv").css("display", "block");
+				$("#ticketDiv").css("display", "block");
 				
 				$("#festivalNo").val(0);
 				$("#festivalName").val("");
@@ -247,8 +230,7 @@
 				console.log(partyFlag);
 				
 				$("#festivalNameDiv").css("display", "block");
-				$("#ticketCountDiv").css("display", "none");
-				$("#ticketPriceDiv").css("display", "none");
+				$("#ticketDiv").css("display", "none");
 				
 				
 				$("#festivalNo").val("${festival.festivalNo}");
@@ -258,7 +240,6 @@
 				var festivalName = $("#festivalName").val();
 				var festivalAddr = $("#partyPlace").val();
 				
-				//console.log("#afterParty 버튼 클릭 ==> "+festivalNo+" :: "+festivalName);
 				console.log("#afterParty 버튼 클릭 ==> "+festivalNo+" :: "+festivalName+" :: "+festivalAddr);
 			});
 			
@@ -418,13 +399,9 @@
 		#festivalNameDiv {
 			display: none;
 		}
-		#ticketCountDiv {
+		#ticketDiv {
 			display: block;
 		}
-		#ticketPriceDiv {
-			display: block;
-		}
-		
 		#noLimitDiv {
 			display: none;
 		}
@@ -570,14 +547,7 @@
 			</div>
 		  </div>
 		  
-		  <!-- <div class="form-group">
-		    <label for="partyMemberlimit" class="col-sm-offset-1 col-sm-3 control-label">파티인원</label>
-		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="partyMemberLimit" name="partyMemberLimit">
-			</div>
-		  </div> -->
-		 		 	  
-		   <div class="form-group">
+		  <div class="form-group">
 		    <label for="partyPlace" class="col-sm-offset-1 col-sm-3 control-label">파티장소(선택입력)</label>
 		    <div class="col-sm-4">
 		      <input type="text" readonly="readonly" class="form-control" id="partyPlace" name="partyPlace" value="${ party.partyPlace }">
@@ -608,35 +578,35 @@
 		    <a href="#">Remove</a>
 		  </div> -->
 				  
-		  
-		  <div class="form-group">
-		    <label for="partyFlag" class="col-sm-offset-1 col-sm-3 control-label">티켓</label>
-		    
-		    <div class="col-sm-2">
-		    	<button type="button" class="btn btn-primary btn-block" name="ticketPriceFlag" id="freeTicket" disabled>무료티켓</button>
-		    </div>
-		    <div class="col-sm-2">
-		    	<button type="button" class="btn btn-primary btn-block" name="ticketPriceFlag" id="noFreeTicket">유료티켓</button>
-		    </div>
-		 </div>
-		  
-		  <div class="form-group" id="ticketCountDiv">
-		    <label for="ticketCount" class="col-sm-offset-1 col-sm-3 control-label">티켓수량</label>
-		    <div class="col-sm-2">
-		      <input type="text" class="form-control" id="ticketCount" name="ticketCount" >
-		    </div>
-		    <div class="col-sm-2" id="noLimitDiv">
-		      <button type="button" class="btn btn-primary btn-block" name="noLimit" id="noLimit">무제한</button>
-		    </div>
-		  </div>
-		  
-		  <div class="form-group" id="ticketPriceDiv">
-		    <label for="ticketPrice" class="col-sm-offset-1 col-sm-3 control-label">티켓가격</label>
-		    <div class="col-sm-2">
-		    	<input type="text" readonly="readonly" class="form-control" id="ticketPrice" name="ticketPrice" value="0" >
-		    </div>
-	 	  </div>
-		  
+		  <div id=ticketDiv>
+			  <div class="form-group">
+			    <label for="partyFlag" class="col-sm-offset-1 col-sm-3 control-label">티켓</label>
+			    
+			    <div class="col-sm-2">
+			    	<button type="button" class="btn btn-primary btn-block" name="ticketPriceFlag" id="freeTicket" disabled>무료티켓</button>
+			    </div>
+			    <div class="col-sm-2">
+			    	<button type="button" class="btn btn-primary btn-block" name="ticketPriceFlag" id="noFreeTicket">유료티켓</button>
+			    </div>
+			 </div>
+			  
+			  <div class="form-group">
+			    <label for="ticketCount" class="col-sm-offset-1 col-sm-3 control-label">티켓수량</label>
+			    <div class="col-sm-2">
+			      <input type="text" class="form-control" id="ticketCount" name="ticketCount" >
+			    </div>
+			    <div class="col-sm-2" id="noLimitDiv">
+			      <button type="button" class="btn btn-primary btn-block" name="noLimit" id="noLimit">무제한</button>
+			    </div>
+			  </div>
+			  
+			  <div class="form-group">
+			    <label for="ticketPrice" class="col-sm-offset-1 col-sm-3 control-label">티켓가격</label>
+			    <div class="col-sm-2">
+			    	<input type="text" readonly="readonly" class="form-control" id="ticketPrice" name="ticketPrice" value="0" >
+			    </div>
+		 	  </div>
+		  </div>  
 		  <!-- <div class="form-group" id="ticketPriceDiv">
 		    <label for="ticketPrice" class="col-sm-offset-1 col-sm-3 control-label">티켓가격</label>
 		    <div class="col-sm-4">

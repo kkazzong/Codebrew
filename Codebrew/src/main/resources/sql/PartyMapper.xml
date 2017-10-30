@@ -98,42 +98,6 @@
 		AND p.party_no = #{value}
 	</select>
 	
-	<!-- <select id="getParty" parameterType="map" resultMap="partySelectMap">
-		SELECT  p.party_no
-				, p.party_name
-				<if test="partyFlag == '2'">
-					,f.festival_no
-					,f.festival_name
-				</if>
-				,u.user_id
-				,u.nickname
-				,u.profile_image
-				,TO_CHAR(p.party_date, 'yy/mm/dd' ) AS party_date 
-				,p.party_time
-				,p.party_member_limit 
-				,p.party_image
-				,p.party_detail 
-				,p.party_place 
-				,TO_CHAR(p.party_reg_date, 'yy/mm/dd') AS party_reg_date
-				,p.delete_flag
-		FROM party p
-			 ,users u
-		 	 <if test="partyFlag == '2'">
-		  		,festival f
-		  	 </if>
-		WHERE p.user_id = u.user_id
-		<if test="partyFlag == '2'">
-			AND p.festival_no = f.festival_no
-		</if>
-		
-		AND p.party_no = #{partyNo:NUMERIC}
-	</select> -->
-	
-	<!-- <select id="getParty" parameterType="int" resultMap="partySelectMap">
-		SELECT TO_CHAR(party_date, 'yy/mm/dd') AS party_date
-		FROM party
-		WHERE party_no = #{partyNo}
-	</select> -->
 	
 	<update id="updateParty" parameterType="party">
 		UPDATE party
@@ -157,6 +121,24 @@
 			delete_flag = 'del'
 		</set>
 		WHERE party_no = #{value}
+	</update>
+	
+	
+	<delete id="cancelParty" parameterType="map">
+		DELETE
+		FROM party_member
+		WHERE party_no = #{partyNo}
+		AND user_id = #{userId}
+	</delete>
+	
+	
+	<update id="deleteMyPartyList" parameterType="map">
+		UPDATE party_member
+		<set>
+			delete_flag = 'del' 
+		</set>
+		WHERE party_no = #{partyNo}
+		AND user_id = #{userId}
 	</update>
 	
 	
@@ -260,42 +242,6 @@
 		 	row_seq BETWEEN #{search.startRowNum:NUMERIC} AND #{search.endRowNum:NUMERIC}
 		 </where>
 	  	
-	  	<!-- SELECT *
-	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
-	  					FROM		(	SELECT p.party_no, p.party_image, f.festival_name, p.party_name, u.nickname, p.party_date, p.party_time, p.party_place
-										FROM party p, festival f, users u
-										
-									    <where>
-									        p.festival_no = f.festival_no(+)
-									        AND p.user_id = u.user_id
-									    	AND p.delete_flag IS NULL
-									    	AND u.user_id = #{userId}
-										<if test="searchCondition == ''">
-											AND p.party_name LIKE '%${searchKeyword}%'
-										</if>
-										<if test="searchCondition != ''">
-										     
-									        <if test="searchCondition == 3 and searchKeyword =='' ">
-									            AND p.party_date &lt; SYSDATE
-									        </if>
-									        <if test="searchCondition == 3 and searchKeyword !='' ">
-									            AND p.party_date &lt; SYSDATE
-									            AND p.party_name LIKE '%${searchKeyword}%'
-									        </if>
-									        <if test="searchCondition == 4 and searchKeyword =='' ">
-									            AND p.party_date >= SYSDATE
-									        </if>
-									        <if test="searchCondition == 4 and searchKeyword !='' ">
-									            AND p.party_date >= SYSDATE
-									            AND p.party_name LIKE '%${searchKeyword}%'
-									        </if>
-										    
-										</if>
-										
-										</where>
-										ORDER BY p.party_date DESC  ) inner_table
-						WHERE ROWNUM &lt;= #{endRowNum} )
-		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}  -->	
 	 </select>
 	 
 	 
@@ -403,23 +349,6 @@
 				,#{user.gender:VARCHAR})		
 	</insert>
 	
-	
-	<delete id="cancelParty" parameterType="map">
-		DELETE
-		FROM party_member
-		WHERE party_no = #{partyNo}
-		AND user_id = #{userId}
-	</delete>
-	
-	
-	<update id="deletePartyMember" parameterType="map">
-		UPDATE party_member
-		<set>
-			delete_flag = 'del' 
-		</set>
-		WHERE party_no = #{partyNo}
-		AND user_id = #{userId}
-	</update>
 	
 	<select  id="getPartyMemberList" parameterType="map" resultMap="partyMemberSelectMap">
 	  	SELECT *

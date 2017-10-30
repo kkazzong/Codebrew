@@ -115,8 +115,8 @@
 										    		
 										    		$("#partyButtonDiv").html(cancelParty).on("click", function() {
 														
-										    			//self.location="/partyRest/json/cancelParty/${party.partyNo}";
-										    			$.ajax(
+										    			self.location="/party/cancelParty/${party.partyNo}";
+										    			/* $.ajax(
 																{ url : "/partyRest/json/cancelParty/${party.partyNo}",
 																  method : "GET",
 																  dataType : "json",
@@ -124,7 +124,8 @@
 																	  		console.log(status);
 																	 		console.log("JSONData : "+JSON.stringify(JSONData));
 																  }
-																});
+																}
+														); */
 													});
 										    		
 										    		return;

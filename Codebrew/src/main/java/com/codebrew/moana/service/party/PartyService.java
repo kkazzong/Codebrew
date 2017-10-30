@@ -28,7 +28,7 @@ public interface PartyService {
 	
 	public Party cancelParty(int partyNo, String userId) throws Exception;
 	
-	public void deletePartyMember(int partyNo, String userId) throws Exception;
+	public void deleteMyPartyList(int partyNo, String userId) throws Exception;
 	
 	public Party getGenderRatio(int partyNo) throws Exception;
  }

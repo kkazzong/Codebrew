@@ -227,7 +227,7 @@ public class PartyController {
 	}
 	
 	
-	/*@RequestMapping( value="cancelParty", method=RequestMethod.GET )
+	@RequestMapping( value="cancelParty", method=RequestMethod.GET )
 	public ModelAndView cancelParty(@RequestParam("partyNo") String partyNo, HttpSession session) throws Exception {
 		
 		System.out.println("\n>>> /party/cancelParty :: GET start <<<");
@@ -240,23 +240,24 @@ public class PartyController {
 		User user = (User)session.getAttribute("user");
 		String userId = user.getUserId();
 		
-		partyService.cancelParty(dbPartyNo, userId);
+		Party party = partyService.cancelParty(dbPartyNo, userId);
 		
 
 		//Model(data) & View(jsp)
 		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("party", party);
 		modelAndView.setViewName("/view/party/getParty.jsp");
 		
 		return modelAndView;
-	}*/
+	}
 	
 	
-	@RequestMapping( value="deletePartyMember", method=RequestMethod.POST )
-	public ModelAndView deletePartyMember(@ModelAttribute("partyNo") String partyNo, HttpSession session) throws Exception {
+	@RequestMapping( value="deleteMyPartyList", method=RequestMethod.POST )
+	public ModelAndView deleteMyPartyList(@ModelAttribute("partyNo") String partyNo, HttpSession session) throws Exception {
 		
-		System.out.println("\n>>> /party/deletePartyMember :: POST start <<<");
+		System.out.println("\n>>> /party/deleteMyPartyList :: POST start <<<");
 		//partyNo 파라미터 출력
-		System.out.println(">>> /party/deletePartyMember :: POST :: partyNo 파라미터 \n"+partyNo);
+		System.out.println(">>> /party/deleteMyPartyList :: POST :: partyNo 파라미터 \n"+partyNo);
 		
 		Search search = new Search();
 		
@@ -266,14 +267,14 @@ public class PartyController {
 		search.setPageSize(pageSize);
 		search.setSearchCondition("4");
 		
-		System.out.println("\n<<< /party/deletePartyMember :: POST :: search\n"+search);
+		System.out.println("\n<<< /party/deleteMyPartyList :: POST :: search\n"+search);
 		
 		//Business Logic
 		int dbPartyNo = Integer.parseInt(partyNo);
 		User user = (User)session.getAttribute("user");
 		String userId = user.getUserId();
 		
-		partyService.deletePartyMember(dbPartyNo, userId);
+		partyService.deleteMyPartyList(dbPartyNo, userId);
 		Map<String,Object> map = partyService.getMyPartyList(search, userId);
 		
 		Page resultPage = new Page(search.getCurrentPage(),((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);

@@ -203,9 +203,9 @@ public class PartyServiceImpl implements PartyService {
 	
 	
 	@Override
-	public void deletePartyMember(int partyNo, String userId) throws Exception {
+	public void deleteMyPartyList(int partyNo, String userId) throws Exception {
 		// TODO Auto-generated method stub
-		partyDAO.deletePartyMember(partyNo, userId);
+		partyDAO.deleteMyPartyList(partyNo, userId);
 	}
 
 

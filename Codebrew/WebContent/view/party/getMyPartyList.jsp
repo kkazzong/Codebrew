@@ -133,7 +133,7 @@
 			$(".pull-right").each(function(){}).on("click", function(){
 				
 				if(confirm("파티목록에서 삭제하시겠습니까?")) {
-					$(this).parents("#deleteForm").attr("method", "post").attr("action", "/party/deletePartyMember").submit();
+					$(this).parents("#deleteForm").attr("method", "post").attr("action", "/party/deleteMyPartyList").submit();
 				} else {
 					return;
 				}

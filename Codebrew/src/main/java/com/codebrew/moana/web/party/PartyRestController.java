@@ -155,7 +155,7 @@ public class PartyRestController {
 	}
 	
 	
-	@RequestMapping( value="json/cancelParty/{partyNo}", method=RequestMethod.GET )
+	/*@RequestMapping( value="json/cancelParty/{partyNo}", method=RequestMethod.GET )
 	public Party cancelParty(@PathVariable String partyNo, HttpSession session) throws Exception {
 		
 		System.out.println("\n>>> /partyRest/json/cancelParty :: GET start <<<");
@@ -173,10 +173,10 @@ public class PartyRestController {
 		System.out.println("\n<<< /partyRest/json/cancelParty :: GET :: party 도메인  \n"+party);
 
 		//Model(data) & View(jsp)
-		/*ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("/view/party/getParty.jsp");*/
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("/view/party/getParty.jsp");
 		
 		return party;
-	}
+	}*/
 }
 

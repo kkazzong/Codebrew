@@ -48,6 +48,6 @@ public interface PartyDAO {
 	public int cancelParty(int partyNo, String userId) throws Exception ;
 	
 	// UPDATE
-	public void deletePartyMember(int partyNo, String userId) throws Exception ;
+	public void deleteMyPartyList(int partyNo, String userId) throws Exception ;
 }
 
