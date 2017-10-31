@@ -103,7 +103,7 @@ body {
   	<div class="col-md-12">
   	
   		<div class="page-header text-center">
-					<h3 class="text-info">축제정보</h3>
+					<h3 class="text-info">마이찜</h3>
 				</div>
 
 	<form>

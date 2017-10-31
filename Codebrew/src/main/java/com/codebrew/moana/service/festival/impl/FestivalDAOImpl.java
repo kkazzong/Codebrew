@@ -124,7 +124,14 @@ public class FestivalDAOImpl implements FestivalDAO {
 		
 		return list;
 		
+	}
+	
+	@Override
+	public List<Festival> getInitListDB() throws Exception {
+		// TODO Auto-generated method stub
+		List<Festival> list = sqlSession.selectList("FestivalMapper.getInitListDB");
 		
+		return list;
 	}
 	
 	public int getTotalCountZzim(Search search,String userId) throws Exception {
@@ -170,6 +177,6 @@ public class FestivalDAOImpl implements FestivalDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 
 }

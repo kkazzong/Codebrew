@@ -703,4 +703,10 @@ public class TourAPIDAOImpl implements FestivalDAO {
 		return 0;
 	}
 
+	@Override
+	public List<Festival> getInitListDB() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

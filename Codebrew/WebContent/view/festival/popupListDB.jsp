@@ -82,20 +82,6 @@ $(function() {
 		});
 	
 });
-
-function setParentText(){
-	
-	opener.document.getElementById("festivalNo").value = document.getElementById("returnFestivalNo").value
-    opener.document.getElementById("festivalName").value = document.getElementById("returnFestivalName").value
-    opener.document.getElementById("startDate").value = document.getElementById("returnStartDate").value
-    opener.document.getElementById("endDate").value = document.getElementById("returnEndDate").value
-    opener.document.getElementById("addr").value = document.getElementById("returnAddr").value
-    
-}
-
-
-	
-	
 	
 </script>
 

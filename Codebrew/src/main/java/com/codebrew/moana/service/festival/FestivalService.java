@@ -45,6 +45,6 @@ public interface FestivalService {
 	
 	public Map<String,Object> getAreaCode() throws Exception;
 	
-
+	public Map<String,Object> getInitListDB() throws Exception;
 	
 }
