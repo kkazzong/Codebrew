@@ -251,54 +251,6 @@ body {
 			
 			<jsp:include page="../../common/pageNavigator_new.jsp"/>
 		
-		
-		
-		
-		
-		<!-- 되는거 -->
-		<%-- <c:forEach var="festival" items="${list}">
-		
-		<br />
-			<table>
-				<tr> 
-					<td>
-					
-					<c:if test="${festival.festivalImage == null }"> 
-						
-						<img src="../resources/uploadFile/no.png" width="300" height="300"/>
-						
-					</c:if>
-					
-					<c:if test="${festival.festivalImage != null }">
-					
-						<img src="${festival.festivalImage }" width="300" height="300" />
-						
-					</c:if>
-					
-					
-					 <br />
-					
-						<div id="festivalNo" style="display: none">
-							<p>${festival.festivalNo }</p>
-						</div> <span> ${festival.festivalName } </span> <br /></td>
-				</tr>
-			</table>
-
-			<div>축제기간 ${festival.startDate } ~ ${festival.endDate }</div>
-			<br />
-			<br />
-		
-			
-		</c:forEach>
-		 
-		
-			
-			<input type = hidden id="currentPage" name = "currentPage" value = ${i } />
-			
-			<jsp:include page="../../common/pageNavigator.jsp"/>
-			
-			--%>
-			
 
 
 	</form>

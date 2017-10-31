@@ -52,7 +52,7 @@
 		(SELECT inner_table.* , ROWNUM AS row_seq
 			  	
 			FROM	(	SELECT f.festival_no, f.festival_name, f.start_date, f.end_date, 
-						f.delete_flag, f.addr,f.area_code,f.read_count, f.reg_date, z.user_id
+						f.delete_flag, f.addr,f.area_code,f.read_count, f.reg_date, f.festival_image, z.user_id
 						
 						FROM festival f,  zzim z
 						
@@ -122,7 +122,7 @@
 	<select  id="getTotalCountZzim"  parameterType="map"	 resultType="int">
 	  	SELECT COUNT(*)
 	  	FROM(	SELECT f.festival_no, f.festival_name, f.start_date, f.end_date,
-						f.delete_flag, f.addr, f.reg_date,f.area_code,f.read_count ,z.user_id
+						f.delete_flag, f.addr, f.reg_date,f.area_code,f.read_count, f.festival_image ,z.user_id
 						
 						FROM festival f,  zzim z
 						

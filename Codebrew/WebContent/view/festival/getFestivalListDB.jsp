@@ -68,6 +68,21 @@ $(function(){
 	
 	});
 	
+/* $(function(){
+	
+	$("#tag").on('click',function(){
+		
+		var festivalNo = $("div:nth-child(13)",this).text();
+		var userId = $("input:hidden[name='userId']").val();
+		
+		self.location="/festival/deleteZzim/"+festivalNo+"/"+userId;
+		
+		
+	});
+
+}); */
+
+	
 	
 	
 </script>
@@ -167,6 +182,8 @@ body {
 			<div class="col-md-6">
 						<div class="panel panel-primary">
 							<div class="panel-heading">
+							<%-- <span class="panel-title pull-left" style = "font-size:1.5em;" >${festival.festivalName}</span>
+									<span class="panel-title pull-right glyphicon glyphicon-heart" style = " font-size:1.5em;  color: red;" id="tag"></span> --%>
 								<h3 class="panel-title pull-left">${i} ${festival.festivalName}</h3>
 								<br/>
         						<div class="clearfix"></div>
@@ -222,55 +239,3 @@ body {
 	</div>
 	</body>
 </html>
-		
-		
-		
-		<%-- <c:forEach var="festival" items="${list}">
-		
-			<c:if test="${festival.deleteFlag == null }">
-		
-		<br />
-			<table>
-				<tr>
-					<td>
-					
-					<c:if test="${festival.festivalImage.contains('http://')==true }">
-					
-					<img src="${festival.festivalImage }" width="300"height="300" />
-					
-					</c:if>
-					
-					<c:if test="${festival.festivalImage.contains('http://')==false }">
-					
-					<img src="../../resources/uploadFile/${festival.festivalImage }" width="300"height="300" />
-					
-					</c:if>
-					
-					 <br />
-						<div id="festivalNo" style="display: none">
-							<p>${festival.festivalNo }</p>
-						</div> <span> ${festival.festivalName } </span> <br /></td>
-				</tr>
-			</table>
-
-			<div>축제기간 ${festival.startDate } ~ ${festival.endDate }</div>
-			
-			<br />
-			<br />
-		
-			</c:if>
-		</c:forEach>
-		
-		
-			
-			<input type = hidden id="currentPage" name = "currentPage" value = ${i } />
-			
-			<jsp:include page="../../common/pageNavigator.jsp"/>
-			
-
- --%>
-
-
-
-<!-- </body>
-</html> -->

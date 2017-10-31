@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -55,6 +56,25 @@ public class FestivalController {
 	@Value("#{imageRepositoryProperties['fileRoot']}")
 	String fileRoot;
 	
+	@RequestMapping(value = "/deleteZzim/{festivalNo}/{userId}" , method = RequestMethod.GET)
+	public ModelAndView deleteZzim(@PathVariable ("festivalNo") int festivalNo, @PathVariable ("userId") String userId)
+			throws Exception {
+
+		System.out.println("deleteZzim........");
+		
+
+		Zzim returnZzim = new Zzim(userId, festivalNo);
+
+		festivalService.deleteZzim(returnZzim);
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("forward:/festival/getMyZzimList");
+		
+		return modelAndView;
+
+
+	}
+	
 	@RequestMapping(value = "getMyZzimList")
 	public ModelAndView getMyZzimList(@ModelAttribute("search") Search search,
 			@ModelAttribute("page") Page page, HttpServletRequest request) throws Exception {
@@ -93,7 +113,6 @@ public class FestivalController {
 			
 		}
 		
-		
 		Page resultPage = new Page(search.getCurrentPage(), ((Integer) map.get("totalCount")).intValue(), pageUnit,
 				pageSize);
 
@@ -104,6 +123,7 @@ public class FestivalController {
 		modelAndView.addObject("search", search);
 		modelAndView.addObject("list", list);
 		modelAndView.addObject("resultPage", resultPage);
+		
 
 		return modelAndView;
 
@@ -111,7 +131,6 @@ public class FestivalController {
 	}
 	
 	@RequestMapping(value = "getFestivalListDB")
-
 	public ModelAndView getFestivalListDB(@ModelAttribute("search") Search search, @ModelAttribute("page") Page page,
 			@RequestParam("menu") String menu) throws Exception {
 
