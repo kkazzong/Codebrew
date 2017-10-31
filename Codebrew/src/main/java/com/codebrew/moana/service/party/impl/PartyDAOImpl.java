@@ -142,6 +142,23 @@ public class PartyDAOImpl implements PartyDAO {
 		return sqlSession.selectOne("PartyMapper.getCurrentMemberCount", map);
 		
 	}
+	
+	
+	@Override
+	public int getCurrentMemberCount(int partyNo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("PartyMapper.getCurrentMemberCountByPartyNo", partyNo);
+		
+	}
+	
+	
+	@Override
+	public List<PartyMember> getGenderRatio(int partyNo) throws Exception{
+		// TODO Auto-generated method stub
+		List<PartyMember> list = sqlSession.selectList("PartyMapper.getGenderRatio", partyNo); 
+			
+		return list;
+	}
 
 
 	@Override
@@ -157,14 +174,14 @@ public class PartyDAOImpl implements PartyDAO {
 
 
 	@Override
-	public void deletePartyMember(int partyNo, String userId) throws Exception {
+	public void deleteMyPartyList(int partyNo, String userId) throws Exception {
 		// TODO Auto-generated method stub
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("partyNo", partyNo);
 		map.put("userId", userId);
 		
-		sqlSession.delete("PartyMapper.deletePartyMember", map);
+		sqlSession.delete("PartyMapper.deleteMyPartyList", map);
 	}
 	
 	

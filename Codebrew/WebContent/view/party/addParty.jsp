@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%-- <%@include file="/data/party/userData.jsp"%>  --%>
-<%-- <%@include file="/data/party/festivalData.jsp"%>  --%>
+
    
 <!DOCTYPE html>
 <html>
@@ -40,6 +39,7 @@
 			var partyMemberLimit=$("input[name='partyMemberLimit']").val();
 			var ticketCount=$("input[name='ticketCount']").val();
 			var ticketPrice=$("input[name='ticketPrice']").val();
+			var festivalNo=$("input[name='festival.festivalNo']").val();
 			
 			var checkNum = /\d/g;
 			
@@ -63,31 +63,21 @@
 				alert("파티설명은 500자 이내로 입력해주세요.");
 				return;
 			}
-			/* if(partyMemberLimit == null || partyMemberLimit.length <1){
-				alert("파티 인원은  반드시 입력하셔야 합니다.");
-				return;
-			} 
-			if(checkNum.test(partyMemberLimit) == false){
-				alert("파티 인원은 반드시 숫자로 입력하셔야 합니다.");
-				return;
-			}
-			if(ticketCount > partyMemberLimit) {				
-				alert("티켓 수량은 파티 인원수 이상 입력하실 수 없습니다.");
-				return;
-			}*/
-			if(ticketCount != 0 && checkNum.test(ticketCount) == false){
-				alert("티켓 수량은 반드시 숫자로 입력하셔야 합니다.");
-				return;
-			}
-			if(ticketPrice != 0 && checkNum.test(ticketPrice) == false){
-				alert("티켓 가격은 반드시 숫자로 입력하셔야 합니다.");
-				return;
-			}
-			if(ticketCount == 0 && ticketPrice == 0){
-				alert("티켓 수량이 무제한인 경우 티켓 가격을 반드시 입력하셔야 합니다.");
-				return;
-			}
-				
+			if(festivalNo == 0){
+				if(ticketCount != 0 && checkNum.test(ticketCount) == false){
+					alert("티켓 수량은 반드시 숫자로 입력하셔야 합니다.");
+					return;
+				}
+				if(ticketPrice != 0 && checkNum.test(ticketPrice) == false){
+					alert("티켓 가격은 반드시 숫자로 입력하셔야 합니다.");
+					return;
+				}
+				if(ticketCount == 0 && ticketPrice == 0){
+					
+						alert("티켓 수량이 무제한인 경우 티켓 가격을 반드시 입력하셔야 합니다.");
+						return;
+				}
+			}	
 			
 			
 			$("form").attr("method", "POST").attr("action", "/party/addParty").submit();
@@ -98,7 +88,6 @@
 		 $(function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			$( "button:contains('파티등록')" ).on("click" , function() {
-				//$("form").attr("method", "POST").attr("action", "/party/addParty").submit();
 				fncAddParty();
 			});
 		});	
@@ -106,8 +95,6 @@
 		
 		//============= "취소"  Event 처리 및  연결 =============
 		$(function() {
-			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			/* $("a[href='#']").on("click" , function() { */
 			$("a:contains('취소')").on("click" , function() {	
 				history.go(-1);
 			});
@@ -116,24 +103,34 @@
 			
 		//============= "축제검색"  Event 연결 =============
 		 $(function() {
-			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			$( "button:contains('축제검색')" ).on("click" , function() {
-				//$("form").attr("method", "POST").attr("action", "/party/addParty").submit();
+			
+			/* $( "button:contains('축제검색')" ).on("click" , function() {
 				
-				var pop = window.open("/view/festival/popupListDB.jsp","pop","width=570,height=420, scrollbars=yes, resizable=yes"); 
+				var pop = window.open("/festival/getFestivalListDB?menu=pop","pop","width=570,height=420, scrollbars=yes, resizable=yes"); 
 				
-			});
+			}); */
 			
 			// 애프터 파티의 경우 축제 장소 자동 입력
-			if( "${party.partyPlace}" != null ){
+			/* if( "${party.partyPlace}" != null ){
 				
 				var addr = "${festival.addr}";
 				$("#partyPlace").val(addr);
 			
-			}
+			} */
 				
 		});
 		
+		
+		 function openChild()
+		         {
+		             // window.name = "부모창 이름"; 
+		             window.name = "parentForm";
+		             // window.open("open할 window", "자식창 이름", "팝업창 옵션");
+		             openWin = window.open("/view/festival/popupListDB.jsp",
+		                     "childForm", "width=570, height=350, resizable = no, scrollbars = yes");    
+		         }
+
+
 		
 		//============= "DatePicker"  Event 처리 및  연결 =============
 		$( function() {
@@ -224,8 +221,7 @@
 				console.log(partyFlag);
 				
 				$("#festivalNameDiv").css("display", "none");
-				$("#ticketCountDiv").css("display", "block");
-				$("#ticketPriceDiv").css("display", "block");
+				$("#ticketDiv").css("display", "block");
 				
 				$("#festivalNo").val(0);
 				$("#festivalName").val("");
@@ -247,18 +243,18 @@
 				console.log(partyFlag);
 				
 				$("#festivalNameDiv").css("display", "block");
-				$("#ticketCountDiv").css("display", "none");
-				$("#ticketPriceDiv").css("display", "none");
+				$("#ticketDiv").css("display", "none");
 				
 				
+				$("#ticketCount").val(-1);
+				$("#ticketPrice").val(-1);
 				$("#festivalNo").val("${festival.festivalNo}");
 				$("#festivalName").val("${festival.festivalName}");
 				$("#partyPlace").val("${festival.addr}");
 				var festivalNo = $("#festivalNo").val();
 				var festivalName = $("#festivalName").val();
-				var festivalAddr = $("#partyPlace").val();
+				var festivalAddr = $("#addr").val();
 				
-				//console.log("#afterParty 버튼 클릭 ==> "+festivalNo+" :: "+festivalName);
 				console.log("#afterParty 버튼 클릭 ==> "+festivalNo+" :: "+festivalName+" :: "+festivalAddr);
 			});
 			
@@ -268,7 +264,21 @@
 		
 		
 		//============= "사진 미리보기"  Event 처리 및  연결 =============
-		
+		function getUploadFilePrivew(html, $target) {
+		    if (html.files && html.files[0]) {
+		        var reader = new FileReader();
+		        reader.onload = function (e) {
+		            $target.css('display', '');
+		            //$target.css('background-image', 'url(\"' + e.target.result + '\")'); // 배경으로 지정시
+		            $target.html('<img src="' + e.target.result + '"width="80%" border="0" alt="" />');
+		        }
+		        reader.readAsDataURL(html.files[0]);
+		    }
+		}
+			
+			
+			
+			
 		/* $(function() {
             $("#uploadFile").on('change', function(){
                 readURL(this);
@@ -326,26 +336,7 @@
 	        e.unwrap(); //감싼 <form> 태그를 제거
 	    } */
 		
-		//=============    파티 참여 취소  Event  처리 		=============
-		/* $(function(){
-			$("button:contains('파티 참여 취소')").on("click", function() {
-				
-				var partyNo = $(this).val();
-				console.log("파티 참여 취소 :: partyNo :: "+partyNo);
-				self.location="/party/cancelParty?partyNo="+partyNo;
 		
-			});
-		}); */
-		
-		
-		//=============    티켓 구매 취소  Event  처리 		=============
-		/* $(function(){
-			$("button:contains('티켓 구매 취소')").on("click", function() {
-				var partyNo = $( "input[name=partyNo]", $(this) ).val();
-				self.location="/purchase/cancelPurchase";
-		
-			});
-		}); */
 		
 		
 		//=============    현재 시간  Event  처리 		=============
@@ -418,15 +409,37 @@
 		#festivalNameDiv {
 			display: none;
 		}
-		#ticketCountDiv {
+		#ticketDiv {
 			display: block;
 		}
-		#ticketPriceDiv {
-			display: block;
-		}
-		
 		#noLimitDiv {
 			display: none;
+		}
+		.filebox label {
+		    display: inline-block;
+		    padding: .5em .75em;
+		    color: #999;
+		    font-size: inherit;
+		    line-height: normal;
+		    vertical-align: middle;
+		    background-color: #fdfdfd;
+		    cursor: pointer;
+		    border: 1px solid #ebebeb;
+		    border-bottom-color: #e2e2e2;
+		    border-radius: .25em;
+		    width:100%;
+		    max-width:100%;
+		}
+		 
+		.filebox input[type="file"] {  /* 파일 필드 숨기기 */
+		    position: absolute;
+		    width: 1px;
+		    height: 1px;
+		    padding: 0;
+		    margin: -1px;
+		    overflow: hidden;
+		    clip:rect(0,0,0,0);
+		    border: 0;
 		}
 	</style>
 		
@@ -499,10 +512,10 @@
 		    <label for="festivalName" class="col-sm-offset-1 col-sm-3 control-label">축제명</label>
 		    <div class="col-sm-4">
 		      <!-- <input type="text" class="form-control" id="festivalName" name="festival.festivalName" value="" /> -->
-		      <input type="text" readonly="readonly" class="form-control" id="festivalName" name="festival.festivalName" value="${ festival.festivalName }">
-		      <input type="hidden" class="form-control" id="festivalNo" name="festival.festivalNo" value=0 />
+		      <input type="text" readonly="readonly" class="form-control" id="festivalName" name="festival.festivalName">
+		      <input type="hidden" class="form-control" id="festivalNo" name="festival.festivalNo"/>
 		      
-		      <button type="button" class="btn btn-primary btn-block" name="searchFestival" >축제검색</button>
+		      <button type="button" class="btn btn-primary btn-block" name="searchFestival" onclick="openChild()">축제검색</button>
 		    </div>
 		  </div>
 		  
@@ -570,17 +583,11 @@
 			</div>
 		  </div>
 		  
-		  <!-- <div class="form-group">
-		    <label for="partyMemberlimit" class="col-sm-offset-1 col-sm-3 control-label">파티인원</label>
-		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="partyMemberLimit" name="partyMemberLimit">
-			</div>
-		  </div> -->
-		 		 	  
-		   <div class="form-group">
+		  <div class="form-group">
 		    <label for="partyPlace" class="col-sm-offset-1 col-sm-3 control-label">파티장소(선택입력)</label>
 		    <div class="col-sm-4">
-		      <input type="text" readonly="readonly" class="form-control" id="partyPlace" name="partyPlace" value="${ party.partyPlace }">
+		      <%-- <input type="text" readonly="readonly" class="form-control" id="partyPlace" name="partyPlace" value="${ party.partyPlace }"> --%>
+		      <input type="text" readonly="readonly" class="form-control" id="addr" name="partyPlace">
 		    </div>
 		    <div>
 		      <!-- <button type="button" class="btn btn-primary" id="search-partyPlace"  >검색</button> -->
@@ -589,11 +596,20 @@
 		  </div>
 		  
 		  <div class="form-group">
+		    <div class="filebox">
+		        <label for="cma_file">파티 이미지 업로드(선택입력)</label>
+		        <input type="file" name="cma_file" id="cma_file" onchange="getUploadFilePrivew(this,$('#uploadFile'))" />
+		        <br /><br />
+		        <div id="uploadFile" style="width:50%; max-width:50%; display:none;"></div>
+		    </div>
+		</div> 
+		  
+		  <!-- <div class="form-group">
 		    <label for="uploadFile" class="col-sm-offset-1 col-sm-3 control-label">파티이미지(선택입력)</label>
 		    <div class="col-sm-4">
 		      <input type="file" class="form-control" id="uploadFile" name="uploadFile" >
 		    </div>
-		  </div>
+		  </div> -->
 		  
 		  <!-- <div>
 		    <p>
@@ -608,35 +624,35 @@
 		    <a href="#">Remove</a>
 		  </div> -->
 				  
-		  
-		  <div class="form-group">
-		    <label for="partyFlag" class="col-sm-offset-1 col-sm-3 control-label">티켓</label>
-		    
-		    <div class="col-sm-2">
-		    	<button type="button" class="btn btn-primary btn-block" name="ticketPriceFlag" id="freeTicket" disabled>무료티켓</button>
-		    </div>
-		    <div class="col-sm-2">
-		    	<button type="button" class="btn btn-primary btn-block" name="ticketPriceFlag" id="noFreeTicket">유료티켓</button>
-		    </div>
-		 </div>
-		  
-		  <div class="form-group" id="ticketCountDiv">
-		    <label for="ticketCount" class="col-sm-offset-1 col-sm-3 control-label">티켓수량</label>
-		    <div class="col-sm-2">
-		      <input type="text" class="form-control" id="ticketCount" name="ticketCount" >
-		    </div>
-		    <div class="col-sm-2" id="noLimitDiv">
-		      <button type="button" class="btn btn-primary btn-block" name="noLimit" id="noLimit">무제한</button>
-		    </div>
-		  </div>
-		  
-		  <div class="form-group" id="ticketPriceDiv">
-		    <label for="ticketPrice" class="col-sm-offset-1 col-sm-3 control-label">티켓가격</label>
-		    <div class="col-sm-2">
-		    	<input type="text" readonly="readonly" class="form-control" id="ticketPrice" name="ticketPrice" value="0" >
-		    </div>
-	 	  </div>
-		  
+		  <div id=ticketDiv>
+			  <div class="form-group">
+			    <label for="partyFlag" class="col-sm-offset-1 col-sm-3 control-label">티켓</label>
+			    
+			    <div class="col-sm-2">
+			    	<button type="button" class="btn btn-primary btn-block" name="ticketPriceFlag" id="freeTicket" disabled>무료티켓</button>
+			    </div>
+			    <div class="col-sm-2">
+			    	<button type="button" class="btn btn-primary btn-block" name="ticketPriceFlag" id="noFreeTicket">유료티켓</button>
+			    </div>
+			 </div>
+			  
+			  <div class="form-group">
+			    <label for="ticketCount" class="col-sm-offset-1 col-sm-3 control-label">티켓수량</label>
+			    <div class="col-sm-2">
+			      <input type="text" class="form-control" id="ticketCount" name="ticketCount" >
+			    </div>
+			    <div class="col-sm-2" id="noLimitDiv">
+			      <button type="button" class="btn btn-primary btn-block" name="noLimit" id="noLimit">무제한</button>
+			    </div>
+			  </div>
+			  
+			  <div class="form-group">
+			    <label for="ticketPrice" class="col-sm-offset-1 col-sm-3 control-label">티켓가격</label>
+			    <div class="col-sm-2">
+			    	<input type="text" readonly="readonly" class="form-control" id="ticketPrice" name="ticketPrice" value="0" >
+			    </div>
+		 	  </div>
+		  </div>  
 		  <!-- <div class="form-group" id="ticketPriceDiv">
 		    <label for="ticketPrice" class="col-sm-offset-1 col-sm-3 control-label">티켓가격</label>
 		    <div class="col-sm-4">

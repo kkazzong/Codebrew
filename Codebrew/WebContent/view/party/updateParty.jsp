@@ -368,13 +368,6 @@
 		  </div>
 		  
 		  <div class="form-group">
-		    <label for="partyDetail" class="col-sm-offset-1 col-sm-3 control-label">파티인원</label>
-		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="partyMemberLimit" name="partyMemberLimit" value="${ party.partyMemberLimit }">
-			</div>
-		  </div>
-		  
-		  <div class="form-group">
 		    <label for="partyPlace" class="col-sm-offset-1 col-sm-3 control-label">파티장소(선택입력)</label>
 		    <div class="col-sm-4">
 		      <input type="text" readonly="readonly" class="form-control" id="partyPlace" name="partyPlace" value="${ party.partyPlace }">
@@ -406,6 +399,7 @@
 	 	  </div>
 		 		  
 		  <div class="form-group">
+		   	<br>
 		    <div class="col-sm-offset-4  col-sm-4 text-center">
 		      <button type="button" class="btn btn-primary btn-block"  >수정</button>
 			  <a class="btn btn-primary btn btn-block" href="#" role="button">취소</a>
