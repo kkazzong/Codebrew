@@ -22,6 +22,7 @@
  		body {
             padding-top : 50px;
         }
+        
 	</style>
 	
 	<!-- jQuery UI toolTip 사용 CSS-->
@@ -44,11 +45,6 @@
 	function fncGetList(currentPage) {
 		$("#currentPage").val(currentPage)
 	   	$("form[name='detailForm']").attr("method" , "POST").attr("action" , "/review/getReviewList").submit();
-	}
-	
-	//테스트미완
-	function fncDeleteListFromList() {
-		$("#form[name='deleteForm']").attr("method", "POST").attr("action", "/review/deleteReview").submit();
 	}
 	
 	//=====> "검색", reviewTitle link Event 연결 및 처리
@@ -109,12 +105,6 @@
 			self.location="/review/getReview?reviewNo="+$(this).val();
 		});
 		 
-		 //테스트미완
-		$( "#deleteReview" ).on("click", function(){
-			//alert("휴지통버튼 클릭 : val = "+$(this).val());
-			self.location="/revoew/deleteReview";
-		});
-		
 		//==> UI 수정 추가부분  :  reviewTitle LINK Event End User 에게 보일수 있도록 
 		$( ".ct_list_pop td:nth-child(2)" ).css("color" , "red");
 		$("h7").css("color" , "red");
@@ -203,13 +193,15 @@
    					<div class="panel panel-primary">
    						<div class="panel-heading">
    							<h3 class="panel-title pull-left">${i}번 : ${review.festivalName }</h3>
-   							<form name="deleteForm">
+   							<!-- 
+   							<form name="deleteForm"> getReviewList.jsp에서는 삭제가 불가하다.
    								<c:if test = "${sessionScope.user.role == 'a' }">
    								<button id = "deleteReview" class="btn btn-default pull-right" type="button" value="${review.reviewNo }">
    									<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
    								</button>
    								</c:if>
    							</form>
+   							 -->
    							<div class="clearfix"></div>
    						</div>
    						<div class="panel-body">

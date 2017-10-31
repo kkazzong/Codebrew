@@ -414,7 +414,7 @@ public class ReviewController {
 		
 		//Business Logic수행
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("/review/getReviewList");
+		modelAndView.setViewName("/review/getMyReviewList");
 		
 		return modelAndView;
 	}

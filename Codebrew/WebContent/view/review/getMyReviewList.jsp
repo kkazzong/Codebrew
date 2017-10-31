@@ -47,10 +47,12 @@
 	}
 	
 	//테스트미완
+	/* 
 	function fncDeleteListFromList() {
 		$("#form[name='deleteForm']").attr("method", "POST").attr("action", "/review/deleteReview").submit();
 	}
-	
+	 */
+	 
 	//=====> "검색", reviewTitle link Event 연결 및 처리
 	$(function(){
 		
@@ -110,9 +112,11 @@
 		});
 		 
 		 //테스트미완
-		$( "#deleteReview" ).on("click", function(){
+		$( ".pull-right" ).on("click", function(){
 			//alert("휴지통버튼 클릭 : val = "+$(this).val());
-			self.location="/revoew/deleteReview";
+			alert("${sessionScope.user.userId}");
+			self.location="/review/deleteReview";
+			//fncDeleteListFromList();
 		});
 		
 		//==> UI 수정 추가부분  :  reviewTitle LINK Event End User 에게 보일수 있도록 
@@ -219,12 +223,11 @@
 								</span>
 								</c:if>
    							</h3>
-   							<form name="deleteForm">
-   								<c:if test = "${sessionScope.user.role == 'a' }">
+   							<form name="deleteForm"> 
+   								<input type="hidden" name="reviewNo" value="${review.reviewNo}"> <!-- post........ -->
    								<button id = "deleteReview" class="btn btn-default pull-right" type="button" value="${review.reviewNo }">
    									<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
    								</button>
-   								</c:if>
    							</form>
    							<div class="clearfix"></div>
    						</div>

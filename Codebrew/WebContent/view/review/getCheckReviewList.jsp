@@ -46,11 +46,6 @@
 	   	$("form[name='detailForm']").attr("method" , "POST").attr("action" , "/review/getReviewList").submit();
 	}
 	
-	//테스트미완
-	function fncDeleteListFromList() {
-		$("#form[name='deleteForm']").attr("method", "POST").attr("action", "/review/deleteReview").submit();
-	}
-	
 	//=====> "검색", reviewTitle link Event 연결 및 처리
 	$(function(){
 		
@@ -109,22 +104,16 @@
 			self.location="/review/getReview?reviewNo="+$(this).val();
 		});
 		 
-		$( "#passCheckCodeFromCheckReviewList" ).on("click" , function() {
-			alert("통과 버튼!!!!"+$(this).val());
+		$( ".btn-success" ).each(function(){}).on("click" , function() {
+			//alert("통과 버튼!!!!"+$(this).val());
 			self.location = "/review/passCheckCodeFromCheckReviewList?reviewNo="+$(this).val();				
 		});
 			 
-		$( "#failCheckCodeFromCheckReviewList" ).on("click" , function() {
-			alert("반려 버튼!!!"+$(this).val());
+		$( ".btn-danger" ).each(function(){}).on("click" , function() {
+			//alert("반려 버튼!!!"+$(this).val());
 			self.location = "/review/failCheckCodeFromCheckReviewList?reviewNo="+$(this).val();
 		});
 		 
-		 //테스트미완
-		$( "#deleteReview" ).on("click", function(){
-			//alert("휴지통버튼 클릭 : val = "+$(this).val());
-			self.location="/revoew/deleteReview";
-		});
-		
 		//==> UI 수정 추가부분  :  reviewTitle LINK Event End User 에게 보일수 있도록 
 		$( ".ct_list_pop td:nth-child(2)" ).css("color" , "red");
 		$("h7").css("color" , "red");
@@ -213,13 +202,14 @@
    					<div class="panel panel-primary">
    						<div class="panel-heading">
    							<h3 class="panel-title pull-left">${i}번 : ${review.festivalName }</h3>
-   							<form name="deleteForm">
+   							<form name="checkForm">
+								<input type="hidden" name="reviewNo" value="${review.reviewNo}"> <!-- post........ -->
    								<c:if test = "${sessionScope.user.role == 'a' }">
-   								<button id = "failCheckCodeFromCheckReviewList" class="btn btn-default pull-right" type="button" value="${review.reviewNo }">
-   									<span class="glyphicon glyphicon-remove-circle" aria-hidden="true" style="color:red"></span>
+   								<button id = "fail" class="btn btn-danger pull-right" type="button" value="${review.reviewNo }">
+   									<span class="glyphicon glyphicon-remove-circle" aria-hidden="true" style="color:whitesmoke"></span>
    								</button>
-   								<button id = "passCheckCodeFromCheckReviewList" class="btn btn-default pull-right" type="button" value="${review.reviewNo }">
-   									<span class="glyphicon glyphicon-ok-circle" aria-hidden="true" style="color:green"></span>
+   								<button id = "pass" class="btn btn-success pull-right" type="button" value="${review.reviewNo }">
+   									<span class="glyphicon glyphicon-ok-circle" aria-hidden="true" style="color:whitesmoke"></span>
    								</button>
    								</c:if>
    							</form>

@@ -78,6 +78,14 @@
 			fncAddReply();
 		});
 		
+		$("#willUpdateReply").on("click", function(){
+			alert("수정버튼클릭");
+		});
+		
+		$("#deleteReply").on("click", function(){
+			alert("삭제버튼클릭");
+		});
+		
 		
 		//==> UI 수정 추가부분  :  replyTitle LINK Event End User 에게 보일수 있도록 
 		$( ".ct_list_pop td:nth-child(2)" ).css("color" , "red");
@@ -160,6 +168,8 @@
    					<th align="left">
    						댓글내용
    					</th>
+   					<th>
+   					</th>
    					<th align="left">
    						댓글작성자
    					</th>
@@ -177,22 +187,20 @@
 	   					<tr class="ct_list_pop">
 	  						<td align="left">
 	   							${replyList.replyDetail }
+	   						</td>
+	   						<td align="left">
 	   							<input type="hidden" name="reviewNo" value=${review.reviewNo }>
 								<span style="display: none" class="hidden_link">/review/getReview?reviewNo=${review.reviewNo }</span>
+								<span>
 								<c:if test="${!empty sessionScope.user}" >
 									<c:if test="${sessionScope.user.role == 'a' || sessionScope.user.userId == replyList.userId }">
 							   			<center>
-								   			<button type="button" id="updateReply" class="btn btn-primary btn-sm">댓글수정</button>
-								   			<button type="button" id="deleteReply" class="btn btn-primary btn-sm">댓글삭제</button>
+								   			<button type="button" id="willUpdateReply" class="btn btn-primary btn-sm">수정하기</button>
+								   			<button type="button" id="deleteReply" class="btn btn-primary btn-sm">삭제</button>
 								   		</center>
 							   		</c:if>
 							   	</c:if>
-							   	<%-- 
-							   	<c:if test="${empty sessionScope.user }">
-							   		<center>
-							   		</center>
-							   	</c:if>
-	   							 --%>
+							   	</span>
 	   						</td>
 	   						<td align="left">
 	   							${replyList.userId }

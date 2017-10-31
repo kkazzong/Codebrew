@@ -210,7 +210,6 @@
 		console.log(sel_files);
 	}
 	
-	 
 	/* 테스트중 ckeditor */
 	/* 
 	$(function(){
@@ -258,10 +257,15 @@
 	  
 	<h1 class="bg-primary text-center">후기등록양식</h1>
 	
+	<input type="button" value="자식창 열기" onclick="openChilde()"><br>
+	전달할 값 : <input type="text" id="pInput"><input type="button" value="전달" onclick="setChildText()">
+	
+	<!-- 
 	<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
 		축제검색
 	</button>
-	
+	 -->
+	 
 	<!-- ////////// form Start ////////// -->
 	<form class="form-horizontal" method="post" name="detailForm" enctype="multipart/form-data">
 
