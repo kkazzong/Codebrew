@@ -101,11 +101,11 @@
 		//============= "축제검색"  Event 연결 =============
 		 $(function() {
 			
-			$( "button:contains('축제검색')" ).on("click" , function() {
+			/* $( "button:contains('축제검색')" ).on("click" , function() {
 				
 				var pop = window.open("/festival/getFestivalListDB?menu=pop","pop","width=570,height=420, scrollbars=yes, resizable=yes"); 
 				
-			});
+			}); */
 			
 			// 애프터 파티의 경우 축제 장소 자동 입력
 			if( "${party.partyPlace}" != null ){
@@ -117,6 +117,17 @@
 				
 		});
 		
+		
+		 function openChild()
+		         {
+		             // window.name = "부모창 이름"; 
+		             window.name = "parentForm";
+		             // window.open("open할 window", "자식창 이름", "팝업창 옵션");
+		             openWin = window.open("/festival/getFestivalListDB?menu=pop",
+		                     "childForm", "width=570, height=350, resizable = no, scrollbars = no");    
+		         }
+
+
 		
 		//============= "DatePicker"  Event 처리 및  연결 =============
 		$( function() {
@@ -254,7 +265,7 @@
 		        reader.onload = function (e) {
 		            $target.css('display', '');
 		            //$target.css('background-image', 'url(\"' + e.target.result + '\")'); // 배경으로 지정시
-		            $target.html('<img src="' + e.target.result + '" border="0" alt="" />');
+		            $target.html('<img src="' + e.target.result + '"width="80%" border="0" alt="" />');
 		        }
 		        reader.readAsDataURL(html.files[0]);
 		    }
@@ -496,10 +507,10 @@
 		    <label for="festivalName" class="col-sm-offset-1 col-sm-3 control-label">축제명</label>
 		    <div class="col-sm-4">
 		      <!-- <input type="text" class="form-control" id="festivalName" name="festival.festivalName" value="" /> -->
-		      <input type="text" readonly="readonly" class="form-control" id="festivalName" name="festival.festivalName" value="${ festival.festivalName }">
-		      <input type="hidden" class="form-control" id="festivalNo" name="festival.festivalNo" value=0 />
+		      <input type="text" readonly="readonly" class="form-control" id="festivalName" name="festival.festivalName">
+		      <input type="hidden" class="form-control" id="festivalNo" name="festival.festivalNo"/>
 		      
-		      <button type="button" class="btn btn-primary btn-block" name="searchFestival" >축제검색</button>
+		      <button type="button" class="btn btn-primary btn-block" name="searchFestival" onclick="openChild()">축제검색</button>
 		    </div>
 		  </div>
 		  
@@ -570,7 +581,8 @@
 		  <div class="form-group">
 		    <label for="partyPlace" class="col-sm-offset-1 col-sm-3 control-label">파티장소(선택입력)</label>
 		    <div class="col-sm-4">
-		      <input type="text" readonly="readonly" class="form-control" id="partyPlace" name="partyPlace" value="${ party.partyPlace }">
+		      <%-- <input type="text" readonly="readonly" class="form-control" id="partyPlace" name="partyPlace" value="${ party.partyPlace }"> --%>
+		      <input type="text" readonly="readonly" class="form-control" id="partyPlace" name="partyPlace">
 		    </div>
 		    <div>
 		      <!-- <button type="button" class="btn btn-primary" id="search-partyPlace"  >검색</button> -->
