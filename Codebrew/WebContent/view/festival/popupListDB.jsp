@@ -33,16 +33,6 @@
 		});
 });
 
-	$(function() {
-
-		$(".panel-body").on("click", function() {
-
-			var festivalNo = $("p", this).text();
-
-			 self.location = "/festivalRest/json/getFestivalDB?menu=pop&festivalNo="+festivalNo;
-			
-		});
-	});
 	
 $(function(){
 		
@@ -55,6 +45,38 @@ $(function(){
 		});
 	
 	});
+	
+	
+$(function() {
+
+	$(".panel-body").on("click", function() {
+
+		var festivalNo = $("p", this).text();
+		 
+			$.ajax( 
+					{
+						url : "/festivalRest/json/getFestivalDB/"+festivalNo,
+						method : "GET" ,
+						dataType : "json" ,
+						headers : {
+							"Accept" : "application/json",
+							"Content-Type" : "application/json"
+						},
+						success : function(JSONData , status) {
+							alert("jsonData...." + JSONData.festivalName);
+							
+							$("#festivalName").val(JSONData.festivalName); 
+							$("#festivalNo").val(JSONData.festivalNo);
+							$("#startDate").val(JSONData.startDate);
+							$("#endDate").val(JSONData.endDate);
+							$("#addr").val(JSONData.addr);
+							
+						}
+		 
+		 
+	});
+}).close();
+});
 	
 	
 	

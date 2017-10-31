@@ -128,8 +128,10 @@ public class FestivalRestController {
 
 	}
 
-	@RequestMapping(value = "json/getFestivalDB")
-	public Festival getFestivalDB(@RequestParam("festivalNo") int festivalNo) throws Exception {
+	@RequestMapping(value = "json/getFestivalDB/{festivalNo}")
+	public Festival getFestivalDB(@PathVariable ("festivalNo") int festivalNo) throws Exception {
+		
+		System.out.println("rest getFDB............." + festivalNo);
 
 		Festival festival = festivalService.getFestivalDB(festivalNo);
 		
