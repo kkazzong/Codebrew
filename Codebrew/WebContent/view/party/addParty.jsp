@@ -39,6 +39,7 @@
 			var partyMemberLimit=$("input[name='partyMemberLimit']").val();
 			var ticketCount=$("input[name='ticketCount']").val();
 			var ticketPrice=$("input[name='ticketPrice']").val();
+			var festivalNo=$("input[name='festival.festivalNo']").val();
 			
 			var checkNum = /\d/g;
 			
@@ -62,19 +63,21 @@
 				alert("파티설명은 500자 이내로 입력해주세요.");
 				return;
 			}
-			if(ticketCount != 0 && checkNum.test(ticketCount) == false){
-				alert("티켓 수량은 반드시 숫자로 입력하셔야 합니다.");
-				return;
-			}
-			if(ticketPrice != 0 && checkNum.test(ticketPrice) == false){
-				alert("티켓 가격은 반드시 숫자로 입력하셔야 합니다.");
-				return;
-			}
-			if(ticketCount == 0 && ticketPrice == 0){
-				alert("티켓 수량이 무제한인 경우 티켓 가격을 반드시 입력하셔야 합니다.");
-				return;
-			}
-				
+			if(festivalNo == 0){
+				if(ticketCount != 0 && checkNum.test(ticketCount) == false){
+					alert("티켓 수량은 반드시 숫자로 입력하셔야 합니다.");
+					return;
+				}
+				if(ticketPrice != 0 && checkNum.test(ticketPrice) == false){
+					alert("티켓 가격은 반드시 숫자로 입력하셔야 합니다.");
+					return;
+				}
+				if(ticketCount == 0 && ticketPrice == 0){
+					
+						alert("티켓 수량이 무제한인 경우 티켓 가격을 반드시 입력하셔야 합니다.");
+						return;
+				}
+			}	
 			
 			
 			$("form").attr("method", "POST").attr("action", "/party/addParty").submit();
@@ -108,12 +111,12 @@
 			}); */
 			
 			// 애프터 파티의 경우 축제 장소 자동 입력
-			if( "${party.partyPlace}" != null ){
+			/* if( "${party.partyPlace}" != null ){
 				
 				var addr = "${festival.addr}";
 				$("#partyPlace").val(addr);
 			
-			}
+			} */
 				
 		});
 		
@@ -123,8 +126,8 @@
 		             // window.name = "부모창 이름"; 
 		             window.name = "parentForm";
 		             // window.open("open할 window", "자식창 이름", "팝업창 옵션");
-		             openWin = window.open("/festival/getFestivalListDB?menu=pop",
-		                     "childForm", "width=570, height=350, resizable = no, scrollbars = no");    
+		             openWin = window.open("/view/festival/popupListDB.jsp",
+		                     "childForm", "width=570, height=350, resizable = no, scrollbars = yes");    
 		         }
 
 
@@ -243,12 +246,14 @@
 				$("#ticketDiv").css("display", "none");
 				
 				
+				$("#ticketCount").val(-1);
+				$("#ticketPrice").val(-1);
 				$("#festivalNo").val("${festival.festivalNo}");
 				$("#festivalName").val("${festival.festivalName}");
 				$("#partyPlace").val("${festival.addr}");
 				var festivalNo = $("#festivalNo").val();
 				var festivalName = $("#festivalName").val();
-				var festivalAddr = $("#partyPlace").val();
+				var festivalAddr = $("#addr").val();
 				
 				console.log("#afterParty 버튼 클릭 ==> "+festivalNo+" :: "+festivalName+" :: "+festivalAddr);
 			});
@@ -582,7 +587,7 @@
 		    <label for="partyPlace" class="col-sm-offset-1 col-sm-3 control-label">파티장소(선택입력)</label>
 		    <div class="col-sm-4">
 		      <%-- <input type="text" readonly="readonly" class="form-control" id="partyPlace" name="partyPlace" value="${ party.partyPlace }"> --%>
-		      <input type="text" readonly="readonly" class="form-control" id="partyPlace" name="partyPlace">
+		      <input type="text" readonly="readonly" class="form-control" id="addr" name="partyPlace">
 		    </div>
 		    <div>
 		      <!-- <button type="button" class="btn btn-primary" id="search-partyPlace"  >검색</button> -->
