@@ -233,16 +233,11 @@ function setParentText(){
 	</div>
 	</div>
 	
-	<input type="text" id="returnFestivalName">
-	<input type="text" id="returnFestivalNo">
-	<input type="text" id="returnAddr">
-	<input type="text" id="returnStartDate">
-	<input type="text" id="returnEndDate">
-	
-	
-	 <input type="button" value="전달하기" onclick="setParentText()">
-    <br><br>
-    <input type="button" value="창닫기" onclick="window.close()">
+	<input type="hidden" id="returnFestivalName">
+	<input type="hidden" id="returnFestivalNo">
+	<input type="hidden" id="returnAddr">
+	<input type="hidden" id="returnStartDate">
+	<input type="hidden" id="returnEndDate">
 
 
     
