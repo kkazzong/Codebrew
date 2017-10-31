@@ -62,11 +62,17 @@
 															+JSONData.list[i].user.nickname+"&nbsp;"+"( "+JSONData.list[i].user.userId+" )"
 															+"</span>"
 															+"<span>"
-															//if(JSONData.list[i].role = 'host'){
-																+"<c:if test='"+JSONData.list[i].role+"==host'>"
+															
+																/* +"<c:if test='"+JSONData.list[i].role+"==host'>"
 																+"<strong>host</strong>"	
-																+"</c:if>"
-															//}
+																+"</c:if>" */
+																/* +"<c:if test='"+JSONData.list[i].user.userId+"!="+sessionId+"'>"
+																+"<button type='button' class='btn btn-default'>채팅하기</button>"
+																+"</c:if>" */
+																/* if(JSONData.list[i].user.userId != sessionId){
+																	+"<button type='button' class='btn btn-default'>채팅하기</button>"
+																} */
+																
 															+"</span>"
 															+"</div>"
 															+"<hr/>";
@@ -200,7 +206,7 @@
 							  			
 							  		} //for문 end
 				
-									var currentMemberCount = "&nbsp;&nbsp;&nbsp;&nbsp;${party.partyMemberLimit} 명 중 "+JSONData.currentMemberCount+" 명 참여중";
+									var currentMemberCount = JSONData.currentMemberCount+" 명 참여중";
 																						
 									$("#currentMemberCountDiv").html(currentMemberCount); 
 		

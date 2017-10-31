@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%-- <%@include file="/data/party/userData.jsp"%>  --%>
-<%-- <%@include file="/data/party/festivalData.jsp"%>  --%>
+
    
 <!DOCTYPE html>
 <html>
@@ -249,7 +248,21 @@
 		
 		
 		//============= "사진 미리보기"  Event 처리 및  연결 =============
-		
+		function getUploadFilePrivew(html, $target) {
+		    if (html.files && html.files[0]) {
+		        var reader = new FileReader();
+		        reader.onload = function (e) {
+		            $target.css('display', '');
+		            //$target.css('background-image', 'url(\"' + e.target.result + '\")'); // 배경으로 지정시
+		            $target.html('<img src="' + e.target.result + '" border="0" alt="" />');
+		        }
+		        reader.readAsDataURL(html.files[0]);
+		    }
+		}
+			
+			
+			
+			
 		/* $(function() {
             $("#uploadFile").on('change', function(){
                 readURL(this);
@@ -307,26 +320,7 @@
 	        e.unwrap(); //감싼 <form> 태그를 제거
 	    } */
 		
-		//=============    파티 참여 취소  Event  처리 		=============
-		/* $(function(){
-			$("button:contains('파티 참여 취소')").on("click", function() {
-				
-				var partyNo = $(this).val();
-				console.log("파티 참여 취소 :: partyNo :: "+partyNo);
-				self.location="/party/cancelParty?partyNo="+partyNo;
 		
-			});
-		}); */
-		
-		
-		//=============    티켓 구매 취소  Event  처리 		=============
-		/* $(function(){
-			$("button:contains('티켓 구매 취소')").on("click", function() {
-				var partyNo = $( "input[name=partyNo]", $(this) ).val();
-				self.location="/purchase/cancelPurchase";
-		
-			});
-		}); */
 		
 		
 		//=============    현재 시간  Event  처리 		=============
@@ -404,6 +398,32 @@
 		}
 		#noLimitDiv {
 			display: none;
+		}
+		.filebox label {
+		    display: inline-block;
+		    padding: .5em .75em;
+		    color: #999;
+		    font-size: inherit;
+		    line-height: normal;
+		    vertical-align: middle;
+		    background-color: #fdfdfd;
+		    cursor: pointer;
+		    border: 1px solid #ebebeb;
+		    border-bottom-color: #e2e2e2;
+		    border-radius: .25em;
+		    width:100%;
+		    max-width:100%;
+		}
+		 
+		.filebox input[type="file"] {  /* 파일 필드 숨기기 */
+		    position: absolute;
+		    width: 1px;
+		    height: 1px;
+		    padding: 0;
+		    margin: -1px;
+		    overflow: hidden;
+		    clip:rect(0,0,0,0);
+		    border: 0;
 		}
 	</style>
 		
@@ -559,11 +579,20 @@
 		  </div>
 		  
 		  <div class="form-group">
+		    <div class="filebox">
+		        <label for="cma_file">파티 이미지 업로드(선택입력)</label>
+		        <input type="file" name="cma_file" id="cma_file" onchange="getUploadFilePrivew(this,$('#uploadFile'))" />
+		        <br /><br />
+		        <div id="uploadFile" style="width:50%; max-width:50%; display:none;"></div>
+		    </div>
+		</div> 
+		  
+		  <!-- <div class="form-group">
 		    <label for="uploadFile" class="col-sm-offset-1 col-sm-3 control-label">파티이미지(선택입력)</label>
 		    <div class="col-sm-4">
 		      <input type="file" class="form-control" id="uploadFile" name="uploadFile" >
 		    </div>
-		  </div>
+		  </div> -->
 		  
 		  <!-- <div>
 		    <p>

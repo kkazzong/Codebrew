@@ -212,12 +212,9 @@ public class PartyServiceImpl implements PartyService {
 	@Override
 	public Party getGenderRatio(int partyNo) throws Exception {
 		// TODO Auto-generated method stub
-		Search search = new Search();
-		search.setCurrentPage(1);
-	 	search.setPageSize(3);
-	 	
-		List<PartyMember> list =  partyDAO.getPartyMemberList(partyNo, search);
-		int currentMemberCount = partyDAO.getCurrentMemberCount(partyNo, search);
+		
+		List<PartyMember> list =  partyDAO.getGenderRatio(partyNo);
+		int currentMemberCount = partyDAO.getCurrentMemberCount(partyNo);
 		
 		System.out.println("현재 참여중인 멤버 수 :: "+currentMemberCount);
 		

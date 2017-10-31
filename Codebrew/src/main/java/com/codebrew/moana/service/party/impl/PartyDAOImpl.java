@@ -142,6 +142,23 @@ public class PartyDAOImpl implements PartyDAO {
 		return sqlSession.selectOne("PartyMapper.getCurrentMemberCount", map);
 		
 	}
+	
+	
+	@Override
+	public int getCurrentMemberCount(int partyNo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("PartyMapper.getCurrentMemberCountByPartyNo", partyNo);
+		
+	}
+	
+	
+	@Override
+	public List<PartyMember> getGenderRatio(int partyNo) throws Exception{
+		// TODO Auto-generated method stub
+		List<PartyMember> list = sqlSession.selectList("PartyMapper.getGenderRatio", partyNo); 
+			
+		return list;
+	}
 
 
 	@Override

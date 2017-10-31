@@ -393,4 +393,34 @@
 				</where>
 			) countTable						
 	 </select>
+	 
+	 
+	 <select  id="getCurrentMemberCountByPartyNo"  parameterType="int"	 resultType="int">
+	  	SELECT COUNT(*)
+	  	FROM(	SELECT 	*
+	  			FROM party_member pm, users u
+				<where>
+				
+					pm.user_id = u.user_id
+					AND pm.party_no = #{value}
+					
+				</where>
+			) countTable						
+	 </select>
+	 
+	 
+	 <select  id="getGenderRatio" parameterType="int" resultMap="partyMemberSelectMap">
+	  	SELECT *
+	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
+	  					FROM		(	SELECT p.party_no, p.party_name, u.user_id, u.nickname, u.profile_image, pm.role, pm.age, pm.gender
+										FROM party_member pm, party p, users u
+										
+									    <where>
+									        pm.user_id = u.user_id
+									        AND pm.party_no = p.party_no
+									    	AND pm.party_no = #{value}
+										</where>
+										
+										ORDER BY pm.role DESC  ) inner_table)
+	</select>
 </mapper>

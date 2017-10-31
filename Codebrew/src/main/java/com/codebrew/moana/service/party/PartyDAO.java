@@ -44,6 +44,12 @@ public interface PartyDAO {
 	// SELECT ONE
 	public int getCurrentMemberCount(int partyNo, Search search) throws Exception ;
 	
+	// SELECT ONE
+	public int getCurrentMemberCount(int partyNo) throws Exception ;
+	
+	// SELECT LIST
+	public List<PartyMember> getGenderRatio(int partyNo) throws Exception;
+	
 	// DELETE
 	public int cancelParty(int partyNo, String userId) throws Exception ;
 	

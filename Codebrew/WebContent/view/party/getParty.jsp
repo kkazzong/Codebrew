@@ -128,8 +128,11 @@
 		
 		//============= "주최자"  Event 처리 및  연결 =============
 		$(function(){
-			$("p.host").on("click", function() {
-				self.location="/myPage/getMyPage/"+"${party.user.userId}";
+			$("#host").on("click", function() {
+				/* self.location="/myPage/getMyPage/"+"${party.user.userId}"; */
+				/* var self = "${user.userId}";
+				var other = "${party.user.userId}"; */
+				window.open('http://127.0.0.1:3000/chat','채팅팝업','width=440, height=520, scrollbars=yes');
 		
 			});
 		});
@@ -171,6 +174,21 @@
 		}); */
 		
 		
+		//============= "채팅"  Event 처리 및  연결 =============
+		function popup(frm)
+		{
+		  var url    ="http://127.0.0.1:3000/chat";
+		  var title  = "chatPop";
+		  var status = "toolbar=no,directories=no,scrollbars=no,resizable=no,status=no,menubar=no,width=440, height=520, top=0,left=20"; 
+		  window.open("", title,status); //window.open(url,title,status); window.open 함수에 url을 앞에와 같이
+		                                            //인수로  넣어도 동작에는 지장이 없으나 form.action에서 적용하므로 생략
+		                                            //가능합니다.
+		  frm.target = title;                    //form.target 이 부분이 빠지면 form값 전송이 되지 않습니다. 
+		  frm.action = url;                    //form.action 이 부분이 빠지면 action값을 찾지 못해서 제대로 된 팝업이 뜨질 않습니다.
+		  frm.method = "post";
+		  frm.submit();     
+		  }
+		
 		
 	</script>
 	
@@ -190,7 +208,8 @@
 	<jsp:include page="/toolbar/toolbar.jsp" />
    	<!-- ToolBar End /////////////////////////////////////-->
    	
-	<!-- page header -->
+   	
+   	<!-- page header -->
 	<div class="row">
 		<div class="col-md-offset-4 col-md-4">
 			<div class="page-header text-center">
@@ -273,7 +292,18 @@
 						<div>
 							&nbsp;&nbsp;&nbsp;&nbsp;
 							<img class="img-circle" src="/resources/uploadFile/${party.user.profileImage}" width="50" height="50">
-							${ party.user.nickname }
+							<div id = "host">${ party.user.nickname }</div>
+							<!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<button type='button' class='btn btn-default'>채팅하기</button> -->
+							
+							<!-- chatting form -->
+						   	<form name="form">
+								<input type="hidden" name="recipient" value="${party.user.userId}"><br>
+								<input type="hidden" name="sender" value="${user.userId}"><br><br>
+								
+								<button type='button' class='btn btn-default' onclick="javascript:popup(this.form);">채팅하기</button>
+							</form>
+						
 						</div>
 					</div>
 					
