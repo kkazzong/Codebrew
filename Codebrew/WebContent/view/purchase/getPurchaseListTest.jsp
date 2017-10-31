@@ -151,7 +151,7 @@
 		
 		
 		//조회(판넬 클릭시)
-		$(".panel-body").on("click", function(){
+		$(".panel-heading").on("click", function(){
 			console.log($(this).find("input:hidden[name='purchaseNo']").val());
 			var purchaseNo = $(this).find("input:hidden[name='purchaseNo']").val()
 			self.location = "/purchase/getPurchase?purchaseNo="+purchaseNo;
@@ -162,10 +162,11 @@
 			self.location = "/purchase/getPurchaseList?userId="+userId;
 		}); */
 		
-		$(".pull-right").each(function(){}).on("click", function(){
+		$("#deleteForm>.pull-right").each(function(){}).on("click", function(event){
 			
-			alert($(this).val());
+			console.log($(this).val());
 			var purchaseNo = $(this).val();
+			
 			
 			swal({
 				  
@@ -229,6 +230,8 @@
 				
 			}) 
 			
+			event.preventDefault();
+			
 			//if(confirm("정말로 삭제하시겠습니까?")) {
 				/* $.ajax({
 					
@@ -262,7 +265,7 @@
 		$("#searchKeyword").autocomplete({
 			source: function( request, response ) {
 		        $.ajax( {
-		          url: "/purchaseRest/json/getPurchaseList/${user.userId}/1",
+		          url: "/purchaseRest/json/getPurchaseList/${user.userId}/''",
 		          method : "POST",
 		          headers : {
 						"Accept" : "application/json",
@@ -272,27 +275,20 @@
 		          data: JSON.stringify({
 		        	currentPage : "1",
 			        searchKeyword : $("#searchKeyword").val(),
-			        searchCondition : $("#searchCondition").val(),
+			        searchCondition : "5",
 		          }),
 		          success: function( JSONData ) {
 		        		  
 		        	console.log("server data =>"+JSON.stringify(JSONData));
-		        	var searchCondition = $("#searchCondition").val();
+		        	var searchCondition = $("#searchCondition2").val();
 		            response($.map(JSONData, function(value, key){
 		            	console.log(value.itemName);
 		            	console.log("key(autocomplete : value)====>"+key);
-		            	//아이디 검색 시
-		            	if(searchCondition == 4) {
-			        		return {
-			        			label : value.user.userId,
-			        			value : value.user.userId //원래는 key,, 선택시를 위해
-			        		}
-		            	} else if(searchCondition == 5) { //티켓명 검색 시
+		            	
 		            		return {
 		            			label :  value.itemName,
 		            			value : value.itemName
 		            		}
-		            	}
 		        	}));
 		          }
 		        } );
@@ -345,6 +341,10 @@
 		
 		//modal에서 클릭한 버튼
 		$(".modal-content .btn").each(function(){}).on("click", function(){
+			if($("#startDate").val() != '' && $("#endDate").val() == '') {
+				alert('조회날짜를 선택해주세요');
+				return;
+			}
 			fncSortList($(this).val());
 		});
 		
@@ -363,12 +363,22 @@
 				  type: 'error',
 				  confirmButtonText: 'Cool'
 				})
-		})		
+		});	
+		
+		$("input:hidden[name='tranCode']").each(function(){
+			if($(this).val() == 2) {
+				console.log("결제취소된거")
+				//console.log($(this).find("div>.purchaseInfo").html());
+				//$("div>.purchaseInfo").css("text-decoration","line-through");
+			}
+		});
+		
 	});
 </script>
 <style type="text/css">
 	body {
 		padding-top : 70px;
+		background-color: #f2f4f6;
     }
     .panel {
 		margin-top : 50px;
@@ -394,9 +404,6 @@
     .section {
     	margin-top : 400px;
     }
-    body {
-    	background-color: #f2f4f6;
-    }
     /* div {
 		border : 3px solid #D6CDB7;
 		margin0top : 10px;
@@ -417,7 +424,7 @@
 	
 	<!-- 모달 -->
 	<jsp:include page="/view/purchase/filterModalUser.jsp"></jsp:include>
-	
+	<%-- 서치컨디션 ${search.searchCondition } --%>
 	<div class="container">
 	
 		<!-- <div class="row">
@@ -430,7 +437,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="page-header text-center">
-					<h1 class="text-info">&nbsp;my티켓</h1>
+					<h3 class="text-info"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;&nbsp;my티켓</h3>
 				</div>
 			</div>
 		</div>
@@ -442,7 +449,29 @@
 			</div>
 		</div>
 		
+		<!-- 검색결과 -->
+		<div class="row">
+			<div class="col-md-12">
+				<c:if test="${!empty search.searchCondition}">
+				<h5 class="text-muted">
+					검색결과 :
+					<c:if test="${search.searchCondition == 1}">
+						축제티켓
+					</c:if>
+					<c:if test="${search.searchCondition == 2}">
+						파티티켓
+					</c:if>
+					<c:if test="${search.searchCondition == 6}">
+						${search.startDate} ~ ${search.endDate }
+					</c:if>
+				</c:if>
+				</h5>
+			</div>
+		</div>
+		
+		
 		<!-- 정렬 -->
+		<div class="search">
 		<div class="row">
 			<div class="col-md-2">
 				<form class="form form-inline" id="sortForm" name="sortForm">
@@ -450,7 +479,7 @@
 					<input type="hidden" name="arrange" 
 								value="${!empty search.arrange ? search.arrange : ''}">
 					<div class="form-group">
-						<button id="filter" class="btn btn-default" data-toggle="modal" 
+						<button id="filter" class="btn btn-default btn-lg" data-toggle="modal" 
 									 data-target=".bs-example-modal-sm" type="button">
 						<span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
 						</button>
@@ -458,34 +487,34 @@
 				</form>
 			</div>
 			<!-- 기간 -->
-			<div class="col-md-6">
+			<%-- <div class="col-md-6">
 				<form class="form form-inline" id="dateSearchForm" name="dateSearchForm">
 					<div class="form-group">
 						<input type="hidden" id="currentPageDate" name="currentPage" value=""/>
 						<input type="hidden" id="searchCondition" name="searchCondition" value="6">
-						<input class="col-md-3 form-control form-inline" type="text" id="startDate" name="startDate" value="${!empty search.startDate ? search.startDate : ''}" placeholder="조회 기간 선택">
-						<input class="col-md-3 form-control form-inline" type="text" id="endDate" name="endDate" value="${!empty search.endDate ? search.endDate : ''}" placeholder="조회 기간 선택">
+						<input class="col-md-3 form-control form-inline input-lg" type="text" id="startDate" name="startDate" value="${!empty search.startDate ? search.startDate : ''}" placeholder="조회 기간 선택">
+						<input class="col-md-3 form-control form-inline input-lg" type="text" id="endDate" name="endDate" value="${!empty search.endDate ? search.endDate : ''}" placeholder="조회 기간 선택">
 						<span class="input-group-btn">	
-							<button id="dateRange" class="btn btn-primary btn-block" type="button">
+							<button id="dateRange" class="btn btn-default btn-lg btn-block" type="button">
 								<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
 							</button>
 						</span>
 					</div>
 				</form>
-			</div>
+			</div> --%>
 			<!-- 검색 -->
-			<div class="col-md-4 text-right">
+			<div class="col-md-10 text-right">
 				<form class="form form-inline" id="searchForm" name="searchForm">
 					<input type="hidden" id="currentPage" name="currentPage" value=""/>
 					<input type="hidden" id="purchaseFlag" name="purchaseFlag" value="${purchaseFlag}"/>
 					<input type="hidden" name="userId" value="${user.userId}">
-					<input type="hidden" id="searchCondition" name="searchCondition" value="${!empty search.searchCondition ? search.searchCondition : ''}">
+					<input type="hidden" id="searchCondition2" name="searchCondition" value="${!empty search.searchCondition ? search.searchCondition : ''}">
 					<div class="input-group">
-						<input class="form-control" id="searchKeyword" name="searchKeyword" type="text" 
+						<input class="form-control input-lg" id="searchKeyword" name="searchKeyword" type="text" 
 									value="${!empty search.searchKeyword ? search.searchKeyword : ''}"
 									placeholder="축제 or 파티 이름으로 검색">
 						<span class="input-group-btn">
-					    	<button id="search" class="btn btn-primary btn-block" type="button">
+					    	<button id="search" class="btn btn-default btn-lg btn-block" type="button">
 					    		<span class="glyphicon glyphicon-search" aria-hidden="true"> 
 					    	</button>
 					    </span>
@@ -493,7 +522,7 @@
 				</form>
 			</div>
 		</div>
-		
+		</div>
 		<!-- 축제 / 파티 버튼 -->
 		<%-- <div class="row">
 			<form id="searchForm">
@@ -510,6 +539,7 @@
 			</form>
 		</div> --%>
 		
+		
 		<!-- 구매한 티켓 리스트 -->
 		<section>
 		<div class="row">
@@ -521,6 +551,7 @@
 				<div class="col-md-6">
 						<div class="panel panel-primary">
 							<div class="panel-heading">
+							<input type="hidden" name="purchaseNo" value="${purchase.purchaseNo}">
 							 <c:if test="${!empty purchase.ticket.festival}">
 								 	<c:if test="${purchase.ticket.festival.festivalImage.contains('http://')}">
 										<img width="100%" height="523" src="${purchase.ticket.festival.festivalImage}">
@@ -534,7 +565,13 @@
 							</c:if>
 							</div>
 							<div class="panel-body">
-								<input type="hidden" name="purchaseNo" value="${purchase.purchaseNo}">
+								<!-- 삭제버튼 -->
+								<form id="deleteForm">
+										<input type="hidden" name="purchaseNo" value="${purchase.purchaseNo}">
+										<button class="btn btn-default pull-right" id="deleteBtn" type="button" value="${purchase.purchaseNo}">
+											<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+										</button>
+								</form>
 								<!-- 축제티켓 -->
 								 <c:if test="${!empty purchase.ticket.festival}">
 								 	<%-- <div class="col-md-12">
@@ -586,6 +623,9 @@
 											</h4>
 									</div>
 								</c:if>
+								<!-- 결제정보 -->
+								<input type="hidden" name="tranCode" value="${purchase.tranCode}">
+								<div class="purchaseInfo">
 									<div class="col-md-12">
 										<h4>
 											결제번호 : 
@@ -636,6 +676,7 @@
 											# 파티
 										</c:if>
 									</div>
+								</div>
 								</div>
 								
 								

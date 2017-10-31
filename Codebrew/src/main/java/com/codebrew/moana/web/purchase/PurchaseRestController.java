@@ -122,6 +122,10 @@ public class PurchaseRestController {
 																		@PathVariable(value="userId") String userId,
 																		@RequestBody Search search) {
 		System.out.println("getPurchaseLis REST");
+		System.out.println(purchaseFlag+","+userId);
+		if(purchaseFlag.equals("")) {
+			System.out.println("purchaseFlag가 널인가여");
+		}
 		if(search.getCurrentPage() == 0) {
 			search.setCurrentPage(1);
 		}
