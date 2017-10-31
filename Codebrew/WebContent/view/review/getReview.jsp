@@ -97,7 +97,6 @@
 								"Content-Type" : "application/json"
 							}, 
 							success : function(JSONData, status){
-								//alert("김성경천재");
 								$("#goodCount").html(JSONData.goodCount);
 							}
 						}		
@@ -140,7 +139,7 @@
 						<h3 class="panel-title">후기제목 : ${review.reviewTitle }</h3>
 					</div>
 					<div class="panel-body">
-						<%-- 
+						<%--  
 						이렇게 하면 1번째 이미지 들어간다
 						<img width="100%" height="300" src="/resources/uploadFile/${review.reviewImageList[0].reviewImage }"> 
 						 --%>
@@ -160,11 +159,11 @@
 							<div class="carousel-inner" role="listbox">
 							<c:set var="i" value="0"/>
 								<div class="item active">
-									<img src="/resources/uploadFile/${review.reviewImageList[0].reviewImage }" width="100%" height="600">
+									<img src="/resources/uploadFile/${review.reviewImageList[0].reviewImage }" width="300" height="300">
 								</div>
 							<c:forEach var="imageList" begin="1" items="${review.reviewImageList }">
 								<div class="item">
-									<img src="/resources/uploadFile/${imageList.reviewImage }" width="100%" height="600">
+									<img src="/resources/uploadFile/${imageList.reviewImage }" width="300" height="300">
 								</div>
 							</c:forEach>
 							</div>
