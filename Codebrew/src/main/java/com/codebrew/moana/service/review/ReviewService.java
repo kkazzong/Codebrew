@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.codebrew.moana.common.Search;
+import com.codebrew.moana.service.domain.Good;
 import com.codebrew.moana.service.domain.Image;
 import com.codebrew.moana.service.domain.Review;
-import com.codebrew.moana.service.domain.User;
 import com.codebrew.moana.service.domain.Video;
 
 //==> 후기관리 CRUD : Service interface
@@ -32,7 +32,7 @@ public interface ReviewService {
 	public Map<String, Object> getMyReviewList(Search search, String userId) throws Exception;
 	
 	//7
-	public Map<String, Object> getCheckReviewList(Search search, String checkCode) throws Exception;
+	public Map<String, Object> getCheckReviewList(Search search) throws Exception;
 	
 	//8
 	public void passCheckCode(Review review) throws Exception;
@@ -41,10 +41,13 @@ public interface ReviewService {
 	public void failCheckCode(Review review) throws Exception;
 	
 	//10
-	public void addGood(String userId, int reviewNo) throws Exception;
+	public void addGood(Good good) throws Exception;
 	
 	//11
-	public void deleteGood(String userId, int reviewNo) throws Exception;
+	public void deleteGood(Good good) throws Exception;
+	
+	//12
+	public Good checkGood(Good good) throws Exception;
 	
 	//12
 	public List<Image> getReviewImage(int reviewNo) throws Exception;

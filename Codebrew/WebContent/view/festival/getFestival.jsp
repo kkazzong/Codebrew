@@ -162,6 +162,7 @@
 								},
 								success : function(JSONData , status) {
 									
+									
 									 if($("#tag").attr("class")=="glyphicon glyphicon-heart"){
 										 tag = "glyphicon glyphicon-heart-empty";
 										 tag2 = "glyphicon glyphicon-heart";

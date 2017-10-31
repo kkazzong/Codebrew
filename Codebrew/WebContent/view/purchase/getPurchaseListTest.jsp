@@ -308,8 +308,7 @@
 
 		$('.panel').each(function() {
 			 $(this).height(maxHeight);
-		});
-		
+		});		
 		
 		//날짜 검색 버튼 
 		$("#dateRange").on("click", function() {
@@ -377,6 +376,27 @@
     .panel-primary>.panel-heading {
     	background-color: #000000;
     }
+    .text-info {
+    	color: #333333; 
+    }
+    .page-header {
+    	border-bottom : 1px solid #f2f4f6;
+    }
+    .panel-primary {
+    	border-color : #3e3e3d;
+    }
+    .panel-primary > .panel-heading {
+    	background-image :linear-gradient(to bottom,#333 0,#333 100%);
+    }
+    .panel {
+    	box-shadow : 9px 7px 10px rgba(154, 143, 143, 0.98);
+    }
+    .section {
+    	margin-top : 400px;
+    }
+    body {
+    	background-color: #f2f4f6;
+    }
     /* div {
 		border : 3px solid #D6CDB7;
 		margin0top : 10px;
@@ -397,7 +417,7 @@
 	
 	<!-- 모달 -->
 	<jsp:include page="/view/purchase/filterModalUser.jsp"></jsp:include>
-	<button id="partyButtonDiv" type="button">파티</button>
+	
 	<div class="container">
 	
 		<!-- <div class="row">
@@ -410,7 +430,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="page-header text-center">
-					<h3 class="text-info"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span> 마이티켓</h3>
+					<h1 class="text-info">&nbsp;my티켓</h1>
 				</div>
 			</div>
 		</div>
@@ -491,6 +511,7 @@
 		</div> --%>
 		
 		<!-- 구매한 티켓 리스트 -->
+		<section>
 		<div class="row">
 		<c:if test="${empty list}">
 			<jsp:include page="/view/purchase/noResult.jsp"></jsp:include>
@@ -500,104 +521,132 @@
 				<div class="col-md-6">
 						<div class="panel panel-primary">
 							<div class="panel-heading">
-								<h3 class="panel-title pull-left">${i} ${purchase.itemName}티켓</h3>
-								<!-- 삭제버튼 -->
-								<form id="deleteForm">
-										<input type="hidden" name="purchaseNo" value="${purchase.purchaseNo}">
-										<button class="btn btn-default pull-right" id="deleteBtn" type="button" value="${purchase.purchaseNo}">
-											<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-										</button>
-								</form>
-        						<div class="clearfix"></div>
+							 <c:if test="${!empty purchase.ticket.festival}">
+								 	<c:if test="${purchase.ticket.festival.festivalImage.contains('http://')}">
+										<img width="100%" height="523" src="${purchase.ticket.festival.festivalImage}">
+									</c:if>
+									<c:if test="${!purchase.ticket.festival.festivalImage.contains('http://')}">
+										<img width="100%" height="523" src="/resources/uploadFile/${purchase.ticket.festival.festivalImage}">
+									</c:if>
+							</c:if>
+							<c:if test="${!empty purchase.ticket.party}">
+								<img width="100%" height="523" src="/resources/uploadFile/${purchase.ticket.party.partyImage}">
+							</c:if>
 							</div>
 							<div class="panel-body">
 								<input type="hidden" name="purchaseNo" value="${purchase.purchaseNo}">
 								<!-- 축제티켓 -->
 								 <c:if test="${!empty purchase.ticket.festival}">
+								 	<%-- <div class="col-md-12">
 								 	<c:if test="${purchase.ticket.festival.festivalImage.contains('http://')}">
-										<img width="100%" height="300" src="${purchase.ticket.festival.festivalImage}">
+										<img width="100%" height="523" src="${purchase.ticket.festival.festivalImage}">
 									</c:if>
 									<c:if test="${!purchase.ticket.festival.festivalImage.contains('http://')}">
-										<img width="100%" height="300" src="/resources/uploadFile/${purchase.ticket.festival.festivalImage}">
+										<img width="100%" height="523" src="/resources/uploadFile/${purchase.ticket.festival.festivalImage}">
 									</c:if>
-									<hr>
+									</div> --%>
 									<div class="col-md-12">
-										<span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
-											${purchase.ticket.festival.festivalName}
+											<h3><strong>${purchase.ticket.festival.festivalName}</strong></h3>
 									</div>
-									<div class="col-md-12">
+									<%-- <div class="col-md-12">
 											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
 											 ${purchase.ticket.festival.startDate} ~ ${purchase.ticket.festival.endDate}
-									</div>
+									</div> --%>
 									<div class="col-md-12">
+										<h4>
 											<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
 										 	${purchase.ticket.festival.addr}<br>
+										 </h4>
 									</div>
 								</c:if>
 								<!-- 파티티켓 -->
 								<c:if test="${!empty purchase.ticket.party}">
-									<img width="100%" height="300" src="/resources/uploadFile/${purchase.ticket.party.partyImage}">
-									<hr>
 									<div class="col-md-12">
-											${purchase.ticket.party.partyName}
+										<%-- <img width="100%" height="523" src="/resources/uploadFile/${purchase.ticket.party.partyImage}"> --%>
 									</div>
 									<div class="col-md-12">
+											<h3><strong>${purchase.ticket.party.partyName}</strong></h3>
+									</div>
+									<%-- <div class="col-md-12">
+											<h4>
 											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
 											${purchase.ticket.party.partyDate}
+											</h4>
 									</div>
 									<div class="col-md-12">
+											<h4>
 											<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
 											${purchase.ticket.party.partyTime}
-									</div>
+											</h4>
+									</div> --%>
 									<div class="col-md-12">
+											<h4>
 											<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
 											${purchase.ticket.party.partyPlace}
+											</h4>
 									</div>
 								</c:if>
-								<br>
-								<div class="row">
-									<div class="col-xs-4 col-md-6"><strong>결제번호</strong></div>
-									<div class="col-xs-8 col-md-6">${purchase.paymentNo}</div>
-								</div>
-								<div class="row">
-									<div class="col-xs-4 col-md-6"><strong>구매날짜</strong></div>
-									<div class="col-xs-8 col-md-6">${purchase.purchaseDate}</div>
-								</div>
-								<div class="row">
-									<div class="col-xs-4 col-md-6"><strong>구매수량</strong></div>
-									<div class="col-xs-8 col-md-6">${purchase.purchaseCount} 장</div>
-								</div>
-								<div class="row">
-									<div class="col-xs-4 col-md-6"><strong>결제금액</strong></div>
-									<div class="col-xs-8 col-md-6">${purchase.purchasePrice} 원</div>
-								</div>
-								<div class="row">
-									<div class="col-xs-4 col-md-6"><strong>결제상태</strong></div>
-									<div class="col-xs-8 col-md-6">
+									<div class="col-md-12">
+										<h4>
+											결제번호 : 
+											${purchase.paymentNo}
+										</h4>
+									</div>
+									<div class="col-md-12">
+										<h4>
+											결제일시 : 
+											${purchase.purchaseDate}
+										</h4>
+									</div>
+									<div class="col-md-12">
+										<h4>
+											구매수량 : 
+											${purchase.purchaseCount} 장
+										</h4>
+									</div>
+									<div class="col-md-12">
+										<h4>
+											결제금액 : 
+											${purchase.purchasePrice} 원
+										</h4>
+									</div>
+									<div class="col-md-12">
+										<h4>
+											결제상태 : 
 										<c:if test="${purchase.tranCode == 1}">
 											결제완료
 										</c:if>
 										<c:if test="${purchase.tranCode == 2}">
 											결제취소
 										</c:if>
+										</h4>
+									</div>
+										<c:if test="${purchase.tranCode == 1}">
+											<%-- <button class="col-md-12 btn btn-default btn-block" type="button" value="${purchase.purchaseNo}">조회</button> --%>
+										</c:if>
+										<%-- <form id="deleteForm">
+											<input type="hidden" name="purchaseNo" value="${purchase.purchaseNo}">
+											<button class="btn btn-default" type="button" value="${purchase.purchaseNo}">삭제</button>
+										</form> --%>
+									<div class="col-md-12">	
+										<c:if test="${purchase.purchaseFlag == 1 }">
+											# 축제
+										</c:if>
+										<c:if test="${purchase.purchaseFlag == 2 }">
+											# 파티
+										</c:if>
 									</div>
 								</div>
-								<hr>
-								<div class="row">
-									<c:if test="${purchase.tranCode == 1}">
-										<%-- <button class="col-md-12 btn btn-default btn-block" type="button" value="${purchase.purchaseNo}">조회</button> --%>
-									</c:if>
-									<%-- <form id="deleteForm">
-										<input type="hidden" name="purchaseNo" value="${purchase.purchaseNo}">
-										<button class="btn btn-default" type="button" value="${purchase.purchaseNo}">삭제</button>
-									</form> --%>
-								</div>
+								
+								
+								
+								
 							</div>
 						</div>
-				</div>
+						
 			</c:forEach>
 		</div>
-		
+		</section>
 		<!-- 내가 만든 페이지네비게이터 -->
 		<jsp:include page="../../common/pageNavigator_new.jsp"/>
 		<%-- <jsp:include page="../../common/pageNavigator.jsp"/> --%>

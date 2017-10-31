@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.codebrew.moana.common.Search;
+import com.codebrew.moana.service.domain.Good;
 import com.codebrew.moana.service.domain.Image;
 import com.codebrew.moana.service.domain.Review;
 import com.codebrew.moana.service.domain.Video;
@@ -84,27 +85,26 @@ public class ReviewServiceImpl implements ReviewService {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", list);
 		map.put("totalCount", new Integer(totalCount));
-		
 		return map;
 	}
 
 	@Override //6
 	public Map<String, Object> getMyReviewList(Search search, String userId) throws Exception {
 		
-		List<Review> list = reviewDAO.getMyReviewList(search);
-		int totalCount = reviewDAO.getTotalCount(search);
+		List<Review> list = reviewDAO.getMyReviewList(search, userId); //이것만 적용시켜봄
+		int totalCount = reviewDAO.getMyReviewTotalCount(search, userId);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", list);
-		map.put("totalCount", new Integer(totalCount));
+		map.put("totalCount", new Integer(totalCount)); //미적용
 		return map;
 	}
 
 	@Override //7
-	public Map<String, Object> getCheckReviewList(Search search, String checkCode) throws Exception {
+	public Map<String, Object> getCheckReviewList(Search search) throws Exception {
 		
 		List<Review> list = reviewDAO.getCheckReviewList(search);
-		int totalCount = reviewDAO.getTotalCount(search);
+		int totalCount = reviewDAO.getCheckReviewTotalCount(search);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", list);
@@ -123,21 +123,21 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override //10
-	public void addGood(String userId, int reviewNo) throws Exception {
-		
-		if(reviewDAO.checkGood(userId, reviewNo) == null){
-			reviewDAO.addGood(userId, reviewNo);
-		}else{
-			reviewDAO.deleteGood(userId, reviewNo);
-		}
+	public void addGood(Good good) throws Exception {
+		reviewDAO.addGood(good);
 	}
 
 	@Override //11
-	public void deleteGood(String userId, int reviewNo) throws Exception {
-		reviewDAO.deleteGood(userId, reviewNo);
+	public void deleteGood(Good good) throws Exception {
+		reviewDAO.deleteGood(good);
 	}
 	
 	@Override //12
+	public Good checkGood(Good good) throws Exception {
+		return reviewDAO.checkGood(good);
+	}
+	
+	@Override //13
 	public List<Image> getReviewImage(int reviewNo) throws Exception {
 		return reviewDAO.getReviewImage(reviewNo);
 	}

@@ -42,7 +42,6 @@
    
    $(function(){
 		 $( "button:contains('축제명으로 찾기')" ).on("click" , function() {
-			 /* $("form").attr("method" , "GET").attr("action" , "/festival/searchKeywordList").submit(); */
 			 
 			 self.location = "/view/festival/searchKeywordList.jsp";
 		});
@@ -52,8 +51,6 @@
 
 
 	$(function() {
-
-		/* $("td:nth-child(1)").on("click", function() { */
 			
 			$(".panel-body").on("click", function() {
 
@@ -62,6 +59,42 @@
 			self.location = "/festival/getFestival?festivalNo=" + festivalNo;
 		});
 	});
+	
+	/* 
+		
+		$(function(){
+			
+			$("#searchCondition").on("click", function () {
+				
+			console.log("누름");
+			
+			$.ajax( 
+					{
+						url : "/festivalRest/json/getAreaCode",
+						method : "GET" ,
+						data : JSON.stringify({
+			    		}),
+						dataType : "json" ,
+						headers : {
+							"Accept" : "application/json",
+							"Content-Type" : "application/json"
+						},
+						success : function(JSONData , status) {
+							
+							alert("json...." + JSONData);
+							var value = 
+							
+							"<h1>"+JSONData.get("list")+"</h1>";
+							
+							$("#searchCondition").append(value);
+							
+						}
+							
+				
+		});
+		});
+		}); */
+			
 </script>
 <style type="text/css">
 body {
@@ -130,6 +163,30 @@ body {
 				</select>
 				</div>
 				
+				
+				
+				<!-- -------------------------------------------- -->
+			<%-- 	
+				  지역검색
+				  <div class="form-group">
+				    <select class="form-control" name="searchCondition" id="searchCondition" >
+					<!-- <option value="" >>지역선택</option> -->
+					
+				</select>
+				</div>
+			<!-- 	//arrange A = 제목 , B = 조회순 , C = 수정일순, D = 생성일순,
+		/			/대표이미지 정렬추가 ( o = 제목순 , p = 조회순 , Q = 수정일순, R = 생성일순) -->
+				정렬
+				  <div class="form-group">
+				    <select class="form-control" name="arrange" >
+					<option value="R" ${ ! empty search.arrange && search.arrange=="R" ? "selected" : "" }>>생성일순2</option>
+				</select>
+				</div> --%>
+				
+				<!-- --------------------------------------------------------------- --> 
+				
+				
+				
 
 		<button type="button" class="btn btn-default btn-block">검색</button>
 		
@@ -194,54 +251,6 @@ body {
 			
 			<jsp:include page="../../common/pageNavigator_new.jsp"/>
 		
-		
-		
-		
-		
-		<!-- 되는거 -->
-		<%-- <c:forEach var="festival" items="${list}">
-		
-		<br />
-			<table>
-				<tr> 
-					<td>
-					
-					<c:if test="${festival.festivalImage == null }"> 
-						
-						<img src="../resources/uploadFile/no.png" width="300" height="300"/>
-						
-					</c:if>
-					
-					<c:if test="${festival.festivalImage != null }">
-					
-						<img src="${festival.festivalImage }" width="300" height="300" />
-						
-					</c:if>
-					
-					
-					 <br />
-					
-						<div id="festivalNo" style="display: none">
-							<p>${festival.festivalNo }</p>
-						</div> <span> ${festival.festivalName } </span> <br /></td>
-				</tr>
-			</table>
-
-			<div>축제기간 ${festival.startDate } ~ ${festival.endDate }</div>
-			<br />
-			<br />
-		
-			
-		</c:forEach>
-		 
-		
-			
-			<input type = hidden id="currentPage" name = "currentPage" value = ${i } />
-			
-			<jsp:include page="../../common/pageNavigator.jsp"/>
-			
-			--%>
-			
 
 
 	</form>

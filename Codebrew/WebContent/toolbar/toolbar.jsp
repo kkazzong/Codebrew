@@ -86,7 +86,8 @@
 						<c:if test="${sessionScope.user.role == 'a'}">
 		                       <li class="divider"></li>
 		                       <li><a href="#">후기심사목록</a></li>
-	                     </c:if> 
+	                     </c:if>
+	                     <li><a href="#">my후기</a></li>
 		             </ul>
 		          </li>
 	                 
@@ -232,6 +233,14 @@
 			
 			$("li > a:contains('후기등록')").bind('click', function(){
 				self.location = "/review/addReview";
+			});
+			
+			$("li > a:contains('my후기')").bind('click', function(){
+				self.location = "/review/getMyReviewList";
+			});
+			
+			$("li > a:contains('후기심사목록')").bind('click', function(){
+				self.location = "/review/getCheckReviewList";
 			});
    		});
    		

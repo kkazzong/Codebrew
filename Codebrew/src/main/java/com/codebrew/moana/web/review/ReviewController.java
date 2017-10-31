@@ -3,9 +3,6 @@ package com.codebrew.moana.web.review;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.codebrew.moana.common.Page;
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Festival;
+import com.codebrew.moana.service.domain.Good;
 import com.codebrew.moana.service.domain.Image;
 import com.codebrew.moana.service.domain.Review;
 import com.codebrew.moana.service.domain.User;
@@ -265,8 +263,7 @@ public class ReviewController {
 	}
 	
 	@RequestMapping(value="getMyReviewList")
-	public ModelAndView getMyReviewList( @ModelAttribute("search") Search search,
-										@ModelAttribute("review") Review review, 
+	public ModelAndView getMyReviewList( @ModelAttribute("search") Search search,   
 										HttpSession session) throws Exception{
 		
 		System.out.println("/view/review/getMyReviewList");
@@ -277,11 +274,8 @@ public class ReviewController {
 		search.setPageSize(pageSize);
 		
 		// Business logic 수행
-		User user = (User)(session.getAttribute("user"));
-		String userId = user.getUserId();
-		
+		String userId = ((User)(session.getAttribute("user"))).getUserId();
 		Map<String, Object> map = reviewService.getMyReviewList(search, userId);
-		
 		Page resultPage = new Page(search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
 		System.out.println(resultPage);
 		
@@ -298,13 +292,8 @@ public class ReviewController {
 	}
 	
 	@RequestMapping(value="getCheckReviewList")
-	public ModelAndView getCheckReviewList( @ModelAttribute("search") Search search,
-											@ModelAttribute("review") Review review)
+	public ModelAndView getCheckReviewList( @ModelAttribute("search") Search search)
 											throws Exception {
-		
-		/*
-		 * 매개변수 HttpSession Type : session 삭제
-		 */
 		
 		System.out.println("/view/review/getCheckReviewList");
 		
@@ -314,20 +303,15 @@ public class ReviewController {
 		search.setPageSize(pageSize);
 		
 		// Business logic 수행
+		Map<String, Object> map = reviewService.getCheckReviewList(search);
+		Page resultPage = new Page(search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+		System.out.println("\ngetCheckReviewList resultPage :: "+resultPage);
+		
 		ModelAndView modelAndView = new ModelAndView();
-		String checkCode = null;
-		if(checkCode == "1" || checkCode == "11"){			
-			Map<String, Object> map = reviewService.getCheckReviewList(search, checkCode);
-			Page resultPage = new Page(search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
-			System.out.println(resultPage);
-			// Model과 View 연결 : 확인 요망
-			modelAndView.addObject("list", map.get("list"));
-			modelAndView.addObject("resultPage", resultPage);
-			modelAndView.addObject("search", search);
-			
-			modelAndView.setViewName("/view/review/getCheckReviewList.jsp");
-			
-		}
+		modelAndView.addObject("list", map.get("list"));
+		modelAndView.addObject("resultPage", resultPage);
+		modelAndView.addObject("search", search);
+		modelAndView.setViewName("/view/review/getCheckReviewList.jsp");
 		return modelAndView;
 		
 	}
@@ -348,6 +332,20 @@ public class ReviewController {
 		return modelAndView;
 	}
 	
+	@RequestMapping(value="passCheckCodeFromCheckReviewList", method=RequestMethod.GET)
+	public ModelAndView passCheckCodeFromCheckReviewList(@RequestParam("reviewNo") int reviewNo) throws Exception {
+		
+		System.out.println("review/passCheckCodeFromCheckReviewList");
+		
+		Review returnReview = reviewService.getReview(reviewNo);
+		reviewService.passCheckCode(returnReview);
+		
+		//Business Logic수행
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("redirect:/review/getCheckReviewList");
+		return modelAndView;
+	}
+	
 	@RequestMapping(value="failCheckCode", method=RequestMethod.GET)
 	public ModelAndView failCheckCode(@RequestParam("reviewNo") int reviewNo) throws Exception {
 		
@@ -364,13 +362,35 @@ public class ReviewController {
 		return modelAndView;
 	}
 	
+	@RequestMapping(value="failCheckCodeFromCheckReviewList", method=RequestMethod.GET)
+	public ModelAndView failCheckCodeFromCheckReviewList(@RequestParam("reviewNo") int reviewNo) throws Exception {
+		
+		System.out.println("review/failCheckCodeFromCheckReviewList");
+		
+		Review returnReview = reviewService.getReview(reviewNo);
+		reviewService.failCheckCode(returnReview);
+		
+		//Business Logic수행
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("redirect:/review/getCheckReviewList");
+		return modelAndView;
+	}
+	
+	//Controller 이름 혼동하지 말것. addGood은 deleteGood과 함께한다
 	@RequestMapping(value="addGood", method=RequestMethod.GET)
 	public ModelAndView addGood(@RequestParam("reviewNo") int reviewNo, 
 								@RequestParam("userId") String userId) throws Exception {
 		
 		System.out.println("review/addGood");
 		
-		reviewService.addGood(userId, reviewNo);
+		Good good = new Good(reviewNo, userId);
+		
+		if(reviewService.checkGood(good) == null){
+			reviewService.addGood(good);
+		}else{
+			reviewService.deleteGood(good);
+		}
+		
 		Review returnReview = reviewService.getReview(reviewNo);
 		
 		//Business Logic수행
@@ -401,6 +421,7 @@ public class ReviewController {
 	
 	/*
 	 * 아래의 Controller는 ckEditor를 이용한 이미지 업로드
+	 * 미완
 	 */
 	@RequestMapping(value="imageUpload")
 	public void imageUpload(HttpServletRequest request, HttpServletResponse response, @RequestParam("upload") MultipartFile upload) throws Exception{

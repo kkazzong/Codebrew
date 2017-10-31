@@ -109,7 +109,7 @@ $(function() {
 		
 		$(function() {
 			$("button:contains('완료')").on("click", function() {
-			self.location = "/festival/getFestivalListDB";
+			self.location = "/festival/getFestivalListDB?menu=db";
 		});
 	});
 			

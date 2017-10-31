@@ -180,8 +180,9 @@ public class PurchaseController {
 		modelAndView.addObject("search", search);
 		modelAndView.addObject("purchaseFlag", purchaseFlag);
 
-		modelAndView.setViewName("/view/purchase/getPurchaseList.jsp");
-
+		//modelAndView.setViewName("/view/purchase/getPurchaseList.jsp");
+		modelAndView.setViewName("/view/purchase/getPurchaseListTest.jsp");
+		
 		return modelAndView;
 	}
 	

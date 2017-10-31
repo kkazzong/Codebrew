@@ -21,8 +21,7 @@
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	
 	<!-- 아래 테스트 중 -->
-	<script type = "text/javascript" src="../../resources/javascript/ckeditor/ckeditor.js"></script>
-	
+	<!-- <script type = "text/javascript" src="../../resources/javascript/ckeditor/ckeditor.js"></script> -->
 	
 	<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
 	<!-- <script src="js/vendor/jquery.ui.widget.js"></script> -->
@@ -58,6 +57,8 @@
         .imgs_wrap { 
         	width: 600px;
         	margin-top: 50px;
+        	aling-items: center;
+        	justify-content: center;
         }
         
         .imgs_wrap img {
@@ -128,7 +129,7 @@
 		
 		//modal창 띄우기
 		$("button.btn.btn-primary:contains('축제검색')").on("click", function(){
-			window.open("/view/festival/popupListDB.jsp", null, "height=450,width=600,status=yes,toolbar=no,menubar=no,location=no");
+			window.open("/festival/getFestivalListDB?menu=pop", null, "height=450,width=600,status=yes,toolbar=no,menubar=no,location=no");
 		});
 		
 		
@@ -137,7 +138,7 @@
 	// 해시태그 등록
 	$(document).ready(function(){
 		$("input[name=toBeHashtag]").keydown(function(key){
-			if(key.keyCode == 13 || key.keyCode == 32){ //키 값이 13(enter)면 실행
+			if(key.keyCode == 13 || key.keyCode == 32){ //키 값이 13(enter)면 실행, 32(space)
 				alert("hashtag로 등록됩니다.");
 				console.log($(this).val());	
 				var innerHtml = $("input:text[name=reviewHashtag]").val();
@@ -148,11 +149,19 @@
 			}
 			
 		});
+		
+		$("#reviewDetail").keydown(function(key){
+			if(key.keyCode == 13){
+				alert("enter 입력 : 한줄 개행");
+				var innerReviewDetail = $("input:text[name=reviewDetail]").val();
+				innerReviewDetail += "\n";
+			}
+		})
 	});
 	
 	// 다중 이미지 미리보기 and 삭제
 	// 이미지 정보를 담을 배열
-	/* 
+	
 	var sel_files = [];
 	
 	$(document).ready(function(){
@@ -200,7 +209,7 @@
 		$(img_id).remove();
 		console.log(sel_files);
 	}
-	 */
+	
 	 
 	/* 테스트중 ckeditor */
 	/* 
@@ -288,7 +297,7 @@
 		
 		<div class="form-group">
 			<label for="reviewTitle" class="col-sm-offset-1 col-sm-3 control-label">후기제목</label>
-			<div class="col-sm-4">
+			<div class="col-md-4">
 				<input type="text" class="form-control" id="reviewTitle" name="reviewTitle"/>
 			</div>
 		</div>
@@ -297,7 +306,7 @@
 		
 		<div class="form-group">
 			<label for="userId" class="col-sm-offset-1 col-sm-3 control-label">작성자</label>
-			<div class="col-sm-4">
+			<div class="col-md-4">
 				<input type="text" class="form-control" id="userId" name="userId" value="${sessionScope.user.userId }" readonly/>
 			</div>
 		</div>
@@ -306,7 +315,7 @@
 		
 		<div class="form-group">
 			<label for="reviewFestivalRating" class="col-sm-offset-1 col-sm-3 control-label">축제에대한 작성자의 평점</label>
-			<div class="col-sm-1">
+			<div class="col-md-2">
 				<input type="number" class="form-control" id="reviewFestivalRating" name="reviewFestivalRating" min="1" max="10"> 
 			</div>
 		</div>
@@ -314,18 +323,18 @@
 		<hr/>
 		
 		<div class="form-group">
-			<label for="reviewImageList" class="col-sm-offset-1 col-sm-3 control-label">후기사진</label>
-			<div class="col-sm-4">
+			<label for="reviewImageList" class="col-md-offset-1 col-md-3 control-label">후기사진</label>
+			<div class="col-md-4">
 				<input type="file" class="form-control" id="uploadReviewImageList" name="uploadReviewImageList" multiple/>
 			</div>
-			<div class="imgs_wrap">
-				<img id="img"/>
+			<div class="imgs_wrap col-md-12" align="center">
+				<img id="img" align="middle"/>
 			</div>
 		</div>
 		
 		<div class="form-group">
-			<label for="reviewDetail" class="col-sm-1 control-label">후기내용</label>
-			<div class="col-sm-10">
+			<label for="reviewDetail" class="col-md-1 control-label">후기내용</label>
+			<div class="col-md-10">
 				 
 				<textarea rows="5" cols="30" class="form-control" id="reviewDetail" name="reviewDetail"></textarea>
 				 
@@ -339,15 +348,15 @@
 		<hr/>
 		
 		<div class="form-group">
-			<label for="reviewVideo" class="col-sm-offset-1 col-sm-3 control-label">동영상</label>
-			<div class="col-sm-4">
+			<label for="reviewVideo" class="col-md-offset-1 col-md-3 control-label">동영상</label>
+			<div class="col-md-4">
 				<input type="file" class="form-control" id="uploadReviewVideoList" name="uploadReviewVideoList"/>			
 			</div>
 		</div>
 		
 		<div class="form-group">
-			<label for="toBeHashtag" class="col-sm-offset-1 col-sm-3 control-label">해시태그를 입력</label>
-			<div class="col-sm-4">
+			<label for="toBeHashtag" class="col-md-offset-1 col-md-3 control-label">해시태그를 입력</label>
+			<div class="col-md-4">
 				<input type="text" class="form-control" id="toBeHashtag" name="toBeHashtag" value="">
 				<span id="helpBlock" class="help-block">
 					<strong class="text-danger">해시태그를 입력한 후 스페이스 혹은 엔터 키를 누르세요</strong>
@@ -358,8 +367,8 @@
 		<hr/>
 		
 		<div class="form-group">
-			<label for="reviewHashtag" class="col-sm-offset-1 col-sm-3 control-label">등록예정 해시태그</label>
-			<div class="col-sm-4">
+			<label for="reviewHashtag" class="col-md-offset-1 col-md-3 control-label">등록예정 해시태그</label>
+			<div class="col-md-4">
 				<input type="text" class="form-control" id="reviewHashtag" name="reviewHashtag">
 				<button type="button" class="btn btn-primary">삭제</button>
 			</div>
@@ -368,7 +377,7 @@
 		<hr/>
 				
 		<div class="form-group">
-			<div class="col-sm-offset-4 col-sm-4 text-center">
+			<div class="col-md-offset-4 col-md-4 text-center">
 				<button type="button" class="btn btn-primary">등록</button>
 				<button type="button" class="btn btn-primary">취소</button>
 			</div>
