@@ -63,20 +63,37 @@ $(function() {
 							"Content-Type" : "application/json"
 						},
 						success : function(JSONData , status) {
-							alert("jsonData...." + JSONData.festivalName);
+							alert("festivalNo..." + JSONData.festivalNo);
 							
-							$("#festivalName").val(JSONData.festivalName); 
-							$("#festivalNo").val(JSONData.festivalNo);
-							$("#startDate").val(JSONData.startDate);
-							$("#endDate").val(JSONData.endDate);
-							$("#addr").val(JSONData.addr);
+							$("#returnFestivalNo").val(JSONData.festivalNo);							
+							$("#returnFestivalName").val(JSONData.festivalName); 
+							$("#returnStartDate").val(JSONData.startDate);
+							$("#returnEndDate").val(JSONData.endDate);
+							$("#returnAddr").val(JSONData.addr);
+							
+							opener.document.getElementById("festivalNo").value = document.getElementById("returnFestivalNo").value
+						    opener.document.getElementById("festivalName").value = document.getElementById("returnFestivalName").value
+						    opener.document.getElementById("addr").value = document.getElementById("returnAddr").value
+						    
+							window.close();
 							
 						}
-		 
-		 
-	});
-}).close();
+				});
+		});
+	
 });
+
+function setParentText(){
+	
+	opener.document.getElementById("festivalNo").value = document.getElementById("returnFestivalNo").value
+    opener.document.getElementById("festivalName").value = document.getElementById("returnFestivalName").value
+    opener.document.getElementById("startDate").value = document.getElementById("returnStartDate").value
+    opener.document.getElementById("endDate").value = document.getElementById("returnEndDate").value
+    opener.document.getElementById("addr").value = document.getElementById("returnAddr").value
+    
+}
+
+
 	
 	
 	
@@ -215,5 +232,21 @@ $(function() {
 	</div>
 	</div>
 	</div>
+	
+	<input type="text" id="returnFestivalName">
+	<input type="text" id="returnFestivalNo">
+	<input type="text" id="returnAddr">
+	<input type="text" id="returnStartDate">
+	<input type="text" id="returnEndDate">
+	
+	
+	 <input type="button" value="전달하기" onclick="setParentText()">
+    <br><br>
+    <input type="button" value="창닫기" onclick="window.close()">
+
+
+    
+
+
 	</body>
 </html>
