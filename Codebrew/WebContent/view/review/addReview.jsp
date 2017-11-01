@@ -142,7 +142,7 @@
 				alert("hashtag로 등록됩니다.");
 				console.log($(this).val());	
 				var innerHtml = $("input:text[name=reviewHashtag]").val();
-				innerHtml += "#"+$(this).val()+";";
+				innerHtml += "#"+$(this).val();
 				
 				$("input:text[name=reviewHashtag]").val(innerHtml);
 				$(this).val("");
@@ -152,9 +152,9 @@
 		
 		$("#reviewDetail").keydown(function(key){
 			if(key.keyCode == 13){
-				alert("enter 입력 : 한줄 개행");
+				//alert("enter 입력 : 한줄 개행");
 				var innerReviewDetail = $("input:text[name=reviewDetail]").val();
-				innerReviewDetail += "\n";
+				innerReviewDetail += "<br>";
 			}
 		})
 	});
@@ -257,14 +257,9 @@
 	  
 	<h1 class="bg-primary text-center">후기등록양식</h1>
 	
-	<input type="button" value="자식창 열기" onclick="openChilde()"><br>
-	전달할 값 : <input type="text" id="pInput"><input type="button" value="전달" onclick="setChildText()">
-	
-	<!-- 
 	<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
 		축제검색
 	</button>
-	 -->
 	 
 	<!-- ////////// form Start ////////// -->
 	<form class="form-horizontal" method="post" name="detailForm" enctype="multipart/form-data">
@@ -273,7 +268,7 @@
 		<div class="form-group">
 			<label for="festivalName" class="col-sm-offset-1 col-sm-3 control-label">축제번호</label>
 			<div class="col-md-4">
-				<input type="text" class="form-control" id="festivalNo" name="festivalNo" value="${festival.festivalNo }">
+				<input type="text" class="form-control" id="festivalNo" name="festivalNo" value="${festival.festivalNo }" readonly>
 			</div>
 		</div>
 		
@@ -282,7 +277,7 @@
 		<div class="form-group">
 			<label for="festivalName" class="col-sm-offset-1 col-sm-3 control-label">축제명</label>
 			<div class="col-md-4">
-				<input type="text" class="form-control" id="festivalName" name="festivalName" value="${festival.festivalName}" >
+				<input type="text" class="form-control" id="festivalName" name="festivalName" value="${festival.festivalName}" readonly>
 			</div>
 		</div>
 		
@@ -291,7 +286,7 @@
 		<div class="form-group">
 			<label for="addr" class="col-sm-offset-1 col-sm-3 control-label">축제위치</label>
 			<div class="col-sm-4">
-				<input type="text" class="form-control" id="addr" name="addr" value="${festival.addr }" >
+				<input type="text" class="form-control" id="addr" name="addr" value="${festival.addr }" readonly>
 			</div>
 		</div>
 		<!-- 위의 3항목은 festival에서 value 받아올 예정 -->

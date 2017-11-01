@@ -23,6 +23,13 @@
             padding-top : 50px;
         }
         
+        .panel-primary > .panel-heading {
+        	/* 
+        	color: 	#8B0000;
+        	border-color: #8B0000;
+        	 */
+        }
+        
 	</style>
 	
 	<!-- jQuery UI toolTip 사용 CSS-->
