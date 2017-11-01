@@ -42,6 +42,7 @@
 	<script type="text/javascript">
 	
 	<!--  // 검색 / page 두가지 경우 모두 Form 전송을 위해 JavaScript 이용 --> 
+	
 	function fncGetList(currentPage) {
 		$("#currentPage").val(currentPage)
 	   	$("form").attr("method" , "POST").attr("action" , "/review/getReplyList").submit();
@@ -67,32 +68,67 @@
 		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2. $(#id) : 3.$(.className)
 		//==> 1과 3 방법 조합 : $("tagName.className:filter함수") 사용함.
 		$("#searchReply").on("click", function(){
-			//Debug..
-			//alert($("button.btn.btn-default")).html();
 			fncGetList(1);
 		});
 		
 		$("#addReply").on("click", function(){
-			//Debug..
-			//alert($("button.btn.btn-primary")).html();
+			alert("댓글등록 클릭");
 			fncAddReply();
 		});
 		
-		$("#willUpdateReply").on("click", function(){
-			alert("수정버튼클릭");
+		$(".btn-warning:contains('삭제')").on("click", function(){
+			alert("댓글삭제버튼클릭 :: replyNo :: "+$(this).val());
+			self.location="/reply/deleteReply?replyNo="+$(this).val();
 		});
 		
-		$("#deleteReply").on("click", function(){
-			alert("삭제버튼클릭");
+		//수정중
+		$(".btn-info:contains('수정')").on("click", function(){
+			//alert("댓글수정하기버튼클릭");
+			//alert("#updateReply${replyList.replyNo }");
+			var tempReplyNo = $(this).val();
+			var tempReviewNo = $("#reviewNo").val();
+			
+			alert("임시reviewNo"+tempReviewNo);
+			//alert("임시댓글번호"+tempReplyNo);
+			//alert("button:#updateReply"+tempReplyNo);
+			
+			$("#replyDetail"+tempReplyNo).removeAttr("readonly")
+			.focus()
+			
+			$("#updateReply"+tempReplyNo).html('완료').on("click", function(){
+				
+				alert("수정완료클릭 :: ajax 시작");
+				
+				$.ajax(
+						{
+							url : "/replyRest/json/updateReply", 
+							method : "POST", 
+							headers : {
+								"Accept" : "application/json", 
+								"Content-Type" : "application/json"
+							}, 
+							data : JSON.stringify({
+								replyNo : tempReplyNo, 
+								replyDetail : $("#replyDetail"+tempReplyNo).val()
+							}),
+							dataType : "json", 
+							success : function(JSONData, status){
+								$("#replyDetail"+tempReplyNo).val(JSONData.replyDetail);
+								$("#replyDetail"+tempReplyNo).attr("readonly", true);
+								$("#updateReply"+tempReplyNo).html('수정');
+							}
+						}
+				)
+				
+			});
+			
 		});
 		
 		
-		//==> UI 수정 추가부분  :  replyTitle LINK Event End User 에게 보일수 있도록 
 		$( ".ct_list_pop td:nth-child(2)" ).css("color" , "red");
 		$("h7").css("color" , "red");
 		$( ".ct_list_pop td:nth-child(7)" ).css("color" , "blue");
 		
-		//==> 아래와 같이 정의한 이유는 ??
 		$(".ct_list_pop:nth-child(4n+6)" ).css("background-color" , "whitesmoke");
 		
 	});
@@ -151,9 +187,11 @@
    				<!-- 
    				<label for="replyDetail" class="col-sm-offset-1 col-sm-3 control-label">댓글내용</label>
    				 -->
-   				<div class="col-md-12">
+   				<div class="col-md-10">
    					<input type="text" class="form-control" id="replyDetail" name="replyDetail">
-   					<button type="button" id = "addReply" class="btn btn-primary btn-sm">댓글등록</button>
+   				</div>
+   				<div class="col-md-2">
+   					<button type="button" id = "addReply" class="btn btn-primary pull pull-left">댓글등록</button>
    				</div>
    			</div>
    		</form>
@@ -165,18 +203,16 @@
    		
    			<thead>
    				<tr>
-   					<th align="left">
-   						댓글내용
-   					</th>
-   					<th>
-   					</th>
-   					<th align="left">
-   						댓글작성자
-   					</th>
-   					<th align="left">
-   						등록일자
-   					</th>
-   				</tr>
+					<td align="left">
+						댓글내용
+					</td>
+					<td align="center">
+						댓글작성자
+					</td>
+					<td align="center">
+						등록일자
+					</td>
+					</tr>
    			</thead>
    			
    			<tbody>
@@ -185,27 +221,38 @@
 	   				<c:forEach var="replyList" items="${review.replyList }">
 	   					<c:set var="i" value="${i+1}"/>
 	   					<tr class="ct_list_pop">
-	  						<td align="left">
-	   							${replyList.replyDetail }
-	   						</td>
 	   						<td align="left">
-	   							<input type="hidden" name="reviewNo" value=${review.reviewNo }>
-								<span style="display: none" class="hidden_link">/review/getReview?reviewNo=${review.reviewNo }</span>
-								<span>
-								<c:if test="${!empty sessionScope.user}" >
-									<c:if test="${sessionScope.user.role == 'a' || sessionScope.user.userId == replyList.userId }">
-							   			<center>
-								   			<button type="button" id="willUpdateReply" class="btn btn-primary btn-sm">수정하기</button>
-								   			<button type="button" id="deleteReply" class="btn btn-primary btn-sm">삭제</button>
-								   		</center>
-							   		</c:if>
-							   	</c:if>
-							   	</span>
+	   							<div class="input-group">
+								<input type="text" class="form-control" id="replyDetail${replyList.replyNo }" aria-label="replyDetail" value="${replyList.replyDetail }" readonly>
+									<c:if test="${!empty sessionScope.user }">
+										<c:if test="${!(sessionScope.user.role == 'a' || sessionScope.user.userId == replyList.userId) }">
+											<div class="input-group-btn">
+												<button type="button" name="replyNoForReport" id="willBeReported" class="btn btn-secondary btn-sm btn-danger">
+									   				신고
+									   			</button>
+											</div>
+										</c:if>
+									</c:if>
+									<c:if test="${!empty sessionScope.user}" >
+										<c:if test="${sessionScope.user.role == 'a' || sessionScope.user.userId == replyList.userId }">
+											<div class="input-group-btn">
+									   			<button type="button" name="buttonForUpdate" id="updateReply${replyList.replyNo }" class="btn btn-secondary btn-sm btn-info" value="${replyList.replyNo }">
+									   				수정
+									   			</button>
+								   				<button type="button" name="buttonForDelete" id="deleteReply${replyList.replyNo }" class="btn btn-secondary btn-sm btn-warning" value="${replyList.replyNo }">
+								   					삭제
+								   				</button>
+											</div>
+								   		</c:if>
+								   	</c:if>
+   									<input type="hidden" name="reviewNo" value=${review.reviewNo }>
+									<span style="display: none" class="hidden_link">/review/getReview?reviewNo=${review.reviewNo }</span>
+								</div>
 	   						</td>
-	   						<td align="left">
+	   						<td align="center">
 	   							${replyList.userId }
 	   						</td>
-	   						<td align="left">
+	   						<td align="center">
 	   							${replyList.replyRegDate }
 	   						</td>
 		   				</tr>
