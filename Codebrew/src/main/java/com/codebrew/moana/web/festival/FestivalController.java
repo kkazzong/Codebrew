@@ -32,6 +32,7 @@ import com.codebrew.moana.service.domain.Zzim;
 import com.codebrew.moana.service.festival.FestivalService;
 import com.codebrew.moana.service.ticket.TicketService;
 
+
 @Controller
 @RequestMapping("/festival/*")
 public class FestivalController {
