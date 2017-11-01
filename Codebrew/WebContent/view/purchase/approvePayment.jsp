@@ -37,6 +37,21 @@
 		border : 3px solid #D6CDB7;
 		margin0top : 10px;
 	}  */
+	body {
+		background-color: #f2f4f6;
+	}
+	 .text-info {
+    	color: #333333; 
+    }
+    .page-header {
+    	border-bottom : 1px solid #f2f4f6;
+    }
+    .panel-primary {
+    	border-color : #3e3e3d;
+    }
+   .panel-primary > .panel-heading {
+    	background-image :linear-gradient(to bottom,#333 0,#333 100%);
+    }
 </style>
 </head>
 <body>
@@ -57,25 +72,71 @@
 		
 		<!-- 결제정보 -->
 		<div class="row">
-			<div class="col-md-offset-3 col-md-6">
+			<div class="col-md-offset-2 col-md-8">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-						<h3 class="panel-title">${user.nickname}님의 결제정보</h3>
-					</div>
-					<div class="panel-body">
 						<c:if test="${!empty purchase.ticket.festival}">
 							<c:if test="${purchase.ticket.festival.festivalImage.contains('http://')}">
-								<img class="col-md-12" width="100%" height="190" src="${purchase.ticket.festival.festivalImage}">
+								<img class="col-md-12" width="100%" height="320" src="${purchase.ticket.festival.festivalImage}">
 							</c:if>
 							<c:if test="${!purchase.ticket.festival.festivalImage.contains('http://')}">
-								<img class="col-md-12" width="100%" height="190" src="/resources/uploadFile/${purchase.ticket.festival.festivalImage}">
+								<img class="col-md-12" width="100%" height="320" src="/resources/uploadFile/${purchase.ticket.festival.festivalImage}">
 							</c:if>
 						</c:if>
 						<c:if test="${!empty purchase.ticket.party}">
-							<img class="col-md-12" width="100%" height="190" src="/resources/uploadFile/${purchase.ticket.party.partyImage}">
+							<img class="col-md-12" width="100%" height="320" src="/resources/uploadFile/${purchase.ticket.party.partyImage}">
 						</c:if>
-						<div class="row">
-							<div class="col-md-12 text-center"><strong>${purchase.itemName}</strong></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-offset-2 col-md-8">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<h3><strong>결제정보</strong></h3>
+							<table class="table">
+								<tr>
+									<td class="col-md-3"><h4>아이디</h4></td>
+									<td><h4>${user.userId}</h4></td>
+								</tr>
+								<tr>
+									<td class="col-md-3"><h4>구매수량</h4></td>
+									<td><h4>${purchase.purchaseCount}장</h4></td>
+								</tr>
+								<tr>
+									<td class="col-md-3"><h4>결제금액</h4></td>
+									<td><h4>${purchase.purchasePrice}원</h4></td>
+								</tr>
+								<tr>
+									<td class="col-md-3"><h4>결제수단</h4></td>
+									<td>
+										<c:if test="${purchase.paymentMethodType == 'MONEY'}">
+											<h4>현금</h4>
+										</c:if>
+										<c:if test="${purchase.paymentMethodType == 'CARD'}">
+											<h4>카드</h4>
+										</c:if>
+										<c:if test="${purchase.paymentMethodType == 'phone'}">
+											<h4>핸드폰 결제</h4>
+										</c:if>
+									</td>
+								</tr>
+								<tr>
+									<td class="col-md-3"><h4>결제일시</h4></td>
+									<td><h4>${purchase.purchaseDate}</h4></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+							<%-- <div class="col-md-12 text-center">
+								<h3>
+									<strong>${purchase.itemName}</strong>
+								</h3>
+							</div>
 						</div>
 						<div class="row">
 							<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>아이디</strong></div>
@@ -106,8 +167,12 @@
 						<div class="row">
 							<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>결제일시</strong></div>
 							<div class="col-xs-8 col-md-4">${purchase.purchaseDate}</div>
-						</div>
+						</div> --%>
 						<!-- 큐알코드 -->
+		<div class="row">
+			<div class="col-md-offset-2 col-md-8">
+				<div class="panel panel-default">
+					<div class="panel-body">
 						<div class="row">
 							<img class="col-md-offset-3" width="50%" height="50%" 
 							onError="this.src='/resources/uploadFile/no.png'"
@@ -122,7 +187,7 @@
 		<!-- 확인버튼 -->
 		<div class="row">
 			<div class="col-md-offset-3 col-md-6">
-				<button class="btn btn-primary btn-block" type="button">확인</button>
+				<button class="btn btn-default btn-lg btn-block" type="button">확인</button>
 			</div>
 		</div>
 		

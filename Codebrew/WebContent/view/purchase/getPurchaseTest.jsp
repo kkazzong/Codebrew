@@ -11,12 +11,6 @@
 <title>getPurchase</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<!-- Facebook image must be at least 600x315px -->
-<meta property="fb:app_id" content="160276001234207">
-<meta property="og:title" content="페이스북 공유를 해보자" />
-<meta property="og:url" content="'http://127.0.0.1:8080/view/purchase/getPurchaseTest.jsp'" />
-<meta property="og:image" content="http://192.168.0.4:8080/resources/uploadFile/default_party_image.jpg" />
-<meta property="og:description" content="Description Here" />
 
 <!-- Bootstrap, jQuery CDN -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -34,101 +28,15 @@
 <!-- KakaoLink -->
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 
-<!-- facebook share -->
-<script src="http://connect.facebook.net/ko_KR/all.js"></script>
+<!-- sweet alert -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.2/sweetalert2.all.min.js"></script>
+<!-- Include a polyfill for ES6 Promises (optional) for IE11 and Android browser -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
 
 <script type="text/javascript">
 	
-	//1.facebook공유
-	/* function share(url) {
-		window.open("http://www.facebook.com/sharer/sharer.php?u="+url);
-	} */
-	
-	//2.facebook 공유 sdk
-	window.fbAsyncInit = function() {
-	    FB.init({
-	    	appId: '160276001234207',
-	    	status: true,
-	    	version: 'v2.10',
-	    	cookie: true,
-	    	xfbml: true});
-	  }; 
-	/* window.fbAsyncInit = function() {
-	    FB.init({
-	    	appId: '365648920529865',
-	    	status: true,
-	    	version: 'v2.10',
-	    	cookie: true,
-	    	xfbml: true});
-	  };
-	  
-	  (function(d, s, id){
-		     var js, fjs = d.getElementsByTagName(s)[0];
-		     if (d.getElementById(id)) {return;}
-		     js = d.createElement(s); js.id = id;
-		     js.src = "//connect.facebook.net/en_US/sdk.js";
-		     fjs.parentNode.insertBefore(js, fjs);
-	 }(document, 'script', 'facebook-jssdk')); */
-	 
-	 /*  (function() {
-	    var e = document.createElement('script'); e.async = true;
-	    e.src = document.location.protocol +
-	      '//connect.facebook.net/ko_KR/all.js';
-	    document.getElementById('fb-root').appendChild(e);
-	  }()); */
-	  
-	  /* $(document).ready(function() {
-		  $.ajaxSetup({ cache: true });
-		  $.getScript('//connect.facebook.net/en_US/sdk.js', function(){
-		    FB.init({
-		      app_id: '{160276001234207}',
-		      version: 'v2.10' // or v2.1, v2.2, v2.3, ...
-		    });     
-		    $('#loginbutton,#feedbutton').removeAttr('disabled');
-		    FB.getLoginStatus(updateStatusCallback);
-		  });
-		}); */
-	  
-	 function share2(){
-		  /* FB.ui({
-			    method: 'share',
-			    display: 'popup',
-			    href: 'https://developers.facebook.com/docs/',
-			  }, function(response){}); */
-		    var share = {
-		    	app_id : '160276001234207',
-		        /* method: 'share_open_graph',
-		        action_type: 'og.likes',
-		        action_properties : JSON.stringify({
-		        	object : 'http://127.0.0.1:8080/view/purchase/getPurchaseTest.jsp',
-			        picture: 'http://127.0.0.1:8080/resources/uploadFile/default_party_image.jpg',
-			        name: 'Facebook Dialogs',
-			        caption: 'Reference Documentation',
-			        description: 'Using Dialogs to interact with people.'
-		        }),
-		        href: 'http://127.0.0.1:8080/view/purchase/getPurchaseTest.jsp',
-		        name: 'codebrew moana',
-		        description: 'festival party' */
-		        display : 'popup',
-		        href :  'http://127.0.0.1:8080/view/purchase/getPurchaseTest.jsp'
-		    };
-		 
-		   FB.ui(share, function(response) { 
-		    	if (response && !response.error_message) {
-		    	      //alert("게시완료");
-		    	    } else {
-		    	      //alert("띠로리 썸띵롱");
-		    	    }	
-		    }); 
-		    /* FB.ui(
-		    		 {
-		    		  method: 'share',
-		    		  href: 'http://127.0.0.1/view/purchase/getPurchase.jsp'
-		    		}, function(response){}); */
-		}
-	
 	// '가정'app 키 ip변경시 동적변경해줘야함
-	 Kakao.init('4c581b38ff4c308971bc220233e61b89');
+	/*  Kakao.init('4c581b38ff4c308971bc220233e61b89');
 	
 	var ticketPrice = ${ticket.ticketPrice};
 	var itemName = '${purchase.itemName}';
@@ -151,12 +59,12 @@
 		url = ip+"/party/getParty?partyNo=${ticket.party.partyNo}";
 		purl = ip+"/purchase/addPurchase?partyNo=${ticket.party.partyNo}";
 	}
+	 */
 	
-	
-	console.log(imageUrl+","+url+","+purl);
+	//console.log(imageUrl+","+url+","+purl);
 	
 	// 카카오 링크 보내기
-	function sendLink() {
+	/* function sendLink() {
 	    Kakao.Link.sendDefault({
 	      objectType: 'commerce',
 	      content: {
@@ -180,7 +88,7 @@
 	        }
 	      ]
 	    });
-	  } 
+	  }  */
 
 	// 카카오페이 결제취소
 	function fncCancelPayment(purchaseNo) {
@@ -202,6 +110,7 @@
 		
 	}
 	
+	
 	$(function(){
 		
 		var referNo2 = $("input:hidden[name='purchaseFlag']").val();
@@ -215,27 +124,154 @@
 		//카카오페이 결제 취소
 		$("button:contains('결제취소하기')").on("click", function(){
 			
-			var result = confirm("정말로 결제를 취소하시겠습니까?");
+			var payMethod = "${purchase.paymentMethodType}";
+			var purchaseNo = $(this).val();
+			/* var result = confirm("정말로 결제를 취소하시겠습니까?");
 			
 			if(result) {
 				var purchaseNo = $(this).val();
 				
 				console.log("결제취소하기 버튼 val = "+purchaseNo);
-				fncCancelPayment(purchaseNo);
+				if(payMethod != 'phone') {
+					console.log('카톡취소');
+					fncCancelPayment(purchaseNo);
+				} else {
+					console.log('폰취소');
+					$("#cancelPay").attr("method", "POST").attr("action", "/purchase/cancelPurchase").submit();
+				}
 			} else { 
 				return;
-			}
+			} */
+			
+			swal({
+				  
+				  title: '결제를 취소하겠습니까?',
+				  text: "You won't be able to revert this!",
+				  type: 'warning',
+				  showCancelButton: true,
+				  confirmButtonColor: '#3085d6',
+				  cancelButtonColor: '#d33', 
+				  confirmButtonText: '확인',
+				  cancelButtonText: '취소',
+				  confirmButtonClass: 'btn btn-primary',
+				  cancelButtonClass: 'btn btn-danger',
+				  buttonsStyling: true,
+				  
+			
+			}).then(function () {
+				 
+				 swal({
+					    type: 'success',
+					    title: '결제 취소가 완료되었습니다',
+					    preConfirm : function(){
+					    	return new Promise(function(resolve) {
+					    		if(payMethod != 'phone') {
+									console.log('카톡취소');
+									fncCancelPayment(purchaseNo);
+									resolve();
+								} else {
+									console.log('폰취소');
+									$("#cancelPay").attr("method", "POST").attr("action", "/purchase/cancelPurchase").submit();
+									resolve();
+								}
+					    	})
+					    }
+				}), function (dismiss) {
+					  // dismiss can be 'cancel', 'overlay',
+					  // 'close', and 'timer'
+					  if (dismiss === 'cancel') {
+					    swal(
+					      'Cancelled',
+					      'Your imaginary file is safe :)',
+					      'error'
+					    )
+					  }
+				 }
+				
+			})  
+			
+			
 		});
 		
 		//구매취소(무료티켓 구매한 내역)
 		$(".btn:contains('구매취소하기')").on("click", function(){
 			
-			if(confirm("정말로 구매를 취소하시겠습니까?")) {
+			var purchaseNo = ${purchase.purchaseNo};
+			/* if(confirm("정말로 구매를 취소하시겠습니까?")) {
 				//alert($("#cancelForm").serialize());
 				$("#cancelForm").attr("method", "POST").attr("action", "/purchase/cancelPurchase").submit();
 			} else {
 				return;
-			}
+			} */
+			
+			 swal({
+				  
+				  title: '구매를 취소하겠습니까?',
+				  text: "You won't be able to revert this!",
+				  type: 'warning',
+				  showCancelButton: true,
+				  confirmButtonColor: '#3085d6',
+				  cancelButtonColor: '#d33', 
+				  confirmButtonText: '확인',
+				  cancelButtonText: '취소',
+				  confirmButtonClass: 'btn btn-primary',
+				  cancelButtonClass: 'btn btn-danger',
+				  buttonsStyling: true,
+				  preConfirm : function(){
+					  return new Promise(function(resolve, reject) {
+						  
+						  $.ajax({
+								
+								url : "/purchaseRest/json/cancelPurchase",
+								method : "POST",
+								headers : {
+									"Accept" : "application/json",
+									"Content-Type" : "application/json"
+								}, 
+								data : JSON.stringify({
+									"purchaseNo" : purchaseNo
+								}), 
+								success : function(JSONData){
+									if(JSONData.message != null) {
+										resolve();
+									} else {
+										reject('Error!');
+									}
+								},
+								error:function(request,status,error){
+							        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+							     }
+
+								
+						})
+						  
+					 });
+					  
+				  }
+			
+			}).then(function () {
+				 
+				 swal({
+					    type: 'success',
+					    title: '구매 취소가 완료되었습니다',
+					    preConfirm : function(){
+					    	return new Promise(function(resolve) {
+					    		self.location = "/purchase/getPurchaseList";
+					    	})
+					    }
+				}), function (dismiss) {
+					  // dismiss can be 'cancel', 'overlay',
+					  // 'close', and 'timer'
+					  if (dismiss === 'cancel') {
+					    swal(
+					      'Cancelled',
+					      'Your imaginary file is safe :)',
+					      'error'
+					    )
+					  }
+				 }
+				
+			})  
 			
 		});
 		
@@ -489,7 +525,10 @@
 							<div class="col-md-6">
 								<c:if test="${purchase.tranCode == 1 }">
 									<c:if test="${ticket.ticketFlag != 'free' }">
+									<form id="cancelPay">
+											<input type="hidden" name="purchaseNo" value="${purchase.purchaseNo}" >
 										<button class="btn btn-primary btn-lg btn-block" type="button" value="${purchase.purchaseNo}">결제취소하기</button>
+									</form>
 									</c:if>
 									<c:if test="${ticket.ticketFlag == 'free' }">
 										<form id="cancelForm">
