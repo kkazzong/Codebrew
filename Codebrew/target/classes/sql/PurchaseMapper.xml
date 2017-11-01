@@ -237,7 +237,7 @@
 										</when>
 										<!-- 티켓명검색 -->
 										<when test="search.searchCondition == 5">
-											AND pc.item_name LIKE '%${search.searchKeyword}%'
+											AND LOWER(pc.item_name) LIKE LOWER('%${search.searchKeyword}%')
 										</when>
 										<!-- 날짜별 검색 -->
 										<when test="search.searchCondition == 6">
@@ -315,7 +315,7 @@
 										</when>
 										<!-- 티켓명검색 -->
 										<when test="searchCondition == 5">
-											AND pc.item_name LIKE '%${searchKeyword}%'
+											AND LOWER(pc.item_name) LIKE LOWER('%${searchKeyword}%')
 										</when>
 									</choose>
 								</if>
