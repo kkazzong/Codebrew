@@ -100,7 +100,15 @@ $(function() {
 		});
 
 		
-		</script>		
+		</script>	
+		
+		<style type="text/css">
+		
+		body{
+			background-color: black;
+		}
+		
+		</style>	
 	
 </head>
 <body>

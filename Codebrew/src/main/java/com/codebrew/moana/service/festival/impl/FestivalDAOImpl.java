@@ -109,7 +109,10 @@ public class FestivalDAOImpl implements FestivalDAO {
 	@Override
 	public void writeFestival(Festival festival) throws Exception {
 		// TODO Auto-generated method stub
+		
 		sqlSession.insert("FestivalMapper.writeFestival", festival);
+		
+		System.out.println("festival..............Noooooooooo" + festival.getFestivalNo());
 	}
 	
 	@Override
