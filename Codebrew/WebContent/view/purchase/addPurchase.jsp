@@ -56,7 +56,13 @@
 		var ticketNo = ${ticket.ticketNo};
 		var userId = "${user.userId}";
 		var ticketCount = ${ticket.ticketCount};
-		var name = '${ticket.ticketName}';
+		/* var name;
+		if(${ticket.ticketName}.indexOf("'") != -1) {
+			name ="${ticket.ticketName}";
+		} else {
+			name = '${ticket.ticketName}';
+		} */
+		var name = $("input:hidden[name='ticketName']").val();
 		
 		IMP.request_pay({
 		    pg : 'danal', // version 1.1.0부터 지원.
@@ -257,12 +263,12 @@
 				//var popupY= (window.screen.height /2) - (300 / 2);
 				// 만들 팝업창 상하 크기의 1/2 만큼 보정값으로 빼주었음
 				
-				var wX = screen.availWidth;
-				 var wY = screen.availHeight;
-				 wY = (wY-38);
+				//var wX = screen.availWidth;
+				// var wY = screen.availHeight;
+				// wY = (wY-38);
 
-				 $.smartPop.open({title: '스마트팝', width: 500, height: 500, url: url });
-				//window.open(url,'kakaoPay','toolbar=no, directories=no, width='+ wX + ', height='+ wY + ', scrollbars=no, status=yes, scrollbars=no,  resizable=yes, direction=yes, location=no, menubar=no, toolbar=no, titlebar=yes');
+				 //$.smartPop.open({title: '스마트팝', width: 500, height: 500, url: url });
+				window.open(url,'kakaoPay','toolbar=no, directories=no, scrollbars=no, status=yes, scrollbars=no,width=426,height=510,  resizable=yes, direction=yes, location=no, menubar=no, toolbar=no, titlebar=yes');
 				//$("#kakaoUrl").attr('href', url);
 				//openLayer('kakaoPopup', {top:700});
 
@@ -414,6 +420,7 @@
 <style type="text/css">
 	body {
 		padding-top : 70px;
+		background-color: #f2f4f6;
     }
     .btn {
 		/*링크 클릭시 파란색 안남도록 */
@@ -421,16 +428,31 @@
 		border : 0;
 		outline : 0;
 	}
+	.panel-primary>.panel-heading {
+    	background-color: #000000;
+    }
+    .text-info {
+    	color: #333333; 
+    }
+    .page-header {
+    	border-bottom : 1px solid #f2f4f6;
+    }
+    .panel-primary {
+    	border-color : #3e3e3d;
+    }
+   .panel-primary > .panel-heading {
+    	background-image :linear-gradient(to bottom,#333 0,#333 100%);
+    }
    /*  div {
 		border : 3px solid #D6CDB7;
 		margin0top : 10px;
 	}   */
-	.glyphicon {
+	/* .glyphicon {
 		font-size: 20px;
-	}
+	} */
 	form > img {
 		width : 100%;
-		height : 300px
+		height : 323px
 	}
 	/* #kakaoPayModal {  
 		  position:absolute;  
@@ -484,7 +506,7 @@
 		
 		<!-- form -->
 		<div class="row">
-			<div class="col-md-offset-3 col-md-6">
+			<div class="col-md-offset-2 col-md-8">
 				<form class="form-inline" id="purchaseForm" name="purchaseForm">
 					<!-- hidden -->
 					<input type="hidden" name="ticketNo" value="${ticket.ticketNo}">
@@ -498,51 +520,92 @@
 					<input type="hidden" name="purchaseCount" value="">
 					<input type="hidden" name="purchasePrice" value="">
 					<input type="hidden" name="ticketName" value="${ticket.ticketName}">
+					
+					<!-- 이미지 -->
+					<div class="row">
+						<div class="col-md-12">
+							<div class="panel panel-primary">
+								<div class="panel-heading">
+									 <c:if test="${!empty festival}">
+											 	<c:if test="${festival.festivalImage.contains('http://')}">
+													<img width="100%" height="323" src="${festival.festivalImage}">
+												</c:if>
+												<c:if test="${!festival.festivalImage.contains('http://')}">
+													<img width="100%" height="323" src="/resources/uploadFile/${festival.festivalImage}">
+												</c:if>
+										</c:if>
+										<c:if test="${!empty party}">
+											<img width="100%" height="323" src="/resources/uploadFile/${party.partyImage}">
+										</c:if>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					
 					<!-- 축제정보 -->
 					<c:if test="${!empty festival}">
-						<input type="hidden" name="festival.festivalName" value="${festival.festivalName}">
-						<c:if test="${festival.festivalImage.contains('http://')}">
-							<img class="col-md-12" src="${festival.festivalImage}">
-						</c:if>
-						<c:if test="${!festival.festivalImage.contains('http://')}">
-							<img class="col-md-12" src="/resources/uploadFile/${festival.festivalImage}">
-						</c:if>
-						<hr>
 						<div class="row">
-							<div class="col-md-12 text-center">
-								<strong>${festival.festivalName}</strong>
+							<div class="col-md-12">
+								<div class="panel panel-default">
+							  		<div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 text-center">
+												<h3>
+													<strong>${festival.festivalName}</strong>
+												</h3>
+											</div>
+											<div class="col-md-12 text-center">
+												<h4>
+													<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> ${festival.addr}
+												</h4>
+											</div>
+											<div class="col-md-12 text-center">
+												<h4>
+													<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+													${ticket.festival.startDate} ~ ${ticket.festival.endDate}
+												</h4>
+											</div>
+											<%-- <div class="col-md-6">
+												${ticket.ticketPrice}원	
+											</div> --%>
+											</div>
+									</div>
+								</div>
 							</div>
-							<div class="col-md-12 text-center">
-								<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> ${festival.addr}
-							</div>
-							<div class="col-md-12 text-center">
-								<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-								${ticket.festival.startDate} ~ ${ticket.festival.endDate}
-							</div>
-							<%-- <div class="col-md-6">
-								${ticket.ticketPrice}원	
-							</div> --%>
 						</div>
 					</c:if>
 					
 					<!-- 파티정보 -->
 					<c:if test="${!empty party}">
 						<input type="hidden" name="party.partyName" value="${party.partyName}">
-						<img class="col-md-12" src="/resources/uploadFile/${party.partyImage}">
-						<hr>
 						<div class="row">
-							<div class="col-md-12 text-center">
-								<strong>${party.partyName}</strong>
+							<div class="col-md-12">
+								<div class="panel panel-default">
+							  		<div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 text-center">
+												<h3>
+													<strong>${party.partyName}</strong>
+												</h3>
+											</div>
+											<div class="col-md-12 text-center">
+												<h4>
+													<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> ${party.partyPlace}
+												</h4>
+											</div>
+											<div class="col-md-12 text-center">
+												<h4>
+													<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> ${party.partyDate}
+												</h4>
+											</div>
+											<%-- <div class="col-md-6">
+												${ticket.ticketPrice}원	
+											</div> --%>
+										</div>
+									</div>
+								</div>
 							</div>
-							<div class="col-md-12 text-center">
-								<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> ${party.partyPlace}
-							</div>
-							<div class="col-md-12 text-center">
-								<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> ${party.partyDate}
-							</div>
-							<%-- <div class="col-md-6">
-								${ticket.ticketPrice}원	
-							</div> --%>
 						</div>
 					</c:if>
 					
@@ -550,53 +613,92 @@
 					
 					<!-- 기본티켓 or 무제한티켓 -->
 					<c:if test="${empty ticket.ticketFlag or ticket.ticketFlag == 'nolimit'}">
-						<div class="row">
-							<div class="col-md-12 text-center">
-								<label class="control-label" for="ticketCount">티켓가격 : </label>
-								<label class="control-label" for="ticketCount">${ticket.ticketPrice}원</label>
+					<div class="row">
+							<div class="col-md-12">
+								<div class="panel panel-default">
+							  		<div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 text-center">
+												<h4>
+												티켓가격 : ${ticket.ticketPrice}원
+												</h4>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</c:if>
 					<!-- 무료티켓 -->
 					<c:if test="${ticket.ticketFlag == 'free'}">
-						<div class="row">
-							<div class="col-md-12 text-center">
-								<label class="control-label" for="ticketCount">티켓가격 : </label>
-								무료
+					<div class="row">
+							<div class="col-md-12">
+								<div class="panel panel-default">
+							  		<div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 text-center">
+												<label class="control-label" for="ticketCount">티켓가격 : </label>
+												무료
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</c:if>
+					
 						<!-- 기본티켓 수량이 0일때 (품절)-->
 						<c:if test="${ticket.ticketFlag != 'nolimit' and ticket.ticketCount == 0}">
 							<jsp:include page="soldOutTicket.jsp"></jsp:include>
 						</c:if>
-						<hr>
 						<c:if test="${ticket.ticketFlag == 'nolimit' and ticket.ticketCount == 0}">
-							<div class="row">
-								<div class="col-md-12 text-center">
-									<div class="form-group form-inline">
-										<label class="control-label" for="ticketCount">수량선택</label>
-										<span id="minus" class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-										<input class="form-control input-sm" type="text" name="ticketCount" value="0" placeholder="0" readonly>
-										<span id="plus" class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="panel panel-default">
+							  		<div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 text-center">
+												<div class="input-group">
+													<label class="control-label" for="ticketCount"><h4>수량선택</h4></label>
+													&nbsp;&nbsp;
+													<span class="input-group-addon">
+														<span id="minus" class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+													</span>
+													<input class="form-control" aria-label="Amount (to the nearest dollar)"type="text" name="ticketCount" value="0" placeholder="0" readonly>
+										  			<span class="input-group-addon">
+														<span id="plus" class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+													</span>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
+						</div>
 						</c:if>
 						<!-- 기본티켓, 무료티켓 수량 0 아닐때 -->
 						<c:if test="${ticket.ticketCount > 0}">
 							<div class="row">
-								<div class="col-md-12 text-center">
-									<div class="form-group form-inline">
-										<label class="control-label" for="ticketCount">수량선택</label>
-										<select id="countSelect" class="form-control input-sm" name="ticketCount">
-											<option value="" selected>선택하세요</option>
-											<c:forEach begin="1" end="${ticket.ticketCount}" var="i" step="1">
-												<option>${i}</option>
-											</c:forEach>
-										</select>
+							<div class="col-md-12">
+								<div class="panel panel-default">
+							  		<div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 text-center">
+												<div class="form-group form-inline">
+													<label class="control-label" for="ticketCount"><h4>수량선택</h4></label>
+													&nbsp;&nbsp;
+													<select id="countSelect" class="form-control input-sm" name="ticketCount">
+														<option value="" selected>선택하세요</option>
+														<c:forEach begin="1" end="${ticket.ticketCount}" var="i" step="1">
+															<option>${i}</option>
+														</c:forEach>
+													</select>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
+							</div>
 							</div>
 							</c:if>
 							<!-- 구매정보 -->
@@ -633,10 +735,16 @@
 							<!-- 카카오페이 & 핸드폰결제 & 계좌이체 -->
 							<c:if test="${empty ticket.ticketFlag or ticket.ticketFlag == 'nolimit'}">
 							<div class="row">
+								<div class="col-md-12">
 									<span class="help-block">
 										결제창이 뜨지 않을 경우, 팝업을 허용한 뒤 다시 시도 해주세요.
 									</span>
-								<div class="col-md-4">
+								</div>
+							</div>
+							
+							
+							<div class="row">
+								<div class="col-md-6">
 									<ul class="list-group">
 									  <li class="list-group-item">
 									카카오페이
@@ -648,7 +756,7 @@
 								</div>
 							<!-- </div> -->
 							<!-- <div class="row"> -->
-								<div class="col-md-4">
+								<div class="col-md-6">
 									<ul class="list-group">
 									  <li class="list-group-item">
 										휴대폰결제
@@ -660,7 +768,7 @@
 								</div>
 							<!-- </div>
 							<div class="row"> -->
-								<div class="col-md-4">
+								<!-- <div class="col-md-4">
 									<ul class="list-group">
 									  <li class="list-group-item">
 										계좌이체
@@ -669,7 +777,7 @@
 										</button>
 										</li>
 									</ul>
-								</div>
+								</div> -->
 							</div>
 							</c:if>
 							
@@ -694,7 +802,7 @@
 				<hr>
 				<div class="row">
 					<div class="col-md-12">
-						<button class="btn btn-primary btn-lg btn-block" type="button">뒤로가기</button>
+						<button class="btn btn-default btn-lg btn-block" type="button">뒤로가기</button>
 					</div>
 				</div>
 			</div>

@@ -180,7 +180,7 @@
 				  cancelButtonText: '취소',
 				  confirmButtonClass: 'btn btn-success',
 				  cancelButtonClass: 'btn btn-danger',
-				  buttonsStyling: false,
+				  buttonsStyling: true,
 				  preConfirm : function(){
 					  return new Promise(function(resolve, reject) {
 						  
