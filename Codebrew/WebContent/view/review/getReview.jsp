@@ -19,9 +19,35 @@
 	 
 	<!--  ///////////////////////// CSS ////////////////////////// -->
 	<style>
+	
  		body {
             padding-top : 50px;
         }
+        
+       	#carouselActive {
+        	width: 900px;
+        	height: 600px;
+        	display: block;
+        	margin-left: auto;
+        	margin-right: auto;
+        }
+        
+        #carouselInactive {
+        	width: 900px;
+        	height: 600px;
+        	display: block;
+        	margin-left: auto;
+        	margin-right: auto;
+        }
+        
+        video {
+        	width: 600px;
+        	height: 600px;
+        	display: block;
+        	margin-left: auto;
+        	margin-right: auto;
+        }
+        
 	</style>
 	
 	<!-- Bootstrap Dropdown Hover CSS -->
@@ -36,6 +62,7 @@
 	<script type="text/javascript">
 	
 	function fncAddReply() {
+		
 		//Form 유효성 검증
 		var replyDetail = $("input[name='replyDetail']").val();
 		
@@ -53,7 +80,7 @@
 		 $( "#getReviewList" ).on("click" , function() { //ok
 			 self.location = "/review/getReviewList"
 		});
-		
+		 
 		 $( "#getCheckReviewList" ).on("click" , function() {
 			self.location = "/review/getCheckReviewList?role=${session.user.role}"
 		});
@@ -70,10 +97,6 @@
 			self.location = "/review/failCheckCode?reviewNo=${review.reviewNo }";
 		});
 		 
-		$( "#addReply" ).on("click" , function() {
-			fncAddReply();
-		});
-		
 		/* 
 		$( "#addGood" ).on("click", function() { //수정중
 			self.location = "/review/addGood?userId=${sessionScope.user.userId}&reviewNo=${review.reviewNo}";
@@ -83,7 +106,7 @@
 		/* var reviewNo = document.getElementById('reviewNo').getAttribute('value');
 		console.log(reviewNo); */
 		
-		//db에는 처리 잘 됨 그런데 화면이...		
+		//addGood ajax
 		$(function(){
 			
 			$("#addGood").on("click", function(){
@@ -100,7 +123,6 @@
 								$("#goodCount").html(JSONData.goodCount);
 							}
 						}		
-				
 				)
 			})
 			
@@ -136,7 +158,7 @@
 			<div class="col-md-12">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-						<h3 class="panel-title">후기제목 : ${review.reviewTitle }</h3>
+						<h3 class="panel-title text-center">후기제목 : ${review.reviewTitle }</h3>
 					</div>
 					<div class="panel-body">
 						<%--  
@@ -159,11 +181,11 @@
 							<div class="carousel-inner" role="listbox">
 							<c:set var="i" value="0"/>
 								<div class="item active">
-									<img src="/resources/uploadFile/${review.reviewImageList[0].reviewImage }" width="300" height="300">
+									<img src="/resources/uploadFile/${review.reviewImageList[0].reviewImage }" id="carouselActive">
 								</div>
 							<c:forEach var="imageList" begin="1" items="${review.reviewImageList }">
 								<div class="item">
-									<img src="/resources/uploadFile/${imageList.reviewImage }" width="300" height="300">
+									<img src="/resources/uploadFile/${imageList.reviewImage }" id="carouselInactive">
 								</div>
 							</c:forEach>
 							</div>
@@ -268,7 +290,8 @@
 						   				<video width="320" height="240" controls>
 						   				 -->
 						   				<video controls >
-						   					<source src="/resources/uploadFile/${listV.reviewVideo}" type="video/mp4"></video>
+						   					<source src="/resources/uploadFile/${listV.reviewVideo}" type="video/mp4">
+						   				</video>
 					   			</c:forEach>
 				   			</c:if>
 				   			<c:if test="${empty review.reviewVideoList[0].reviewVideo }">
@@ -314,6 +337,7 @@
 						   			</center>
 						   		</c:if>
 							</small>
+							<br>
 						</div>
 						<div class="col-md-12">
 							<small>

@@ -66,8 +66,10 @@
 			reply_detail = #{replyDetail:VARCHAR}, 
 			reply_reg_date = SYSDATE 
 		WHERE reply_no = #{replyNo:NUMERIC} 
+		<!-- 
 		AND user_id = #{userId:VARCHAR} 
 		AND review_no = #{review.reviewNo:NUMERIC}
+		 -->
 	</update>
 	
 	<!-- 4 -->

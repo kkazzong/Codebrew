@@ -257,16 +257,10 @@
 		<hr/>
 		
 		<div class="form-group">
-			<label for="uploadHashtagList" class="col-sm-offset-1 col-sm-3 control-label">등록예정 해시태그</label>
-			<div class="col-sm-4">
-		   		<div class="col-xs-8 col-md-4">
-					<c:set var="i" value="0"/>
-		  			<c:forEach var="listH" items="${review.reviewHashtagList }">
-			   			<div class="col-xs-8 col-md-4">
-			   				<input type="text" class="form-control" id="uploadHashtagList" name="uploadHashtagList">${listH.hashtagDetail }
-			   			</div>
-		   			</c:forEach>
-		  		</div>
+			<label for="reviewHashtag" class="col-md-offset-1 col-md-3 control-label">등록예정 해시태그</label>
+			<div class="col-md-4">
+				<input type="text" class="form-control" id="reviewHashtag" name="reviewHashtag" value="${review.reviewHashtag }">
+				<button type="button" class="btn btn-primary">삭제</button>
 			</div>
 		</div>
 		

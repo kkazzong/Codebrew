@@ -124,7 +124,7 @@ public class ReviewRestController {
 	}
 	
 	//완료는 : Good을 리턴하는 것이 아니라 review를 리턴해야...해당 화면에 Review 객체에 대한 정보를 보내줄 수 있다.
-	@RequestMapping(value = "json/addGood/{userId}/{reviewNo}")
+	@RequestMapping(value = "/json/addGood/{userId}/{reviewNo}")
 	public Review addGood(@PathVariable("userId") String userId, 
 						@PathVariable("reviewNo") int reviewNo)
 						throws Exception {
