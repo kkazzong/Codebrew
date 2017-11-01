@@ -430,7 +430,6 @@
 		    width:100%;
 		    max-width:100%;
 		}
-		 
 		.filebox input[type="file"] {  /* 파일 필드 숨기기 */
 		    position: absolute;
 		    width: 1px;

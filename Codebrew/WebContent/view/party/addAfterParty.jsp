@@ -39,6 +39,10 @@
 			var partyDetail=$("textarea[name='partyDetail']").val();
 			var partyMemberLimit=$("input[name='partyMemberLimit']").val();
 			var ticketCount=$("input[name='ticketCount']").val();
+			var ticketPrice=$("input[name='ticketPrice']").val();
+			var festivalNo=$("input[name='festival.festivalNo']").val();
+			
+			console.log("festivalNo ==> "+festivalNo);
 			
 			var checkNum = /\d/g;
 			
@@ -62,18 +66,20 @@
 				alert("파티설명은 500자 이내로 입력해주세요.");
 				return;
 			}
-			if(partyMemberLimit == null || partyMemberLimit.length <1){
-				alert("파티 인원은  반드시 입력하셔야 합니다.");
-				return;
-			}
-			if(checkNum.test(partyMemberLimit) == false){
-				alert("파티 인원은 반드시 숫자로 입력하셔야 합니다.");
-				return;
-			}
-			if( ticketCount > partyMemberLimit ) {				
-				alert("티켓 수량은 파티 인원수 이상 입력하실 수 없습니다.");
-				
-				return;
+			if(festivalNo == 0){
+				if(ticketCount != 0 && checkNum.test(ticketCount) == false){
+					alert("티켓 수량은 반드시 숫자로 입력하셔야 합니다.");
+					return;
+				}
+				if(ticketPrice != 0 && checkNum.test(ticketPrice) == false){
+					alert("티켓 가격은 반드시 숫자로 입력하셔야 합니다.");
+					return;
+				}
+				if(ticketCount == 0 && ticketPrice == 0){
+					
+						alert("티켓 수량이 무제한인 경우 티켓 가격을 반드시 입력하셔야 합니다.");
+						return;
+				}
 			}
 				
 			
@@ -216,6 +222,20 @@
 			});
 		});
 		
+		
+		//============= "사진 미리보기"  Event 처리 및  연결 =============
+		function getUploadFilePrivew(html, $target) {
+		    if (html.files && html.files[0]) {
+		        var reader = new FileReader();
+		        reader.onload = function (e) {
+		            $target.css('display', '');
+		            //$target.css('background-image', 'url(\"' + e.target.result + '\")'); // 배경으로 지정시
+		            $target.html('<img src="' + e.target.result + '"width="80%" border="0" alt="" />');
+		        }
+		        reader.readAsDataURL(html.files[0]);
+		    }
+		}
+		
 		//=============    파티 참여 취소  Event  처리 		=============
 		/* $(function(){
 			$("button:contains('파티 참여 취소')").on("click", function() {
@@ -303,7 +323,31 @@
 		body {
 	     	padding-top : 70px;
 	    }
-		
+		.filebox label {
+		    display: inline-block;
+		    padding: .5em .75em;
+		    color: #999;
+		    font-size: inherit;
+		    line-height: normal;
+		    vertical-align: middle;
+		    background-color: #fdfdfd;
+		    cursor: pointer;
+		    border: 1px solid #ebebeb;
+		    border-bottom-color: #e2e2e2;
+		    border-radius: .25em;
+		    width:100%;
+		    max-width:100%;
+		}
+		.filebox input[type="file"] {  /* 파일 필드 숨기기 */
+		    position: absolute;
+		    width: 1px;
+		    height: 1px;
+		    padding: 0;
+		    margin: -1px;
+		    overflow: hidden;
+		    clip:rect(0,0,0,0);
+		    border: 0;
+		}
 	</style>
 		
 </head>
@@ -363,7 +407,7 @@
 		    <div class="col-sm-4">
 		      <!-- <input type="text" class="form-control" id="festivalName" name="festival.festivalName" value="" /> -->
 		      <input type="text" readonly="readonly" class="form-control" id="festivalName" name="festival.festivalName" value="${ festival.festivalName }">
-		      <input type="hidden" class="form-control" id="festivalNo" name="festival.festivalNo" value=0 />
+		      <input type="hidden" class="form-control" id="festivalNo" name="festival.festivalNo" value="${ festival.festivalNo }"/>
 		      
 		      <button type="button" class="btn btn-primary btn-block" name="searchFestival" >축제검색</button>
 		    </div>
@@ -432,13 +476,6 @@
 		      <textarea name = "partyDetail" class="form-control" rows="10" cols="50"></textarea>
 			</div>
 		  </div>
-		  
-		  <div class="form-group">
-		    <label for="partyMemberlimit" class="col-sm-offset-1 col-sm-3 control-label">파티인원</label>
-		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="partyMemberLimit" name="partyMemberLimit">
-			</div>
-		  </div>
 		 		 	  
 		   <div class="form-group">
 		    <label for="partyPlace" class="col-sm-offset-1 col-sm-3 control-label">파티장소(선택입력)</label>
@@ -452,11 +489,20 @@
 		  </div>
 		  
 		  <div class="form-group">
+		    <div class="filebox">
+		        <label for="cma_file">파티 이미지 업로드(선택입력)</label>
+		        <input type="file" name="cma_file" id="cma_file" onchange="getUploadFilePrivew(this,$('#uploadFile'))" />
+		        <br /><br />
+		        <div id="uploadFile" style="width:50%; max-width:50%; display:none;"></div>
+		    </div>
+		</div> 
+		  
+		  <!-- <div class="form-group">
 		    <label for="uploadFile" class="col-sm-offset-1 col-sm-3 control-label">파티이미지(선택입력)</label>
 		    <div class="col-sm-4">
 		      <input type="file" class="form-control" id="uploadFile" name="uploadFile" >
 		    </div>
-		  </div>
+		  </div> -->
 		  
 		  
 		  	  	

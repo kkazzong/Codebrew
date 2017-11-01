@@ -224,6 +224,19 @@
 		});
 		
 		
+		//============= "사진 미리보기"  Event 처리 및  연결 =============
+		function getUploadFilePrivew(html, $target) {
+		    if (html.files && html.files[0]) {
+		        var reader = new FileReader();
+		        reader.onload = function (e) {
+		            $target.css('display', '');
+		            //$target.css('background-image', 'url(\"' + e.target.result + '\")'); // 배경으로 지정시
+		            $target.html('<img src="' + e.target.result + '"width="50%" border="0" alt="" />');
+		        }
+		        reader.readAsDataURL(html.files[0]);
+		    }
+		}
+		
 	</script>
 	
 	
@@ -242,6 +255,31 @@
 		}
 		#ticketPriceDiv {
 			display: block;
+		}
+		.filebox label {
+		    display: inline-block;
+		    padding: .5em .75em;
+		    color: #999;
+		    font-size: inherit;
+		    line-height: normal;
+		    vertical-align: middle;
+		    background-color: #fdfdfd;
+		    cursor: pointer;
+		    border: 1px solid #ebebeb;
+		    border-bottom-color: #e2e2e2;
+		    border-radius: .25em;
+		    width:100%;
+		    max-width:100%;
+		}
+		.filebox input[type="file"] {  /* 파일 필드 숨기기 */
+		    position: absolute;
+		    width: 1px;
+		    height: 1px;
+		    padding: 0;
+		    margin: -1px;
+		    overflow: hidden;
+		    clip:rect(0,0,0,0);
+		    border: 0;
 		}
 	</style>
 	
@@ -265,12 +303,6 @@
 		<br>
 		<!-- form Start /////////////////////////////////////-->
 		<form class="form-horizontal">
-			
-		  <div class="text-center">
-				<img src="../../resources/uploadFile/${party.partyImage}" width="50%" >
-				<br><hr>
-		  </div>
-		  	
 		  <div class="form-group">
 		    <label for="host" class="col-sm-offset-1 col-sm-3 control-label">파티 호스트</label>
 		    <div class="col-sm-4">
@@ -281,12 +313,27 @@
 		   	
 		  </div>
 		  
+		  
+		  <div class="form-group text-center" id="imageFile">
+				<img src="../../resources/uploadFile/${party.partyImage}" width="50%" >
+				<br><hr>
+		  </div>
+	
 		  <div class="form-group">
+		    <div class="filebox">
+		    	<label for="cma_file">파티 이미지 업로드(선택입력)</label>
+		        <input type="file" name="cma_file" id="cma_file" onchange="getUploadFilePrivew(this,$('#imageFile'))" />
+		        <br /><br />
+		        
+		    </div>
+		  </div> 
+		  
+		  <!-- <div class="form-group">
 		    <label for="uploadFile" class="col-sm-offset-1 col-sm-3 control-label">파티사진(선택입력)</label>
 		    <div class="col-sm-4">
 		      <input type="file" class="form-control" id="uploadFile" name="uploadFile" >
 		    </div>
-		  </div>
+		  </div> -->
 		  
 		  <%-- <c:if test="${ party.festival != null }"> --%>
 		  <div class="form-group" id="festivalNameDiv">
