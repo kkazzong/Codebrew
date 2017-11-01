@@ -10,7 +10,11 @@ public class Statistics {
 	private String statDate; // 날짜
 	private String startDate; // 조회시 시작날짜
 	private String endDate; // 조회시 끝 날짜
-
+	private int referNo; //참조번호
+	private String name;
+	private String image; //이미지
+	private String addr; //주소
+	
 	// Constructor
 	public Statistics() {
 		System.out.println(this.getClass());
@@ -72,11 +76,43 @@ public class Statistics {
 		this.endDate = endDate;
 	}
 
+	public int getReferNo() {
+		return referNo;
+	}
+
+	public void setReferNo(int referNo) {
+		this.referNo = referNo;
+	}
+
+	public String getAddr() {
+		return addr;
+	}
+
+	public void setAddr(String addr) {
+		this.addr = addr;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 	@Override
 	public String toString() {
 		return "Statistics [purchase=" + purchase + ", totalPrice=" + totalPrice + ", totalCount=" + totalCount
 				+ ", statFlag=" + statFlag + ", statDate=" + statDate + ", startDate=" + startDate + ", endDate="
-				+ endDate + "]";
+				+ endDate + ", referNo=" + referNo + ", name=" + name + ", image=" + image + ", addr=" + addr + "]";
 	}
 
 }

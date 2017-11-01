@@ -98,6 +98,9 @@
 								<c:if test="${purchase.paymentMethodType == 'CARD'}">
 									카드
 								</c:if>
+								<c:if test="${purchase.paymentMethodType == 'phone'}">
+									핸드폰 결제
+								</c:if>
 							</div>
 						</div>
 						<div class="row">

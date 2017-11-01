@@ -131,7 +131,7 @@
 	 Kakao.init('4c581b38ff4c308971bc220233e61b89');
 	
 	var ticketPrice = ${ticket.ticketPrice};
-	var itemName = "${purchase.itemName}";
+	var itemName = '${purchase.itemName}';
 	var ip = "http://192.168.1.237:8080";
 	var referNo = "${purchase.purchaseFlag}";
 	var imageUrl = "";

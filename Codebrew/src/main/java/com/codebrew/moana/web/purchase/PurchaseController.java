@@ -282,6 +282,7 @@ public class PurchaseController {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("purchase", purchase);
 		modelAndView.setViewName("/view/purchase/approvePayment.jsp");
+		//modelAndView.setViewName("/purchase/getPurchase?purchaseNo="+purchase.getPurchaseNo());
 		
 		return modelAndView;
 

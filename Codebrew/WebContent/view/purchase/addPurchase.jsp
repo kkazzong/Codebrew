@@ -36,6 +36,10 @@
 <!-- Magnific Popup core JS file -->
 <script src="/resources/javascript/jquery.magnific-popup.min.js"></script>
 
+<!-- smartpopup -->
+<script type="text/javascript" src="/resources/javascript/jquery.smartPop.js"></script>
+<link href="/resources/css/jquery.smartPop.css" rel="stylesheet"/>
+
 <!-- 아임포트 -->
 <script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 
@@ -52,7 +56,7 @@
 		var ticketNo = ${ticket.ticketNo};
 		var userId = "${user.userId}";
 		var ticketCount = ${ticket.ticketCount};
-		var name = "${ticket.ticketName}";
+		var name = '${ticket.ticketName}';
 		
 		IMP.request_pay({
 		    pg : 'danal', // version 1.1.0부터 지원.
@@ -95,7 +99,7 @@
 		    		success : function(JSONData){
 		    			
 		    			console.log(JSONData);
-		    			self.location = "/purchase/approvePayment?purchaseNo="+JSONData.purchaseNo;
+		    			self.location = "/purchase/getPurchase?purchaseNo="+JSONData.purchaseNo;
 		    		}
 		    		
 		    	});
@@ -119,7 +123,7 @@
 		var ticketNo = ${ticket.ticketNo};
 		var userId = "${user.userId}";
 		var ticketCount = ${ticket.ticketCount};
-		var name = "${ticket.ticketName}";
+		var name = '${ticket.ticketName}';
 		
 		//alert($("#purchaseForm").serialize());
 		var innerHtml = "<form id=transForm>";
@@ -252,13 +256,47 @@
 
 				//var popupY= (window.screen.height /2) - (300 / 2);
 				// 만들 팝업창 상하 크기의 1/2 만큼 보정값으로 빼주었음
-				window.open(url,'kakaoPay','toolbar=no, directories=no, fullscreen=yes, status=no, location=center,menubar=no,width=426,height=510');
+				
+				var wX = screen.availWidth;
+				 var wY = screen.availHeight;
+				 wY = (wY-38);
+
+				 $.smartPop.open({title: '스마트팝', width: 500, height: 500, url: url });
+				//window.open(url,'kakaoPay','toolbar=no, directories=no, width='+ wX + ', height='+ wY + ', scrollbars=no, status=yes, scrollbars=no,  resizable=yes, direction=yes, location=no, menubar=no, toolbar=no, titlebar=yes');
+				//$("#kakaoUrl").attr('href', url);
+				//openLayer('kakaoPopup', {top:700});
 
 				
 			}
 			
 		});
 		
+	}
+	
+	function openLayer(targetID, options){
+		var $layer = $('#'+targetID);
+		var $close = $layer.find('.close');
+		var width = $layer.outerWidth();
+		var ypos = options.top;
+		var xpos = options.left;
+		var marginLeft = 0;
+		
+		if(xpos==undefined){
+			xpos = '50%';
+			marginLeft = -(width/2);
+		}
+
+		if(!$layer.is(':visible')){
+			$layer.css({'top':ypos+'px','left':xpos,'margin-left':marginLeft})
+				.show();
+		}
+
+		$close.bind('click',function(){
+			if($layer.is(':visible')){
+				$layer.hide();
+			}
+			return false;
+		});
 	}
 	
 	$(function(){
@@ -410,6 +448,17 @@
 	  max-width: 500px;
 	  margin: 20px auto;
 	}
+	.layer-popup {
+		display: none;
+		position: absolute;
+		left: 50%;
+		top: 175px;
+		z-index: 10;
+		 padding: 30px 30px 35px;
+		 margin-left: -235px;
+		 background-color: #fff;
+		 border: 1px solid #000;
+	}
 </style>
 </head>
 
@@ -417,8 +466,10 @@
 	
 	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
 	
-	<div id="kakaoPayModal" class="white-popup mfp-hide"></div>
-	
+	<div id="kakaoPopup" class="layer-popup">
+		<a id="kakaoUrl" href="#"></a>
+	</div>
+		
 	<div class="container">
 		
 		<!-- page header -->
