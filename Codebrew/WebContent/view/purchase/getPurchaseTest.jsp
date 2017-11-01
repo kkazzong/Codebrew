@@ -208,7 +208,7 @@
 		//alert(referNo2);
 		
 		//확인 버튼
-		$("button:contains('확인')").on("click", function(){
+		$("button:contains('목록으로')").on("click", function(){
 			self.location = "/purchase/getPurchaseList";
 		});
 		
@@ -250,6 +250,19 @@
 <style type="text/css">
 	body {
 		padding-top : 70px;
+		background-color: #f2f4f6;
+    }
+     .text-info {
+    	color: #333333; 
+    }
+    .page-header {
+    	border-bottom : 1px solid #f2f4f6;
+    }
+     .panel-primary > .panel-heading {
+    	background-image :linear-gradient(to bottom,#333 0,#333 100%);
+    }
+     .panel-primary {
+    	border-color : #3e3e3d;
     }
     /* div {
 		border : 3px solid #D6CDB7;
@@ -276,22 +289,22 @@
 		<div class="row">
 			<div class="col-md-offset-4 col-md-4">
 				<div class="page-header text-center">
-					<h3 class="text-info"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span> 마이티켓상세</h3>
+					<h3 class="text-info"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;&nbsp;구매내역</h3>
 				</div>
 			</div>
 		</div>
 	</header>
 		<!-- kakao link -->
-		<a id="kakao-link-btn" href="javascript:sendLink();">
+		<!-- <a id="kakao-link-btn" href="javascript:sendLink();">
 			<img src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"/>
-		</a>
+		</a> -->
 		
 		<!-- facebook share -->
 		<!-- <a id="facebookShare" onclick="share2()">
 			<img src="../../resources/image/buttonImage/facebook.png">
 		</a> -->
-		<div class="fb-share-button" data-href="http://127.0.0.1:8080/" data-layout="button_count" data-size="large" data-mobile-iframe="true">
-		<a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A8080%2F&amp;src=sdkpreparse">공유하기</a></div>
+		<!-- <div class="fb-share-button" data-href="http://127.0.0.1:8080/" data-layout="button_count" data-size="large" data-mobile-iframe="true">
+		<a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A8080%2F&amp;src=sdkpreparse">공유하기</a></div> -->
 		
 		<!-- facebook -->
 		<!-- <div
@@ -304,76 +317,213 @@
 	<section>	
 		<input type="hidden" name="purchaseFlag" value="${purchase.purchaseFlag}">
 		
+		<!-- 카톡공유버튼 -->
 		<div class="row">
-			<div class="col-md-offset-3 col-md-6">
+			<div class="col-md-offset-2 col-md-8">
+				<a id="kakao-link-btn" href="javascript:sendLink();">
+					<img src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"/>
+				</a>
+			</div>
+		</div>
+		
+		<!-- 이미지 -->
+		<div class="row">
+			<div class="col-md-offset-2 col-md-8">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-						<h3 class="panel-title">${purchase.itemName} 티켓</h3>
-					</div>
-					<div class="panel-body">
-						<!-- 축제티켓 -->
-						<c:if test="${!empty ticket.festival}">
-						<c:if test="${ticket.festival.festivalImage.contains('http://')}">
-										<img width="100%" height="300" src="${ticket.festival.festivalImage}">
+						 <c:if test="${!empty ticket.festival}">
+								 	<c:if test="${ticket.festival.festivalImage.contains('http://')}">
+										<img width="100%" height="323" src="${ticket.festival.festivalImage}">
 									</c:if>
 									<c:if test="${!ticket.festival.festivalImage.contains('http://')}">
-										<img width="100%" height="300" src="/resources/uploadFile/${ticket.festival.festivalImage}">
+										<img width="100%" height="323" src="/resources/uploadFile/${ticket.festival.festivalImage}">
 									</c:if>
-						<hr>
+							</c:if>
+							<c:if test="${!empty ticket.party}">
+								<img width="100%" height="323" src="/resources/uploadFile/${ticket.party.partyImage}">
+							</c:if>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- 티켓정보 -->
+		<div class="row">
+			<div class="col-md-offset-2 col-md-8">
+				<div class="panel panel-default">
+				  <div class="panel-body">
+						<!-- 축제티켓 -->
+						<c:if test="${!empty ticket.festival}">
 						<div class="col-md-12">
-							<strong>
+							<h3><strong>
 								${ticket.festival.festivalName}
 							</strong>
+							</h3>
 						</div>
 						<div class="col-md-12">
-							<small>
+							<h4>
 								<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
 									${ticket.festival.startDate} ~ ${ticket.festival.endDate}
-							</small>
-							</div>
+							</h4>
+						</div>
 							<div class="col-md-12">
-								<small>
+								<h4>
 									<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
 									${ticket.festival.addr}
-								</small>
+								</h4>
 							</div>
 							</c:if>
 							<!-- 파티티켓 -->
 							<c:if test="${!empty ticket.party}">
-							<img width="100%" height="300" src="/resources/uploadFile/${ticket.party.partyImage}">
-							<hr>
 							<div class="col-md-12">
+								<h3>
 								<strong>
 									${ticket.party.partyName}
 								</strong>
+								</h3>
 							</div>
 							<div class="col-md-12">
-								<small>
+								<h4>
 									<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
 									${ticket.party.partyDate}
-								</small>
+								</h4>
 							</div>
 							<div class="col-md-12">
-								<small>
-									<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+								<h4>
+									<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
 									${ticket.party.partyTime}
-								</small>
+								</h4>
 							</div>
 							<div class="col-md-12">
-								<small>
+								<h4>
 									<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
 									${ticket.party.partyPlace}
-								</small>
+								</h4>
 							</div>
 							</c:if>
-							<br>
-							<div class="row">
-								<div class="col-xs-4 col-md-6"><strong>결제번호</strong></div>
-								<div class="col-xs-8 col-md-6">${purchase.paymentNo}</div>
+				  	</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- 결제정보 -->
+		<div class="row">
+			<div class="col-md-offset-2 col-md-8">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div class="col-md-12">
+							<h3><strong>결제정보</strong></h3>
+							<table class="table">
+								<tr>
+									<td class="col-md-3"><h4>결제번호</h4></td>
+									<td><h4>${purchase.paymentNo}</h4></td>
+								</tr>
+								<tr>
+									<td class="col-md-3"><h4>결제일시</h4></td>
+									<td><h4>${purchase.purchaseDate}</h4></td>
+								</tr>
+								<tr>
+									<td class="col-md-3"><h4>구매수량</h4></td>
+									<td><h4>${purchase.purchaseCount} 장</h4></td>
+								</tr>
+								<tr>
+									<td class="col-md-3"><h4>결제금액</h4></td>
+									<td><h4>${purchase.purchasePrice} 원</h4></td>
+								</tr>
+								<tr>
+									<td class="col-md-3"><h4>결제수단</h4></td>
+									<td>
+										<h4>
+											<c:if test="${purchase.paymentMethodType == 'CARD'}">
+											카드
+											</c:if>
+											<c:if test="${purchase.paymentMethodType == 'MONEY'}">
+												현금
+											</c:if>
+											<c:if test="${purchase.paymentMethodType == 'phone'}">
+												핸드폰 결제
+											</c:if>
+											<c:if test="${empty purchase.paymentMethodType}">
+												무료결제
+											</c:if>
+										</h4>
+									</td>
+								</tr>
+								<tr>
+									<td class="col-md-3"><h4>결제상태</h4></td>
+									<td>
+										<h4>
+											<c:if test="${purchase.tranCode == 1}">
+												결제완료
+											</c:if>
+											<c:if test="${purchase.tranCode == 2}">
+												결제취소
+											</c:if>
+										</h4>
+									</td>
+								</tr>
+							</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		
+			<!-- 큐알코드 -->
+			<div class="row">
+				<div class="col-md-offset-2 col-md-8">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<img width="50%" height="20%" src="../../resources/image/QRCodeImage/${purchase.qrCode.qrCodeImage}">
+						</div>
+					</div>
+				</div>
+			</div>
+		
+			<!-- 버튼 -->
+			<div class="row">
+				<div class="col-md-offset-2 col-md-8">
+							<div class="col-md-6">
+									<button class="btn btn-default btn-lg btn-block" type="button">목록으로</button>
+							</div>
+							<div class="col-md-6">
+								<c:if test="${purchase.tranCode == 1 }">
+									<c:if test="${ticket.ticketFlag != 'free' }">
+										<button class="btn btn-primary btn-lg btn-block" type="button" value="${purchase.purchaseNo}">결제취소하기</button>
+									</c:if>
+									<c:if test="${ticket.ticketFlag == 'free' }">
+										<form id="cancelForm">
+											<input type="hidden" name="purchaseNo" value="${purchase.purchaseNo}" >
+											<button class="btn btn-primary bth-lg btn-block" type="button" value="${purchase.purchaseNo}">구매취소하기</button>
+										</form>
+									</c:if>
+								</c:if>
+							</div>
+						</div>
+			</div>
+		
+		</section>
+		</div>
+		
+							<%-- <div class="row">
+								<div class="col-xs-4 col-md-6 pull-rigth">
+									<h4>
+									결제번호
+									</h4>
+								</div>
+								<div class="col-xs-8 col-md-6">
+									<h4>
+									${purchase.paymentNo}
+									</h4>
+								</div>
 							</div>
 							<div class="row">
-								<div class="col-xs-4 col-md-6"><strong>결제일시</strong></div>
-								<div class="col-xs-8 col-md-6">${purchase.purchaseDate}</div>
+								<div class="col-xs-4 col-md-6">
+									<h4>결제일시</h4>
+								</div>
+								<div class="col-xs-8 col-md-6">
+									<h4>${purchase.purchaseDate}</h4>
+								</div>
 							</div>
 							<div class="row">
 								<div class="col-xs-4 col-md-6"><strong>구매수량</strong></div>
@@ -392,6 +542,9 @@
 									<c:if test="${purchase.paymentMethodType == 'MONEY'}">
 										현금
 									</c:if>
+									<c:if test="${purchase.paymentMethodType == 'phone'}">
+										핸드폰 결제
+									</c:if>
 									<c:if test="${empty purchase.paymentMethodType}">
 										무료결제
 									</c:if>
@@ -408,30 +561,30 @@
 									</c:if>
 								</div>
 							</div>
-							<hr>
-							<div class="col-md-offset-4">
+							<hr> --%>
+							<%-- <div class="col-md-offset-4">
 								<img width="50%" height="50%" src="../../resources/image/QRCodeImage/${purchase.qrCode.qrCodeImage}">
-							</div>
-								<div class="col-md-6">
-									<button class="btn btn-default btn-block" type="button">확인</button>
+							</div> --%>
+								<%-- <div class="col-md-6">
+									<button class="btn btn-default btn-lg btn-block" type="button">확인</button>
 								</div>
 								<div class="col-md-6">
 									<c:if test="${ticket.ticketFlag != 'free' }">
-										<button class="btn btn-primary btn-block" type="button" value="${purchase.purchaseNo}">결제취소하기</button>
+										<button class="btn btn-primary btn-lg btn-block" type="button" value="${purchase.purchaseNo}">결제취소하기</button>
 									</c:if>
 									<c:if test="${ticket.ticketFlag == 'free' }">
 										<form id="cancelForm">
 											<input type="hidden" name="purchaseNo" value="${purchase.purchaseNo}" >
-											<button class="btn btn-primary btn-block" type="button" value="${purchase.purchaseNo}">구매취소하기</button>
+											<button class="btn btn-primary bth-lg btn-block" type="button" value="${purchase.purchaseNo}">구매취소하기</button>
 										</form>
 									</c:if>
-								</div>
-						</div>
+								</div> --%>
+						<!-- </div>
 					</div>
 				</div>
 		</div>
 		</section>
-	</div>
+	</div> -->
 	
 	<%-- <c:if test="${!empty ticket.festival}">
 		<img width="100" height="100" src="${ticket.festival.festivalImage}">

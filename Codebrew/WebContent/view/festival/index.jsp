@@ -25,8 +25,6 @@
 <!-- Bootstrap Dropdown Hover JS -->
 <script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
 
-
-
 <style type="text/css">
 	body {
 		padding-top : 70px;
@@ -50,47 +48,221 @@
 	.title {
 		color: black;
 		text-shadow:1px 1px 1px black;
+	
 	} 
+	/* 
+	.panel-relative{
+		position : relative;
+	}
+	 */
+	
 </style>
 
 
 	<script type="text/javascript">
+	
+
+	function fncGetInitListDB() {
+		
+		$(function() {
+				 
+					$.ajax( 
+							{
+								url : "/festivalRest/json/getInitListDB",
+								method : "GET" ,
+								dataType : "json" ,
+								headers : {
+									"Accept" : "application/json",
+									"Content-Type" : "application/json"
+								},
+								success : function(jsonData , status) {
+									alert("dd"+jsonData.list[0].festivalName);
+									
+									for(var i = 0 ; i<3; i++){
+										
+									var festivalName =  jsonData.list[i].festivalName;	
+									var festivalImage = jsonData.list[i].festivalImage
+									var festivalNo = jsonData.list[i].festivalNo
+									var startDate = jsonData.list[i].startDate
+									var endDate = jsonData.list[i].endDate
+									var addr = jsonData.list[i].addr
+									
+									}
+									
+									/* 0 */
+									$("#festivalName0").text(jsonData.list[0].festivalName);
+									$("#image0").attr("src",jsonData.list[0].festivalImage);
+									$("#festivalNo0 > p").text(jsonData.list[0].festivalNo);
+									$("#date0").text(jsonData.list[0].startDate + " ~ " + jsonData.list[0].endDate);
+									$("#addr0").text(jsonData.list[0].addr);
+									
+									/* 1 */
+									$("#festivalName1").text(jsonData.list[1].festivalName);
+									$("#image1").attr("src",jsonData.list[1].festivalImage);
+									$("#festivalNo1 > p").text(jsonData.list[1].festivalNo);
+									$("#date1").text(jsonData.list[1].startDate + " ~ " + jsonData.list[1].endDate);
+									$("#addr1").text(jsonData.list[1].addr);
+									
+									/* 2 */
+									$("#festivalName2").text(jsonData.list[2].festivalName);
+									$("#image2").attr("src",jsonData.list[2].festivalImage);
+									$("#festivalNo2 > p").text(jsonData.list[2].festivalNo);
+									$("#date2").text(jsonData.list[2].startDate + " ~ " + jsonData.list[2].endDate);
+									$("#addr2").text(jsonData.list[2].addr);
+									
+								}
+						});
+				});
+	}
+	
+	$(function() {
+
+		$(".panel-body").on("click", function() {
+
+		var festivalNo = $("p", this).text();
+
+		/* self.location = "/festival/getFestivalDB?festivalNo=" + festivalNo; */
+		self.location = "/festival/getFestivalDB?festivalNo=" + festivalNo;
+	});
+});
+			
+	   
 
 	    
 </script>
 <title>Moana</title>
 <!-- 타이틀 수정하지마세용 -->
 </head>
-<body onload="alert('시작한다');">
+<body onload="fncGetInitListDB();">
 	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
+	
+		<div class="container">
+	
+  	<div class="row">
+  	
+  	<div class="col-md-12">
+  	
+  		<div class="page-header text-center">
+					<h3 class="text-info">main</h3>
+				</div>
+				
+	<form>
+	
+	<jsp:include page="/view/festival/getFestivalListDB.jsp"></jsp:include>	
+	
+	</form>
+	
+	<br/><br/><br/>
 
-	
-	<!-- 배경 이미지 -->
-	<section>
-	
-	<div class="row">
-		<div class="col-md-12 text-center">
-			<div class="title">
-			</div>
-		</div>
+		
+		
+	<div class="col-md-4">
+						<div class="panel panel-primary">
+							<div class="panel-heading text-center panel-relative">
+								
+							<%-- 	<h3 class="panel-title" id="festivalName0"> ${festival.festivalName}</h3>
+								<br/>
+        						<div class="clearfix"></div> --%>
+        						
+							</div>
+							
+					<div class="panel-body">
+					
+					<img src="${festival.festivalImage }" id="image0" width="100%"height="300" />
+					
+					<br/>
+									<div id="festivalNo0" style="display: none">
+										<p>${festival.festivalNo }</p>
+									</div> 
+						<br />
+									
+									<div class="col-md-12">
+											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+											 <Strong id="date0">${festival.startDate} ~ ${festival.endDate}</Strong>
+											 <br/>
+											 <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+											 <Strong id="addr0">${festival.addr } </Strong>
+									</div>
+							</div>
+						</div>
+				</div>	
+				
+				<!-- 1 -->
+				
+		
+	<div class="col-md-4">
+						<div class="panel panel-primary">
+							<div class="panel-heading text-center panel-relative">
+							
+								<%-- <h3 class="panel-title" id="festivalName1"> ${festival.festivalName}</h3>
+								<br/>
+        						<div class="clearfix"></div> --%>
+        						
+							</div>
+							
+					<div class="panel-body">
+					
+					<img src="${festival.festivalImage }" id="image1" width="100%"height="300" />
+					
+					<br/>
+									<div id="festivalNo1" style="display: none">
+										<p>${festival.festivalNo }</p>
+									</div> 
+						<br />
+									
+									<div class="col-md-12">
+											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+											 <Strong id="date1">${festival.startDate} ~ ${festival.endDate}</Strong>
+											 <br/>
+											 <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+											 <Strong id="addr1">${festival.addr } </Strong>
+									</div>
+							</div>
+						</div>
+				</div>	
+				
+				
+				<!-- 2 -->
+				
+				<div class="col-md-4">
+						<div class="panel panel-primary">
+							<div class="panel-heading text-center panel-relative">
+							
+								<%-- <h3 class="panel-title" id="festivalName2"> ${festival.festivalName}</h3>
+								<br/>
+        						<div class="clearfix"></div> --%>
+        						
+							</div>
+							
+					<div class="panel-body">
+					
+					<img src="${festival.festivalImage }" id="image2" width="100%"height="300" />
+					
+					<br/>
+									<div id="festivalNo2" style="display: none">
+										<p>${festival.festivalNo }</p>
+									</div> 
+						<br />
+									
+									<div class="col-md-12">
+											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+											 <Strong id="date2">${festival.startDate} ~ ${festival.endDate}</Strong>
+											 <br/>
+											 <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+											 <Strong id="addr2">${festival.addr } </Strong>
+									</div>
+							</div>
+						</div>
+				</div>	
+				
+				<br/>
 	</div>
-	
-	<div id="box" class="row">
-		<div class="col-md-12 text-center">
-			<div class="col-md-offset-4 col-md-4">
-				<form class="form form-inline">
-					<div class="form-group">
-						<input class="form-control input-lg" type="text" placeholder="축제명 or 파티명 검색">
-					</div>
-					<div class="form-group">
-						 <button class="btn btn-primary btn-block" type="button">검색</button> 
-					</div>
-				</form>
-			</div>
-		</div>
 	</div>
-	
-<a href="/festival/getMyZzimList">getZzimlist</a>
-	</section>
-</body>
+	</div>
+
+
+    
+
+
+	</body>
 </html>

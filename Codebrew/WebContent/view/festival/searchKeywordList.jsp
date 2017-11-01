@@ -157,11 +157,6 @@
 		
 		<br/>
 		<br/>
-	
-	
-	<%-- <c:if test="${festival.isNull==false }"> --%>
-		
-
 		
 		<c:forEach var="festival" items="${list}">
 		

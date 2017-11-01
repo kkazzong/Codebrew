@@ -328,6 +328,35 @@
 								
 						</if> ) countTable						
 	 </select>
+	 
+	 <select  id="getInitListDB"  resultMap="festivalSelectMap">
+
+	 SELECT * FROM (	SELECT inner_table.* , ROWNUM AS row_seq
+	  					FROM		
+	  					(	SELECT
+	  					 FESTIVAL_NO,
+	  					 FESTIVAL_NAME,
+	  					 START_DATE,
+	  					 END_DATE,
+	  					 FESTIVAL_IMAGE,
+	  					 DELETE_FLAG,
+	  					 ADDR,
+	  					 REG_DATE
+
+						 FROM festival
+						 
+						 where end_date &gt;= TO_CHAR(SYSDATE, 'yyyymmdd')
+							and delete_flag is null
+						
+								order by read_count desc
+										
+		) inner_table
+		WHERE ROWNUM &lt;= 3 )
+		
+	
+							
+							
+	 </select>
 
 	 
 </mapper>	

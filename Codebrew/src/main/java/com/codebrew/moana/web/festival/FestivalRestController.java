@@ -6,12 +6,16 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.codebrew.moana.common.Page;
+import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Festival;
 import com.codebrew.moana.service.domain.Zzim;
 import com.codebrew.moana.service.festival.FestivalService;
@@ -41,6 +45,20 @@ public class FestivalRestController {
 
 	@Value("#{imageRepositoryProperties['fileRoot']}")
 	String fileRoot;
+	
+	@RequestMapping(value = "/json/getInitListDB")
+	
+	public Map<String,Object> getInitListDB() throws Exception {
+		
+		Map<String, Object> map = festivalService.getInitListDB();
+		
+		System.out.println(map);
+
+		return map;
+
+	}
+	
+	
 	
 	@RequestMapping(value = "/json/getAreaCode")
 	public Map<String, Object> getAreaCode () throws Exception {

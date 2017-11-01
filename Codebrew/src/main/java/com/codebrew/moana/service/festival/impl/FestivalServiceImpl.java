@@ -182,5 +182,16 @@ public class FestivalServiceImpl implements FestivalService{
 		
 		return map;
 	}
+
+	@Override
+	public Map<String, Object> getInitListDB() throws Exception {
+		// TODO Auto-generated method stub
+		List<Festival> list = festivalDAO.getInitListDB();
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		
+		return map;
+	}
 	
 }

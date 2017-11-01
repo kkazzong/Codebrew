@@ -48,4 +48,5 @@ public interface FestivalDAO {
 	
 	public Map<String,Object> getAreaCode() throws Exception;
 	
+	public List<Festival> getInitListDB() throws Exception;
 }
