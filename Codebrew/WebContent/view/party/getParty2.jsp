@@ -473,7 +473,7 @@
 						</c:if> --%>
 						
 						<!-- 애프터 파티 -->
-						<%-- <c:if test="${ !empty party.festival.festivalNo }">
+						<c:if test="${ !empty party.festival.festivalNo }">
 							console.log("애프터 파티 버튼 구간 1");
 							<c:set var="i" value="0" />
 							<c:forEach var="partyMember" items="${list}">
@@ -490,7 +490,7 @@
 		
 									</c:if>
 							</c:forEach>
-						</c:if> --%>
+						</c:if>
 						<span id="partyButtonDiv"></span>					
 					<!-- <button type="button" class="btn btn-primary">뒤로</button> -->
 						

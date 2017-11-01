@@ -150,7 +150,8 @@
 	  									   f.festival_no,
 	  									   p.party_name,
 	  									   u.nickname,
-	  									   p.party_date,
+	  									   u.profile_image,
+	  									   TO_CHAR(p.party_date, 'yy/mm/dd' ) AS party_date,
 	  									   p.party_time, 
 	  									   p.party_place
 									FROM party p, festival f, users u
@@ -201,7 +202,8 @@
 		                                       p.party_name,
 		                                       u.user_id,
 		                                       u.nickname,
-		                                       p.party_date AS party_date,
+		                                       u.profile_image,
+		                                       TO_CHAR(p.party_date, 'yy/mm/dd' ) AS party_date,
 		                                       p.party_time,
 		                                       p.party_place
 		                                FROM party p, festival f, users u

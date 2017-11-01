@@ -214,7 +214,7 @@ public class PartyController {
 		//Business Logic
 		//Map<String, Object> map = partyService.joinParty(partyMember);
 		Party dbParty = partyService.joinParty(partyMember);
-		
+		System.out.println("\n<<< /party/joinParty :: GET :: party도메인\n"+dbParty);
 		
 		//Model(data) & View(jsp)
 		ModelAndView modelAndView = new ModelAndView();
@@ -241,12 +241,12 @@ public class PartyController {
 		String userId = user.getUserId();
 		
 		Party party = partyService.cancelParty(dbPartyNo, userId);
-		
+		System.out.println("\n<<< /party/cancelParty :: GET :: party도메인\n"+party);
 
 		//Model(data) & View(jsp)
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("party", party);
-		modelAndView.setViewName("/view/party/getParty.jsp");
+		modelAndView.setViewName("redirect:/party/getParty?partyNo="+party.getPartyNo());
 		
 		return modelAndView;
 	}
@@ -353,8 +353,8 @@ public class PartyController {
 		modelAndView.addObject("ticket", ticket);
 		//modelAndView.addObject("user", user);
 		
-		modelAndView.addObject("list", map.get("list"));
-		modelAndView.addObject("currentMemberCount", map.get("currentMemberCount"));
+		//modelAndView.addObject("list", map.get("list"));
+		//modelAndView.addObject("currentMemberCount", map.get("currentMemberCount"));
 		modelAndView.setViewName("forward:/view/party/getParty.jsp");
 		
 		return modelAndView;

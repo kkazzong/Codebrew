@@ -22,7 +22,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
+    <!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
 	
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
@@ -365,24 +365,53 @@
 						</c:if> --%>
 						
 						<!-- 애프터 파티 -->
-						<%-- <c:if test="${ !empty party.festival.festivalNo }">
+						 <%-- <c:if test="${ !empty party.festival.festivalNo }">
 							console.log("애프터 파티 버튼 구간 1");
-							<c:set var="i" value="0" />
-							<c:forEach var="partyMember" items="${list}">
-								<c:set var="i" value="${ i+1 }" />
-								console.log("애프터 파티 버튼 구간 2");
-									<c:if test="${ partyMember.user.userId != user.userId }">
-										console.log("애프터 파티 버튼 구간 3");
-										<button type="button" class="btn btn-primary">애프터파티 참여</button>
-									</c:if>
+								<c:set var="i" value="0" />
+								<c:set var="break" value="false" />
+								<c:forEach var="partyMember" items="${list}">
 								
-									<c:if test="${ partyMember.user.userId==user.userId && party.user.userId!=user.userId }">
-										console.log("애프터 파티 버튼 구간 4");
-										<button type="button" class="btn btn-primary">파티참여취소</button>
-		
-									</c:if>
-							</c:forEach>
-						</c:if> --%>
+								    <c:if test="break">
+								        <c:set var="i" value="${ i+1 }" />
+								        <c:if test="${ partyMember.user.userId != user.userId }">
+											<button type="button" class="btn btn-primary">애프터파티 참여</button>
+								            <c:set var="break" value="true" />
+								        </c:if>
+								    </c:if>
+								</c:forEach> --%>
+							
+							
+							
+							
+<%-- 							<c:set var="i" value="0" /> --%>
+<%-- 							<c:set var="break" value="false"/> --%>
+<%-- 							<c:forEach var="partyMember" items="${list}"> --%>
+<%-- 								<c:set var="i" value="${ i+1 }" /> --%>
+<!-- 								console.log("애프터 파티 버튼 구간 2"); -->
+<%-- 								<c:if test="${ break != true }"> --%>
+								
+<%-- 								<c:choose> --%>
+									
+<%-- 									<c:when test="${ partyMember.user.userId==user.userId && partyMember.role=='guest'}"> --%>
+									
+<%-- 									<c:if test="${ partyMember.user.userId==user.userId }">	 --%>
+<!-- 										console.log("애프터 파티 버튼 구간 3"); -->
+<!-- 										<button type="button" class="btn btn-primary">파티참여취소</button> -->
+<%-- 										<c:set var="break" value="true" /> --%>
+<%-- 									</c:if> --%>
+<%-- 									</c:when> --%>
+<%-- 									<c:when test="${ partyMember.user.userId != user.userId &&  party.user.userId!=user.userId}">		 --%>
+<%-- 									<c:if test="${ partyMember.user.userId != user.userId }"> --%>
+<!-- 										console.log("애프터 파티 버튼 구간 4"); -->
+<!-- 										<button type="button" class="btn btn-primary">애프터파티 참여</button> -->
+<%-- 										<c:set var="break" value="true" /> --%>
+<%-- 									</c:if>	 --%>
+<%-- 									</c:when> --%>
+<%-- 								</c:choose> --%>
+<%-- 								</c:if> --%>
+<%-- 							</c:forEach> --%>
+<%-- 						</c:if> --%>
+
 						<span id="partyButtonDiv"></span>					
 					<!-- <button type="button" class="btn btn-primary">뒤로</button> -->
 					</div>	

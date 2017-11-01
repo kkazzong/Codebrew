@@ -23,7 +23,7 @@
 	여기있음 하이퍼링크
 	<div><a href = "/party/addParty?userId=user01@naver.com">addParty.jsp</a></div>
 	<div><a href = "/party/getParty?partyNo=10000">getParty.jsp</a></div>
-	<div><a href = "/party/getPartyList">getPartyList.jsp</a></div>
+	<div><a href = "/view/party/getPartyList_UI.jsp">getPartyList_UI.jsp</a></div>
 	<div><a href = "/party/getMyPartyList">getMyPartyList.jsp</a></div>
 	<div><a href = "http://127.0.0.1:8080/view/party/Sample.jsp">Sample.jsp</a></div>
 	<div><a href = "http://127.0.0.1:8080/view/party/daum.jsp">daum.jsp</a></div>
