@@ -60,7 +60,21 @@ public class StatisticsDAOImpl implements StatisticsDAO{
 	public List<Statistics> getQuarterTotalSaleAmountStat(Statistics statistics) throws Exception {
 		return sqlSession.selectList("StatisticsMapper.getQuarterTotalSaleAmountStat2", statistics);
 	}
+	
+	@Override
+	public List<Statistics> getFestivalZzim() throws Exception {
+		return sqlSession.selectList("StatisticsMapper.getFestivalZzim");
+	}
+	
+	@Override
+	public List<Statistics> getFestivalRating() throws Exception {
+		return sqlSession.selectList("StatisticsMapper.getFestivalRating");
+	}
 
+	@Override
+	public List<Statistics> getPartyCount() throws Exception {
+		return sqlSession.selectList("StatisticsMapper.getPartyCount");
+	}
 	
 	public  void writeJson(List list) {
 		

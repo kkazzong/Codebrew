@@ -1,13 +1,18 @@
 package com.codebrew.moana.service.statistics.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.codebrew.moana.service.domain.Festival;
 import com.codebrew.moana.service.domain.Statistics;
+import com.codebrew.moana.service.festival.FestivalDAO;
+import com.codebrew.moana.service.party.PartyDAO;
 import com.codebrew.moana.service.statistics.StatisticsDAO;
 import com.codebrew.moana.service.statistics.StatisticsService;
 
@@ -17,6 +22,14 @@ public class StatisticsServiceImpl implements StatisticsService {
 	@Autowired
 	@Qualifier("statisticsDAOImpl")
 	StatisticsDAO statisticsDAO;
+	
+	@Autowired
+	@Qualifier("festivalDAOImpl")
+	FestivalDAO festivalDAO;
+	
+	@Autowired
+	@Qualifier("partyDAOImpl")
+	PartyDAO partyDAO;
 	
 	public StatisticsServiceImpl() {
 		System.out.println(this.getClass());
@@ -61,6 +74,33 @@ public class StatisticsServiceImpl implements StatisticsService {
 		}
 
 		return list;
+	}
+
+	@Override
+	public List<Statistics> getFestivalZzim() throws Exception {
+		
+		/*Map<String, Object> map = new HashMap<String, Object>();
+		List<Statistics> list =  statisticsDAO.getFestivalZzim();
+		List<Festival> festivalList = new ArrayList<Festival>(); 
+	
+		for(Statistics stat : list) {
+			festivalList.add(festivalDAO.getFestivalDB(Integer.parseInt(stat.getStatDate())));
+		}
+		map.put("list", list);
+		map.put("festivalList", festivalList);
+		
+		return map;*/
+		return statisticsDAO.getFestivalZzim();
+	}
+
+	@Override
+	public List<Statistics> getFestivalRating() throws Exception {
+		return statisticsDAO.getFestivalRating();
+	}
+
+	@Override
+	public List<Statistics> getPartyCount() throws Exception {
+		return statisticsDAO.getPartyCount();
 	}
 	
 	

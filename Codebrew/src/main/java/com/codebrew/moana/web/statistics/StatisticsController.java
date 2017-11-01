@@ -1,5 +1,7 @@
 package com.codebrew.moana.web.statistics;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -40,6 +42,45 @@ public class StatisticsController {
 		modelAndView.setViewName("/view/statistics/getStatistics.jsp");
 		//modelAndView.setView(new RedirectView("/view/statistics/getStatistics.jsp"));
 		
+		return modelAndView;
+		
+	}
+	
+	@RequestMapping(value="getFestivalZzim", method=RequestMethod.GET)
+	public ModelAndView getFestivalZzim() throws Exception {
+		
+		List<Statistics> list = statisticsService.getFestivalZzim();
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("statList", list);
+		//modelAndView.addObject("festivalList", map.get("festivalList"));
+		modelAndView.setViewName("/view/statistics/getFestivalZzim.jsp");
+		return modelAndView;
+		
+	}
+	
+	@RequestMapping(value="getFestivalRating", method=RequestMethod.GET)
+	public ModelAndView getFestivalRating() throws Exception {
+		
+		List<Statistics> list = statisticsService.getFestivalRating();
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("list", list);
+		//modelAndView.addObject("festivalList", map.get("festivalList"));
+		modelAndView.setViewName("/view/statistics/getFestivalRating.jsp");
+		return modelAndView;
+		
+	}
+	
+	@RequestMapping(value="getPartyCount", method=RequestMethod.GET)
+	public ModelAndView getPartyCount() throws Exception {
+		
+		List<Statistics> list = statisticsService.getPartyCount();
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("list", list);
+		//modelAndView.addObject("festivalList", map.get("festivalList"));
+		modelAndView.setViewName("/view/statistics/getPartyCount.jsp");
 		return modelAndView;
 		
 	}

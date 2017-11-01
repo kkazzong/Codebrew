@@ -395,7 +395,7 @@
     .panel-primary {
     	border-color : #3e3e3d;
     }
-    .panel-primary > .panel-heading {
+   .panel-primary > .panel-heading {
     	background-image :linear-gradient(to bottom,#333 0,#333 100%);
     }
     .panel {
@@ -425,6 +425,10 @@
 	<!-- 모달 -->
 	<jsp:include page="/view/purchase/filterModalUser.jsp"></jsp:include>
 	<%-- 서치컨디션 ${search.searchCondition } --%>
+	
+	
+	<%-- <jsp:include page="/view/statistics/getFestivalZzim.jsp"></jsp:include> --%>
+	
 	<div class="container">
 	
 		<!-- <div class="row">
