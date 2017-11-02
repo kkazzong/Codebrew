@@ -489,7 +489,7 @@
 									placeholder="축제 or 파티 이름으로 검색">
 						<span class="input-group-btn">
 					    	<button id="search" class="btn btn-default btn-lg btn-block" type="button">
-					    		<span class="glyphicon glyphicon-search" aria-hidden="true"> 
+					    		<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 					    	</button>
 					    </span>
 					</div>
