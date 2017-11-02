@@ -4,6 +4,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,11 +26,13 @@ import org.springframework.web.servlet.ModelAndView;
 import com.codebrew.moana.common.Page;
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Festival;
+import com.codebrew.moana.service.domain.Statistics;
 import com.codebrew.moana.service.domain.Ticket;
 import com.codebrew.moana.service.domain.User;
 import com.codebrew.moana.service.domain.Weather;
 import com.codebrew.moana.service.domain.Zzim;
 import com.codebrew.moana.service.festival.FestivalService;
+import com.codebrew.moana.service.statistics.StatisticsService;
 import com.codebrew.moana.service.ticket.TicketService;
 
 @Controller
@@ -43,6 +46,10 @@ public class FestivalController {
 	@Autowired
 	@Qualifier("ticketServiceImpl")
 	private TicketService ticketService;
+	
+	@Autowired
+	@Qualifier("statisticsServiceImpl")
+	private StatisticsService statisticsService;
 
 	public FestivalController() {
 		System.out.println(this.getClass());
@@ -149,7 +156,9 @@ public class FestivalController {
 				pageSize);
 
 		ModelAndView modelAndView = new ModelAndView();
-
+		List<Statistics> list = statisticsService.getFestivalZzim();
+		
+		modelAndView.addObject("statList", list);
 		modelAndView.addObject("search", search);
 		modelAndView.addObject("list", map.get("list"));
 		modelAndView.addObject("resultPage", resultPage);
@@ -379,8 +388,7 @@ public class FestivalController {
 
 			festivalService.addFestival(festival);
 
-			modelAndView.setViewName("forward:/view/festival/addFestival.jsp");
-			modelAndView.addObject(festival);
+			modelAndView.setViewName("forward:/view/festival/getFestivalListDB?menu=db");
 
 		} else {
 
@@ -388,8 +396,7 @@ public class FestivalController {
 
 			festivalService.addFestival(festival);
 
-			modelAndView.setViewName("forward:/view/festival/addFestival.jsp");
-			modelAndView.addObject(festival);
+			modelAndView.setViewName("forward:/festival/getFestivalListDB?menu=db");
 
 		}
 
@@ -404,7 +411,8 @@ public class FestivalController {
 	}
 
 	@RequestMapping(value = "searchKeywordList", method = RequestMethod.GET)
-	public ModelAndView searchKeywordList(@ModelAttribute("search") Search search, @ModelAttribute("page") Page page)
+	public ModelAndView searchKeywordList(@ModelAttribute("search") Search search, @ModelAttribute("page") Page page,
+			@RequestParam (value = "menu", required = false) String menu)
 			throws Exception {
 
 		System.out.println("컨트롤러 들어옴");
@@ -422,9 +430,15 @@ public class FestivalController {
 		if (search.getSearchKeyword() == null || search.getSearchKeyword() == "") {
 			search.setSearchKeyword(currentDate);
 		}
-
-		Map<String, Object> map = festivalService.searchKeywordList(search);
-
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		
+		if(menu.equals("db")){
+			map = festivalService.getFestivalListDB(search);
+		}else{
+			map = festivalService.searchKeywordList(search);
+		}
+		
 		Page resultPage = new Page(search.getCurrentPage(), ((Integer) map.get("totalCount")).intValue(), pageUnit,
 				pageSize);
 

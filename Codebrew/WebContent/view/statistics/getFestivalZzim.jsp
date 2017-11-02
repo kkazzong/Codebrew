@@ -71,7 +71,6 @@
 	<%-- <jsp:include page="/toolbar/toolbar.jsp"></jsp:include> --%>	
 	
 	
-	<div class="content">
 		
 		<div class="row">
 			<div class="col-md-offset-3 col-md-6">
@@ -115,7 +114,6 @@
 				</div>
 			</div>
 		</div>
-	</div>
 	
 </body>
 </html>

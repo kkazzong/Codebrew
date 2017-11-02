@@ -74,8 +74,10 @@ body {
 
 </head>
 <body>
+	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>
 
 	<div class="container">
+	<jsp:include page="/view/statistics/getFestivalZzim.jsp"></jsp:include>
 	
   	<div class="row">
   	
@@ -87,9 +89,7 @@ body {
 
 	<form>
 	
-	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>
 	
-
 	
 		<br/>
 		<br/>

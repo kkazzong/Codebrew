@@ -1,25 +1,25 @@
 package com.codebrew.moana.web.festival;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.codebrew.moana.common.Page;
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Festival;
 import com.codebrew.moana.service.domain.Zzim;
 import com.codebrew.moana.service.festival.FestivalService;
 import com.codebrew.moana.service.ticket.TicketService;
+import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 
 @RestController
 @RequestMapping("/festivalRest/*")
@@ -33,11 +33,6 @@ public class FestivalRestController {
 	@Qualifier("ticketServiceImpl")
 	private TicketService ticketService;
 
-	public FestivalRestController() {
-		// TODO Auto-generated constructor stub
-		System.out.println(this.getClass());
-	}
-
 	@Value("#{commonProperties['pageUnit']}")
 	int pageUnit;
 	@Value("#{commonProperties['pageSize']}")
@@ -45,6 +40,29 @@ public class FestivalRestController {
 
 	@Value("#{imageRepositoryProperties['fileRoot']}")
 	String fileRoot;
+	
+	public FestivalRestController() {
+		// TODO Auto-generated constructor stub
+		System.out.println(this.getClass());
+	}
+	
+	
+	@RequestMapping(value = "json/getKeyword", method=RequestMethod.POST)
+	public List<Festival> getKeyword(@RequestBody Search search) throws Exception {
+		
+		
+		System.out.println("getKeyword에서 search" + search);
+		
+		if(search.getCurrentPage() == 0) {
+			search.setCurrentPage(1);
+		}
+		search.setPageSize(pageSize);
+
+		Map<String,Object> map = festivalService.getFestivalListDB(search);
+
+		return (List<Festival>) map.get("list");
+
+	}
 	
 	@RequestMapping(value = "/json/getInitListDB")
 	
@@ -158,5 +176,6 @@ public class FestivalRestController {
 		return festival;
 
 	}
+
 
 }
