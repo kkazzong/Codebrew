@@ -7,12 +7,16 @@
 <mapper namespace="StatisticsMapper">
 
 	<resultMap type="statistics" id="selectStatisticsMap">
-		<result property="statDate" column="stat_date" jdbcType="VARCHAR"/>
 		<result property="totalPrice" column="total_price" jdbcType="NUMERIC"/>
 		<result property="totalCount" column="total_count" jdbcType="NUMERIC"/>
-		<result property="statDate"/>
 		<result property="statFlag" column="stat_flag" jdbcType="VARCHAR"/>
-		<association property="purchase" javaType="purchase">
+		<result property="statDate" column="stat_date" jdbcType="VARCHAR"/>
+		<result property="startDate" column="start_date" jdbcType="VARCHAR"/>
+		<result property="endDate" column="end_date" jdbcType="VARCHAR"/>
+		<result property="referNo" column="refer_no" jdbcType="NUMERIC"/>
+		<result property="imageName" column="image_name" jdbcType="VARCHAR"/>
+		<result property="addr" column="addr" jdbcType="VARCHAR"/>
+		<!-- <association property="purchase" javaType="purchase">
 			<id property="purchaseNo" column="purchase_no" jdbcType="NUMERIC"/>
 			<result property="purchaseMethodType" column="purchase_method_type" jdbcType="VARCHAR"/>
 			<result property="itemName" column="item_name" jdbcType="VARCHAR"/>
@@ -21,6 +25,22 @@
 			<result property="purchaseCount" column="purchase_count" jdbcType="VARCHAR"/>
 			<result property="tranCode" column="tran_code" jdbcType="VARCHAR"/>
 		</association>
+		<association property="festival" javaType="festival">
+			<id property="festivalNo" column="festival_no" jdbcType="NUMERIC"/>
+			<result property="festivalImage" column="festival_image" jdbcType="VARCHAR"/>
+			<result property="festivalName" column="festival_name" jdbcType="VARCHAR"/>
+			<result property="addr" column="addr" jdbcType="VARCHAR"/>
+			<result property="startDate" column="start_date" jdbcType="NUMERIC"/>
+			<result property="endDate" column="end_date" jdbcType="VARCHAR"/>
+		</association>
+		<association property="party" javaType="com.codebrew.moana.service.domain.Party">
+			<result property="partyNo" column="party_no" jdbcType="NUMERIC"/>
+			<result property="partyName" column="party_name" jdbcType="VARCHAR"/>
+			<result property="partyDate" column="party_date" jdbcType="VARCHAR"/>
+			<result property="partyTime" column="party_time" jdbcType="VARCHAR"/>
+			<result property="partyPlace" column="party_place" jdbcType="VARCHAR"/>
+			<result property="partyImage" column="party_image" jdbcType="VARCHAR"/>
+		</association> -->
 	</resultMap>
 	
 	<select id="getDailyTotalSaleAmountStat" resultMap="selectStatisticsMap">
@@ -164,5 +184,87 @@
 		</where>
 		GROUP BY TO_CHAR(purchase_date, 'q')
 		ORDER BY stat_date
+	</select>
+	
+	<!-- 찜 많이 받은 상위 3개 축제 -->
+	<select id="getFestivalZzim" resultMap="selectStatisticsMap">
+		SELECT
+		vt.festival_no AS refer_no,
+		vt.festival_name AS name,
+		vt.festival_image AS image,
+		vt.addr AS addr,
+		vt.start_date AS start_date,
+		vt.end_date AS end_date,
+		vt.total_count AS total_count
+		FROM (
+					SELECT
+					z.festival_no AS festival_no,
+					f.festival_name AS festival_name,
+					f.festival_image AS festival_image,
+					f.addr AS addr,
+					f.start_date AS start_date,
+					f.end_date AS end_date,
+					count(z.festival_no) AS total_count
+					FROM zzim z, festival f
+					WHERE z.festival_no = f.festival_no
+					GROUP BY z.festival_no, f.festival_name, f.festival_image, f.addr, f.start_date, f.end_date
+					ORDER by total_count DESC
+					)vt
+		WHERE ROWNUM BETWEEN 1 AND 3
+	</select>
+	
+	<!-- 평점순 -->
+	<select id="getFestivalRating" resultMap="selectStatisticsMap">
+		SELECT
+		vt.festival_no AS refer_no,
+		vt.festival_name AS name,
+		vt.festival_image AS image,
+		vt.start_date AS start_date,
+		vt.end_date AS end_date,
+		vt.total_count AS total_count
+		FROM (
+					SELECT
+					f.festival_no AS festival_no,
+					f.festival_image AS festival_image,
+					f.festival_name AS festival_name,
+					f.start_date AS start_date,
+					f.end_date AS end_date,
+					SUM(r.review_festival_rating) AS total_count
+					FROM festival f, review r
+					WHERE f.festival_no = r.festival_no
+					GROUP BY f.festival_no,
+										f.festival_image,
+										f.festival_name,
+										f.start_date,
+										f.end_date
+					ORDER BY total_count DESC
+					)vt
+		WHERE ROWNUM BETWEEN 1 AND 3
+	</select>
+	
+	<!-- 파티멤버 참여순 -->
+	<select id="getPartyCount" resultMap="selectStatisticsMap">
+		SELECT
+		vt.party_no AS refer_no,
+		vt.party_name AS name,
+		vt.party_image AS image,
+		vt.party_place AS addr,
+		vt.total_count AS total_count
+		FROM (
+					SELECT
+					pm.party_no AS party_no,
+					p.party_name AS party_name,
+					p.party_image AS party_image,
+					p.party_place AS party_place,
+					count(pm.party_no) AS total_count
+					FROM party p, party_member pm
+					WHERE p.party_no = pm.party_no
+					GROUP BY pm.party_no,
+										p.party_name,
+										p.party_image,
+										p.party_place
+					ORDER BY total_count DESC
+					)vt
+		WHERE ROWNUM BETWEEN 1 AND 3
 	</select>
 </mapper>

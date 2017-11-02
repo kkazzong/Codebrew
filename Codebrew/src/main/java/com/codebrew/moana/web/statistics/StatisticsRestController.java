@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.codebrew.moana.service.domain.Statistics;
 import com.codebrew.moana.service.statistics.StatisticsService;
@@ -81,4 +82,17 @@ public class StatisticsRestController {
 		
 		return list;
 	}
+	
+	/*@RequestMapping(value="/json/getFestivalZzim", method=RequestMethod.GET)
+	public ModelAndView getFestivalZzim() throws Exception {
+		
+		List<Statistics> list = statisticsService.getFestivalZzim();
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("list", list);
+		//modelAndView.addObject("festivalList", map.get("festivalList"));
+		modelAndView.setViewName("/view/statistics/getFestivalZzim.jsp");
+		return modelAndView;
+		
+	}*/
 }

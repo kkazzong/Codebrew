@@ -54,7 +54,12 @@ public class TicketServiceImpl implements TicketService {
 		}
 		
 	}
-
+	
+	
+	/*
+	 * ticketFlag가 1 : 축제티켓, 2 : 파티티켓
+	 * 
+	 * */
 	@Override
 	public Ticket getTicket(int num, String ticketFlag) {
 		

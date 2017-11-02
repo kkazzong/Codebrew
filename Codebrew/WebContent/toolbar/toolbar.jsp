@@ -99,6 +99,9 @@
 	                </a>
 	                <ul class="dropdown-menu">
 	                       <li><a href="#">my티켓</a></li>
+	                       <li><a href="#">축제통계</a></li>
+	                       <li><a href="#">평점통계</a></li>
+	                       <li><a href="#">참여자수통계</a></li>
 	                       <c:if test="${sessionScope.user.role == 'a'}">
 		                       <li class="divider"></li>
 		                       <li><a href="#">판매목록</a></li>
@@ -249,6 +252,18 @@
 			
 			$("a:contains('my티켓')").bind('click', function(){
 				self.location = "/purchase/getPurchaseList";
+			});
+			
+			$("a:contains('축제통계')").bind('click', function(){
+				self.location = "/statistics/getFestivalZzim";
+			});
+			
+			$("a:contains('평점통계')").bind('click', function(){
+				self.location = "/statistics/getFestivalRating";
+			});
+			
+			$("a:contains('참여자수통계')").bind('click', function(){
+				self.location = "/statistics/getPartyCount";
 			});
 			
 			$("li > a:contains('판매목록')").bind('click', function(){

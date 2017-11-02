@@ -1,6 +1,5 @@
 package com.codebrew.moana.web.reply;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -8,9 +7,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,13 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Reply;
-import com.codebrew.moana.service.domain.Review;
-import com.codebrew.moana.service.domain.User;
 import com.codebrew.moana.service.reply.ReplyService;
 import com.codebrew.moana.service.user.UserService;
 
 @RestController
-@RequestMapping({"/reply/*"})
+@RequestMapping("/replyRest/*")
 public class ReplyRestController {
 
 	///Field
@@ -51,18 +45,24 @@ public class ReplyRestController {
 	//@Value("#{commonProperties['pageSize'] ?: 2}")
 	int pageSize;
 	
+	
 	@RequestMapping(value="json/addReply", method=RequestMethod.POST)
-	public ResponseEntity<String> addReply(@RequestBody Reply reply, 
-											HttpSession session) throws Exception{
+	public Reply addReply(@RequestBody Reply reply, 
+							HttpSession session) throws Exception {
 		
-		ResponseEntity<String> entity = null;
-		String userId = (String) session.getAttribute("userId");
+		System.out.println("ReplyRestController");
+		
+		String userId = (String)session.getAttribute("userId");
+		System.out.println("\n\nuserId :: "+userId);
+		
 		reply.setUserId(userId);
 		replyService.addReply(reply);
+		int replyNo = reply.getReplyNo();
+		System.out.println("\n\nreplyNo"+replyNo);
 		
-		entity = new ResponseEntity<String>("success", HttpStatus.OK);
+		Reply returnReply = replyService.getReply(replyNo);
 		
-		return entity;
+		return returnReply;
 		
 	}
 	
@@ -77,16 +77,35 @@ public class ReplyRestController {
 	}
 	
 	
-	@RequestMapping(value="json/updateReply/{replyNo}", method=RequestMethod.POST)
-	public Review updateReply(@RequestBody Reply reply) throws Exception{
+	@RequestMapping(value="/json/updateReply", method=RequestMethod.POST)
+	public Reply updateReply(@RequestBody Reply reply) throws Exception{
 		
 		System.out.println("/reply/updateReply");
+		System.out.println(reply);
 		
+		String returnReplyDetail = reply.getReplyDetail(); // 인자로 받은 replyDetail을 reutnReplyDetail로 넣음
+		
+		int replyNo = reply.getReplyNo();
+		
+		reply = replyService.getReply(replyNo); //인자로 받은 replyNo와 동일한 reply객체를 불러옴
+		reply.setReplyDetail(returnReplyDetail); // 바로 위에서 불러온 reply객체에 returnReplyDetail을 set해준다.
+		
+		//test
+		System.out.println("\n\nreplyNo :: "+reply.getReplyNo());
+		System.out.println("\n\nreplyDetail :: "+reply.getReplyDetail());
+		System.out.println("\n\nreviewNo :: "+reply.getReviewNo());
+		System.out.println("\n\n\nreply :: "+reply+"\n\n\n");
+		
+
 		//Business Logic
 		replyService.updateReply(reply);
 		
-		//계속 수정요망
-		return null;
+		//test
+		System.out.println("\n\n\n\n\nokokokokok\n\n\n\n\n");
+		
+		reply = replyService.getReply(replyNo);
+		
+		return reply;
 		
 	}
 	

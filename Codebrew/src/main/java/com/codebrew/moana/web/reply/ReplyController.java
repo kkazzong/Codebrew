@@ -56,7 +56,6 @@ public class ReplyController {
 								HttpServletRequest request) throws Exception {
 		
 		System.out.println("ReplyController :: addReplyList");
-		System.out.println("/view/reply/getReplyList ===>>> /view/review/getReplyList");
 		
 		User user = (User)session.getAttribute("user");
 		System.out.println("user"+user);
@@ -69,18 +68,18 @@ public class ReplyController {
 		ModelAndView modelAndView = new ModelAndView();
 		//modelAndView.addObject("reviewNo", reviewNo);
 		modelAndView.addObject("reply", reply);
-		modelAndView.setViewName("/review/getReview?reviewNo="+reviewNo);
+		modelAndView.setViewName("redirect:/review/getReview?reviewNo="+reviewNo);
 		
 		return modelAndView;
 		
 	}
 	
 	//2. getReplyList : 해당(reviewNo)에 맞는 reply목록들을 불러온다.
+	@RequestMapping(value="getReplyList")
 	public ModelAndView getReplyList(@RequestParam("search") Search search,
 									@RequestParam("reply") Reply reply) throws Exception {
 		
 		System.out.println("ReplyController :: getReplyList");
-		System.out.println("/view/reply/getReplyList ===>>> /view/review/getReplyList");
 		
 		if(search.getCurrentPage() == 0){
 			search.setCurrentPage(1);
@@ -105,11 +104,11 @@ public class ReplyController {
 	}
 	
 	//3. updateReply : 본인이 작성한 댓글을 수정
+	@RequestMapping(value="updateReply")
 	public ModelAndView updateReply(@RequestParam("search") Search search, 
 									@RequestParam("reply") Reply reply) throws Exception {
 		
 		System.out.println("ReplyController :: updateReply");
-		System.out.println("/view/reply/getReplyList ===>>> /view/review/getReplyList");
 		
 		// Business Logic 수행
 		replyService.updateReply(reply);
@@ -135,33 +134,22 @@ public class ReplyController {
 	}
 	
 	//4. deleteReply : 본인이 작성한 댓글을 삭제
-	public ModelAndView deleteReply(@RequestParam("search") Search search, 
-									@RequestParam("replyNo") int replyNo) throws Exception {
+	@RequestMapping(value="deleteReply")
+	public ModelAndView deleteReply(@RequestParam("replyNo") int replyNo) throws Exception {
 		
 		System.out.println("ReplyController :: deleteReply");
-		System.out.println("/view/reply/getReplyList ===>>> /view/review/getReplyList");
+		
+		Reply reply = replyService.getReply(replyNo);
+		int reviewNo = reply.getReviewNo();
 		
 		//Business Logic 수행
 		replyService.deleteReply(replyNo);
 		
-		if(search.getCurrentPage() == 0){
-			search.setCurrentPage(1);
-		}
-		search.setPageSize(pageSize);
-		
-		Map<String, Object> map = replyService.getReplyList(search);
-		
-		Page resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
-		System.out.println(resultPage);
-		
 		//Model 과 View 연결
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("list", map.get("list"));
-		modelAndView.addObject("resultPage", resultPage);
-		modelAndView.addObject("search", search);
 		
-		modelAndView.setViewName("/view/review/getReplyList.jsp");
-		return null;
+		modelAndView.setViewName("redirect:/review/getReview?reviewNo="+reviewNo);
+		return modelAndView;
 	}
 	
 	

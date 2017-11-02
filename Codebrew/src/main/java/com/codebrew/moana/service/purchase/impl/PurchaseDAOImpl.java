@@ -182,6 +182,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			// 파일경로
 			System.out.println("from properties [path] : "+qrCodePath);
 			System.out.println("from session [path] : "+path);
+			
 			file = new File(qrCodePath);
 			serverFile = new File(path);
 			if (!file.exists()) {

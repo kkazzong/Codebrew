@@ -25,40 +25,6 @@
 <!-- Bootstrap Dropdown Hover JS -->
 <script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
 
-<style type="text/css">
-	body {
-		padding-top : 70px;
-    }
-    
-    section {
-    	/* background: url(/resources/image/toolbarImage/bg2.jpg) no-repeat center center; */
-    	background: url(/resources/image/ui/main.gif) no-repeat center center;
-		width: 100%;
-	   	height: 500px;
-	   background-size: 100%;
-	   opacity: 0.8;
-    }
-    
-    #box {
-		padding-top: 187px;
-		text-align: center;
-	}
-     
-		
-	.title {
-		color: black;
-		text-shadow:1px 1px 1px black;
-	
-	} 
-	/* 
-	.panel-relative{
-		position : relative;
-	}
-	 */
-	
-</style>
-
-
 	<script type="text/javascript">
 	
 
@@ -76,7 +42,6 @@
 									"Content-Type" : "application/json"
 								},
 								success : function(jsonData , status) {
-									alert("dd"+jsonData.list[0].festivalName);
 									
 									for(var i = 0 ; i<3; i++){
 										
@@ -95,6 +60,7 @@
 									$("#festivalNo0 > p").text(jsonData.list[0].festivalNo);
 									$("#date0").text(jsonData.list[0].startDate + " ~ " + jsonData.list[0].endDate);
 									$("#addr0").text(jsonData.list[0].addr);
+									$("c").attr("test",jsonData.list[0].festivalImage +".contains('http://')==false");
 									
 									/* 1 */
 									$("#festivalName1").text(jsonData.list[1].festivalName);
@@ -109,6 +75,8 @@
 									$("#festivalNo2 > p").text(jsonData.list[2].festivalNo);
 									$("#date2").text(jsonData.list[2].startDate + " ~ " + jsonData.list[2].endDate);
 									$("#addr2").text(jsonData.list[2].addr);
+									
+									
 									
 								}
 						});
@@ -126,15 +94,28 @@
 	});
 });
 			
-	   
-
 	    
 </script>
+
+
+<style type="text/css">
+
+/* body{
+	background-color: black;	
+} */
+
+</style>
+
+
+
 <title>Moana</title>
-<!-- 타이틀 수정하지마세용 -->
 </head>
+
+<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
+
+
 <body onload="fncGetInitListDB();">
-	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
+	
 	
 		<div class="container">
 	
@@ -146,11 +127,9 @@
 					<h3 class="text-info">main</h3>
 				</div>
 				
-	<form>
 	
 	<jsp:include page="/view/festival/getFestivalListDB.jsp"></jsp:include>	
 	
-	</form>
 	
 	<br/><br/><br/>
 
@@ -168,7 +147,12 @@
 							
 					<div class="panel-body">
 					
-					<img src="${festival.festivalImage }" id="image0" width="100%"height="300" />
+					
+					<img src="${festival.festivalImage }" class="img-rounded" id="image0" width="100%"height="300" />
+					
+					<c:if test="${festival.festivalImage.contains('http://')==false }">
+					
+					</c:if>
 					
 					<br/>
 									<div id="festivalNo0" style="display: none">
@@ -202,7 +186,8 @@
 							
 					<div class="panel-body">
 					
-					<img src="${festival.festivalImage }" id="image1" width="100%"height="300" />
+					
+					<img src="${festival.festivalImage }" class="img-rounded" id="image1" width="100%"height="300" />
 					
 					<br/>
 									<div id="festivalNo1" style="display: none">
@@ -236,7 +221,7 @@
 							
 					<div class="panel-body">
 					
-					<img src="${festival.festivalImage }" id="image2" width="100%"height="300" />
+					<img src="${festival.festivalImage }" class="img-rounded" id="image2" width="100%"height="300" />
 					
 					<br/>
 									<div id="festivalNo2" style="display: none">

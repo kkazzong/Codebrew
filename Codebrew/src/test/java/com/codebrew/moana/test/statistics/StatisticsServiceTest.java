@@ -1,8 +1,7 @@
 package com.codebrew.moana.test.statistics;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,14 +11,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.codebrew.moana.service.domain.Festival;
-import com.codebrew.moana.service.domain.Party;
-import com.codebrew.moana.service.domain.Purchase;
-import com.codebrew.moana.service.domain.QRCode;
 import com.codebrew.moana.service.domain.Statistics;
-import com.codebrew.moana.service.domain.User;
-import com.codebrew.moana.service.purchase.PurchaseDAO;
 import com.codebrew.moana.service.statistics.StatisticsDAO;
+import com.codebrew.moana.service.statistics.StatisticsService;
 
 /*
  *	FileName :  UserServiceTest.java
@@ -40,8 +34,12 @@ public class StatisticsServiceTest {
 	@Autowired
 	@Qualifier("statisticsDAOImpl")
 	StatisticsDAO statisticsDAO;
+	
+	@Autowired
+	@Qualifier("statisticsServiceImpl")
+	StatisticsService statisticsService;
 
-	@Test
+	//@Test
 	public void getDailyTotalSaleAmountStat() throws Exception {
 		
 		List<Statistics> list = statisticsDAO.getDailyTotalSaleAmountStat();
@@ -66,5 +64,37 @@ public class StatisticsServiceTest {
 		
 		Assert.assertNotNull(list);
 		Assert.assertEquals(4, list.size());
+	}
+	
+	//@Test
+	public void getFestivalZzim() throws Exception {
+
+		List<Statistics> list = statisticsDAO.getFestivalZzim();
+		
+		Assert.assertNotNull(list);
+		Assert.assertEquals(3, list.size());
+		
+		/*Map map = statisticsService.getFestivalZzim();
+		System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+		System.out.println(map);
+		System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");*/
+	}
+	 
+	@Test
+	public void getFestivalRating() throws Exception {
+
+		List<Statistics> list = statisticsDAO.getFestivalRating();
+
+		Assert.assertNotNull(list);
+		Assert.assertEquals(3, list.size());
+	}
+	
+	//@Test
+	public void getPartyCount() throws Exception {
+
+		List<Statistics> list = statisticsDAO.getPartyCount();
+		
+		Assert.assertNotNull(list);
+		Assert.assertEquals(3, list.size());
 	}
 }

@@ -66,11 +66,11 @@ public class PurchaseController {
 	}
 
 	@RequestMapping(value = "addPurchase", method = RequestMethod.GET)
-	public ModelAndView addPurchase(HttpSession session, RedirectAttributes redirectAttributes,
-			@RequestParam(value = "festivalNo", required = false) String festivalNo,
-			@RequestParam(value = "partyNo", required = false) String partyNo) throws Exception {
+	public ModelAndView addPurchase(HttpSession session,
+																	@RequestParam(value = "festivalNo", required = false) String festivalNo,
+																	@RequestParam(value = "partyNo", required = false) String partyNo) throws Exception {
 
-		System.out.println("축제라면 : " + festivalNo + " 파티라면 : " + partyNo);
+		System.out.println("[[축제번호 : " + festivalNo + " 파티번호 : " + partyNo+"]]");
 
 		// 세션체크
 		User user = (User) session.getAttribute("user");
@@ -80,23 +80,18 @@ public class PurchaseController {
 
 		if (festivalNo != null) {
 
-			System.out.println("디즈이즈 축제");
+			System.out.println("[[축제 티켓 구매]]");
 
 			Festival festival = festivalService.getFestivalDB(Integer.parseInt(festivalNo));
 			ticket = ticketService.getTicket(festival.getFestivalNo(), "1");
 
-			//redirectAttributes.addFlashAttribute("festival", festival.getClass());
 			modelAndView.addObject("festival", festival);
 			modelAndView.addObject("purchaseFlag", "1");
 
 		} else {
 
-			System.out.println("아모루파티");
+			System.out.println("[[파티 티켓 구매]]");
 
-			//Party party = partyService.getParty(Integer.parseInt(partyNo));
-			//ticket = ticketService.getTicket(party.getPartyNo(), "2");
-
-			//modelAndView.addObject("party", party);
 			Party party = partyService.getParty(Integer.parseInt(partyNo),"1");
 			ticket = ticketService.getTicket(party.getPartyNo(), "2");
 
@@ -147,8 +142,8 @@ public class PurchaseController {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("purchase", purchase);
 		modelAndView.addObject("ticket", ticket);
-		//modelAndView.setViewName("/view/purchase/getPurchase.jsp");
-		modelAndView.setViewName("/view/purchase/getPurchaseTest.jsp");
+		modelAndView.setViewName("/view/purchase/getPurchase.jsp");
+		//modelAndView.setViewName("/view/purchase/getPurchaseTest.jsp");
 		return modelAndView;
 
 	}
@@ -180,8 +175,8 @@ public class PurchaseController {
 		modelAndView.addObject("search", search);
 		modelAndView.addObject("purchaseFlag", purchaseFlag);
 
-		//modelAndView.setViewName("/view/purchase/getPurchaseList.jsp");
-		modelAndView.setViewName("/view/purchase/getPurchaseListTest.jsp");
+		modelAndView.setViewName("/view/purchase/getPurchaseList.jsp");
+		//modelAndView.setViewName("/view/purchase/getPurchaseListTest.jsp");
 		
 		return modelAndView;
 	}
@@ -282,6 +277,7 @@ public class PurchaseController {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("purchase", purchase);
 		modelAndView.setViewName("/view/purchase/approvePayment.jsp");
+		//modelAndView.setViewName("/purchase/getPurchase?purchaseNo="+purchase.getPurchaseNo());
 		
 		return modelAndView;
 

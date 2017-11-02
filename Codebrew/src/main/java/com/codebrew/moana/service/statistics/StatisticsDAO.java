@@ -11,4 +11,7 @@ public interface StatisticsDAO {
 	public List<Statistics> getMonthlyTotalSaleAmountStat(Statistics statistics) throws Exception;
 	public List<Statistics> getQuarterTotalSaleAmountStat() throws Exception;
 	public List<Statistics> getQuarterTotalSaleAmountStat(Statistics statistics) throws Exception;
+	public List<Statistics> getFestivalZzim() throws Exception;
+	public List<Statistics> getFestivalRating() throws Exception;
+	public List<Statistics> getPartyCount() throws Exception;
 }

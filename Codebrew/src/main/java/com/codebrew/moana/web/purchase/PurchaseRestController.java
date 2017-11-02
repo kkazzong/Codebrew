@@ -230,6 +230,10 @@ public class PurchaseRestController {
 	public Purchase approvePayment(HttpSession session,
 																@RequestBody Purchase purchase) throws Exception {
 		String path = session.getServletContext().getRealPath("/");
+		path += "\\resources\\image\\QRCodeImage";
+		System.out.println("@@@@@@@@@@@@@@@@@@@@@@");
+		System.out.println("휴대폰결제path"+path);
+		System.out.println("@@@@@@@@@@@@@@@@@@@@@@");
 		Map<String, Object> map = new HashMap<String, Object>();
 		purchase.setUser((User)session.getAttribute("user"));
 		map.put("purchase", purchase);
@@ -246,6 +250,7 @@ public class PurchaseRestController {
 															@RequestBody Purchase purchase) throws Exception {
 		
 		String path = session.getServletContext().getRealPath("/");
+		path += "\\resources\\image\\QRCodeImage";
 		purchase = purchaseService.readyTransfer(purchase);
 		Map<String, Object> map = new HashMap<String, Object>();
 		purchase.setUser((User)session.getAttribute("user"));

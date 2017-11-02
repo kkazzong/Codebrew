@@ -56,29 +56,12 @@ $(function(){
 		$("input:text[name='searchKeyword']").on('keydown',function(event){
 			
 			if(event.keyCode ==13){
-				/* alert("dpsxj") */
 				event.preventDefault();
 				$( "button:contains('검색')" ).click();
 			}
 		});
 	
 	});
-	
-/* $(function(){
-	
-	$("#tag").on('click',function(){
-		
-		var festivalNo = $("div:nth-child(13)",this).text();
-		var userId = $("input:hidden[name='userId']").val();
-		
-		self.location="/festival/deleteZzim/"+festivalNo+"/"+userId;
-		
-		
-	});
-
-}); */
-
-	
 	
 	
 </script>
