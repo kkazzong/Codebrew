@@ -28,6 +28,8 @@
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
 	
+	<link rel="stylesheet" href="/resources/css/badge.css">
+	
 	<!-- 자바스크립트 -->
 	<script type="text/javascript">
 	
@@ -185,6 +187,7 @@
 	    	font-size: 17px;
 	    }
 	    
+	    .thead-dark th{color:#fff;background-color:#212529;border-color:#32383e}
 	    /* div {
 			border : 3px solid #D6CDB7;
 			margin0top : 10px;
@@ -309,7 +312,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<table class="table table-striped text-center">
-					<thead>
+					<thead class="thead-dark">
 						<tr>
 							<th>NO</th>
 							<th>구매번호</th>
@@ -326,16 +329,16 @@
 						<c:forEach var="purchase" items="${list}">
 							<c:set var="i" value="${i+1}"></c:set>
 							<tr>
-								<td>${i}</td>
+								<td scope="row">${i}</td>
 								<td>${purchase.purchaseNo}</td>
 								<td>${purchase.user.userId}</td>
 								<td>
 									<c:choose>
 										<c:when test="${purchase.purchaseFlag == 1}">
-											<span class="label label-success"># 축제</span>
+											<span class="badge badge-pill badge-info"># 축제</span>
 										</c:when>
 										<c:when test="${purchase.purchaseFlag == 2}">
-											<span class="label label-warning"># 파티</span>
+											<span class="badge badge-pill badge-warning"># 파티</span>
 										</c:when>
 									</c:choose>
 								</td>

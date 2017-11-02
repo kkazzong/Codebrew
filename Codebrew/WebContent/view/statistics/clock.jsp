@@ -43,19 +43,14 @@
 	}
 	
 	$(function() {
-		printClock();
+		//printClock();
 	})
 </script>
 
 <style type="text/css">
 
 	#clock {
-		/* border : 1px solid #dedede;
-		width : 100%;
-		height : 50px; */
-		/* line-height : 50px;
-		color : #666; */
-		font-size : 10px;
+		font-size : 12px;
 		text-align : center;
 	}
 	
