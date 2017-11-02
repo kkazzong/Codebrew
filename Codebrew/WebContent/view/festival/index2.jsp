@@ -31,9 +31,70 @@
 	<script type="text/javascript">
 	
 
-	function fncGetInitListDB() {
+	/* function fncGetInitListDB() {
 		
 		$(function() {
+				 
+					$.ajax( 
+							{
+								url : "/festivalRest/json/getInitListDB",
+								method : "GET" ,
+								dataType : "json" ,
+								headers : {
+									"Accept" : "application/json",
+									"Content-Type" : "application/json"
+								},
+								success : function(jsonData , status) {
+									
+									for(var i = 0 ; i<3; i++){
+										
+									var festivalName =  jsonData.list[i].festivalName;	
+									var festivalImage = jsonData.list[i].festivalImage
+									var festivalNo = jsonData.list[i].festivalNo
+									var startDate = jsonData.list[i].startDate
+									var endDate = jsonData.list[i].endDate
+									var addr = jsonData.list[i].addr
+									
+									}
+									
+									$("#festivalName0").text(jsonData.list[0].festivalName);
+									$("#image0").attr("src",jsonData.list[0].festivalImage);
+									$("#festivalNo0 > p").text(jsonData.list[0].festivalNo);
+									$("#date0").text(jsonData.list[0].startDate + " ~ " + jsonData.list[0].endDate);
+									$("#addr0").text(jsonData.list[0].addr);
+									$("c").attr("test",jsonData.list[0].festivalImage +".contains('http://')==false");
+									$(".first-slide").attr("src",jsonData.list[0].festivalImage);
+									$("#tag0 > div > p").text(jsonData.list[0].festivalNo);
+									$("#tag0").val(jsonData.list[0].festivalNo);
+									
+									
+									$("#festivalName1").text(jsonData.list[1].festivalName);
+									$("#image1").attr("src",jsonData.list[1].festivalImage);
+									$("#festivalNo1 > p").text(jsonData.list[1].festivalNo);
+									$("#date1").text(jsonData.list[1].startDate + " ~ " + jsonData.list[1].endDate);
+									$("#addr1").text(jsonData.list[1].addr);
+									$(".second-slide").attr("src",jsonData.list[1].festivalImage);
+									$("#tag1 > div > p").text(jsonData.list[1].festivalNo);
+									$("#tag1").val(jsonData.list[1].festivalNo);
+									
+									$("#festivalName2").text(jsonData.list[2].festivalName);
+									$("#image2").attr("src",jsonData.list[2].festivalImage);
+									$("#festivalNo2 > p").text(jsonData.list[2].festivalNo);
+									$("#date2").text(jsonData.list[2].startDate + " ~ " + jsonData.list[2].endDate);
+									$("#addr2").text(jsonData.list[2].addr);
+									$(".third-slide").attr("src",jsonData.list[2].festivalImage);
+									$("#tag2 > div > p").text(jsonData.list[2].festivalNo);
+									$("#tag2").val(jsonData.list[2].festivalNo);
+									
+									alert("init"+ $("#festivalName0").text());
+									
+									
+								}
+						});
+				});
+	} */
+	
+	$(document).ready(function() {
 				 
 					$.ajax( 
 							{
@@ -89,10 +150,46 @@
 									$("#tag2 > div > p").text(jsonData.list[2].festivalNo);
 									$("#tag2").val(jsonData.list[2].festivalNo);
 									
+									alert("init"+ $("#festivalName0").text());
+									
+									
 								}
-						});
 				});
-	}
+	});
+	
+	
+function fncGetWebSearch() {
+		
+		$(function() {
+		
+			
+			alert("websearch"+ $("#festivalName0").text());
+			
+			
+			var festivalName0 = $("#festivalName0").text();
+		
+			 $.ajax( 
+					 {
+						url : "https://dapi.kakao.com/v2/search/web?query="
+								+ encodeURIComponent(festivalName0)
+									+"&page=1&size=1",
+						method : "GET" ,
+						headers : {
+							"Authorization" : "KakaoAK a6419e542017d8fd315556f745f29fcf"
+						},
+						success : function(JSONData , status) {
+
+							alert("JSONData : \n"+JSONData);
+							alert( "JSON.stringify(JSONData) : \n"+JSON.stringify(JSONData) );
+							
+							$("#search0").val(JSONData);
+						}
+					 });
+	});
+}
+		
+
+	
 
 	
 	
@@ -155,6 +252,9 @@
 			   self.location="/festival/getFestivalDB?festivalNo="+festivalNo;
 		   })
 	   })
+	   
+	   
+	
 				    	
 				    	
   
@@ -179,6 +279,11 @@
            height : 400x;
     }
     
+   .form-control{
+   	width: 1200px;
+   	height: auto;
+   }
+    
     
 
 </style>
@@ -190,13 +295,30 @@
 
 <jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
 
-
-<body onload="fncGetInitListDB();">
-	
+<body onload="fncGetWebSearch();">
 	
   	
   		<div class="page-header text-center">
-					<h3 class="text-info">main</h3>
+					<h3 class="text-info">
+						<div class="row">
+							<div class="text-center">
+									<form class="form form-inline" id="searchForm" name="searchForm">
+										<input type="hidden" id="currentPage" name="currentPage" value=""/>
+										<input type="hidden" id="festivalNo" name="festivalNo" value=""/>
+										<div class="input-group">
+											<input class="form-control" id="searchKeyword" name="searchKeyword" type="text" 
+														value="${!empty search.searchKeyword ? search.searchKeyword : ''}"
+														placeholder="축제를 검색해보세요.">
+											<span class="input-group-btn">
+										    	<button id="search" class="btn btn-primary btn-block" type="button">
+										    		<span class="glyphicon glyphicon-search" aria-hidden="true" > </span>
+										    	</button>
+										    </span>
+										</div>
+									</form>
+								</div>
+							</div>
+					</h3>
 				</div>
 				
 				<!-- carousel  -->
@@ -284,29 +406,21 @@
       </div> 
       
     <!-- carousel 끝 -->
-    
-    
 	
 	<br/>
 	
-		<div class="row">
-		<div class="col-md-4 text-right">
-				<form class="form form-inline" id="searchForm" name="searchForm">
-					<input type="hidden" id="currentPage" name="currentPage" value=""/>
-					<input type="hidden" id="festivalNo" name="festivalNo" value=""/>
-					<div class="input-group">
-						<input class="form-control" id="searchKeyword" name="searchKeyword" type="text" 
-									value="${!empty search.searchKeyword ? search.searchKeyword : ''}"
-									placeholder="축제를 검색해보세요.">
-						<span class="input-group-btn">
-					    	<button id="search" class="btn btn-primary btn-block" type="button">
-					    		<span class="glyphicon glyphicon-search" aria-hidden="true"> </span>
-					    	</button>
-					    </span>
-					</div>
-				</form>
-			</div>
-		</div>
+	<!-- fncGetWebSearch.... -->
+	
+	<input type="text" id="search0" value="">
+	
+	<br/>
+	
+	<input type="text" id="search1" value="">
+	
+	<br/>
+	
+	<input type="text" id="search2" value="">
+	
 			
 			</body>
 			
