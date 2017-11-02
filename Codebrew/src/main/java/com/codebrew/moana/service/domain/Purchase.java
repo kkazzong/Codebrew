@@ -11,6 +11,7 @@ public class Purchase {
 	private Ticket ticket; // 티켓
 	private String itemName; // 티켓이름(축제이름,파티이름)
 	private int purchasePrice; // 구매가격
+	private String price;
 	private int purchaseCount; // 구매수량
 	private String purchaseDate; // 구매날짜
 	private String paymentMethodType; // 결제수단[CARD, MONEY]
@@ -33,7 +34,6 @@ public class Purchase {
 
 	// Constructor
 	public Purchase() {
-		System.out.println("purchase default constructor");
 	}
 
 	// getter, setter
@@ -235,6 +235,14 @@ public class Purchase {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+	
+	public String getPrice() {
+		return price;
+	}
+
+	public void setPrice(String price) {
+		this.price = price;
 	}
 
 	@Override

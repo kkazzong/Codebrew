@@ -75,14 +75,14 @@
 	<div class="container">
 	
 		<!-- page header -->
-		<div class="row">
+		<!-- <div class="row">
 			<div class="col-md-offset-4 col-md-4">
 				<div class="page-header text-center">
 					<h3 class="text-info"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 결제완료</h3>
 					<small class="text-muted">결제정보를 확인해주세요</small>
 				</div>
 			</div>
-		</div>
+		</div> -->
 		
 		<!-- 이미지 -->
 		<%-- <div class="row">
@@ -129,7 +129,7 @@
 								</tr>
 								<tr>
 									<td class="col-md-3 active"><h4>결제금액</h4></td>
-									<td><h4>${purchase.purchasePrice}원</h4></td>
+									<td><h4><%-- ${purchase.purchasePrice} --%>${purchase.price}원</h4></td>
 								</tr>
 								<tr>
 									<td class="col-md-3 active"><h4>결제수단</h4></td>

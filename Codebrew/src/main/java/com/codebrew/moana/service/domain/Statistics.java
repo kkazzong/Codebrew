@@ -17,7 +17,6 @@ public class Statistics {
 	
 	// Constructor
 	public Statistics() {
-		System.out.println(this.getClass());
 	}
 
 	public Purchase getPurchase() {

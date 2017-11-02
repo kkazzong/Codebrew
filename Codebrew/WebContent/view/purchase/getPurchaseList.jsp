@@ -388,7 +388,8 @@
 	    }
 	    
 	   .panel-primary > .panel-heading {
-	    	background-image :linear-gradient(to bottom,#333 0,#333 100%);
+	    	background-image :linear-gradient(to bottom,#ffffff 0,#ffffff 100%);
+	    	border-color: rgba(255,255,255,.15);
 	    }
 	    
 	    .panel {
@@ -617,7 +618,7 @@
 									</div>
 									<div class="col-md-12">
 										<h4>
-											${purchase.purchaseCount} 장 / <em>${purchase.purchasePrice}</em><i>원</i>
+											${purchase.purchaseCount}장 / <%-- ${purchase.purchasePrice} --%>${purchase.price}원
 										</h4>
 									</div>
 									<div class="col-md-12">

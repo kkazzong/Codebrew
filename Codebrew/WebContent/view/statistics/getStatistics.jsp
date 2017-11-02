@@ -301,11 +301,16 @@
 	    .page-header {
 	    	border-bottom : 1px solid #f2f4f6;
 	    }
+	    
+	   #refreshClock {
+	    	margin-top: 50px;
+	    }
 		
 		/* div {
 			border : 3px solid #D6CDB7;
 			margin0top : 10px;
 		} */
+		
 	</style>
 	
 </head>
@@ -342,22 +347,6 @@
 		<div class="row">
 			<div class="col-md-offset-3 col-md-6">
 				<div class="row">
-						<!-- <div class="col-md-12 btn-group" role="group">
-							<button class="btn btn-default btn-lg" type="button" value="1">Daily</button>
-							<button class="btn btn-default btn-lg" type="button" value="2">Monthly</button>
-							<button class="btn btn-default btn-lg" type="button" value="3">Quarter</button>
-						</div> -->
-					<!-- <div class="col-md-12 btn-group" data-toggle="buttons">
-						<label class="btn btn-default active">
-							<input type="radio" name="options" value="daily" autocomplete="off" checked> Daily
-						</label>
-						<label class="btn btn-default">
-							 <input type="radio" name="options" value="monthly" autocomplete="off"> Monthly
-						</label>
-						<label class="btn btn-default">
-							<input type="radio" name="options" value="quarter" autocomplete="off"> Quarterly
-						</label>
-					</div> -->
 					<!-- Tab -->
 					<ul class="nav nav-tabs" role="tablist">
 					    <li role="presentation" class="active">
@@ -376,33 +365,7 @@
 		
 		<input type="hidden" name="statFlag" value="${statistics.statFlag}">
 		
-		<!-- <!-- 기간별 검색 
-		<div class="row">
-			<div class="col-md-offset-3 col-md-6">
-				<div class="row">
-					<div class="col-md-12">
-						<form class="form form-inline">
-							<div class="form-group">
-								<label for="기간 선택">기간 선택</label>
-								<input class="form-control" type="text" name="startDate">
-								<input class="form-control" type="text" name="endDate">
-								<div class="input-group">
-									<input class="form-control" type="text" name="statDate">
-									<div class="input-group-addon">
-									<span class="glyphicon glyphicon-calendar"></span>
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<button class="btn btn-default" type="button">조회하기</button>
-							</div>
-						</form>
-					</div>
-				</div>			
-			</div>
-		</div> -->
-		
-		<div class="row">
+		<div id="refreshClock" class="row">
 			<div class="col-md-offset-3 col-md-6">
 				<div class="row">
 					<div class="col-md-12">

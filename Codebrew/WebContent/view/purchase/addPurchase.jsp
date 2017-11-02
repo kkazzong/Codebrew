@@ -40,9 +40,10 @@
 	<!-- Include a polyfill for ES6 Promises (optional) for IE11 and Android browser -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
 	
+	<script type="text/javascript" src="/resources/javascript/commonUtil.js"></script>
 	<!-- 자바스크립트 -->
 	<script type="text/javascript">
-	
+		
 		//// 아임포트 변수 초기화
 		var IMP = window.IMP; // 생략가능
 		IMP.init('imp74820381'); // 'iamport' 대신 부여받은 "가맹점 식별코드"를 사용
@@ -210,7 +211,7 @@
 			}
 			
 			$("#purchaseCount").html(selectedCount); //구매수량
-			$("#purchasePrice").html(purchasePrice); //결제금액
+			$("#purchasePrice").html(AddComma(purchasePrice)); //결제금액
 			
 			$("#kakaoPay").removeAttr("disabled"); //카카오페이 버튼 활성화
 			$("#danal").removeAttr("disabled"); //핸드폰 결제 활성화
@@ -315,7 +316,7 @@
 	
 					selectedCount = $("#purchaseCount").html().trim();
 					$("input:hidden[name='purchaseCount']").val(selectedCount);
-					$("input:hidden[name='purchasePrice']").val(purchasePrice);
+					$("input:hidden[name='purchasePrice']").val(AddComma(purchasePrice));
 					console.log(selectedCount+"개, "+purchasePrice+"원");
 					$("form").attr("method", "POST").attr("action", "/purchase/addPurchase").submit();
 					

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
 <script type="text/javascript">
 
 	function printClock() {
@@ -23,7 +24,7 @@
 					+ '</span>'
 		}
 		var innerHTML = calendar + " "+ currentHours + ":" + currentMinute +
-		":" + currentSeconds +" <span style='font-size:10px;'>" + amPm+ "</span>"; //날짜를 출력해 줌
+		":" + currentSeconds +" <span style='font-size:12px;'>" + amPm+ "</span>"; //날짜를 출력해 줌
 		
 		$("#clock").html(innerHTML);
 
@@ -45,7 +46,9 @@
 		printClock();
 	})
 </script>
+
 <style type="text/css">
+
 	#clock {
 		/* border : 1px solid #dedede;
 		width : 100%;
@@ -55,6 +58,7 @@
 		font-size : 10px;
 		text-align : center;
 	}
+	
 </style>
 <span id="clock"></span>
 

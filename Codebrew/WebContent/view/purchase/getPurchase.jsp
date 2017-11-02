@@ -445,11 +445,11 @@
 								</tr>
 								<tr>
 									<td class="col-md-3 active"><h4>구매수량</h4></td>
-									<td><h4>${purchase.purchaseCount} 장</h4></td>
+									<td><h4>${purchase.purchaseCount}장</h4></td>
 								</tr>
 								<tr>
 									<td class="col-md-3 active"><h4>결제금액</h4></td>
-									<td><h4>${purchase.purchasePrice} 원</h4></td>
+									<td><h4><%-- ${purchase.purchasePrice} --%>${purchase.price}원</h4></td>
 								</tr>
 								<tr>
 									<td class="col-md-3 active"><h4>결제수단</h4></td>
