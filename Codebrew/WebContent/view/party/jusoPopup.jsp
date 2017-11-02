@@ -36,9 +36,6 @@
 	/** 2017년 3월 추가제공 **/
 	/* String emdNo  = request.getParameter("emdNo"); */
 	
-	String entX  = request.getParameter("entX");
-	String entY  = request.getParameter("entY");
-
 %>
 </head>
 <script language="javascript">
@@ -48,7 +45,7 @@
 function init(){
 	var url = location.href;
 	var confmKey = "U01TX0FVVEgyMDE3MTAyNDE3MDAyNDEwNzQzNjI=";
-	var resultType = "4"; // 도로명주소 검색결과 화면 출력내용, 1 : 도로명, 2 : 도로명+지번, 3 : 도로명+상세건물명, 4 : 도로명+지번+상세건물명
+	var resultType = "2"; // 도로명주소 검색결과 화면 출력내용, 1 : 도로명, 2 : 도로명+지번, 3 : 도로명+상세건물명, 4 : 도로명+지번+상세건물명
 	var inputYn= "<%=inputYn%>";
 	if(inputYn != "Y"){
 		document.form.confmKey.value = confmKey;

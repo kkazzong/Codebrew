@@ -19,7 +19,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
+    
 	
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
@@ -87,9 +87,9 @@
 				
 				if( $("#searchCondition").val() != "4"){
 					console.log("진행중인 파티 버튼");
-					$("#searchKeyword").val("");
+					$("#searchKeyword").val('');
 				}
-				$("#searchCondition").val("4");
+				$("#searchCondition").val('4');
 				fncGetList(1);
 				
 			});
@@ -320,16 +320,19 @@
 								
 								<%-- ${ party.user.profileImage} --%>
 								<h3 class="panel-title pull-left">
-								<img class="img-circle" src="/resources/uploadFile/${party.user.profileImage}" width="50" height="50">
-								&nbsp; ${ party.user.nickname }</h3>
+									<img class="img-circle" src="/resources/uploadFile/${party.user.profileImage}" width="50" height="50">
+									&nbsp; ${ party.user.nickname }
+								</h3>
 								
         						<!-- 삭제버튼 -->
 								<form id="deleteForm">
 										<input type="hidden" name="partyNo" value="${party.partyNo}">
 										
-										<button class="btn btn-default pull-right" type="button" value="${party.partyNo}">
-											<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-										</button>
+										<c:if test="${search.searchCondition == '3' }">
+											<button class="btn btn-default pull-right" type="button" value="${party.partyNo}">
+												<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+											</button>
+										</c:if>
 								</form>
 								<div class="clearfix"></div>
 							</div>

@@ -150,32 +150,35 @@
 <style type="text/css">
 	body {
 		padding-top : 70px;
-		background-color: #f2f4f6;
     }
+    
     .panel {
 		margin-top : 50px;
     }
+    
     .panel-primary>.panel-heading {
     	background-color: #000000;
     }
-    .text-info {
-    	color: #333333; 
-    }
-    .page-header {
-    	border-bottom : 1px solid #f2f4f6;
-    }
-    .panel-primary {
-    	border-color : #3e3e3d;
-    }
-    .panel-primary > .panel-heading {
-    	background-image :linear-gradient(to bottom,#333 0,#333 100%);
-    }
-    .panel {
-    	box-shadow : 9px 7px 10px rgba(154, 143, 143, 0.98);
-    }
-    .section {
-    	margin-top : 400px;
-    }
+   
+	.panel-heading h3 {
+	    white-space: nowrap;
+	    overflow: hidden;
+	    text-overflow: ellipsis;
+	    line-height: normal;
+	    width: 75%;
+	    padding-top: 8px;
+	}
+	
+/* 	#main { */
+/* 		 background-image: url(/resources/image/ui/party_banner2.jpg);  */
+/* 		 width: 100%; */
+/* 		 height : 500px; */
+/* 	     /* height: 100%; */  
+/* 		 background-size: 100%;  */
+/* 		 opacity: 1.0; */
+/* 		 /* background-color: #556180; */ 
+/* 	}  */
+
 	#banner {
 		background: url(https://cdnstrgcu01.azureedge.net/web/banners/banner_1.jpg) center center no-repeat;
 	    background-size: cover;
@@ -195,51 +198,41 @@
 	    color: #FFF;
 	    /* width: 100%; */
 	}
+	
 	.title {
 		color: white;
 		text-shadow:1px 1px 1px black;
 	} 
+	
 	.text-center white {
 		line-height: 500px; 
 		/* top: 25%;
 		position: relative;
 		text-align: center; */
 	}
+	
+	/* .main .search-main input[type=text] {
+	
+		width: 83%;
+	    height: 41px;
+	    padding-left: 10px;
+	    float: left;
+	    margin-top: 2px;
+	    margin-left: 2px;
+	} */
+	
+	/* .main .search-main {
+	    background-color: black;
+	    width: 100%;
+	    height: 45px;
+	    margin-bottom: 76px;
+	    position: relative;
+	} */
+
 	.search-main img {
 	    width: 40px;
 	    margin-top: 2px; 
 
-	}
-	
-	/* 파티 플래그 버튼 */
-	.button-3d {
-	  position:relative;
-	  width: auto;
-	  display:inline-block;
-	  color:#ecf0f1;
-	  text-decoration:none;
-	  border-radius:5px;
-	  border:solid 1px #f39c12;
-	  background:#e67e22;
-	  text-align:center;
-	  padding:16px 18px 14px;
-	  margin: 12px;
-	  
-	  -webkit-transition: all 0.1s;
-		-moz-transition: all 0.1s;
-		transition: all 0.1s;
-		
-	  -webkit-box-shadow: 0px 6px 0px #d35400;
-	  -moz-box-shadow: 0px 6px 0px #d35400;
-	  box-shadow: 0px 6px 0px #d35400;
-	}
-	
-	.button-3d:active{
-	    -webkit-box-shadow: 0px 2px 0px #d35400;
-	    -moz-box-shadow: 0px 2px 0px #d35400;
-	    box-shadow: 0px 2px 0px #d35400;
-	    position:relative;
-	    top:4px;
 	}
 	
 </style>
@@ -250,15 +243,8 @@
 	<jsp:include page="/toolbar/toolbar.jsp" />
    	<!-- ToolBar End /////////////////////////////////////-->
    	
-	
 	<div class="container">
 	
-		<!-- <div class="row">
-			<div class="col-md-offset-4 col-md-4">
-				<button class="btn btn-primary">마이티켓</button>
-			</div>
-		</div> -->
-		
 		<!-- page header -->
 		<div class="row" id="banner">
 			<div class="col-md-12">
@@ -319,16 +305,6 @@
 	                </div>
 			</div>
 		</div>
-		<%-- <div class="form-group ">
-			<div class="col-md-12 control-label">
-				<span class="col-md-3 control-label"><button type="button" class="button-3d">파티</button></span> 
-				<span class="col-md-6 control-label"><button type="button" class="button-3d">애프터 파티</button></span> 
-				<input type="hidden" class="form-control" id="searchCondition" name="searchCondition" value="${ ! empty search.searchCondition ? search.searchCondition : '' }">
-				<input type="hidden" id="currentPage" name="currentPage" value="" />
-			</div>
-		</div> --%>
-		
-		<br><br><br>
 		
 		<!-- 데이터 수 -->
 		<div class="row">
@@ -337,7 +313,7 @@
 			</div>
 		</div>
 		
-		<!-- 애프터 파티 등록하러 가기 버튼 출력 -->
+		<!-- 정렬 -->
 		<div class="row">
 			<div class="col-md-2">
 				
@@ -351,9 +327,10 @@
 			</div>
 		</div>
 		
-		<!-- 목록 조회 Start /////////////////////////////////////-->
-		<section>
-		<div class="row">
+		
+		
+	  <!-- 목록 조회 Start /////////////////////////////////////-->
+	  <div class="row">
 		<c:if test="${empty list}">
 			<%-- <jsp:include page="/view/purchase/noResult.jsp"></jsp:include> --%>
 		</c:if>
@@ -361,12 +338,15 @@
 				<c:set var="i" value="${i+1}"></c:set>
 				<div class="col-md-6">
 						<div class="panel panel-primary">
-							<%-- <div class="panel-heading">
-								${ party.user.profileImage}
+							<div class="panel-heading">
+								
+								<%-- ${ party.user.profileImage} --%>
 								<h3 class="panel-title pull-left">
 								<img class="img-circle" src="/resources/uploadFile/${party.user.profileImage}" width="50" height="50">
 								&nbsp; ${ party.user.nickname }</h3>
-							</div> --%>
+								
+        						<div class="clearfix"></div>
+							</div>
 							<div class="panel-body">
 								<!-- 파티 -->
 								<input type="hidden" name="partyNo" value="${party.partyNo}">
@@ -381,22 +361,30 @@
 									</div>
 									<hr>
 									<div class="col-md-12">
-										<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+										<small>
+											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
 											${party.partyDate}
+										</small>
 									</div>
 									<div class="col-md-12">
-										<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+										<small>
+											<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
 											${party.partyTime}
+										</small>
 									</div>
 									<div class="col-md-12">
-									<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+										<small>
+											<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
 											${party.partyPlace}
+										</small>
 									</div>
 									<div class="col-md-12">
-										<c:if test="${ !empty party.festival.festivalName}">
+										<small>
+											<c:if test="${ !empty party.festival.festivalName}">
 												<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
 												${ party.festival.festivalName }
 											</c:if>
+										</small>
 									</div>
 									<br>
 									<div class="col-md-12">
@@ -416,14 +404,15 @@
 				</div>
 			</c:forEach>
 		</div>
-		</section>
 		<!-- 목록 조회 End /////////////////////////////////////-->
+		
 		
 		<!-- 내가 만든 페이지네비게이터 -->
 		<jsp:include page="../../common/pageNavigator_new.jsp"/>
 		<%-- <jsp:include page="../../common/pageNavigator.jsp"/> --%>
 		
 	</div>
+
 	
 </body>
 </html>

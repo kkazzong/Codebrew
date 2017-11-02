@@ -17,7 +17,6 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
     
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
@@ -36,7 +35,8 @@
 			var partyName=$("input[name='partyName']").val();
 			var partyDate=$("input[name='partyDate']").val();
 			var partyDetail=$("textarea[name='partyDetail']").val();
-			var partyMemberLimit=$("input[name='partyMemberLimit']").val();
+			var partyPlace=$("input[name='partyPlace']").val();
+			//var partyMemberLimit=$("input[name='partyMemberLimit']").val();
 			var ticketCount=$("input[name='ticketCount']").val();
 			var ticketPrice=$("input[name='ticketPrice']").val();
 			var festivalNo=$("input[name='festival.festivalNo']").val();
@@ -61,6 +61,10 @@
 			}
 			if(partyDetail.length >500){
 				alert("파티설명은 500자 이내로 입력해주세요.");
+				return;
+			}
+			if(partyPlace == null || partyPlace.length <1){
+				alert("파티장소는 반드시 입력하셔야 합니다.");
 				return;
 			}
 			if(festivalNo == 0){
@@ -121,14 +125,14 @@
 		});
 		
 		
-		 function openChild()
-		         {
-		             // window.name = "부모창 이름"; 
-		             window.name = "parentForm";
-		             // window.open("open할 window", "자식창 이름", "팝업창 옵션");
-		             openWin = window.open("/view/festival/popupListDB.jsp",
-		                     "childForm", "width=570, height=350, resizable = no, scrollbars = yes");    
-		         }
+		 function openChild(){
+             
+ 			 // window.name = "부모창 이름"; 
+             window.name = "parentForm";
+             // window.open("open할 window", "자식창 이름", "팝업창 옵션");
+             openWin = window.open("/view/festival/popupListDB.jsp",
+                     "childForm", "width=570, height=350, resizable = no, scrollbars = yes");    
+         }
 
 
 		
@@ -248,9 +252,9 @@
 				
 				$("#ticketCount").val(-1);
 				$("#ticketPrice").val(-1);
-				$("#festivalNo").val("${festival.festivalNo}");
+				/* $("#festivalNo").val("${festival.festivalNo}");
 				$("#festivalName").val("${festival.festivalName}");
-				$("#partyPlace").val("${festival.addr}");
+				$("#partyPlace").val("${festival.addr}"); */
 				var festivalNo = $("#festivalNo").val();
 				var festivalName = $("#festivalName").val();
 				var festivalAddr = $("#addr").val();
@@ -271,6 +275,7 @@
 		            $target.css('display', '');
 		            //$target.css('background-image', 'url(\"' + e.target.result + '\")'); // 배경으로 지정시
 		            $target.html('<img src="' + e.target.result + '"width="80%" border="0" alt="" />');
+		        	console.log("사진미리보기 출력=====> "+e.target.result);
 		        }
 		        reader.readAsDataURL(html.files[0]);
 		    }
@@ -512,7 +517,7 @@
 		    <div class="col-sm-4">
 		      <!-- <input type="text" class="form-control" id="festivalName" name="festival.festivalName" value="" /> -->
 		      <input type="text" readonly="readonly" class="form-control" id="festivalName" name="festival.festivalName">
-		      <input type="hidden" class="form-control" id="festivalNo" name="festival.festivalNo"/>
+		      <input type="hidden" class="form-control" id="festivalNo" name="festival.festivalNo" value=0 />	<!-- 띄어쓰기 조심 -->
 		      
 		      <button type="button" class="btn btn-primary btn-block" name="searchFestival" onclick="openChild()">축제검색</button>
 		    </div>
@@ -583,7 +588,7 @@
 		  </div>
 		  
 		  <div class="form-group">
-		    <label for="partyPlace" class="col-sm-offset-1 col-sm-3 control-label">파티장소(선택입력)</label>
+		    <label for="partyPlace" class="col-sm-offset-1 col-sm-3 control-label">파티장소</label>
 		    <div class="col-sm-4">
 		      <%-- <input type="text" readonly="readonly" class="form-control" id="partyPlace" name="partyPlace" value="${ party.partyPlace }"> --%>
 		      <input type="text" readonly="readonly" class="form-control" id="addr" name="partyPlace">
@@ -596,10 +601,10 @@
 		  
 		  <div class="form-group">
 		    <div class="filebox">
-		        <label for="cma_file">파티 이미지 업로드(선택입력)</label>
-		        <input type="file" name="cma_file" id="cma_file" onchange="getUploadFilePrivew(this,$('#uploadFile'))" />
+		        <label for="uploadFile">파티 이미지 업로드(선택입력)</label>
+		        <input type="file" name="uploadFile" id="uploadFile" onchange="getUploadFilePrivew(this,$('#previewImage'))" />
 		        <br /><br />
-		        <div id="uploadFile" style="width:50%; max-width:50%; display:none;"></div>
+		        <div id="previewImage" style="width:50%; max-width:50%; display:none;"></div>
 		    </div>
 		</div> 
 		  
@@ -682,7 +687,7 @@
 		  	<div class="col-sm-offset-4  col-sm-4 text-center">
 		  	<br><br>
 		      <button type="button" class="btn btn-primary btn-block" name="addParty" >파티등록</button>
-			  <a class="btn btn-primary btn btn-block" href="#" role="button">취소</a>
+			  <a class="btn btn-default btn btn-block" href="#" role="button">취소</a>
 		    </div>
 		  </div>
 		</form>

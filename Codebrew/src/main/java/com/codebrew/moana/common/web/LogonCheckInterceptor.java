@@ -59,7 +59,8 @@ public class LogonCheckInterceptor extends HandlerInterceptorAdapter {
 					uri.indexOf("findPwd") != -1 || uri.indexOf("confirmUser") != -1  || 
 					uri.indexOf("findUser") != -1||uri.indexOf("json/confirmUser") != -1 ||
 					uri.indexOf("json/checkNickname") != -1 || uri.indexOf("json/checkUserId") != -1||
-					uri.indexOf("kakaoLogin") != -1 ||  uri.indexOf("json/getUser") != -1){
+					uri.indexOf("kakaoLogin") != -1 ||  uri.indexOf("json/getUser") != -1 ||
+					uri.indexOf("getMyPartyList") != -1){
 				System.out.println("[로그인 시도 상태 .... ]");
 				System.out.println("[ LogonCheckInterceptor end........]\n");
 				return true;

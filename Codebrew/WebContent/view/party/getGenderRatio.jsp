@@ -42,10 +42,19 @@
 <!--  화면구성 div Start /////////////////////////////////////-->
 
 <!-- Button trigger modal -->
-<div class="col-md-offset-4 col-md-4" >
-	<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal2">
+<div class="col-md-offset-4 col-md-4 text-center" >
+	<!-- <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal2">
 	  확인하기
-	</button>
+	</button> -->
+	<!-- <img src="../../resources/image/buttonImage/ratio_lock_icon.png" width="20%" height="20%" data-toggle="modal" data-target="#exampleModal2"> -->
+	
+	
+	<div class="hover01 column">
+		<div>
+			<figure><img src="../../resources/image/buttonImage/ratio_lock_icon.png" width="20%" height="20%" data-toggle="modal" data-target="#exampleModal2"></figure>
+			
+		</div>
+	</div>
 </div>
 
 <!-- Modal -->
