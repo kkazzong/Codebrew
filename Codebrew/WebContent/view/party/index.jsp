@@ -28,6 +28,7 @@
 	<div><a href = "http://127.0.0.1:8080/view/party/Sample.jsp">Sample.jsp</a></div>
 	<div><a href = "http://127.0.0.1:8080/view/party/daum.jsp">daum.jsp</a></div>
 	<div><a href = "http://127.0.0.1:8080/view/party/addr.jsp">addr.jsp</a></div>
+	<div><a href = "http://127.0.0.1:8080/view/party/chatting.jsp">chatting.jsp</a></div>
 	
 </body>
 </html>

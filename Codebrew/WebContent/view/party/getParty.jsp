@@ -39,6 +39,7 @@
 
 <!--  ///////////////////////// JavaScript ////////////////////////// -->
 <script type="text/javascript">
+
 	//============= "파티수정"  Event 연결 =============
 	$(function() {
 		$("button:contains('파티수정')")
@@ -134,7 +135,7 @@
 	
 	$(function() {
 		$("#host").on("click", function() {
-					/* self.location="/myPage/getMyPage/"+"${party.user.userId}"; */
+					//self.location="http://127.0.0.1:3000/public/client04.html";
 					/* var self = "${user.userId}";
 					var other = "${party.user.userId}"; */
 					//window.open('http://127.0.0.1:3000/chat', '채팅팝업', 'width=440, height=520, scrollbars=yes');
@@ -178,8 +179,8 @@
 	}); */
 
 	//============= "채팅"  Event 처리 및  연결 =============
-	function popup(frm) {
-		var url = "http://127.0.0.1:3000/chat";
+	/* function popup(frm) {
+		var url = "http://127.0.0.1:3000/public/client05.html";
 		var title = "chatPop";
 		var status = "toolbar=no,directories=no,scrollbars=no,resizable=no,status=no,menubar=no,width=440, height=520, top=0,left=20";
 		window.open("", title, status); //window.open(url,title,status); window.open 함수에 url을 앞에와 같이
@@ -187,9 +188,26 @@
 		//가능합니다.
 		frm.target = title; //form.target 이 부분이 빠지면 form값 전송이 되지 않습니다. 
 		frm.action = url; //form.action 이 부분이 빠지면 action값을 찾지 못해서 제대로 된 팝업이 뜨질 않습니다.
-		frm.method = "post";
+		frm.method = "get";
 		frm.submit();
+	} */
+	
+	//============= "채팅"  Event 처리 및  연결 =============
+	function popup(frm) {
+	/* var url = "http://127.0.0.1:3000/public/client05.html"; */
+	var url = "/chat/getChatting";
+	var title = "chatPop";
+	var status = "toolbar=no,directories=no,scrollbars=yes,resizable=no,status=no,menubar=no,width=440, height=520, top=0,left=20";
+	window.open("", title, status); //window.open(url,title,status); window.open 함수에 url을 앞에와 같이
+	//인수로  넣어도 동작에는 지장이 없으나 form.action에서 적용하므로 생략
+	//가능합니다.
+	frm.target = title; //form.target 이 부분이 빠지면 form값 전송이 되지 않습니다. 
+	frm.action = url; //form.action 이 부분이 빠지면 action값을 찾지 못해서 제대로 된 팝업이 뜨질 않습니다.
+	frm.method = "post";
+	frm.submit();
 	}
+	
+	
 </script>
 
 <!--  ///////////////////////// CSS ////////////////////////// -->
@@ -220,7 +238,7 @@ body {
 }
 
 #userDiv {
-	height: 80px;
+	height: 90px;
 }
 /* Zoom In */
 .hover01 figure img {
