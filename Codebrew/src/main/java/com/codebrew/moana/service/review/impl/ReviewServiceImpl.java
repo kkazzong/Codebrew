@@ -16,17 +16,26 @@ import com.codebrew.moana.service.domain.Video;
 import com.codebrew.moana.service.review.ReviewDAO;
 import com.codebrew.moana.service.review.ReviewService;
 
-//TTL Method : 1 EA
 @Service("reviewServiceImpl")
 public class ReviewServiceImpl implements ReviewService {
 	
 	///Field
 	@Autowired
 	@Qualifier("reviewDAOImpl")
-	ReviewDAO reviewDAO;
+	private ReviewDAO reviewDAO;
+	
+	///Field
+	@Autowired
+	@Qualifier("ODSayAPIDAOImpl")
+	private ReviewDAO ODSayAPIDAO;
+	
 	
 	public void setReviewDAO(ReviewDAO reviewDAO){
 		this.reviewDAO = reviewDAO;
+	}
+	
+	public void setODSayAPIDAO(ReviewDAO ODSayAPIDAO){
+		this.ODSayAPIDAO = ODSayAPIDAO;
 	}
 
 	public ReviewServiceImpl() {
@@ -145,6 +154,11 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override //14
 	public List<Video> getReviewVideo(int reviewNo) throws Exception {
 		return reviewDAO.getReviewVideo(reviewNo);
+	}
+	
+	@Override //15
+	public Map<String, Object> getTransportListAtStation(double x, double y, int radius) throws Exception {
+		return ODSayAPIDAO.getTransportListAtStation(x, y, radius);
 	}
 
 }

@@ -158,5 +158,13 @@ public class ReviewDAOImpl implements ReviewDAO {
 		System.out.println("reviewDAO :: getReviewVideo");
 		return sqlSession.selectList("ReviewMapper.getReviewVideo", reviewNo);
 	}
+
+	///////////////////////////////////////////////API////////////////////////////////////////////////////
+	
+	@Override //20
+	public Map<String, Object> getTransportListAtStation(double x, double y, int radius) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }
