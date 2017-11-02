@@ -7,7 +7,7 @@
 	
 		//============= "파티 비율 확인하기"  Event 처리 및  연결 =============
 		$(function(){
-			$("button:contains('확인하기')").on("click", function() {
+			$("#ratioLock").on("click", function() {
 				//self.location="/partyRest/json/getGenderRatio/${party.partyNo}";
 				console.log("파티 비율 확인하기 버튼 클릭.....");
 				var partyNo = $("#partyNo").val();
@@ -42,20 +42,15 @@
 <!--  화면구성 div Start /////////////////////////////////////-->
 
 <!-- Button trigger modal -->
-<div class="col-md-offset-4 col-md-4 text-center" >
+<!-- <div class="col-md-offset-4 col-md-4 text-center" > -->
 	<!-- <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal2">
 	  확인하기
 	</button> -->
 	<!-- <img src="../../resources/image/buttonImage/ratio_lock_icon.png" width="20%" height="20%" data-toggle="modal" data-target="#exampleModal2"> -->
 	
 	
-	<div class="hover01 column">
-		<div>
-			<figure><img src="../../resources/image/buttonImage/ratio_lock_icon.png" width="20%" height="20%" data-toggle="modal" data-target="#exampleModal2"></figure>
-			
-		</div>
-	</div>
-</div>
+	
+<!-- </div> -->
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
