@@ -150,7 +150,7 @@
     			$(document).ready(function(){
     				$.ajax(
     						{
-    							url : "/reviewRest/json/getTransportListAtStation/"+map_x+"/"+map_y+"/"+"300", 
+    							url : "/reviewRest/json/getTransportListAtStation/"+map_x+"/"+map_y+"/"+"350", 
     							method : "GET", 
     							dataType : "json", 
     							headers : {
@@ -162,7 +162,17 @@
     								console.log(JSONData.busNoList);
     								console.log(JSONData.stationNameList);
     								console.log(JSONData.stationIDList);
-    								$("#transportListAtStation").html(JSONData.busNoList);
+    								console.log(JSONData.subwayList);
+    								var str = "";
+    								for(var i = 0; i < JSONData.busNoList.length; i ++) {
+    									str += JSONData.busNoList[i]+", ";
+    								}
+    								for(var i = 0; i < JSONData.subwayList.length; i++) {
+    									str += JSONData.subwayList[i]+", ";
+    								}
+    								str = str.substr(0, str.length-2);
+    								//$("#transportListAtStation").html(JSONData.busNoList);
+    								$("#transportListAtStation").html(str);
     							}
     						}		
     				)
@@ -370,21 +380,20 @@
 						</c:if>
 						<div class="col-md-12">
 							<small>
-								<span class="glyphicon glyphicon-time" aria-hidden="true">작성일시 : </span>
+								<span class="glyphicon glyphicon-time" aria-hidden="true">작성일시:</span>
 								<span id="reviewRegDateIdForJS">${review.reviewRegDate }</span>
 							</small>
 						</div>
 						<div class="col-md-12">
 							<small>
-								<span class="glyphicon glyphicon-user" aria-hidden="true">작성자 : </span>
+								<span class="glyphicon glyphicon-user" aria-hidden="true">작성자:</span>
 								<span id="writerIdForJS">${review.userId }</span>
 							</small>
 						</div>
 						<div class="col-md-12">
 							<small>
-								<span class="glyphicon glyphicon-map-marker" aria-hidden="true">축제장소 : </span>
+								<span class="glyphicon glyphicon-map-marker" aria-hidden="true">축제장소:</span>
 								<span id="addrIdForGoogleMap">${review.addr }</span>
-								<span id="transportListAtStation"></span>
 							</small>
 							<!-- 지도추가된부분 -->		
 							<div id="googleMap" style="width:500px;height:380px;"></div>
@@ -392,13 +401,19 @@
 						</div>
 						<div class="col-md-12">
 							<small>
-								<span class="glyphicon glyphicon-dashboard" aria-hidden="true">축제평점 : </span>
+								<span class="glyphicon glyphicon-road" aria-hidden="true">대중교통:</span>
+								<span id="transportListAtStation"></span>
+							</small>
+						</div>
+						<div class="col-md-12">
+							<small>
+								<span class="glyphicon glyphicon-dashboard" aria-hidden="true">축제평점:</span>
 								<span id="reviewFestivalRatingForGoogleMap">${review.reviewFestivalRating }</span>
 							</small>
 						</div>
 						<div class="col-md-12">
 							<small>
-								<span class="glyphicon glyphicon-heart-empty" aria-hidden="true">좋아요 : </span>
+								<span class="glyphicon glyphicon-heart-empty" aria-hidden="true">좋아요:</span>
 								<span id="goodCountForGoogleMap">${review.goodCount }</span>
 								<c:if test="${!empty sessionScope.user }">
 									<span class = "glyphicon glyphicon-thumbs-up" id = "addGood" role="button"></span>
@@ -407,13 +422,13 @@
 						</div>
 						<div class="col-md-12">
 							<small>
-								<span class="glyphicon glyphicon-book" aria-hidden="true">후기내용 : </span>
+								<span class="glyphicon glyphicon-book" aria-hidden="true">후기내용:</span>
 								<span id="reviewDetailForJS">${review.reviewDetail }</span>
 							</small>
 						</div>
 						<div class="col-md-12">
 							<small>
-								<span class="glyphicon glyphicon-tags" aria-hidden="true">해시태그 : </span>
+								<span class="glyphicon glyphicon-tags" aria-hidden="true">해시태그:</span>
 								<span id="reviewHashtagForJS">${review.reviewHashtag }</span>
 							</small>
 						</div>
