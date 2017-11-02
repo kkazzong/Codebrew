@@ -131,17 +131,15 @@
 	}); */
 
 	//============= "주최자"  Event 처리 및  연결 =============
+	
 	$(function() {
-		$("#host").on(
-				"click",
-				function() {
+		$("#host").on("click", function() {
 					/* self.location="/myPage/getMyPage/"+"${party.user.userId}"; */
 					/* var self = "${user.userId}";
 					var other = "${party.user.userId}"; */
-					window.open('http://127.0.0.1:3000/chat', '채팅팝업',
-							'width=440, height=520, scrollbars=yes');
+					//window.open('http://127.0.0.1:3000/chat', '채팅팝업', 'width=440, height=520, scrollbars=yes');
 
-				});
+		});
 	});
 
 	//============= "티켓환불"  Event 처리 및  연결 =============
