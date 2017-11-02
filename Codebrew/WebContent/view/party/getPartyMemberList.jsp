@@ -346,8 +346,7 @@
 																 //+"</c:if>" 
 															//}
 															+"</span>"
-															+"</div>"
-															+"<hr/>";
+															+"</div>";
 											
 										$("form.form-horizontal-1").append(partyMemberList); 
 										console.log(partyMemberList);
@@ -476,7 +475,7 @@
 							  			
 							  		} //for문 end
 				
-									var currentMemberCount = "&nbsp;&nbsp;&nbsp;&nbsp;${party.partyMemberLimit} 명 중 "+JSONData.currentMemberCount+" 명 참여중";
+									var currentMemberCount = "MOANA 회원 중&nbsp;<strong>"+JSONData.currentMemberCount+"</strong> 명 참여중";
 																						
 									$("#currentMemberCountDiv").html(currentMemberCount); 
 		

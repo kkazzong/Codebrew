@@ -210,8 +210,7 @@
 		                                <where> 
 		                                	p.festival_no = f.festival_no(+)
 		                                	AND p.user_id = u.user_id
-		                                	AND p.delete_flag IS NULL
-			                                <if test="search.searchCondition == '' and search.searchKeyword !=''">
+		                                	<if test="search.searchCondition == '' and search.searchKeyword !=''">
 												AND p.party_name LIKE '%${search.searchKeyword}%'
 											</if>
 											<if test="search.searchCondition != ''">
@@ -237,6 +236,7 @@
 		        <where>
 		        	pm.party_no = inner_table.party_no
 			        AND pm.user_id = #{userId:VARCHAR}
+			        AND pm.delete_flag IS NULL
 			        AND ROWNUM &lt;= #{search.endRowNum:NUMERIC}
 		        </where>
 		        ORDER BY inner_table.party_date ASC)
