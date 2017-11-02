@@ -101,12 +101,8 @@
 											<!-- 썸네일 설명 -->
 											<div class="caption">
 												<span class="label label-default">${i}위</span> 
+												<span class="glyphicon glyphicon-heart" aria-hidden="true"></span> ${stat.totalCount}
 												<h4>${stat.name}</h4>
-												<div class="text">
-													<h3>
-														<span class="glyphicon glyphicon-heart" aria-hidden="true"></span> ${stat.totalCount}
-													</h3>
-												</div>
 											</div>
 											
 										</div>
