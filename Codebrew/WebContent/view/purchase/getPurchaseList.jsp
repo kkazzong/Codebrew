@@ -41,6 +41,11 @@
 	<!-- Include a polyfill for ES6 Promises (optional) for IE11 and Android browser -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
 	
+	<!-- button css -->
+	<!-- <link rel="stylesheet" href="/resources/css/button.css"> -->
+	<!-- card css -->
+	<link rel="stylesheet" href="/resources/css/card.css">
+	
 	<!-- 자바스크립트 -->
 	<script type="text/javascript">
 		
@@ -152,7 +157,7 @@
 			
 			
 			//조회(판넬 클릭시)
-			$(".panel-heading").on("click", function(){
+			$(".card > a").on("click", function(){
 				console.log($(this).find("input:hidden[name='purchaseNo']").val());
 				var purchaseNo = $(this).find("input:hidden[name='purchaseNo']").val()
 				self.location = "/purchase/getPurchase?purchaseNo="+purchaseNo;
@@ -296,11 +301,11 @@
 			//판넬 높이 조절
 			var maxHeight = -1;
 	
-			$('.panel').each(function() {
+			$('.card').each(function() {
 				maxHeight = maxHeight > $(this).height() ? maxHeight : $(this).height();
 			});
 	
-			$('.panel').each(function() {
+			$('.card').each(function() {
 				 $(this).height(maxHeight);
 			});		
 			
@@ -367,7 +372,7 @@
 			background-color: #f2f4f6;
 	    }
 	    
-	    .panel {
+	    .card {
 			margin-top : 50px;
 	    }
 	    
@@ -490,7 +495,9 @@
 									placeholder="축제 or 파티 이름으로 검색">
 						<span class="input-group-btn">
 					    	<button id="search" class="btn btn-default btn-lg btn-block" type="button">
-					    		<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					    		<!-- <span class="glyphicon glyphicon-search" aria-hidden="true"></span> -->
+					    		<!-- <img src="/resources/image/svg/si-glyph-magnifier-2.svg"/> -->
+					    		검색
 					    	</button>
 					    </span>
 					</div>
@@ -513,27 +520,26 @@
 			<c:forEach var="purchase" items="${list}">
 				<c:set var="i" value="${i+1}"></c:set>
 					<div class="col-md-6">
-						<div class="panel panel-primary">
-							<div class="panel-heading">
+						<div class="card">
+							<!-- <div class="panel-body"> -->
 								<a href="#">
 									<input type="hidden" name="purchaseNo" value="${purchase.purchaseNo}">
 									<input type="hidden" name="tranCode" value="${purchase.tranCode}">
 									 <c:if test="${!empty purchase.ticket.festival}">
 										 	<c:if test="${purchase.ticket.festival.festivalImage.contains('http://')}">
-												<img width="100%" height="423" src="${purchase.ticket.festival.festivalImage}">
+												<img class="card-img-top" width="100%" height="423" src="${purchase.ticket.festival.festivalImage}">
 											</c:if>
 											<c:if test="${!purchase.ticket.festival.festivalImage.contains('http://')}">
-												<img width="100%" height="423" src="/resources/uploadFile/${purchase.ticket.festival.festivalImage}">
+												<img class="card-img-top" width="100%" height="423" src="/resources/uploadFile/${purchase.ticket.festival.festivalImage}">
 											</c:if>
 									</c:if>
 									<c:if test="${!empty purchase.ticket.party}">
-										<img width="100%" height="423" src="/resources/uploadFile/${purchase.ticket.party.partyImage}">
+										<img class="card-img-top" width="100%" height="423" src="/resources/uploadFile/${purchase.ticket.party.partyImage}">
 									</c:if>
 								</a>
 							
-							</div>
-							
-							<div class="panel-body">
+								<div class="card-body">
+							<!-- <div class="panel-body"> -->
 								<!-- 삭제버튼 -->
 								<form id="deleteForm">
 										<input type="hidden" name="purchaseNo" value="${purchase.purchaseNo}">
