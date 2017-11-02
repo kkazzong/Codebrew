@@ -261,7 +261,8 @@
 		
 		<!-- page header -->
 		<div class="row" id="banner">
-			<div class="col-md-12">
+			<!-- <div class="col-md-12"> -->
+			<div>
 				<div>
 	                    <div class="text-center white">
 	                        <!-- <ul class="title">
@@ -327,7 +328,8 @@
 				<input type="hidden" id="currentPage" name="currentPage" value="" />
 			</div>
 		</div> --%>
-		
+	</div>
+	<div class="container">
 		<br><br><br>
 		
 		<!-- 데이터 수 -->
