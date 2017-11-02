@@ -341,8 +341,8 @@
 								</td>
 								<td>${purchase.itemName}</td>
 								<td>${purchase.purchaseDate}</td>
-								<td>${purchase.purchaseCount}</td>
-								<td>${purchase.purchasePrice}</td>
+								<td>${purchase.purchaseCount}장</td>
+								<td><%-- ${purchase.purchasePrice} --%>${purchase.price}원</td>
 								<td>
 								<c:if test="${purchase.tranCode == 1}">
 									결제완료

@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
+import com.codebrew.moana.common.CommonUtil;
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Bank;
 import com.codebrew.moana.service.domain.PartyMember;
@@ -96,7 +97,11 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			partyMember.setGender(user.getGender());
 			partyMember.setRole("guest");
 			partyMember.setUser(user);
-			partyMember.setParty(purchase.getTicket().getParty());
+			if(purchase.getTicket().getParty() != null) {
+				partyMember.setParty(purchase.getTicket().getParty());
+			} else {
+				partyMember.setParty(ticket.getParty());
+			}
 			partyDAO.joinParty(partyMember);
 		}
 		sqlSession.insert("PurchaseMapper.addPurchase", purchase);
@@ -106,7 +111,10 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 
 	@Override
 	public Purchase getPurchase(int purchaseNo) {
-		return sqlSession.selectOne("PurchaseMapper.getPurchase", purchaseNo);
+		Purchase purchase = sqlSession.selectOne("PurchaseMapper.getPurchase", purchaseNo);
+		String purchasePrice = CommonUtil.toAmountStr(purchase.getPurchasePrice()+"");
+		purchase.setPrice(purchasePrice);
+		return purchase;
 	}
 	
 	@Override
@@ -139,12 +147,21 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 				list = sqlSession.selectList("PurchaseMapper.getPurchaseList", map);
 				break;
 		}
+		for(Purchase purchase : list) {
+			String purchasePrice = CommonUtil.toAmountStr(purchase.getPurchasePrice()+"");
+			purchase.setPrice(purchasePrice);
+		}
 		return list;
 	}
 
 	@Override
 	public List<Purchase> getSaleList(Search search) {
-		return sqlSession.selectList("PurchaseMapper.getSaleList", search);
+		List<Purchase> list = sqlSession.selectList("PurchaseMapper.getSaleList", search);
+		for(Purchase purchase : list) {
+			String purchasePrice = CommonUtil.toAmountStr(purchase.getPurchasePrice()+"");
+			purchase.setPrice(purchasePrice);
+		}
+		return list;
 	}
 
 	@Override
