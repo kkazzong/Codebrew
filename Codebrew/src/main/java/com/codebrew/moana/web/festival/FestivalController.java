@@ -81,7 +81,7 @@ public class FestivalController {
 		return modelAndView;
 
 
-	}
+	} 
 	
 	@RequestMapping(value = "getMyZzimList")
 	public ModelAndView getMyZzimList(@ModelAttribute("search") Search search,
