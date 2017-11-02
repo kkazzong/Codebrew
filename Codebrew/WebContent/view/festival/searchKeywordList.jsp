@@ -77,6 +77,47 @@
 			self.location = "/festival/getFestival?festivalNo=" + festivalNo;
 		});
 	});
+	
+	
+	/* role='u'; */
+	
+	 function fncGetList(currentPage) {
+	   
+	    $("#currentPage").val(currentPage)
+	   
+	   $("form").attr("method" , "POST").attr("action" , "/festival/getFestivalListDB?menu=db").submit();
+	   
+	}  
+   
+   $(function(){
+		 $( "button:contains('검색')" ).on("click" , function() {
+			fncGetList(1);
+		});
+});
+
+	$(function() {
+
+			$(".panel-body").on("click", function() {
+
+			var festivalNo = $("p", this).text();
+
+			/* self.location = "/festival/getFestivalDB?festivalNo=" + festivalNo; */
+			self.location = "/festival/getFestivalDB?festivalNo=" + festivalNo;
+		});
+	});
+	
+$(function(){
+		
+		$("input:text[name='searchKeyword']").on('keydown',function(event){
+			
+			if(event.keyCode ==13){
+				event.preventDefault();
+				$( "button:contains('검색')" ).click();
+			}
+		});
+	
+	});
+	
 </script>
 
 </head>
