@@ -281,7 +281,7 @@
 </div>	 -->
 
 <!-- <a href="/festival/getFestivalListDB?menu=pop">popup</a> -->
-<a href="/festival/getMyZzimList">getZzimlist</a>
+<!-- <a href="/festival/getMyZzimList">getZzimlist</a> -->
 	</section>
 </body>
 </html>

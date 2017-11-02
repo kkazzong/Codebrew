@@ -51,6 +51,7 @@
 		              </a>
 			              <ul class="dropdown-menu">
 							<li><a href="#">축제목록</a></li>
+							<li><a href="#">my찜</a></li>
 		                 <c:if test="${sessionScope.user.role == 'a'}">
 			                       <li class="divider"></li>
 			                       <li><a href="#">축제직접등록</a></li>
@@ -216,6 +217,10 @@
 			
 			$("li > a:contains('축제직접등록')").bind('click', function(){
 				self.location = "/view/festival/writeFestival.jsp";
+			});
+			
+			$("li > a:contains('my찜')").bind('click', function(){
+				self.location = "/festival/getMyZzimList";
 			});
    		});
   		

@@ -55,4 +55,7 @@ public interface ReviewService {
 	//13
 	public List<Video> getReviewVideo(int reviewNo) throws Exception;
 	
+	//14
+	public Map<String, Object> getTransportListAtStation(double x, double y, int radius) throws Exception;
+	
 }

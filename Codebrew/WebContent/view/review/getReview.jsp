@@ -57,6 +57,8 @@
 	<!-- Bootstrap Dropdown Hover JS -->
 	<script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
 	
+	<!-- Load the Google API -->
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDvESicBSzYYtr3_xNOvik6YvE4v6UxPOQ"></script>
     
     <!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
@@ -72,6 +74,129 @@
 		}
 		$("form").attr("method", "POST").attr("action", "/reply/addReply").submit();
 	}
+	
+	//맵 1단 : 맵을 초기화해주기 위한 함수 : test 중
+	var map_x = null;
+	var map_y = null;
+	function initialize() {
+		//초기화 함수 안에, 맵의 속성(properties)을 정의할 객체(mapProp)를 생성한다
+		//center 속성 : 맵의 중심을 어디로 할지
+		//LatLng객체를 생성하여 특정포인트를 정한다.
+		//zoom 속성은 맵에서의 줌 레벨을 정의한다.
+		//mapTypeID 속성은 화면에 표시될 맵 타입을 정의한다.
+			
+			// Roadmap(normal, default 2D map)
+			// Satellite(photographic map)
+			// Hybrid(photographic map + roads and city names)
+			// Terrain(map with mountains, rivers, etc.)
+		
+		var mapOptions = {
+							zoom:16,
+							mapTypeId:google.maps.MapTypeId.ROADMAP
+						};
+
+		//id가 'googleMap'인 <div> 태그 안에 새로운 맵을 만드는 코드이다. 파라미터인 mapProp를 이용한다.
+		var map = new google.maps.Map(document.getElementById("googleMap"), mapOptions);
+		/* 
+		var size_x = 40; //마커로 사용할 이미지의 가로 크기
+		var size_y = 40; //마커로 사용할 이미지의 세로 크기
+		
+		//마커로 사용할 이미지 주소
+		var iconImage = new google.maps.MarkerImage(
+												'../../resources/image/monster.png', 
+												new google.maps.Size(size_x, size_y),
+                                                '',
+                                                '', 
+                                                new google.maps.Size(size_x, size_y)
+												);
+		 */										
+		
+		//Geocoding start*********************
+		//alert($('#addrIdForGoogleMap').html());
+		//alert($('#festivalNameIdForGoogleMap').html());
+		
+		var address = $('#addrIdForGoogleMap').html(); //tag에서 받아오는 주소
+		var marker = null;
+        var geocoder = new google.maps.Geocoder(); //google map의 Geocoder 객체 생성
+        geocoder.geocode( { 'address': address}, function(results, status) {
+        	if (status == google.maps.GeocoderStatus.OK) {
+                map.setCenter(results[0].geometry.location);
+                marker = new google.maps.Marker({
+                                map: map,
+                                icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png', // 마커로 사용할 이미지(변수 or URL)
+                                title: address, // 마커에 마우스 포인트를 갖다댔을 때 뜨는 타이틀
+                                position: results[0].geometry.location
+                            });
+                
+                map_x = results[0].geometry.location.lng(); //밑에서 쓰기위해서 선언해준 변수에 값을 대입
+                map_y = results[0].geometry.location.lat(); //밑에서 쓰기위해서 선언해준 변수에 값을 대입
+                
+				var content = $('#festivalNameIdForGoogleMap').html()+"<br/><br/>"+"좋아요 : "+$('#goodCountForGoogleMap').html()+"<br/><br/>"+"축제평점 : "+$('#reviewFestivalRatingForGoogleMap').html(); // 말풍선 안에 들어갈 내용
+				
+            	 // 마커를 클릭했을 때의 이벤트. 말풍선 뿅~
+                var infowindow = new google.maps.InfoWindow({ content: content});
+                google.maps.event.addListener(marker, "click", function() {infowindow.open(map,marker);});
+            } else {
+                alert("Geocode was not successful for the following reason: " + status);
+            }
+			
+        	//여기서부터는 조심
+           	console.log(map_x);
+           	console.log(map_y);
+        	
+     	    //대중교통정보 불러오기 ajax
+    		$(function(){
+    			
+    			$(document).ready(function(){
+    				$.ajax(
+    						{
+    							url : "/reviewRest/json/getTransportListAtStation/"+map_x+"/"+map_y+"/"+"300", 
+    							method : "GET", 
+    							dataType : "json", 
+    							headers : {
+    								"Accept" : "application/json", 
+    								"Content-Type" : "application/json"
+    							}, 
+    							success : function(JSONData, status){
+    								//alert(status);
+    								console.log(JSONData.busNoList);
+    								console.log(JSONData.stationNameList);
+    								console.log(JSONData.stationIDList);
+    								$("#transportListAtStation").html(JSONData.busNoList);
+    							}
+    						}		
+    				)
+    			})
+    			
+    		});
+           	
+        	
+        });
+		//Geocoding end*********************
+
+	}
+	google.maps.event.addDomListener(window, 'load', initialize);
+	
+	
+	/* 교통정보 API 이용
+	function fncPointSearch() {
+		
+		console.log("x : "+map_x);
+		console.log("y : "+map_y);
+		
+		var xhr = new XMLHttpRequest();
+		var url = "https://api.odsay.com/api/pointSearch?x="+map_x+"&y="+map_y+"&radius=250"+"&apiKey=9Y8umSFLTjBabpZyQD9MSJZ/GpAV/XJrRHAGwBVmguw";
+		console.log("requestURL : "+url);
+		
+		xhr.open("GET", url, true);
+		xhr.send();
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				console.log( xhr.responseText ); // <- xhr.responseText 로 결과를 가져올 수 있음
+			}
+		}
+	}
+	 */
 	
 	
 	//Event 걸어주기
@@ -97,6 +222,10 @@
 			self.location = "/review/failCheckCode?reviewNo=${review.reviewNo }";
 		});
 		 
+		 $("#testButtonForTransport").on("click", function(){
+			 fncPointSearch();
+		 });
+		 
 		/* 
 		$( "#addGood" ).on("click", function() { //수정중
 			self.location = "/review/addGood?userId=${sessionScope.user.userId}&reviewNo=${review.reviewNo}";
@@ -120,7 +249,7 @@
 								"Content-Type" : "application/json"
 							}, 
 							success : function(JSONData, status){
-								$("#goodCount").html(JSONData.goodCount);
+								$("#goodCountForGoogleMap").html(JSONData.goodCount);
 							}
 						}		
 				)
@@ -139,6 +268,8 @@
 	<jsp:include page="../../toolbar/toolbar.jsp" />
 	
 	<input type="hidden" name="reviewNo" value="${review.reviewNo }">
+	<input type="hidden" id="location_x" value="">
+	<input type="hidden" id="location_y" value="">
    	
    	<!-- 후기상세조회 화면구성 div Start -->
    	<div class="container">
@@ -149,6 +280,9 @@
 		   		<div class="page-header text-center">
 		   			<h3 class="text-info">후기상세조회</h3>
 		   			<h5 class="text-muted">후기 정보를 <strong class="text-danger">내놓으시길</strong>바랍니다.</h5>
+		   			<!-- 
+		   			<span class = "glyphicon glyphicon-road" id = "testButtonForTransport" role="button"></span>
+		   			 -->
 		   		</div>
 			</div>
 		</div>
@@ -213,7 +347,8 @@
 						<hr>
 						<div class="col-md-12">
 							<strong>
-								축제명 : ${review.festivalName }
+								<span>축제명 : </span>
+								<span id="festivalNameIdForGoogleMap">${review.festivalName }</span>
 							</strong>
 						</div>
 						<c:if test="${sessionScope.user.userId == review.userId || sessionScope.user.role == 'a'}">
@@ -235,32 +370,36 @@
 						</c:if>
 						<div class="col-md-12">
 							<small>
-								<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
-									작성일시 : ${review.reviewRegDate }
+								<span class="glyphicon glyphicon-time" aria-hidden="true">작성일시 : </span>
+								<span id="reviewRegDateIdForJS">${review.reviewRegDate }</span>
 							</small>
 						</div>
 						<div class="col-md-12">
 							<small>
-								<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-									작성자 : ${review.userId }
+								<span class="glyphicon glyphicon-user" aria-hidden="true">작성자 : </span>
+								<span id="writerIdForJS">${review.userId }</span>
 							</small>
 						</div>
 						<div class="col-md-12">
 							<small>
-								<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
-									축제위치 : ${review.addr }
+								<span class="glyphicon glyphicon-map-marker" aria-hidden="true">축제장소 : </span>
+								<span id="addrIdForGoogleMap">${review.addr }</span>
+								<span id="transportListAtStation"></span>
+							</small>
+							<!-- 지도추가된부분 -->		
+							<div id="googleMap" style="width:500px;height:380px;"></div>
+									
+						</div>
+						<div class="col-md-12">
+							<small>
+								<span class="glyphicon glyphicon-dashboard" aria-hidden="true">축제평점 : </span>
+								<span id="reviewFestivalRatingForGoogleMap">${review.reviewFestivalRating }</span>
 							</small>
 						</div>
 						<div class="col-md-12">
 							<small>
-								<span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span>
-									축제평점 : ${review.reviewFestivalRating }
-							</small>
-						</div>
-						<div class="col-md-12">
-							<small>
-								<span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
-									좋아요 : <span id="goodCount">${review.goodCount }</span>
+								<span class="glyphicon glyphicon-heart-empty" aria-hidden="true">좋아요 : </span>
+								<span id="goodCountForGoogleMap">${review.goodCount }</span>
 								<c:if test="${!empty sessionScope.user }">
 									<span class = "glyphicon glyphicon-thumbs-up" id = "addGood" role="button"></span>
 								</c:if>
@@ -268,14 +407,14 @@
 						</div>
 						<div class="col-md-12">
 							<small>
-								<span class="glyphicon glyphicon-book" aria-hidden="true"></span>
-									후기내용 : ${review.reviewDetail }
+								<span class="glyphicon glyphicon-book" aria-hidden="true">후기내용 : </span>
+								<span id="reviewDetailForJS">${review.reviewDetail }</span>
 							</small>
 						</div>
 						<div class="col-md-12">
 							<small>
-								<span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
-									해시태그 : ${review.reviewHashtag }
+								<span class="glyphicon glyphicon-tags" aria-hidden="true">해시태그 : </span>
+								<span id="reviewHashtagForJS">${review.reviewHashtag }</span>
 							</small>
 						</div>
 						<div class="col-md-12">

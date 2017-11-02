@@ -309,16 +309,6 @@
 				 $(this).height(maxHeight);
 			});		
 			
-			//날짜 검색 버튼 
-			$("#dateRange").on("click", function() {
-				//alert($("#dailySelect").val());
-				if($("#startDate").val() == '' || $("#startDate").val() == null) {
-					alert("조회 기간을 선택해주세요");
-					return;
-				}
-				fncSearchDate();
-			})
-			
 			//datepicker 설정
 			$.datepicker.setDefaults({
 		        dateFormat: 'yy-mm-dd',
@@ -343,13 +333,23 @@
 			});
 			
 			//modal에서 클릭한 버튼
-			$(".modal-content .btn").each(function(){}).on("click", function(){
-				if($("#startDate").val() != '' && $("#endDate").val() == '') {
-					alert('조회날짜를 선택해주세요');
-					return;
+			$(".modal-content .btn").each(function(){}).on("click", function(event){
+				console.log($(this).val());
+				if($(this).val() == '1' || $(this).val() == '2') {
+					fncSortList($(this).val());
 				}
-				fncSortList($(this).val());
 			});
+			
+			//modal에서 날짜 검색 버튼 
+			$("#dateRange").on("click", function() {
+				//alert($("#dailySelect").val());
+				if($("#startDate").val() == '' || $("#endDate").val() == '') {
+					alert("조회 기간을 선택해주세요");
+					return;
+				} else {
+					fncSearchDate();
+				}
+			})
 			
 			
 			$("#partyButtonDiv").on("click", function(){
@@ -361,6 +361,14 @@
 					})
 			});	
 			
+		});
+		
+		///////////////////////채팅
+		$(function(){
+			$("#chat").on("click", function(){
+				alert("대화방입장");
+				self.location = "/view/chat2/chat.jsp";
+			});
 		});
 	</script>
 	
@@ -426,6 +434,8 @@
 	<!-- 모달 -->
 	<jsp:include page="/view/purchase/filterModalUser.jsp"></jsp:include>
 	<%-- 서치컨디션 ${search.searchCondition } --%>
+	
+	<button id="chat" type="button">채팅하기</button>
 	
 	<div class="container">
 	
@@ -553,7 +563,7 @@
 									<div class="col-md-12">
 											<h3>
 											<strong>${purchase.ticket.festival.festivalName}</strong>
-											<span class="label label-success"># 축제</span>
+											<span class="label label-info"># 축제</span>
 											</h3>
 									</div>
 									<%-- <div class="col-md-12">

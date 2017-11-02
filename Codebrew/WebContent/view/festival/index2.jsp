@@ -18,6 +18,9 @@
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+
 <!-- Bootstrap Dropdown Hover CSS -->
 <link href="/resources/css/animate.min.css" rel="stylesheet">
 <link href="/resources/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
@@ -86,24 +89,75 @@
 									$("#tag2 > div > p").text(jsonData.list[2].festivalNo);
 									$("#tag2").val(jsonData.list[2].festivalNo);
 									
-									
-									
 								}
 						});
 				});
 	}
 
 	
-	$(function() {
-
-		$("button").on("click", function() {
-
-		var festivalNo = $(this).val();
-
-		self.location = "/festival/getFestivalDB?festivalNo=" + festivalNo;
-	});
-});
 	
+	$(function() {
+	$("#searchKeyword").autocomplete({
+		source: function( request, response ) {
+	        $.ajax( {
+	          url: "/festivalRest/json/getKeyword",
+	          method : "POST",
+	          headers : {
+					"Accept" : "application/json",
+					"Content-Type" : "application/json"
+			  },
+	          dataType: "json",
+	          data: JSON.stringify({
+	        	currentPage : "1",
+		        searchKeyword : $("#searchKeyword").val(),
+		        searchCondition : ""
+	          }),
+	          success: function( JSONData ) {
+	            response($.map(JSONData, function(value, key){
+	            	console.log(value.festivalNo);
+	            	
+	            	var festivalNo = value.festivalNo;
+	            	
+	            	$("#festivalNo").val(festivalNo);
+	            	
+	            		return {
+	            			label :  value.festivalName,
+	            			value : value.festivalName
+	            			
+	            		}
+	        	}));
+	        	
+	          }
+	        } );
+	    }
+	});
+	});
+	
+	
+	   
+	   $(function(){
+			
+			$("input:text[name='searchKeyword']").on('keydown',function(event){
+				
+				if(event.keyCode ==13){
+					event.preventDefault();
+					$( "#search"  ).click();
+				}
+			});
+		
+		});
+	   
+	   $(function(){
+		   $("#search").on("click",function(){
+				
+			   var festivalNo = $("#festivalNo").val();
+			   
+			   self.location="/festival/getFestivalDB?festivalNo="+festivalNo;
+		   })
+	   })
+				    	
+				    	
+  
 	    
 </script>
 
@@ -232,33 +286,34 @@
     <!-- carousel 끝 -->
     
     
-	<div class="container">
+	
+	<br/>
+	
 		<div class="row">
-		  	<div class="col-md-12">
-		  	
-		  		<div class="col-md-4">
-		  		
-		  			
-		  		
-		  		</div>
-		  	
-		  	
-  	
-  	
-  			</div>
-  		</div>
-  	</div>
-    
-    
-    
-    
-    
-    
-      
-				
+		<div class="col-md-4 text-right">
+				<form class="form form-inline" id="searchForm" name="searchForm">
+					<input type="hidden" id="currentPage" name="currentPage" value=""/>
+					<input type="hidden" id="festivalNo" name="festivalNo" value=""/>
+					<div class="input-group">
+						<input class="form-control" id="searchKeyword" name="searchKeyword" type="text" 
+									value="${!empty search.searchKeyword ? search.searchKeyword : ''}"
+									placeholder="축제를 검색해보세요.">
+						<span class="input-group-btn">
+					    	<button id="search" class="btn btn-primary btn-block" type="button">
+					    		<span class="glyphicon glyphicon-search" aria-hidden="true"> </span>
+					    	</button>
+					    </span>
+					</div>
+				</form>
+			</div>
+		</div>
+			
+			</body>
+			
+
+	
 
     
 
 
-	</body>
 </html>

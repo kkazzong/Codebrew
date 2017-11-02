@@ -82,4 +82,7 @@ public interface ReviewDAO {
 	//19
 	public List<Video> getReviewVideo(int reviewNo) throws Exception;
 	
+	//20
+	public Map<String, Object> getTransportListAtStation(double x, double y, int radius) throws Exception;
+	
 }
