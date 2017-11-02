@@ -84,11 +84,13 @@
 				
 				var sender = $('#senderInput').val();
 				var recipient = $('#recipientInput').val();
+				var senNick = $('#senNick').val(); //////////senNick추가////////////////////
 				var data = $('#dataInput').val();
 				var time = $('#dataInputTime').val();
 				
-				var output = {sender : sender, recipient : recipient, command : 'chat', type  : 'text', data : data, time : time};
-				console.log('서버로 보낼 데이터 : ' + JSON.stringify(output));
+				var output = {sender : sender, recipient : recipient, senNick : senNick, command : 'chat', type  : 'text', data : data, time : time};
+				alert('서버로 보낼 데이터 : ' + JSON.stringify(output));
+				
 				
 				if(socket == undefined){
 					alert('서버에 연결되어 있지 않습니다. 먼저 서버에 연결하세요.');
@@ -106,11 +108,14 @@
 					
 					var sender = $('#senderInput').val();
 					var recipient = $('#recipientInput').val();
+					var senNick = $('#senNick').val(); //////////senNick추가////////////////////
+					var recNick = $('#recNick').val();
 					var data = $('#dataInput').val();
 					var time = $('#dataInputTime').val();
 					
-					var output = {sender : sender, recipient : recipient, command : 'chat', type  : 'text', data : data, time : time};
-					console.log('서버로 보낼 데이터 : ' + JSON.stringify(output));
+					var output = {sender : sender, recipient : recipient, senNick : senNick,
+							recNick : recNick, command : 'chat', type  : 'text', data : data, time : time};
+					alert('서버로 보낼 데이터 : ' + JSON.stringify(output));
 					
 					if(socket == undefined){
 						alert('서버에 연결되어 있지 않습니다. 먼저 서버에 연결하세요.');
@@ -127,7 +132,7 @@
 				//alert('로그인 버튼 클릭!!')
 				var id = $('#idInput').val();
 				var password = $('#passwordInput').val();
-				var alias = $('#aliasInput').val();
+				var alias = $('#senNick').val();
 				var today = $('#todayInput').val();
 				
 				var output = {id : id, password : password, alias : alias, today : today};
@@ -140,6 +145,29 @@
 				
 				socket.emit('login', output);
 			//});
+			
+			
+			
+				var sender = $('#senderInput').val();
+				var recipient = $('#recipientInput').val();
+				var senNick = $('#senNick').val(); //////////senNick추가////////////////////
+				var data = $('#dataInput').val();
+				var time = $('#dataInputTime').val();
+				
+				var output2 = {
+						sender : sender,
+						recipient : recipient,
+						senNick : senNick,
+				};
+				console.log('서버로 보낼 데이터 : ' + JSON.stringify(output2));
+				
+				if(socket == undefined){
+					alert('서버에 연결되어 있지 않습니다. 먼저 서버에 연결하세요.');
+					return;
+				}
+				
+				socket.emit('findChat', output2);
+				//addToDiscussion('self',data,time);
 		});	
 	 
 		 
@@ -162,6 +190,29 @@
 							+ message.command + ', ' + message.type + ', ' + message.data +','+message.time+ '</p>');
 					
 					addToDiscussion('other', message.data, message.time);
+				});
+				
+				
+				////////////////////////////채팅내용찾은거//////////////////////////////////
+				socket.on('findChat', function(message){
+					
+					console.log("FROM DB"+JSON.stringify(message));
+					
+					var sessionId = "${user.userId}"; //세션아이디
+					
+					for(var i = 0; i < message.length; i++) {
+						println('<p>디비에서 가져온 채팅 : ' +message[i].sender+ ', ' + message[i].recipient + ', '+ message[i].message +','+message[i].time+'</p>');
+						//addToDiscussion('self', message[i].message, message[i].time);
+						
+						//alert(message[i].sender)
+						if(sessionId == message[i].sender) {
+							addToDiscussion('self', message[i].message, message[i].time);
+						} else {
+							addToDiscussion('other', message[i].message, message[i].time);
+						}
+						
+					}
+					
 				});
 				
 			});
@@ -341,7 +392,8 @@
 	<div>
 		<!-- 보낼 유저 정보 -->
 		<input type = "hidden" id = "idInput" value="${sender.userId}">
-		<input type = "hidden" id = "aliasInput" value="${sender.nickname}">
+		<input type = "hidden" id = "senNick" value="${sender.nickname}">
+		<input type = "hidden" id = "recNick" value="${recipient.nickname}">
 		<!-- <input type = "password" id = "passwordInput" value="1111"> -->
 		<!-- <input type = "text" id = "todayInput" > -->
 	</div>
