@@ -170,9 +170,9 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group">
+							<!-- <div class="form-group">
 								<button class="btn btn-default" type="button">조회하기</button>
-							</div>
+							</div> -->
 						</form>
 					</div>
 				</div>			

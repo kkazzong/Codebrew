@@ -297,6 +297,7 @@
 								TO_CHAR(pc.purchase_date, 'yyyy-mm-dd hh24:mi:ss') AS purchase_date,
 								pc.purchase_count AS purchase_count,
 								pc.purchase_price AS purchase_price,
+								pc.purchase_flag AS purchase_flag,
 								pc.tran_code AS tran_code
 								FROM users u, festival f, party p, ticket t, purchase pc
 								WHERE pc.user_id = u.user_id

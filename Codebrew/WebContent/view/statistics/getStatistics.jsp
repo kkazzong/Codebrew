@@ -1,10 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-	<title>getStatistics</title>
+
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	
+	<title>getStatistics</title>
+	
 	<!-- Bootstrap, jQuery CDN -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
@@ -40,6 +44,7 @@
 	<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
 	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
 
+	<!-- 자바스크립트 -->
 	<script type="text/javascript">
 		
 		/////////////////////////////////////////////amChart getData////////////////////////////////////////////////////////
@@ -275,10 +280,13 @@
 			
 		});
 	</script>
+	
+	<!-- CSS -->
 	<style type="text/css">
 	
 		body {
 			padding-top : 70px;
+			background-color: #f2f4f6;
 	    }
 	    
 		.ui-datepicker-trigger {
@@ -286,11 +294,20 @@
 			height : 20px;
 		}
 		
+		.text-info {
+	    	color: #333333; 
+	    }
+	    
+	    .page-header {
+	    	border-bottom : 1px solid #f2f4f6;
+	    }
+		
 		/* div {
 			border : 3px solid #D6CDB7;
 			margin0top : 10px;
 		} */
 	</style>
+	
 </head>
 
 <body>
