@@ -338,14 +338,14 @@
 															+JSONData.list[i].user.nickname+"&nbsp;"+"( "+JSONData.list[i].user.userId+" )"
 															+"</span>"
 															+"<span>"
-														 	 +JSONData.list[i].role 
+														 	+JSONData.list[i].role 
 															//if(role.indexOf('host') != -1){
 																 //+"<c:if test='${"+role+"== host}'>" 
-															+JSONData.list[i].role	
-																
-																 //+"</c:if>" 
+																//+JSONData.list[i].role	
+																//+"</c:if>" 
 															//}
 															+"</span>"
+															+"<hr>"
 															+"</div>";
 											
 										$("form.form-horizontal-1").append(partyMemberList); 
@@ -356,12 +356,18 @@
 							  				console.log("if문 안 파티 멤버 리스트 보기 버튼");
 								  			
 							  				/* 파티 멤버 리스트 보기 버튼 */
-											var getPartyMemberList = "<button type='button' class='btn btn-primary btn-block' data-toggle='modal' data-target='#exampleModal'>"
+											/* var getPartyMemberList = "<button type='button' class='btn btn-primary btn-block' data-toggle='modal' data-target='#exampleModal'>"
 														 +"파티멤버보기"
-														 +"</button>";
+														 +"</button>"; */
+														 
+											var getPartyMemberList = "<div class='hover01 column'>"
+																	+"<div>"
+																	+"<figure id='memberLock'><img src='../../resources/image/buttonImage/member_lock_icon.png' width='35%' height='35%' data-toggle='modal' data-target='#exampleModal'></figure>"
+																	+"</div>"
+																	+"</div>"			 
 														 
 										    //$("#partyMemberListButtonDiv").html(button);
-										    $("#partyMemberListButtonDiv").append(getPartyMemberList);
+										    $("#partyMemberListButtonDiv").html(getPartyMemberList);
 										    
 										    console.log(getPartyMemberList);
 										 
@@ -475,7 +481,7 @@
 							  			
 							  		} //for문 end
 				
-									var currentMemberCount = "MOANA 회원 중&nbsp;<strong>"+JSONData.currentMemberCount+"</strong> 명 참여중";
+									var currentMemberCount = "&nbsp;&nbsp;&nbsp;&nbsp;MOANA 회원 중&nbsp;<strong>"+JSONData.currentMemberCount+"</strong> 명 참여중";
 																						
 									$("#currentMemberCountDiv").html(currentMemberCount); 
 		
@@ -502,7 +508,8 @@
 
 <!--  화면구성 div Start /////////////////////////////////////-->
 <!-- Button trigger modal -->
-<div class="col-md-offset-4 col-md-4" id="partyMemberListButtonDiv"></div>
+<!-- <div class="col-md-offset-4 col-md-4" id="partyMemberListButtonDiv"></div> -->
+
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -512,7 +519,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h1 class="modal-title" id="exampleModalLabel" align="center">파티 멤버</h1>
+        <h1 class="modal-title" id="exampleModalLabel" >파티 멤버</h1>
         <div><h4 align="center">${ party.partyName }</h4></div>
         
       </div>
@@ -522,7 +529,7 @@
 			
 		</form>
       </div>
-      <div class="modal-footer">
+      <div class="footer" align="center">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
       </div>
     </div>

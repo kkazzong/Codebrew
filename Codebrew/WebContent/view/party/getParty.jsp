@@ -221,6 +221,9 @@ body {
 	color: #b5121b;
 }
 
+#userDiv {
+	height: 80px;
+}
 /* Zoom In */
 .hover01 figure img {
 	-webkit-transform: scale(1);
@@ -363,7 +366,7 @@ body {
 				<div class="col-md-offset-2 col-md-8">
 					<div class="panel panel-default">
 						<div class="panel-body">
-							<div class="col-md-12">
+							<div id="host" class="col-md-12">
 								<small><span class="glyphicon glyphicon-star"></span> 파티호스트</small> <br>
 								<%-- <p><img class="rounded-circle" src="/resources/image/uploadFile/${ party.user.profileImage }" alt="Generic placeholder image" width="40" height="40"></p> --%>
 								<%-- <div>
@@ -387,7 +390,7 @@ body {
 									<p class="pull-left">
 										<br>
 										&nbsp;&nbsp;&nbsp;&nbsp; <img class="img-circle" src="/resources/uploadFile/${party.user.profileImage}" width="50" height="50">
-										<span id="host">${ party.user.nickname }</span>
+										<span id="userDiv">${ party.user.nickname }</span>
 										<!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<button type='button' class='btn btn-default'>채팅하기</button> -->
 									</p>
@@ -404,20 +407,68 @@ body {
 							</div>
 
 							<div class="col-md-12">
-								<hr>
-								<small><span class="glyphicon glyphicon-star"></span> 참여인원</small> 
-								<br><br>
-								<div id="currentMemberCountDiv"></div>
 								<%@include file="/view/party/getPartyMemberList.jsp"%>
+								<hr>
+								<small><span class="glyphicon glyphicon-star"></span> 파티에 참여한 사람들</small>
+								<div id="currentMemberCountDiv"></div>
+								<br>
+								<br>
 								
-							</div>
-							<div class="col-md-12">
-								<div class="jumbotron">
-									<%@include file="/view/party/getGenderRatio.jsp"%>
-									<br>
-									<div class="text-center"><h4><strong>파티에 참여하는 사람들의 비율을 확인하세요</strong></h4></div>
-									<div class="text-center"><h5>파티에 참여하기 전에 '코코넛'을 이용하면</h5></div>
-									<div class="text-center"><h5>참여자 비율을 미리 알 수 있어요!</h5></div>
+								<div class="col-md-6 text-center">
+									<div class="ratio-info">
+										<div class="hover01 column">
+											<div>
+												<figure id="ratioLock">
+													<img
+														src="../../resources/image/buttonImage/ratio_lock_icon.png"
+														width="45%" height="45%" data-toggle="modal"
+														data-target="#exampleModal2">
+												</figure>
+											</div>
+										</div>
+										<%@include file="/view/party/getGenderRatio.jsp"%>
+										<br>
+									</div>
+									<div>
+										<div class="text-center">
+											<h4>
+												<strong>파티에 참여한 사람들의 비율을 확인하세요</strong>
+											</h4>
+										</div>
+										<div class="text-center">
+											<h5>파티에 참여하기 전에 '코코넛'을 이용하면 참여자 비율을 미리 알 수 있어요!</h5>
+										</div>
+										<!-- <div class="text-center"><h5>참여자 비율을 미리 알 수 있어요!</h5></div> -->
+									</div>
+								</div>
+								<br>
+								<br>
+								<div class="col-md-6 text-center">
+									<div class="member-info">
+										<div id="partyMemberListButtonDiv">
+											<div class='hover01 column'>
+												<div>
+													<figure id="memberLock">
+														<img
+															src='../../resources/image/buttonImage/member_lock_icon.png'
+															width='35%' height='35%'>
+													</figure>
+												</div>
+											</div>
+										</div>
+										<br><br>
+										<div>
+											<div class="text-center">
+												<h4>
+													<strong>파티에 참여한 사람들의 리스트를 확인하세요</strong>
+												</h4>
+											</div>
+											<div class="text-center">
+												<h5>${ !empty user.nickname ? user.nickname : '회원' }님 말고도
+													다른 사람들이 참여중이에요!</h5>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -469,6 +520,9 @@ body {
 						<c:if test="${ party.user.userId==user.userId }">
 							<button type="button" class="btn btn-primary btn-block">파티수정</button>
 						</c:if>
+						
+						<!-- 파티버튼 -->
+						<span id="partyButtonDiv"></span>	
 					</div>
 				</div>
 			</div>
