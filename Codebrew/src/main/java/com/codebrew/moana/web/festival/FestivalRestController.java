@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codebrew.moana.common.Search;
+import com.codebrew.moana.service.domain.Contents;
 import com.codebrew.moana.service.domain.Festival;
 import com.codebrew.moana.service.domain.Zzim;
 import com.codebrew.moana.service.festival.FestivalService;
 import com.codebrew.moana.service.ticket.TicketService;
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 
 @RestController
 @RequestMapping("/festivalRest/*")
@@ -44,6 +44,17 @@ public class FestivalRestController {
 	public FestivalRestController() {
 		// TODO Auto-generated constructor stub
 		System.out.println(this.getClass());
+	}
+	
+	@RequestMapping(value = "json/kakaoWeb", method=RequestMethod.GET)
+	public Contents kakaoWeb(@RequestParam("festivalName0") String festivalName0) throws Exception {
+		
+		System.out.println("레스트 컨트롤러............." + festivalName0);
+		
+		Contents contents = festivalService.kakaoWeb(festivalName0);
+
+		return contents;
+
 	}
 	
 	

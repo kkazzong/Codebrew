@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.codebrew.moana.common.Search;
+import com.codebrew.moana.service.domain.Contents;
 import com.codebrew.moana.service.domain.Festival;
 import com.codebrew.moana.service.domain.Location;
 import com.codebrew.moana.service.domain.Weather;
@@ -192,6 +193,14 @@ public class FestivalServiceImpl implements FestivalService{
 		map.put("list", list);
 		
 		return map;
+	}
+
+	@Override
+	public Contents kakaoWeb(String festivalName0) throws Exception {
+		// TODO Auto-generated method stub
+		System.out.println("카카오웹 festivalName0................" + festivalName0);
+		
+		return tourAPIDAO.kakaoWeb(festivalName0);
 	}
 	
 }
