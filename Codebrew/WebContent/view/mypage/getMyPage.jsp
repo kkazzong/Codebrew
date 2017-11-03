@@ -4,8 +4,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 	<script src="https://use.fontawesome.com/04438b50a5.js"></script>
 	
-	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+	 <!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
+	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -13,7 +13,7 @@
 	
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
-	
+	  
 	
 	
 	<script type="text/javascript">
@@ -95,8 +95,10 @@
 		}
 		.profile-userpic img {
 		  float: none;
-		  margin: 0 auto;
-		  width: 50%;
+		   text-align: center;
+		 /*  margin: 0 auto;  */
+		 /* margin: center; */
+		  width: 70%;
 		  height: 120px;
 		  -webkit-border-radius: 50% !important;
 		  -moz-border-radius: 50% !important;
@@ -108,16 +110,16 @@
 		}
 		.profile-usertitle-name {
 		  color: #5a7391;
-		  font-size: 16px;
+		  font-size: 20px;
 		  font-weight: 600;
 		  margin-bottom: 50px;
 		}
 		.profile-usertitle-job {
 		  text-transform: uppercase;
 		  color: #5b9bd1;
-		  font-size: 12px;
+		  font-size: 20px;
 		  font-weight: 600;
-		  margin-bottom: 15px;
+		  margin-bottom: 20px;
 		}
 		.profile-userbuttons {
 		  text-align: center;
@@ -181,17 +183,21 @@
 		<input type="hidden" id="sessionId" value="${sessionScope.user.userId}">
         
 		<div class="row">
-			<div class="profile-sidebar">
 			
+			   		<div class="profile-userpic" style="width: 180px; float: left; height: 250px;">
+            
+						<img src="/resources/uploadFile/${user.profileImage}" class="img-responsive" alt="" >
+						</div>
+						 
+					</div>
+					
+					
 		
 					<!-- SIDEBAR USER TITLE -->
 					<div class="profile-usertitle">
+						
 						<div class="profile-usertitle-name">
 							${user.nickname}
-						</div>
-						<div class="profile-pic"
-									style="width: 180px; float: left; height: 250px;">
-						<img src="/resources/uploadFile/${user.profileImage}" class="img-responsive" alt="" >
 						</div>
 						<div class="profile-usertitle-job">
 							${user.userId}

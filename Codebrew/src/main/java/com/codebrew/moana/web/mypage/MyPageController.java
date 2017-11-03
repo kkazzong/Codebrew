@@ -1,5 +1,6 @@
 package com.codebrew.moana.web.mypage;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -51,6 +52,10 @@ public class MyPageController {
 		
 			sessionId=((User)session.getAttribute("user")).getUserId();
 		}
+		
+		System.out.println("세션아디는???"+sessionId);
+		System.out.println("리퀘스트아이디는???"+requestId);
+		
 		  if(requestId !=null) {
 			
 			if(sessionId.indexOf("requestId")== -1) {
@@ -59,7 +64,12 @@ public class MyPageController {
 			
 		}
 		
-		User user=userService.getUser(sessionId);
+		  System.out.println("세션아디가 뭘로 변했나??"+sessionId);//리퀘스트 아이디로 변함 
+		  
+		User user=userService.getUser(sessionId);//내가 팔로우 하려는 유저정보
+		
+		//Follow follow=followService.getFollow(responseId, requestId)
+		
 		
 		System.out.println("누구로 검색하고 있는지...user 도메인에 있는 사람은 누구????"+user);
 		
@@ -126,7 +136,9 @@ public class MyPageController {
 		
 		//Follow follow=followService.getFollow(responseId, requestId);
 		
-	
+	    Map<String, Object>map=new HashMap<String, Object>();
+	    map.put("requestId", requestId);
+	    map.put("sessionId", ((User)session.getAttribute("user")).getUserId());
 		
 	   
 	   
@@ -138,7 +150,7 @@ public class MyPageController {
 		
 		System.out.println("세션아디는???"+sessionId);
 		System.out.println("리퀘스트아이디는???"+requestId);
-		  if(requestId !=null) {
+		  if(requestId !=null) {//팔로잉 하는 사람이 있으면
 			
 			if(sessionId.indexOf("requestId")== -1) {
 				sessionId=requestId;
@@ -150,8 +162,7 @@ public class MyPageController {
 		  
 		user=userService.getUser(sessionId);
 		
-		
-		
+	
 		ModelAndView modelAndView=new ModelAndView();
 		modelAndView.addObject("user", user);
 		modelAndView.setViewName("forward:/view/mypage/getMyPage.jsp");
