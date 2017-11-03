@@ -5,4 +5,98 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 		
 <mapper namespace="FollowMapper">
+ <resultMap id="followSelectMap" type="follow">
+ 
+ <result property="followNo" column="follow_no" jdbcType="NUMERIC"/>
+ <result property="requestId" column="request_id" jdbcType="VARCHAR"/>
+ <result property="responseId" column="response_id" jdbcType="VARCHAR"/>
+ <result property="f4f" column="f4f" jdbcType="VARCHAR"/>
+ <result property="profileImage" column="profile_image" jdbcType="VARCHAR"/>
+ <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
+ <result property="userId" column="user_id" jdbcType="VARCHAR"/>
+ <!--mapper에 result를 안해주면 바인딩이 안됨....u.profileImage를 못받아옴  -->
+ 
+ </resultMap>
+ 
+ <insert id="addFollow" parameterType="follow">
+ INSERT
+ INTO follow(follow_no,
+             response_id,
+             request_id
+             )<!--항목수가 일치해야함  -->
+ VALUES(seq_follow_follow_no.nextval,
+        #{responseId:VARCHAR},
+        #{requestId:VARCHAR}
+  <!-- <if test="f4f !=null">
+        #{f4f}
+        </if> -->
+       )
+ </insert>
+ 
+ 
+ <delete id="deleteFollow" parameterType="map">
+ DELETE
+ FROM follow
+ WHERE response_id=#{responseId:VARCHAR}
+ AND request_id=#{requestId:VARCHAR}
+ </delete>
+ 
+ 
+ <select id="getFollow" parameterType="map" resultMap="followSelectMap">
+ SELECT * 
+ FROM follow
+ WHERE response_id=#{responseId} 
+ AND request_id=#{requestId}
+ </select>
+ 
+ 
+ 
+ <update id="updateFollow" parameterType="follow">
+ UPDATE follow
+ 
+ <set>
+  f4f=#{f4f}
+ </set>
+ 
+ WHERE response_id=#{responseId:VARCHAR}
+ AND request_id=#{requestId:VARCHAR}
+ </update>
+ 
+ 
+ <select id="getFollowingList" parameterType="search" resultMap="followSelectMap">
+ SELECT f.follow_no, f.response_id, f.request_id, f.f4f, u.nickname, u.profile_image
+ FROM follow f, users u
+ WHERE f.response_id=#{searchKeyword}
+ AND u.user_id=f.request_id
+ </select>
+ 
+ 
+ 
+ <select id="getFollowerList" parameterType="search" resultMap="followSelectMap">
+ SELECT f.follow_no, f.response_id, f.request_id, f.f4f, u.nickname, u.profile_image
+ FROM follow f, users u
+ WHERE f.request_id=#{searchKeyword}
+ AND u.user_id=f.reponse_id
+ </select>
+ 
+ 
+ <select id="getFollowerTotalCount" parameterType="search" resultType="int">
+ SELECT COUNT(*)
+ FROM(SELECT follow_no, response_id, request_id
+      FROM follow
+      WHERE response_id=#{searchKeyword}
+      )countTable
+ </select>
+ 
+ 
+ 
+ <select id="getFollowingTotalCount" parameterType="search" resultType="int">
+ SELECT COUNT(*)
+ FROM(SELECT follow_no, response_id, request_id
+      FROM follow
+      WHERE request_id=#{searchKeyword}
+      )countTable
+ </select>
+ 
+
 </mapper>
