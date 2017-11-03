@@ -144,11 +144,7 @@
 			              <ul class="dropdown-menu">
 			                    <li><a href="#">마이페이지</a></li> 
 			              </ul>
-<<<<<<< HEAD
 			           </li>
-=======
-			          
->>>>>>> refs/heads/new/jooyoung
 		             	<li><a href="#">${sessionScope.user.nickname}님</a></li>
 		             	<li><a href="#">로그아웃</a></li>
 	             	</c:if>

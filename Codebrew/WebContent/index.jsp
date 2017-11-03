@@ -18,6 +18,9 @@
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+
 <!-- Bootstrap Dropdown Hover CSS -->
 <link href="/resources/css/animate.min.css" rel="stylesheet">
 <link href="/resources/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
@@ -25,265 +28,429 @@
 <!-- Bootstrap Dropdown Hover JS -->
 <script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
 
+	<script type="text/javascript">
+	
+
+	/* function fncGetInitListDB() {
+		
+		$(function() {
+				 
+					$.ajax( 
+							{
+								url : "/festivalRest/json/getInitListDB",
+								method : "GET" ,
+								dataType : "json" ,
+								headers : {
+									"Accept" : "application/json",
+									"Content-Type" : "application/json"
+								},
+								success : function(jsonData , status) {
+									
+									for(var i = 0 ; i<3; i++){
+										
+									var festivalName =  jsonData.list[i].festivalName;	
+									var festivalImage = jsonData.list[i].festivalImage
+									var festivalNo = jsonData.list[i].festivalNo
+									var startDate = jsonData.list[i].startDate
+									var endDate = jsonData.list[i].endDate
+									var addr = jsonData.list[i].addr
+									
+									}
+									
+									$("#festivalName0").text(jsonData.list[0].festivalName);
+									$("#image0").attr("src",jsonData.list[0].festivalImage);
+									$("#festivalNo0 > p").text(jsonData.list[0].festivalNo);
+									$("#date0").text(jsonData.list[0].startDate + " ~ " + jsonData.list[0].endDate);
+									$("#addr0").text(jsonData.list[0].addr);
+									$("c").attr("test",jsonData.list[0].festivalImage +".contains('http://')==false");
+									$(".first-slide").attr("src",jsonData.list[0].festivalImage);
+									$("#tag0 > div > p").text(jsonData.list[0].festivalNo);
+									$("#tag0").val(jsonData.list[0].festivalNo);
+									
+									
+									$("#festivalName1").text(jsonData.list[1].festivalName);
+									$("#image1").attr("src",jsonData.list[1].festivalImage);
+									$("#festivalNo1 > p").text(jsonData.list[1].festivalNo);
+									$("#date1").text(jsonData.list[1].startDate + " ~ " + jsonData.list[1].endDate);
+									$("#addr1").text(jsonData.list[1].addr);
+									$(".second-slide").attr("src",jsonData.list[1].festivalImage);
+									$("#tag1 > div > p").text(jsonData.list[1].festivalNo);
+									$("#tag1").val(jsonData.list[1].festivalNo);
+									
+									$("#festivalName2").text(jsonData.list[2].festivalName);
+									$("#image2").attr("src",jsonData.list[2].festivalImage);
+									$("#festivalNo2 > p").text(jsonData.list[2].festivalNo);
+									$("#date2").text(jsonData.list[2].startDate + " ~ " + jsonData.list[2].endDate);
+									$("#addr2").text(jsonData.list[2].addr);
+									$(".third-slide").attr("src",jsonData.list[2].festivalImage);
+									$("#tag2 > div > p").text(jsonData.list[2].festivalNo);
+									$("#tag2").val(jsonData.list[2].festivalNo);
+									
+									alert("init"+ $("#festivalName0").text());
+									
+									
+								}
+						});
+				});
+	} */
+	
+	$(document).ready(function() {
+				 
+					$.ajax( 
+							{
+								url : "/festivalRest/json/getInitListDB",
+								method : "GET" ,
+								dataType : "json" ,
+								headers : {
+									"Accept" : "application/json",
+									"Content-Type" : "application/json"
+								},
+								success : function(jsonData , status) {
+									
+									for(var i = 0 ; i<3; i++){
+										
+									var festivalName =  jsonData.list[i].festivalName;	
+									var festivalImage = jsonData.list[i].festivalImage
+									var festivalNo = jsonData.list[i].festivalNo
+									var startDate = jsonData.list[i].startDate
+									var endDate = jsonData.list[i].endDate
+									var addr = jsonData.list[i].addr
+									
+									}
+									
+									/* 0 */
+									$("#festivalName0").text(jsonData.list[0].festivalName);
+									$("#image0").attr("src",jsonData.list[0].festivalImage);
+									$("#festivalNo0 > p").text(jsonData.list[0].festivalNo);
+									$("#date0").text(jsonData.list[0].startDate + " ~ " + jsonData.list[0].endDate);
+									$("#addr0").text(jsonData.list[0].addr);
+									$("c").attr("test",jsonData.list[0].festivalImage +".contains('http://')==false");
+									$(".first-slide").attr("src",jsonData.list[0].festivalImage);
+									$("#tag0 > div > p").text(jsonData.list[0].festivalNo);
+									$("#tag0").val(jsonData.list[0].festivalNo);
+									
+									
+									/* 1 */
+									$("#festivalName1").text(jsonData.list[1].festivalName);
+									$("#image1").attr("src",jsonData.list[1].festivalImage);
+									$("#festivalNo1 > p").text(jsonData.list[1].festivalNo);
+									$("#date1").text(jsonData.list[1].startDate + " ~ " + jsonData.list[1].endDate);
+									$("#addr1").text(jsonData.list[1].addr);
+									$(".second-slide").attr("src",jsonData.list[1].festivalImage);
+									$("#tag1 > div > p").text(jsonData.list[1].festivalNo);
+									$("#tag1").val(jsonData.list[1].festivalNo);
+									
+									/* 2 */
+									$("#festivalName2").text(jsonData.list[2].festivalName);
+									$("#image2").attr("src",jsonData.list[2].festivalImage);
+									$("#festivalNo2 > p").text(jsonData.list[2].festivalNo);
+									$("#date2").text(jsonData.list[2].startDate + " ~ " + jsonData.list[2].endDate);
+									$("#addr2").text(jsonData.list[2].addr);
+									$(".third-slide").attr("src",jsonData.list[2].festivalImage);
+									$("#tag2 > div > p").text(jsonData.list[2].festivalNo);
+									$("#tag2").val(jsonData.list[2].festivalNo);
+									
+									
+									/* test  */
+									/* alert("init"+ $("#festivalName0").text()); */
+									
+									/* other */
+									fncGetWebSearch();
+									
+									
+								}
+				});
+	});
+	
+	
+function fncGetWebSearch() {
+		
+		$(function() {
+			
+			/* alert("web"+ $("#festivalName0").text()); */
+			
+			var festivalName0 = $("#festivalName0").text();
+		
+			 $.ajax( 
+					 {
+						url : "/festivalRest/json/kakaoWeb?festivalName0="+festivalName0,
+						method : "GET",
+						success : function(JSONData , status) {
+
+							 /* alert("JSONData : \n"+JSONData);
+							alert( "JSON.stringify(JSONData) : \n"+JSON.stringify(JSONData) ); */
+							
+							/* $("#search0").val(JSONData.url); */
+							
+							/* +"&autoplay=1&rel=0&roop=1" */
+						 /* $("#object").attr("data",JSONData.url); */
+							
+						}
+					 });
+	});
+}
+
+		
+
+	
+
+	
+	
+	$(function() {
+	$("#searchKeyword").autocomplete({
+		source: function( request, response ) {
+	        $.ajax( {
+	          url: "/festivalRest/json/getKeyword",
+	          method : "POST",
+	          headers : {
+					"Accept" : "application/json",
+					"Content-Type" : "application/json"
+			  },
+	          dataType: "json",
+	          data: JSON.stringify({
+	        	currentPage : "1",
+		        searchKeyword : $("#searchKeyword").val(),
+		        searchCondition : ""
+	          }),
+	          success: function( JSONData ) {
+	            response($.map(JSONData, function(value, key){
+	            	console.log(value.festivalNo);
+	            	
+	            	var festivalNo = value.festivalNo;
+	            	
+	            	$("#festivalNo").val(festivalNo);
+	            	
+	            		return {
+	            			label :  value.festivalName,
+	            			value : value.festivalName
+	            			
+	            		}
+	        	}));
+	        	
+	          }
+	        } );
+	    }
+	});
+	});
+	
+	
+	   
+	   $(function(){
+			
+			$("input:text[name='searchKeyword']").on('keydown',function(event){
+				
+				if(event.keyCode ==13){
+					event.preventDefault();
+					$( "#search"  ).click();
+				}
+			});
+		
+		});
+	   
+	   $(function(){
+		   $("#search").on("click",function(){
+				
+			   var festivalNo = $("#festivalNo").val();
+			   
+			   self.location="/festival/getFestivalDB?festivalNo="+festivalNo;
+		   })
+	   })
+	   
+	    $(function(){
+		   $("button").on("click",function(){
+				
+			   var festivalNo = $(this).val();
+			   
+			   self.location="/festival/getFestivalDB?festivalNo="+festivalNo;
+		   })
+	   })
+	   
+	   
+	
+				    	
+				    	
+  
+	    
+</script>
 
 
 <style type="text/css">
+
 	body {
-		padding-top : 70px;
+            padding-top : 50px;
+    }
+	
+
+  .carousel-inner > .item > img {
+      min-width: 100%;
+      min-height: 100%;
+    
     }
     
-    section {
-    	/* background: url(/resources/image/toolbarImage/bg2.jpg) no-repeat center center; */
-    	background: url(/resources/image/ui/main.gif) no-repeat center center;
-		width: 100%;
-	   	height: 500px;
-	   background-size: 100%;
-	   opacity: 0.8;
+    #myCarousel, .carousel-inner{
+           height : 400x;
     }
     
-    #box {
-		padding-top: 187px;
-		text-align: center;
-	}
-     
-		
-	.title {
-		color: black;
-		text-shadow:1px 1px 1px black;
-	} 
-	
-	/* .main .search-main input[type=text] {
-		
-		width: 83%;
-	    height: 41px;
-	    padding-left: 10px;
-	    float: left;
-	    margin-top: 2px;
-	    margin-left: 2px;
-	}
-	
-	.main .search-main {
-	    background-color: #556180;
-	    width: 100%;
-	    height: 45px;
-	    margin-bottom: 76px;
-	    position: relative;
-	}
+   .form-control{
+   	width: 600px;
+   	height: auto;
+   }
+   
+	.video-container { margin: 0;padding-bottom: 75%; max-width: 100%; height: 0; position: relative;overflow: hidden;} 
+	.video-container iframe, 
+	.video-container object, 
+	.video-container embed { margin: 0;padding: 0; width: 100%; height: 95%;position: absolute; top: 0;left: 0; }
+    
+    
 
-	.main .search-main img {
-	    width: 40px;
-	    margin-top: 2px;
-
-	}
- */
 </style>
 
 
-	<script type="text/javascript">
 
-	    
-</script>
 <title>Moana</title>
-<!-- 타이틀 수정하지마세용 -->
 </head>
+
+<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
+
+<!-- <body onload="fncGetWebSearch();"> -->
 <body>
-	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
+	
+  	
+  		<div class="page-header text-center">
+					<h3 class="text-info">
+						<div class="row">
+							<div class="text-center">
+									<form class="form form-inline" id="searchForm" name="searchForm">
+										<input type="hidden" id="currentPage" name="currentPage" value=""/>
+										<input type="hidden" id="festivalNo" name="festivalNo" value=""/>
+										<div class="input-group">
+											<input class="form-control" id="searchKeyword" name="searchKeyword" type="text" 
+														value="${!empty search.searchKeyword ? search.searchKeyword : ''}"
+														placeholder="축제를 검색해보세요.">
+											<span class="input-group-btn">
+										    	<button id="search" class="btn btn-primary btn-block" type="button">
+										    		<span class="glyphicon glyphicon-search" aria-hidden="true" > </span>
+										    	</button>
+										    </span>
+										</div>
+									</form>
+								</div>
+							</div>
+					</h3>
+				</div>
+				
+				<!-- carousel  -->
+				
+				<div class="container">
 
+      <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+          <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+          <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+          <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+        </ol>
+        
+        <div class="carousel-inner" role="listbox">
+           
+          <div class="item active">
+          
+      		<label for="item">
+      		</label>  
+            <img class="first-slide" src="" alt="First slide"  style="width : 600px; height : 400px;"  title="Click Images">
+            <div class="carousel-caption" >
+            
+            
+            <!-- data 삽입태그 -->
+            <h1 class="glyphicon glyphicon-eye-open" id="festivalName0" aria-hidden="true"></h1><br/>
+            <h4 class="glyphicon glyphicon-map-marker" id="addr0" aria-hidden="true"></h4><br/>
+            <h4 class="glyphicon glyphicon-calendar" id="date0"></h4><br/>
+            <button type="button" id="tag0" data-loading-text="Loading..." class="btn btn-primary" value="">상세보기</button>
+            <div style=diplay:none>
+            <p></p>
+            </div>
+            
+            
+            <div class="container">
+          		</div>
+          		</div>
+          		</div>
+          <div class="item">
+          <label for="item">
+      		</label>  
+            <img class="second-slide" src="" alt="Second slide"  style="width : 600px; height : 400px;" title="Click Images" >
+            <div class="container">
+            <div class="carousel-caption">
+            
+            <!-- data 삽입태그 -->
+            <h1 class="glyphicon glyphicon-eye-open" id="festivalName1" aria-hidden="true"></h1><br/>
+            <h4 class="glyphicon glyphicon-map-marker" id="addr1" aria-hidden="true"></h4><br/>
+            <h4 class="glyphicon glyphicon-calendar" id="date1"></h4><br/>
+            <div>
+            <button type="button" id="tag1" data-loading-text="Loading..." class="btn btn-primary" value="">상세보기</button>
+            <p></p>
+            </div>
+          		</div>
+          		</div>
+          		</div>
+          <div class="item">
+          <label for="item">
+      		</label>  
+            <img class="third-slide" src="" alt="Third slide" style="width : 600px; height : 400px;" title="Click Images" >
+            <div class="container">
+            <div class="carousel-caption">
+            
+            <!-- data 삽입태그 -->
+            <h1 class="glyphicon glyphicon-eye-open" id="festivalName2" aria-hidden="true"></h1><br/>
+            <h4 class="glyphicon glyphicon-map-marker" id="addr2" aria-hidden="true"></h4><br/>
+            <h4 class="glyphicon glyphicon-calendar" id="date2"></h4><br/>
+            <div>
+            <button type="button" id="tag2" data-loading-text="Loading..." class="btn btn-primary" value="">상세보기</button>
+            <p></p>
+            </div>
+          		</div>
+          		</div>
+          		</div>
+          		</div>
+        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+      
+      </div> 
+      
+    <!-- carousel 끝 -->
 	
-	<!-- 배경 이미지 -->
-	<section>
+	<br/>
 	
-	<div class="row">
-		<div class="col-md-12 text-center">
-			<div class="title">
-			</div>
-		</div>
+	<!-- fncGetWebSearch.... -->
+	
+	<!-- <iframe  width="1350" height="1000" src="" id="iframe"></iframe> -->
+	
+	<div class="video-container">
+  		 <iframe width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
 	</div>
 	
-	<div id="box" class="row">
-		<div class="col-md-12 text-center">
-			<div class="col-md-offset-4 col-md-4">
-				<form class="form form-inline">
-					<div class="form-group">
-						<input class="form-control input-lg" type="text" placeholder="축제명 or 파티명 검색">
-					</div>
-					<div class="form-group">
-						 <button class="btn btn-primary btn-block" type="button">검색</button> 
-						<!-- <a id="search" class="click" type="button">
-		                      <img src="/resources/image/buttonImage/btn_nav_search_white@3x.png">
-		                </a>	 -->
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
 	
+	<br/>
 	
+	<input type="text" id="search1" value="">
 	
-	<!-- Title -->
-	<!-- <div class="main-wrapper">
-		
-		<div class="main">
-		<div class="main">
-	        <div class="container">
-	            <div class="col-md-12">
-	                <div class="col-md-6 col-md-offset-3 padding-none">
-	                    <div class="text-center white">
-	                       
-	                        <div class="title">
-	                        	<h1>MOANA</h1>
-	                            <h1>이번 주말에 모아나ㅋ</h1>
-	                        </div>
+	<br/>
 	
-	                        <div class="sub-title-container">
+	<input type="text" id="search2" value="">
 	
-	                            <div class="search-main">
-	                                
-	                                <form class="form-inline" name="detailForm">
-	                                	
-										  
-										  <div class="form-group">
-										    <label class="sr-only" for="searchKeyword">검색어</label>
-										    
-											<input type="text" class="form-control" id="search" placeholder="ex) 할로윈">
-											<input type="text" placeholder="ex) 할로윈">
-										    <a id="search" class="click" type="button">
-		                                        <img src="/resources/image/buttonImage/btn_nav_search_white@3x.png">
-		                                    </a>		 
-										  </div>
-	                               	</form>
-	                                
-	                             
-	                                </div>
-	                            </div>
-	                        
+			
+			</body>
+			
+
 	
-	                        <script>
-	                            $("#search").click(function () {
-	                                var query = $(".search-main input").val();
-	                                if (!query) {
-	                                    alert("검색어를 입력해주세요.");
-	                                } else {
-	                                    location.href = "/search/" + query;
-	                                }
-	                            })
-	                        </script>
-	
-	                        
-	
-	                    </div>
-	                </div>
-	            </div>
-	        </div>
-	    </div>
-	</div> -->
-	
-	
-<!-- <a href="/festival/ListFestival"> 축제리스트 (api사용) </a> -->
-<!-- <a href="/festival/getFestivalList?pageNo=1"> 축제리스트 (api사용) 관리자 </a>
 
-<br/>
-<br/> -->
-
-<!-- <a href="/festival/getFestivalListDB"> 축제리스트 (서버DB) 회원 / 비회원 </a> -->
-
-<!-- <a href="/festival/getFestivalListDB?menu=db"> 축제리스트 (서버DB) 회원 / 비회원 </a> -->
-
-<!-- 가정이가 써보았다 -->
-<%-- <br>
-<br>
-<c:if test="${user.role == 'a'}">
-<a href="/purchase/getSaleList"> 판매목록 (관리자only) </a>
-</c:if>
-<br>
-<br> --%>
-
-<!-- <a href="/purchase/getPurchaseList"> my티켓 </a>
-
-<br>
-<br> -->
-<!--주영이가 써보았다.  -->
+    
 
 
-<%-- <a href="/user/login">로그인</a>
-
-<br>
-<br>
-
-<a href="/user/logout">로그아웃</a>
-
-
-<br>
-<br>
-
-
-<a href="/user/updateUser?userId=${user.userId}">회원정보 수정</a>
-
-<br>
-<br>
-
-<a href="/user/getUserList">회원리스트</a>
-
-<br>
-<br>
-
-<a href="/user/withdrawUser?userId=${user.userId }">회원탈퇴</a>
-
-<br>
-<br>
-
-<a href="/view/user/addUser.jsp">회원가입 ui 확인용</a>
-<br>
-<br>
-
-
-<a href="/view/festival/writeFestival.jsp">직접등록</a>
-
-<br>
-<br>
-
-<a href="/view/festival/weather.jsp">날씨</a> --%>
-
-<!--유아이 수정용 주소  -->
-<!-- <a href="/view/user/addExtraUser.jsp">추가정보 입력 ui</a>
-
-<br>
-<br>
-
-<a href="/view/user/findUser.jsp">아이디찾기/비밀번호 찾기 ui 확인용</a>
-
-<br>
-<br>
-
-<a href="/view/user/confirmUser.jsp">본인인증UI용</a> -->
-
-
-
-<!-- 가정이가 또 써보았다 -->
-<%-- <br>
-<br>
-<c:if test="${!empty user}">
- 현재 로그인한 userId : ${user.userId} <br>
- 어드민이니? 유저니? : ${user.role} <br>
-</c:if>
-
-<c:if test="${user.role == 'a'}">
-	<a href="/statistics/getStatistics"> 판매통계보기 (관리자only) </a>
-</c:if>
-<h5>jsp에서 dropdown cdn추가하고 툴바.jsp include(index.jsp참고하세염)</h5>
-<br>
-<br> --%>
-<!--후기등록 테스트중 -->
-<!-- <a href="/review/addReview">후기등록</a> -->
-
-
-<!-- 파티 index -->
-<!-- <div>
-	<div><a href = "/party/getMyPartyList">My 파티 리스트</a></div>
-</div>	 -->
-
-<!-- <a href="/festival/getFestivalListDB?menu=pop">popup</a> -->
-<!-- <a href="/festival/getMyZzimList">getZzimlist</a> -->
-	</section>
-</body>
 </html>
