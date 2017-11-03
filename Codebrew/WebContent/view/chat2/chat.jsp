@@ -1,6 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
+<%@ page import="com.codebrew.moana.service.domain.*" %>
+<%
+	//User sender = new User();
+	/* sender.setUserId("user01@naver.com");
+	sender.setNickname("쎄리");
+	sender.setProfileImage("default_profile_image.jpg"); */
+	User sender = (User)session.getAttribute("user");
+	User recipient = new User();
+	recipient.setUserId("user06@naver.com");
+	recipient.setNickname("희정");
+	recipient.setProfileImage("default_profile_image.jpg");
+	Chat chat = new Chat();
+	chat.setSender(sender);
+	chat.setRecipient(recipient);
+	session.setAttribute("sender", sender);
+	session.setAttribute("recipient", recipient);
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -76,19 +93,21 @@
 				connectToServer();
 			//});
 			
+			
+			//메세지 전송
 			$("#sendButton").on('click', function(event){
-				
 				
 				printClock();
 				
 				var sender = $('#senderInput').val();
-				var recepient = $('#recepientInput').val();
-				var senNick = $('#aliasInput').val(); //////////senNick추가////////////////////
+				var recipient = $('#recipientInput').val();
+				var senNick = $('#senNick').val(); //////////senNick추가////////////////////
 				var data = $('#dataInput').val();
 				var time = $('#dataInputTime').val();
 				
-				var output = {sender : sender, recipient : recepient, senNick : senNick, command : 'chat', type  : 'text', data : data, time : time};
-				console.log('서버로 보낼 데이터 : ' + JSON.stringify(output));
+				var output = {sender : sender, recipient : recipient, senNick : senNick, command : 'chat', type  : 'text', data : data, time : time};
+				alert('서버로 보낼 데이터 : ' + JSON.stringify(output));
+				
 				
 				if(socket == undefined){
 					alert('서버에 연결되어 있지 않습니다. 먼저 서버에 연결하세요.');
@@ -99,12 +118,38 @@
 				addToDiscussion('self',data,time);
 			});
 			
+			$("#dataInput").on('keydown',function(event){
+				if(event.keyCode ==13){
+					
+					printClock();
+					
+					var sender = $('#senderInput').val();
+					var recipient = $('#recipientInput').val();
+					var senNick = $('#senNick').val(); //////////senNick추가////////////////////
+					var recNick = $('#recNick').val();
+					var data = $('#dataInput').val();
+					var time = $('#dataInputTime').val();
+					
+					var output = {sender : sender, recipient : recipient, senNick : senNick,
+							recNick : recNick, command : 'chat', type  : 'text', data : data, time : time};
+					alert('서버로 보낼 데이터 : ' + JSON.stringify(output));
+					
+					if(socket == undefined){
+						alert('서버에 연결되어 있지 않습니다. 먼저 서버에 연결하세요.');
+						return;
+					}
+					
+					socket.emit('message', output);
+					addToDiscussion('self',data,time);
+				}
+			});
+			
 			
 			//$("#loginButton").on('click', function(event){
 				//alert('로그인 버튼 클릭!!')
 				var id = $('#idInput').val();
 				var password = $('#passwordInput').val();
-				var alias = $('#aliasInput').val();
+				var alias = $('#senNick').val();
 				var today = $('#todayInput').val();
 				
 				var output = {id : id, password : password, alias : alias, today : today};
@@ -117,8 +162,130 @@
 				
 				socket.emit('login', output);
 			//});
+			
+			
+			
+				var sender = $('#senderInput').val();
+				var recipient = $('#recipientInput').val();
+				var senNick = $('#senNick').val(); //////////senNick추가////////////////////
+				var data = $('#dataInput').val();
+				var time = $('#dataInputTime').val();
+				
+				var output2 = {
+						sender : sender,
+						recipient : recipient,
+						senNick : senNick,
+				};
+				console.log('서버로 보낼 데이터 : ' + JSON.stringify(output2));
+				
+				if(socket == undefined){
+					alert('서버에 연결되어 있지 않습니다. 먼저 서버에 연결하세요.');
+					return;
+				}
+				
+				socket.emit('findChat', output2);
+				//addToDiscussion('self',data,time);
 		});	
-	 
+				
+		/////////////////////채팅방만들기/////////////////////
+		$(function(){
+			
+			$("#createRoomBtn").on("click", function(){
+				
+				alert("방만들기");
+				var roomId = $("#roomIdInput").val();
+				var roomName = $("#roomNameInput").val();
+				var id = $("input:hidden[name='sender']").val();
+				
+				var output = {
+						command : 'create',
+						roomId : roomId,
+						roomName : roomName,
+						roomOwner : id
+				}
+				
+				console.log("서버로 보낼 데이터 : "+JSON.stringify(output));
+				
+				if(socket == undefined){
+					alert('서버에 연결되어 있지 않습니다. 먼저 서버에 연결하세요.');
+					return;
+				}
+				
+				socket.emit('room', output);
+				
+			})
+			
+			
+		});
+		
+		
+		/////////////////////방입장/////////////////////
+		$(function(){
+			
+			$("#joinRoomBtn").on("click", function(){
+				
+				alert("방참여");
+				var roomId = $("#roomIdInput").val();
+				
+				var output = {
+						command : 'join',
+						roomId : roomId
+				}
+				
+				console.log("서버로 보낼 데이터 : "+JSON.stringify(output));
+				
+				if(socket == undefined){
+					alert('서버에 연결되어 있지 않습니다. 먼저 서버에 연결하세요.');
+					return;
+				}
+				
+				socket.emit('room', output);
+				
+			})
+			
+			
+		});
+	 	
+		/////////////////////그룹톡 전송/////////////////////
+		$(function(){
+			
+			$("#groupBtn").on("click", function(){
+				
+				printClock();
+
+				var chatType = $("#chatType").val(); ///////////////채팅 타입 : 그룹톡인지 그냥 톡인지
+				var sender = $('#senderInput').val();
+				var recipient = $("input:hidden[name='roomRecipient']").val(); ///////////////그룹방에 참여한 사람한테
+				var senNick = $('#senNick').val(); //////////senNick추가////////////////////
+				var recNick = $('#recNick').val();
+				var data = $('#groutDataInput').val();
+				var time = $('#dataInputTime').val();
+				//var roomId = $("#roomIdInput").val();
+				
+				var output = {
+						command : chatType,
+						sender : sender,
+						recipient : recipient, 
+						senNick : senNick,
+						recNick : recNick,
+						type  : 'text',
+						data : data,
+						time : time
+				}
+				
+				console.log("서버로 보낼 데이터 : "+JSON.stringify(output));
+				
+				if(socket == undefined){
+					alert('서버에 연결되어 있지 않습니다. 먼저 서버에 연결하세요.');
+					return;
+				}
+				
+				socket.emit('message', output);
+				
+			})
+			
+			
+		});
 		 
 		
 		// 서버에 연결하는 함수 정의
@@ -135,20 +302,54 @@
 				socket.on('message', function(message){
 					console.log(JSON.stringify(message));
 					
-					println('<p>수신 메세지 : ' + message.sender + ', ' + message.recepient + ', '
+					println('<p>수신 메세지 : ' + message.sender + ', ' + message.recipient + ', '
 							+ message.command + ', ' + message.type + ', ' + message.data +','+message.time+ '</p>');
 					
 					addToDiscussion('other', message.data, message.time);
 				});
+				
 				
 				////////////////////////////채팅내용찾은거//////////////////////////////////
 				socket.on('findChat', function(message){
 					
 					console.log("FROM DB"+JSON.stringify(message));
 					
+					var sessionId = "${user.userId}"; //세션아이디
+					
 					for(var i = 0; i < message.length; i++) {
 						println('<p>디비에서 가져온 채팅 : ' +message[i].sender+ ', ' + message[i].recipient + ', '+ message[i].message +','+message[i].time+'</p>');
-						addToDiscussion('other', message[i].message, message[i].time);
+						//addToDiscussion('self', message[i].message, message[i].time);
+						
+						//alert(message[i].sender)
+						if(sessionId == message[i].sender) {
+							addToDiscussion('self', message[i].message, message[i].time);
+						} else {
+							addToDiscussion('other', message[i].message, message[i].time);
+						}
+						
+					}
+					
+				});
+				
+				/////////////////////////////////그룹 방 리스트 받음////////////////////////////////////
+				socket.on('room', function(message){
+					
+					console.log("서버에서 받은 룸 데이터 : "+JSON.stringify(message));
+					
+					println('<p>방 이벤트 : ' +message.command+ '</p>');
+					println('<p>방 리스트를 받았습니다 </p>');
+					
+					//방리스트
+					if(message.command == 'list') {
+						
+						var roomCount = message.rooms.length;
+						
+						$("#roomList").html('<p>방 리스트 '+roomCount+'개</p>');
+						
+						for(var i = 0; i < roomCount; i++) {
+							$("#roomList").append('<p>방 #'+i+' : '+message.rooms[i].id+', '+message.rooms[i].name+', '+message.rooms[i].owner+'</p>');
+						}
+						
 					}
 					
 				});
@@ -174,56 +375,54 @@
 		
 		function addToDiscussion(writer, msg, time){
 			println("addToDiscussion 호출됨 : " + writer + ", " + msg);
+			var img;
+			var contents;
+			var recipient;
+			var sender;
 			
-			/* var img = './images/user1.jpg'; */
-			var img = '/resources/uploadFile/default_profile_image.jpg'; 
+			
 			if(writer == 'other'){
-				img = '/resources/uploadFile/default_profile_image.jpg';
-			}
+				
+				img = '${recipient.profileImage}';
+				recipient = '${recipient.nickname}';
 			
-			var contents = "<li class = '"+writer+"'>"
+				contents = "<li class = '"+writer+"'>"
+							+"<div>"+recipient+"</div>"
 							+"<div class = 'avatar'>"
-							+"<img src = '" + img + "'width='40' length='40'/>"
+							+"<img class = 'img-circle' src = '/resources/uploadFile/" + img + "'width='40' length='40'/>"
 							+"</div>"
 							+"<div class = 'message'>"
 							+"<p>" + msg + "</p>"
 							+"<time datetime='2017-10-05 13:52'>"+time+"</time>"
 							+"</div>"
 							+"</li>";
-							
-			println("추가할 HTML : " + contents);
-			$(".discussion").append(contents);
+								
+				println("추가할 HTML : " + contents);
+				$(".discussion").append(contents);
+			
+			}else{
+				
+				img = '${sender.profileImage}';
+				sender = '${sender.nickname}';
+				
+				contents = "<li class = '"+writer+"'>"
+							+"<div>"+sender+"</div>"
+							+"<div class = 'avatar'>"
+							+"<img class = 'img-circle' src = '/resources/uploadFile/" + img + "'width='40' length='40'/>"
+							+"</div>"
+							+"<div class = 'message'>"
+							+"<p>" + msg + "</p>"
+							+"<time datetime='2017-10-05 13:52'>"+time+"</time>"
+							+"</div>"
+							+"</li>";
+								
+				println("추가할 HTML : " + contents);
+				$(".discussion").append(contents);
+				$("#dataInput").val("");
+				
+			}
 		}
 		
-		///////////////////////////////채팅내용불러오기///////////////////////////////////
-		$(function(){
-			
-			$("#findChat").on("click", function(){
-				
-				var sender = $('#senderInput').val();
-				var recipient = $('#recepientInput').val();
-				var senNick = $('#aliasInput').val(); //////////senNick추가////////////////////
-				var data = $('#dataInput').val();
-				var time = $('#dataInputTime').val();
-				
-				var output = {
-						sender : sender,
-						recipient : recipient,
-						senNick : senNick,
-				};
-				console.log('서버로 보낼 데이터 : ' + JSON.stringify(output));
-				
-				if(socket == undefined){
-					alert('서버에 연결되어 있지 않습니다. 먼저 서버에 연결하세요.');
-					return;
-				}
-				
-				socket.emit('findChat', output);
-				//addToDiscussion('self',data,time);
-				
-			});
-			
-		});
 		
 	</script>
 	
@@ -273,24 +472,65 @@
   			justify-content : flex-end;
   			align-item : flex-end;
   		}
+  		
+  		////////////////////////////////////////////////////////////////////
+  		* {
+  			margin: 0; padding: 0; box-sizing: border-box; 
+  		}
+	    
+	    body { 
+	    	font: 13px Helvetica, Arial;
+	    	background-color: #b4c9ed;
+	    }
+	      
+	    #message { background: #ffffff; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+	      
+	    #message input { border: none; padding: 10px; width: 70%; margin-right: 5%; }
+	      
+	    #message button { width: 15%; background: #ff5959; border: none; padding: 10px; }
+	      
+	    /* #messages { list-style-type: none; margin: 0; padding: 0; }
+	      
+	    #messages li { padding: 5px 10px; }
+	      
+	    #messages li:nth-child(odd) { background: #eee; } */
 	</style>
 </head>
 <body>
+
+	<!-- chatting form -->
+	<form name="form">
+		<input type="hidden" name="recipient" value="user01@naver.com">
+		<input type="hidden" name="sender" value="${user.userId}">
+		<button type='button' class='btn-sm btn-default pull-right'
+			onclick="javascript:popup(this.form);">채팅하기</button>
+		<br>
+		<!--//////////////// 그룹방방방방방 ////////////////-->
+		<input type="text" id="roomIdInput" value="Voyager파티">
+		<input type="text" id="roomNameInput" value="파티채팅해해">
+		<button id="createRoomBtn" type='button' class='btn-sm btn-default'>방만들기</button>
+		<input type="hidden" name="roomRecipient" value="ALL">
+		<button id="joinRoomBtn" type="button" class=" btn-default">방 입장</button>
+		<button id="leaveRoomBtn" type="button" class=" btn-default">방 나가기</button>
+	</form>
 	
-	<!-- ///////////////////채팅불러오기버튼/////////////////// -->
-	<button id="findChat" type="button">채팅내용불러오기</button>
+	<input type="hidden" id="chatType" value="groupchat">
+	그룹방 전용 메시지 : <input type="text" id="groutDataInput">
+	<button id="groupBtn" type="button" class=" btn-default">전송</button>
 	
+	
+	<div id="roomList"></div>
 	
 	<div class = "container">
 		<div id = "cardbox" class = "ui blue fluid card">
 			<div class = "content">
 				<div class = "left floated author">
-					<img id = "iconImage" class = "ui avatar image" src = "./images/coconut1.png">
+					<img id = "iconImage" class = "ui avatar image" src = "/resources/image/chat/Messages-icon.png" width="45px" height="45px">
 				</div>
 				<div>
 					<div id = "titleText" class = "header">MOANA</div>
 					<div id = "contentsText" class = "description">
-						연결 및 로그인 후 메세지를 보내세요
+						${ sender.nickname } 님 채팅
 					</div>
 				</div>
 			</div>
@@ -310,42 +550,44 @@
 	
 	<div>
 		<!-- 보낼 유저 정보 -->
-		<input type = "hidden" id = "idInput" value="${user.userId}">
-		<input type = "hidden" id = "aliasInput" value="${user.nickname}">
+		<input type = "hidden" id = "idInput" value="${sender.userId}">
+		<input type = "hidden" id = "senNick" value="${sender.nickname}">
+		<input type = "hidden" id = "recNick" value="${recipient.nickname}">
 		<!-- <input type = "password" id = "passwordInput" value="1111"> -->
 		<!-- <input type = "text" id = "todayInput" > -->
 	</div>
 	
-	<div>
-		<div>
-			<!-- <span>보내는 사람 아이디 : </span> -->
-			<input type = "hidden" id = "senderInput" value="${user.userId}">
-		</div>
-		<div>
-			<!-- <span>받는 사람 아이디 : </span> -->
-			<input type = "hidden" id = "recepientInput" value="user07@naver.com">
-		</div>
-		<div>
-			<span>메세지 데이터 : </span>
-			<input type = "text" id = "dataInput">
-			<input type = "hidden" id = "dataInputTime">
-		</div>
-		<br>
-		<input type = "button" id = "sendButton" value = "전송">
-	</div>
-	
 	<hr/>
-	<div id="currentDate"></div>
+	
+	<!-- 채팅 확인창 -->
+	<!-- <div id="currentDate"></div>
 	<hr/>
 	<h4 class = "ui horizontal divider header">메세지</h4>
 	
-	<div class = "ui segment" id = "result"></div>
+	<div class = "ui segment" id = "result"></div> -->
 
+	<!-- 채팅창 -->
 	<ol class="discussion">
 		
 	</ol>
 	
-	
+	<div>
+		<div>
+			<!-- <span>보내는 사람 아이디 : </span> -->
+			<input type = "hidden" id = "senderInput" value="${sender.userId}">
+		</div>
+		<div>
+			<!-- <span>받는 사람 아이디 : </span> -->
+			<input type = "hidden" id = "recipientInput" value="${recipient.userId}">
+		</div>
+		<div id="message">
+			<input type = "text" id = "dataInput"/>
+			<button type = "button" id = "sendButton">전송</button>
+			<input type = "hidden" id = "dataInputTime">
+		</div>
+		<br>
+		
+	</div>
 
 
 	</div>
