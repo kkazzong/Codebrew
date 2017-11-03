@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.codebrew.moana.common.Page;
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Reply;
 import com.codebrew.moana.service.reply.ReplyService;
@@ -131,7 +132,7 @@ public class ReplyRestController {
 	//for normal user
 	@RequestMapping(value="json/getReplyList", method=RequestMethod.POST)
 	public Map<String, Object> getReplyList(@RequestBody Search search, 
-											@RequestParam String userId) throws Exception{
+											@RequestParam int reviewNo) throws Exception{
 		
 		System.out.println("/reply/getReplyList");
 		
@@ -140,8 +141,19 @@ public class ReplyRestController {
 		}
 		search.setPageSize(pageSize);
 		
+		//Business Logic
+		Map<String, Object> map = replyService.getReplyList(search, reviewNo);
+		Page resultPage = new Page(search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+
+		System.out.println("ReplyRestController :: map getReplyList"+map);
+		System.out.println("\n\nRest : getReplyList resultPage :: "+resultPage);
+		System.out.println("\n\nreturn mpa :: "+map.toString());
 		
-		return null;
+		//resultMap을 map에
+		map.put("resultPage", resultPage);
+		map.put("search", search);
+		
+		return map;
 	}	
 	
 }

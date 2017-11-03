@@ -2,8 +2,6 @@ package com.codebrew.moana.service.reply;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Reply;
 
@@ -23,10 +21,10 @@ public interface ReplyService {
 	//4
 	public void deleteReply(int replyNo) throws Exception;
 	
-	//5
+	//5 안써
 	public Map<String, Object> getAllReplyList(Search search) throws Exception;
 	
 	//6
-	public Map<String, Object> getReplyList(Search search) throws Exception;
+	public Map<String, Object> getReplyList(Search search, int reviewNo) throws Exception;
 
 }

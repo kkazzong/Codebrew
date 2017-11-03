@@ -28,10 +28,12 @@ import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Festival;
 import com.codebrew.moana.service.domain.Good;
 import com.codebrew.moana.service.domain.Image;
+import com.codebrew.moana.service.domain.Reply;
 import com.codebrew.moana.service.domain.Review;
 import com.codebrew.moana.service.domain.User;
 import com.codebrew.moana.service.domain.Video;
 import com.codebrew.moana.service.festival.FestivalService;
+import com.codebrew.moana.service.reply.ReplyService;
 import com.codebrew.moana.service.review.ReviewService;
 import com.codebrew.moana.service.user.UserService;
 
@@ -52,6 +54,10 @@ public class ReviewController {
 	@Autowired
 	@Qualifier("userServiceImpl")
 	private UserService userService;
+	
+	@Autowired
+	@Qualifier("replyServiceImpl")
+	private ReplyService replyService;
 
 	public ReviewController() {
 		System.out.println(this.getClass());
@@ -194,14 +200,16 @@ public class ReviewController {
 	@RequestMapping(value="getReview", method = {RequestMethod.GET, RequestMethod.POST})
 	public ModelAndView getReview( @RequestParam("reviewNo") int reviewNo) throws Exception {
 		
+		//parameter인 @ModelAttribute("search") Search search 는 Reply paging 처리때문에 받음.
+		
 		System.out.println("/view/review/getReview");		
 		
 		//Business Logic
 		Review review = reviewService.getReview(reviewNo);
-		//Festival festival = festivalService.getFestival(review.getFestivalNo());
 		
 		// Model 과 View 연결
 		ModelAndView modelAndView = new ModelAndView();
+		
 		//modelAndView.addObject("festival", festival);
 		modelAndView.addObject("review", review);
 		modelAndView.setViewName("/view/review/getReview.jsp");

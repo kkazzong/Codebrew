@@ -77,9 +77,11 @@ public class ReplyController {
 	//2. getReplyList : 해당(reviewNo)에 맞는 reply목록들을 불러온다.
 	@RequestMapping(value="getReplyList")
 	public ModelAndView getReplyList(@RequestParam("search") Search search,
-									@RequestParam("reply") Reply reply) throws Exception {
+									@RequestParam("reviewNo") int reviewNo) throws Exception {
 		
 		System.out.println("ReplyController :: getReplyList");
+		
+		
 		
 		if(search.getCurrentPage() == 0){
 			search.setCurrentPage(1);
@@ -87,7 +89,7 @@ public class ReplyController {
 		search.setPageSize(pageSize);
 		
 		// Business logic 수행
-		Map<String, Object> map = replyService.getReplyList(search);
+		Map<String, Object> map = replyService.getReplyList(search, reviewNo);
 		
 		Page resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize );
 		System.out.println(resultPage);
@@ -113,12 +115,14 @@ public class ReplyController {
 		// Business Logic 수행
 		replyService.updateReply(reply);
 		
+		int reviewNo = reply.getReviewNo();
+		
 		if(search.getCurrentPage() == 0){
 			search.setCurrentPage(1);
 		}
 		search.setPageSize(pageSize);
 		
-		Map<String, Object> map = replyService.getReplyList(search);
+		Map<String, Object> map = replyService.getReplyList(search, reviewNo);
 		
 		Page resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize );
 		System.out.println(resultPage);

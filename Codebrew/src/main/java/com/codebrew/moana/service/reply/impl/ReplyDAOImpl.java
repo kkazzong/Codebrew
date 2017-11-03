@@ -1,6 +1,8 @@
 package com.codebrew.moana.service.reply.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,17 +58,27 @@ public class ReplyDAOImpl implements ReplyDAO {
 	}
 
 	
-	@Override //5 댓글 목록
-	public List<Reply> getReplyList(Search search) throws Exception {
+	@Override //5 해당 후기에 대한 댓글들
+	public List<Reply> getReplyList(Search search, int reviewNo) throws Exception {
 		System.out.println("DAO :: getReplyList");
-		return sqlSession.selectList("ReplyMapper.getReplyList", search);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("search", search);
+		map.put("reviewNo", reviewNo);
+		
+		return sqlSession.selectList("ReplyMapper.getReplyList", map);
 	}
 	
 	
-	@Override //6
-	public int getTotalCount(Search search) throws Exception{
+	@Override //6 해당 후기에 대한 댓글이 몇개인지
+	public int getTotalCount(Search search, int reviewNo) throws Exception{
 		System.out.println("DAO :: getTotalCount");
-		return sqlSession.selectOne("ReplyMapper.getTotalCount", search);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("search", search);
+		map.put("reviewNo", reviewNo);
+		
+		return sqlSession.selectOne("ReplyMapper.getTotalCount", map);
 	}
 
 }
