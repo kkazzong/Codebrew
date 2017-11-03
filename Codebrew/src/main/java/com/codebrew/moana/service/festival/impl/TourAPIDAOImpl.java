@@ -106,6 +106,117 @@ public class TourAPIDAOImpl implements FestivalDAO {
 
 	}
 	
+	public static final StringBuilder kakaoWebURL(StringBuilder urlBuilder) throws Exception{
+		
+		URL url = new URL(urlBuilder.toString());
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setRequestMethod("GET");
+		conn.setRequestProperty("Authorization", "KakaoAK a6419e542017d8fd315556f745f29fcf");
+		System.out.println("Response code: " + conn.getResponseCode());
+		BufferedReader rd;
+		if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+			rd = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+		} else {
+			rd = new BufferedReader(new InputStreamReader(conn.getErrorStream(), "UTF-8"));
+		}
+		StringBuilder sb = new StringBuilder();
+		String line;
+		while ((line = rd.readLine()) != null) {
+			sb.append(line);
+		}
+
+		rd.close();
+		conn.disconnect();
+		
+		return sb;
+	}
+	
+	public Contents kakaoWeb(String festivalName0,String festivalName1,String festivalName2) throws Exception {
+		// TODO Auto-generated method stub
+		
+		Contents contents = new Contents();
+		
+
+//		0
+		
+		StringBuilder urlBuilder0 = new StringBuilder("https://dapi.kakao.com/v2/search/vclip?query="
+				+ URLEncoder.encode(festivalName0,"UTF-8") + "&page=1&size=1");
+		
+		StringBuilder sb0 = TourAPIDAOImpl.kakaoWebURL(urlBuilder0);
+		
+		System.out.println("sb0...................." + sb0);
+		
+		JSONObject jsonobj0 = (JSONObject) JSONValue.parse(sb0.toString());
+		
+		JSONArray jsonarray0 = (JSONArray) jsonobj0.get("documents");
+		
+		for (int i = 0; i < jsonarray0.size(); i++) {
+
+			JSONObject jsonobj00 = (JSONObject) jsonarray0.get(i);
+			
+			String origin0 = jsonobj00.get("url").toString();
+			
+			contents.setUrl0(origin0);
+		}
+		
+		
+//		1
+		
+		StringBuilder urlBuilder1 = new StringBuilder("https://dapi.kakao.com/v2/search/vclip?query="
+				+ URLEncoder.encode(festivalName1,"UTF-8") + "&page=1&size=1");
+		
+		StringBuilder sb1 = TourAPIDAOImpl.kakaoWebURL(urlBuilder1);
+		
+		System.out.println("sb1...................." + sb1);
+		
+		JSONObject jsonobj1 = (JSONObject) JSONValue.parse(sb1.toString());
+		
+		JSONArray jsonarray1 = (JSONArray) jsonobj1.get("documents");
+		
+		for (int i = 0; i < jsonarray1.size(); i++) {
+
+			JSONObject jsonobj11 = (JSONObject) jsonarray1.get(i);
+			
+			String origin1 = jsonobj11.get("url").toString();
+			
+			contents.setUrl1(origin1);
+		}
+
+		
+		
+//		2
+		
+		StringBuilder urlBuilder2 = new StringBuilder("https://dapi.kakao.com/v2/search/vclip?query="
+				+ URLEncoder.encode(festivalName2,"UTF-8") + "&page=1&size=1");
+		
+		StringBuilder sb2 = TourAPIDAOImpl.kakaoWebURL(urlBuilder2);
+		
+		System.out.println("sb2...................." + sb2);
+		
+		JSONObject jsonobj2 = (JSONObject) JSONValue.parse(sb2.toString());
+		
+		JSONArray jsonarray2 = (JSONArray) jsonobj2.get("documents");
+		
+		for (int i = 0; i < jsonarray2.size(); i++) {
+
+			JSONObject jsonobj22 = (JSONObject) jsonarray2.get(i);
+			
+			String origin2 = jsonobj22.get("url").toString();
+			
+			contents.setUrl1(origin2);
+		}
+		
+		
+		
+		this.contents=contents;
+		
+		System.out.println("dao에서 도메인/..................." + contents);
+		
+		return contents;
+		
+				
+	}
+	
 
 	@Override
 	public Contents kakaoWeb(String festivalName0) throws Exception {
@@ -159,7 +270,7 @@ public class TourAPIDAOImpl implements FestivalDAO {
 		
 		
 			
-			contents.setUrl(jsonobj2.get("url").toString());
+		contents.setUrl(jsonobj2.get("url").toString());
 		
 		System.out.println("dao 카카오웹에서 contents 인스턴스...." + contents);
 		
@@ -171,6 +282,8 @@ public class TourAPIDAOImpl implements FestivalDAO {
 				
 		return contents;
 	}
+	
+	
 	
 	public Map<String,Object> getAreaCode() throws Exception{
 		
@@ -274,7 +387,7 @@ public class TourAPIDAOImpl implements FestivalDAO {
 		}
 
 		if (jsonobj5.get("firstimage") == null || jsonobj5.get("firstimage") == "") {
-			festival.setFestivalImage("제공정보없음");
+			festival.setFestivalImage("no.png");
 		} else {
 			festival.setFestivalImage(jsonobj5.get("firstimage").toString()); // 원본사진
 		}
@@ -425,7 +538,7 @@ public class TourAPIDAOImpl implements FestivalDAO {
 
 			if (jsonobj5.get("firstimage") == null || jsonobj5.get("firstimage") == "") {
 				// festival.setFestivalImage("no.png");
-				festival.setFestivalImage(null);
+				festival.setFestivalImage("no.png");
 			} else {
 				festival.setFestivalImage(jsonobj5.get("firstimage").toString()); // 원본사진
 			}
@@ -539,14 +652,14 @@ public class TourAPIDAOImpl implements FestivalDAO {
 
 				Festival festival = new Festival();
 
-				if (jsonobj5.get("content") == null || jsonobj5.get("firstimage") == "") {
-					festival.setFestivalImage("../images/uploadFiles/no.png");
-				} else {
-					festival.setFestivalImage(jsonobj5.get("firstimage").toString()); // 원본사진
-				}
+//				if (jsonobj5.get("content") == null || jsonobj5.get("firstimage") == "") {
+//					festival.setFestivalImage(null);
+//				} else {
+//					festival.setFestivalImage(jsonobj5.get("firstimage").toString()); // 원본사진
+//				}
 
 				if (jsonobj5.get("firstimage") == null || jsonobj5.get("firstimage") == "") {
-					festival.setFestivalImage("../images/uploadFiles/no.png");
+					festival.setFestivalImage("no.png");
 				} else {
 					festival.setFestivalImage(jsonobj5.get("firstimage").toString()); // 원본사진
 				}

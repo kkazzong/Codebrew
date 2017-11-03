@@ -193,18 +193,18 @@ $(function(){
 						<!-- <div class="panel panel-primary"> -->
 						<div class="card">
 							<div class="getDB">
-							<c:if test="${festival.festivalImage.contains('http://')==true }">
-								<img class="card-img-top" src="${festival.festivalImage }" width="100%" height="423" />
-							</c:if>
-							
-							<c:if test="${festival.festivalImage.contains('http://')==false }">
-								<img class="card-img-top" src="../../resources/uploadFile/${festival.festivalImage }" width="100%" height="423" />
-							</c:if>
-							
-							<div id="festivalNo" style="display: none">
-										<p>${festival.festivalNo }</p>
-							</div> 
-							</div>
+								<c:if test="${festival.festivalImage.contains('http://')==true }">
+									<img class="card-img-top" src="${festival.festivalImage }" width="100%" height="423" />
+								</c:if>
+								
+								<c:if test="${festival.festivalImage.contains('http://')==false }">
+									<img class="card-img-top" src="../../resources/uploadFile/${festival.festivalImage }" width="100%" height="423" />
+								</c:if>
+								
+								<div id="festivalNo" style="display: none">
+											<p>${festival.festivalNo }</p>
+								</div> 
+								</div>
 					<div class="card-body">
 					
 						<div class="festivalInfo">
