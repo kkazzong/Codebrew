@@ -139,11 +139,16 @@
 		             	<li class="dropdown">
 			             <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
 			                 <span>MyPage</span>
+			                 <span class="caret"></span>
 			              </a>
 			              <ul class="dropdown-menu">
 			                    <li><a href="#">마이페이지</a></li> 
 			              </ul>
+<<<<<<< HEAD
 			           </li>
+=======
+			          
+>>>>>>> refs/heads/new/jooyoung
 		             	<li><a href="#">${sessionScope.user.nickname}님</a></li>
 		             	<li><a href="#">로그아웃</a></li>
 	             	</c:if>
@@ -208,7 +213,9 @@
 			}); 
 		 	
 		 	$("a:contains('마이페이지')").on("click" , function() {
-				self.location = "/myPage/getMyPage?requestId="+${sessionScope.user.userId};
+
+		self.location = "/myPage/getMyPage?requestId=${sessionScope.user.userId}";
+
 			}); 
 		 	
 		});
