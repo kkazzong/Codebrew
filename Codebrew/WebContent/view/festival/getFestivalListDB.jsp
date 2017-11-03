@@ -23,6 +23,9 @@
 
 	<!-- Bootstrap Dropdown Hover JS -->
 	<script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
+	
+	<!-- card css -->
+	<link rel="stylesheet" href="/resources/css/card.css">
 
 <script type="text/javascript">
 
@@ -42,7 +45,8 @@
 
 	$(function() {
 
-			$(".panel-body").on("click", function() {
+			/* $(".panel-body").on("click", function() { */
+				$(".getDB").on("click", function() {
 
 			var festivalNo = $("p", this).text();
 
@@ -67,9 +71,36 @@ $(function(){
 </script>
 
 <style type="text/css">
-body {
-		padding-top : 70px;
-    }
+	body {
+			padding-top : 70px;
+			background-color: #f2f4f6;
+	    }
+	    
+	    .card {
+			margin-top : 50px;
+	    }
+	    
+	    .panel-primary>.panel-heading {
+	    	background-color: #000000;
+	    }
+	    
+	    .text-info {
+	    	color: #333333; 
+	    }
+	    
+	    .page-header {
+	    	border-bottom : 1px solid #f2f4f6;
+	    }
+	    
+	    
+	    .section {
+	    	margin-top : 400px;
+	    }
+	    
+	    em {
+	    	font-family: tahoma;
+	    }
+	    
    </style>
 
 </head>
@@ -77,15 +108,15 @@ body {
 	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>
 
 	<div class="container">
-	<jsp:include page="/view/statistics/getFestivalZzim.jsp"></jsp:include>
+	<%-- <jsp:include page="/view/statistics/getFestivalZzim.jsp"></jsp:include> --%>
 	
   	<div class="row">
   	
   	<div class="col-md-12">
   	
-  <!-- 		<div class="page-header text-center">
+  		<div class="page-header text-center">
 					<h3 class="text-info">축제정보</h3>
-				</div> -->
+				</div>
 
 	<form>
 	
@@ -151,7 +182,7 @@ body {
 		<br/>
 		
 		
-
+		<section>
 		<div class="row">
 		
 		<c:forEach var="festival" items="${list}">
@@ -159,42 +190,42 @@ body {
 			<c:if test="${festival.deleteFlag == null }">
 			
 			<div class="col-md-6">
-						<div class="panel panel-primary">
-							<div class="panel-heading">
-							<%-- <span class="panel-title pull-left" style = "font-size:1.5em;" >${festival.festivalName}</span>
-									<span class="panel-title pull-right glyphicon glyphicon-heart" style = " font-size:1.5em;  color: red;" id="tag"></span> --%>
-								<h3 class="panel-title pull-left">${i} ${festival.festivalName}</h3>
-								<br/>
-        						<div class="clearfix"></div>
-							</div>
+						<!-- <div class="panel panel-primary"> -->
+						<div class="card">
+							<div class="getDB">
+							<c:if test="${festival.festivalImage.contains('http://')==true }">
+								<img class="card-img-top" src="${festival.festivalImage }" width="100%" height="423" />
+							</c:if>
 							
-					<div class="panel-body">
+							<c:if test="${festival.festivalImage.contains('http://')==false }">
+								<img class="card-img-top" src="../../resources/uploadFile/${festival.festivalImage }" width="100%" height="423" />
+							</c:if>
 							
-					<c:if test="${festival.festivalImage.contains('http://')==true }">
-					
-					<img src="${festival.festivalImage }" width="100%"height="300" />
-					
-					</c:if>
-					
-					<c:if test="${festival.festivalImage.contains('http://')==false }">
-					
-					<img src="../../resources/uploadFile/${festival.festivalImage }" width="100%"height="300" />
-					
-					</c:if>
-					
-					<br/>
-									<div id="festivalNo" style="display: none">
+							<div id="festivalNo" style="display: none">
 										<p>${festival.festivalNo }</p>
-									</div> 
-						<br />
+							</div> 
+							</div>
+					<div class="card-body">
+					
+						<div class="festivalInfo">
 									
 									<div class="col-md-12">
-											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-											 <Strong>${festival.startDate} ~ ${festival.endDate}</Strong>
-											 <br/>
-											 <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
-											 <Strong>${festival.addr } </Strong>
+											<h4><Strong>${festival.festivalName}</Strong></h4>
 									</div>
+									
+									<div class="col-md-12">
+										<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+										<Strong>${festival.startDate} ~ ${festival.endDate}</Strong>
+									</div>
+									
+									<div class="col-md-12">
+										 <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+										 <Strong>${festival.addr } </Strong>
+									</div>
+									
+									
+									</div>
+									
 							</div>
 						</div>
 				</div>	
@@ -204,9 +235,7 @@ body {
 			
 			</c:forEach>
 		</div>
-		
-		
-		
+		</section>
 		
 		<input type = hidden id="currentPage" name = "currentPage" value = ${i } />
 			
@@ -215,6 +244,10 @@ body {
 				</form>
 	</div>
 	</div>
+	
 	</div>
+	
 	</body>
 </html>
+
+

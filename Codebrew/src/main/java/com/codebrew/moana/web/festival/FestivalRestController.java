@@ -52,6 +52,14 @@ public class FestivalRestController {
 		System.out.println("레스트 컨트롤러............." + festivalName0);
 		
 		Contents contents = festivalService.kakaoWeb(festivalName0);
+		
+		String url = contents.getUrl();
+		
+		int eqIndex = url.indexOf("=");
+		
+		String youtubeEmbed = url.substring(eqIndex+1);
+		
+		contents.setUrl(youtubeEmbed);
 
 		return contents;
 

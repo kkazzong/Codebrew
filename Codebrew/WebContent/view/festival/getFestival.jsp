@@ -202,223 +202,335 @@ body {
 
 <jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
 
-<div class="panel panel-primary">
-	<div class="panel-heading text-center">
-		<h3><Strong>${festival.festivalName }</Strong></h3>
-	</div>
-</div>
-
-<div class="panel">
-	<div class="panel-heading text-center">
-  
-	<c:if test="${weather.main == 'Thunderstorm' }">
-		<img src = "http://openweathermap.org/img/w/11d.png">
-		${weather.description }
-	</c:if>
+<div class="container">
 	
-	<c:if test="${weather.main == 'Drizzle' }">
-		<img src = "http://openweathermap.org/img/w/09d.png">
-		${weather.description }
-	</c:if>
+	<header>
+		<div class="row">
+			<div class="col-md-offset-4 col-md-4">
+				<div class="page-header text-center">
+				
+				<h3 class="text-info"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;&nbsp;축제정보</h3>
+		
+		
+				</div>
+			</div>
+		</div><!-- row -->
+	</header>
+	<!-- header 끝 -->
 	
-	<c:if test="${weather.main == 'Rain' }">
-		<img src = "http://openweathermap.org/img/w/10d.png">
-		${weather.description }
-	</c:if>
+	<section>
 	
-	<c:if test="${weather.main == 'Snow' }">
-		<img src = "http://openweathermap.org/img/w/13d.png">
-		${weather.description }
-	</c:if>
-	
-	<c:if test="${weather.main == 'Atmosphere' }">
-		<img src = "http://openweathermap.org/img/w/50d.png">
-		${weather.description }
-	</c:if>
-	
-	<c:if test="${weather.main == 'Clear' }">
-		<img src = "http://openweathermap.org/img/w/01d.png">
-		${weather.description }
-	</c:if>
-	
-	<c:if test="${weather.main == 'Clouds' }">
-		<img src = "http://openweathermap.org/img/w/03d.png">
-		${weather.description }
-	</c:if>
-	
-	<c:if test="${weather.main == 'Haze' }">
-		<img src = "http://openweathermap.org/img/w/50d.png">
-		${weather.description }
-	</c:if>
-	
-	<c:if test="${weather.main == 'Mist' }">
-		<img src = "http://openweathermap.org/img/w/50n.png">
-		${weather.description }
-	</c:if>
-	
-	<c:if test="${weather.main == 'Extreme' && weather.id =='900' }">
-		<img src = "../../resources/image/weather/tornado.gif">
-		${weather.description }
-	</c:if>
-	
-	<c:if test="${weather.main == 'Extreme' && weather.id =='901' }">
-		<img src = "../../resources/image/weather/tropicalStorm.gif">
-		${weather.description }
-	</c:if>
-	
-	<c:if test="${weather.main == 'Extreme' && weather.id =='902' }">
-		<img src = "../../resources/image/weather/hurricane.gif">
-		${weather.description }
-	</c:if>
-	
-	<c:if test="${weather.main == 'Extreme' && weather.id =='903' }">
-		<img src = "../../resources/image/weather/cold.gif">
-		${weather.description }
-	</c:if>
-	
-	<c:if test="${weather.main == 'Extreme' && weather.id =='904' }">
-		<img src = "../../resources/image/weather/hot.gif">
-		${weather.description }
-	</c:if>
-	
-	<c:if test="${weather.main == 'Extreme' && weather.id =='905' }">
-		<img src = "../../resources/image/weather/windy.gif">
-		${weather.description }
-	</c:if>
-	
-	<c:if test="${weather.main == 'Extreme' && weather.id =='906' }">
-		<img src = "../../resources/image/weather/hail.gif">
-		${weather.description }
-	</c:if>
-	<br/>
-  	
-	<c:if test="${festival.festivalImage.contains('http://')==true }">
-		<img src="${festival.festivalImage }" width="100%" height="300" />
-	</c:if>
-	
-	<c:if test="${festival.festivalImage.contains('http://')==false }">
-		<img src="../../resources/uploadFile/${festival.festivalImage }" width="100%" height="300" />
-	</c:if>
-	
-	<c:if test="${returnZzim == null }">
-		<h1><span class="glyphicon glyphicon-heart-empty" aria-hidden="true" id="tag"></span></h1>
-	</c:if>
-	
-	<c:if test="${returnZzim != null }">
-		<h1><span class="glyphicon glyphicon-heart" aria-hidden="true" id="tag"></span></h1>
-	</c:if>
-	</div>
-	</div>
-	
-	
-	
-<ul class="list-group">
-
-  <li class="list-group-item">
-  	<c:if test="${festival.isNull==true }">
-		삭제되었던 축제입니다.
-	</c:if>
-  </li>
-  
-  <li class="list-group-item">조회수 : ${festival.readCount }</li>
-  
-  <li class="list-group-item">
-  	<c:if test="${festival.homepage!=null}">
-  		홈페이지 :  ${festival.homepage }
-  	</c:if>	
-  	</li>
-  
-  <li class="list-group-item">
-  	<c:if test="${festival.festivalOverview!=null }">
-  		소개 : ${festival.festivalOverview }
-  	</c:if>
-  </li>
-  
-  <li class="list-group-item">
-  	<c:if test="${festival.addr!=null}">
-  		개최장소 : ${festival.addr }
-  	</c:if>
-  </li>
-  
-  <li class="list-group-item">축제기간 : ${festival.startDate } ~ ${festival.endDate }</li>
-  
-  <li class="list-group-item">
-  	<c:if test="${festival.festivalDetail!=null}">
-  		내용 : ${festival.festivalDetail }
-  	</c:if>
-  </li>
-  
-  <li class="list-group-item">
-  	<c:if test="${festival.orgPhone!=null}">
-  		연락처 : ${festival.orgPhone }
-  	</c:if>	
-  </li>
-  
-  <li class="list-group-item">
-  	<c:if test="${festival.ageLimit!=null}">
-  		연령제한 : ${festival.ageLimit }
-  	</c:if>
-  </li>
-  
-  <li class="list-group-item">
-  	<c:if test="${festival.bookingPlace!=null}">
-  		예매처 : ${festival.bookingPlace }
-  	</c:if>	  	
-  </li>
-  
-  <li class="list-group-item">
-  	<c:if test="${festival.discount!=null}">
-  		할인정보 : ${festival.discount }
-  	</c:if>
-  </li>
-  
-  <li class="list-group-item">
-  	<c:if test="${festival.program!=null}">
-  		행사프로그램 : ${festival.program }
-  	</c:if>
-  
-  </li>
-  
-  <li class="list-group-item">
-  	<c:if test="${festival.playTime!=null}">		
-  		공연시간 : ${festival.playTime }
-  	</c:if>
-  </li>
-  
-  <li class="list-group-item">
-  	<c:if test="${festival.spendTimeFestival!=null}">
-  		관람소요시간 : ${festival.spendTimeFestival }
-  	</c:if>
-  </li>
-  
-  <li class="list-group-item">
-  	<c:if test="${festival.subEvent!=null}">
-  		부대행사 : ${festival.subEvent }
-  	</c:if>
-  </li>
-  
-  <li class="list-group-item">
-  	<c:if test="${festival.useTimeFestival!=null}">
-  		이용요금 : ${festival.useTimeFestival }
-  	</c:if>	
-  </li>
-  
-  <li class="list-group-item">
-  	<c:if test= "${user.role=='u' }" >
-		티켓가격 : ${festival.ticketPrice }
-			<br/>
-		티켓수량 : ${festival.ticketCount }
-	</c:if></li>
-	
-</ul>
-
-<div id="map" style="width:200;height:350px;"></div>
-	<p>
-		<button onclick="setCenter()">지도 중심좌표 이동시키기</button> 
-		<button onclick="panTo()">지도 중심좌표 부드럽게 이동시키기</button>
-	</p>
+	<div class="row">
+		<div class="col-md-offset-2 col-md-8">
+			<div class="panel panel-primary">
+					<div class="panel-heading">
+						
+						<c:if test="${festival.festivalImage.contains('http://')==true }">
+							<img src="${festival.festivalImage }" width="100%" height="300" />
+						</c:if>
+						
+						<c:if test="${festival.festivalImage.contains('http://')==false }">
+							<img src="../../resources/uploadFile/${festival.festivalImage }" width="100%" height="300" />
+						</c:if>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		
+			
 
 
+	
+		<div class="row">
+			<div class="col-md-offset-2 col-md-8">
+				<div class="panel panel-default">
+				  <div class="panel-body text-center">
+				  		<c:if test="${festival.isNull==true }">
+							삭제되었던 축제입니다.
+							</c:if>
+						<c:if test="${returnZzim == null }">
+							<div class="col-md-12">
+								<h1><span class="glyphicon glyphicon-heart-empty" aria-hidden="true" id="tag"></span></h1>
+							</div>
+						</c:if>
+						
+						<div class="col-md-12">
+							<c:if test="${returnZzim != null }">
+								<h1><span class="glyphicon glyphicon-heart" aria-hidden="true" id="tag"></span></h1>
+							</c:if>
+						</div>
+				  	</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-offset-2 col-md-8">
+				<div class="panel panel-default">
+				  <div class="panel-body text-center">
+				  	<div id="map" style="width:200;height:350px;"></div>
+						<p>
+							<button onclick="setCenter()">지도 중심좌표 이동시키기</button> 
+							<button onclick="panTo()">지도 중심좌표 부드럽게 이동시키기</button>
+						</p>
+					</div>
+			  	</div>
+			</div>
+		</div>
+		
+		<!-- 축제정보  -->
+		<div class="row">
+			<div class="col-md-offset-2 col-md-8">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div class="col-md-12">
+							<h3>
+								<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+								<strong>축제정보</strong>
+							</h3>
+							<table class="table">
+								<tr>
+									<td class="col-md-3 active"><h4>날씨</h4></td>
+									<td>
+										<h4>
+											<c:if test="${weather.main == 'Thunderstorm' }">
+												<img src = "http://openweathermap.org/img/w/11d.png">
+													${weather.description }
+											</c:if>
+											
+											<c:if test="${weather.main == 'Drizzle' }">
+												<img src = "http://openweathermap.org/img/w/09d.png">
+													${weather.description }
+											</c:if>
+											
+											<c:if test="${weather.main == 'Rain' }">
+												<img src = "http://openweathermap.org/img/w/10d.png">
+													${weather.description }
+											</c:if>
+											
+											<c:if test="${weather.main == 'Snow' }">
+												<img src = "http://openweathermap.org/img/w/13d.png">
+													${weather.description }
+											</c:if>
+											
+											<c:if test="${weather.main == 'Atmosphere' }">
+												<img src = "http://openweathermap.org/img/w/50d.png">
+													${weather.description }
+											</c:if>
+											
+											<c:if test="${weather.main == 'Clear' }">
+												<img src = "http://openweathermap.org/img/w/01d.png">
+													${weather.description }
+											</c:if>
+											
+											<c:if test="${weather.main == 'Clouds' }">
+												<img src = "http://openweathermap.org/img/w/03d.png">
+													${weather.description }
+											</c:if>
+											
+											<c:if test="${weather.main == 'Haze' }">
+												<img src = "http://openweathermap.org/img/w/50d.png">
+													${weather.description }
+											</c:if>
+											
+											<c:if test="${weather.main == 'Mist' }">
+												<img src = "http://openweathermap.org/img/w/50n.png">
+													${weather.description }
+											</c:if>
+											
+											<c:if test="${weather.main == 'Extreme' && weather.id =='900' }">
+												<img src = "../../resources/image/weather/tornado.gif">
+													${weather.description }
+											</c:if>
+											
+											<c:if test="${weather.main == 'Extreme' && weather.id =='901' }">
+												<img src = "../../resources/image/weather/tropicalStorm.gif">
+													${weather.description }
+											</c:if>
+											
+											<c:if test="${weather.main == 'Extreme' && weather.id =='902' }">
+												<img src = "../../resources/image/weather/hurricane.gif">
+													${weather.description }
+											</c:if>
+											
+											<c:if test="${weather.main == 'Extreme' && weather.id =='903' }">
+												<img src = "../../resources/image/weather/cold.gif">
+													${weather.description }
+											</c:if>
+											
+											<c:if test="${weather.main == 'Extreme' && weather.id =='904' }">
+												<img src = "../../resources/image/weather/hot.gif">
+													${weather.description }
+											</c:if>
+											
+											<c:if test="${weather.main == 'Extreme' && weather.id =='905' }">
+												<img src = "../../resources/image/weather/windy.gif">
+													${weather.description }
+											</c:if>
+											
+											<c:if test="${weather.main == 'Extreme' && weather.id =='906' }">
+												<img src = "../../resources/image/weather/hail.gif">
+													${weather.description }
+											</c:if>
+										</h4>
+									</td>
+								</tr>
+								
+								<tr>
+									<td class="col-md-3 active"><h4>축제명</h4></td>
+									<td><h4><Strong>${festival.festivalName }</Strong></h4></td>
+								</tr>
+								
+								<tr>
+									<td class="col-md-3 active"><h4>홈페이지</h4></td>
+									<td>
+										<h4>
+											<c:if test="${festival.homepage!=null}">
+										  		${festival.homepage }
+										  	</c:if>	
+									 	</h4>
+									</td>
+								</tr>
+								
+								<tr>
+									<td class="col-md-3 active"><h4>소개</h4></td>
+									<td><h4>
+									<c:if test="${festival.festivalOverview!=null }">
+								  		${festival.festivalOverview }
+								  	</c:if>
+									</h4></td>
+								</tr>
+								
+								<tr>
+									<td class="col-md-3 active"><h4>개최장소</h4></td>
+									<td><h4>
+										<c:if test="${festival.addr!=null}">
+									  		개최장소 : ${festival.addr }
+									  	</c:if>
+									</h4></td>
+								</tr>
+								
+								<tr>
+									<td class="col-md-3 active"><h4>축제기간</h4></td>
+									<td><h4>
+										${festival.startDate } ~ ${festival.endDate }
+									</h4></td>
+								</tr>
+								
+								<tr>
+									<td class="col-md-3 active"><h4>내용</h4></td>
+									<td><h4>
+										<c:if test="${festival.festivalDetail!=null}">
+									  		${festival.festivalDetail }
+									  	</c:if>
+									</h4></td>
+								</tr>
+								
+								<tr>
+									<td class="col-md-3 active"><h4>연락처</h4></td>
+									<td><h4>
+										<c:if test="${festival.orgPhone!=null}">
+									  		${festival.orgPhone }
+									  	</c:if>	
+									</h4></td>
+								</tr>
+								
+								<tr>
+									<td class="col-md-3 active"><h4>부대행사</h4></td>
+									<td><h4>
+										<c:if test="${festival.subEvent!=null}">
+									  		${festival.subEvent }
+									  	</c:if>
+									</h4></td>
+								</tr>
+								
+								<tr>
+									<td class="col-md-3 active"><h4>연령제한</h4></td>
+									<td><h4>
+										<c:if test="${festival.ageLimit!=null}">
+									  		연령제한 : ${festival.ageLimit }
+									  	</c:if>
+									</h4></td>
+								</tr>
+								
+								<tr>
+									<td class="col-md-3 active"><h4>예매처</h4></td>
+									<td><h4>
+									<c:if test="${festival.bookingPlace!=null}">
+								  		${festival.bookingPlace }
+								  	</c:if>	  	
+									</h4></td>
+								</tr>
+								
+								<tr>
+									<td class="col-md-3 active"><h4>할인정보</h4></td>
+									<td><h4>
+									<c:if test="${festival.discount!=null}">
+								  		${festival.discount }
+								  	</c:if>  	
+									</h4></td>
+								</tr>
+								
+								<tr>
+									<td class="col-md-3 active"><h4>행사프로그램</h4></td>
+									<td><h4>
+									<c:if test="${festival.program!=null}">
+								  		${festival.program }
+								  	</c:if>	
+									</h4></td>
+								</tr>
+								
+								<tr>
+									<td class="col-md-3 active"><h4>공연시간</h4></td>
+									<td><h4>
+									<c:if test="${festival.playTime!=null}">		
+								  		${festival.playTime }
+								  	</c:if>
+									</h4></td>
+								</tr>
+								
+								<tr>
+									<td class="col-md-3 active"><h4>관람소요시간</h4></td>
+									<td><h4>
+										<c:if test="${festival.spendTimeFestival!=null}">
+									  		${festival.spendTimeFestival }
+									  	</c:if>
+									</h4></td>
+								</tr>
+								
+								<tr>
+									<td class="col-md-3 active"><h4>이용요금</h4></td>
+									<td><h4>
+										<c:if test="${festival.useTimeFestival!=null}">
+									  		${festival.useTimeFestival }
+									  	</c:if>	
+									</h4></td>
+								</tr>
+								
+								<tr>
+									<td class="col-md-3 active"><h4>티켓가격</h4></td>
+									<td><h4>
+										<c:if test= "${user.role=='u' }" >
+											${festival.ticketPrice }
+										</c:if>
+									</h4></td>
+								</tr>
+								
+								<tr>
+									<td class="col-md-3 active"><h4>티켓수량</h4></td>
+									<td><h4>
+										<c:if test= "${user.role=='u' }" >
+											${festival.ticketCount }
+										</c:if>
+									</h4></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	
 	<!-- hidden tag -->
 	<input type = "hidden" class="form-control" id="festivalLongitude" name="festivalLongitude" value= "${festival.festivalLongitude }">
@@ -432,18 +544,15 @@ body {
 	
 	
 	
-	
-	<c:if test= "${user.role=='a' }" >
-		
-		<div class="form-group">
-				<div class="col-sm-offset-4  col-sm-4 text-center">
-
-				
-				<c:if test="${ticket==null }">
-					<c:if test="${festival.isNull==true }">
-						<button type="button" class="btn btn-primary">재등록</button>
+	<div class="row">
+		<div class="col-md-offset-2 col-md-8">
+			<c:if test= "${user.role=='a' }" >
+				<div class="col-md-6">
+					<c:if test="${ticket==null }">
+						<c:if test="${festival.isNull==true }">
+							<button type="button" class="btn btn-primary">재등록</button>
+						</c:if>
 					</c:if>
-				</c:if>
 				
 				<c:if test="${ticket==null }">
 					<c:if test="${festival.isNull==false }">
@@ -459,30 +568,24 @@ body {
 					<input type = "button" id = "back" name = "back" value = "뒤로"/>
 			
 				</div>
-			</div>
 			
-	</c:if>
+		</c:if>
 	
 			
-	<c:if test="${user.role!='a' }">
-		<div class="form-group">
-				<div class="col-sm-offset-4  col-sm-4 text-center">
+		<c:if test="${user.role!='a' }">
+				<div class="col-md-offset-2 col-md-8">
 					<button type="button" class="btn btn-primary">애프터파티 조회</button>
 						<c:if test="${ticket.ticketFlag!='del'}">
 							<button type="button" class="btn btn-primary">티켓구매</button>
 						</c:if>
-					
 					<input type = "button" id = "back" name = "back" value = "뒤로"/>
-					
-				</div>
-			</div>
-			
-	</c:if>
+					</div>
+			</c:if>
+		</div>
+	</div>
 	
-	
-	
-	
-	
-	
+	</section>
+</div> <!--container -->
+		
 </body>
 </html>
