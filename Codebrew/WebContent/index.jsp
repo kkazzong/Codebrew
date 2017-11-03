@@ -120,6 +120,16 @@
 	
 	
 	
+	<a href="/user/getUser?userId=${sessionScope.user.userId }">Ui테스트</a>
+	
+	<br>
+	<br>
+	<a href="/view/user/getMyPage.jsp">로그인</a>
+	<br>
+	<br>
+	<a href="/view/user/getMyPage2.jsp">마이페이지</a>
+	
+	
 	<!-- Title -->
 	<!-- <div class="main-wrapper">
 		

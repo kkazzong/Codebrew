@@ -44,7 +44,7 @@ public class FollowServiceImpl implements FollowService {
 		
 		Follow follow = followDAO.getFollow(responseId, requestId);//(주현,주현)
 		
-		if(follow !=null) {
+		if(follow !=null) {//맞팔이 되면
 			
 			follow.setF4f("1");
 			

@@ -146,7 +146,7 @@ public class UserController {
 	  ModelAndView modelAndView=new ModelAndView();
 	 
 	  modelAndView.addObject("user", user);
-	  modelAndView.setViewName("forward:/view/mypage/getMyPage.jsp"); 
+	  modelAndView.setViewName("forward:/view/user/getMyPage.jsp"); 
 	  return modelAndView;
 	  
 	  }
