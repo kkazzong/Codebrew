@@ -30,6 +30,8 @@
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+	<!-- card css -->
+	<link rel="stylesheet" href="/resources/css/card.css">
 
 	<!--  ///////////////////////// JavaScript ////////////////////////// -->
     <script type="text/javascript">
@@ -125,20 +127,20 @@
 		//=============    판넬  Event  처리 		=============
 		$(function(){	
 			
-			/* 판넬 높이 조절 */
+			/* 카드 높이 조절 */
 			var maxHeight = -1;
 	
-			$('.panel').each(function() {
+			$('.card').each(function() {
 				maxHeight = maxHeight > $(this).height() ? maxHeight : $(this).height();
 			});
 	
-			$('.panel').each(function() {
+			$('.card').each(function() {
 				 $(this).height(maxHeight);
 			});
 			
 			
 			/* 파티 상세 조회 */
-			$(".panel-body").on("click", function(){
+			$(".card").on("click", function(){
 				console.log($(this).find("input:hidden[name='partyNo']").val());
 				var partyNo = $(this).find("input:hidden[name='partyNo']").val()
 				self.location = "/party/getParty?partyNo="+partyNo;
@@ -152,7 +154,7 @@
 		padding-top : 70px;
 		background-color: #f2f4f6;
     }
-    .panel {
+    .card {
 		margin-top : 50px;
     }
     .panel-primary>.panel-heading {
@@ -205,11 +207,15 @@
 		position: relative;
 		text-align: center; */
 	}
-	.search-main img {
+	a > img {
 	    width: 40px;
 	    margin-top: 2px; 
+	    /* background-color: gray; */
 
 	}
+	/* span.input-group-btn {
+		background-color: gray;
+	} */
 	
 	/* 파티 플래그 버튼 */
 	.button-3d {
@@ -241,7 +247,35 @@
 	    position:relative;
 	    top:4px;
 	}
-	
+	.searchbar {background: none;}
+	.searchbar input, .d5 button {
+	  outline: none;
+	  background: transparent;
+	}
+	.searchbar input {
+	  width: 50%;
+	  height: 42px;
+	  padding-left: 15px;
+	  border: 3px solid #F9F0DA;
+	}
+	.searchbar button {
+	  border: none;
+	  height: 42px;
+	  width: 42px;
+	  position: absolute;
+	  top: 0;
+	  right: 0;
+	  cursor: pointer;
+	}
+	.searchbar button:before {
+	  content: "\f002";
+	  font-family: FontAwesome;
+	  font-size: 20px;
+	  color: #F9F0DA;
+	}
+	.searchbar input:focus {
+	  border-color: #6dc6ed;
+	}
 </style>
 </head>
 <body>
@@ -261,7 +295,7 @@
 		
 		<!-- page header -->
 		<div class="row" id="banner">
-			<!-- <div class="col-md-12"> -->
+			<div class="col-md-12">
 			<div>
 				<div>
 	                    <div class="text-center white">
@@ -270,13 +304,58 @@
 	                            <li>뭐하고 놀지?</li>
 	                        </ul> -->
 	                        <div class="title">
-	                        	<h2>이번 주말에</h2>
-	                            <h2>뭐하고 놀지?</h2>
+	                        	<h2>파티의 즐거움을 찾아보세요</h2>
+	                        </div>
+	                        <div class="subtitle">
+	                        	<h4>파티를 통해 다양한 사람을 만나고 경험하세요!</h4>
+	                            <br>
 	                        </div>
 	
 	                        <div class="sub-title-container">
-	
-	                            <div class="search-main">
+								<!-- 검색 -->
+								<div class="searchbar">
+									<form>
+										<input type="hidden" class="form-control" id="searchCondition" name="searchCondition" value="${ ! empty search.searchCondition ? search.searchCondition : '' }">
+										<input type="hidden" id="currentPage" name="currentPage" value=""/>
+										
+									    <c:if test="${ !empty search.searchCondition && search.searchCondition == '5' }">
+											<input type="text" id="searchKeyword" name="searchKeyword" value="" placeholder="파티 이름으로 검색">
+										</c:if>
+										<c:if test="${ search.searchCondition != '5' }">
+											<input type="text" id="searchKeyword" name="searchKeyword" value="${! empty search.searchKeyword ? search.searchKeyword : '' }" placeholder="파티 이름으로 검색">
+										</c:if>
+									    <span class="input-group-btn">
+									  		<a id="search" class="btn btn-xs btn-link" type="button"><img src="/resources/image/buttonImage/btn_nav_search_white@3x.png"></a>
+									    </span>
+									</form>
+									<%-- <form class="form form-inline" id="searchForm" name="searchForm">
+										
+										<input type="hidden" class="form-control" id="searchCondition" name="searchCondition" value="${ ! empty search.searchCondition ? search.searchCondition : '' }">
+										<input type="hidden" id="currentPage" name="currentPage" value=""/>
+										
+										<div class="input-group">
+											<c:if test="${ !empty search.searchCondition && search.searchCondition == '5' }">
+												<input type="text" class="form-control input-lg" size="40" id="searchKeyword" name="searchKeyword" value="" placeholder="파티 이름으로 검색">
+											</c:if>
+											<c:if test="${ search.searchCondition != '5' }">
+												<input type="text" class="form-control input-lg" size="40" id="searchKeyword" name="searchKeyword" value="${! empty search.searchKeyword ? search.searchKeyword : '' }" placeholder="파티 이름으로 검색">
+											</c:if>
+											<span class="input-group-btn">
+										    	<button id="search" class="btn btn-info btn-xs" type="button">
+		                                       		<img src="/resources/image/buttonImage/btn_nav_search_white@3x.png">
+		                                    	</button>
+		                                    	
+										    </span>
+										</div>
+																				
+									</form> --%>
+									
+								</div>
+							</div>
+							</div>
+		
+		
+	                            <%-- <div class="search-main">
 	                                
 	                                <form class="form-inline" name="detailForm">
 	                                	<div class="form-group ">
@@ -300,7 +379,7 @@
 											<c:if test="${ search.searchCondition != '5' }">
 												<input type="text" class="form-control" id="searchKeyword" name="searchKeyword" value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
 											</c:if>
-											<%-- <input type="text" class="form-control" id="searchKeyword" name="searchKeyword" value="${! empty search.searchKeyword ? search.searchKeyword : '' }"> --%>
+											<input type="text" class="form-control" id="searchKeyword" name="searchKeyword" value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
 										    <!-- <button type="button" class="btn btn-default btn-block">검색</button>	 -->
 										    <a id="search" class="click" type="button">
 		                                        <img src="/resources/image/buttonImage/btn_nav_search_white@3x.png">
@@ -313,7 +392,7 @@
 	                                    <!-- <a id="search" class="click" type="button">
 	                                        <img src="/resources/image/buttonImage/btn_nav_search_white@3x.png">
 	                                    </a> -->
-	                                </div>
+	                                </div> --%>
 	                            </div>                        
 	
 	                    </div>
@@ -328,7 +407,7 @@
 				<input type="hidden" id="currentPage" name="currentPage" value="" />
 			</div>
 		</div> --%>
-	</div>
+	<!-- </div> -->
 	<div class="container">
 		<br><br><br>
 		
@@ -353,6 +432,12 @@
 			</div>
 		</div>
 		
+		<div class="input-group-btn text-center">
+	    	Buttons
+	    	<button type="button" class="btn btn-info btn-lg" >파티</button>
+	    	<button type="button" class="btn btn-info btn-lg" >애프터 파티</button>
+		</div>
+											
 		<!-- 목록 조회 Start /////////////////////////////////////-->
 		<section>
 		<div class="row">
@@ -362,18 +447,12 @@
 			<c:forEach var="party" items="${list}">
 				<c:set var="i" value="${i+1}"></c:set>
 				<div class="col-md-6">
-						<div class="panel panel-primary">
-							<%-- <div class="panel-heading">
-								${ party.user.profileImage}
-								<h3 class="panel-title pull-left">
-								<img class="img-circle" src="/resources/uploadFile/${party.user.profileImage}" width="50" height="50">
-								&nbsp; ${ party.user.nickname }</h3>
-							</div> --%>
-							<div class="panel-body">
+						<div class="card">
+							<input type="hidden" name="partyNo" value="${party.partyNo}">
+							<img class="card-img-top" width="100%" height="500" src="/resources/uploadFile/${party.partyImage}">
+								
+							<div class="card-body">
 								<!-- 파티 -->
-								<input type="hidden" name="partyNo" value="${party.partyNo}">
-									<img width="100%" height="100%" src="/resources/uploadFile/${party.partyImage}">
-									
 									<div class="col-md-12">
 										<h4>
 										<strong>
@@ -381,7 +460,7 @@
 										</strong>
 										</h4>
 									</div>
-									<hr>
+									
 									<div class="col-md-12">
 										<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
 											${party.partyDate}
@@ -396,23 +475,44 @@
 									</div>
 									<div class="col-md-12">
 										<c:if test="${ !empty party.festival.festivalName}">
-												<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
-												${ party.festival.festivalName }
-											</c:if>
+											<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
+											${ party.festival.festivalName }
+										</c:if>
 									</div>
-									<br>
 									<div class="col-md-12">
-										<small>
+										<h4>
+										<strong>
 											<c:if test="${ !empty party.festival.festivalNo}">
-												<strong>#애프터 파티</strong>
+												<span class="label label-info"># 애프터파티</span>
 											</c:if>
 											<c:if test="${ empty party.festival.festivalNo}">
-												<strong>#파티</strong>
+												<span class="label label-warning"># 파티</span>
 											</c:if>
-										</small>
+										</strong>
+										</h4>
 									</div>
+									<%-- <div class="col-md-12">
+										
+											<c:if test="${ !empty party.festival.festivalNo}">
+												<div class="col-md-12">
+													<h3>
+														<strong>${purchase.ticket.party.partyName}</strong>
+														<span class="label label-warning"># 애프터파티</span>
+													</h3>
+												</div>
+											</c:if>
+											<c:if test="${ empty party.festival.festivalNo}">
+												<div class="col-md-12">
+													<h3>
+														<strong>${purchase.ticket.party.partyName}</strong>
+														<span class="label label-warning"># 파티</span>
+													</h3>
+												</div>
+											</c:if>
+										
+									</div> --%>
 								
-								<br>
+								
 							</div>
 						</div>
 				</div>

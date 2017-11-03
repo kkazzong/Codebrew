@@ -501,7 +501,20 @@
 		});
 		
 	
-		
+		//============= "그룹 채팅"  Event 처리 및  연결 =============
+		function groupChatPopup(frm) {
+			
+			var url = "/chat/getGroupChatting";
+			var title = "chatPop";
+			var status = "toolbar=no,directories=no,scrollbars=yes,resizable=no,status=no,menubar=no,width=440, height=520, top=0,left=20";
+			window.open("", title, status); //window.open(url,title,status); window.open 함수에 url을 앞에와 같이
+			//인수로  넣어도 동작에는 지장이 없으나 form.action에서 적용하므로 생략
+			//가능합니다.
+			frm.target = title; //form.target 이 부분이 빠지면 form값 전송이 되지 않습니다. 
+			frm.action = url; //form.action 이 부분이 빠지면 action값을 찾지 못해서 제대로 된 팝업이 뜨질 않습니다.
+			frm.method = "post";
+			frm.submit();
+		}
 	</script> 
 	
   
@@ -519,8 +532,17 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h1 class="modal-title" id="exampleModalLabel" >파티 멤버</h1>
-        <div><h4 align="center">${ party.partyName }</h4></div>
+        <h1 class="modal-title text-center" id="exampleModalLabel" >${ party.partyName }</h1>
+        <div><h4 align="center">파티 멤버</h4></div>
+        
+        <!-- 파티 그룹 채팅 -->
+        <form name="form">
+			<input type="hidden" name="recipient" value="user01@naver.com">
+			<input type="hidden" name="sender" value="${user.userId}">
+			<button type='button' class='btn-sm btn-default pull-right'
+				onclick="javascript:groupChatPopup(this.form);">채팅하기</button>
+		</form>
+        
         
       </div>
       <div class="modal-body">
