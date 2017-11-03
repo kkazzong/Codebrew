@@ -37,7 +37,7 @@ public class ReviewServiceImpl implements ReviewService {
 	public void setODSayAPIDAO(ReviewDAO ODSayAPIDAO){
 		this.ODSayAPIDAO = ODSayAPIDAO;
 	}
-
+	
 	public ReviewServiceImpl() {
 		System.out.println(this.getClass());
 	}

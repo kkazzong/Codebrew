@@ -44,6 +44,8 @@
 	<!-- Bootstrap Dropdown Hover JS -->
 	<script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
 	
+	<!-- card css -->
+	<link rel="stylesheet" href="/resources/css/card.css">
 	
 	<!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
@@ -105,12 +107,20 @@
 		});
 		 */
 		
+		//조회
+		$(".card > a").on("click", function(){
+			console.log($(this).find("input:hidden[name='reviewNo']").val());
+			var reviewNo = $(this).find("input:hidden[name='reviewNo']").val();
+		 	self.location = "/review/getReview?reviewNo="+reviewNo;
+		})
 		
 		//==> reviewTitle LINK : Click Event 연결처리
+		/* 
 		$( "button:contains('조회')" ).on("click" , function() {
 			//alert("조회버튼 클릭 : val = "+$(this).val());
 			self.location="/review/getReview?reviewNo="+$(this).val();
 		});
+		 */ 
 		 
 		//==> UI 수정 추가부분  :  reviewTitle LINK Event End User 에게 보일수 있도록 
 		$( ".ct_list_pop td:nth-child(2)" ).css("color" , "red");
@@ -159,7 +169,7 @@
    		
    			<div class="col-md-6 text-left">
    				<p class="text-primary">
-   					전체  ${resultPage.totalCount } 건수, 현재 ${resultPage.currentPage}  페이지
+   					전체  ${resultPage.totalCount } 건수, 현재 ${resultPage.currentPage}  페이지 
    				</p>
    			</div>
    			
@@ -197,27 +207,28 @@
    			<c:forEach var="review" items="${list}">
    				<c:set var="i" value="${i+1}"/>
    				<div class="col-md-6">
-   					<div class="panel panel-primary">
-   						<div class="panel-heading">
-   							<h3 class="panel-title pull-left">${i}번 : ${review.festivalName }</h3>
-   							<!-- 
-   							<form name="deleteForm"> getReviewList.jsp에서는 삭제가 불가하다.
-   								<c:if test = "${sessionScope.user.role == 'a' }">
-   								<button id = "deleteReview" class="btn btn-default pull-right" type="button" value="${review.reviewNo }">
-   									<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-   								</button>
-   								</c:if>
-   							</form>
-   							 -->
-   							<div class="clearfix"></div>
-   						</div>
-   						<div class="panel-body">
-   							
+   					<div class="card">
+   						<a href="#">
+   							<input type="hidden" name = "reviewNo" value="${review.reviewNo }">
+							<c:if test="${!empty review.reviewImageList }">
+								<img width="100%" height="300" src="/resources/uploadFile/${review.reviewImageList[0].reviewImage}">
+							</c:if>
+						</a>
+							<%-- 
+							<h3 class="panel-title pull-left">${i}번 : ${review.festivalName }</h3>
+							 --%>
+						 
+						 <div class="card-body">
+						 	<%-- 
+						 	<form id="deleteForm">
+									<input type="hidden" name="purchaseNo" value="${purchase.purchaseNo}">
+									<button class="btn btn-default pull-right" id="deleteBtn" type="button" value="${review.reviewNo}">
+										<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+									</button>
+							</form>
+   							 --%> 
+   							 
    							<!-- 후기목록 -->
-   							<c:if test="${!empty review.reviewImageList }">
-   								<img width="100%" height="300" src="/resources/uploadFile/${review.reviewImageList[0].reviewImage}">
-   							</c:if>
-   							<hr>
    							<div class="col-md-12">
    								<strong>
    									${review.festivalName }
@@ -242,9 +253,11 @@
    								</small>
    							</div>
    							<hr>
+   							<%-- 
    							<div class="row">
    								<button id="getReview" class="col-md-12 btn primary btn-block" type="button" value="${review.reviewNo }">조회</button>
    							</div>
+   							 --%>
    						</div>
    						
    					</div>

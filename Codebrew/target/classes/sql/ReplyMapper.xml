@@ -48,7 +48,7 @@
 				)
 	</insert>
 	
-	<!-- 2 -->
+	<!-- 2 이건 딱히 쓸모가 없음-->
 	<select id="getReply" parameterType="int" resultMap="replySelectMap">
 		SELECT
 			rp.reply_no, 
@@ -152,28 +152,30 @@
 	
 	<!-- SQL : SELECT ROW Count -->
 	<!-- 7 -->
-	<select  id="getTotalCount" parameterType="search"	 resultType="int">
+	<select  id="getTotalCount" parameterType="map"	 resultType="int">
 	  	SELECT COUNT(*) 
 	  	FROM(	SELECT 
-		  				rp.reply_no, 
-		  				rp.user_id, 
-		  				rp.review_no, 
-		  				rp.reply_detail, 
-		  				rp.reply_reg_date, 
-						FROM reply rp 
-						<if test="searchCondition != null">
-							<where>
-								<if test="searchCondition == 0 and searchKeyword !='' ">
-						 			rp.reply_no like '%${searchKeyword}%'
-								</if>
-								<if test="searchCondition == 1 and searchKeyword !='' ">
-						 			rp.reply_detail like '%${searchKeyword}%'
-								</if>
-								<if test="searchCondition == 2 and searchKeyword !='' ">
-						 			rp.user_id like '%${searchKeyword}%'
-								</if>
-							</where>
-						</if> ) countTable
+  				rp.reply_no, 
+  				rp.user_id, 
+  				rp.review_no, 
+  				rp.reply_detail, 
+  				rp.reply_reg_date 
+				FROM reply rp 
+				<where>
+				rp.review_no = #{reviewNo} 
+					<if test="search.searchCondition != null">
+						<if test="search.searchCondition == 0 and search.searchKeyword !='' ">
+				 			AND rp.reply_no like '%${search.searchKeyword}%'
+						</if>
+						<if test="search.searchCondition == 1 and search.searchKeyword !='' ">
+				 			AND rp.reply_detail like '%${search.searchKeyword}%'
+						</if>
+						<if test="search.searchCondition == 2 and search.searchKeyword !='' ">
+				 			AND rp.user_id like '%${search.searchKeyword}%'
+						</if>
+					</if>
+				</where>
+			) countTable
 	</select>
 
 </mapper>

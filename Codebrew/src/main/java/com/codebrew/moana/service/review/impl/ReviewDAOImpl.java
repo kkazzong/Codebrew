@@ -57,6 +57,7 @@ public class ReviewDAOImpl implements ReviewDAO {
 		System.out.println("reviewDAO :: deleteReview");
 		sqlSession.update("ReviewMapper.deleteReview", reviewNo);
 	}
+	
 	@Override //5
 	public List<Review> getReviewList(Search search) throws Exception {
 		System.out.println("reviewDAO :: getReviewList");

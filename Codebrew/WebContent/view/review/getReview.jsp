@@ -140,43 +140,40 @@
                 alert("Geocode was not successful for the following reason: " + status);
             }
 			
-        	//여기서부터는 조심
-           	console.log(map_x);
-           	console.log(map_y);
+        	//ODSayAPI 요청 ajax
+           	//console.log(map_x);
+           	//console.log(map_y);
         	
      	    //대중교통정보 불러오기 ajax
     		$(function(){
-    			
-    			$(document).ready(function(){
-    				$.ajax(
-    						{
-    							url : "/reviewRest/json/getTransportListAtStation/"+map_x+"/"+map_y+"/"+"350", 
-    							method : "GET", 
-    							dataType : "json", 
-    							headers : {
-    								"Accept" : "application/json", 
-    								"Content-Type" : "application/json"
-    							}, 
-    							success : function(JSONData, status){
-    								//alert(status);
-    								console.log(JSONData.busNoList);
-    								console.log(JSONData.stationNameList);
-    								console.log(JSONData.stationIDList);
-    								console.log(JSONData.subwayList);
-    								var str = "";
-    								for(var i = 0; i < JSONData.busNoList.length; i ++) {
-    									str += JSONData.busNoList[i]+", ";
-    								}
-    								for(var i = 0; i < JSONData.subwayList.length; i++) {
-    									str += JSONData.subwayList[i]+", ";
-    								}
-    								str = str.substr(0, str.length-2);
-    								//$("#transportListAtStation").html(JSONData.busNoList);
-    								$("#transportListAtStation").html(str);
-    							}
-    						}		
-    				)
-    			})
+    			 
+   				$.ajax(
+   						{
+   							url : "/reviewRest/json/getTransportListAtStation/"+map_x+"/"+map_y+"/"+"350", 
+   							method : "GET", 
+   							dataType : "json", 
+   							headers : {
+   								"Accept" : "application/json", 
+   								"Content-Type" : "application/json"
+   							}, 
+   							success : function(JSONData, status){
+   								//alert(status);
+   								//console.log(JSONData.busNoList);
+   								//console.log(JSONData.stationNameList);
+   								//console.log(JSONData.stationIDList);
+   								//console.log(JSONData.subwayList);
+   								var str = "";
+   								for(var i = 0; i < JSONData.busNoList.length; i ++) {
+   									str += JSONData.busNoList[i]+", ";
+   								}
+   								for(var i = 0; i < JSONData.subwayList.length; i++) {
+   									str += JSONData.subwayList[i]+", ";
+   								}
+   								str = str.substr(0, str.length-2);
+   								$("#transportListAtStation").html(str);
+   							}
+   						}		
+   				)
     			
     		});
            	
@@ -302,7 +299,7 @@
 			<div class="col-md-12">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-						<h3 class="panel-title text-center">후기제목 : ${review.reviewTitle }</h3>
+						<h3 class="panel-title text-center">후기제목 : ${review.reviewTitle } ${resultPage } ${search }</h3>
 					</div>
 					<div class="panel-body">
 						<%--  
