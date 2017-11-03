@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import com.codebrew.moana.common.Search;
+import com.codebrew.moana.service.domain.Contents;
 import com.codebrew.moana.service.domain.Festival;
 import com.codebrew.moana.service.domain.Location;
 import com.codebrew.moana.service.domain.Weather;
@@ -62,9 +63,8 @@ public class TourAPIDAOImpl implements FestivalDAO {
 	String openWeatherMapKey;
 
 	private Festival festival;
-	
 	private Weather weather;
-	
+	private Contents contents;
 	private Location location;
 
 	Date dt = new Date();
@@ -104,6 +104,72 @@ public class TourAPIDAOImpl implements FestivalDAO {
 
 		return sb;
 
+	}
+	
+
+	@Override
+	public Contents kakaoWeb(String festivalName0) throws Exception {
+		// TODO Auto-generated method stub
+		
+		System.out.println("카카오웹 festivalName0................" + festivalName0);
+		
+		StringBuilder urlBuilder = new StringBuilder("https://dapi.kakao.com/v2/search/vclip?query="
+				+ URLEncoder.encode(festivalName0,"UTF-8") + "&page=1&size=1");
+		
+//		StringBuilder sb = TourAPIDAOImpl.sendGetURL(urlBuilder);
+		
+		URL url = new URL(urlBuilder.toString());
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setRequestMethod("GET");
+		conn.setRequestProperty("Authorization", "KakaoAK a6419e542017d8fd315556f745f29fcf");
+		System.out.println("Response code: " + conn.getResponseCode());
+		BufferedReader rd;
+		if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+			rd = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+		} else {
+			rd = new BufferedReader(new InputStreamReader(conn.getErrorStream(), "UTF-8"));
+		}
+		StringBuilder sb = new StringBuilder();
+		String line;
+		while ((line = rd.readLine()) != null) {
+			sb.append(line);
+		}
+
+		rd.close();
+		conn.disconnect();
+		
+		JSONObject jsonobj = (JSONObject) JSONValue.parse(sb.toString());
+		
+		System.out.println("dao 카카오웹 제이슨오브젝트..........." + jsonobj);
+		
+		JSONArray jsonarray = (JSONArray) jsonobj.get("documents");
+		
+		System.out.println("dao 카카오웹 제이슨 으레이..........." + jsonarray);
+		
+		for (int i = 0; i < jsonarray.size(); i++) {
+
+			JSONObject jsonobj2 = (JSONObject) jsonarray.get(i);
+			
+			System.out.println("dao 카카오웹 제이슨2..........." + jsonobj2);
+		
+//		ObjectMapper objectMapper = new ObjectMapper();
+		Contents contents = new Contents();
+//		contents = objectMapper.readValue(jsonobj2.toString(), Contents.class);
+		String origin = jsonobj2.get("url").toString();
+		
+		
+			
+			contents.setUrl(jsonobj2.get("url").toString());
+		
+		System.out.println("dao 카카오웹에서 contents 인스턴스...." + contents);
+		
+		
+		this.contents=contents;
+		return contents;
+		
+		}
+				
+		return contents;
 	}
 	
 	public Map<String,Object> getAreaCode() throws Exception{
@@ -623,7 +689,6 @@ public class TourAPIDAOImpl implements FestivalDAO {
 		return weather;
 
 	}
-
 	///////////////////////////////////////////////////////////////
 	@Override
 	public Festival getFestivalDB(int festivalNo) throws Exception {
@@ -708,5 +773,6 @@ public class TourAPIDAOImpl implements FestivalDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }

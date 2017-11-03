@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.codebrew.moana.common.Search;
+import com.codebrew.moana.service.domain.Contents;
 import com.codebrew.moana.service.domain.Festival;
-import com.codebrew.moana.service.domain.Location;
 import com.codebrew.moana.service.domain.Weather;
 import com.codebrew.moana.service.domain.Zzim;
 
@@ -49,4 +49,6 @@ public interface FestivalDAO {
 	public Map<String,Object> getAreaCode() throws Exception;
 	
 	public List<Festival> getInitListDB() throws Exception;
+	
+	public Contents kakaoWeb(String festivalName0) throws Exception;
 }

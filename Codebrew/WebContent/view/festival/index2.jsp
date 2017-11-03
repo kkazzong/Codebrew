@@ -150,7 +150,12 @@
 									$("#tag2 > div > p").text(jsonData.list[2].festivalNo);
 									$("#tag2").val(jsonData.list[2].festivalNo);
 									
+									
+									/* test  */
 									alert("init"+ $("#festivalName0").text());
+									
+									/* other */
+									fncGetWebSearch();
 									
 									
 								}
@@ -161,32 +166,30 @@
 function fncGetWebSearch() {
 		
 		$(function() {
-		
 			
-			alert("websearch"+ $("#festivalName0").text());
-			
+			alert("web"+ $("#festivalName0").text());
 			
 			var festivalName0 = $("#festivalName0").text();
 		
 			 $.ajax( 
 					 {
-						url : "https://dapi.kakao.com/v2/search/web?query="
-								+ encodeURIComponent(festivalName0)
-									+"&page=1&size=1",
-						method : "GET" ,
-						headers : {
-							"Authorization" : "KakaoAK a6419e542017d8fd315556f745f29fcf"
-						},
+						url : "/festivalRest/json/kakaoWeb?festivalName0="+festivalName0,
+						method : "GET",
 						success : function(JSONData , status) {
 
-							alert("JSONData : \n"+JSONData);
+							 alert("JSONData : \n"+JSONData);
 							alert( "JSON.stringify(JSONData) : \n"+JSON.stringify(JSONData) );
 							
-							$("#search0").val(JSONData);
+							/* $("#search0").val(JSONData.url); */
+							
+							/* +"&autoplay=1&rel=0&roop=1" */
+						 /* $("#object").attr("data",JSONData.url); */
+							
 						}
 					 });
 	});
 }
+
 		
 
 	
@@ -253,6 +256,15 @@ function fncGetWebSearch() {
 		   })
 	   })
 	   
+	    $(function(){
+		   $("button").on("click",function(){
+				
+			   var festivalNo = $(this).val();
+			   
+			   self.location="/festival/getFestivalDB?festivalNo="+festivalNo;
+		   })
+	   })
+	   
 	   
 	
 				    	
@@ -280,9 +292,14 @@ function fncGetWebSearch() {
     }
     
    .form-control{
-   	width: 1200px;
+   	width: 600px;
    	height: auto;
    }
+   
+	.video-container { margin: 0;padding-bottom: 75%; max-width: 100%; height: 0; position: relative;overflow: hidden;} 
+	.video-container iframe, 
+	.video-container object, 
+	.video-container embed { margin: 0;padding: 0; width: 100%; height: 95%;position: absolute; top: 0;left: 0; }
     
     
 
@@ -295,7 +312,8 @@ function fncGetWebSearch() {
 
 <jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
 
-<body onload="fncGetWebSearch();">
+<!-- <body onload="fncGetWebSearch();"> -->
+<body>
 	
   	
   		<div class="page-header text-center">
@@ -411,7 +429,12 @@ function fncGetWebSearch() {
 	
 	<!-- fncGetWebSearch.... -->
 	
-	<input type="text" id="search0" value="">
+	<!-- <iframe  width="1350" height="1000" src="" id="iframe"></iframe> -->
+	
+	<div class="video-container">
+  		 <iframe width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
+	</div>
+	
 	
 	<br/>
 	
