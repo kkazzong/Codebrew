@@ -115,7 +115,7 @@
 					
 					var output = {sender : sender, recipient : recipient, senNick : senNick,
 							recNick : recNick, command : 'chat', type  : 'text', data : data, time : time};
-					alert('서버로 보낼 데이터 : ' + JSON.stringify(output));
+					//alert('서버로 보낼 데이터 : ' + JSON.stringify(output));
 					
 					if(socket == undefined){
 						alert('서버에 연결되어 있지 않습니다. 먼저 서버에 연결하세요.');
@@ -254,7 +254,8 @@
 							+"</div>"
 							+"<div class = 'message'>"
 							+"<p>" + msg + "</p>"
-							+"<time datetime='2017-10-05 13:52'>"+time+"</time>"
+							/* +"<time datetime='2017-10-05 13:52'>"+time+"</time>" */
+							+"<time datetime='yyyy-mm-ddThh:mm:ss:Z'>"+time+"</time>"
 							+"</div>"
 							+"</li>";
 								
@@ -273,7 +274,7 @@
 							+"</div>"
 							+"<div class = 'message'>"
 							+"<p>" + msg + "</p>"
-							+"<time datetime='2017-10-05 13:52'>"+time+"</time>"
+							+"<time datetime='yyyy-mm-ddThh:mm:ss:Z'>"+time+"</time>"
 							+"</div>"
 							+"</li>";
 								
@@ -401,11 +402,11 @@
 	<hr/>
 	
 	<!-- 채팅 확인창 -->
-	<!-- <div id="currentDate"></div>
+	<div id="currentDate"></div>
 	<hr/>
 	<h4 class = "ui horizontal divider header">메세지</h4>
 	
-	<div class = "ui segment" id = "result"></div> -->
+	<div class = "ui segment" id = "result"></div>
 
 	<!-- 채팅창 -->
 	<ol class="discussion">
