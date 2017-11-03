@@ -171,7 +171,7 @@
 		});	
 	 
 		
-/////////////////////채팅방만들기/////////////////////
+		/////////////////////채팅방만들기/////////////////////
 		$(function(){
 			
 			$("#createRoomBtn").on("click", function(){
@@ -231,7 +231,7 @@
 		});
 		
 		
-/////////////////////그룹톡 전송/////////////////////
+		/////////////////////그룹톡 전송/////////////////////
 		$(function(){
 			
 			$("#groupBtn").on("click", function(){
@@ -489,14 +489,10 @@
 	
 	<!-- chatting form -->
 	<form name="form">
-		<input type="hidden" name="recipient" value="user01@naver.com">
-		<input type="hidden" name="sender" value="${user.userId}">
-		<button type='button' class='btn-sm btn-default pull-right'
-			onclick="javascript:popup(this.form);">채팅하기</button>
-		<br>
+		
 		<!--//////////////// 그룹방방방방방 ////////////////-->
-		<input type="text" id="roomIdInput" value="Voyager파티">
-		<input type="text" id="roomNameInput" value="파티채팅해해">
+		<input type="text" id="roomIdInput" value="${ party.partyNo }">
+		<input type="text" id="roomNameInput" value="${ party.partyName }">
 		<button id="createRoomBtn" type='button' class='btn-sm btn-default'>방만들기</button>
 		<input type="hidden" name="roomRecipient" value="ALL">
 		<button id="joinRoomBtn" type="button" class=" btn-default">방 입장</button>
