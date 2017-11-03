@@ -260,10 +260,11 @@
 				var recNick = $('#recNick').val();
 				var data = $('#groutDataInput').val();
 				var time = $('#dataInputTime').val();
-				//var roomId = $("#roomIdInput").val();
+				var roomId = $("#roomIdInput").val();
 				
 				var output = {
 						command : chatType,
+						roomId : roomId,
 						sender : sender,
 						recipient : recipient, 
 						senNick : senNick,
@@ -505,21 +506,33 @@
 		<button type='button' class='btn-sm btn-default pull-right'
 			onclick="javascript:popup(this.form);">채팅하기</button>
 		<br>
+		
 		<!--//////////////// 그룹방방방방방 ////////////////-->
-		<input type="text" id="roomIdInput" value="Voyager파티">
-		<input type="text" id="roomNameInput" value="파티채팅해해">
+		<input type="text" id="roomIdInput" value="Voyager파티"> <!-- 그룹방 아이디 -->
+		<input type="text" id="roomNameInput" value="파티채팅해해"> <!-- 그룹방 이름 -->
+		
 		<button id="createRoomBtn" type='button' class='btn-sm btn-default'>방만들기</button>
-		<input type="hidden" name="roomRecipient" value="ALL">
+		
+		<input type="hidden" name="roomRecipient" value="ALL"> <!-- 그룹톡 보낼 사람(모두) -->
 		<button id="joinRoomBtn" type="button" class=" btn-default">방 입장</button>
 		<button id="leaveRoomBtn" type="button" class=" btn-default">방 나가기</button>
 	</form>
 	
-	<input type="hidden" id="chatType" value="groupchat">
-	그룹방 전용 메시지 : <input type="text" id="groutDataInput">
-	<button id="groupBtn" type="button" class=" btn-default">전송</button>
+	<input type="hidden" id="chatType" value="groupchat"> <!-- 채팅 타입(chat, groupchat) -->
+	그룹방 전용 메시지 : <input type="text" id="groutDataInput"> <!-- 그룹톡 메시지 -->
+	<button id="groupBtn" type="button" class=" btn-default">전송</button> <!-- 그룹톡 전송 -->
 	
-	
+	<!-- 그룹방 리스트 -->
 	<div id="roomList"></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	<div class = "container">
 		<div id = "cardbox" class = "ui blue fluid card">
