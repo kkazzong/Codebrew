@@ -62,9 +62,13 @@
 		 $(function() {
 		
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			$( "td:nth-child(2)" ).on("click" , function() {
-				var userId=$(this).text().trim();
-				 self.location ="/user/getUser?userId="+userId;
+			$( "td:nth-child(3)" ).on("click" , function() {
+				var requestId=$(this).text().trim();
+				
+				console.log("userId는????"+requestId);
+				
+				
+				 self.location ="/myPage/getMyPage?requestId="+requestId;
 			});
 						
 			//==> userId LINK Event End User 에게 보일수 있도록 

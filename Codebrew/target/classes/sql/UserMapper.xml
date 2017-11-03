@@ -40,7 +40,7 @@
 			profile_image,
 		</if>
 		<if test="locationFlag != null">
-				#{location_flag:VARCHAR},
+		    location_flag,
 		</if>
 		coconut_count,
 		user_reg_date)
@@ -68,9 +68,11 @@
 	SELECT
 	user_id, user_name, password, nickname, role, phone, gender, age, profile_image, location_flag, coconut_count, user_reg_date
 	from users
-	Where user_id= #{value} and role !='d'<!--탈퇴하면 로그인안됨 -->
+	Where user_id= #{value}
 	</select>
 	
+	
+	<!--Where user_id= #{value} and role !='d'--><!--탈퇴하면 로그인안됨 --> 
 	<!-- Where  user_id= #{value} and role = 'u' -->
 	
 	<!-- Where user_id= #{value} 

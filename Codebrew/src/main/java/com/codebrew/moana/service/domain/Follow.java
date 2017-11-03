@@ -1,11 +1,13 @@
 package com.codebrew.moana.service.domain;
 
-public class Follow {
+public class Follow extends User {
 	
 	
 	private int followNo;
 	private String requestId;
 	private String responseId;
+	private String f4f;
+	
 	
 	
 	public Follow() {
@@ -43,10 +45,24 @@ public class Follow {
 	}
 
 
+	public String getF4f() {
+		return f4f;
+	}
+
+
+	public void setF4f(String f4f) {
+		this.f4f = f4f;
+	}
+
+
 	@Override
 	public String toString() {
-		return "Follow [followNo=" + followNo + ", requestId=" + requestId + ", responseId=" + responseId + "]";
+		return "Follow [followNo=" + followNo + ", requestId=" + requestId + ", responseId=" + responseId + ", f4f="
+				+ f4f + "]";
 	}
+
+
+	
 	
 
 }

@@ -131,25 +131,26 @@ public class UserController {
 		return modelAndView;
 	}
 
-	/*
-	 * //회원정보 조회
-	 * 
-	 * @RequestMapping(value="getUser", method=RequestMethod.GET) public
-	 * ModelAndView getUser(@RequestParam("userId") String userId)throws Exception{
-	 * //업데이트화면에 온건 userId를 가지고 들어오니깐
-	 * 
-	 * System.out.println("/user/getUser : GET");
-	 * 
-	 * //비즈니스로직 User user=userService.getUser(userId);
-	 * 
-	 * ModelAndView modelAndView=new ModelAndView();
-	 * 
-	 * modelAndView.addObject("user", user);
-	 * modelAndView.setViewName("forward:/view/user/getProfile.jsp"); return
-	 * modelAndView;
-	 * 
-	 * }
-	 */
+	
+	 //회원정보 조회
+	 @RequestMapping(value="getUser", method=RequestMethod.GET) 
+	 public ModelAndView getUser(@RequestParam("userId") String userId,
+			 @ModelAttribute("user")User user)throws Exception{
+	 //업데이트화면에 온건 userId를 가지고 들어오니깐
+	 
+	   System.out.println("/user/getUser : GET");
+	 
+	  //비즈니스로직
+      user=userService.getUser(userId);
+	 
+	  ModelAndView modelAndView=new ModelAndView();
+	 
+	  modelAndView.addObject("user", user);
+	  modelAndView.setViewName("forward:/view/mypage/getMyPage.jsp"); 
+	  return modelAndView;
+	  
+	  }
+	 
 	// 회원정보조회 및 수정화면이동
 	@RequestMapping(value = "updateUser", method = RequestMethod.GET)
 	public ModelAndView updateUser(@RequestParam("userId") String userId) throws Exception {
