@@ -46,27 +46,34 @@
 			});
 		});	
 	 
-	 $(function() {
+/* 	 $(function() {
 		 
 		 var requestId = $("#userId").val();
 	
 			 
-		
+	
 		 
 			$( "#getFollowingList" ).on("click" , function() {
 				
 			
 				self.location="/myPage/getFollowingList?requestId="+requestId;
-			});
+			});  
+			
+		/* 	$( "#following" ).on("click" , function() {
+				
+				
+				self.location="/myPage/getFollowingList?requestId="+requestId;
+			}); */
 			
 			
 			
-			$( "#getFollowerList" ).on("click" , function() {
+			
+	/* 		$( "#getFollowerList" ).on("click" , function() {
 				self.location="/myPage/getFollowerList?requestId="+requestId;
 			});
 		
 			
-		});
+		});  */
 	 
 	</script>
 	<style>
@@ -246,13 +253,16 @@
 						<li id="getFollowerList" class="test">
 							<input type="hidden" id="userId" name="userId" value="${user.userId}">
 							<a href="#">
-							<i class="fa fa-user-circle" aria-hidden="true" ></i>
+							<i class="fa fa-user-circle" aria-hidden="true" 
+							data-toggle="modal" data-target="#follower" > </i><!--data-toggle="modal" data-target="#follower" >  -->
 							팔로워</a>
 						</li>
 						<li id="getFollowingList" class="test">
 						 
 							<a href="#">
-							<i class="fa fa-user-circle-o" aria-hidden="true"></i>
+							<i class="fa fa-user-circle-o" aria-hidden="true"
+							data-toggle="modal" data-target="#following" ></i><!--data-toggle="modal" data-target="#following" > -->
+	
 							팔로잉</a>
 						</li>
 					</ul>

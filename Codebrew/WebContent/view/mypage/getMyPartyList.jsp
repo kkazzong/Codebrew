@@ -276,7 +276,7 @@
 		    <!-- 데이터 수 -->
 			<div class="row">
 				<div class="col-md-12">
-					<h5>총 : ${resultPage.totalCount} 건 (${resultPage.currentPage} / ${resultPage.maxPage})</h5>
+					<h5>총 : ${resultPage2.totalCount} 건 (${resultPage2.currentPage} / ${resultPage2.maxPage})</h5>
 				</div>
 			</div>
 		    
@@ -309,20 +309,20 @@
 	  
 	  <!-- 목록 조회 Start /////////////////////////////////////-->
 	  <div class="row">
-		<c:if test="${empty list}">
+		<c:if test="${empty list2}">
 			<%-- <jsp:include page="/view/purchase/noResult.jsp"></jsp:include> --%>
 		</c:if>
-			<c:forEach var="party" items="${list}">
+			<c:forEach var="party" items="${list2}">
 				<c:set var="i" value="${i+1}"></c:set>
 				<div class="col-md-6">
 						<div class="panel panel-primary">
 							<div class="panel-heading">
 								
 								<%-- ${ party.user.profileImage} --%>
-								<h3 class="panel-title pull-left">
+								<%-- <h3 class="panel-title pull-left">
 									<img class="img-circle" src="/resources/uploadFile/${party.user.profileImage}" width="50" height="50">
-									&nbsp; ${ party.user.nickname }
-								</h3>
+									${ party.user.nickname }
+								</h3> --%>
 								
         						<!-- 삭제버튼 -->
 								<form id="deleteForm">
@@ -341,6 +341,16 @@
 								<input type="hidden" name="partyNo" value="${party.partyNo}">
 									<img width="100%" height="100%" src="/resources/uploadFile/${party.partyImage}">
 									<!-- <hr> -->
+									
+									<br>
+									<br>
+									<div class="col-md-12">
+									<img class="img-circle" src="/resources/uploadFile/${party.user.profileImage}" width="50" height="50">
+									${ party.user.nickname }
+									</div>
+									
+									
+									
 									<div class="col-md-12">
 										<h4>
 										<strong>

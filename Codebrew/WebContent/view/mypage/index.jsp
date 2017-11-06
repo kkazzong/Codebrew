@@ -342,5 +342,95 @@ $(function() {
 	
 	
 
+	<a href="/user/getUser?userId=${sessionScope.user.userId }">Ui테스트</a>
 	
+	<br>
+	<br>
+	<a href="/view/user/getMyPage.jsp">로그인</a>
+	<br>
+	<br>
+	<a href="/view/user/getMyPage2.jsp">마이페이지</a>
+	<br>
+	<br>
+	<a href="/myPage/getMyPage?requestId=${sessionScope.user.userId}">진짜 마이페이지</a>
+	
+	
+	<!-- Title -->
+	<!-- <div class="main-wrapper">
+		
+		<div class="main">
+		<div class="main">
+	        <div class="container">
+	            <div class="col-md-12">
+	                <div class="col-md-6 col-md-offset-3 padding-none">
+	                    <div class="text-center white">
+	                       
+	                        <div class="title">
+	                        	<h1>MOANA</h1>
+	                            <h1>이번 주말에 모아나ㅋ</h1>
+	                        </div>
+	
+	                        <div class="sub-title-container">
+	
+	                            <div class="search-main">
+	                                
+	                                <form class="form-inline" name="detailForm">
+	                                	
+										  
+										  <div class="form-group">
+										    <label class="sr-only" for="searchKeyword">검색어</label>
+										    
+											<input type="text" class="form-control" id="search" placeholder="ex) 할로윈">
+											<input type="text" placeholder="ex) 할로윈">
+										    <a id="search" class="click" type="button">
+		                                        <img src="/resources/image/buttonImage/btn_nav_search_white@3x.png">
+		                                    </a>		 
+										  </div>
+	                               	</form>
+	                                
+	                             
+	                                </div>
+	                            </div>
+	                        
+	
+	                        <script>
+	                            $("#search").click(function () {
+	                                var query = $(".search-main input").val();
+	                                if (!query) {
+	                                    alert("검색어를 입력해주세요.");
+	                                } else {
+	                                    location.href = "/search/" + query;
+	                                }
+	                            })
+	                        </script>
+	
+	                        
+	
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div> -->
+
+	
+	
+	<br/>
+	
+	<input type="text" id="search1" value="">
+	
+	<br/>
+	
+	<input type="text" id="search2" value="">
+	
+			
+			</body>
+			
+
+	
+
+    
+
+>>>>>>> refs/heads/new/jooyoung
+
 </html>

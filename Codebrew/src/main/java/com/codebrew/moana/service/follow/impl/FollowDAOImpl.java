@@ -67,7 +67,7 @@ public class FollowDAOImpl implements FollowDAO {
 		// TODO Auto-generated method stub
 		
 		System.out.println("search는????????"+search);
-		return sqlSession.selectList("FollowMappper.getFollowerList", search);
+		return sqlSession.selectList("FollowMapper.getFollowerList", search);
 	}
 
 	@Override
