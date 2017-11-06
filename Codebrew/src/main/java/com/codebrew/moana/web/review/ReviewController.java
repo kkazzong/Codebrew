@@ -87,8 +87,7 @@ public class ReviewController {
 	public ModelAndView addReview(HttpSession session,
 									@ModelAttribute("review") Review review, 
 									@RequestParam("uploadReviewImageList") List<MultipartFile> uploadReviewImage, 
-									@RequestParam("uploadReviewVideoList") List<MultipartFile> uploadReviewVideo) 
-									throws Exception {
+									@RequestParam("uploadReviewVideoList") List<MultipartFile> uploadReviewVideo) throws Exception {
 		
 //		@RequestParam("uploadReviewVideo") MultipartHttpServletRequest reviewVideo
 		
@@ -257,6 +256,117 @@ public class ReviewController {
 		
 		return modelAndView;
 	}
+	
+	// 실제 update 하여 getReview로 넘어감
+	@RequestMapping(value="updateReview", method=RequestMethod.POST)
+	public ModelAndView updateReview(HttpSession session, 
+									@ModelAttribute("review") Review review, 
+									@RequestParam("uploadReviewImageList") List<MultipartFile> uploadReviewImage, 
+									@RequestParam("uploadReviewVideoList") List<MultipartFile> uploadReviewVideo) throws Exception{
+		
+		System.out.println("updateReview processing...");
+		
+		String filePath1 = "C:\\Users\\Admin\\git\\Codebrew\\Codebrew\\WebContent\\resources\\uploadFile\\"; // 실제 directory 경로로 파일을 영구적으로 저장하기 위함이다.
+		String filePath2 = session.getServletContext().getRealPath("/")+"\\resources\\uploadFile\\"; //실제 folder가 아닌 tomcat의 임시 서버로서 add후 바로 get을 했을때 이미지를 볼 수 있도록 한다.
+		
+		System.out.println("\n\n\nfilePath :: \n"+filePath2);
+		
+if(uploadReviewImage != null && uploadReviewImage.size() > 0){
+			
+			List<Image> uploadImageList = new ArrayList<Image>();
+			for(MultipartFile multipartFile : uploadReviewImage){
+				Image eachImage = new Image();
+				String fileName = UUID.randomUUID().toString()+System.currentTimeMillis()+multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."), multipartFile.getOriginalFilename().length());
+				eachImage.setReviewImage(fileName); //각각의 이미지 fileName을 setting
+				
+				uploadImageList.add(eachImage); //생성한 list에 setting이 끝난 각각의 Image 객체를 넣어줌
+				File file1 = new File(filePath1+fileName); // 1st Path : 실제 존재하는 uploadFile 경로+fileName
+				//File file1 = new File(filePath1, fileName);
+				File file2 = new File(filePath2+fileName); // 2nd Path : Tomcat의 temporary folder 경로+fileName
+				//File file2 = new File(filePath2, fileName);
+				
+				System.out.println("\n\n\n\n\nmultipartFile :: Image :: "+multipartFile+"\n\n\n\n\n");
+				multipartFile.transferTo(file2);
+				
+				FileInputStream fis = null;
+				FileOutputStream fos = null; 
+
+				try {
+					fis = new FileInputStream(file2); // 원본파일
+					fos = new FileOutputStream(file1); // 복사위치
+					   
+					byte[] buffer = new byte[1024];
+					int readcount = 0;
+					  
+					while((readcount=fis.read(buffer)) != -1) {
+						fos.write(buffer, 0, readcount); // 파일 복사 
+					}
+				} catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+					fis.close();
+					fos.close();
+				}
+			}
+			review.setReviewImageList(uploadImageList);
+		}
+		
+		/*
+		 * upload Video <multipartFile> : 동영상은 선택적으로 올릴수 있기 때문에 조건절 복잡 : 나중을 위하여 List로 받음(jsp상 multiple은 아니다)
+		 */
+		if(uploadReviewVideo.get(0).getOriginalFilename() != "" && uploadReviewVideo != null && uploadReviewVideo.size() > 0){
+			
+			List<Video> uploadVideoList = new ArrayList<Video>();
+			for(MultipartFile multipartFile : uploadReviewVideo){
+				Video eachVideo = new Video();
+				String fileName = UUID.randomUUID().toString()+System.currentTimeMillis()+multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."), multipartFile.getOriginalFilename().length());
+				eachVideo.setReviewVideo(fileName); //각각의 이미지 fileName을 setting
+				
+				uploadVideoList.add(eachVideo); //생성한 list에 setting이 끝난 각각의 video 객체를 넣어줌
+				File file1 = new File(filePath1+fileName); // 1st Path : 실제 존재하는 uploadFile 경로+fileName
+				//File file1 = new File(filePath1, fileName);
+				File file2 = new File(filePath2+fileName); // 2nd Path : Tomcat의 temporary folder 경로+fileName
+				//File file2 = new File(filePath2, fileName);
+				
+				System.out.println("\n\n\n\n\nmultipartFile :: Video :: "+multipartFile+"\n\n\n\n\n");
+				multipartFile.transferTo(file2);
+				
+				FileInputStream fis = null;
+				FileOutputStream fos = null; 
+
+				try {
+					fis = new FileInputStream(file2); // 원본파일
+					fos = new FileOutputStream(file1); // 복사위치
+					   
+					byte[] buffer = new byte[1024];
+					int readcount = 0;
+					  
+					while((readcount=fis.read(buffer)) != -1) {
+						fos.write(buffer, 0, readcount); // 파일 복사 
+					}
+				} catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+					fis.close();
+					fos.close();
+				}
+			}
+			review.setReviewVideoList(uploadVideoList);
+		}
+		
+		System.out.println("\n\n\n\n\n=====okokokokok=====\n\n\n\n\n");
+		
+		review = reviewService.addReview(review);
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject(review);
+		modelAndView.setViewName("/view/review/getReview.jsp");
+		
+		return modelAndView;
+		
+	}
+	
+	
 	
 	@RequestMapping(value="getReviewList")
 	public ModelAndView getReviewList( @ModelAttribute("search") Search search ) throws Exception{

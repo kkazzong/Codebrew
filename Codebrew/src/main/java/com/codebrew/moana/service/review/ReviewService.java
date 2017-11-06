@@ -20,7 +20,7 @@ public interface ReviewService {
 	public Review getReview(int reviewNo) throws Exception;
 	
 	//3
-	public void updateReview(Review review) throws Exception;
+	public Review updateReview(Review review) throws Exception;
 	
 	//4
 	public void deleteReview(int reviewNo) throws Exception;

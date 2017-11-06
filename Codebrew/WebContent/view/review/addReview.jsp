@@ -135,6 +135,12 @@
 			window.open("/festival/getFestivalListDB?menu=pop", null, "height=450,width=600,status=yes,toolbar=no,menubar=no,location=no");
 		});
 		
+		//등록예정인 해시태그들 삭제
+		$("button.btn.btn-primary:contains('삭제')").on("click", function(){
+			alert($('#reviewHashtag').val());
+			$('#reviewHashtag').val("");
+		});
+		
 		
 	});
 	
@@ -204,7 +210,7 @@
 		});
 	}
 	
-	/* 파일 삭제 javascript : 배열에서는 삭제가 되는데...
+	/* 파일 삭제 javascript : 배열에서는 삭제가 되는데...*/
 	function deleteImageAction(index) {
 		console.log("index : "+index);
 		sel_files.splice(index, 1); //테스트 이미지 몇개 들어가는지 계속해서 확인 요망
@@ -214,7 +220,6 @@
 		$(img_id).remove();
 		console.log(sel_files);
 	}
-	 */	
 	
 	
 	/* 테스트중 ckeditor */
@@ -393,8 +398,10 @@
 				<div class="form-group">
 					<label for="reviewHashtag" class="col-md-offset-1 col-md-3 control-label">등록예정 해시태그</label>
 					<div class="col-md-4">
-						<input type="text" class="form-control" id="reviewHashtag" name="reviewHashtag">
-						<button type="button" class="btn btn-primary">삭제</button>
+						<input type="text" class="form-control" id="reviewHashtag" name="reviewHashtag" readonly>
+						<span>
+							<button type="button" id="deleteAllHashtag" class="btn btn-primary">삭제</button>
+						</span>
 					</div>
 				</div>
 				
