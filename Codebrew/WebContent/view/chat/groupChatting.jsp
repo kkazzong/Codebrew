@@ -206,7 +206,7 @@
 		/////////////////////방입장/////////////////////
 		$(function(){
 			
-			$("#joinRoomBtn").on("click", function(){
+			//$("#joinRoomBtn").on("click", function(){
 				
 				alert("방참여");
 				var roomId = $("#roomIdInput").val();
@@ -225,7 +225,7 @@
 				
 				socket.emit('room', output);
 				
-			})
+			//})
 			
 			
 		});

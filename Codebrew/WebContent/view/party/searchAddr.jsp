@@ -53,7 +53,7 @@ function jusoCallBack(roadFullAddr){
 
 </script>
 
-<div class="col-sm-offset-4  col-sm-4 text-center">
+<div class="col-sm-2 text-center">
 <input type="button" class="btn btn-primary btn-block" onClick="goPopup();" value="검색"/>
 </div>
 <!-- <form name="form" id="form" method="post">

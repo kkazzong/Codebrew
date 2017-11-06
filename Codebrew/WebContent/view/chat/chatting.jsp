@@ -171,107 +171,7 @@
 		});	
 	 
 		
-/////////////////////채팅방만들기/////////////////////
-		$(function(){
-			
-			$("#createRoomBtn").on("click", function(){
-				
-				alert("방만들기");
-				var roomId = $("#roomIdInput").val();
-				var roomName = $("#roomNameInput").val();
-				var id = $("input:hidden[name='sender']").val();
-				
-				var output = {
-						command : 'create',
-						roomId : roomId,
-						roomName : roomName,
-						roomOwner : id
-				}
-				
-				console.log("서버로 보낼 데이터 : "+JSON.stringify(output));
-				
-				if(socket == undefined){
-					alert('서버에 연결되어 있지 않습니다. 먼저 서버에 연결하세요.');
-					return;
-				}
-				
-				socket.emit('room', output);
-				
-			})
-			
-			
-		});
-		
-		
-		/////////////////////방입장/////////////////////
-		$(function(){
-			
-			$("#joinRoomBtn").on("click", function(){
-				
-				alert("방참여");
-				var roomId = $("#roomIdInput").val();
-				
-				var output = {
-						command : 'join',
-						roomId : roomId
-				}
-				
-				console.log("서버로 보낼 데이터 : "+JSON.stringify(output));
-				
-				if(socket == undefined){
-					alert('서버에 연결되어 있지 않습니다. 먼저 서버에 연결하세요.');
-					return;
-				}
-				
-				socket.emit('room', output);
-				
-			})
-			
-			
-		});
-		
-		
-/////////////////////그룹톡 전송/////////////////////
-		$(function(){
-			
-			$("#groupBtn").on("click", function(){
-				
-				printClock();
 
-				var chatType = $("#chatType").val(); ///////////////채팅 타입 : 그룹톡인지 그냥 톡인지
-				var sender = $('#senderInput').val();
-				var recipient = $("input:hidden[name='roomRecipient']").val(); ///////////////그룹방에 참여한 사람한테
-				var senNick = $('#senNick').val(); //////////senNick추가////////////////////
-				var recNick = $('#recNick').val();
-				var data = $('#groutDataInput').val();
-				var time = $('#dataInputTime').val();
-				//var roomId = $("#roomIdInput").val();
-				
-				var output = {
-						command : chatType,
-						sender : sender,
-						recipient : recipient, 
-						senNick : senNick,
-						recNick : recNick,
-						type  : 'text',
-						data : data,
-						time : time
-				}
-				
-				console.log("서버로 보낼 데이터 : "+JSON.stringify(output));
-				
-				if(socket == undefined){
-					alert('서버에 연결되어 있지 않습니다. 먼저 서버에 연결하세요.');
-					return;
-				}
-				
-				socket.emit('message', output);
-				
-			})
-			
-			
-		});
-		
 		
 		// 서버에 연결하는 함수 정의
 		function connectToServer(){
@@ -316,28 +216,6 @@
 					
 				});
 				
-				/////////////////////////////////그룹 방 리스트 받음////////////////////////////////////
-				socket.on('room', function(message){
-					
-					console.log("서버에서 받은 룸 데이터 : "+JSON.stringify(message));
-					
-					println('<p>방 이벤트 : ' +message.command+ '</p>');
-					println('<p>방 리스트를 받았습니다 </p>');
-					
-					//방리스트
-					if(message.command == 'list') {
-						
-						var roomCount = message.rooms.length;
-						
-						$("#roomList").html('<p>방 리스트 '+roomCount+'개</p>');
-						
-						for(var i = 0; i < roomCount; i++) {
-							$("#roomList").append('<p>방 #'+i+' : '+message.rooms[i].id+', '+message.rooms[i].name+', '+message.rooms[i].owner+'</p>');
-						}
-						
-					}
-					
-				});
 				
 			});
 			
@@ -486,30 +364,6 @@
 	</style>
 </head>
 <body>
-	
-	<!-- chatting form -->
-	<form name="form">
-		<input type="hidden" name="recipient" value="user01@naver.com">
-		<input type="hidden" name="sender" value="${user.userId}">
-		<button type='button' class='btn-sm btn-default pull-right'
-			onclick="javascript:popup(this.form);">채팅하기</button>
-		<br>
-		<!--//////////////// 그룹방방방방방 ////////////////-->
-		<input type="text" id="roomIdInput" value="Voyager파티">
-		<input type="text" id="roomNameInput" value="파티채팅해해">
-		<button id="createRoomBtn" type='button' class='btn-sm btn-default'>방만들기</button>
-		<input type="hidden" name="roomRecipient" value="ALL">
-		<button id="joinRoomBtn" type="button" class=" btn-default">방 입장</button>
-		<button id="leaveRoomBtn" type="button" class=" btn-default">방 나가기</button>
-	</form>
-	
-	<input type="hidden" id="chatType" value="groupchat">
-	그룹방 전용 메시지 : <input type="text" id="groutDataInput">
-	<button id="groupBtn" type="button" class=" btn-default">전송</button>
-	
-	
-	<div id="roomList"></div>
-	
 	
 	<div class = "container">
 		<div id = "cardbox" class = "ui blue fluid card">

@@ -45,6 +45,10 @@ public class ChatController {
 	@Qualifier("userServiceImpl")
 	private UserService userService;
 	
+	@Autowired
+	@Qualifier("partyServiceImpl")
+	private PartyService partyService;
+	
 	
 	///Constructor///
 	public ChatController() {
@@ -58,18 +62,18 @@ public class ChatController {
 	@RequestMapping( value="getChatting")
 	public ModelAndView getChatting(@RequestParam("sender") String sender, @RequestParam("recipient") String recipient) throws Exception {
 		
-		System.out.println("\n>>> /chat/getChatting :: GET start <<<");
+		System.out.println("\n>>> /chat/getChatting :: POST start <<<");
 		
 		//sender, recipient 파라미터 출력
-		System.out.println(">>> /chat/getChatting :: GET :: sender 파라미터 \n"+sender);
-		System.out.println(">>> /chat/getChatting :: GET :: recipient 파라미터 \n"+recipient);
+		System.out.println(">>> /chat/getChatting :: POST :: sender 파라미터 \n"+sender);
+		System.out.println(">>> /chat/getChatting :: POST :: recipient 파라미터 \n"+recipient);
 		
 		
 		User dbSender = userService.getUser(sender);
 		User dbRecipient = userService.getUser(recipient);
 		//User 도메인 출력
-		System.out.println("\n<<< /chat/getChatting :: GET :: sender 도메인  \n"+dbSender);
-		System.out.println("\n<<< /chat/getChatting :: GET :: recipient 도메인  \n"+dbRecipient);
+		System.out.println("\n<<< /chat/getChatting :: POST :: sender 도메인  \n"+dbSender);
+		System.out.println("\n<<< /chat/getChatting :: POST :: recipient 도메인  \n"+dbRecipient);
 		
 		
 		
@@ -79,6 +83,35 @@ public class ChatController {
 		modelAndView.addObject("recipient", dbRecipient);
 		
 		modelAndView.setViewName("forward:/view/chat/chatting.jsp");
+		
+		return modelAndView;
+	}
+	
+	
+	@RequestMapping( value="getGroupChatting")
+	public ModelAndView getGroupChatting(@RequestParam("sender") String sender, @RequestParam("partyNo") String partyNo) throws Exception {
+		
+		System.out.println("\n>>> /chat/getGroupChatting :: POST start <<<");
+		
+		//sender, recipient 파라미터 출력
+		System.out.println(">>> /chat/getGroupChatting :: POST :: sender 파라미터 \n"+sender);
+		System.out.println(">>> /chat/getGroupChatting :: POST :: partyNo 파라미터 \n"+partyNo);
+		
+		int dbPartyNo = Integer.parseInt(partyNo);
+		
+		User dbSender = userService.getUser(sender);
+		Party dbParty = partyService.getParty(dbPartyNo, "");
+		//도메인 출력
+		System.out.println("\n<<< /chat/getChatting :: POST :: sender 도메인  \n"+dbSender);
+		System.out.println("\n<<< /chat/getChatting :: POST :: party 도메인  \n"+dbParty);
+		
+		
+		//Model(data) & View(jsp)
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("sender", dbSender);
+		modelAndView.addObject("party", dbParty);
+		
+		modelAndView.setViewName("forward:/view/chat/groupChatting.jsp");
 		
 		return modelAndView;
 	}
