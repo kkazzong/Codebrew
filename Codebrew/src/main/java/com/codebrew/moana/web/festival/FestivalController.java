@@ -70,6 +70,8 @@ public class FestivalController {
 
 		System.out.println("deleteZzim........");
 		
+		System.out.println("찜지우기.........." + festivalNo + "," + userId);
+		
 
 		Zzim returnZzim = new Zzim(userId, festivalNo);
 
@@ -88,7 +90,7 @@ public class FestivalController {
 			@ModelAttribute("page") Page page, HttpServletRequest request) throws Exception {
 
 		
-		System.out.println("getzzim............" + search);
+		System.out.println("getzzimSearch............" + search);
 		
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
@@ -394,6 +396,8 @@ public class FestivalController {
 		} else {
 
 			System.out.println("else로 들어옴!! " + festival.getFestivalNo());
+			
+			festival.setFestivalImage("no.png");
 
 			festivalService.addFestival(festival);
 

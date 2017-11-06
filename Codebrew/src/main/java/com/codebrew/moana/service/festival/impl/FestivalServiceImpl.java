@@ -202,5 +202,12 @@ public class FestivalServiceImpl implements FestivalService{
 		
 		return tourAPIDAO.kakaoWeb(festivalName0);
 	}
+
+	@Override
+	public Contents kakaoWeb(String festivalName0, String festivalName1, String festivalName2) throws Exception {
+		// TODO Auto-generated method stub
+		
+		return tourAPIDAO.kakaoWeb(festivalName0,festivalName1,festivalName2);
+	}
 	
 }

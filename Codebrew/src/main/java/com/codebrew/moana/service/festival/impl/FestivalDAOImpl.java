@@ -188,5 +188,11 @@ public class FestivalDAOImpl implements FestivalDAO {
 		return null;
 	}
 
+	@Override
+	public Contents kakaoWeb(String festivalName0, String festivalName1, String festivalName2) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

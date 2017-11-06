@@ -51,4 +51,6 @@ public interface FestivalDAO {
 	public List<Festival> getInitListDB() throws Exception;
 	
 	public Contents kakaoWeb(String festivalName0) throws Exception;
+	
+	public Contents kakaoWeb(String festivalName0,String festivalName1,String festivalName2) throws Exception;
 }

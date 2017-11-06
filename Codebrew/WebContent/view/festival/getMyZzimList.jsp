@@ -34,7 +34,7 @@
 	   
 	    $("#currentPage").val(currentPage)
 	   
-	   $("form").attr("method" , "POST").attr("action" , "/festival/getFestivalListDB?menu=db").submit();
+	   $("form").attr("method" , "POST").attr("action" , "/festival/getMyZzimList").submit();
 	   
 	}  
    
@@ -70,9 +70,9 @@ $(function(){
 	
  $(function(){
 	
-	$(".pull-right").on('click',function(){
+	$(".deleteZzim").on('click',function(){
 		
-		var festivalNo = $("input:hidden[name='festivalNo']").val();
+		var festivalNo = $("#festivalNo",this).val();
 		var userId = $("input:hidden[name='userId']").val();
 		
 		self.location="/festival/deleteZzim/"+festivalNo+"/"+userId;
@@ -81,6 +81,21 @@ $(function(){
 	});
 
 });
+ 
+/* 
+	$(function(){
+		
+		$(".glyphicon-heart").on('click',function(){
+			
+			var festivalNo = $("div:nth-child(13)",this).text();
+			var userId = $("input:hidden[name='userId']").val();
+			
+			self.location="/festival/deleteZzim/"+festivalNo+"/"+userId;
+			
+			
+		});
+	
+	}); */
 
 	
 	
@@ -181,11 +196,17 @@ body {
 			<div class="col-md-6">
 						<div class="panel panel-primary">
 							<div class="panel-heading">
-							<span class="panel-title pull-left" style = "font-size:1.5em;" >${festival.festivalName}</span>
-							<span class="panel-title pull-right glyphicon glyphicon-heart" 
-							style = " font-size:1.5em;  color: red;" id="tag"></span>		
-								<br/>
+								
+									<span class="panel-title pull-left" style = "font-size:1.5em;" >${festival.festivalName}</span>
+									
+									<div class="deleteZzim">
+										<span class="panel-title pull-right glyphicon glyphicon-heart" 
+										style = " font-size:1.5em;  color: red;" id="tag"></span>
+										<input type="text" name="festivalNo" id="festivalNo" value="${festival.festivalNo }">
+									</div>
+											
         						<div class="clearfix"></div>
+        						
 							</div>
 							
 							
@@ -204,9 +225,9 @@ body {
 					</c:if>
 					
 					<br/>
-									<div id="festivalNo" style="display: none">
+									<!-- <div id="festivalNo" style="display: none" -->
+									<div id="festivalNo2">
 										<p>${festival.festivalNo }</p>
-										<input type="hidden" name="festivalNo" value="${festival.festivalNo }">
 									</div> 
 						<br />
 									

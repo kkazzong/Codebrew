@@ -314,7 +314,7 @@
 						<if test="searchCondition != null">
 						
 								<if test="searchCondition != '' and searchKeyword =='' ">
-						 			and area_code = ${searchCondition}
+						 			and area_code = '${searchCondition}'
 								</if>
 								
 								<if test="searchCondition == '' and searchKeyword !='' ">

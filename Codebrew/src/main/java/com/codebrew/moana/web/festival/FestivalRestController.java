@@ -46,7 +46,7 @@ public class FestivalRestController {
 		System.out.println(this.getClass());
 	}
 	
-	@RequestMapping(value = "json/kakaoWeb", method=RequestMethod.GET)
+/*	@RequestMapping(value = "json/kakaoWeb", method=RequestMethod.GET)
 	public Contents kakaoWeb(@RequestParam("festivalName0") String festivalName0) throws Exception {
 		
 		System.out.println("레스트 컨트롤러............." + festivalName0);
@@ -64,7 +64,51 @@ public class FestivalRestController {
 		return contents;
 
 	}
+*/
 	
+	@RequestMapping(value = "json/kakaoWeb", method=RequestMethod.GET)
+	public Contents kakaoWeb(@RequestParam("festivalName0") String festivalName0,
+										@RequestParam("festivalName1") String festivalName1,
+											@RequestParam("festivalName2") String festivalName2) throws Exception {
+		
+		System.out.println("레스트 컨트롤러............." + festivalName0 + "," + festivalName1 + "," +festivalName2);
+		
+		
+		Contents contents = festivalService.kakaoWeb(festivalName0,festivalName1,festivalName2);
+		
+		if(contents.getUrl0()!=null){
+		String url0 = contents.getUrl0();
+		int eqIndex0 = url0.indexOf("=");
+		String youtubeEmbed0 = url0.substring(eqIndex0+1);
+		contents.setUrl0(youtubeEmbed0);
+		return contents;
+		}
+		
+		if(contents.getUrl1()!=null){
+		String url1 = contents.getUrl1();
+		int eqIndex1 = url1.indexOf("=");
+		String youtubeEmbed1 = url1.substring(eqIndex1+1);
+		contents.setUrl1(youtubeEmbed1);
+		return contents;
+		}
+		
+		if(contents.getUrl2()!=null){
+		String url2 = contents.getUrl2();
+		int eqIndex2 = url2.indexOf("=");
+		String youtubeEmbed2 = url2.substring(eqIndex2+1);
+		contents.setUrl(youtubeEmbed2);
+		return contents;
+		}
+		
+		System.out.println("다없으면 기본값..............." );
+		
+//	festivalName3 만들어서 '지역축제홍보영상' 검색한 값 가져와서 변수로 선언.. 아니면 우리 디폴트 동영상..
+		contents.setUrl("ILg6DsEso94");
+		return contents;
+
+
+	}
+
 	
 	@RequestMapping(value = "json/getKeyword", method=RequestMethod.POST)
 	public List<Festival> getKeyword(@RequestBody Search search) throws Exception {
