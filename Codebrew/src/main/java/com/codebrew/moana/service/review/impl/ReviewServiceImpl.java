@@ -76,8 +76,30 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override //3
-	public void updateReview(Review review) throws Exception {
+	public Review updateReview(Review review) throws Exception {
+		
+		System.out.println("Service :: updateReview");
+		
 		reviewDAO.updateReview(review);
+		
+		if(review.getReviewImageList() != null && review.getReviewImageList().size() != 0) { //이미지 upload
+			for(Image reviewImage : review.getReviewImageList()){
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("reviewNo", review.getReviewNo());
+				map.put("reviewImage", reviewImage);
+				reviewDAO.uploadReviewImage(map);
+			}
+		}
+		if(review.getReviewVideoList() != null && review.getReviewVideoList().size() != 0){
+			for(Video reviewVideo : review.getReviewVideoList()){
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("reviewNo", review.getReviewNo());
+				map.put("reviewVideo", reviewVideo);
+				reviewDAO.uploadReviewVideo(map);
+			}
+		}
+		
+		return reviewDAO.getReview(review.getReviewNo());
 	}
 
 	@Override //4
