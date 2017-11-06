@@ -195,6 +195,7 @@ $(function() {
 
 	body {
             padding-top : 50px;
+            padding-left : 50px;
     }
 	
 
