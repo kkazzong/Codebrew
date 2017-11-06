@@ -159,10 +159,10 @@
 	           yearSuffix: '년',
 	           changeMonth: true,
 	         changeYear : true,
-	         buttonImageOnly: true,
+	         /* buttonImageOnly: true,
 	          buttonText: "Select date",
 	          showOn: "button",
-	          buttonImage: "/resources/image/ui/small_cal.jpg",
+	          buttonImage: "/resources/image/ui/small_cal.jpg", */
 	          yearRange : "1900:2017"
 	       });
 		
