@@ -60,7 +60,8 @@ public class ChatController {
 	
 	///Method///
 	@RequestMapping( value="getChatting")
-	public ModelAndView getChatting(@RequestParam("sender") String sender, @RequestParam("recipient") String recipient) throws Exception {
+	public ModelAndView getChatting(@RequestParam("sender") String sender,
+																@RequestParam(value="recipient", required=false) String recipient) throws Exception {
 		
 		System.out.println("\n>>> /chat/getChatting :: POST start <<<");
 		
@@ -68,9 +69,16 @@ public class ChatController {
 		System.out.println(">>> /chat/getChatting :: POST :: sender 파라미터 \n"+sender);
 		System.out.println(">>> /chat/getChatting :: POST :: recipient 파라미터 \n"+recipient);
 		
+		User dbSender = null;
+		User dbRecipient = null;
 		
-		User dbSender = userService.getUser(sender);
-		User dbRecipient = userService.getUser(recipient);
+		//게스트가 채팅할때
+		if(recipient != null) {
+			dbSender = userService.getUser(sender);
+			dbRecipient = userService.getUser(recipient);
+		} else {
+			dbSender = userService.getUser(sender);
+		}
 		//User 도메인 출력
 		System.out.println("\n<<< /chat/getChatting :: POST :: sender 도메인  \n"+dbSender);
 		System.out.println("\n<<< /chat/getChatting :: POST :: recipient 도메인  \n"+dbRecipient);

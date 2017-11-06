@@ -88,7 +88,15 @@
 				var data = $('#dataInput').val();
 				var time = $('#dataInputTime').val();
 				
-				var output = {sender : sender, recipient : recipient, senNick : senNick, command : 'chat', type  : 'text', data : data, time : time};
+				var output = {
+						sender : sender,
+						recipient : recipient,
+						senNick : senNick,
+						command : 'chat',
+						type  : 'text',
+						data : data,
+						time : time
+				};
 				alert('서버로 보낼 데이터 : ' + JSON.stringify(output));
 				
 				
@@ -132,10 +140,15 @@
 				//alert('로그인 버튼 클릭!!')
 				var id = $('#idInput').val();
 				var password = $('#passwordInput').val();
-				var alias = $('#senNick').val();
+				var senNick = $('#senNick').val();
 				var today = $('#todayInput').val();
 				
-				var output = {id : id, password : password, alias : alias, today : today};
+				var output = {
+						id : id,
+						/* password : password, */
+						senNick : senNick,
+						/* today : today */
+				};
 				console.log('서버로 보낼 데이터 : '+ JSON.stringify(output));
 				
 				if(socket == undefined){
@@ -145,7 +158,6 @@
 				
 				socket.emit('login', output);
 			//});
-			
 			
 			
 				var sender = $('#senderInput').val();
