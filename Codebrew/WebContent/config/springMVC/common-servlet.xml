@@ -49,6 +49,7 @@
 			<mvc:exclude-mapping path="/festival/getFestivalDB"/>
 			<mvc:exclude-mapping path="/festival/getFestivalListDB"/>
 			<mvc:exclude-mapping path="/statistics/getFestivalZzim"/>
+			<mvc:exclude-mapping path="/userRest/json/getUser"/>
 			<bean class="com.codebrew.moana.common.web.LogonCheckInterceptor" />
    		</mvc:interceptor>
 

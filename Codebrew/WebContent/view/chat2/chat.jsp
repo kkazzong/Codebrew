@@ -351,6 +351,13 @@
 							$("#roomList").append('<p>방 #'+i+' : '+message.rooms[i].id+', '+message.rooms[i].name+', '+message.rooms[i].owner+'</p>');
 						}
 						
+					} else if(message.command == 'count') {
+						
+						//alert("count");
+						var memberCount = message.count;
+						
+						$("#count").html('<p>인원수# '+memberCount+'</p>');
+						
 					}
 					
 				});
@@ -524,6 +531,9 @@
 	
 	<!-- 그룹방 리스트 -->
 	<div id="roomList"></div>
+	
+	<!-- 그룹방 멤버수 -->
+	<div id="count"></div>
 	
 	
 	
