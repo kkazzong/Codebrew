@@ -296,37 +296,45 @@
 		<!-- page header -->
 		<div class="row" id="banner">
 			<div class="col-md-12">
-			<div>
 				<div>
-	                    <div class="text-center white">
-	                        <!-- <ul class="title">
+					<div>
+						<div class="text-center white">
+							<!-- <ul class="title">
 	                            <li>이번 주말에</li>
 	                            <li>뭐하고 놀지?</li>
 	                        </ul> -->
-	                        <div class="title">
-	                        	<h2>파티의 즐거움을 찾아보세요</h2>
-	                        </div>
-	                        <div class="subtitle">
-	                        	<h4>파티를 통해 다양한 사람을 만나고 경험하세요!</h4>
-	                            <br>
-	                        </div>
-	
-	                        <div class="sub-title-container">
+							<div class="title">
+								<h2>파티의 즐거움을 찾아보세요</h2>
+							</div>
+							<div class="subtitle">
+								<h4>파티를 통해 다양한 사람을 만나고 경험하세요!</h4>
+								<br>
+							</div>
+
+							<div class="sub-title-container">
 								<!-- 검색 -->
 								<div class="searchbar">
 									<form>
-										<input type="hidden" class="form-control" id="searchCondition" name="searchCondition" value="${ ! empty search.searchCondition ? search.searchCondition : '' }">
-										<input type="hidden" id="currentPage" name="currentPage" value=""/>
-										
-									    <c:if test="${ !empty search.searchCondition && search.searchCondition == '5' }">
-											<input type="text" id="searchKeyword" name="searchKeyword" value="" placeholder="파티 이름으로 검색">
+										<input type="hidden" class="form-control" id="searchCondition"
+											name="searchCondition"
+											value="${ ! empty search.searchCondition ? search.searchCondition : '' }">
+										<input type="hidden" id="currentPage" name="currentPage"
+											value="" />
+
+										<c:if
+											test="${ !empty search.searchCondition && search.searchCondition == '5' }">
+											<input type="text" id="searchKeyword" name="searchKeyword"
+												value="" placeholder="파티 이름으로 검색">
 										</c:if>
 										<c:if test="${ search.searchCondition != '5' }">
-											<input type="text" id="searchKeyword" name="searchKeyword" value="${! empty search.searchKeyword ? search.searchKeyword : '' }" placeholder="파티 이름으로 검색">
+											<input type="text" id="searchKeyword" name="searchKeyword"
+												value="${! empty search.searchKeyword ? search.searchKeyword : '' }"
+												placeholder="파티 이름으로 검색">
 										</c:if>
-									    <span class="input-group-btn">
-									  		<a id="search" class="btn btn-xs btn-link" type="button"><img src="/resources/image/buttonImage/btn_nav_search_white@3x.png"></a>
-									    </span>
+										<span class="input-group-btn"> <a id="search"
+											class="btn btn-xs btn-link" type="button"><img
+												src="/resources/image/buttonImage/btn_nav_search_white@3x.png"></a>
+										</span>
 									</form>
 									<%-- <form class="form form-inline" id="searchForm" name="searchForm">
 										
@@ -349,56 +357,18 @@
 										</div>
 																				
 									</form> --%>
-									
+
 								</div>
 							</div>
-							</div>
-		
-		
-	                            <%-- <div class="search-main">
-	                                
-	                                <form class="form-inline" name="detailForm">
-	                                	<div class="form-group ">
-										    <!-- <div class="form-select"> -->
-										    	<div class="col-md-12 control-label">
-												<span class="col-md-3 control-label"><button type="button" class="btn btn-default" >파티</button></span>
-												<span class="col-md-6 control-label"><button type="button" class="btn btn-default" >애프터 파티</button></span>
-												<input type="hidden" class="form-control" id="searchCondition" name="searchCondition" value="${ ! empty search.searchCondition ? search.searchCondition : '' }">
-												<input type="hidden" id="currentPage" name="currentPage" value=""/>
-												</div>
-												
-											<!-- </div> -->
-										  </div>
-										  <br>
-										  <div class="form-group">
-										    <label class="sr-only" for="searchKeyword">검색어</label>
-										    
-											<c:if test="${ !empty search.searchCondition && search.searchCondition == '5' }">
-												<input type="text" class="form-control" id="searchKeyword" name="searchKeyword" value="">
-											</c:if>
-											<c:if test="${ search.searchCondition != '5' }">
-												<input type="text" class="form-control" id="searchKeyword" name="searchKeyword" value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
-											</c:if>
-											<input type="text" class="form-control" id="searchKeyword" name="searchKeyword" value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
-										    <!-- <button type="button" class="btn btn-default btn-block">검색</button>	 -->
-										    <a id="search" class="click" type="button">
-		                                        <img src="/resources/image/buttonImage/btn_nav_search_white@3x.png">
-		                                    </a>		 
-										  </div>
-	                               	</form>
-	                                
-	                                
-	                                    <!-- <input type="text" placeholder="ex) 할로윈"> -->
-	                                    <!-- <a id="search" class="click" type="button">
-	                                        <img src="/resources/image/buttonImage/btn_nav_search_white@3x.png">
-	                                    </a> -->
-	                                </div> --%>
-	                            </div>                        
-	
-	                    </div>
-	                </div>
+						</div>
+
+
+					</div>
+
+				</div>
 			</div>
 		</div>
+	</div>
 		<%-- <div class="form-group ">
 			<div class="col-md-12 control-label">
 				<span class="col-md-3 control-label"><button type="button" class="button-3d">파티</button></span> 
@@ -411,27 +381,23 @@
 	<div class="container">
 		<br><br><br>
 		
-		<!-- 데이터 수 -->
-		<div class="row">
-			<div class="col-md-12">
-				<h5>총  ${resultPage.totalCount} 건 (${resultPage.currentPage} 페이지 / ${resultPage.maxPage} 페이지)</h5>
-			</div>
-		</div>
 		
-		<!-- 애프터 파티 등록하러 가기 버튼 출력 -->
 		<div class="row">
-			<div class="col-md-2">
-				
-				<div class="form-group">
+			<!-- 데이터 수 -->
+			<div class="col-md-6">
+				<h5><small>${resultPage.totalCount} 건 (${resultPage.currentPage} 페이지 / ${resultPage.maxPage} 페이지)</small></h5>
+			</div>
+			<!-- 애프터 파티 등록하러 가기 버튼 출력 -->
+			<div class="col-md-6">
+				<div class="form-group pull-right">
 					<c:if test="${ search.searchCondition == '5' }">
 						<button type="button" class="btn btn-default" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 						&nbsp;애프터파티 등록하러 가기</button>
 					</c:if>
 				</div>
-			
 			</div>
 		</div>
-		
+		<hr><br>
 		<div class="input-group-btn text-center">
 	    	Buttons
 	    	<button type="button" class="btn btn-info btn-lg" >파티</button>
@@ -477,6 +443,12 @@
 										<c:if test="${ !empty party.festival.festivalName}">
 											<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
 											${ party.festival.festivalName }
+										</c:if>
+									</div>
+									<div class="col-md-12">
+										<c:if test="${ !empty party.user.nickname}">
+											<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+											${ party.user.nickname }
 										</c:if>
 									</div>
 									<div class="col-md-12">

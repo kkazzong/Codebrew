@@ -50,6 +50,8 @@
 
   </head>
   
+  
+  
   	<script type="text/javascript">
   	
   	 $(function() {
@@ -86,7 +88,7 @@
   	
   	////////////////////////////////////////////////////////////////////////////////////////////////////////
   	
-  	   $(function() {
+  	  /*  $(function() {
 		 
 		 var userId = $("#userId").val();
 		 
@@ -108,7 +110,7 @@
 				
 				self.location="/myPage/getFollowerList?requestId="+requestId;
 			});
-			 */
+			
 			 $( "#getMyZzimList" ).on("click" , function() {
 				
 				self.location="/festival/getMyZzimList";
@@ -134,13 +136,27 @@
 			
 		});
 	
-  
+   */
   
 //펑션 불필요 그냥 다 mypage.jsp로 보내줌
   
   </script>
+  
+   <style>
+
+ .bg-primary{
+  background-color:#868e96 !important;
+ }
+   
+	
+	
+</style>
+  
+  
+  
     
   <body id="page-top">
+<%--   <jsp:include page="/toolbar/toolbar.jsp"/> --%>
 	<input type="hidden" id="sessionId" value="${sessionScope.user.userId}">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
 
@@ -183,24 +199,26 @@
     <div class="container-fluid p-0">
      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="getMyPage">
         <div class="my-auto">
-          <h2 class="mb-5">about</h2>
+         <!--  <h2 class="mb-5">about</h2> -->
              <jsp:include page="/view/mypage/getMyPage.jsp"/>
+             
          </div>
       </section>
     </div>
 
       <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="getMyReviewList">
         <div class="my-auto">
-          <h2 class="mb-5">my review</h2>
-             <jsp:include page="/view/review/getMyReviewList.jsp"/>
+         <!--  <h2 class="mb-5">my review</h2> -->
+             <jsp:include page="/view/mypage/getMyReviewList.jsp"/>
+             <!--key를 바꿨기때문에 바꾼 화면으로 네비 (list를 list3으로 바꿔서) -->
          </div>
       </section>
 
 
       <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="getMyZzimList">
         <div class="my-auto">
-          <h2 class="mb-5">my zzim</h2>
-           <jsp:include page="/view/festival/getMyZzimList.jsp"/>
+          <!-- <h2 class="mb-5">my zzim</h2> -->
+           <jsp:include page="/view/mypage/getMyZzimList.jsp"/>
         </div>
       </section>
 
@@ -209,16 +227,16 @@
 
        <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="getMyPartyList">
         <div class="my-auto">
-          <h2 class="mb-5">my party</h2>
-         <jsp:include page="/view/party/getMyPartyList.jsp"/>  
+         <!--  <h2 class="mb-5">my party</h2> -->
+         <jsp:include page="/view/mypage/getMyPartyList.jsp"/>  
         </div>
       </section>
        
       
        <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="getPurchaseList">
         <div class="my-auto">
-          <h2 class="mb-5">my purchase</h2>
-           <jsp:include page="/view/purchase/getPurchaseList.jsp"/>  
+          <!-- <h2 class="mb-5">my purchase</h2> -->
+           <jsp:include page="/view/mypage/getPurchaseList.jsp"/>  
         </div>
       </section>
    

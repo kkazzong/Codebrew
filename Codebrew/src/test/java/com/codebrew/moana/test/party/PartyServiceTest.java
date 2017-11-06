@@ -158,7 +158,7 @@ public class PartyServiceTest {
 	}
 	
 	
-	//@Test
+	@Test
 	public void testGetPartyListAll() throws Exception{
 		 
 	 	Search search = new Search();
@@ -181,9 +181,8 @@ public class PartyServiceTest {
 	 	System.out.println("=======================================");
 	 	
 	 	search.setCurrentPage(1);
-	 	search.setPageSize(3);
-	 	search.setSearchCondition("0");
-	 	search.setSearchKeyword("");
+	 	search.setPageSize(8);
+	 	
 	 	map = partyService.getPartyList(search);
 	 	
 	 	list = (List<Object>)map.get("list");

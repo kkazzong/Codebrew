@@ -20,8 +20,8 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	
 	<!-- Bootstrap Dropdown Hover CSS -->
-	<link href="/resources/css/animate.min.css" rel="stylesheet">
-	<link href="/resources/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
+	<!-- <link href="/resources/css/animate.min.css" rel="stylesheet">
+	<link href="/resources/css/bootstrap-dropdownhover.min.css" rel="stylesheet"> -->
 	
 	<!-- Bootstrap Dropdown Hover JS -->
 	<script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
@@ -385,7 +385,8 @@
 	<style type="text/css">
 	
 		body {
-			padding-top : 70px;
+			padding-top : 100px;
+			/* padding-left : 20rem; */
 			background-color: #f2f4f6;
 	    }
 	    
@@ -438,7 +439,7 @@
 <body>
 	
 	<!-- 툴바 -->
-     <jsp:include page="/toolbar/toolbar.jsp"></jsp:include> 
+     <jsp:include page="/toolbar/toolbar_new2.jsp"></jsp:include> 
 	
 	<!-- 모달 -->
 	<jsp:include page="/view/purchase/filterModalUser.jsp"></jsp:include>

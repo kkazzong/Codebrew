@@ -12,6 +12,7 @@ public class Search {
 	private int startRowNum;
 	
 	private String arrange;
+	private String sigunguCode;
 
 	private String startDate;
 	private String endDate;
@@ -29,6 +30,14 @@ public class Search {
 	public String getArrange() {
 		return arrange;
 	}
+	public String getSigunguCode() {
+		return sigunguCode;
+	}
+
+	public void setSigunguCode(String sigunguCode) {
+		this.sigunguCode = sigunguCode;
+	}
+
 	public int getPageSize() {
 		return pageSize;
 	}
@@ -88,7 +97,7 @@ public class Search {
 	public String toString() {
 		return "Search [currentPage=" + currentPage + ", searchCondition=" + searchCondition + ", searchKeyword="
 				+ searchKeyword + ", pageSize=" + pageSize + ", endRowNum=" + endRowNum + ", startRowNum=" + startRowNum
-				+ ", arrange=" + arrange + ", startDate=" + startDate + ", endDate=" + endDate + "]";
+				+ ", arrange=" + arrange + "sigunguCode=" + sigunguCode + ", startDate=" + startDate + ", endDate=" + endDate + "]";
 	}
 
 }

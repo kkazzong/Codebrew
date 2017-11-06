@@ -145,7 +145,8 @@
 	<select  id="getPartyList" parameterType="com.codebrew.moana.common.Search" resultMap="partySelectMap">
 	  	SELECT *
 	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
-	  					FROM	(	SELECT p.party_no, p.party_image,
+	  					FROM	(	SELECT p.party_no,
+	  									   p.party_image,
 	  									   f.festival_name,
 	  									   f.festival_no,
 	  									   p.party_name,
@@ -163,7 +164,7 @@
 									    	AND p.party_date >= SYSDATE
 									    	
 											<if test="searchCondition == ''">
-												AND p.party_name LIKE '%${searchKeyword}%'
+												AND LOWER(p.party_name) LIKE LOWER('%${searchKeyword}%')
 											</if>
 											<if test="searchCondition != ''">
 										        <if test="searchCondition == 1 and searchKeyword =='' ">
@@ -171,14 +172,14 @@
 										        </if>
 										        <if test="searchCondition == 1 and searchKeyword !='' ">
 										            AND p.festival_no IS NULL
-										            AND p.party_name LIKE '%${searchKeyword}%'
+										            AND LOWER(p.party_name) LIKE LOWER('%${searchKeyword}%')
 										        </if>
 										        <if test="searchCondition == 2 and searchKeyword =='' ">
 										            AND p.festival_no IS NOT NULL
 										        </if>
 										        <if test="searchCondition == 2 and searchKeyword !='' ">
 										            AND p.festival_no IS NOT NULL
-										            AND p.party_name LIKE '%${searchKeyword}%'
+										            AND LOWER(p.party_name) LIKE LOWER('%${searchKeyword}%')
 										        </if>
 										        <if test="searchCondition == 5 and searchKeyword !='' ">
 										        	AND p.festival_no LIKE '${searchKeyword}'
@@ -211,7 +212,7 @@
 		                                	p.festival_no = f.festival_no(+)
 		                                	AND p.user_id = u.user_id
 		                                	<if test="search.searchCondition == '' and search.searchKeyword !=''">
-												AND p.party_name LIKE '%${search.searchKeyword}%'
+												AND LOWER(p.party_name) LIKE LOWER('%${searchKeyword}%')
 											</if>
 											<if test="search.searchCondition != ''">
 											     
@@ -220,14 +221,14 @@
 										        </if>
 										        <if test="search.searchCondition == 3 and search.searchKeyword !='' ">
 										            AND p.party_date &lt; SYSDATE
-										            AND p.party_name LIKE '%${search.searchKeyword}%'
+										            AND LOWER(p.party_name) LIKE LOWER('%${searchKeyword}%')
 										        </if>
 										        <if test="search.searchCondition == 4 and search.searchKeyword =='' ">
 										            AND p.party_date >= SYSDATE
 										        </if>
 										        <if test="search.searchCondition == 4 and search.searchKeyword !='' ">
 										            AND p.party_date >= SYSDATE
-										            AND p.party_name LIKE '%${search.searchKeyword}%'
+										            AND LOWER(p.party_name) LIKE LOWER('%${searchKeyword}%')
 										        </if>
 											    
 											</if>
@@ -258,7 +259,7 @@
 					AND p.party_date >= SYSDATE
 					
 					<if test="searchCondition == ''">
-						AND p.party_name LIKE '%${searchKeyword}%'
+						AND LOWER(p.party_name) LIKE LOWER('%${searchKeyword}%')
 					</if>
 					<if test="searchCondition != ''">
 					    
@@ -267,14 +268,14 @@
 				        </if>
 				        <if test="searchCondition == 1 and searchKeyword !='' ">
 				            AND p.festival_no IS NULL
-				            AND p.party_name LIKE '%${searchKeyword}%'
+				            AND LOWER(p.party_name) LIKE LOWER('%${searchKeyword}%')
 				        </if>
 				        <if test="searchCondition == 2 and searchKeyword =='' ">
 				            AND p.festival_no IS NOT NULL
 				        </if>
 				        <if test="searchCondition == 2 and searchKeyword !='' ">
 				            AND p.festival_no IS NOT NULL
-				            AND p.party_name LIKE '%${searchKeyword}%'
+				            AND LOWER(p.party_name) LIKE LOWER('%${searchKeyword}%')
 				        </if>
 					    <if test="searchCondition == 5 and searchKeyword !='' ">
 				        	AND p.festival_no LIKE '${searchKeyword}'
@@ -305,7 +306,7 @@
 		                                	AND p.user_id = u.user_id
 		                                	AND p.delete_flag IS NULL
 			                                <if test="search.searchCondition == '' and search.searchKeyword !=''">
-												AND p.party_name LIKE '%${search.searchKeyword}%'
+												AND LOWER(p.party_name) LIKE LOWER('%${searchKeyword}%')
 											</if>
 											<if test="search.searchCondition != ''">
 											     
@@ -314,14 +315,14 @@
 										        </if>
 										        <if test="search.searchCondition == 3 and search.searchKeyword !='' ">
 										            AND p.party_date &lt; SYSDATE
-										            AND p.party_name LIKE '%${search.searchKeyword}%'
+										            AND LOWER(p.party_name) LIKE LOWER('%${searchKeyword}%')
 										        </if>
 										        <if test="search.searchCondition == 4 and search.searchKeyword =='' ">
 										            AND p.party_date >= SYSDATE
 										        </if>
 										        <if test="search.searchCondition == 4 and search.searchKeyword !='' ">
 										            AND p.party_date >= SYSDATE
-										            AND p.party_name LIKE '%${search.searchKeyword}%'
+										            AND LOWER(p.party_name) LIKE LOWER('%${searchKeyword}%')
 										        </if>
 											    
 											</if>
@@ -364,7 +365,7 @@
 									    	AND pm.party_no = #{partyNo}
 										
 									        <if test="search.searchKeyword != null and search.searchKeyword !='' ">
-									            AND u.nickname LIKE '%${search.searchKeyword}%'
+									            AND u.nickname IN '%${search.searchKeyword}%'
 									        </if>
 									    
 										</where>

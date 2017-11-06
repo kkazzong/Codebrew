@@ -106,6 +106,78 @@ public class TourAPIDAOImpl implements FestivalDAO {
 
 	}
 	
+	public Map<String,Object> getAreaCode() throws Exception{
+		
+		List<Location> list = new ArrayList<Location>();
+		Map<String,Object> map = new HashMap<String,Object>();
+		
+		StringBuilder urlBuilder = new StringBuilder(tourURL + "areaCode?ServiceKey=" + tourKey + "&MobileOS=ETC&MobileApp=AppTesting");
+
+		StringBuilder sb = TourAPIDAOImpl.sendGetURL(urlBuilder);
+
+		JSONObject jsonobj = (JSONObject) JSONValue.parse(sb.toString());
+		System.out.println(sb);
+		
+		
+		JSONObject jsonobj2 = (JSONObject) jsonobj.get("response");
+		JSONObject jsonobj3 = (JSONObject) jsonobj2.get("body");
+		JSONObject jsonobj4 = (JSONObject) jsonobj3.get("items");
+		JSONArray jsonarray = (JSONArray) jsonobj4.get("item");
+
+		for (int i = 0; i < jsonarray.size(); i++) {
+
+			JSONObject jsonobj5 = (JSONObject) jsonarray.get(i);
+			
+			
+			Location location = new Location();
+			ObjectMapper objectMapper = new ObjectMapper();
+			location = objectMapper.readValue(jsonobj5.toString(), Location.class);
+			this.location=location;
+			list.add(location);
+			map.put("list", list);
+			
+			}
+		
+		return map;
+		
+	}
+	
+	@Override
+	public Map<String, Object> getSigunguCode(String areaCode) throws Exception{
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		List<Location> list = new ArrayList<Location>();
+			
+		StringBuilder urlBuilder = new StringBuilder(tourURL + "areaCode?ServiceKey=" + tourKey);
+		urlBuilder.append("&areaCode=" + areaCode+"&numOfRows=20&pageNo=1&MobileOS=ETC&MobileApp=AppTesting" );
+
+		StringBuilder sb = TourAPIDAOImpl.sendGetURL(urlBuilder);
+
+		JSONObject jsonobj = (JSONObject) JSONValue.parse(sb.toString());
+		
+		System.out.println("dao에서 sb................." + sb);
+		JSONObject jsonobj2 = (JSONObject) jsonobj.get("response");
+		JSONObject jsonobj3 = (JSONObject) jsonobj2.get("body");
+		JSONObject jsonobj4 = (JSONObject) jsonobj3.get("items");
+		JSONArray jsonarray = (JSONArray) jsonobj4.get("item");
+
+		for (int i = 0; i < jsonarray.size(); i++) {
+
+			JSONObject jsonobj5 = (JSONObject) jsonarray.get(i);
+			
+			Location location = new Location();
+			ObjectMapper objectMapper = new ObjectMapper();
+			location = objectMapper.readValue(jsonobj5.toString(), Location.class);
+			this.location=location;
+			list.add(location);
+			map.put("list", list);
+			
+		}
+		
+		return map;
+	}
+	
+	
 	public static final StringBuilder kakaoWebURL(StringBuilder urlBuilder) throws Exception{
 		
 		URL url = new URL(urlBuilder.toString());
@@ -281,71 +353,6 @@ public class TourAPIDAOImpl implements FestivalDAO {
 		}
 				
 		return contents;
-	}
-	
-	
-	
-	public Map<String,Object> getAreaCode() throws Exception{
-		
-		List<Location> list = new ArrayList<Location>();
-		Map<String,Object> map = new HashMap<String,Object>();
-		
-		StringBuilder urlBuilder = new StringBuilder(tourURL + "areaCode?ServiceKey=" + tourKey);
-
-		StringBuilder sb = TourAPIDAOImpl.sendGetURL(urlBuilder);
-
-		JSONObject jsonobj = (JSONObject) JSONValue.parse(sb.toString());
-		JSONObject jsonobj2 = (JSONObject) jsonobj.get("response");
-		JSONObject jsonobj3 = (JSONObject) jsonobj2.get("body");
-		JSONObject jsonobj4 = (JSONObject) jsonobj3.get("items");
-		JSONArray jsonarray = (JSONArray) jsonobj4.get("item");
-
-		for (int i = 0; i < jsonarray.size(); i++) {
-
-			JSONObject jsonobj5 = (JSONObject) jsonarray.get(i);
-			
-			Location location = new Location();
-			ObjectMapper objectMapper = new ObjectMapper();
-			location = objectMapper.readValue(jsonobj5.toString(), Location.class);
-			this.location=location;
-			list.add(location);
-			map.put("list", list);
-			
-			}
-		return map;
-		
-	}
-	
-		public Map<String, Object> getSigunguCode(String areaCode) throws Exception{
-			
-		Map<String,Object> map = new HashMap<String,Object>();
-		List<Location> list = new ArrayList<Location>();
-			
-		StringBuilder urlBuilder = new StringBuilder(tourURL + "areaCode?ServiceKey=" + tourKey);
-		urlBuilder.append("&areaCode=" + areaCode );
-
-		StringBuilder sb = TourAPIDAOImpl.sendGetURL(urlBuilder);
-
-		JSONObject jsonobj = (JSONObject) JSONValue.parse(sb.toString());
-		JSONObject jsonobj2 = (JSONObject) jsonobj.get("response");
-		JSONObject jsonobj3 = (JSONObject) jsonobj2.get("body");
-		JSONObject jsonobj4 = (JSONObject) jsonobj3.get("items");
-		JSONArray jsonarray = (JSONArray) jsonobj4.get("item");
-
-		for (int i = 0; i < jsonarray.size(); i++) {
-
-			JSONObject jsonobj5 = (JSONObject) jsonarray.get(i);
-			
-			Location location = new Location();
-			ObjectMapper objectMapper = new ObjectMapper();
-			location = objectMapper.readValue(jsonobj5.toString(), Location.class);
-			this.location=location;
-			list.add(location);
-			map.put("list", list);
-			
-		}
-		
-		return map;
 	}
 
 	public Festival getFestival(int festivalNo) throws Exception {
@@ -652,11 +659,11 @@ public class TourAPIDAOImpl implements FestivalDAO {
 
 				Festival festival = new Festival();
 
-//				if (jsonobj5.get("content") == null || jsonobj5.get("firstimage") == "") {
-//					festival.setFestivalImage(null);
-//				} else {
-//					festival.setFestivalImage(jsonobj5.get("firstimage").toString()); // 원본사진
-//				}
+				if (jsonobj5.get("content") == null || jsonobj5.get("firstimage") == "") {
+					festival.setFestivalImage("no.png");
+				} else {
+					festival.setFestivalImage(jsonobj5.get("firstimage").toString()); // 원본사진
+				}
 
 				if (jsonobj5.get("firstimage") == null || jsonobj5.get("firstimage") == "") {
 					festival.setFestivalImage("no.png");
@@ -802,6 +809,7 @@ public class TourAPIDAOImpl implements FestivalDAO {
 		return weather;
 
 	}
+	
 	///////////////////////////////////////////////////////////////
 	@Override
 	public Festival getFestivalDB(int festivalNo) throws Exception {
@@ -886,6 +894,4 @@ public class TourAPIDAOImpl implements FestivalDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
 }

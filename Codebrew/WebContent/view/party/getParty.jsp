@@ -42,21 +42,31 @@
 
 	//============= "파티수정"  Event 연결 =============
 	$(function() {
-		$("button:contains('파티수정')")
-				.on(
-						"click",
-						function() {
-							console.log($("td.ct_btn01:contains('파티수정')")
-									.html());
+		$("button:contains('파티수정')").on("click",function() {
+			console.log($("td.ct_btn01:contains('파티수정')")
+					.html());
 
-							var partyFlag = $("input[name=partyFlag]", $(this))
-									.val();
+			var partyFlag = $("input[name=partyFlag]", $(this))
+					.val();
 
-							self.location = "/party/updateParty?partyNo=${party.partyNo}&partyFlag="
-									+ partyFlag;
+			self.location = "/party/updateParty?partyNo=${party.partyNo}&partyFlag="
+					+ partyFlag;
 
-						});
+		});
 	});
+	
+	//============= "파티리스트 보기"  Event 연결 =============
+	$(function() {
+		$("button:contains('파티리스트 보기')").on("click",function() {
+			console.log($("td.ct_btn01:contains('파티리스트 보기')")
+					.html());
+
+			self.location = "/party/getPartyList";
+				
+
+		});
+	});
+	
 
 	//============= "파티삭제"  Event 처리 및  연결 =============
 	/* $(function(){
@@ -251,6 +261,14 @@ body {
 	-webkit-transform: scale(1.3);
 	transform: scale(1.3);
 }
+.info{
+	background-color: #edeeef;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	padding-left: 20px;
+	padding-right: 20px;
+	
+}
 
 /* Blur */
 /* .hover07 figure img {
@@ -343,18 +361,16 @@ body {
 							</div>
 							<br>
 							<div class="col-md-12">
-
-								<c:if test="${ !empty party.festival.festivalNo}">
-									<h4>
-										<strong>#애프터 파티</strong>
-									</h4>
-								</c:if>
-								<c:if test="${ empty party.festival.festivalNo}">
-									<h4>
-										<strong>#파티</strong>
-									</h4>
-								</c:if>
-
+								<h4>
+								<strong>
+									<c:if test="${ !empty party.festival.festivalNo}">
+										<span class="label label-info"># 애프터파티</span>
+									</c:if>
+									<c:if test="${ empty party.festival.festivalNo}">
+										<span class="label label-warning"># 파티</span>
+									</c:if>
+								</strong>
+								</h4>
 							</div>
 
 						</div>
@@ -402,7 +418,7 @@ body {
 									</form>
 								</div> --%>
 								
-								<div>
+								<div class="col-xs-12">
 									<p class="pull-left">
 										<br>
 										&nbsp;&nbsp;&nbsp;&nbsp; <img class="img-circle" src="/resources/uploadFile/${party.user.profileImage}" width="50" height="50">
@@ -417,50 +433,51 @@ body {
 										<input type="hidden" name="sender" value="${user.userId}">
 										<button type='button' class='btn-sm btn-default pull-right' onclick="javascript:chatPopup(this.form);">채팅하기</button>
 										<br>
-										
 									</form>
+									
 								</div>
+								<div class="col-xs-12"><hr></div>
 							</div>
 
-							<div class="col-md-12">
+							<div class="col-xs-12">
 								<%@include file="/view/party/getPartyMemberList.jsp"%>
-								<hr>
+								
 								<small><span class="glyphicon glyphicon-star"></span> 파티에 참여한 사람들</small>
 								<div id="currentMemberCountDiv"></div>
 								<br>
 								<br>
 								
 								<div class="col-md-6 text-center">
-									<div class="ratio-info">
+									<div class="info">
 										<div class="hover01 column">
 											<div>
 												<figure id="ratioLock">
 													<img
 														src="../../resources/image/buttonImage/ratio_lock_icon.png"
-														width="45%" height="45%" data-toggle="modal"
+														width="35%" height="35%" data-toggle="modal"
 														data-target="#exampleModal2">
 												</figure>
 											</div>
 										</div>
 										<%@include file="/view/party/getGenderRatio.jsp"%>
-										<br>
-									</div>
-									<div>
-										<div class="text-center">
-											<h4>
-												<strong>파티에 참여한 사람들의 비율을 확인하세요</strong>
-											</h4>
+										<br><br>
+									
+										<div>
+											<div class="text-center">
+												<h4>
+													<strong>파티에 참여한 사람들의 비율을 확인하세요</strong>
+												</h4>
+											</div>
+											<div class="text-center">
+												<h5>파티에 참여하기 전에 '코코넛'을 이용하면 참여자 비율을 미리 알 수 있어요!</h5>
+											</div>
+											<!-- <div class="text-center"><h5>참여자 비율을 미리 알 수 있어요!</h5></div> -->
 										</div>
-										<div class="text-center">
-											<h5>파티에 참여하기 전에 '코코넛'을 이용하면 참여자 비율을 미리 알 수 있어요!</h5>
-										</div>
-										<!-- <div class="text-center"><h5>참여자 비율을 미리 알 수 있어요!</h5></div> -->
 									</div>
 								</div>
-								<br>
-								<br>
+								
 								<div class="col-md-6 text-center">
-									<div class="member-info">
+									<div class="info">
 										<div id="partyMemberListButtonDiv">
 											<div class='hover01 column'>
 												<div>
@@ -482,6 +499,7 @@ body {
 											<div class="text-center">
 												<h5>${ !empty user.nickname ? user.nickname : '회원' }님 말고도
 													다른 사람들이 참여중이에요!</h5>
+												<br>
 											</div>
 										</div>
 									</div>
@@ -530,11 +548,11 @@ body {
 			<div class="row">
 				<div class="col-md-offset-2 col-md-8">
 					<div class="col-md-6">
-						<button class="btn btn-default btn btn-block" type="button">파티리스트 보기</button>
+						<button class="btn btn-default btn btn-block" type="button" onClick="history.go(-1)">파티리스트 보기</button>
 					</div>
 					<div class="col-md-6">
 						<c:if test="${ party.user.userId==user.userId }">
-							<button type="button" class="btn btn-primary btn-block">파티수정</button>
+							<button type="button" class="btn btn-info btn-block">파티수정</button>
 						</c:if>
 						
 						<!-- 파티버튼 -->
