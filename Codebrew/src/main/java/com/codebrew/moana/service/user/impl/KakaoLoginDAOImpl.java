@@ -19,7 +19,7 @@ import com.codebrew.moana.service.user.UserDAO;
 
 @Repository("kakaoLoginDAOImpl")//이거해줘야 seviceImpl에서 @Qulifier가 먹힘
 public class KakaoLoginDAOImpl implements UserDAO {
-//클래스 하나 만들어 줬고
+
 	
 	
 	public KakaoLoginDAOImpl() {

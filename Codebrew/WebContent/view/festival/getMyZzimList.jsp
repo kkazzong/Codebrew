@@ -108,8 +108,8 @@ body {
 
 	<form>
 	
-	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>
-	
+	 <jsp:include page="/toolbar/toolbar.jsp"></jsp:include>
+	 
 
 	
 		<br/>

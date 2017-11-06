@@ -22,7 +22,20 @@
 	
 	<script type="text/javascript">
 
-  
+    $(function() {
+		
+		//팔로우한 회원 프로필로 이동(회원프로필에서 userId입장에서 물고들어간다.)
+		$(".followProfile").on("click", function() {
+			var userId = $(this).text().trim();
+			self.location = "/myPage/getYourPage?userId="+userId;
+		});
+	
+	});
+	
+	
+	
+	
+	
 		 $(function() {
 			 
 			 var sessionId = $("#sessionId").val();
@@ -32,11 +45,11 @@
 				console.log("userId????"+userId);
 				
 				
-				 if( sessionId == userId ) { 
+				 if( sessionId == userId ) { /* 그래서 세리일때만 나옴  */
 				$( ".btn.btn-sm" ).on("click" , function() {
-					var requestId = $(this).next().val();
+					var requestId = $("#follower").val();
 								
-					f4f = $(this).val();
+					 f4f = $(this).val();
 					
 					
 					if( f4f == "Follow" ) {
@@ -110,13 +123,13 @@
 	
  </head>
 <body>
-<jsp:include page="/toolbar/toolbar.jsp"/>
+<%-- <jsp:include page="/toolbar/toolbar.jsp"/> --%>
 
-<input type="hidden" id="sessionId" value="${sessionScope.user.userId}">
- <input type="hidden" id="userId" value="${user.userId}"> 
+<%-- <input type="hidden" id="sessionId" value="${sessionScope.user.userId}">
+ <input type="hidden" id="userId" value="${user.userId}">  --%>
 	<div class="container">
 		<div class="row profile">
-			<%-- <jsp:include page="/view/mypage/getMyPage.jsp" /> --%>
+			 <jsp:include page="/view/mypage/getMyPage.jsp" /> <!--프로필 정보에서 세션아디와 유저아디를 물고와야 하니깐  -->
 				<div class="col-md-9">
 				<div class="profile-content">
 					<div class="row">
@@ -129,7 +142,7 @@
 									<br> <br> <br> 
 									<img src="/resources/uploadFile/${follow.profileImage}" class="img-responsive" alt=""> 
 										<input type="hidden" class="follow" value="${follow.responseId }">
-										<span>${follow.nickname } </span><br> 
+										<span class="followProfile" title="클릭 이동">${follow.nickname}</span><br>
 									<c:choose>
 										<c:when test="${follow.f4f == 1}">
 											<input type="button" class="btn btn-info btn-sm"
@@ -140,7 +153,7 @@
 										<c:otherwise>
 											<input type="button" class="btn btn-sm" id="follow"
 												value="Follow">
-											<input type="hidden" class="follow"
+											<input type="hidden" id="follower" class="follow"
 												value="${follow.responseId }">
 										</c:otherwise>
 									</c:choose>

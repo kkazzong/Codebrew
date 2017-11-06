@@ -18,7 +18,6 @@
 	
 	<script type="text/javascript">
 	
-
 	 $(function() {
 		 
 			$("#profileFollow").on("click" , function() {
@@ -176,11 +175,15 @@
 	
 	</head>
 	<body>
-	<jsp:include page="/toolbar/toolbar.jsp"/>
+	<%-- <jsp:include page="/toolbar/toolbar.jsp"/> --%>
     <div class="container">
       <div class="row profile">
 		
 		<input type="hidden" id="sessionId" value="${sessionScope.user.userId}">
+        
+        
+        
+        
         
 		<div class="row">
 			
@@ -204,24 +207,32 @@
 						</div>
 					</div>
 			
-			
-			
-			
+	    
+			      
+			<!--user-profile  -->
 			                                                                                                                                                                                                                                                                                                                  
 				<div class="profile-userbuttons">
 					<c:if test="${! empty sessionScope.user.userId }">
 						<c:if test="${sessionScope.user.userId != user.userId }">  
-							 <c:choose >
-								 <c:when test="${ empty follow.requestId }">
+							 <c:choose>
+							 <c:when test="${empty follow.requestId }">
+								
+								 <!--나(sessionId) 이사람 requestId면 (팔로잉 목록에 없다면)-->
 									<button type="button" class="btn btn-sm" id="profileFollow" value="follow">Follow</button>			
 								</c:when>
-								<c:otherwise >
-									<button type="button" class="btn btn-sm" id="profileFollowing" value="following">Following</button>
-								</c:otherwise>
-							</c:choose>
-						</c:if>
+							     <c:otherwise>
+							      <!--나(sessionId) 이사람 requestId면 (팔로잉 목록에 있다면)-->
+								     <button type="button" class="btn btn-sm" id="profileFollowing" value="following">Following</button>
+							     </c:otherwise>
+						</c:choose>
 					</c:if> 
-				</div>
+				</c:if>
+			  </div>
+			
+		
+			
+			
+			
 			
 			
 			
@@ -232,17 +243,17 @@
 			
 				<div class="profile-usermenu">
 					<ul class="nav">
-						<li id="getFollowingList" class="test">
+						<li id="getFollowerList" class="test">
 							<input type="hidden" id="userId" name="userId" value="${user.userId}">
 							<a href="#">
 							<i class="fa fa-user-circle" aria-hidden="true" ></i>
-							팔로잉</a>
+							팔로워</a>
 						</li>
-						<li id="getFollowerList" class="test">
-						  <%-- <input type="hidden" id="userId" name="userId" value="${user.userId}"> --%>
+						<li id="getFollowingList" class="test">
+						 
 							<a href="#">
 							<i class="fa fa-user-circle-o" aria-hidden="true"></i>
-							팔로워</a>
+							팔로잉</a>
 						</li>
 					</ul>
 				</div>
@@ -252,7 +263,6 @@
 			
 			</div>
 		 </div>
-	</div>
-	</div>
+	
 </body>
 </html>
