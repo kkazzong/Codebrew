@@ -65,7 +65,7 @@
 			$( "td:nth-child(3)" ).on("click" , function() {
 				var requestId=$(this).text().trim();
 				
-				console.log("userId는????"+requestId);
+				console.log("requestId는????"+requestId);
 				
 				
 				 self.location ="/myPage/getMyPage?requestId="+requestId;

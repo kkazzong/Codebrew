@@ -163,16 +163,7 @@ public class UserRestController {
   }
 	
 	
-/*	//임시비밀번호보내기
-	@RequestMapping(value="json/findPwd", method=RequestMethod.POST)
-	public void findPwd(@RequestBody User user)throws Exception{
-		
-		System.out.println("/userRest/json/findPwd : POST");
-		
-		userService.findPwd(user);
-		//리턴할 필요없을거 같음
-	
-	}*/
+
 	
 	
 	

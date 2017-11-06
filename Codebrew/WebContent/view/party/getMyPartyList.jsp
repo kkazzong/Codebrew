@@ -257,7 +257,7 @@
 <!-- <body onload="startTime()"> -->
 <body>
 	<!-- ToolBar Start /////////////////////////////////////-->
-	<jsp:include page="/toolbar/toolbar.jsp" />
+	 <jsp:include page="/toolbar/toolbar.jsp" /> 
    	<!-- ToolBar End /////////////////////////////////////-->
    	
 	<!--  화면구성 div Start /////////////////////////////////////-->

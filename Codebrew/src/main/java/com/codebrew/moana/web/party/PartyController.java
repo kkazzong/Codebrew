@@ -519,7 +519,7 @@ public class PartyController {
 		modelAndView.addObject("resultPage", resultPage);
 		modelAndView.addObject("search", search);
 		modelAndView.setViewName("forward:/view/party/getPartyList.jsp");
-		
+/*		  modelAndView.setViewName("forward:/user/mypage/getMyPage2.jsp");*/
 		return modelAndView;
 		
 	}
@@ -559,8 +559,8 @@ public class PartyController {
 		modelAndView.addObject("list", map.get("list"));
 		modelAndView.addObject("resultPage", resultPage);
 		modelAndView.addObject("search", search);
-		modelAndView.setViewName("forward:/view/party/getMyPartyList.jsp");
-		
+	    modelAndView.setViewName("forward:/view/party/getMyPartyList.jsp");
+	  /* modelAndView.setViewName("forward:/user/mypage/getMyPage2.jsp");*/
 		return modelAndView;
 	}
 	
