@@ -43,6 +43,16 @@ public class FestivalServiceImpl implements FestivalService{
 	public FestivalServiceImpl() {
 		System.out.println(this.getClass());
 	}
+	
+	@Override
+	public Map<String,Object> getAreaCode() throws Exception {
+		// TODO Auto-generated method stub
+		System.out.println("지역코드 서비스임플 확인..");
+		Map<String, Object> map = tourAPIDAO.getAreaCode();
+		
+		return map;
+	}
+
 
 	@Override
 	public Festival getFestival(int festivalNo) throws Exception {
@@ -175,15 +185,7 @@ public class FestivalServiceImpl implements FestivalService{
 		return map;
 	}
 
-	@Override
-	public Map<String,Object> getAreaCode() throws Exception {
-		// TODO Auto-generated method stub
-		
-		Map<String, Object> map = tourAPIDAO.getAreaCode();
-		
-		return map;
-	}
-
+	
 	@Override
 	public Map<String, Object> getInitListDB() throws Exception {
 		// TODO Auto-generated method stub
@@ -208,6 +210,15 @@ public class FestivalServiceImpl implements FestivalService{
 		// TODO Auto-generated method stub
 		
 		return tourAPIDAO.kakaoWeb(festivalName0,festivalName1,festivalName2);
+	}
+
+	@Override
+	public Map<String, Object> getSigunguCode(String areaCode) throws Exception {
+		// TODO Auto-generated method stub
+		System.out.println("지역코드 서비스임플 확인..");
+		Map<String, Object> map = tourAPIDAO.getSigunguCode(areaCode);
+		
+		return map;
 	}
 	
 }

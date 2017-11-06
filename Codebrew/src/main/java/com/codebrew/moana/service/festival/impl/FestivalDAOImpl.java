@@ -197,5 +197,10 @@ public class FestivalDAOImpl implements FestivalDAO {
 		return null;
 	}
 
+	@Override
+	public Map<String, Object> getSigunguCode(String areaCode) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

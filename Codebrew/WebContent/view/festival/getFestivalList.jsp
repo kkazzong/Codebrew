@@ -211,7 +211,7 @@ body {
 							</div>
 							
 							<div class="panel-body">
-								<c:if test="${festival.festivalImage == null }"> 
+								<%-- <c:if test="${festival.festivalImage == null }"> 
 						
 									<img src="../resources/uploadFile/no.png" width="100%" height="300"/>
 									<br/>
@@ -223,6 +223,13 @@ body {
 									<img src="${festival.festivalImage }" width="100%" height="300" />
 									<br/>
 						
+								</c:if> --%>
+								<c:if test="${festival.festivalImage.contains('http://')==true }">
+									<img src="${festival.festivalImage }" width="100%" height="423" />
+								</c:if>
+								
+								<c:if test="${festival.festivalImage.contains('http://')==false }">
+									<img src="../../resources/uploadFile/${festival.festivalImage }" width="100%" height="423" />
 								</c:if>
 									<br/>
 									<div id="festivalNo" style="display: none">
