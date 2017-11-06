@@ -107,14 +107,7 @@ body {
 
 	<form>
 	
-<<<<<<< HEAD
 	 <jsp:include page="/toolbar/toolbar.jsp"></jsp:include>
-	 
-
-=======
-	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>
->>>>>>> refs/heads/new/sungkyoung
-	
 		<br/>
 		<br/>
 		<br/>
