@@ -90,6 +90,9 @@ public class FestivalDAOImpl implements FestivalDAO {
 	@Override
 	public void deleteZzim(Zzim zzim) throws Exception {
 		// TODO Auto-generated method stub
+		
+		System.out.println("deleteZzim DAO................" + zzim);
+		
 		sqlSession.delete("ZzimMapper.deleteZzim", zzim);
 
 	}
