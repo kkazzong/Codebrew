@@ -20,7 +20,12 @@
 	<!--  ///////////////////////// CSS ////////////////////////// -->
 	<style>
  		body {
-            padding-top : 50px;
+            padding-top : 70px;
+            background-color: #f2f4f6;
+        }
+        
+        .card {
+        	margin-top : 50px;
         }
 	</style>
 	
@@ -60,56 +65,45 @@
 		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2. $(#id) : 3.$(.className)
 		//==> 1과 3 방법 조합 : $("tagName.className:filter함수") 사용함.
 		$("#searchReviewList").on("click", function(){
-			alert("검색버튼 클릭 : val = "+$("#searchKeyword").val());
-			//Debug..
-			//alert($("button.btn.btn-default")).html();
+			if($("#searchKeyword").val() == ''){
+				event.preventDefault();
+				alert("검색어를 입력해주세요");
+				return;
+			}
+			event.preventDefault();
 			fncGetList(1);
+			
+			alert("검색버튼 클릭 : val = "+$("#searchKeyword").val());
+			
 		});
 		
-		/* 
-		$( "td:nth-child(2)" ).on("mouseover", function(){
-			
-			var reviewNo = $("input:hidden[name='reviewNo']", $(this)).val();
-			//alert("reviewNo :: "+reviewNo);
-			
-			$.ajax(
-					{
-						url : "/review/json/getReview/"+reviewNo ,
-						method : "GET" ,
-						dataType : "json" ,
-						headers : {
-							"Accept" : "application/json",
-							"Content-Type" : "application/json"
-					},
-					success : function(JSONData , status) {
-
-						//Debug...
-						//alert(status);
-						//Debug...
-						//alert("JSONData.fileName : \n"+JSONData);
-						
-						var displayValue = "<h5>"
-											+"상품번호 : "+JSONData.reviewNo+"<br/>"
-											+"<div style='width: 200px; height: 200px; overflow: hidden'>"
-											+"<img src='../images/uploadFiles/"+JSONData.fileName+"' style='max-width: 100%; height: auto'><br/>"
-											+"</div>"
-											+"</h5>";
-						//Debug...	
-						//alert(displayValue);
-						$("h5").remove();
-						$( "#"+reviewNo+"" ).html(displayValue);
-						
-					}
-				});
+		//enter key 검색 : 뒤의 on부터
+		$("#searchKeyword").on("keydown", function(event){
+			if(event.keyCode == '13'){
+				alert("검색버튼 클릭 : val = "+$("#searchKeyword").val());
+				if($("#searchKeyword").val() == ''){
+					event.preventDefault();
+					alert("검색어를 입력해주세요");
+					return;
+				}
+				event.preventDefault();
+				fncGetList(1);
+			}
 		});
-		 */
 		
 		
 		//==> reviewTitle LINK : Click Event 연결처리
-		$( "button:contains('조회')" ).on("click" , function() {
+		$(".card > a").on("click", function(){
+			console.log($(this).find("input:hidden[name='reviewNo']").val());
+			var reviewNo = $(this).find("input:hidden[name='reviewNo']").val();
+			self.location = "/review/getReview?reviewNo="+reviewNo;
+		})
+		
+		
+		/* $( "button:contains('조회')" ).on("click" , function() {
 			//alert("조회버튼 클릭 : val = "+$(this).val());
 			self.location="/review/getReview?reviewNo="+$(this).val();
-		});
+		}); */
 		 
 		 //테스트미완
 		$( ".pull-right" ).on("click", function(){
@@ -130,8 +124,6 @@
 	});
 	
 	</script>
-
-
 
 
 <title>Insert title here</title>
@@ -204,8 +196,14 @@
    			<c:forEach var="review" items="${list}">
    				<c:set var="i" value="${i+1}"/>
    				<div class="col-md-6">
-   					<div class="panel panel-primary">
-   						<div class="panel-heading">
+   					<div class="card">
+   						<a href="#">
+   							<input type="hidden" name="reviewNo" value="${review.reviewNo }">
+   							<c:if test="${!empty review.reviewImageList }">
+   								<img width="100%" height="300" src="/resources/uploadFile/${review.reviewImageList[0].reviewImage}">
+   							</c:if>
+   						</a>
+   						<div class="card-body">
    							<h3 class="panel-title pull-left">${i}번 : ${review.festivalName } 
    								<c:if test = "${review.checkCode == '1' || review.checkCode == '11' }">
    								<span style="color:pink">
@@ -224,19 +222,11 @@
 								</c:if>
    							</h3>
    							<form name="deleteForm"> 
-   								<input type="hidden" name="reviewNo" value="${review.reviewNo}"> <!-- post........ -->
+   								<input type="hidden" name="reviewNo" value="${review.reviewNo}"> <!-- post방식 이라 form으로 -->
    								<button id = "deleteReview" class="btn btn-default pull-right" type="button" value="${review.reviewNo }">
    									<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
    								</button>
    							</form>
-   							<div class="clearfix"></div>
-   						</div>
-   						<div class="panel-body">
-   							
-   							<!-- 후기목록 -->
-   							<c:if test="${!empty review.reviewImageList }">
-   								<img width="100%" height="300" src="/resources/uploadFile/${review.reviewImageList[0].reviewImage}">
-   							</c:if>
    							<hr>
    							<div class="col-md-12">
    								<strong>
@@ -262,11 +252,7 @@
    								</small>
    							</div>
    							<hr>
-   							<div class="row">
-   								<button id="getReview" class="col-md-12 btn primary btn-block" type="button" value="${review.reviewNo }">조회</button>
-   							</div>
    						</div>
-   						
    					</div>
    				</div>
    			</c:forEach>

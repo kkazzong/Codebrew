@@ -35,6 +35,7 @@
 	<style>
 	  body {
             padding-top : 50px;
+            background-color: #f2f4f6;
         }
     </style>
     
@@ -45,7 +46,7 @@
 	
 	function fncGetList(currentPage) {
 		$("#currentPage").val(currentPage)
-	   	$("form").attr("method" , "POST").attr("action" , "/review/getReplyList").submit();
+	   	$("form[name='searchForm']").attr("method" , "POST").attr("action" , "/review/getReview").submit();
 	}
 	
 	function fucAddReply(){
@@ -58,7 +59,7 @@
 			return;
 		}
 		
-		$("form").attr("method", "POST").attr("action", "/reply/addReply").submit();
+		$("form[name='detailForm']").attr("method", "POST").attr("action", "/reply/addReply").submit();
 	}
 	
 	//=====> "검색", replyTitle link Event 연결 및 처리
@@ -95,7 +96,7 @@
 			$("#replyDetail"+tempReplyNo).removeAttr("readonly")
 			.focus()
 			
-			$("#updateReply"+tempReplyNo).html('완료').on("click", function(){
+			$("#updateReply"+tempReplyNo).html('완료').on("click", function(event){
 				
 				alert("수정완료클릭 :: ajax 시작");
 				
@@ -116,6 +117,7 @@
 								$("#replyDetail"+tempReplyNo).val(JSONData.replyDetail);
 								$("#replyDetail"+tempReplyNo).attr("readonly", true);
 								$("#updateReply"+tempReplyNo).html('수정');
+								$(this).off("click");
 							}
 						}
 				)
@@ -144,9 +146,12 @@
    	<div class="container">
    			
    			<!-- 'search' is only for 'Admin' menu -->
-   			<c:if test="sessionScope.user.role == 'a'">
 	   			<div class="col-md-offset-4 col-md-4">
-	   				<form class="form-inline" name="detailForm">
+	   				<form class="form-inline" name="searchForm">
+	   					<!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
+	   					<input type="hidden" id="currentPage" name="currentPage" value=""/>
+	   					<input type="hidden" name="reviewNo" value="${review.reviewNo }"/>
+   			<c:if test="sessionScope.user.role == 'a'">
 	   					<%-- 
 	   					<input name="menu" value="${param.menu }" type="hidden"/>
 	   					 --%>
@@ -166,12 +171,10 @@
 	   					
 	   					<button type="button" id = "searchReply" class="btn btn-default">검색</button>
 	   					
-	   					<!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
-	   					<input type="hidden" id="currentPage" name="currentPage" value=""/>
 	   				
+   			</c:if>
 	   				</form>
 	   			</div>
-   			</c:if>
    		</div>
    		<!-- 화면구성 div End -->
    		
@@ -259,15 +262,20 @@
 	   				</c:forEach>
    				</c:if>
 
-			<!-- PageNavigation Start -->
-			<%-- <jsp:include page="../../common/pageNavigator_new.jsp"/> --%> 
-			<!-- PageNavigation End -->
 
    			</tbody>   			
    			
    		</table>
+   		
    		<!-- table End -->
    		
+   		<div class="text-center">
+   		
+				<!-- PageNavigation Start -->
+				<jsp:include page="../../common/pageNavigator_new.jsp"/>
+				<!-- PageNavigation End -->
+   		</div>
+			
 
 </body>
 </html>

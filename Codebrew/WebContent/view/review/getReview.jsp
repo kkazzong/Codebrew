@@ -22,6 +22,7 @@
 	
  		body {
             padding-top : 50px;
+            background-color: #f2f4f6;
         }
         
        	#carouselActive {
@@ -295,11 +296,11 @@
 		</div>
 		
 		<div class="row">
-			<!-- <div class="col-md-offset-3 col-md-6"> -->
-			<div class="col-md-12">
+			<div class="col-md-offset-2 col-md-8">
+			<!-- <div class="col-md-12"> -->
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-						<h3 class="panel-title text-center">후기제목 : ${review.reviewTitle } ${resultPage } ${search }</h3>
+						<h3 class="panel-title text-center">후기제목 : ${review.reviewTitle }</h3>
 					</div>
 					<div class="panel-body">
 						<%--  
@@ -392,14 +393,13 @@
 								<span class="glyphicon glyphicon-map-marker" aria-hidden="true">축제장소:</span>
 								<span id="addrIdForGoogleMap">${review.addr }</span>
 							</small>
-							<!-- 지도추가된부분 -->		
-							<div id="googleMap" style="width:500px;height:380px;"></div>
-									
 						</div>
+						<!-- 지도추가된부분 -->		
+						<div class="col-md-12" id="googleMap" style="width:100%;height:380px;"></div>
 						<div class="col-md-12">
 							<small>
 								<span class="glyphicon glyphicon-road" aria-hidden="true">대중교통:</span>
-								<span id="transportListAtStation"></span>
+								<span id="transportListAtStation">교통정보 불러오는 중...</span>
 							</small>
 						</div>
 						<div class="col-md-12">

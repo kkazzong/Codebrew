@@ -198,20 +198,42 @@ public class ReviewController {
 	
 	
 	@RequestMapping(value="getReview", method = {RequestMethod.GET, RequestMethod.POST})
-	public ModelAndView getReview( @RequestParam("reviewNo") int reviewNo) throws Exception {
+	public ModelAndView getReview( @RequestParam("reviewNo") int reviewNo, 
+									@ModelAttribute("Search") Search search) throws Exception {
 		
 		//parameter인 @ModelAttribute("search") Search search 는 Reply paging 처리때문에 받음.
 		
 		System.out.println("/view/review/getReview");		
 		
+		if(search.getCurrentPage() ==0 ){
+			search.setCurrentPage(1);
+		}
+		search.setPageSize(pageSize);
+		
 		//Business Logic
 		Review review = reviewService.getReview(reviewNo);
+		
+		//아래 test
+		//List<Reply> replyList = (List<Reply>) replyService.getReplyList(search, reviewNo).get("replyList");
+		
+		Map<String, Object> map = replyService.getReplyList(search, reviewNo);
+		
+		List<Reply> replyList = (List<Reply>)map.get("replyList");
+		
+		//test
+		System.out.println("\n\n test :: replyList.toString() :: "+replyList.toString());
+		
+		//Page처리
+		Page resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+		
+		review.setReplyList(replyList);
 		
 		// Model 과 View 연결
 		ModelAndView modelAndView = new ModelAndView();
 		
 		//modelAndView.addObject("festival", festival);
 		modelAndView.addObject("review", review);
+		modelAndView.addObject("resultPage", resultPage);
 		modelAndView.setViewName("/view/review/getReview.jsp");
 		
 		return modelAndView;

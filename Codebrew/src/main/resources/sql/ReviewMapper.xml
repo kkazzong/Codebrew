@@ -164,6 +164,7 @@
 	</update>
 	
 	<!-- 6 -->
+	<!-- 추가부분 reply쪽 paging처리 때문에 따로 빼서 받음 -->
 	<select id="getReview" parameterType="int" resultMap="reviewSelectMap">
 		SELECT
 			rv.review_no, 
@@ -177,20 +178,20 @@
 			rv.review_detail, 
 			rv.review_hashtag, 
 			rv.review_reg_date, 
-			rp.reply_no, 
+			<!-- rp.reply_no, 
 			rp.user_id AS reply_user_id, 
 			rp.reply_detail, 
-			rp.reply_reg_date, 
+			rp.reply_reg_date,  -->
 			i.review_image, 
 			v.review_video, 
 			g.good_count AS good_count
 		FROM review rv, festival f, 
 			(SELECT image_no, review_no, review_image FROM image WHERE review_no=#{reviewNo} ORDER BY review_no DESC) i, 
 			(SELECT video_no, review_no, review_video FROM video WHERE review_no=#{reviewNo} ORDER BY video_no DESC) v, 
-			(SELECT COUNT(good_no) good_count FROM good WHERE review_no=#{reviewNo}) g, 
-			(SELECT reply_no, review_no, user_id, reply_detail, reply_reg_date FROM reply WHERE review_no=#{reviewNo} ORDER BY reply_no DESC) rp 
-		WHERE rv.review_no=rp.review_no(+) 
-		AND rv.review_no = i.review_no(+) 
+			(SELECT COUNT(good_no) good_count FROM good WHERE review_no=#{reviewNo}) g 
+			<!-- (SELECT reply_no, review_no, user_id, reply_detail, reply_reg_date FROM reply WHERE review_no=#{reviewNo} ORDER BY reply_no DESC) rp  -->
+		WHERE <!-- rv.review_no=rp.review_no(+)  -->
+		rv.review_no = i.review_no(+) 
 		AND rv.review_no = v.review_no(+) 
 		AND rv.festival_no = f.festival_no
 		AND rv.review_no = #{reviewNo}
@@ -280,19 +281,23 @@
 								i.review_image
 						FROM review rv, ( SELECT * FROM ( SELECT image.*, row_number() OVER (PARTITION BY review_no ORDER BY image_no ) rnum
 							             FROM image
-							             WHERE 1=1 ) WHERE rnum = 1) i 
+							             WHERE 1=1 ) 
+						WHERE rnum = 1) i 
 								<where>
 									rv.review_no = i.review_no 
 									AND (rv.check_code = '2' OR rv.check_code = '22') 
 									<if test="searchCondition != null ">
+										<!-- 축제이름 검색 -->
 								        <if test="searchCondition == 0 and searchKeyword !='' ">
-								            AND rv.festival_name LIKE '%${searchKeyword}%'
+								            AND LOWER(rv.festival_name) LIKE LOWER('%${searchKeyword}%')
 								        </if>
+								        <!-- 축제장소 검색 -->
 								        <if test="searchCondition == 1 and searchKeyword !='' ">
-								            AND rv.addr LIKE '%${searchKeyword}%'
+								            AND LOWER(rv.addr) LIKE LOWER('%${searchKeyword}%')
 								        </if>
+								        <!-- 해시태그 검색 -->
 								        <if test="searchCondition == 2 and searchKeyword !='' ">
-								        	AND rv.review_hashtag LIKE '%{searchKeyword}%' 
+								        	AND LOWER(rv.review_hashtag) LIKE LOWER('%${searchKeyword}%') 
 								        </if>
 									</if>
 								</where>
@@ -314,19 +319,23 @@
 								i.review_image
 						FROM review rv, ( SELECT * FROM ( SELECT image.*, row_number() OVER (PARTITION BY review_no ORDER BY image_no ) rnum
 							             FROM image
-							             WHERE 1=1 ) WHERE rnum = 1) i 
+							             WHERE 1=1 ) 
+						WHERE rnum = 1) i 
 								<where>
 									rv.review_no = i.review_no 
 									AND rv.user_id = #{userId} 
 									<if test="search.searchCondition != null ">
+										<!-- 축제이름 검색 -->
 								        <if test="search.searchCondition == 0 and search.searchKeyword !='' ">
-								            AND rv.festival_name LIKE '%${search.searchKeyword}%'
+								            AND LOWER(rv.festival_name) LIKE LOWER('%${search.searchKeyword}%')
 								        </if>
+								        <!-- 축제장소 검색 -->
 								        <if test="search.searchCondition == 1 and search.searchKeyword !='' ">
-								            AND rv.addr LIKE '%${search.searchKeyword}%'
+								            AND LOWER(rv.addr) LIKE LOWER('%${search.searchKeyword}%')
 								        </if>
+								        <!-- 해시태그 검색 -->
 								        <if test="search.searchCondition == 2 and search.searchKeyword !='' ">
-								        	AND rv.review_hashtag LIKE '%{search.searchKeyword}%' 
+								        	AND LOWER(rv.review_hashtag) LIKE LOWER('%${search.searchKeyword}%') 
 								        </if>
 									</if>
 								</where>
@@ -348,19 +357,23 @@
 								i.review_image
 						FROM review rv, ( SELECT * FROM ( SELECT image.*, row_number() OVER (PARTITION BY review_no ORDER BY image_no ) rnum
 							             FROM image
-							             WHERE 1=1 ) WHERE rnum = 1) i 
+							             WHERE 1=1 ) 
+						WHERE rnum = 1) i 
 								<where>
 									rv.review_no = i.review_no 
 									AND (rv.check_code = '1' OR rv.check_code = '11') 
 									<if test="searchCondition != null ">
+										<!-- 축제이름 검색 -->
 								        <if test="searchCondition == 0 and searchKeyword !='' ">
-								            AND rv.festival_name LIKE '%${searchKeyword}%'
+								            AND LOWER(rv.festival_name) LIKE LOWER('%${searchKeyword}%')
 								        </if>
+								        <!-- 축제장소 검색 -->
 								        <if test="searchCondition == 1 and searchKeyword !='' ">
-								            AND rv.addr LIKE '%${searchKeyword}%'
+								            AND LOWER(rv.addr) LIKE LOWER('%${searchKeyword}%')
 								        </if>
+								        <!-- 해시태그 검색 -->
 								        <if test="searchCondition == 2 and searchKeyword !='' ">
-								        	AND rv.review_hashtag LIKE '%{searchKeyword}%' 
+								        	AND LOWER(rv.review_hashtag) LIKE LOWER('%${searchKeyword}%') 
 								        </if>
 									</if>
 								</where>

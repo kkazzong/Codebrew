@@ -129,6 +129,57 @@
 		});
 	});
 	
+	// 다중 이미지 미리보기 and 삭제(미완...)
+	// 이미지 정보를 담을 배열
+	var sel_files = [];
+	
+	$(document).ready(function(){
+		$("#uploadReviewImageList").on("change", handleImgsFilesSelect);
+	});
+	
+	function fileUploadAction() {
+		console.log("fileUploadAction");
+		$("#uploadReviewImageList").trigger('click');
+	}
+	
+	
+	function handleImgsFilesSelect(e){
+		
+		sel_files = []; //이미지 정보 초기화 : handler event 발생시 기존 이미지 정보들 모두 초기화
+		$(".imgs_wrap").empty();
+		
+		var files = e.target.files;
+		var filesArr = Array.prototype.slice.call(files);
+		
+		var index = 0;
+		filesArr.forEach(function(f) {
+			if(!f.type.match("image.*")) {
+				alert("확장자는 이미지 확장자만 가능합니다.");
+				return;
+			}
+			sel_files.push(f);
+			
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				var html = "<a href=\"javascript:void(0);\" onclick=\"deleteImageAction("+index+")\" id=\"img_id_"+index+"\"><img width='100px' height='100px' src=\"" + e.target.result + "\" data-file = '"+f.name+"' class='selProductFile' title='Click to remove'></a>";
+				$(".imgs_wrap").append(html);
+				index++;
+				
+			}
+			reader.readAsDataURL(f);
+		});
+	}
+	
+	function deleteImageAction(index) {
+		console.log("index : "+index);
+		sel_files.splice(index, 1); //테스트 이미지 몇개 들어가는지 계속해서 확인 요망
+
+		//sel_files.shift(index, 1); //테스트
+		var img_id = "#img_id_"+index;
+		$(img_id).remove();
+		console.log(sel_files);
+	}
+	
 	
 	</script>
 	
@@ -160,8 +211,7 @@
 		<div class="form-group">
 			<label for="festivalName" class="col-sm-offset-1 col-sm-3 control-label">축제번호</label>
 			<div class="col-sm-4">
-				<!-- <input type="hidden" id="festivalNo" name="festivalNo" value="638576"/> -->
-				<input type="text" class="form-control" id="festivalNo" name="festivalNo" value="${festival.festivalNo}">
+				<input type="text" class="form-control" id="festivalNo" name="festivalNo" value="${festival.festivalNo}" readonly>
 			</div>
 		</div>
 		
@@ -170,7 +220,7 @@
 		<div class="form-group">
 			<label for="festivalName" class="col-sm-offset-1 col-sm-3 control-label">축제명</label>
 			<div class="col-sm-4">
-				<input type="text" class="form-control" id="festivalName" name="festivalName" value="${festival.festivalName}" >
+				<input type="text" class="form-control" id="festivalName" name="festivalName" value="${festival.festivalName}" readonly>
 			</div>
 		</div>
 		
@@ -179,7 +229,7 @@
 		<div class="form-group">
 			<label for="addr" class="col-sm-offset-1 col-sm-3 control-label">축제위치</label>
 			<div class="col-sm-4">
-				<input type="text" class="form-control" id="addr" name="addr" value="${festival.addr }" >
+				<input type="text" class="form-control" id="addr" name="addr" value="${festival.addr }" readonly>
 			</div>
 		</div>
 		
@@ -224,7 +274,15 @@
 		<div class="form-group">
 			<label for="reviewImageList" class="col-sm-offset-1 col-sm-3 control-label">후기사진</label>
 			<div class="col-sm-3">
-				<input type="file" class="form-control" id="uploadReviewImageList" name="uploadReviewImageList" multiple/>
+				<input type="file" class="form-control" id="uploadReviewImageList" accept="image/*" name="uploadReviewImageList" multiple/>
+			</div>
+		</div>
+		
+		<div class="form-group text-center">
+			<div class="imgs_wrap" align="center">
+				<small class="text-danger">사진은 반드시 1장 이상 업로드해야 합니다</small><br>
+				<small>이미지 미리보기</small>
+				<img id="img" align="middle"/>
 			</div>
 		</div>
 		
@@ -240,7 +298,7 @@
 		<div class="form-group">
 			<label for="reviewVideo" class="col-sm-offset-1 col-sm-3 control-label">동영상</label>
 			<div class="col-sm-4">
-				<input type="file" class="form-control" id="uploadReviewVideo" name="uploadReviewVideo" multiple/>			
+				<input type="file" class="form-control" id="uploadReviewVideo" accept="video/*" name="uploadReviewVideo" multiple/>			
 			</div>
 		</div>
 		

@@ -20,8 +20,13 @@
 	<!--  ///////////////////////// CSS ////////////////////////// -->
 	<style>
  		body {
-            padding-top : 50px;
+            padding-top : 70px;
+            background-color: #f2f4f6;
         }
+        
+         .card {
+			margin-top : 50px;
+	    }
         
         .panel-primary > .panel-heading {
         	/* 
@@ -63,49 +68,31 @@
 		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2. $(#id) : 3.$(.className)
 		//==> 1과 3 방법 조합 : $("tagName.className:filter함수") 사용함.
 		$("#searchReviewList").on("click", function(){
-			alert("검색버튼 클릭 : val = "+$("#searchKeyword").val());
-			//Debug..
-			//alert($("button.btn.btn-default")).html();
+			if($("#searchKeyword").val() == ''){
+				event.preventDefault();
+				alert("검색어를 입력해주세요");
+				return;
+			}
+			event.preventDefault();
 			fncGetList(1);
+			
+			alert("검색버튼 클릭 : val = "+$("#searchKeyword").val());
+			
 		});
 		
-		/* 
-		$( "td:nth-child(2)" ).on("mouseover", function(){
-			
-			var reviewNo = $("input:hidden[name='reviewNo']", $(this)).val();
-			//alert("reviewNo :: "+reviewNo);
-			
-			$.ajax(
-					{
-						url : "/review/json/getReview/"+reviewNo ,
-						method : "GET" ,
-						dataType : "json" ,
-						headers : {
-							"Accept" : "application/json",
-							"Content-Type" : "application/json"
-					},
-					success : function(JSONData , status) {
-
-						//Debug...
-						//alert(status);
-						//Debug...
-						//alert("JSONData.fileName : \n"+JSONData);
-						
-						var displayValue = "<h5>"
-											+"상품번호 : "+JSONData.reviewNo+"<br/>"
-											+"<div style='width: 200px; height: 200px; overflow: hidden'>"
-											+"<img src='../images/uploadFiles/"+JSONData.fileName+"' style='max-width: 100%; height: auto'><br/>"
-											+"</div>"
-											+"</h5>";
-						//Debug...	
-						//alert(displayValue);
-						$("h5").remove();
-						$( "#"+reviewNo+"" ).html(displayValue);
-						
-					}
-				});
+		//enter key 검색 : 뒤의 on부터
+		$("#searchKeyword").on("keydown", function(event){
+			if(event.keyCode == '13'){
+				alert("검색버튼 클릭 : val = "+$("#searchKeyword").val());
+				if($("#searchKeyword").val() == ''){
+					event.preventDefault();
+					alert("검색어를 입력해주세요");
+					return;
+				}
+				event.preventDefault();
+				fncGetList(1);
+			}
 		});
-		 */
 		
 		//조회
 		$(".card > a").on("click", function(){
@@ -114,14 +101,6 @@
 		 	self.location = "/review/getReview?reviewNo="+reviewNo;
 		})
 		
-		//==> reviewTitle LINK : Click Event 연결처리
-		/* 
-		$( "button:contains('조회')" ).on("click" , function() {
-			//alert("조회버튼 클릭 : val = "+$(this).val());
-			self.location="/review/getReview?reviewNo="+$(this).val();
-		});
-		 */ 
-		 
 		//==> UI 수정 추가부분  :  reviewTitle LINK Event End User 에게 보일수 있도록 
 		$( ".ct_list_pop td:nth-child(2)" ).css("color" , "red");
 		$("h7").css("color" , "red");
@@ -208,27 +187,15 @@
    				<c:set var="i" value="${i+1}"/>
    				<div class="col-md-6">
    					<div class="card">
+						<!-- 후기목록 -->
    						<a href="#">
    							<input type="hidden" name = "reviewNo" value="${review.reviewNo }">
 							<c:if test="${!empty review.reviewImageList }">
-								<img width="100%" height="300" src="/resources/uploadFile/${review.reviewImageList[0].reviewImage}">
+								<img width="100%" height="423" src="/resources/uploadFile/${review.reviewImageList[0].reviewImage}">
 							</c:if>
 						</a>
-							<%-- 
-							<h3 class="panel-title pull-left">${i}번 : ${review.festivalName }</h3>
-							 --%>
 						 
 						 <div class="card-body">
-						 	<%-- 
-						 	<form id="deleteForm">
-									<input type="hidden" name="purchaseNo" value="${purchase.purchaseNo}">
-									<button class="btn btn-default pull-right" id="deleteBtn" type="button" value="${review.reviewNo}">
-										<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-									</button>
-							</form>
-   							 --%> 
-   							 
-   							<!-- 후기목록 -->
    							<div class="col-md-12">
    								<strong>
    									${review.festivalName }
@@ -253,11 +220,6 @@
    								</small>
    							</div>
    							<hr>
-   							<%-- 
-   							<div class="row">
-   								<button id="getReview" class="col-md-12 btn primary btn-block" type="button" value="${review.reviewNo }">조회</button>
-   							</div>
-   							 --%>
    						</div>
    						
    					</div>
