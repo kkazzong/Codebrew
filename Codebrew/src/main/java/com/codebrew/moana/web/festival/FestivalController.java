@@ -397,8 +397,6 @@ public class FestivalController {
 		} else {
 
 			System.out.println("else로 들어옴!! " + festival.getFestivalNo());
-			
-			festival.setFestivalImage("no.png");
 
 			festivalService.addFestival(festival);
 
