@@ -42,20 +42,29 @@
 
 	//============= "파티수정"  Event 연결 =============
 	$(function() {
-		$("button:contains('파티수정')")
-				.on(
-						"click",
-						function() {
-							console.log($("td.ct_btn01:contains('파티수정')")
-									.html());
+		$("button:contains('파티수정')").on("click",function() {
+			console.log($("td.ct_btn01:contains('파티수정')")
+					.html());
 
-							var partyFlag = $("input[name=partyFlag]", $(this))
-									.val();
+			var partyFlag = $("input[name=partyFlag]", $(this))
+					.val();
 
-							self.location = "/party/updateParty?partyNo=${party.partyNo}&partyFlag="
-									+ partyFlag;
+			self.location = "/party/updateParty?partyNo=${party.partyNo}&partyFlag="
+					+ partyFlag;
 
-						});
+		});
+	});
+	
+	//============= "파티리스트 보기"  Event 연결 =============
+	$(function() {
+		$("button:contains('파티리스트 보기')").on("click",function() {
+			console.log($("td.ct_btn01:contains('파티리스트 보기')")
+					.html());
+
+			self.location = "/party/getPartyList";
+				
+
+		});
 	});
 	
 
@@ -252,6 +261,14 @@ body {
 	-webkit-transform: scale(1.3);
 	transform: scale(1.3);
 }
+.info{
+	background-color: #edeeef;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	padding-left: 20px;
+	padding-right: 20px;
+	
+}
 
 /* Blur */
 /* .hover07 figure img {
@@ -422,7 +439,7 @@ body {
 								<div class="col-xs-12"><hr></div>
 							</div>
 
-							<div class="col-md-12">
+							<div class="col-xs-12">
 								<%@include file="/view/party/getPartyMemberList.jsp"%>
 								
 								<small><span class="glyphicon glyphicon-star"></span> 파티에 참여한 사람들</small>
@@ -431,7 +448,7 @@ body {
 								<br>
 								
 								<div class="col-md-6 text-center">
-									<div class="ratio-info">
+									<div class="info">
 										<div class="hover01 column">
 											<div>
 												<figure id="ratioLock">
@@ -443,24 +460,24 @@ body {
 											</div>
 										</div>
 										<%@include file="/view/party/getGenderRatio.jsp"%>
-										<br>
-									</div>
-									<div>
-										<div class="text-center">
-											<h4>
-												<strong>파티에 참여한 사람들의 비율을 확인하세요</strong>
-											</h4>
+										<br><br>
+									
+										<div>
+											<div class="text-center">
+												<h4>
+													<strong>파티에 참여한 사람들의 비율을 확인하세요</strong>
+												</h4>
+											</div>
+											<div class="text-center">
+												<h5>파티에 참여하기 전에 '코코넛'을 이용하면 참여자 비율을 미리 알 수 있어요!</h5>
+											</div>
+											<!-- <div class="text-center"><h5>참여자 비율을 미리 알 수 있어요!</h5></div> -->
 										</div>
-										<div class="text-center">
-											<h5>파티에 참여하기 전에 '코코넛'을 이용하면 참여자 비율을 미리 알 수 있어요!</h5>
-										</div>
-										<!-- <div class="text-center"><h5>참여자 비율을 미리 알 수 있어요!</h5></div> -->
 									</div>
 								</div>
-								<br>
-								<br>
+								
 								<div class="col-md-6 text-center">
-									<div class="member-info">
+									<div class="info">
 										<div id="partyMemberListButtonDiv">
 											<div class='hover01 column'>
 												<div>
@@ -482,6 +499,7 @@ body {
 											<div class="text-center">
 												<h5>${ !empty user.nickname ? user.nickname : '회원' }님 말고도
 													다른 사람들이 참여중이에요!</h5>
+												<br>
 											</div>
 										</div>
 									</div>

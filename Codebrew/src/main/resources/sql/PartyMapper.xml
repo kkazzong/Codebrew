@@ -145,7 +145,8 @@
 	<select  id="getPartyList" parameterType="com.codebrew.moana.common.Search" resultMap="partySelectMap">
 	  	SELECT *
 	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
-	  					FROM	(	SELECT p.party_no, p.party_image,
+	  					FROM	(	SELECT p.party_no,
+	  									   p.party_image,
 	  									   f.festival_name,
 	  									   f.festival_no,
 	  									   p.party_name,
