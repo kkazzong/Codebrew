@@ -393,6 +393,9 @@
 	<br>
 	<br>
 	<a href="/view/user/getMyPage2.jsp">마이페이지</a>
+	<br>
+	<br>
+	<a href="/myPage/getMyPage?requestId=${sessionScope.user.userId}">진짜 마이페이지</a>
 	
 	
 	<!-- Title -->

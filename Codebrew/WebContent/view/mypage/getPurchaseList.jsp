@@ -459,7 +459,7 @@
 		<!-- 데이터 수 -->
 		<div class="row">
 			<div class="col-md-12">
-				<h5>총 : ${resultPage.totalCount} 건 (${resultPage.currentPage} / ${resultPage.maxPage})</h5>
+				<h5>총 : ${resultPage4.totalCount} 건 (${resultPage4.currentPage} / ${resultPage4.maxPage})</h5>
 			</div>
 		</div>
 		
@@ -528,14 +528,14 @@
 		<section>
 		<div class="row">
 		
-			<c:if test="${empty list}">
+			<c:if test="${empty list4}">
 				<%-- <jsp:include page="/view/purchase/noResult.jsp"></jsp:include> --%>
 				<div class="col-md-12 text-center">
 					<h1><small>구매내역이 없습니다.</small></h1>
 				</div>
 			</c:if>
 			
-			<c:forEach var="purchase" items="${list}">
+			<c:forEach var="purchase" items="${list4}">
 				<c:set var="i" value="${i+1}"></c:set>
 					<div class="col-md-6">
 						<div class="card">

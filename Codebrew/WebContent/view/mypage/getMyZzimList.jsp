@@ -117,9 +117,9 @@ body {
 		<br/>
 
 
-		전체 게시물 수 : ${resultPage.totalCount }
+		전체 게시물 수 : ${resultPage1.totalCount }
 		<br/>
-		현재 페이지 : ${resultPage.currentPage }
+		현재 페이지 : ${resultPage1.currentPage }
 		
 		<br/>
 		<br/>
@@ -175,7 +175,7 @@ body {
 
 		<div class="row">
 		
-		<c:forEach var="festival" items="${list}">
+		<c:forEach var="festival" items="${list1}">
 		
 			
 			<div class="col-md-6">
