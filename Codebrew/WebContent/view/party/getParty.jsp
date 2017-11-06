@@ -74,7 +74,6 @@
 	
 	
 	
-	
 	//============= "파티삭제"  Event 처리 및  연결 =============
 	/* $(function(){
 		$("button:contains('파티삭제')").on("click", function() {
