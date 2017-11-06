@@ -135,7 +135,6 @@
 		});
 	});
 
-		 var id = "";
 		 var tag="";
 		 var tag2="";
 		 var met="";
@@ -191,8 +190,8 @@ body {
     }
     
     img {
-    	width: 100%;
-    	height: 100%
+    	width: 100;
+    	height: 100;
     }
 		
 </style>
@@ -271,8 +270,8 @@ body {
 				  <div class="panel-body text-center">
 				  	<div id="map" style="width:200;height:350px;"></div>
 						<p>
-							<button onclick="setCenter()">지도 중심좌표 이동시키기</button> 
-							<button onclick="panTo()">지도 중심좌표 부드럽게 이동시키기</button>
+							<!-- <button onclick="setCenter()" class="btn btn-primary" >지도 중심좌표 이동시키기</button> --> 
+							<button onclick="panTo()" class="btn btn-primary" >축제장소로 이동</button>
 						</p>
 					</div>
 			  	</div>
@@ -290,6 +289,11 @@ body {
 								<strong>축제정보</strong>
 							</h3>
 							<table class="table">
+							
+								<tr>
+									<td class="col-md-3 active"><h4>조회수</h4></td>
+									<td>${festival.readCount }</td>
+								</tr>
 								<tr>
 									<td class="col-md-3 active"><h4>날씨</h4></td>
 									<td>
@@ -545,42 +549,56 @@ body {
 	
 	
 	<div class="row">
-		<div class="col-md-offset-2 col-md-8">
+		<div class="col-md-12">
+			<div class="col-md-offset-4 col-md-4">
 			<c:if test= "${user.role=='a' }" >
-				<div class="col-md-6">
-					<c:if test="${ticket==null }">
-						<c:if test="${festival.isNull==true }">
-							<button type="button" class="btn btn-primary">재등록</button>
-						</c:if>
-					</c:if>
-				
+			
 				<c:if test="${ticket==null }">
-					<c:if test="${festival.isNull==false }">
-						<button type="button" class="btn btn-primary">등록하기</button>
+				
+					<c:if test="${festival.isNull==true }">
+						<button type="button" class="btn btn-primary vertical-align-middle">재등록</button>
 					</c:if>
+					
 				</c:if>
 				
-				<c:if test="${ticket!=null }">
-					<button type="button" class="btn btn-primary">수정하기</button>
-					<button type="button" class="btn btn-primary">삭제하기</button>
+			<c:if test="${ticket==null }">
+			
+				<c:if test="${festival.isNull==false }">
+					<button type="button" class="btn btn-primary vertical-align-middle">등록하기</button>
 				</c:if>
+				
+			</c:if>
 			
-					<input type = "button" id = "back" name = "back" value = "뒤로"/>
+			<c:if test="${ticket!=null }">
 			
+				<button type="button" class="btn btn-primary vertical-align-middle">수정하기</button>
+				<button type="button" class="btn btn-primary vertical-align-middle">삭제하기</button>
+			</c:if>
+			
+				<button type="button" class="btn btn-primary vertical-align-middle" id = "back" name = "back">뒤로</button>
+				
+			</c:if>
+		</div>
+		
+		
+		
+		<div class="row">
+			<div class="col-md-12">
+				<div class="col-md-offset-4 col-md-4">
+				  	<c:if test="${user.role!='a' }">
+						<button type="button" class="btn btn-primary vertical-align-middle">애프터파티 조회</button>
+							<c:if test="${ticket.ticketFlag!='del'}">
+								<button type="button" class="btn btn-primary vertical-align-middle">티켓구매</button>
+							</c:if>
+						<button type="button" class="btn btn-primary vertical-align-middle" id = "back" name = "back">뒤로</button>
+					</c:if>
 				</div>
-			
-		</c:if>
+			</div>
+		</div>
+		
 	
 			
-		<c:if test="${user.role!='a' }">
-				<div class="col-md-offset-2 col-md-8">
-					<button type="button" class="btn btn-primary">애프터파티 조회</button>
-						<c:if test="${ticket.ticketFlag!='del'}">
-							<button type="button" class="btn btn-primary">티켓구매</button>
-						</c:if>
-					<input type = "button" id = "back" name = "back" value = "뒤로"/>
-					</div>
-			</c:if>
+		
 		</div>
 	</div>
 	

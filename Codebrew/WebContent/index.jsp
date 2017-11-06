@@ -92,32 +92,8 @@
 								}
 				});
 	});
-	
-	
-/* function fncGetWebSearch() {
-		
-		$(function() {
-			
-			var festivalName0 = $("#festivalName0").text();
-			var festivalName0 = $("#festivalName1").text();
-			var festivalName0 = $("#festivalName2").text();
-		
-			 $.ajax( 
-					 {
-						url : "/festivalRest/json/kakaoWeb?festivalName0="+festivalName0,
-						method : "GET",
-						success : function(jsonData , status) {
-						
-						 $("#iframe").attr("src","//www.youtube.com/embed/"+jsonData.url + "?autoplay=1&rel=0");
-							
-						}
-					 });
-	});
-}
- */
  
  function fncGetWebSearch() {
-		
 		$(function() {
 			
 			var festivalName0 = $("#festivalName0").text();
@@ -129,7 +105,6 @@
 						url : "/festivalRest/json/kakaoWeb?festivalName0="+festivalName0+"&festivalName1="+festivalName1+"&festivalName2="+festivalName2,
 						method : "GET",
 						success : function(jsonData , status) {
-							alert(jsonData);
 						
 					if(jsonData.url0!=null){
 						 $("#iframe").attr("src","//www.youtube.com/embed/"+jsonData.url0 + "?autoplay=1&rel=0");
@@ -142,21 +117,12 @@
 					}else{
 						 $("#iframe").attr("src","//www.youtube.com/embed/8Nzvfks800c?autoplay=1&rel=0");
 					}
-					
-						
-
-						
 				}
 			});
 	});
 }
-		
-
 	
-
-	
-	
-	$(function() {
+$(function() {
 	$("#searchKeyword").autocomplete({
 		source: function( request, response ) {
 	        $.ajax( {
@@ -183,20 +149,15 @@
 	            		return {
 	            			label :  value.festivalName,
 	            			value : value.festivalName
-	            			
 	            		}
-	        	}));
-	        	
-	          }
-	        } );
+		        	}));
+		          }
+	        });
 	    }
 	});
-	});
-	
-	
+});
 	   
 	   $(function(){
-			
 			$("input:text[name='searchKeyword']").on('keydown',function(event){
 				
 				if(event.keyCode ==13){
@@ -226,12 +187,6 @@
 			   self.location="/festival/getFestivalDB?festivalNo="+festivalNo;
 		   });
 	   });
-	   
-	   
-	
-				    	
-				    	
-  
 	    
 </script>
 
@@ -379,6 +334,7 @@
       </div> 
       
     <!-- carousel 끝 -->
+<<<<<<< HEAD
 	
 	<br/>
 	
@@ -463,13 +419,9 @@
 	
 	<input type="text" id="search2" value="">
 	
+=======
+>>>>>>> refs/heads/new/sungkyoung
 			
-			</body>
-			
-
-	
-
-    
-
+</body>
 
 </html>

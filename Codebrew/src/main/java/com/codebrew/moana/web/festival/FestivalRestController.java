@@ -46,26 +46,6 @@ public class FestivalRestController {
 		System.out.println(this.getClass());
 	}
 	
-/*	@RequestMapping(value = "json/kakaoWeb", method=RequestMethod.GET)
-	public Contents kakaoWeb(@RequestParam("festivalName0") String festivalName0) throws Exception {
-		
-		System.out.println("레스트 컨트롤러............." + festivalName0);
-		
-		Contents contents = festivalService.kakaoWeb(festivalName0);
-		
-		String url = contents.getUrl();
-		
-		int eqIndex = url.indexOf("=");
-		
-		String youtubeEmbed = url.substring(eqIndex+1);
-		
-		contents.setUrl(youtubeEmbed);
-
-		return contents;
-
-	}
-*/
-	
 	@RequestMapping(value = "json/kakaoWeb", method=RequestMethod.GET)
 	public Contents kakaoWeb(@RequestParam("festivalName0") String festivalName0,
 										@RequestParam("festivalName1") String festivalName1,
@@ -128,7 +108,6 @@ public class FestivalRestController {
 	}
 	
 	@RequestMapping(value = "/json/getInitListDB")
-	
 	public Map<String,Object> getInitListDB() throws Exception {
 		
 		Map<String, Object> map = festivalService.getInitListDB();
@@ -191,7 +170,7 @@ public class FestivalRestController {
 
 	}
 
-	@RequestMapping(value = "/json/deleteZzim/{userId}/{festivalNo}")
+	@RequestMapping(value = "/json/deleteZzim/{userId}"+"/{festivalNo}")
 	public Zzim deleteZzim(@PathVariable("userId") String userId, @PathVariable("festivalNo") int festivalNo)
 			throws Exception {
 
