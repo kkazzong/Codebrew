@@ -46,25 +46,35 @@ public class FestivalRestController {
 		System.out.println(this.getClass());
 	}
 	
-/*	@RequestMapping(value = "json/kakaoWeb", method=RequestMethod.GET)
-	public Contents kakaoWeb(@RequestParam("festivalName0") String festivalName0) throws Exception {
-		
-		System.out.println("레스트 컨트롤러............." + festivalName0);
-		
-		Contents contents = festivalService.kakaoWeb(festivalName0);
-		
-		String url = contents.getUrl();
-		
-		int eqIndex = url.indexOf("=");
-		
-		String youtubeEmbed = url.substring(eqIndex+1);
-		
-		contents.setUrl(youtubeEmbed);
+	@RequestMapping(value = "/json/getSigunguCode/{areaCode}")
+	public Map<String, Object> getSigunguCode (@PathVariable ("areaCode") String areaCode) throws Exception {
 
-		return contents;
+		System.out.println("json/getSigunguCode........ : " + areaCode);
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		
+			map = festivalService.getSigunguCode(areaCode);
+			
+			System.out.println("레스트에서 시군구map....." + map);
+			
+			return map;
 
-	}
-*/
+		}
+	
+	@RequestMapping(value = "/json/getAreaCode")
+	public Map<String, Object> getAreaCode () throws Exception {
+
+		System.out.println("json/getAreaCode........");
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		
+			map = festivalService.getAreaCode();
+			
+			return map;
+
+		}
+
+
 	
 	@RequestMapping(value = "json/kakaoWeb", method=RequestMethod.GET)
 	public Contents kakaoWeb(@RequestParam("festivalName0") String festivalName0,
@@ -108,7 +118,6 @@ public class FestivalRestController {
 
 
 	}
-
 	
 	@RequestMapping(value = "json/getKeyword", method=RequestMethod.POST)
 	public List<Festival> getKeyword(@RequestBody Search search) throws Exception {
@@ -128,7 +137,6 @@ public class FestivalRestController {
 	}
 	
 	@RequestMapping(value = "/json/getInitListDB")
-	
 	public Map<String,Object> getInitListDB() throws Exception {
 		
 		Map<String, Object> map = festivalService.getInitListDB();
@@ -138,26 +146,6 @@ public class FestivalRestController {
 		return map;
 
 	}
-	
-	
-	
-	@RequestMapping(value = "/json/getAreaCode")
-	public Map<String, Object> getAreaCode () throws Exception {
-
-		System.out.println("json/getAreaCode........");
-		
-		Map<String,Object> map = new HashMap<String,Object>();
-		
-			map = festivalService.getAreaCode();
-			
-			System.out.println("레스트에서 map....." + map);
-			
-			return map;
-
-
-		}
-
-
 
 	@RequestMapping(value = "/json/addZzim/{userId}/{festivalNo}")
 	public Zzim addZzim(@PathVariable("userId") String userId, @PathVariable("festivalNo") int festivalNo)
@@ -191,7 +179,7 @@ public class FestivalRestController {
 
 	}
 
-	@RequestMapping(value = "/json/deleteZzim/{userId}/{festivalNo}")
+	@RequestMapping(value = "/json/deleteZzim/{userId}"+"/{festivalNo}")
 	public Zzim deleteZzim(@PathVariable("userId") String userId, @PathVariable("festivalNo") int festivalNo)
 			throws Exception {
 

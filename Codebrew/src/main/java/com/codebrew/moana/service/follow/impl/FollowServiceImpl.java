@@ -44,7 +44,7 @@ public class FollowServiceImpl implements FollowService {
 		
 		Follow follow = followDAO.getFollow(responseId, requestId);//(주현,주현)
 		
-		if(follow !=null) {
+		if(follow !=null) {//맞팔이 되면
 			
 			follow.setF4f("1");
 			
@@ -95,11 +95,11 @@ public class FollowServiceImpl implements FollowService {
 	}
 
 	@Override
-	public Map<String, Object> getFollowingList(Search search, String responseId) throws Exception {
+	public Map<String, Object> getFollowingList(Search search, String requestId) throws Exception {
 		// TODO Auto-generated method stub
 		
 		
-		search.setSearchKeyword(responseId);//내 아디가 reponseId가 되서 내가 request 하는 사람들 목록을 본다. 
+		search.setSearchKeyword(requestId);//내가 리퀘스트한 아디를 서치 컨디션에 넣기
 		
 		List<Follow> list= followDAO.getFollowingList(search);
 		int totalCount=followDAO.getFollowingTotalCount(search);
@@ -113,10 +113,10 @@ public class FollowServiceImpl implements FollowService {
 	}
 
 	@Override
-	public Map<String, Object> getFollwerList(Search search, String requestId) throws Exception {
+	public Map<String, Object> getFollwerList(Search search, String responseId) throws Exception {
 		// TODO Auto-generated method stub
 		
-		search.setSearchKeyword(requestId);//내 아디가 requestId가 되서 나를 response 하고 있는 사람들의 목록을 본다
+		search.setSearchKeyword(responseId);//나를 response 하는 목록
 		
 		List<Follow> list= followDAO.getFollowerList(search);
 		int totalCount=followDAO.getFollowerTotalCount(search);

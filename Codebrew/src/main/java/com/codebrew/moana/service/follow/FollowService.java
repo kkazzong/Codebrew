@@ -16,7 +16,7 @@ public interface FollowService {
 	public Follow getFollow(String responseId, String requestId)throws Exception;
 	
 	
-	public Map<String, Object> getFollowingList(Search search,String responseId)throws Exception;
+	public Map<String, Object> getFollowingList(Search search,String requestId)throws Exception;
 	
 	
 	public Map<String, Object> getFollwerList(Search search,String responseId)throws Exception;

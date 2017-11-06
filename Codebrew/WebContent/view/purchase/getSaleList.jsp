@@ -163,8 +163,15 @@
 	<style type="text/css">
 	
 		body {
-			padding-top : 70px;
-			background-color: #f2f4f6;
+			font-family: "Helvetica Neue", Helvetica, Arial;
+		  font-size: 14px;
+		  line-height: 20px;
+		  font-weight: 400;
+		  color: #3b3b3b;
+		  padding-top : 70px;
+		  -webkit-font-smoothing: antialiased;
+		  font-smoothing: antialiased;
+		  background-color: #f2f4f6;
 	    }
 	    
 	     .text-info {
@@ -180,6 +187,9 @@
 	    }
 	    
 	    .table>thead>tr>th {
+	    	font-weight: 900;
+			color: #ffffff;
+			background: #ea6153;
 	    	text-align: center;
 	    }
 	    
@@ -200,7 +210,7 @@
 <body>
 	
 	<!-- 툴바 -->
-	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>
+	<jsp:include page="/toolbar/toolbar_new2.jsp"></jsp:include>
 	
 	<!-- 모달 -->
 	<jsp:include page="/view/purchase/filterModal.jsp"></jsp:include>
@@ -318,7 +328,7 @@
 							<th>구매번호</th>
 							<th>아이디</th>
 							<th>분류</th>
-							<th>티켓명</th>
+							<th width="330">티켓명</th>
 							<th>구매날짜</th>
 							<th>수량</th>
 							<th>결제금액</th>

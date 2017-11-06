@@ -67,6 +67,104 @@ $(function(){
 	
 	});
 	
+
+$(function(){
+		 
+	var jsonValue="";	
+	
+	$(".areaCodePick").on('click',function(){
+		$.ajax( 
+				{
+					url : "/festivalRest/json/getAreaCode",
+					method : "GET" ,
+					dataType : "json" ,
+					headers : {
+						"Accept" : "application/json",
+						"Content-Type" : "application/json"
+					},
+					success : function(jsonData , status) {
+						$.each(jsonData.list,function(i,e){
+							
+							var rnum = e.rnum;
+							var name = e.name;
+							var code = e.code;
+						    
+						    var jsonValue = 
+"<option value='"+e.code+"' ${ ! empty search.searchCondition && search.searchCondition=='"+e.code+"' ? 'selected' : '' }>"+e.name+"</option>"
+							$("select[name='searchCondition']").removeAttr("style");
+						    
+
+
+
+						$("select[name='searchCondition']").prepend(jsonValue).on("click", function(){
+								
+								var areaCode = $(this).val();
+								
+								console.log(areaCode);
+								
+								fncGetSigunguCode(areaCode);
+								
+			});
+							
+							
+							
+							
+							
+						});
+					
+					}
+				});
+			});
+		});
+
+
+
+function fncGetSigunguCode(areaCode){
+	
+	 
+	 	$("#checkAreaCode").text(areaCode);
+	 
+	 $.ajax( 
+				{
+					url : "/festivalRest/json/getSigunguCode/"+areaCode,
+					method : "GET" ,
+					dataType : "json" ,
+					headers : {
+						"Accept" : "application/json",
+						"Content-Type" : "application/json"
+					},
+					success : function(jsonData , status) {
+						
+						$.each(jsonData.list,function(i,e){
+							var rnum = e.rnum;
+							var name = e.name;
+							var code = e.code;		
+							/* "<option value='"+e.code+"' ${ ! empty search.searchCondition && search.searchCondition=='"+e.code+"' ? 'selected' : '' }>"+e.name+"</option>" */								
+						    /* var jsonValue = "<option value='"+e.code+"'>"+e.name+"</option>"; */
+						    var jsonValue = 
+						    "<option value='"+e.code+"' ${ ! empty search.sigunguCode && search.sigunguCode=='"+e.code+"' ? 'selected' : '' }>"+e.name+"</option>"
+
+						
+
+  								$("select[name='sigunguCode']").removeAttr("style");
+  	
+	   							$("select[name='sigunguCode']").prepend(jsonValue).on("click", function(){
+									
+	   							var sigunguCode = $(this).val();
+	   							
+	   							$("#checkSigunguCode").text(sigunguCode);
+	   							
+	   							});
+							
+								
+			});//each
+							
+		}//success	
+	});//ajax
+
+}//javascript
+	
+	
 	
 </script>
 
@@ -134,9 +232,9 @@ $(function(){
 		<br/>
 		<br/>
 		<br/>
-			    지역검색
+<%-- 			    지역검색
 				  <div class="form-group">
-				    <select class="form-control" name="searchCondition" >
+				    <select class="form-control" name="searchCondition" id="searchCondition" >
 					<option value="" ${ ! empty search.searchCondition && search.searchCondition=="" ? "selected" : "" }>전체지역</option>
 					<option value="1" ${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>>서울</option>
 					<option value="2" ${ ! empty search.searchCondition && search.searchCondition==2 ? "selected" : "" }>>인천</option>
@@ -158,6 +256,38 @@ $(function(){
 					
 				</select>
 				</div>
+				정렬
+				  <div class="form-group">
+				    <select class="form-control" name="arrange" >
+					<option value="" ${ ! empty search.arrange && search.arrange=="" ? "selected" : "" }>>정렬</option>
+					<option value="A" ${ ! empty search.arrange && search.arrange=="A" ? "selected" : "" }>>제목</option>
+					<option value="B" ${ ! empty search.arrange && search.arrange=="B" ? "selected" : "" }>>조회순</option>
+					<option value="C" ${ ! empty search.arrange && search.arrange=="C" ? "selected" : "" }>>최근시작일순</option>
+					<option value="D" ${ ! empty search.arrange && search.arrange=="D" ? "selected" : "" }>>축제종료일순</option>
+				</select>
+				</div> --%>
+				
+				
+				<!--수정중..  -->
+				
+			
+					<div class="glyphicon glyphicon-cog">지역검색</div>
+					
+			<div class="areaCodePick">
+				  <div class="form-group">
+				  	<input type="hidden" >
+				    <select class="form-control" name="searchCondition">
+				    <!-- <select class="form-control" name="searchCondition"> -->
+				    <option value="">전지역</option>
+				</select>
+				</div>
+			</div>	
+				 <div class="form-group">
+				    <select class="form-control" name="sigunguCode" >
+				    <option value="">전체시군구</option>
+				</select>
+				</div>
+			
 				정렬
 				  <div class="form-group">
 				    <select class="form-control" name="arrange" >

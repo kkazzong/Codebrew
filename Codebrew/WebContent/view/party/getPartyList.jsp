@@ -281,7 +281,7 @@
 <body>
 
 	<!-- ToolBar Start /////////////////////////////////////-->
-	<jsp:include page="/toolbar/toolbar.jsp" />
+	<%-- <jsp:include page="/toolbar/toolbar.jsp" /> --%>
    	<!-- ToolBar End /////////////////////////////////////-->
    	
 	

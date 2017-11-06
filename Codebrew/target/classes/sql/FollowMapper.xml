@@ -63,20 +63,20 @@
  </update>
  
  
- <select id="getFollowingList" parameterType="search" resultMap="followSelectMap">
+ <select id="getFollowerList" parameterType="search" resultMap="followSelectMap">
  SELECT f.follow_no, f.response_id, f.request_id, f.f4f, u.nickname, u.profile_image
  FROM follow f, users u
  WHERE f.response_id=#{searchKeyword}
- AND u.user_id=f.request_id
+ AND u.user_id=f.request_id 
  </select>
  
  
  
- <select id="getFollowerList" parameterType="search" resultMap="followSelectMap">
+ <select id="getFollowingList" parameterType="search" resultMap="followSelectMap">
  SELECT f.follow_no, f.response_id, f.request_id, f.f4f, u.nickname, u.profile_image
  FROM follow f, users u
  WHERE f.request_id=#{searchKeyword}
- AND u.user_id=f.reponse_id
+ AND u.user_id=f.response_id 
  </select>
  
  

@@ -64,7 +64,8 @@ public class FestivalController {
 	@Value("#{imageRepositoryProperties['fileRoot']}")
 	String fileRoot;
 	
-	@RequestMapping(value = "/deleteZzim/{festivalNo}/{userId}" , method = RequestMethod.GET)
+//	@RequestMapping(value = "/deleteZzim/{festivalNo}/{userId:.+}" , method = RequestMethod.GET)
+	@RequestMapping(value = "/deleteZzim/{userId}/{festivalNo}" , method = RequestMethod.GET)
 	public ModelAndView deleteZzim(@PathVariable ("festivalNo") int festivalNo, @PathVariable ("userId") String userId)
 			throws Exception {
 
@@ -396,8 +397,6 @@ public class FestivalController {
 		} else {
 
 			System.out.println("else로 들어옴!! " + festival.getFestivalNo());
-			
-			festival.setFestivalImage("no.png");
 
 			festivalService.addFestival(festival);
 

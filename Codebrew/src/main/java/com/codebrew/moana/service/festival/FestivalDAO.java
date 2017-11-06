@@ -48,6 +48,8 @@ public interface FestivalDAO {
 	
 	public Map<String,Object> getAreaCode() throws Exception;
 	
+	public Map<String,Object> getSigunguCode(String areaCode) throws Exception;
+	
 	public List<Festival> getInitListDB() throws Exception;
 	
 	public Contents kakaoWeb(String festivalName0) throws Exception;

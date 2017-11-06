@@ -19,6 +19,23 @@
 	
 	<script type="text/javascript">
 	
+	
+	$(function() {
+		
+		//팔로우한 회원 프로필로 이동(회원프로필에서 userId입장에서 물고들어간다.)
+		$(".followProfile").on("click", function() {
+			var userId = $(this).text().trim();
+			self.location = "/myPage/getYourPage?userId="+userId;
+		});
+	
+	});
+	
+	
+	
+	
+	
+	
+	
 		 $(function() {
 		
 			
@@ -79,11 +96,11 @@
 </head>
 <body>
  <input type="hidden" value="${sessionScope.user.userId}" id="sessionId" name="sessionId">
-  <input type="hidden" value="${user.userId}" id="userId" name="userId"> 
-<jsp:include page="/toolbar/toolbar.jsp"/>
+  <%-- <input type="hidden" value="${user.userId}" id="userId" name="userId"> --%> 
+<%-- <jsp:include page="/toolbar/toolbar.jsp"/> --%>
 <div class="container">
     <div class="row profile">
-	<%-- 	<jsp:include page="/view/mypage/getMyPage.jsp"/>  --%>
+	<jsp:include page="/view/mypage/getMyPage.jsp"/>
 		
 			<div class="col-md-9">
 	          	<div class="profile-content">
@@ -99,7 +116,7 @@
 									<br> 
 									<img src="/resources/uploadFile/${follow.profileImage}" class="img-responsive" alt="" >
 									<input type="hidden" class="follow" name="follow" value="${follow.requestId }">
-										<span>${follow.nickname}</span><br> 
+										<span class="followProfile" title="클릭 이동">${follow.nickname}</span><br> 
 									<c:choose>
 										<c:when test="${ empty follow.nickname } ">
 											<input type="button" class="btn btn-sm" id="follow"
