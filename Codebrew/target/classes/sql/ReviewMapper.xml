@@ -188,12 +188,12 @@
 			(SELECT image_no, review_no, review_image FROM image WHERE review_no=#{reviewNo} ORDER BY review_no DESC) i, 
 			(SELECT video_no, review_no, review_video FROM video WHERE review_no=#{reviewNo} ORDER BY video_no DESC) v, 
 			(SELECT COUNT(good_no) good_count FROM good WHERE review_no=#{reviewNo}) g, 
-			(SELECT reply_no, review_no, user_id, reply_detail, reply_reg_date FROM reply WHERE review_no=#{reviewNo} ORDER BY reply_no DESC) rp
+			(SELECT reply_no, review_no, user_id, reply_detail, reply_reg_date FROM reply WHERE review_no=#{reviewNo} ORDER BY reply_no DESC) rp 
 		WHERE rv.review_no=rp.review_no(+) 
-		AND rv.review_no=i.review_no(+) 
-		AND rv.review_no=v.review_no(+) 
+		AND rv.review_no = i.review_no(+) 
+		AND rv.review_no = v.review_no(+) 
 		AND rv.festival_no = f.festival_no
-		AND rv.review_no=#{reviewNo}
+		AND rv.review_no = #{reviewNo}
 	</select>
 	
 	<!-- 7 -->

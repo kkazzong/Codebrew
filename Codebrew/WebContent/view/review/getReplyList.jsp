@@ -216,7 +216,7 @@
    			</thead>
    			
    			<tbody>
-   				<c:if test="${!empty review.replyList }">
+	   			 <c:if test="${!empty review.replyList }">	
 	   				<c:set var="i" value="0"/>
 	   				<c:forEach var="replyList" items="${review.replyList }">
 	   					<c:set var="i" value="${i+1}"/>

@@ -22,8 +22,8 @@ public interface ReplyDAO {
 	public void deleteReply(int replyNo) throws Exception;
 	
 	//5 해당 review에 대한 댓글 목록
-	public List<Reply> getReplyList(Search search) throws Exception;
+	public List<Reply> getReplyList(Search search, int reviewNo) throws Exception;
 	
 	//6 댓글 갯수
-	public int getTotalCount(Search search) throws Exception;
+	public int getTotalCount(Search search, int reviewNo) throws Exception;
 }

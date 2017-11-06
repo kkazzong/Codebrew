@@ -47,22 +47,22 @@ public class ReplyServiceImpl implements ReplyService {
 	}
 	@Override //5
 	public Map<String, Object> getAllReplyList(Search search) throws Exception {
-		
+		/*
 		List<Reply> replyList = replyDAO.getReplyList(search);
 		int totalCount = replyDAO.getTotalCount(search);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("replyList", replyList);
 		map.put("totalCount", new Integer(totalCount));
-		
-		return map;
+		*/
+		return null;
 	}
 	
 	@Override //6
-	public Map<String, Object> getReplyList(Search search) throws Exception {
+	public Map<String, Object> getReplyList(Search search, int reviewNo) throws Exception {
 		
-		List<Reply> replyList = replyDAO.getReplyList(search);
-		int totalCount = replyDAO.getTotalCount(search);
+		List<Reply> replyList = replyDAO.getReplyList(search, reviewNo);
+		int totalCount = replyDAO.getTotalCount(search, reviewNo);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("replyList", replyList);
