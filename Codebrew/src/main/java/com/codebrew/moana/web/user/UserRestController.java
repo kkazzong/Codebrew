@@ -40,7 +40,7 @@ public class UserRestController {
 	@RequestMapping(value="json/getUser", method=RequestMethod.POST)
 	public User getUser(@RequestParam("userId")String userId)throws Exception{
 		
-		System.out.println("/user/json/getUser : GET");
+		System.out.println("/userRest/json/getUser : GET");
 		
 		return userService.getUser(userId);
 		
@@ -50,7 +50,7 @@ public class UserRestController {
 	@RequestMapping(value="json/login", method=RequestMethod.POST)
 	public User login(@RequestBody User user, HttpSession session)throws Exception{
 	
-		System.out.println("/user/json/login : POST");
+		System.out.println("/userRest/json/login : POST");
 		
 		User dbUser=userService.getUser(user.getUserId());
 		//user:내가 입력한 정보  /dbUser:디비에서 가져온 정보  / session 세션에 담고 있는 정보
@@ -62,6 +62,9 @@ public class UserRestController {
 		return dbUser;
 	
 	}*/
+	
+	
+	
 	/*@RequestMapping(value="json/logout", method=RequestMethod.GET)
 	public void logout(HttpSession session)throws Exception{
 		System.out.println("/userRest/json/logout : GET");
@@ -160,16 +163,7 @@ public class UserRestController {
   }
 	
 	
-/*	//임시비밀번호보내기
-	@RequestMapping(value="json/findPwd", method=RequestMethod.POST)
-	public void findPwd(@RequestBody User user)throws Exception{
-		
-		System.out.println("/userRest/json/findPwd : POST");
-		
-		userService.findPwd(user);
-		//리턴할 필요없을거 같음
-	
-	}*/
+
 	
 	
 	

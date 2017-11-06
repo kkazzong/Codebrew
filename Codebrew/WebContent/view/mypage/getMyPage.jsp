@@ -4,8 +4,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 	<script src="https://use.fontawesome.com/04438b50a5.js"></script>
 	
-	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+	 <!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
+	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -13,12 +13,11 @@
 	
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
-	
+	  
 	
 	
 	<script type="text/javascript">
 	
-
 	 $(function() {
 		 
 			$("#profileFollow").on("click" , function() {
@@ -95,8 +94,10 @@
 		}
 		.profile-userpic img {
 		  float: none;
-		  margin: 0 auto;
-		  width: 50%;
+		   text-align: center;
+		 /*  margin: 0 auto;  */
+		 /* margin: center; */
+		  width: 70%;
 		  height: 120px;
 		  -webkit-border-radius: 50% !important;
 		  -moz-border-radius: 50% !important;
@@ -108,16 +109,16 @@
 		}
 		.profile-usertitle-name {
 		  color: #5a7391;
-		  font-size: 16px;
+		  font-size: 20px;
 		  font-weight: 600;
 		  margin-bottom: 50px;
 		}
 		.profile-usertitle-job {
 		  text-transform: uppercase;
 		  color: #5b9bd1;
-		  font-size: 12px;
+		  font-size: 20px;
 		  font-weight: 600;
-		  margin-bottom: 15px;
+		  margin-bottom: 20px;
 		}
 		.profile-userbuttons {
 		  text-align: center;
@@ -174,48 +175,64 @@
 	
 	</head>
 	<body>
-	<jsp:include page="/toolbar/toolbar.jsp"/>
+	<%-- <jsp:include page="/toolbar/toolbar.jsp"/> --%>
     <div class="container">
       <div class="row profile">
 		
 		<input type="hidden" id="sessionId" value="${sessionScope.user.userId}">
         
+        
+        
+        
+        
 		<div class="row">
-			<div class="profile-sidebar">
 			
+			   		<div class="profile-userpic" style="width: 180px; float: left; height: 250px;">
+            
+						<img src="/resources/uploadFile/${user.profileImage}" class="img-responsive" alt="" >
+						</div>
+						 
+					</div>
+					
+					
 		
 					<!-- SIDEBAR USER TITLE -->
 					<div class="profile-usertitle">
+						
 						<div class="profile-usertitle-name">
 							${user.nickname}
-						</div>
-						<div class="profile-pic"
-									style="width: 180px; float: left; height: 250px;">
-						<img src="/resources/uploadFile/${user.profileImage}" class="img-responsive" alt="" >
 						</div>
 						<div class="profile-usertitle-job">
 							${user.userId}
 						</div>
 					</div>
 			
-			
-			
-			
+	    
+			      
+			<!--user-profile  -->
 			                                                                                                                                                                                                                                                                                                                  
 				<div class="profile-userbuttons">
 					<c:if test="${! empty sessionScope.user.userId }">
 						<c:if test="${sessionScope.user.userId != user.userId }">  
-							 <c:choose >
-								 <c:when test="${ empty follow.requestId }">
+							 <c:choose>
+							 <c:when test="${empty follow.requestId }">
+								
+								 <!--나(sessionId) 이사람 requestId면 (팔로잉 목록에 없다면)-->
 									<button type="button" class="btn btn-sm" id="profileFollow" value="follow">Follow</button>			
 								</c:when>
-								<c:otherwise >
-									<button type="button" class="btn btn-sm" id="profileFollowing" value="following">Following</button>
-								</c:otherwise>
-							</c:choose>
-						</c:if>
+							     <c:otherwise>
+							      <!--나(sessionId) 이사람 requestId면 (팔로잉 목록에 있다면)-->
+								     <button type="button" class="btn btn-sm" id="profileFollowing" value="following">Following</button>
+							     </c:otherwise>
+						</c:choose>
 					</c:if> 
-				</div>
+				</c:if>
+			  </div>
+			
+		
+			
+			
+			
 			
 			
 			
@@ -226,17 +243,17 @@
 			
 				<div class="profile-usermenu">
 					<ul class="nav">
-						<li id="getFollowingList" class="test">
+						<li id="getFollowerList" class="test">
 							<input type="hidden" id="userId" name="userId" value="${user.userId}">
 							<a href="#">
 							<i class="fa fa-user-circle" aria-hidden="true" ></i>
-							팔로잉</a>
+							팔로워</a>
 						</li>
-						<li id="getFollowerList" class="test">
-						  <%-- <input type="hidden" id="userId" name="userId" value="${user.userId}"> --%>
+						<li id="getFollowingList" class="test">
+						 
 							<a href="#">
 							<i class="fa fa-user-circle-o" aria-hidden="true"></i>
-							팔로워</a>
+							팔로잉</a>
 						</li>
 					</ul>
 				</div>
@@ -246,7 +263,6 @@
 			
 			</div>
 		 </div>
-	</div>
-	</div>
+	
 </body>
 </html>

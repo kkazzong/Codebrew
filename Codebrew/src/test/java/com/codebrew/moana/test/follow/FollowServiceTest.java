@@ -3,6 +3,7 @@ package com.codebrew.moana.test.follow;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,7 +29,7 @@ public class FollowServiceTest {
 	@Qualifier("followServiceImpl")
 	private FollowService followService;
 	
-	
+	//@Test
 	public void testAddFollow() throws Exception{
 		User user=new User();
 		user.setUserId("user07@naver.com");
@@ -47,7 +48,7 @@ public class FollowServiceTest {
 		
 	}
 	
-	
+	//@Test
 	public void testDeleteFollow() throws Exception{
 		User user=new User();
 		user.setUserId("user07@naver.com");
@@ -64,7 +65,7 @@ public class FollowServiceTest {
 		
 	}
 	
-	
+	//@Test
 	public void testGetFollow() throws Exception{
 		
 		User user=new User();
@@ -81,7 +82,7 @@ public class FollowServiceTest {
 		
 	}
 	
-	
+	//@Test
 	public void testGetFollowingList() throws Exception{
 		
 		Search search=new Search();
@@ -106,10 +107,10 @@ public class FollowServiceTest {
 		
 	}
 	
-	
+	@Test
 	public void testGetFollowerList() throws Exception{
 		
-Search search=new Search();
+         Search search=new Search();
 		
 		
 		User user=new User();

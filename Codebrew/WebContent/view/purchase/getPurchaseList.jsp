@@ -438,7 +438,7 @@
 <body>
 	
 	<!-- 툴바 -->
-	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>
+     <jsp:include page="/toolbar/toolbar.jsp"></jsp:include> 
 	
 	<!-- 모달 -->
 	<jsp:include page="/view/purchase/filterModalUser.jsp"></jsp:include>

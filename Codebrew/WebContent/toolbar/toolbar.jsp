@@ -145,6 +145,7 @@
 			                    <li><a href="#">마이페이지</a></li> 
 			              </ul>
 			           </li>
+
 		             	<li><a href="#">${sessionScope.user.nickname}님</a></li>
 		             	<li><a href="#">로그아웃</a></li>
 	             	</c:if>

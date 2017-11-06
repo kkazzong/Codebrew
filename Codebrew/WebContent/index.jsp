@@ -86,47 +86,43 @@
 									$("#tag2 > div > p").text(jsonData.list[2].festivalNo);
 									$("#tag2").val(jsonData.list[2].festivalNo);
 									
-									
-									/* test  */
-									/* alert("init"+ $("#festivalName0").text()); */
-									
-									/* other */
 									fncGetWebSearch();
 									
 									
 								}
 				});
 	});
-	
-	
-function fncGetWebSearch() {
-		
+ 
+ function fncGetWebSearch() {
 		$(function() {
 			
 			var festivalName0 = $("#festivalName0").text();
-			var festivalName0 = $("#festivalName1").text();
-			var festivalName0 = $("#festivalName2").text();
+			var festivalName1 = $("#festivalName1").text();
+			var festivalName2 = $("#festivalName2").text();
 		
 			 $.ajax( 
 					 {
-						url : "/festivalRest/json/kakaoWeb?festivalName0="+festivalName0,
+						url : "/festivalRest/json/kakaoWeb?festivalName0="+festivalName0+"&festivalName1="+festivalName1+"&festivalName2="+festivalName2,
 						method : "GET",
-						success : function(JSONData , status) {
+						success : function(jsonData , status) {
 						
-						 $("#iframe").attr("src","//www.youtube.com/embed/"+JSONData.url + "?autoplay=1&rel=0");
-							
-						}
-					 });
+					if(jsonData.url0!=null){
+						 $("#iframe").attr("src","//www.youtube.com/embed/"+jsonData.url0 + "?autoplay=1&rel=0");
+						 
+					}else if(jsonData.url1!=null){
+						 $("#iframe").attr("src","//www.youtube.com/embed/"+jsonData.url1 + "?autoplay=1&rel=0");
+						 
+					}else if(jsonData.url2!=null){
+						 $("#iframe").attr("src","//www.youtube.com/embed/"+jsonData.url2 + "?autoplay=1&rel=0");
+					}else{
+						 $("#iframe").attr("src","//www.youtube.com/embed/8Nzvfks800c?autoplay=1&rel=0");
+					}
+				}
+			});
 	});
 }
-
-		
-
 	
-
-	
-	
-	$(function() {
+$(function() {
 	$("#searchKeyword").autocomplete({
 		source: function( request, response ) {
 	        $.ajax( {
@@ -153,20 +149,15 @@ function fncGetWebSearch() {
 	            		return {
 	            			label :  value.festivalName,
 	            			value : value.festivalName
-	            			
 	            		}
-	        	}));
-	        	
-	          }
-	        } );
+		        	}));
+		          }
+	        });
 	    }
 	});
-	});
-	
-	
+});
 	   
 	   $(function(){
-			
 			$("input:text[name='searchKeyword']").on('keydown',function(event){
 				
 				if(event.keyCode ==13){
@@ -196,12 +187,6 @@ function fncGetWebSearch() {
 			   self.location="/festival/getFestivalDB?festivalNo="+festivalNo;
 		   });
 	   });
-	   
-	   
-	
-				    	
-				    	
-  
 	    
 </script>
 
@@ -349,28 +334,6 @@ function fncGetWebSearch() {
       </div> 
       
     <!-- carousel 끝 -->
-	
-	<br/>
-	
-	
-	
-	
-	
-	<br/>
-	
-	<input type="text" id="search1" value="">
-	
-	<br/>
-	
-	<input type="text" id="search2" value="">
-	
-			
-			</body>
-			
-
-	
-
-    
-
+</body>
 
 </html>

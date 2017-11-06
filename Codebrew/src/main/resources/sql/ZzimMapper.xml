@@ -27,7 +27,8 @@
 		VALUES (
 		
 		SEQ_ZZIM_ZZIM_NO.NEXTVAL,
-		#{userId:VARCHAR},
+		<!-- #{userId:VARCHAR}, -->
+		#{userId},
 		#{festivalNo:NUMERIC}
 		
 		)
@@ -35,14 +36,16 @@
 	
 	<delete id="deleteZzim" parameterType="zzim" >
 		DELETE FROM ZZIM 
-		WHERE USER_ID = #{userId:VARCHAR}
+		<!-- WHERE USER_ID = #{userId:VARCHAR} -->
+		WHERE USER_ID = #{userId}
 		AND FESTIVAL_NO = #{festivalNo:NUMERIC}
 		
 	</delete>
 	
 	<select id="getZzim" parameterType="zzim" resultMap="zzimSelectMap">
 		SELECT * FROM ZZIM
-		WHERE USER_ID = #{userId:VARCHAR}
+		<!-- WHERE USER_ID = #{userId:VARCHAR} -->
+		WHERE USER_ID = #{userId}
 		AND FESTIVAL_NO = #{festivalNo:NUMERIC}
 	</select>
 	
@@ -58,7 +61,8 @@
 						
 						WHERE f.festival_no = z.festival_no
 						
-						AND z.user_id = #{userId:VARCHAR}	
+						<!-- AND z.user_id = #{userId:VARCHAR}	 -->
+						AND z.user_id = #{userId}	
 						
 						AND f.end_date &gt;= TO_CHAR(SYSDATE, 'yyyymmdd')
 						
@@ -128,7 +132,8 @@
 						
 						WHERE f.festival_no = z.festival_no
 						
-						AND z.user_id = #{userId:VARCHAR}
+						<!-- AND z.user_id = #{userId:VARCHAR} -->
+						AND z.user_id = #{userId}
 						
 						AND end_date &gt;= TO_CHAR(SYSDATE, 'yyyymmdd')
 						
