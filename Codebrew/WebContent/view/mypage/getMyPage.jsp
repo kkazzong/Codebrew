@@ -183,6 +183,7 @@
 	</head>
 	<body>
 	<%-- <jsp:include page="/toolbar/toolbar.jsp"/> --%>
+	
     <div class="container">
       <div class="row profile">
 		

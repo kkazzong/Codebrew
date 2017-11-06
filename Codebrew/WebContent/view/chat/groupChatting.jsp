@@ -113,8 +113,8 @@
 					}
 					
 					socket.emit('message', output);
-					addToDiscussion('self',data,time);
-					
+					//addToDiscussion('self',data,time);
+					addToGroupDiscussion('self',output);
 				
 			});
 			
@@ -154,7 +154,8 @@
 					}
 					
 					socket.emit('message', output);
-					addToDiscussion('self',data,time);
+					//addToDiscussion('self',data,time);
+					addToGroupDiscussion('self',output);
 					
 				}
 			});
@@ -205,6 +206,7 @@
 					//$("#createRoomBtn").on("click", function(){ 
 						
 						var senderId = $("#idInput").val(); //sender 아이디
+						var senNick = "${user.nickname}"; /////////////////////새로추가 센닉
 						var hostId = "${party.user.userId}"; //party host 아이디
 						alert("senderId ==> "+senderId);
 						alert("hostId ==> "+hostId);
@@ -244,7 +246,9 @@
 									
 									var output = {
 											command : 'join',
-											roomId : roomId
+											roomId : roomId,
+											senderId : senderId, //////새로추가 !!
+											senNick : senNick
 									}
 									
 									console.log("서버로 보낼 데이터 : "+JSON.stringify(output));
@@ -276,6 +280,7 @@
 			
 			var options = {'forceNew' : true};
 			var url = 'http://' + host + ':' + port;
+			var senderId = $("#idInput").val();
 			// 연결 요청
 			socket = io.connect(url, options);
 			
@@ -283,7 +288,8 @@
 				println('웹 소켓 서버에 연결되었습니다. : '+ url);
 				
 				socket.on('message', function(message){
-					console.log(JSON.stringify(message));
+					
+					console.log("groutdiscussion"+JSON.stringify(message));
 					
 					println('<p>수신 메세지 : ' + message.sender + ', ' + message.recipient + ', '
 							+ message.command + ', ' + message.type + ', ' + message.data +','+message.time+ '</p>');
@@ -292,7 +298,8 @@
 					
 					if(senderId != message.sender){
 						
-						addToDiscussion('other', message.data, message.time);
+						//addToDiscussion('other', message.data, message.time);
+						addToGroupDiscussion('other', message);
 					}
 					
 				});
@@ -306,14 +313,16 @@
 					var sessionId = $('#idInput').val(); //세션아이디
 					
 					for(var i = 0; i < message.length; i++) {
-						println('<p>디비에서 가져온 채팅 : ' +message[i].sender+ ', ' + message[i].recipient + ', '+ message[i].message +','+message[i].time+'</p>');
+						println('<p>디비에서 가져온 채팅 : ' +message[i].sender+ ', ' + message[i].recipient + ', '+ message[i].data +','+message[i].time+'</p>');
 						//addToDiscussion('self', message[i].message, message[i].time);
 						
 						//alert(message[i].sender)
 						if(sessionId == message[i].sender) {
-							addToDiscussion('self', message[i].message, message[i].time);
+							//addToDiscussion('self', message[i].message, message[i].time);
+							addToGroupDiscussion('self', message[i]);
 						} else {
-							addToDiscussion('other', message[i].message, message[i].time);
+							//addToDiscussion('other', message[i].message, message[i].time);
+							addToGroupDiscussion('other', message[i]);
 						}
 						
 					}
@@ -343,7 +352,21 @@
 					
 				});
 				
-			});
+				///////////////////////////////////새로들어온사람 정보받기////////////////////
+				socket.on('join', function(message){
+				
+					console.log("서버에서 받은 룸 데이터 : "+JSON.stringify(message));
+					
+					println('<p>방 이벤트 : ' +message.command+ '</p>');
+					println('<p>새로운 사람을을를 받았습니다 </p>');
+					
+					//방리스트
+					if(message.command == 'join') {
+						
+						 addToJoin(message);						
+					}
+				});
+					
 			
 			socket.on('disconnect', function(){
 				println('웹 소켓 연결이 종료되었습니다.');
@@ -353,8 +376,8 @@
 				console.log(JSON.stringify(response));
 				println('응답 메세지를 받았습니다. : ' + response.command + ', ' + response.code + ', ' + response.message);
 			});
-		}
-		
+		});
+	}
 		
 		function println(data) {
 			console.log(data);
@@ -371,9 +394,12 @@
 			
 			
 			if(writer == 'other'){
-				
-				img = '${recipient.profileImage}';
-				recipient = '${recipient.nickname}';
+				//alert(msg);
+				//img = '${recipient.profileImage}';
+				//recipient = '${recipient.nickname}';
+				///////////////recipient는 서버에서 받은걸로
+				img = 'default_profile_image.jpg';
+				recipient = msg.sender;
 			
 				contents = "<li class = '"+writer+"'>"
 							+"<div>"+recipient+"</div>"
@@ -412,6 +438,82 @@
 				
 			}
 		}
+		
+		
+		/////////////////그룹채팅///////////////////////////////////////////////////////////////////
+		function addToGroupDiscussion(writer, message){
+			println("addToGroupDiscussion 호출됨 : " + writer + ", " + msg);
+			var img;
+			var msg = message.data;
+			var contents;
+			var recipient;
+			var sender;
+			var time = message.time;
+			
+			
+			if(writer == 'other'){
+				//img = '${recipient.profileImage}';
+				//recipient = '${recipient.nickname}';
+				///////////////recipient는 서버에서 받은걸로
+				img = 'default_profile_image.jpg';
+				recipient = message.senNick;
+				console.log("other임!!!!!!!!!!!!!!!!!!!!!!!!!!"+msg+recipient);
+			
+				contents = "<li class = '"+writer+"'>"
+							+"<div>"+recipient+"</div>"
+							+"<div class = 'avatar'>"
+							+"<img class = 'img-circle' src = '/resources/uploadFile/" + img + "'width='40' length='40'/>"
+							+"</div>"
+							+"<div class = 'message'>"
+							+"<p>" + msg + "</p>"
+							/* +"<time datetime='2017-10-05 13:52'>"+time+"</time>" */
+							+"<time datetime='yyyy-mm-ddThh:mm:ss:Z'>"+time+"</time>"
+							+"</div>"
+							+"</li>";
+								
+				println("추가할 HTML : " + contents);
+				$(".discussion").append(contents);
+			
+			}else{
+				
+				img = '${sender.profileImage}';
+				sender = '${sender.nickname}';
+				
+				contents = "<li class = '"+writer+"'>"
+							+"<div>"+sender+"</div>"
+							+"<div class = 'avatar'>"
+							+"<img class = 'img-circle' src = '/resources/uploadFile/" + img + "'width='40' length='40'/>"
+							+"</div>"
+							+"<div class = 'message'>"
+							+"<p>" + msg + "</p>"
+							+"<time datetime='yyyy-mm-ddThh:mm:ss:Z'>"+time+"</time>"
+							+"</div>"
+							+"</li>";
+								
+				println("추가할 HTML : " + contents);
+				$(".discussion").append(contents);
+				$("#dataInput").val("");
+				
+			}
+		}
+		
+		/* function addToJoin(message){
+			println("addToGroupDiscussion 호출됨 : " +  msg);
+			
+				img = '${sender.profileImage}';
+				sender = '${sender.nickname}';
+				
+				contents = "<li class = '"+writer+"'>"
+							+"<div class = 'message'>"
+							+"<p>" + msg.senNick + "님 입장!</p>"
+							+"</div>"
+							+"</li>";
+								
+				println("추가할 HTML : " + contents);
+				$(".discussion").append(contents);
+				$("#dataInput").val("");
+				
+		} */
 			
 		
 		

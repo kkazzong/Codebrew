@@ -87,8 +87,8 @@ public class ChatController {
 		return modelAndView;
 	}
 	
-	
-	@RequestMapping( value="getGroupChatting")
+	//수정된 부분. RequestMethod
+	@RequestMapping( value="getGroupChatting", method=RequestMethod.POST)
 	public ModelAndView getGroupChatting(@RequestParam("sender") String sender, @RequestParam("partyNo") String partyNo) throws Exception {
 		
 		System.out.println("\n>>> /chat/getGroupChatting :: POST start <<<");
