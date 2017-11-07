@@ -61,18 +61,18 @@ $(function(){
 			
 			if(event.keyCode ==13){
 				event.preventDefault();
-				$( "button:contains('검색')" ).click();
+				$( "#DBSearch" ).click();
 			}
 		});
 	
 	});
 	
 
-$(function(){
+/* $(function(){
 		 
 	var jsonValue="";	
 	
-	$(".areaCodePick").on('click',function(){
+	$(document).ready(function() {
 		$.ajax( 
 				{
 					url : "/festivalRest/json/getAreaCode",
@@ -94,8 +94,6 @@ $(function(){
 							$("select[name='searchCondition']").removeAttr("style");
 						    
 
-
-
 						$("select[name='searchCondition']").prepend(jsonValue).on("click", function(){
 								
 								var areaCode = $(this).val();
@@ -106,18 +104,18 @@ $(function(){
 								
 			});
 							
+							 */
 							
 							
-							
-							
+	/* 						
 						});
 					
 					}
 				});
 			});
-		});
+		}); */
 
-
+/*
 
 function fncGetSigunguCode(areaCode){
 	
@@ -141,28 +139,30 @@ function fncGetSigunguCode(areaCode){
 							var code = e.code;		
 							/* "<option value='"+e.code+"' ${ ! empty search.searchCondition && search.searchCondition=='"+e.code+"' ? 'selected' : '' }>"+e.name+"</option>" */								
 						    /* var jsonValue = "<option value='"+e.code+"'>"+e.name+"</option>"; */
-						    var jsonValue = 
-						    "<option value='"+e.code+"' ${ ! empty search.sigunguCode && search.sigunguCode=='"+e.code+"' ? 'selected' : '' }>"+e.name+"</option>"
+						//    var jsonValue = 
+						  //  "<option value='"+e.code+"' ${ ! empty search.sigunguCode && search.sigunguCode=='"+e.code+"' ? 'selected' : '' }>"+e.name+"</option>"
 
 						
 
-  								$("select[name='sigunguCode']").removeAttr("style");
+  							//	$("select[name='sigunguCode']").removeAttr("style");
   	
-	   							$("select[name='sigunguCode']").prepend(jsonValue).on("click", function(){
+	   							//$("select[name='sigunguCode']").prepend(jsonValue).on("click", function(){
 									
-	   							var sigunguCode = $(this).val();
+	   							//var sigunguCode = $(this).val();
 	   							
-	   							$("#checkSigunguCode").text(sigunguCode);
+	   							//$("#checkSigunguCode").text(sigunguCode);
 	   							
-	   							});
+	   							//});
 							
 								
-			});//each
+			//});//each
 							
-		}//success	
-	});//ajax
+		//}//success	
+//	});//ajax
 
-}//javascript
+//}//javascript
+
+
 	
 	
 	
@@ -232,7 +232,7 @@ function fncGetSigunguCode(areaCode){
 		<br/>
 		<br/>
 		<br/>
-<%-- 			    지역검색
+			    지역검색
 				  <div class="form-group">
 				    <select class="form-control" name="searchCondition" id="searchCondition" >
 					<option value="" ${ ! empty search.searchCondition && search.searchCondition=="" ? "selected" : "" }>전체지역</option>
@@ -265,13 +265,13 @@ function fncGetSigunguCode(areaCode){
 					<option value="C" ${ ! empty search.arrange && search.arrange=="C" ? "selected" : "" }>>최근시작일순</option>
 					<option value="D" ${ ! empty search.arrange && search.arrange=="D" ? "selected" : "" }>>축제종료일순</option>
 				</select>
-				</div> --%>
+				</div>
 				
 				
 				<!--수정중..  -->
 				
 			
-					<div class="glyphicon glyphicon-cog">지역검색</div>
+<%-- 					<div class="glyphicon glyphicon-cog">지역검색</div>
 					
 			<div class="areaCodePick">
 				  <div class="form-group">
@@ -297,7 +297,7 @@ function fncGetSigunguCode(areaCode){
 					<option value="C" ${ ! empty search.arrange && search.arrange=="C" ? "selected" : "" }>>최근시작일순</option>
 					<option value="D" ${ ! empty search.arrange && search.arrange=="D" ? "selected" : "" }>>축제종료일순</option>
 				</select>
-				</div>
+				</div> --%>
 				
 				
 				 <div class="form-group">
@@ -306,7 +306,7 @@ function fncGetSigunguCode(areaCode){
 				    			 value="${! empty search.searchKeyword ? search.searchKeyword : '' }"  >
 				  </div>
 
-		<button type="button" class="btn btn-default btn-block">검색</button>
+		<button type="button" class="btn btn-default btn-block" id="DBSearch">검색</button>
 		
 		<br/>
 		<br/>

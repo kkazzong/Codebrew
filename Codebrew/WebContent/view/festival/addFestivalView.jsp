@@ -87,17 +87,10 @@ $(function() {
 		});
 		
 		$(function() {
-			$("button[type='button']").on("click", function() {
-
-				$('form').attr("method","POST").attr("enctype", "multipart/form-data").attr("action", "/festival/addFestival").submit();
-			});
-		});
-		
-		$(function() {
 			$('#startDate').datepicker(
 					{
 
-						dateFormat : "yyyymmdd",
+						dateFormat : "yymmdd",
 						showMonthAfterYear : true,
 						changeMonth: true,
 					    changeYear: true,
@@ -112,7 +105,7 @@ $(function() {
 			$('#endDate').datepicker(
 					{
 
-						dateFormat : "yyyymmdd",
+						dateFormat : "yymmdd",
 						showMonthAfterYear : true,
 						changeMonth: true,
 					    changeYear: true,
@@ -122,6 +115,58 @@ $(function() {
 								'8월', '9월', '10월', '11월', '12월' ]
 					});
 		});
+		
+		$.datepicker.setDefaults({
+	        dateFormat: 'yy-mm-dd',
+	        monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+	        monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+	        dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+	        dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+	        dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+	        showMonthAfterYear: true,
+	        yearSuffix: '년',
+	        changeMonth: true,
+			changeYear : true,
+			buttonImageOnly: true,
+		    yearRange : "1990:2017"
+    	});
+		
+		$(function() {
+			$("button[type='button']").on("click", function() {
+
+				fncWriteFestival();
+			});
+		});
+		
+		function fncWriteFestival() {
+			
+			var festivalName=$("textarea[name='festivalName']").val();
+			var startDate=$("#startDate").val();
+			var endDate=$("#endDate").val();
+			var addr=$("#addr").val();
+			
+			if(festivalName == null || festivalName.length <1){
+				alert("축제명은 반드시 한 글자 이상 입력하셔야 합니다.");
+				return;
+			}
+			
+			if(startDate == null || startDate.length <1){
+				alert("축제시작일을 입력하세요.");
+				return;
+			}
+			
+			if(endDate == null || endDate.length <1){
+				alert("축제종료일을 입력하세요.");
+				return;
+			}
+			
+			if(addr == null || addr.length <1){
+				alert("장소를 입력하세요.");
+				return;
+			}
+			
+			$('form').attr("method","POST").attr("enctype", "multipart/form-data").attr("action", "/festival/addFestival").submit();
+		}
 
 		
 		</script>		
@@ -196,7 +241,7 @@ $(function() {
 			
 			<div class="col-sm-4">
 				<%-- <input type = "text" class="form-control" id="addr" name="addr" value= "${festival.addr }"> --%>
-				<textarea rows="5" cols="30" name="addr">${festival.addr }</textarea>
+				<textarea rows="5" cols="30" id="addr" name="addr">${festival.addr }</textarea>
 			</div>	
 			
 		</div>

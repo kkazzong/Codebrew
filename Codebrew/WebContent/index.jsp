@@ -178,7 +178,7 @@ $(function() {
 	   });
 	   
 	    $(function(){
-		   $("button").on("click",function(){
+		   $("button:contains('상세보기')").on("click",function(){
 				
 			   var festivalNo = $(this).val();
 			   
