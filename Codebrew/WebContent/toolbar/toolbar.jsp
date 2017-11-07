@@ -111,6 +111,14 @@
 	                   </ul>
 	                 </li>
 	                 
+	                 <c:if test="${!empty user}">
+		                  <li class="dropdown">
+			                <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+			                    <span >나의채팅방</span>
+			                </a>
+		                </li>
+	                 </c:if>
+	                 
 	                <!-- 관리자일때 -->
 	                <c:if test="${sessionScope.user.role == 'a'}">
 		                <li class="dropdown">
@@ -291,6 +299,14 @@
 				self.location = "/statistics/getStatistics";
 			});
 			
+		});
+  		
+		//////채팅관리//////
+		$(function(){
+			
+			$("a:contains('나의채팅방')").bind('click', function(){
+				self.location = "/chat/getChattingList";
+			});
 		});
   		
 		//////파티관리//////
