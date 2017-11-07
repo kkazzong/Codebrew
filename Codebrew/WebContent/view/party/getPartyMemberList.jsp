@@ -69,24 +69,27 @@
 									  			
 									  			
 									  			/* 파티 멤버 리스트 */
-									  			var partyMemberList = "<div class='row' id='userDiv'>"
+									  			var partyMemberList ="<p>"
+									  								+"<div class='row' id='userDiv'>"
 																	+"<input type='hidden' id='userId' name='userId' value='"+JSONData.list[i].user.userId+"'>"
-																	+"<span>"
+																	+"<div class='col-xs-2' id='userImage'>"
 																		+"<img class='img-circle' src='/resources/uploadFile/"+JSONData.list[i].user.profileImage+"' width='50' height='50'>"
-																	+"</span>"
-																	+"<span>"
+																	+"</div>"
+																	+"<div class='col-xs-7' id='userNick'>"
 																	+JSONData.list[i].user.nickname+"&nbsp;"+"( "+JSONData.list[i].user.userId+" )"
-																	+"</span>"
-																	+"<span>"
+																	+"</div>"
+																	+"<div class='col-xs-3' id='userRole'>"
 																 	+JSONData.list[i].role 
 																	//if(role.indexOf('host') != -1){
 																		 //+"<c:if test='${"+role+"== host}'>" 
 																		//+JSONData.list[i].role	
 																		//+"</c:if>" 
 																	//}
-																	+"</span>"
+																	+"</div>"
+																	
+																	+"</div>"
 																	+"<hr>"
-																	+"</div>";
+																	+"</p>";
 													
 												$("form.form-horizontal-1").append(partyMemberList); 
 												console.log(partyMemberList);
