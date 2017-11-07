@@ -134,6 +134,22 @@
 		});	
 	
 		
+		function getAge(){
+			
+		    var bbirthday=$("input[name='birth']").val();
+		
+			var birthday=new Date(bbirthday);
+			
+			var today=new Date();
+		
+			var year=today.getFullYear()-birthday.getFullYear();
+			
+			age=Number(year)
+			
+			console.log(age)
+			
+			$("input[name='age']").val(age)
+		};
 	   
 	
 		 
@@ -315,10 +331,10 @@
 		  <div class="form-group">
 		    <label for="birth" class="col-sm-offset-1 col-sm-3 control-label">생년월일</label>
 		    <div class="col-sm-4">
-		    <input type="text" id="datepicker" class="form-control"  readonly="readonly" name="birth" >
+		    <input type="text" id="datepicker" class="form-control"  readonly="readonly" name="birth" onchange="getAge();" >
 		    </div>
 		  </div>
-		  
+		  <input type="hidden" name="age">
 		
 		  
 	<div class="form-group">

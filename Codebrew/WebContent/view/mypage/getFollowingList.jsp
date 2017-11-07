@@ -32,10 +32,6 @@
 	
 	
 	
-	
-	
-	
-	
 		 $(function() {
 		
 			
@@ -73,6 +69,7 @@
 		
 	
 	</script>
+	
 	<style>
 	 body {
 		padding-top : 70px;
@@ -80,15 +77,7 @@
 	
 	
 	
-		.profile-pic img {
-		  float: none;
-		  margin: 0 auto;
-		  width:110px;
-		  height:120px;
-		  -webkit-border-radius: 50% !important;
-		  -moz-border-radius: 50% !important;
-		  border-radius: 50% !important;
-		}
+		
 		.profile-content{
 			text-align:center;
 		}
@@ -161,63 +150,56 @@
         </button>
       </div>
       <div class="modal-body">
-        <form class="form-horizontal-2" enctype="multipart/form-data">
+        <form class="form-horizontal-1" enctype="multipart/form-data">
 		
 		
 			
-		 <input type="hidden" value="${sessionScope.user.userId}" id="sessionId" name="sessionId">
-  <%-- <input type="hidden" value="${user.userId}" id="userId" name="userId"> --%> 
-<%-- <jsp:include page="/toolbar/toolbar.jsp"/> --%>
-<div class="container">
-    <div class="row profile">
-    
-<%-- <jsp:include page="/view/mypage/getMyPage.jsp"/>--%>
+  <input type="hidden" value="${sessionScope.user.userId}" id="sessionId" name="sessionId">
+  <input type="hidden" value="${user.userId}" id="userId" name="userId"> 
 
-			<div class="col-md-9">
-	          	<div class="profile-content">
+<!-- <div class="container">
+    <div class="row profile">
+       <div class="col-md-9">
+	          	<div class="profile-content"> -->
 					<div class="row">
-						<div>
-							<c:set var="i" value="0" />
+					<!-- 	<div> -->
+						<c:set var="i" value="0" />
 							<c:forEach var="follow" items="${list5}">
 								<c:set var="i" value="${ i+1 }" />
-								<div class="profile-pic"
-									style="width: 180px; float: left; height: 250px;">
-									<br>
-									<br>
-									<br> 
-									<img src="/resources/uploadFile/${follow.profileImage}" class="img-responsive" alt="" >
+								 <div class="col-xs-6 col-md-4">
+									<img class="img-circle" src="/resources/uploadFile/${follow.profileImage}" width="40" height="40"></div>
 									<input type="hidden" class="follow" name="follow" value="${follow.requestId }">
-										<span class="followProfile" title="클릭 이동">${follow.nickname}</span><br> 
+										<div class="col-xs-6 col-md-4" title="클릭 이동">${follow.nickname}</div>
+									<div class="col-xs-6 col-md-4">
 									<c:choose>
 										<c:when test="${ empty follow.nickname } ">
-											<input type="button" class="btn btn-sm" id="follow"
+											<input type="button" class="btn btn-sm pull-right" id="follow"
 												value="Follow">
 											<input type="hidden" class="follow"
 												value="${follow.requestId }">
 										</c:when>
 										<c:otherwise>
-											<input type="button" class="btn btn-info btn-sm"
+											<input type="button" class="btn btn-info btn-sm pull-right"
 												id="following" value="Following">
 											<input type="hidden" class="follow"
 												value="${follow.requestId }">
 										</c:otherwise>
 									</c:choose>
 								</div>
+								<br>
+								<br>
+								<br>
 							</c:forEach>
-						</div>         	
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+			               
+			               <hr>
+			               </div>
+			               <hr>
 	
 	
 		
 			
 			
-			
-			
-			
+				
 			
 		</form>
       </div>

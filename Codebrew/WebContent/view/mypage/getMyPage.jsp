@@ -92,24 +92,16 @@
 		.profile {
 		  margin: 20px 0;
 		}
-		/* Profile sidebar */
+		
+		
+		
 		.profile-sidebar {
 		  padding: 20px 0 10px 0;
 		  background: #F1F3FA;
 		  border-radius : 4px;
 		  /* background: #fff; */
 		}
-		.profile-userpic img {
-		  float: none;
-		   text-align: center;
-		 /*  margin: 0 auto;  */
-		 /* margin: center; */
-		  width: 70%;
-		  height: 120px;
-		  -webkit-border-radius: 50% !important;
-		  -moz-border-radius: 50% !important;
-		  border-radius: 50% !important;
-		}
+		
 		.profile-usertitle {
 		  text-align: center;
 		  margin-top: 50px;
@@ -183,6 +175,8 @@
 	</head>
 	<body>
 	<%-- <jsp:include page="/toolbar/toolbar.jsp"/> --%>
+	<jsp:include page="/view/mypage/getFollowingList.jsp"/>
+	<jsp:include page="/view/mypage/getFollowerList.jsp"/>
     <div class="container">
       <div class="row profile">
 		
@@ -194,24 +188,37 @@
         
 		<div class="row">
 			
-			   		<div class="profile-userpic" style="width: 180px; float: left; height: 250px;">
+			   		<div class="col-md-4 col-md-offset-4">
             
-						<img src="/resources/uploadFile/${user.profileImage}" class="img-responsive" alt="" >
-						</div>
-						 
-					</div>
+				<img class="img-circle" src="/resources/uploadFile/${user.profileImage}" width="100" height="100"></div>
 					
 					
-		
+		            <br>
+		            
 					<!-- SIDEBAR USER TITLE -->
 					<div class="profile-usertitle">
 						
-						<div class="profile-usertitle-name">
+						 <div class="profile-usertitle-name"> 
+						<!-- <div class="col-md-4 col-md-offset-4"> -->
 							${user.nickname}
 						</div>
+						
+						<div class="profile-usertitle-job"> 
+						<!-- <div class="col-md-4 col-md-offset-4"> -->
+						    ${user.gender == 'm' ? '남자':'여자'}
+						</div>
+						
 						<div class="profile-usertitle-job">
+						<!-- <div class="col-md-4 col-md-offset-4"> -->
+						   ${user.age }
+						</div>
+						
+					   <div class="profile-usertitle-job"> 
+						<!-- <div class="col-md-4 col-md-offset-4"> -->
 							${user.userId}
 						</div>
+						
+						
 					</div>
 			
 	    
@@ -254,19 +261,25 @@
 							<input type="hidden" id="userId" name="userId" value="${user.userId}">
 							<a href="#">
 							<i class="fa fa-user-circle" aria-hidden="true" 
-							data-toggle="modal" data-target="#follower" > </i><!--data-toggle="modal" data-target="#follower" >  -->
-							팔로워</a>
+							data-toggle="modal" data-target="#follower" > </i>
+							팔로워 </a>${totalCount6}
 						</li>
+				
 						<li id="getFollowingList" class="test">
 						 
 							<a href="#">
 							<i class="fa fa-user-circle-o" aria-hidden="true"
-							data-toggle="modal" data-target="#following" ></i><!--data-toggle="modal" data-target="#following" > -->
+							data-toggle="modal" data-target="#following" ></i>
 	
-							팔로잉</a>
+							팔로잉</a>${totalCount5}
 						</li>
+					
 					</ul>
 				</div>
+				
+				
+				
+				
 			
 			
 			

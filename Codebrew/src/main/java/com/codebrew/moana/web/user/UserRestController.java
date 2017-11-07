@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +36,14 @@ public class UserRestController {
 		// TODO Auto-generated constructor stub
 		System.out.println(this.getClass());
 	}
+	
+	
+	@Value("#{coconutProperties['partyCoconut']}")
+	int partyCoconut;
+	
+	@Value("#{coconutProperties['reviewCoconut']}")
+	int reviewCoconut;
+	
 	
     //입력한 아이디와 비밀번호가 맞는지 알려주려고 만든 거
 	@RequestMapping(value="json/getUser", method=RequestMethod.POST)
@@ -247,4 +256,35 @@ public class UserRestController {
 		
 		return user;
 	}
+	
+	
+	
+	
+	@RequestMapping(value="json/updateCoconut/{userId}/{flag}", method=RequestMethod.GET)
+	public User updateCoconut(@PathVariable("userId") String userId,
+			@PathVariable("flag") String flag, @RequestBody User user)throws Exception{
+		
+		System.out.println("/userRest/json/updateCoconut : POST");
+		System.out.println("flag->>>>>"+flag);
+		// 1이면 파티 ------ 수량까기
+		// 2이면 후기 ------ 수량더하기
+		
+		/*user=userService.getUser(user.getUserId());*/
+		
+		int originCoconut=userService.getUser(user.getUserId()).getCoconutCount();
+		
+	
+		
+		if(flag.equals("1")) { //파티인경우
+			user.setCoconutCount(originCoconut-partyCoconut);
+		} else { //후기인경우
+		   user.setCoconutCount(originCoconut+reviewCoconut);
+			
+		}
+		
+		userService.updateCoconut(user);
+		
+		return user;
+	}  
+	
 }
