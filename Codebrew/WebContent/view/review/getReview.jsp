@@ -42,8 +42,8 @@
         }
         
         video {
-        	width: 600px;
-        	height: 600px;
+        	width: 100%;
+        	height: 500px;
         	display: block;
         	margin-left: auto;
         	margin-right: auto;
@@ -158,11 +158,6 @@
    								"Content-Type" : "application/json"
    							}, 
    							success : function(JSONData, status){
-   								//alert(status);
-   								//console.log(JSONData.busNoList);
-   								//console.log(JSONData.stationNameList);
-   								//console.log(JSONData.stationIDList);
-   								//console.log(JSONData.subwayList);
    								var str = "";
    								for(var i = 0; i < JSONData.busNoList.length; i ++) {
    									str += JSONData.busNoList[i]+", ";
@@ -184,28 +179,6 @@
 
 	}
 	google.maps.event.addDomListener(window, 'load', initialize);
-	
-	
-	/* 교통정보 API 이용
-	function fncPointSearch() {
-		
-		console.log("x : "+map_x);
-		console.log("y : "+map_y);
-		
-		var xhr = new XMLHttpRequest();
-		var url = "https://api.odsay.com/api/pointSearch?x="+map_x+"&y="+map_y+"&radius=250"+"&apiKey=9Y8umSFLTjBabpZyQD9MSJZ/GpAV/XJrRHAGwBVmguw";
-		console.log("requestURL : "+url);
-		
-		xhr.open("GET", url, true);
-		xhr.send();
-		xhr.onreadystatechange = function() {
-			if (xhr.readyState == 4 && xhr.status == 200) {
-				console.log( xhr.responseText ); // <- xhr.responseText 로 결과를 가져올 수 있음
-			}
-		}
-	}
-	 */
-	
 	
 	//Event 걸어주기
 	$(function() {
@@ -437,9 +410,6 @@
 							<c:if test="${!empty review.reviewVideoList[0].reviewVideo }">
 								<c:set var="i" value="0"/>
 					  			<c:forEach var="listV" items="${review.reviewVideoList}">
-						   				<!-- 
-						   				<video width="320" height="240" controls>
-						   				 -->
 						   				<video controls >
 						   					<source src="/resources/uploadFile/${listV.reviewVideo}" type="video/mp4">
 						   				</video>

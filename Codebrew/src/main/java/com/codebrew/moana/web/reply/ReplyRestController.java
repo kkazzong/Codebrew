@@ -2,8 +2,6 @@ package com.codebrew.moana.web.reply;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codebrew.moana.common.Page;
@@ -48,15 +45,12 @@ public class ReplyRestController {
 	
 	
 	@RequestMapping(value="json/addReply", method=RequestMethod.POST)
-	public Reply addReply(@RequestBody Reply reply, 
-							HttpSession session) throws Exception {
+	public Reply addReply(@RequestBody Reply reply) throws Exception {
 		
 		System.out.println("ReplyRestController");
 		
-		String userId = (String)session.getAttribute("userId");
-		System.out.println("\n\nuserId :: "+userId);
+		System.out.println("\n\nreply.toString() :: \n"+reply);
 		
-		reply.setUserId(userId);
 		replyService.addReply(reply);
 		int replyNo = reply.getReplyNo();
 		System.out.println("\n\nreplyNo"+replyNo);
@@ -78,7 +72,7 @@ public class ReplyRestController {
 	}
 	
 	
-	@RequestMapping(value="/json/updateReply", method=RequestMethod.POST)
+	@RequestMapping(value="json/updateReply", method=RequestMethod.POST)
 	public Reply updateReply(@RequestBody Reply reply) throws Exception{
 		
 		System.out.println("/reply/updateReply");
@@ -92,10 +86,10 @@ public class ReplyRestController {
 		reply.setReplyDetail(returnReplyDetail); // 바로 위에서 불러온 reply객체에 returnReplyDetail을 set해준다.
 		
 		//test
-		System.out.println("\n\nreplyNo :: "+reply.getReplyNo());
-		System.out.println("\n\nreplyDetail :: "+reply.getReplyDetail());
-		System.out.println("\n\nreviewNo :: "+reply.getReviewNo());
-		System.out.println("\n\n\nreply :: "+reply+"\n\n\n");
+		System.out.println("\n\nreplyNo :: \n"+reply.getReplyNo());
+		System.out.println("\n\nreplyDetail :: \n"+reply.getReplyDetail());
+		System.out.println("\n\nreviewNo :: \n"+reply.getReviewNo());
+		System.out.println("\n\n\nreply :: \n"+reply+"\n\n\n");
 		
 
 		//Business Logic
@@ -131,8 +125,8 @@ public class ReplyRestController {
 	
 	//for normal user
 	@RequestMapping(value="json/getReplyList", method=RequestMethod.POST)
-	public Map<String, Object> getReplyList(@RequestBody Search search, 
-											@RequestParam int reviewNo) throws Exception{
+	public Map<String, Object> getReplyList(@RequestBody(required=false) Search search, 
+											@PathVariable int reviewNo) throws Exception{
 		
 		System.out.println("/reply/getReplyList");
 		
