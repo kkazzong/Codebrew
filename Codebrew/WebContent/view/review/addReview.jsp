@@ -98,6 +98,9 @@
 			return;
 		}
 		
+		//reviewDetail.replace("\r\n", "<br>");
+		alert("reviewDetail 입력확인 :: "+reviewDetail); //debugging 용
+		
 		$("form").attr("method", "POST").attr("action", "/review/addReview").submit();
 	}
 	
@@ -131,7 +134,7 @@
 		});
 		
 		//modal창 띄우기
-		$("button.btn.btn-primary:contains('축제검색')").on("click", function(){
+		$("button.btn.btn-info:contains('축제검색')").on("click", function(){
 			window.open("/festival/getFestivalListDB?menu=pop", null, "height=450,width=600,status=yes,toolbar=no,menubar=no,location=no");
 		});
 		
@@ -159,13 +162,13 @@
 			
 		});
 		
-		$("#reviewDetail").keydown(function(key){
+		/* $("#reviewDetail").keydown(function(key){
 			if(key.keyCode == 13){
-				//alert("enter 입력 : 한줄 개행");
-				var innerReviewDetail = $("input:text[name=reviewDetail]").val();
-				innerReviewDetail += "<br>";
+				var innerReviewDetail = $("textarea[name='reviewDetail']").val();
+				//innerReviewDetail.replace("\r\n", "<br>");
+				alert("innerReviewDetail :: "+innerReviewDetail); //debugging 용
 			}
-		})
+		}) */
 	});
 	
 	// 다중 이미지 미리보기 and 삭제(미완...)
@@ -273,19 +276,22 @@
 		<div class="col-md-offset-2 col-md-8">
 		
 	<h1 class="bg-primary text-center">후기등록양식</h1>
-	
-	<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+	<p align="center">
+	<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
 		축제검색
 	</button>
-	 
+	 </p>
 	<!-- ////////// form Start ////////// -->
 		
 			<form class="form-horizontal" method="post" name="detailForm" enctype="multipart/form-data">
 		
 				<!-- in the form group, should be there the hidden prodNo? -->
 				<div class="form-group">
-					<label for="festivalName" class="col-sm-offset-1 col-sm-3 control-label">축제번호</label>
-					<div class="col-md-4">
+					<!-- 
+					<label for="festivalName" class="col-md-offset-1 col-md-2 control-label">축제번호</label>
+					 -->
+					<label for="festivalName" class="col-md-3 control-label">축제번호</label>
+					<div class="col-md-6">
 						<input type="text" class="form-control" id="festivalNo" name="festivalNo" value="${festival.festivalNo }" readonly>
 					</div>
 				</div>
@@ -293,8 +299,8 @@
 				<hr/>
 				
 				<div class="form-group">
-					<label for="festivalName" class="col-sm-offset-1 col-sm-3 control-label">축제명</label>
-					<div class="col-md-4">
+					<label for="festivalName" class="col-md-3 control-label">축제명</label>
+					<div class="col-md-6">
 						<input type="text" class="form-control" id="festivalName" name="festivalName" value="${festival.festivalName}" readonly>
 					</div>
 				</div>
@@ -302,19 +308,18 @@
 				<hr/>
 				
 				<div class="form-group">
-					<label for="addr" class="col-sm-offset-1 col-sm-3 control-label">축제위치</label>
-					<div class="col-sm-4">
+					<label for="addr" class="col-md-3 control-label">축제위치</label>
+					<div class="col-md-6">
 						<input type="text" class="form-control" id="addr" name="addr" value="${festival.addr }" readonly>
 					</div>
 				</div>
 				<!-- 위의 3항목은 festival에서 value 받아올 예정 -->
 				
-				
 				<hr/>
 				
 				<div class="form-group">
-					<label for="reviewTitle" class="col-sm-offset-1 col-sm-3 control-label">후기제목</label>
-					<div class="col-md-4">
+					<label for="reviewTitle" class="col-md-3 control-label">후기제목</label>
+					<div class="col-md-6">
 						<input type="text" class="form-control" id="reviewTitle" name="reviewTitle"/>
 					</div>
 				</div>
@@ -322,8 +327,8 @@
 				<hr/>
 				
 				<div class="form-group">
-					<label for="userId" class="col-sm-offset-1 col-sm-3 control-label">작성자</label>
-					<div class="col-md-4">
+					<label for="userId" class="col-md-3 control-label">작성자</label>
+					<div class="col-md-6">
 						<input type="text" class="form-control" id="userId" name="userId" value="${sessionScope.user.userId }" readonly/>
 					</div>
 				</div>
@@ -331,8 +336,8 @@
 				<hr/>
 				
 				<div class="form-group">
-					<label for="reviewFestivalRating" class="col-sm-offset-1 col-sm-3 control-label">축제에대한 작성자의 평점</label>
-					<div class="col-md-2">
+					<label for="reviewFestivalRating" class="col-md-3 control-label">축제평점</label>
+					<div class="col-md-6">
 						<input type="number" class="form-control" id="reviewFestivalRating" name="reviewFestivalRating" min="1" max="10"> 
 					</div>
 				</div>
@@ -340,13 +345,10 @@
 				<hr/>
 				
 				<div class="form-group">
-					<label for="reviewImageList" class="col-md-offset-1 col-md-3 control-label">후기사진</label>
-					<div class="col-md-4">
+					<label for="reviewImageList" class="col-md-3 control-label">후기사진</label>
+					<div class="col-md-6">
 						<!-- 
 						<a href="javascript:" onclick="fileUploadAction();" class="my_button">파일업로드</a>
-						-->
-						<!--  
-						<input type="button" onclick="document.getElementById('uploadReviewImageList').click();" value="사진 업로드"/>
 						-->
 						<button type="button" class="btn btn-primary" onclick="document.getElementById('uploadReviewImageList').click(); ">사진 업로드</button>
 						<input type="file" class="form-control" id="uploadReviewImageList" accept="image/*" name="uploadReviewImageList" style="display:none;" multiple/>
@@ -362,14 +364,12 @@
 				</div>
 				
 				<div class="form-group">
-					<label for="reviewDetail" class="col-md-1 control-label">후기내용</label>
+					<label for="reviewDetail" class="col-md-1 control-label">후기</label>
 					<div class="col-md-10">
-						 
 						<textarea rows="5" cols="30" class="form-control" id="reviewDetail" name="reviewDetail"></textarea>
-						 
 						<!-- <textarea rows="5" cols="30" class="ckeditor" id="ckeditor"></textarea> ckEditor 사용-->
 						<span id="helpBlock" class="help-block">
-							<strong class="text-danger">후기내용은 반드시 입력해야 합니다.</strong>
+							<strong class="text-danger text-center">후기내용은 반드시 입력해야 합니다.</strong>
 						</span>
 					</div>
 				</div>
@@ -377,15 +377,15 @@
 				<hr/>
 				
 				<div class="form-group">
-					<label for="reviewVideo" class="col-md-offset-1 col-md-3 control-label">동영상</label>
-					<div class="col-md-4">
+					<label for="reviewVideo" class="col-md-3 control-label">동영상</label>
+					<div class="col-md-6">
 						<input type="file" class="form-control" id="uploadReviewVideoList" accept="video/*" name="uploadReviewVideoList"/>
 					</div>
 				</div>
 				
 				<div class="form-group">
-					<label for="toBeHashtag" class="col-md-offset-1 col-md-3 control-label">해시태그를 입력</label>
-					<div class="col-md-4">
+					<label for="toBeHashtag" class="col-md-3 control-label">해시태그 입력</label>
+					<div class="col-md-6">
 						<input type="text" class="form-control" id="toBeHashtag" name="toBeHashtag" value="">
 						<span id="helpBlock" class="help-block">
 							<strong class="text-danger">해시태그를 입력한 후 엔터 키를 누르세요</strong>
@@ -396,8 +396,8 @@
 				<hr/>
 				
 				<div class="form-group">
-					<label for="reviewHashtag" class="col-md-offset-1 col-md-3 control-label">등록예정 해시태그</label>
-					<div class="col-md-4">
+					<label for="reviewHashtag" class="col-md-3 control-label">등록 해시태그</label>
+					<div class="col-md-6">
 						<input type="text" class="form-control" id="reviewHashtag" name="reviewHashtag" readonly>
 						<span>
 							<button type="button" id="deleteAllHashtag" class="btn btn-primary">삭제</button>

@@ -398,6 +398,9 @@
 			</div>
 		</div>
 		<hr><br>
+		<div class="page-header text-info">
+   		   <h3 align="center">다가오는 파티</h3>
+	    </div>
 		<div class="input-group-btn text-center">
 	    	Buttons
 	    	<button type="button" class="btn btn-info btn-lg" >파티</button>

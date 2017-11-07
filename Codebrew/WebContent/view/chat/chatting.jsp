@@ -214,14 +214,14 @@
 					var sessionId = "${user.userId}"; //세션아이디
 					
 					for(var i = 0; i < message.length; i++) {
-						println('<p>디비에서 가져온 채팅 : ' +message[i].sender+ ', ' + message[i].recipient + ', '+ message[i].message +','+message[i].time+'</p>');
+						println('<p>디비에서 가져온 채팅 : ' +message[i].sender+ ', ' + message[i].recipient + ', '+ message[i].data +','+message[i].time+'</p>');
 						//addToDiscussion('self', message[i].message, message[i].time);
 						
 						//alert(message[i].sender)
 						if(sessionId == message[i].sender) {
-							addToDiscussion('self', message[i].message, message[i].time);
+							addToDiscussion('self', message[i].data, message[i].time);
 						} else {
-							addToDiscussion('other', message[i].message, message[i].time);
+							addToDiscussion('other', message[i].data, message[i].time);
 						}
 						
 					}

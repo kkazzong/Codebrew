@@ -46,7 +46,8 @@
 	
 	function fncGetList(currentPage) {
 		$("#currentPage").val(currentPage)
-	   	$("form[name='searchForm']").attr("method" , "POST").attr("action" , "/review/getReview").submit();
+	   	$("form[name='searchForm']").attr("method" , "POST").attr("action" , "/review/getReview").submit(); //그냥...화면 흔들자
+		//$("form[name='searchForm']").attr("method" , "POST").attr("action" , "/reply/getReplyList").submit(); //rest 로 하려다가...
 	}
 	
 	function fucAddReply(){
@@ -72,10 +73,78 @@
 			fncGetList(1);
 		});
 		
-		$("#addReply").on("click", function(){
+		/* $("#addReply").on("click", function(){
 			alert("댓글등록 클릭");
 			fncAddReply();
-		});
+		}); */
+		
+		$("#addReply").on("click", function(){
+
+			if($("#replyDetail").val() == null || $("#replyDetail").val() == ''){
+				alert("1. 댓글내용을 입력한 후에 댓글을 등록할 수 있습니다.");
+				return;
+			}else{
+				
+				$.ajax(
+						{
+							url : "/replyRest/json/addReply", 
+							method : "POST", 
+							headers : {
+								"Accept" : "application/json", 
+								"Content-Type" : "application/json"
+							}, 
+							data : JSON.stringify({
+								userId : $("#userId").val(), 
+								reviewNo : $("#reviewNo").val(), 
+								replyDetail : $("#replyDetail").val()
+							}), 
+							datayType : "json", 
+							success : function(JSONData, status){
+								
+								alert("1. 댓글 등록 ajax완료!!!!");
+								console.log("JSONData.userId :: "+JSONData.userId+
+											"\nJSONData.replyNo :: "+JSONData.replyNo+
+											"\nJSONData.reviewNo :: "+JSONData.reviewNo+
+											"\nJSONData.replyDetail :: "+JSONData.replyDetail+
+											"\nJSONData.replyRegDate :: "+JSONData.replyRegDate);
+								
+								fncGetList(1);
+								
+								/* 
+								$.ajax(
+										{
+											url : "/replyRest/json/getReplyList", 
+											method : "POST", 
+											headers : {
+												"Accept" : "application/json", 
+												"Content-Type" : "application/json"
+											}, 
+											data : JSON.stringify({
+												reviewNo : $("#reviewNo").val(), 
+												search : null
+											}), 
+											dataType : "json", 
+											success : function(JSONData, status){
+												
+												alert("2. 댓글 list를 불러오는 ajax 완료");
+												console.log("JSONData :: "+JSONData);
+												
+											}
+										}
+										
+								)
+								*/
+							}
+						}
+				)
+				
+			}
+			
+			
+		})
+		
+		
+		
 		
 		$(".btn-warning:contains('삭제')").on("click", function(){
 			alert("댓글삭제버튼클릭 :: replyNo :: "+$(this).val());
@@ -83,46 +152,57 @@
 		});
 		
 		//수정중
+		var tempReplyNo;
+		var tempReviewNo;
 		$(".btn-info:contains('수정')").on("click", function(){
-			//alert("댓글수정하기버튼클릭");
-			//alert("#updateReply${replyList.replyNo }");
-			var tempReplyNo = $(this).val();
-			var tempReviewNo = $("#reviewNo").val();
 			
-			alert("임시reviewNo"+tempReviewNo);
+			//alert("1 :: 댓글수정하기버튼클릭"); //debugging
+			//alert("#updateReply${replyList.replyNo }");
+			tempReplyNo = $(this).val();
+			tempReviewNo = $("#reviewNo").val();
+			
+			//alert("임시reviewNo"+tempReviewNo);
 			//alert("임시댓글번호"+tempReplyNo);
-			//alert("button:#updateReply"+tempReplyNo);
+			
+			$("#updateReply"+tempReplyNo).attr('style', 'display:none');
+			$("#updateCompReply"+tempReplyNo).attr('style', 'display:inline');
 			
 			$("#replyDetail"+tempReplyNo).removeAttr("readonly")
 			.focus()
 			
-			$("#updateReply"+tempReplyNo).html('완료').on("click", function(event){
-				
-				alert("수정완료클릭 :: ajax 시작");
-				
-				$.ajax(
-						{
-							url : "/replyRest/json/updateReply", 
-							method : "POST", 
-							headers : {
-								"Accept" : "application/json", 
-								"Content-Type" : "application/json"
-							}, 
-							data : JSON.stringify({
-								replyNo : tempReplyNo, 
-								replyDetail : $("#replyDetail"+tempReplyNo).val()
-							}),
-							dataType : "json", 
-							success : function(JSONData, status){
-								$("#replyDetail"+tempReplyNo).val(JSONData.replyDetail);
-								$("#replyDetail"+tempReplyNo).attr("readonly", true);
-								$("#updateReply"+tempReplyNo).html('수정');
-								$(this).off("click");
-							}
+			//alert("2 :: focusing 부분"); //debugging
+			
+		});
+		
+		//please...do not handle more than one event in one button.........fuxx
+		$(".btn-info:contains('완료')").on("click", function(){
+			
+			//alert("3 :: 수정완료클릭 :: ajax 시작");
+			
+			$.ajax(
+					{
+						url : "/replyRest/json/updateReply", 
+						method : "POST", 
+						headers : {
+							"Accept" : "application/json", 
+							"Content-Type" : "application/json"
+						}, 
+						data : JSON.stringify({
+							replyNo : tempReplyNo, 
+							replyDetail : $("#replyDetail"+tempReplyNo).val()
+						}),
+						dataType : "json", 
+						success : function(JSONData, status){
+							//alert("4 :: ajax 완료"); //debugging
+							$("#replyDetail"+tempReplyNo).val(JSONData.replyDetail);
+							$("#replyDetail"+tempReplyNo).attr("readonly", true);
+							
+							//원상복귀....(보이는 건 다시 안보이게 & 안보이는건 다시 보이게)
+							$("#updateCompReply"+tempReplyNo).attr('style', 'display:none');
+							$("#updateReply"+tempReplyNo).attr('style', 'display:inline');
 						}
-				)
-				
-			});
+					}
+			)
 			
 		});
 		
@@ -201,8 +281,9 @@
    		</c:if>
    		<!-- 댓글입력 form End-->
    		
+   		
    		<!-- table Start -->
-   		<table class="table table-hover table-striped">
+   		<table class="table table-hover table-striped" id="replyList">
    		
    			<thead>
    				<tr>
@@ -239,8 +320,11 @@
 									<c:if test="${!empty sessionScope.user}" >
 										<c:if test="${sessionScope.user.role == 'a' || sessionScope.user.userId == replyList.userId }">
 											<div class="input-group-btn">
-									   			<button type="button" name="buttonForUpdate" id="updateReply${replyList.replyNo }" class="btn btn-secondary btn-sm btn-info" value="${replyList.replyNo }">
+									   			<button type="button" name="buttonForUpdate" id="updateReply${replyList.replyNo }" class="btn btn-secondary btn-sm btn-info" value="${replyList.replyNo }" style="display:inline">
 									   				수정
+									   			</button>
+									   			<button type="button" name="buttonForUpdate" id="updateCompReply${replyList.replyNo }" class="btn btn-secondary btn-sm btn-info" value="${replyList.replyNo }" style="display:none">
+									   				완료
 									   			</button>
 								   				<button type="button" name="buttonForDelete" id="deleteReply${replyList.replyNo }" class="btn btn-secondary btn-sm btn-warning" value="${replyList.replyNo }">
 								   					삭제
@@ -252,7 +336,7 @@
 									<span style="display: none" class="hidden_link">/review/getReview?reviewNo=${review.reviewNo }</span>
 								</div>
 	   						</td>
-	   						<td align="center">
+	   						<td align="center" >
 	   							${replyList.userId }
 	   						</td>
 	   						<td align="center">
@@ -266,7 +350,6 @@
    			</tbody>   			
    			
    		</table>
-   		
    		<!-- table End -->
    		
    		<div class="text-center">

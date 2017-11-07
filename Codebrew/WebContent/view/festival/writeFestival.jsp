@@ -44,7 +44,7 @@
 	<script type="text/javascript">
 	
 	$(function() {
-		$("button[type='button']").on("click", function() {
+		$("button:contains('등록')").on("click", function() {
 
 			fncWriteFestival();
 		});
@@ -52,10 +52,28 @@
 	
 	function fncWriteFestival() {
 		
-		var festivalName=$("textarea[name='festivalName']").val();
+		var festivalName=$("#festivalName").val();
+		var startDate=$("#startDate").val();
+		var endDate=$("#endDate").val();
+		var addr=$("#addr").val();
 		
 		if(festivalName == null || festivalName.length <1){
 			alert("축제명은 반드시 한 글자 이상 입력하셔야 합니다.");
+			return;
+		}
+		
+		if(startDate == null || startDate.length <1){
+			alert("축제시작일을 입력하세요.");
+			return;
+		}
+		
+		if(endDate == null || endDate.length <1){
+			alert("축제종료일을 입력하세요.");
+			return;
+		}
+		
+		if(addr == null || addr.length <1){
+			alert("장소를 입력하세요.");
 			return;
 		}
 		
@@ -158,301 +176,233 @@
 
 		
 		</script>		
+		
+		
+		<style type="text/css">
+			.img_wrap{
+        	width:600px;
+        	margin-top: 50px;
+        }
+        
+        .img_wrap img{
+        max-width: 200px;
+        }
+        
+        .form-control{
+        	resize: none; /* cannot be changed by the user */
+        }
+        
+ 		body {
+            padding-top : 50px;
+            background-color: #f2f4f6;
+        }
+        
+        .imgs_wrap { 
+        	/* border: 3px solid #333; */
+        	/* width: 600px; */
+        	/* height : 120px; */
+        	margin-top: 50px;
+        	aling-items: center;
+        	justify-content: center;
+        }
+        
+        .imgs_wrap img {
+        	max-width: 200px;
+        }
+		
+		</style>
 	
 </head>
 <body>
 
 <jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
 
-
-	<form name="detailForm" class="form-horizontal">
-                          
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-
+	<div class="row">
+		<div class="col-md-12">
+		
+			<h1 class="bg-primary text-center">
+				축제등록
+			</h1>
+			
+				<form class="form-horizontal" method="post" name="detailForm" enctype="multipart/form-data">
+					<div class = "form-group">
 	
-	<div class = "form-group">
+						<label for ="festivalName" class="col-sm-offset-1 col-sm-3 control-label">축제명</label>
+							<div class="col-md-4">
+								<input type="text" class="form-control" id="festivalName" name="festivalName" value="${festival.festivalName }">
+							</div>
+					</div>
+					
+					<hr/>
+					
+					<div class = "form-group">
 	
-		<label for ="festivalName" class="col-sm-offset-1 col-sm-3 control-label">축제명</label>
-		
-		<div class="col-sm-4">
-			<%-- <input type="text" class="form-control" id="festivalName" name="festivalName" value= "${festival.festivalName }"> --%>
-				<textarea rows="5" cols="30" name="festivalName">${festival.festivalName }</textarea>
-		</div>
-	
-	</div>
-	
-<br/>
-<br/>
-
-	<div class = "form-group">
-	
-		<label for ="festivalOverview" class="col-sm-offset-1 col-sm-3 control-label">소개</label>
-	
-		<div class="col-sm-4">
-			<%-- <input type="text" class="form-control" id="festivalOverview" name="festivalOverview"  value= "${festival.festivalOverview }"> --%>
-			<textarea rows="5" cols="30" name="festivalOverview">${festival.festivalOverview }</textarea>
+						<label for ="festivalOverview" class="col-sm-offset-1 col-sm-3 control-label">소개</label>
+							<div class="col-md-4">
+								<textarea rows="5" cols="54" class="form-control" id="festivalOverview" name="festivalOverview">${festival.festivalOverview }</textarea>
+							</div>
+					</div>
+					
+					<hr/>
+					
+					<div class = "form-group">
+						<label for ="file" class="col-sm-offset-1 col-sm-3 control-label">이미지</label>
+						
+							<div class="col-md-4">
+								<img src="${festival.festivalImage }" width="345" height="300"/>
+									<input type = "hidden" class="form-control" id="festivalImage" name="festivalImage" value= "${festival.festivalImage }">
+										<input type="file" id="festivalImage" name="file" class="form-control">
+							</div>	
+						</div>
 			
-		</div>
-	
-	</div>
-<br/>
-<br/>
-
-	<div class = "form-group">
-	
-		<label for ="file" class="col-sm-offset-1 col-sm-3 control-label">이미지</label>
-		
-		<div class="col-sm-4">
-			<%-- <img src="${festival.festivalImage }" width="300" height="300"/> --%>
-			<input type = "hidden" class="form-control" id="festivalImage" name="festivalImage" value= "${festival.festivalImage }">
+				<hr/>
+				
+				<div class="form-group">
+					<label for="addr" class="col-sm-offset-1 col-sm-3 control-label">개최장소</label>
+						<div class="col-md-4">
+							<input type="text" class="form-control" id="addr" name = "addr" placeholder="주소">
+							<input type="button" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
+							<input type="hidden" class="form-control" id="festivalLongitude" name="festivalLatitude">
+							<input type="hidden" class="form-control" id="festivalLatitude" name="festivalLongitude" >
+						</div>
+				</div>
+				
+				<hr/>
+				
+				<div class = "form-group">
+					<label for ="startDate" class="col-sm-offset-1 col-sm-3 control-label">축제시작일자</label>
+						<div class="col-md-4">
+							<input type = "text" class="form-control" id="startDate" name="startDate" value= "${festival.startDate }">
+						</div>	
+				</div>
+				
+				<hr/>
+				
+				
+				<div class = "form-group">
+					<label for ="endDate" class="col-sm-offset-1 col-sm-3 control-label">축제종료일자</label>
+						<div class="col-md-4">
+							<input type = "text" class="form-control" id="endDate" name="endDate" value= "${festival.endDate }">
+						</div>	
+					
+				</div>
+				
+				<hr/>
+				
+				<div class = "form-group">
+					<label for ="festivalDetail" class="col-sm-offset-1 col-sm-3 control-label">내용을 입력하세요</label>
+						<div class="col-md-4">
+							<textarea rows="5" cols="54" name="festivalDetail">${festival.festivalDetail }</textarea>
+						</div>	
+				</div>
+				
+				<hr/>
+				
+				<div class = "form-group">
+					<label for ="orgPhone" class="col-sm-offset-1 col-sm-3 control-label">연락처</label>
+						<div class="col-md-4">
+							<%-- <input type = "text" class="form-control" id="orgPhone" name="orgPhone" value= "${festival.orgPhone }"> --%>
+							<textarea rows="5" cols="54" name="orgPhone">${festival.orgPhone }</textarea>
+						</div>	
+				</div>
+				
+				<hr/>
+				
+				<div class = "form-group">
+					<label for ="ageLimit" class="col-sm-offset-1 col-sm-3 control-label">연령제한</label>
+						<div class="col-md-4">
+							<textarea rows="5" cols="54" name="ageLimit">${festival.ageLimit }</textarea>
+						</div>	
+				</div>
 			
-			<input type="file" id="festivalImage" name="file" class="form-control">
+				<hr/>
+				
+				<div class = "form-group">
 			
-		</div>	
-		
-	</div>
-		
-<br/>
-<br/>
-
-	<div class="form-group">
-	
-		<label for="addr" class="col-sm-offset-1 col-sm-3 control-label">개최장소</label>
-		
-		<div class="col-sm-4">
-		
-			<input type="text" class="form-control" id="addr" name = "addr" placeholder="주소">
-			<input type="button" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
-			<input type="hidden" class="form-control" id="festivalLongitude" name="festivalLatitude">
-			<input type="hidden" class="form-control" id="festivalLatitude" name="festivalLongitude" >
-		</div>
-	</div>
-	
-<br/>
-<br/>
-
-		<div class = "form-group">
-		
-			<label for ="startDate" class="col-sm-offset-1 col-sm-3 control-label">축제시작일자</label>
+					<label for ="bookingPlace" class="col-sm-offset-1 col-sm-3 control-label">예매처</label>
+						<div class="col-md-4">
+							<textarea rows="5" cols="54" name="bookingPlace">${festival.bookingPlace }</textarea>
+						</div>	
+				</div>
+				
+				<hr/>
+				
+								
+				<div class = "form-group">
+						<label for ="program" class="col-sm-offset-1 col-sm-3 control-label">행사프로그램</label>
+							<div class="col-md-4">
+								<textarea rows="5" cols="54" name="program">${festival.program }</textarea>
+							</div>	
+				</div>
+				
+				<hr/>
+				
+				
+				<div class = "form-group">
+					<label for ="playTime" class="col-sm-offset-1 col-sm-3 control-label">공연시간</label>
+						<div class="col-md-4">
+							<textarea rows="5" cols="54" name="playTime">${festival.playTime }</textarea>
+						</div>	
+				</div>
+				
+				<hr/>
+				
+				<div class = "form-group">
+					<label for ="spendTimeFestival" class="col-sm-offset-1 col-sm-3 control-label">관람소요시간</label>
+						<div class="col-md-4">
+							<textarea rows="5" cols="54" name="spendTimeFestival">${festival.spendTimeFestival }</textarea>
+						</div>	
+				</div>
+				
+				<hr/>
+				
+			<div class = "form-group">
+				<label for ="subEvent" class="col-sm-offset-1 col-sm-3 control-label">부대행사</label>
+					<div class="col-md-4">
+						<textarea rows="5" cols="54" name="subEvent">${festival.subEvent }</textarea>
+					</div>	
+			</div>
 			
-			<div class="col-sm-4">
-				<input type = "text" class="form-control" id="startDate" name="startDate" value= "${festival.startDate }">
-			</div>	
+			<hr/>
 			
-		</div>
-<br/>
-<br/>
-
-		<div class = "form-group">
-		
-			<label for ="endDate" class="col-sm-offset-1 col-sm-3 control-label">축제종료일자</label>
+			<div class = "form-group">
+				<label for ="useTimeFestival" class="col-sm-offset-1 col-sm-3 control-label">이용요금</label>
+					<div class="col-md-4">
+						<textarea rows="5" cols="54" name="useTimeFestival">${festival.useTimeFestival }</textarea>
+					</div>	
+			</div>
 			
-			<div class="col-sm-4">
-				<input type = "text" class="form-control" id="endDate" name="endDate" value= "${festival.endDate }">
-			</div>	
+			<hr/>
 			
-		</div>
-<br/>
-<br/>
-
-	<div class = "form-group">
-		
-			<label for ="festivalDetail" class="col-sm-offset-1 col-sm-3 control-label">내용을 입력하세요</label>
+			<div class = "form-group">
+				<label for ="ticketPrice" class="col-sm-offset-1 col-sm-3 control-label">티켓가격</label>
+					<div class="col-md-4">
+						<input type = "text" class="form-control" id="ticketPrice" name="ticketPrice" value= "${festival.ticketPrice }">
+					</div>	
+			</div>
 			
-			<div class="col-sm-4">
-				<%-- <input type = "text" class="form-control" id="festivalDetail" name="festivalDetail" value= "${festival.festivalDetail }"> --%>
-				<textarea rows="5" cols="30" name="festivalDetail">${festival.festivalDetail }</textarea>
-			</div>	
-			
-		</div>
-		
-<br/>
-<br/>
-
-		<div class = "form-group">
-		
-			<label for ="orgPhone" class="col-sm-offset-1 col-sm-3 control-label">연락처</label>
-			
-			<div class="col-sm-4">
-				<%-- <input type = "text" class="form-control" id="orgPhone" name="orgPhone" value= "${festival.orgPhone }"> --%>
-				<textarea rows="5" cols="30" name="orgPhone">${festival.orgPhone }</textarea>
-			</div>	
-			
-		</div>
-
-<br/>
-<br/>
-
-		<div class = "form-group">
-		
-			<label for ="ageLimit" class="col-sm-offset-1 col-sm-3 control-label">연령제한</label>
-			
-			<div class="col-sm-4">
-				<%-- <input type = "text" class="form-control" id="ageLimit" name="ageLimit" value= "${festival.ageLimit }"> --%>
-				<textarea rows="5" cols="30" name="ageLimit">${festival.ageLimit }</textarea>
-			</div>	
-			
-		</div>
-
-<br/>
-<br/>
-
-	<div class = "form-group">
-		
-			<label for ="bookingPlace" class="col-sm-offset-1 col-sm-3 control-label">예매처</label>
-			
-			<div class="col-sm-4">
-				<%-- <input type = "text" class="form-control" id="bookingPlace" name="bookingPlace" value= "${festival.bookingPlace }"> --%>
-				<textarea rows="5" cols="30" name="bookingPlace">${festival.bookingPlace }</textarea>
-			</div>	
-			
-		</div>
-
-<br/>
-<br/>
-
-	<div class = "form-group">
-		
-			<label for ="discount" class="col-sm-offset-1 col-sm-3 control-label">할인정보</label>
-			
-			<div class="col-sm-4">
-				<%-- <input type = "text" class="form-control" id="discount" name="discount" value= "${festival.discount }"> --%>
-				<textarea rows="5" cols="30" name="discount">${festival.discount }</textarea>
-			</div>	
-			
-		</div>
-
-<br/>
-<br/>
-	
-	<div class = "form-group">
-		
-			<label for ="program" class="col-sm-offset-1 col-sm-3 control-label">행사프로그램</label>
-			
-			<div class="col-sm-4">
-				<%-- <input type = "text" class="form-control" id="program" name="program" value= "${festival.program }"> --%>
-				<textarea rows="5" cols="30" name="program">${festival.program }</textarea>
-			</div>	
-			
-		</div>
-
-<br/>
-<br/>
-
-		<div class = "form-group">
-		
-			<label for ="playTime" class="col-sm-offset-1 col-sm-3 control-label">공연시간</label>
-			
-			<div class="col-sm-4">
-				<%-- <input type = "text" class="form-control" id="playTime" name="playTime" value= "${festival.playTime }"> --%>
-				<textarea rows="5" cols="30" name="playTime">${festival.playTime }</textarea>
-			</div>	
-			
-		</div>
-
-
-<br/>
-<br/>
-
-		<div class = "form-group">
-		
-			<label for ="spendTimeFestival" class="col-sm-offset-1 col-sm-3 control-label">관람소요시간</label>
-			
-			<div class="col-sm-4">
-				<%-- <input type = "text" class="form-control" id="spendTimeFestival" name="spendTimeFestival" value= "${festival.spendTimeFestival }"> --%>
-				<textarea rows="5" cols="30" name="spendTimeFestival">${festival.spendTimeFestival }</textarea>
-			</div>	
-			
-		</div>
-
-<br/>
-<br/>
-
-	<div class = "form-group">
-		
-			<label for ="subEvent" class="col-sm-offset-1 col-sm-3 control-label">부대행사</label>
-			
-			<div class="col-sm-4">
-				<%-- <input type = "text" class="form-control" id="subEvent" name="subEvent" value= "${festival.subEvent }"> --%>
-				<textarea rows="5" cols="30" name="subEvent">${festival.subEvent }</textarea>
-			</div>	
-			
-		</div>
-
-<br/>
-<br/>
-
-		<div class = "form-group">
-		
-			<label for ="useTimeFestival" class="col-sm-offset-1 col-sm-3 control-label">이용요금</label>
-			
-			<div class="col-sm-4">
-				<%-- <input type = "text" class="form-control" id="useTimeFestival" name="useTimeFestival" value= "${festival.useTimeFestival }"> --%>
-				<textarea rows="5" cols="30" name="useTimeFestival">${festival.useTimeFestival }</textarea>
-			</div>	
-			
-		</div>
-	
-
-<br/>
-<br/>
-
-	<div class = "form-group">
-		
-			<label for ="ticketPrice" class="col-sm-offset-1 col-sm-3 control-label">티켓가격</label>
-			
-			<div class="col-sm-4">
-				<input type = "text" class="form-control" id="ticketPrice" name="ticketPrice" value= "${festival.ticketPrice }">
-			</div>	
-			
-		</div>
-
-
-<br/>
-<br/>
-
-		<div class = "form-group">
-		
-			<label for ="ticketCount" class="col-sm-offset-1 col-sm-3 control-label">티켓수량</label>
-			
-			<div class="col-sm-4">
-				<input type = "text" class="form-control" id="ticketCount" name="ticketCount" value= "${festival.ticketCount }">
-			</div>	
-			
-		</div>
-		
-		
-		<!-- 시퀀스 -->
-		<!-- <input type = "hidden" class="form-control" id="festivalNo" name="festivalNo"> -->
-		
-		
-		<input type = "hidden" class="form-control" id="contentTypeId" name="contentTypeId" value= "15">
-		<!-- <input type = "hidden" class="form-control" id="readCount" name="readCount"> -->
-		
-		<!--주소검색시 맨앞 파싱해서 비교  -->
-		<%-- <input type = "hidden" class="form-control" id="areaCode" name="areaCode" value= "${festival.areaCode }"> --%>
-		
-		<!--일단은 null  -->
-		<input type = "hidden" class="form-control" id="sigunguCode" name="sigunguCode" value= "${festival.sigunguCode }">
-		
-
-	<div class="form-group">
-				<div class="col-sm-offset-4  col-sm-4 text-center">
+			<hr/>
+			<div class = "form-group">
+				<label for ="ticketCount" class="col-sm-offset-1 col-sm-3 control-label">티켓수량</label>
+					<div class="col-md-4">
+						<input type = "text" class="form-control" id="ticketCount" name="ticketCount" value= "${festival.ticketCount }">
+					</div>	
+			</div>
+				
+				
+				<input type = "hidden" class="form-control" id="contentTypeId" name="contentTypeId" value= "15">
+				<input type = "hidden" class="form-control" id="sigunguCode" name="sigunguCode" value= "${festival.sigunguCode }">
+				
+			<div class="form-group">
+				<div class="col-sm-offset-4  col-md-4 text-center">
 					<button type="button" class="btn btn-primary">등록</button>
-					<input type = "button" id = "back" name = "back" value = "취소"/>
+					<input type = "button" class="btn btn-primary" id = "back" name = "back" value = "취소"/>
 				</div>
 			</div>
-	
-	</form>
-	
+					
+				
+			</form>
+		</div>
+	</div>
 </body>
 </html>

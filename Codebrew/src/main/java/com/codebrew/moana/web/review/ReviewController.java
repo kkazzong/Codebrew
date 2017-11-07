@@ -96,7 +96,7 @@ public class ReviewController {
 		/*
 		 * upload Image List List<multipartFile> : view에서 javaScript로 사진을 무조건 1장이상 올리게 했기 때문에 조건절 간단하게 써줌
 		 */
-		String filePath1 = "C:\\Users\\Admin\\git\\Codebrew\\Codebrew\\WebContent\\resources\\uploadFile\\"; // 실제 directory 경로로 파일을 영구적으로 저장하기 위함이다.
+		String filePath1 = "C:\\Users\\Admin\\git\\Codebrew\\Codebrew\\WebContent\\resources\\uploadFile\\"; // 실제 directory 경로로 파일을 영구적으로 저장하기 위함이다. 관리가 되는 폴더
 		String filePath2 = session.getServletContext().getRealPath("/")+"\\resources\\uploadFile\\"; //실제 folder가 아닌 tomcat의 임시 서버로서 add후 바로 get을 했을때 이미지를 볼 수 있도록 한다.
 		
 		System.out.println("\n\n\nfilePath :: \n"+filePath2);
@@ -106,7 +106,7 @@ public class ReviewController {
 			List<Image> uploadImageList = new ArrayList<Image>();
 			for(MultipartFile multipartFile : uploadReviewImage){
 				Image eachImage = new Image();
-				String fileName = UUID.randomUUID().toString()+System.currentTimeMillis()+multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."), multipartFile.getOriginalFilename().length());
+				String fileName = "Taehoon"+UUID.randomUUID().toString()+System.currentTimeMillis()+multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."), multipartFile.getOriginalFilename().length());
 				eachImage.setReviewImage(fileName); //각각의 이미지 fileName을 setting
 				
 				uploadImageList.add(eachImage); //생성한 list에 setting이 끝난 각각의 Image 객체를 넣어줌
@@ -183,6 +183,13 @@ public class ReviewController {
 			}
 			review.setReviewVideoList(uploadVideoList);
 		}
+		
+		/////////// 디비 입출력시 엔터처리 ////////////////
+		String reviewDetail = review.getReviewDetail();
+		System.out.println("\n\nreviewDetail :: \n"+reviewDetail);
+		reviewDetail = reviewDetail.replaceAll("\n", "<br>");
+		review.setReviewDetail(reviewDetail);
+		/////////// 디비 입출력시 엔터처리 ////////////////
 		
 		System.out.println("\n\n\n\n\n=====okokokokok=====\n\n\n\n\n");
 		
@@ -271,7 +278,7 @@ public class ReviewController {
 		
 		System.out.println("\n\n\nfilePath :: \n"+filePath2);
 		
-if(uploadReviewImage != null && uploadReviewImage.size() > 0){
+		if(uploadReviewImage != null && uploadReviewImage.size() > 0){
 			
 			List<Image> uploadImageList = new ArrayList<Image>();
 			for(MultipartFile multipartFile : uploadReviewImage){

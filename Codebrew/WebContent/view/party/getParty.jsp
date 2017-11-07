@@ -224,6 +224,7 @@
 	}
 	
 	
+	
 </script>
 
 <!--  ///////////////////////// CSS ////////////////////////// -->
@@ -254,8 +255,15 @@ body {
 }
 
 #userDiv {
-	height: 90px;
+	height: 40px;
 }
+#userRole {
+	padding: 10px;
+}
+#userNick {
+	padding: 10px;
+}
+
 /* Zoom In */
 .hover01 figure img {
 	-webkit-transform: scale(1);
@@ -277,10 +285,12 @@ body {
 }
 #chartdiv {
 	width	: 100%;
-	height	: 500px;
-	margin-top : 50px;
+	height	: 400px;
+	margin-top : 20px;
 }	
-
+.modal-body {
+	background-color : #fff8d6;
+}
 
 </style>
 
@@ -431,7 +441,12 @@ body {
 									<form name="form">
 										<input type="hidden" name="recipient" value="${party.user.userId}">
 										<input type="hidden" name="sender" value="${user.userId}">
-										<button type='button' class='btn-sm btn-default pull-right' onclick="javascript:chatPopup(this.form);">채팅하기</button>
+										<c:if test="${user.userId != party.user.userId }">
+											<button type='button' class='btn-sm btn-default pull-right' onclick="javascript:chatPopup(this.form);">채팅하기</button>
+										</c:if>
+										<c:if test="${user.userId == party.user.userId }">
+											<button type='button' class='btn-sm btn-default pull-right' onclick="javascript:chatPopup(this.form);">채팅목록보기</button>
+										</c:if>
 										<br>
 									</form>
 									

@@ -279,6 +279,7 @@ public class MyPageController {
 		Map<String, Object>map5=followService.getFollowingList(search, sessionId);
 		
 		
+		
 		//팔로워66
 		Map<String, Object>map6=followService.getFollwerList(search, sessionId);
 		
@@ -329,14 +330,18 @@ public class MyPageController {
 		
 		//팔로잉
 		modelAndView.addObject("list5", map5.get("list"));
+		modelAndView.addObject("totalCount5",map5.get("totalCount"));
 		
 		System.out.println("팔로잉리스트는????"+map5.get("list"));
+		System.out.println("팔로잉토탈카운트는??"+map5.get("totalCount"));
 		
 		//팔로워
 		modelAndView.addObject("list6", map6.get("list"));
+		modelAndView.addObject("totalCount6",map6.get("totalCount"));
 		
 		
 		System.out.println("팔로워리스트는????"+map6.get("list"));
+		System.out.println("팔로워토탈카운트는??"+map6.get("list"));
 		
 		/*modelAndView.setViewName("forward:/view/mypage/getMyPage.jsp");*/
 		
