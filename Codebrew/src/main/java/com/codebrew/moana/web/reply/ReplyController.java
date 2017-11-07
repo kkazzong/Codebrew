@@ -100,7 +100,7 @@ public class ReplyController {
 		modelAndView.addObject("resultPage", resultPage);
 		modelAndView.addObject("search", search);
 		
-		modelAndView.setViewName("/view/review/getReplyList.jsp");
+		modelAndView.setViewName("redirect:/view/review/getReplyList.jsp");
 		
 		return modelAndView;
 	}

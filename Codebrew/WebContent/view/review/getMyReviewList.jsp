@@ -21,7 +21,7 @@
 	<style>
  		body {
             padding-top : 70px;
-            background-color: #f2f4f6;
+            background-color : #f2f4f6;
         }
         
         .card {
@@ -131,7 +131,7 @@
 <body>
 
 	<!-- ToolBar Start /////////////////////////////////////-->
-	<%-- <jsp:include page="/toolbar/toolbar.jsp" /> --%>
+	<jsp:include page="/toolbar/toolbar.jsp" />
    	<!-- ToolBar End /////////////////////////////////////-->
    	
    	<!-- 화면구성 div Start -->

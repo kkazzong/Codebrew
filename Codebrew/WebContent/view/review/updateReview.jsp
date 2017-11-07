@@ -65,7 +65,7 @@
 		//var reviewImageList = document.detailForm.reviewImageList.value;
 		
 		var reviewTitle = $("input[name='reviewTitle']").val();
-		var reviewDetail = $("input[name='reviewDetail']").val();
+		var reviewDetail = $("textarea[name='reviewDetail']").val();
 		var reviewImageList = $("input[name='uploadReviewImageList']").val();
 		
 		if(reviewTitle == null || reviewTitle.length<1){
@@ -274,7 +274,8 @@
 		<div class="form-group">
 			<label for="reviewImageList" class="col-sm-offset-1 col-sm-3 control-label">후기사진</label>
 			<div class="col-sm-3">
-				<input type="file" class="form-control" id="uploadReviewImageList" accept="image/*" name="uploadReviewImageList" multiple/>
+				<button type="button" class="btn btn-primary" onclick="document.getElementById('uploadReviewImageList').click(); ">사진 업로드</button>
+				<input type="file" class="form-control" id="uploadReviewImageList" accept="image/*" name="uploadReviewImageList" style="display:none;" multiple/>
 			</div>
 		</div>
 		
@@ -298,7 +299,7 @@
 		<div class="form-group">
 			<label for="reviewVideo" class="col-sm-offset-1 col-sm-3 control-label">동영상</label>
 			<div class="col-sm-4">
-				<input type="file" class="form-control" id="uploadReviewVideo" accept="video/*" name="uploadReviewVideo" multiple/>			
+				<input type="file" class="form-control" id="uploadReviewVideoList" accept="video/*" name="uploadReviewVideoList" multiple/>			
 			</div>
 		</div>
 		
