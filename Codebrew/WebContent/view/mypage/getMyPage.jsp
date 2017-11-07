@@ -176,10 +176,12 @@
 	<body>
 	<%-- <jsp:include page="/toolbar/toolbar.jsp"/> --%>
 
+
 	
 
 	<jsp:include page="/view/mypage/getFollowingList.jsp"/>
 	<jsp:include page="/view/mypage/getFollowerList.jsp"/>
+
 
     <div class="container">
       <div class="row profile">
