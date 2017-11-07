@@ -51,7 +51,7 @@
 		              </a>
 			              <ul class="dropdown-menu">
 							<li><a href="#">축제목록</a></li>
-							<li><a href="#">my찜</a></li>
+							<!-- <li><a href="#">my찜</a></li> -->
 		                 <c:if test="${sessionScope.user.role == 'a'}">
 			                       <li class="divider"></li>
 			                       <li><a href="#">축제직접등록</a></li>
@@ -67,7 +67,7 @@
 		                 <span class="caret"></span>
 		              </a>
 		              <ul class="dropdown-menu">
-		                  <li><a href="#">my파티</a></li>
+		                  <!-- <li><a href="#">my파티</a></li> -->
 		                  <li><a href="#">파티등록</a></li>
 		                  <li><a href="#">파티목록</a></li>
 		                  <!-- <li><a href="#">애프터파티</a></li>
@@ -88,7 +88,7 @@
 		                       <li class="divider"></li>
 		                       <li><a href="#">후기심사목록</a></li>
 	                     </c:if>
-	                     <li><a href="#">my후기</a></li>
+	                     <!-- <li><a href="#">my후기</a></li> -->
 		             </ul>
 		          </li>
 	                 
@@ -99,7 +99,7 @@
 	                    <span class="caret"></span>
 	                </a>
 	                <ul class="dropdown-menu">
-	                       <li><a href="#">my티켓</a></li>
+	                       <!-- <li><a href="#">my티켓</a></li> -->
 	                       <li><a href="#">축제통계</a></li>
 	                       <li><a href="#">평점통계</a></li>
 	                       <li><a href="#">참여자수통계</a></li>
@@ -151,6 +151,10 @@
 			              </a>
 			              <ul class="dropdown-menu">
 			                    <li><a href="#">마이페이지</a></li> 
+			                    <li><a href="#">my찜</a></li>
+			                    <li><a href="#">my파티</a></li>
+			                    <li><a href="#">my후기</a></li>
+			                    <li><a href="#">my티켓</a></li>
 			              </ul>
 			           </li>
 

@@ -33,7 +33,7 @@
     <link href="/resources/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     
     <!-- Custom js -->
-    <script src="/resources/css/toolbar/js/jquery.min.js"></script>
+    <!-- <script src="/resources/css/toolbar/js/jquery.min.js"></script> -->
 	<script src="/resources/css/toolbar/js/jquery.scrolly.min.js"></script>
 	<script src="/resources/css/toolbar/js/jquery.scrollzer.min.js"></script>
 	<script src="/resources/css/toolbar/js/skel.min.js"></script>

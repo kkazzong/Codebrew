@@ -20,8 +20,8 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	
 	<!-- Bootstrap Dropdown Hover CSS -->
-	<!-- <link href="/resources/css/animate.min.css" rel="stylesheet">
-	<link href="/resources/css/bootstrap-dropdownhover.min.css" rel="stylesheet"> -->
+	<link href="/resources/css/animate.min.css" rel="stylesheet">
+	<link href="/resources/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
 	
 	<!-- Bootstrap Dropdown Hover JS -->
 	<script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
@@ -265,7 +265,7 @@
 			var userId = "${user.userId}";
 			
 			//autocomplete
-			$("#searchKeyword").autocomplete({
+			/* $("#searchKeyword").autocomplete({
 				source: function( request, response ) {
 			        $.ajax( {
 			          url: "/purchaseRest/json/getPurchaseList/${user.userId}/''",
@@ -296,7 +296,7 @@
 			          }
 			        } );
 			    }
-			});
+			}); */
 			
 			//판넬 높이 조절
 			var maxHeight = -1;
@@ -383,12 +383,23 @@
 	
 	<!-- CSS -->
 	<style type="text/css">
-	
-		body {
+		
+		/* @media (min-width: 992px) {
+		  body {
+		    padding-top: 50px;
+		    padding-left: 17rem;
+		    background-color: #f2f4f6; */
+		   /*  position: absolute;
+		    z-index : 100; */
+		    /* overflow-y: hidden;} } */
+		 body {
 			padding-top : 100px;
-			/* padding-left : 20rem; */
 			background-color: #f2f4f6;
-	    }
+			padding-left: 30rem;
+		}
+			/* padding-left : 20rem;
+			background-color: #f2f4f6;
+	    } 
 	    
 	    .card {
 			margin-top : 50px;
@@ -436,11 +447,12 @@
 	
 </head>
 
+     <%-- <jsp:include page="/toolbar/toolbar3.jsp"></jsp:include>  --%>
 <body>
 	
 	<!-- 툴바 -->
-     <jsp:include page="/toolbar/toolbar_new2.jsp"></jsp:include> 
-	
+	<jsp:include page="/toolbar/toolbar_new2.jsp"></jsp:include>
+	<%-- <jsp:include page="/toolbar/toolbar3.jsp"></jsp:include> --%>
 	<!-- 모달 -->
 	<jsp:include page="/view/purchase/filterModalUser.jsp"></jsp:include>
 	<%-- 서치컨디션 ${search.searchCondition } --%>
