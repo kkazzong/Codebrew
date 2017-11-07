@@ -123,5 +123,22 @@ public class ChatController {
 		
 		return modelAndView;
 	}
+	
+	//나의채팅목록
+	@RequestMapping( value="getChattingList")
+	public ModelAndView getChattingList(HttpSession session) throws Exception {
+		
+		System.out.println("\n>>> /chat/getChattingList :: POST start <<<");
+		
+		User sender = (User)session.getAttribute("user");
+		ModelAndView modelAndView = new ModelAndView();
+		
+		if(sender != null) {
+			modelAndView.addObject("sender", sender);
+			modelAndView.setViewName("/view/chat/getChattingList.jsp");
+		} 
+		
+		return modelAndView;
+	}
 
 }
