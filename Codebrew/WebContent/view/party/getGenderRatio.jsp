@@ -7,7 +7,7 @@
 	
 		//============= "파티 비율 확인하기"  Event 처리 및  연결 =============
 		$(function(){
-			$("#ratioLock").on("click", function() {
+			$("#ratioLock > img").on("click", function() {
 				//self.location="/partyRest/json/getGenderRatio/${party.partyNo}";
 				console.log("파티 비율 확인하기 버튼 클릭.....");
 				var partyNo = $("#partyNo").val();
@@ -24,15 +24,13 @@
 								console.log("JSONData.maleAgeAverage : "+JSONData.maleAgeAverage);
 								console.log("JSONData.partyName : "+JSONData.partyName);
 								
-								var html =  "<div><h1 align='center'>"+JSONData.partyName+"</h1></div>"
-											+"<div>여자 비율 "+JSONData.femalePercentage+"%</div>"
-											+"<div>여자 나이 평균 "+JSONData.femaleAgeAverage+"살</div>"
-											+"<hr>"
-											+"<div>남자 비율 "+JSONData.malePercentage+"%</div>"
-											+"<div>남자 나이 평균"+JSONData.maleAgeAverage+"살</div>"
-								
+								var html =  "<div class='row'>"
+											+"<div class='col-xs-6'><strong>여자 나이 평균 "+JSONData.femaleAgeAverage+"살</strong></div>"
+											+"<div class='col-xs-6'><strong>남자 나이 평균 "+JSONData.maleAgeAverage+"살</strong></div>"
+											+"</div>"
 								$("form.form-horizontal-2").html(html);
-											
+								
+								if(JSONData.femalePercentage>JSONData.malePercentage){
 								var chart = AmCharts.makeChart("chartdiv",
 										{
 										    "type": "serial",
@@ -42,7 +40,7 @@
 										        "points": JSONData.femalePercentage,
 										        "color": "#DB4C3C",
 										        /* "bullet": "https://www.amcharts.com/lib/images/faces/D02.png" */
-										        "bullet": "/resources/image/ui/female.png"
+										       "bullet": "/resources/image/ui/female_up.png"
 										    },{
 										        "name": "남자",
 										        "points": JSONData.malePercentage,
@@ -51,7 +49,7 @@
 										        "bullet": "/resources/image/ui/male.png"
 										    }],
 										    "valueAxes": [{
-										        "maximum": 100,
+										        "maximum": 120,
 										        "minimum": 0,
 										        "axisAlpha": 0,
 										        "dashLength": 4,
@@ -70,7 +68,7 @@
 										        "type": "column",
 										        "valueField": "points"
 										    }],
-										    "marginTop": 50,
+										    "marginTop": 0,
 										    "marginRight": 0,
 										    "marginLeft": 0,
 										    "marginBottom": 20,
@@ -86,6 +84,62 @@
 										    	"enabled": true
 										     }
 										});
+								 }else{
+									 
+									 var chart = AmCharts.makeChart("chartdiv",
+												{
+												    "type": "serial",
+												    "theme": "light",
+												    "dataProvider": [{
+												        "name": "여자",
+												        "points": JSONData.femalePercentage,
+												        "color": "#DB4C3C",
+												        /* "bullet": "https://www.amcharts.com/lib/images/faces/D02.png" */
+												       "bullet": "/resources/image/ui/female.png"
+												    },{
+												        "name": "남자",
+												        "points": JSONData.malePercentage,
+												        "color": "#7F8DA9",
+												        /* "bullet": "https://www.amcharts.com/lib/images/faces/A04.png" */
+												        "bullet": "/resources/image/ui/male_up.png"
+												    }],
+												    "valueAxes": [{
+												        "maximum": 120,
+												        "minimum": 0,
+												        "axisAlpha": 0,
+												        "dashLength": 4,
+												        "position": "left"
+												    }],
+												    "startDuration": 1,
+												    "graphs": [{
+												        "balloonText": "<span style='font-size:13px;'>[[category]]: <b>[[value]]</b></span>",
+												        "bulletOffset": 10,
+												        "bulletSize": 52,
+												        "colorField": "color",
+												        "cornerRadiusTop": 8,
+												        "customBulletField": "bullet",
+												        "fillAlphas": 0.8,
+												        "lineAlpha": 0,
+												        "type": "column",
+												        "valueField": "points"
+												    }],
+												    "marginTop": 0,
+												    "marginRight": 0,
+												    "marginLeft": 0,
+												    "marginBottom": 20,
+												    "autoMargins": false,
+												    "categoryField": "name",
+												    "categoryAxis": {
+												        "axisAlpha": 0,
+												        "gridAlpha": 0,
+												        "inside": true,
+												        "tickLength": 0
+												    },
+												    "export": {
+												    	"enabled": true
+												     }
+												});
+								 }
 							});
 				
 			});
@@ -114,20 +168,20 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">파티 성별 비율</h5>
+        <h5 class="modal-title" id="exampleModalLabel">현재 파티에 참여중인 사람들의 비율이에요!</h5>
+        <h1 align="center">${ party.partyName }</h1>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form class="form-horizontal-2" enctype="multipart/form-data">
-			
-			
-			
-		</form>
-		
+      	<!-- 성별 비율 차트 -->
 		<div id="chartdiv"></div>
-      </div>
+		<!-- 나이 비율 -->
+        <form class="form-horizontal-2" enctype="multipart/form-data">
+		
+		</form>
+	  </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
       </div>

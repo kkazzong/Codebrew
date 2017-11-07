@@ -98,7 +98,7 @@
 				}
 				
 				socket.emit('message', output);
-				addToDiscussion('self',data,time);
+				addToDiscussion('self',data,time,"");
 			});
 			
 			$("#dataInput").on('keydown',function(event){
@@ -123,7 +123,7 @@
 					}
 					
 					socket.emit('message', output);
-					addToDiscussion('self',data,time);
+					addToDiscussion('self',data,time,"");
 				}
 			});
 			
@@ -144,6 +144,8 @@
 				}
 				
 				socket.emit('login', output);
+				
+				
 			//});
 			
 			
@@ -159,6 +161,7 @@
 						recipient : recipient,
 						senNick : senNick,
 				};
+				
 				console.log('서버로 보낼 데이터 : ' + JSON.stringify(output2));
 				
 				if(socket == undefined){
@@ -168,10 +171,13 @@
 				
 				socket.emit('findChat', output2);
 				//addToDiscussion('self',data,time);
+				
+				//채팅방 입장시 이벤트 발생
+				//socket.emit('admit', output3);
 		});	
 	 
 		
-
+		
 		
 		// 서버에 연결하는 함수 정의
 		function connectToServer(){
@@ -190,7 +196,7 @@
 					println('<p>수신 메세지 : ' + message.sender + ', ' + message.recipient + ', '
 							+ message.command + ', ' + message.type + ', ' + message.data +','+message.time+ '</p>');
 					
-					addToDiscussion('other', message.data, message.time);
+					addToDiscussion('other', message.data, message.time, message.flag);
 				});
 				
 				
@@ -207,9 +213,9 @@
 						
 						//alert(message[i].sender)
 						if(sessionId == message[i].sender) {
-							addToDiscussion('self', message[i].data, message[i].time);
+							addToDiscussion('self', message[i].data, message[i].time, message[i].flag);
 						} else {
-							addToDiscussion('other', message[i].data, message[i].time);
+							addToDiscussion('other', message[i].data, message[i].time, message[i].flag);
 						}
 						
 					}
@@ -218,6 +224,7 @@
 				
 				
 			});
+			
 			
 			socket.on('disconnect', function(){
 				println('웹 소켓 연결이 종료되었습니다.');
@@ -236,8 +243,8 @@
 		}
 		
 		
-		function addToDiscussion(writer, msg, time){
-			println("addToDiscussion 호출됨 : " + writer + ", " + msg);
+		function addToDiscussion(writer, msg, time, flag){
+			println("addToDiscussion 호출됨 : " + writer + ", " + msg + ", " + flag);
 			var img;
 			var contents;
 			var recipient;
@@ -256,6 +263,7 @@
 							+"</div>"
 							+"<div class = 'message'>"
 							+"<p>" + msg + "</p>"
+							+"<p>" + flag + "</p>"
 							/* +"<time datetime='2017-10-05 13:52'>"+time+"</time>" */
 							+"<time datetime='yyyy-mm-ddThh:mm:ss:Z'>"+time+"</time>"
 							+"</div>"
@@ -288,7 +296,25 @@
 		}
 			
 		
-		
+		//채팅방 나갔을 때 이벤트 발생
+		$(window).unload(function() {
+			
+			alert('Handler for .unload() called.');
+
+			var sender = $('#senderInput').val();
+			var recipient = $('#recipientInput').val();
+			var senNick = $('#senNick').val(); //////////senNick추가////////////////////
+			var data = $('#dataInput').val();
+			var time = $('#dataInputTime').val();
+			
+			var output3 = {
+					sender : sender,
+					recipient : recipient
+			};
+			
+			console.log('서버로 보낼 데이터 : ' + JSON.stringify(output3));
+			socket.emit('exit', output3)
+		});
 		
 		
 	</script>
