@@ -53,9 +53,27 @@
 	function fncWriteFestival() {
 		
 		var festivalName=$("textarea[name='festivalName']").val();
+		var startDate=$("#startDate").val();
+		var endDate=$("#endDate").val();
+		var addr=$("#addr").val();
 		
 		if(festivalName == null || festivalName.length <1){
 			alert("축제명은 반드시 한 글자 이상 입력하셔야 합니다.");
+			return;
+		}
+		
+		if(startDate == null || startDate.length <1){
+			alert("축제시작일을 입력하세요.");
+			return;
+		}
+		
+		if(endDate == null || endDate.length <1){
+			alert("축제종료일을 입력하세요.");
+			return;
+		}
+		
+		if(addr == null || addr.length <1){
+			alert("장소를 입력하세요.");
 			return;
 		}
 		
@@ -185,7 +203,7 @@
 		
 		<div class="col-sm-4">
 			<%-- <input type="text" class="form-control" id="festivalName" name="festivalName" value= "${festival.festivalName }"> --%>
-				<textarea rows="5" cols="30" name="festivalName">${festival.festivalName }</textarea>
+				<textarea rows="2" cols="30" name="festivalName">${festival.festivalName }</textarea>
 		</div>
 	
 	</div>
