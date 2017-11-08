@@ -208,12 +208,12 @@
 						var senderId = $("#idInput").val(); //sender 아이디
 						var senNick = "${user.nickname}"; /////////////////////새로추가 센닉
 						var hostId = "${party.user.userId}"; //party host 아이디
-						alert("senderId ==> "+senderId);
-						alert("hostId ==> "+hostId);
+						alert("senderId ==> "+senderId+", hostId ==> "+hostId);
+						//alert("hostId ==> "+hostId);
 						
 						if(senderId == hostId){
 							
-							alert("방만들기");
+							alert("[방만들기] 호스트");
 							var roomId = $("#roomIdInput").val();
 							var roomName = $("#roomNameInput").val();
 							var id = $("#idInput").val();
@@ -241,7 +241,7 @@
 								
 								//$("#joinRoomBtn").on("click", function(){
 									
-									alert("방참여");
+									alert("[방참여] 게스트");
 									var roomId = $("#roomIdInput").val();
 									
 									var output = {
@@ -281,6 +281,8 @@
 			var options = {'forceNew' : true};
 			var url = 'http://' + host + ':' + port;
 			var senderId = $("#idInput").val();
+			///////추가
+			//var joinMessage;
 			// 연결 요청
 			socket = io.connect(url, options);
 			
@@ -324,8 +326,8 @@
 							//addToDiscussion('other', message[i].message, message[i].time);
 							addToGroupDiscussion('other', message[i]);
 						}
-						
 					}
+					//addToJoin(joinMessage);
 					
 				});
 				
@@ -348,6 +350,11 @@
 							$("#roomList").append('<p>방 #'+i+' : '+message.rooms[i].id+', '+message.rooms[i].name+', '+message.rooms[i].owner+'</p>');
 						}
 						
+					} else if(message.command == 'join') {
+						
+						println('<p>방 현재 참여자수 : ' +message.count+ '</p>');
+						//joinMessage = message;
+						//addToJoin(message);
 					}
 					
 				});
@@ -359,14 +366,47 @@
 					
 					println('<p>방 이벤트 : ' +message.command+ '</p>');
 					println('<p>새로운 사람을을를 받았습니다 </p>');
-					
-					//방리스트
-					if(message.command == 'join') {
-						
-						 addToJoin(message);						
-					}
+					addToJoin(message);
 				});
+				
+				
+				//////////////////////////////////호스트입장에서 다시 들어올때 //////////////////////
+				socket.on('duplicate', function(message){
+				
+					console.log("[그룹채팅] 서버에서 받은 룸 데이터 : "+JSON.stringify(message));
 					
+					println('<p>방 이벤트 : ' +message.command+ '</p>');
+					
+					var roomId = $("#roomIdInput").val();
+					
+					var output = {
+							command : 'join',
+							roomId : roomId,
+							senderId : senderId, //////새로추가 !!
+							senNick : senNick
+					}
+					
+					console.log("서버로 보낼 데이터 : "+JSON.stringify(output));
+					
+					if(socket == undefined){
+						alert('서버에 연결되어 있지 않습니다. 먼저 서버에 연결하세요.');
+						return;
+					}
+					
+					socket.emit('room', output);
+				
+				});
+				
+				////////////////////////////게스트입장에서 방이 아직 안만들어져 있을때//////////////
+				socket.on('none', function(message){
+				
+					console.log("[그룹채팅] 서버에서 받은 룸 데이터 : "+JSON.stringify(message));
+					
+					println('<p>방 이벤트 : ' +message.command+ '</p>');
+					
+					//addToAlert();
+				
+				});
 			
 			socket.on('disconnect', function(){
 				println('웹 소켓 연결이 종료되었습니다.');
@@ -497,23 +537,46 @@
 			}
 		}
 		
-		/* function addToJoin(message){
-			println("addToGroupDiscussion 호출됨 : " +  msg);
+		
+		//////////////////////////입장시 알림/////////////////////////////////////
+		 function addToJoin(message){
+			println("addToJoin 호출됨 : " +  message);
 			
-				img = '${sender.profileImage}';
-				sender = '${sender.nickname}';
+				//img = '${sender.profileImage}';
+				//sender = '${sender.nickname}';
 				
-				contents = "<li class = '"+writer+"'>"
+				contents = "<ol class='join'><li>"
 							+"<div class = 'message'>"
-							+"<p>" + msg.senNick + "님 입장!</p>"
+							+"<p>" + message.senNick + "님 입장!</p>"
 							+"</div>"
-							+"</li>";
+							+"</li>"
+							+"</ol>";
 								
 				println("추가할 HTML : " + contents);
 				$(".discussion").append(contents);
 				$("#dataInput").val("");
 				
-		} */
+		} 
+		
+		//////////////////////////입장시 방 없을때/////////////////////////////////////
+		 function addToAlert(){
+			println("addToAlert 호출됨 : " +  message);
+			
+				//img = '${sender.profileImage}';
+				//sender = '${sender.nickname}';
+				
+				contents = "<ol class='alert'><li>"
+							+"<div class = 'message'>"
+							+"<p>방이 아직 개설되지 않았슴다ㅠㅠ</p>"
+							+"</div>"
+							+"</li>"
+							+"</ol>";
+								
+				println("추가할 HTML : " + contents);
+				$(".alert").append(contents);
+				$("#dataInput").val("");
+				
+		} 
 			
 		
 		
@@ -569,6 +632,34 @@
   		}
   		
   		////////////////////////////////////////////////////////////////////
+  		.join{
+  			list-style : none;
+  			background : #ededed;
+  			margin : 0;
+  			padding : 0 0 50px 0;
+  		}
+  		
+  		.join li{
+  			background-color:gray;
+  			padding : 0.5em;
+  			overflow : hidden;
+  			display : flex;
+  		}
+  		
+  		.alert{
+  			list-style : none;
+  			background : #ededed;
+  			margin : 0;
+  			padding : 0 0 50px 0;
+  		}
+  		
+  		.alert li{
+  			background-color:red;
+  			padding : 0.5em;
+  			overflow : hidden;
+  			display : flex;
+  		}
+  		///////////////////////////////////////////////////////////////////
   		* {
   			margin: 0; padding: 0; box-sizing: border-box; 
   		}
@@ -662,6 +753,9 @@
 
 	<!-- 채팅창 -->
 	<ol class="discussion">
+		
+	</ol>
+	<ol class="alert">
 		
 	</ol>
 	
