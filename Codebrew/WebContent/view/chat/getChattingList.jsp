@@ -94,18 +94,32 @@
 					
 					var sessionId = "${user.userId}"; 
 					
+					alert(message);
+					
+					var senders = [];
 					for(var i = 0; i < message.length; i++) {
-						println('<p>디비에서 가져온 채팅 : ' +message[i].sender+ ', ' + message[i].recipient + ', '+ message[i].data +','+message[i].time+'</p>');
+						//println('<p>디비에서 가져온 채팅 : ' +message[i].sender+ ', ' + message[i].recipient + ', '+ message[i].data +','+message[i].time+'</p>');
 						//addToDiscussion('self', message[i].message, message[i].time);
+						
+						alert(message[i].senders);
+						senders = message[i].senders;
 						
 						//alert(message[i].sender)
 						if(sessionId == message[i].sender) {
 							//addToDiscussion('self', message[i]);
 						} else {
-							addToDiscussion('other', message[i]);
+							//addToDiscussion('other', message[i]);
 						}
 						
+					} 
+					
+					for(var i = 0; i < senders.length; i ++) {
+						
+						alert(senders[i]);
+						addToDiscussion(senders[i]);
 					}
+					
+					//var senders = message[i].senders;
 					
 				});
 				
@@ -130,8 +144,53 @@
 			$('#result').append('<p>'+data+'</p>');
 		}
 		
+		function addToDiscussion(message){
+			/* var msg = message.data;
+			var time = message.time;
+			println("addToDiscussion 호출됨 : " + writer + ", " + msg);
+			var img;
+			var contents;
+			var recipient; */
+			var sender;
+			
+				//alert("otehr");
+				///////////////recipient는 서버에서 받은걸로
+				img = 'default_profile_image.jpg';
+				//recipient = message.sender;
+				//sender = message.senNick;
+				sender = message;
+				
+				contents = '<div class="row">'
+							+'<div class="col-md-offset-2 col-md-8">'
+							+'<div class="panel panel-default">'
+							+'<div class="panel-body">'
+							+'<div class="col-md-2">'
+							+"<div class = 'avatar'>"
+							+'<img width="100%" height="100%" src="/resources/image/chat/Messages-icon.png">'
+							+'</div>'
+							+'</div>'
+							+'<div class="col-md-10">'
+							+'<div>'+sender+'</div>'
+							+'<div class = "message">'
+							/* +'<p>' + msg + '</p>' */
+							/* +"<time datetime='2017-10-05 13:52'>"+time+"</time>" */
+							/* +'<time datetime="yyyy-mm-ddThh:mm:ss:Z">'+time+'</time>' */
+							+"</div>"
+							+'</div>'
+							+'</div>'
+							+'</div>'
+							+'</div>'
+							+'</div> ';
+								
+				console.log("추가할 HTML : " + contents);
+				$(".discussion").append(contents);
+			
+			
+		}
 		
-		function addToDiscussion(writer, message){
+		
+		
+		/* function addToDiscussion(writer, message){
 			var msg = message.data;
 			var time = message.time;
 			println("addToDiscussion 호출됨 : " + writer + ", " + msg);
@@ -162,7 +221,7 @@
 							+'<div>'+sender+'</div>'
 							+'<div class = "message">'
 							+'<p>' + msg + '</p>'
-							/* +"<time datetime='2017-10-05 13:52'>"+time+"</time>" */
+							/* +"<time datetime='2017-10-05 13:52'>"+time+"</time>" 
 							+'<time datetime="yyyy-mm-ddThh:mm:ss:Z">'+time+'</time>'
 							+"</div>"
 							+'</div>'
@@ -195,7 +254,7 @@
 				$("#dataInput").val("");
 				
 			}
-		}
+		} */
 		
 		
 		///////////////////////////시간////////////////////////////////////////////////////////////
