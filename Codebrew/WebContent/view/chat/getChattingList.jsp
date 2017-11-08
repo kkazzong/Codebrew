@@ -97,12 +97,17 @@
 					alert(message);
 					
 					var senders = [];
+					//추가
+					var datas = [];
 					for(var i = 0; i < message.length; i++) {
 						//println('<p>디비에서 가져온 채팅 : ' +message[i].sender+ ', ' + message[i].recipient + ', '+ message[i].data +','+message[i].time+'</p>');
 						//addToDiscussion('self', message[i].message, message[i].time);
 						
 						alert(message[i].senders);
+						alert(message[i].data);
 						senders = message[i].senders;
+						//추가
+						datas = message[i].data;
 						
 						//alert(message[i].sender)
 						if(sessionId == message[i].sender) {
@@ -116,8 +121,13 @@
 					for(var i = 0; i < senders.length; i ++) {
 						
 						alert(senders[i]);
-						addToDiscussion(senders[i]);
+						alert(datas[i]);
+						//변경
+						addToDiscussion(senders[i], datas[i]);
+					
+						
 					}
+					
 					
 					//var senders = message[i].senders;
 					
@@ -144,7 +154,8 @@
 			$('#result').append('<p>'+data+'</p>');
 		}
 		
-		function addToDiscussion(message){
+		//변경
+		function addToDiscussion(message, data){
 			/* var msg = message.data;
 			var time = message.time;
 			println("addToDiscussion 호출됨 : " + writer + ", " + msg);
@@ -152,6 +163,8 @@
 			var contents;
 			var recipient; */
 			var sender;
+			//추가
+			var data;
 			
 				//alert("otehr");
 				///////////////recipient는 서버에서 받은걸로
@@ -159,6 +172,8 @@
 				//recipient = message.sender;
 				//sender = message.senNick;
 				sender = message;
+				//추가
+				data = data;
 				
 				contents = '<div class="row">'
 							+'<div class="col-md-offset-2 col-md-8">'
@@ -171,6 +186,7 @@
 							+'</div>'
 							+'<div class="col-md-10">'
 							+'<div>'+sender+'</div>'
+							+'<div>'+data+'</div>'
 							+'<div class = "message">'
 							/* +'<p>' + msg + '</p>' */
 							/* +"<time datetime='2017-10-05 13:52'>"+time+"</time>" */
