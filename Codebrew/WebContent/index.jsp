@@ -247,7 +247,7 @@ $(function() {
 				
 				<!-- carousel  -->
 				
-				<div class="container">
+	<div class="container">
 
       <div id="myCarousel" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
@@ -265,7 +265,6 @@ $(function() {
             <img class="first-slide" src="" alt="First slide"  style="width : 600px; height : 400px;"  title="Click Images">
             <div class="carousel-caption" >
             
-            
             <!-- data 삽입태그 -->
             <h1 class="glyphicon glyphicon-eye-open" id="festivalName0" aria-hidden="true"></h1><br/>
             <h4 class="glyphicon glyphicon-map-marker" id="addr0" aria-hidden="true"></h4><br/>
@@ -276,7 +275,7 @@ $(function() {
             </div>
             
             
-            <div class="container">
+        <div class="container">
           		</div>
           		</div>
           		</div>
