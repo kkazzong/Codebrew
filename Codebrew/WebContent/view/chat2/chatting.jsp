@@ -303,9 +303,9 @@
 			
 		
 		//채팅방 나갔을 때 이벤트 발생
-		$(this).unload(function() {
+		/* $(this).unload(function() {
 			
-			alert('Handler for .unload() called.');
+			//alert('Handler for .unload() called.');
 			//return 'Handler for .unload() called.';
 
 			 var sender = $('#senderInput').val();
@@ -320,8 +320,28 @@
 			};
 			
 			console.log('서버로 보낼 데이터 : ' + JSON.stringify(output3));
-			socket.emit('exit', output3) ;
-		});
+			socket.emit('exit', outsput3) ;
+		}); */
+		
+			window.onunload = function() {
+			
+			//alert('Handler for .unload() called.');
+			//return 'Handler for .unload() called.';
+
+			 var sender = $('#senderInput').val();
+			var recipient = $('#recipientInput').val();
+			//var senNick = $('#senNick').val(); //////////senNick추가////////////////////
+			//var data = $('#dataInput').val();
+			//var time = $('#dataInputTime').val();
+			
+			var output3 = {
+					sender : sender,
+					recipient : recipient
+			};
+			
+			console.log('서버로 보낼 데이터 : ' + JSON.stringify(output3));
+			socket.emit('exit', outsput3) ;
+		};
 		
 		
 	</script>
