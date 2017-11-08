@@ -64,7 +64,8 @@
 		
 		//문서 로딩 후 실행
 		$(function(){
-			alert("chat/chatting.jsp");
+			
+			alert("chat/chatting2.jsp");
 			//////오늘 날짜 출력
 			printDate();
 			
@@ -88,15 +89,7 @@
 				var data = $('#dataInput').val();
 				var time = $('#dataInputTime').val();
 				
-				var output = {
-						sender : sender,
-						recipient : recipient,
-						senNick : senNick,
-						command : 'chat',
-						type  : 'text',
-						data : data,
-						time : time
-				};
+				var output = {sender : sender, recipient : recipient, senNick : senNick, command : 'chat', type  : 'text', data : data, time : time};
 				alert('서버로 보낼 데이터 : ' + JSON.stringify(output));
 				
 				
@@ -106,7 +99,7 @@
 				}
 				
 				socket.emit('message', output);
-				addToDiscussion('self',data,time);
+				addToDiscussion('self',data,time,"");
 			});
 			
 			$("#dataInput").on('keydown',function(event){
@@ -131,7 +124,7 @@
 					}
 					
 					socket.emit('message', output);
-					addToDiscussion('self',data,time);
+					addToDiscussion('self',data,time,"");
 				}
 			});
 			
@@ -140,15 +133,10 @@
 				//alert('로그인 버튼 클릭!!')
 				var id = $('#idInput').val();
 				var password = $('#passwordInput').val();
-				var senNick = $('#senNick').val();
+				var alias = $('#senNick').val();
 				var today = $('#todayInput').val();
 				
-				var output = {
-						id : id,
-						/* password : password, */
-						senNick : senNick,
-						/* today : today */
-				};
+				var output = {id : id, password : password, alias : alias, today : today};
 				console.log('서버로 보낼 데이터 : '+ JSON.stringify(output));
 				
 				if(socket == undefined){
@@ -157,7 +145,10 @@
 				}
 				
 				socket.emit('login', output);
+				
+				
 			//});
+			
 			
 			
 				var sender = $('#senderInput').val();
@@ -171,6 +162,7 @@
 						recipient : recipient,
 						senNick : senNick,
 				};
+				
 				console.log('서버로 보낼 데이터 : ' + JSON.stringify(output2));
 				
 				if(socket == undefined){
@@ -180,10 +172,13 @@
 				
 				socket.emit('findChat', output2);
 				//addToDiscussion('self',data,time);
+				
+				//채팅방 입장시 이벤트 발생
+				//socket.emit('admit', output3);
 		});	
 	 
 		
-
+		
 		
 		// 서버에 연결하는 함수 정의
 		function connectToServer(){
@@ -202,7 +197,7 @@
 					println('<p>수신 메세지 : ' + message.sender + ', ' + message.recipient + ', '
 							+ message.command + ', ' + message.type + ', ' + message.data +','+message.time+ '</p>');
 					
-					addToDiscussion('other', message.data, message.time);
+					addToDiscussion('other', message.data, message.time, message.flag);
 				});
 				
 				
@@ -219,9 +214,9 @@
 						
 						//alert(message[i].sender)
 						if(sessionId == message[i].sender) {
-							addToDiscussion('self', message[i].data, message[i].time);
+							addToDiscussion('self', message[i].data, message[i].time, message[i].flag);
 						} else {
-							addToDiscussion('other', message[i].data, message[i].time);
+							addToDiscussion('other', message[i].data, message[i].time, message[i].flag);
 						}
 						
 					}
@@ -231,13 +226,20 @@
 				
 			});
 			
-			socket.on('disconnect', function(){
+			
+			/* socket.on('disconnect', function(){
 				println('웹 소켓 연결이 종료되었습니다.');
-			});
+			}); */
 			
 			socket.on('response', function(response){
 				console.log(JSON.stringify(response));
 				println('응답 메세지를 받았습니다. : ' + response.command + ', ' + response.code + ', ' + response.message);
+			});
+			
+			socket.on('disconnect',function(userList){
+				console.log(JSON.stringify(userList));
+				println('user list를 받았습니다. : ' + userList);
+				println('웹 소켓 연결이 종료되었습니다.');
 			});
 		}
 		
@@ -248,8 +250,8 @@
 		}
 		
 		
-		function addToDiscussion(writer, msg, time){
-			println("addToDiscussion 호출됨 : " + writer + ", " + msg);
+		function addToDiscussion(writer, msg, time, flag){
+			println("addToDiscussion 호출됨 : " + writer + ", " + msg + ", " + flag);
 			var img;
 			var contents;
 			var recipient;
@@ -268,6 +270,7 @@
 							+"</div>"
 							+"<div class = 'message'>"
 							+"<p>" + msg + "</p>"
+							+"<p>" + flag + "</p>"
 							/* +"<time datetime='2017-10-05 13:52'>"+time+"</time>" */
 							+"<time datetime='yyyy-mm-ddThh:mm:ss:Z'>"+time+"</time>"
 							+"</div>"
@@ -300,7 +303,29 @@
 		}
 			
 		
-		
+		//채팅방 나갔을 때 이벤트 발생
+		function exit() {
+			
+			//$(this).unload(function() {
+				
+				alert('Handler for .unload() called.');
+				//return 'Handler for .unload() called.';
+	
+				 var sender = $('#senderInput').val();
+				var recipient = $('#recipientInput').val();
+				//var senNick = $('#senNick').val(); //////////senNick추가////////////////////
+				//var data = $('#dataInput').val();
+				//var time = $('#dataInputTime').val();
+				
+				var output3 = {
+						sender : sender,
+						recipient : recipient
+				};
+				
+				console.log('서버로 보낼 데이터 : ' + JSON.stringify(output3));
+				socket.emit('exit', output3) ;
+			//});
+		}
 		
 		
 	</script>
@@ -375,7 +400,7 @@
 	    #messages li:nth-child(odd) { background: #eee; } */
 	</style>
 </head>
-<body>
+<body onbeforeunload="exit()">
 	
 	<div class = "container">
 		<div id = "cardbox" class = "ui blue fluid card">
@@ -394,7 +419,6 @@
 	
 	<div>
 		<div class = "ui input">
-			<!-- <input type = "hidden" id = "hostInput" value = "localhost"> -->
 			<input type = "hidden" id = "hostInput" value = "192.168.0.4">
 		</div>
 		<div class = "ui input">
