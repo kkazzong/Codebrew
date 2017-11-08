@@ -3,7 +3,10 @@ package com.codebrew.moana.web.review;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -69,6 +72,13 @@ public class ReviewController {
 	@Value("#{commonProperties['pageSize']}")
 	int pageSize;
 	
+	public static class TIME_MAXIMUM{
+		public static final int SEC = 60;
+        public static final int MIN = 60;
+        public static final int HOUR = 24;
+        public static final int DAY = 30;
+        public static final int MONTH = 12;
+	}
 
 	//1. GET 인 경우 : addReview.jsp(review를 등록하는 form)를 불러온다. : ok
 	@RequestMapping(value="addReview", method=RequestMethod.GET)
@@ -224,9 +234,45 @@ public class ReviewController {
 		
 		Map<String, Object> map = replyService.getReplyList(search, reviewNo);
 		
+		@SuppressWarnings("unchecked")
 		List<Reply> replyList = (List<Reply>)map.get("replyList");
 		
+		long presentTime = System.currentTimeMillis();
+		
 		//test
+		for(int i = 0; i < replyList.size(); i++){
+			
+			System.out.println("\nreplyList.get(i).getReplyRegDate() :: \n"+replyList.get(i).getReplyRegDate());
+			Date eachReplyRegDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").parse(replyList.get(i).getReplyRegDate());
+			long diffTime = (presentTime - eachReplyRegDateTime.getTime())/1000;
+			
+			if(diffTime < TIME_MAXIMUM.SEC)
+			{
+				replyList.get(i).setReplyRegDate("바로 전");
+			}
+			else if((diffTime /= TIME_MAXIMUM.SEC) < TIME_MAXIMUM.MIN)
+			{
+				replyList.get(i).setReplyRegDate(diffTime+"분 전");
+			}
+			else if((diffTime /= TIME_MAXIMUM.MIN) < TIME_MAXIMUM.HOUR)
+			{
+				replyList.get(i).setReplyRegDate(diffTime+"시간 전");
+			}
+			else if((diffTime /= TIME_MAXIMUM.HOUR) < TIME_MAXIMUM.DAY)
+			{
+				replyList.get(i).setReplyRegDate(diffTime+"일 전");
+			}
+			else if((diffTime /= TIME_MAXIMUM.DAY) < TIME_MAXIMUM.MONTH)
+			{
+				replyList.get(i).setReplyRegDate(diffTime+"달 전");
+			}
+			else
+			{
+				replyList.get(i).setReplyRegDate(diffTime+"년 전");
+			}
+		}
+		
+		
 		System.out.println("\n\n test :: replyList.toString() :: "+replyList.toString());
 		
 		//Page처리
@@ -252,6 +298,12 @@ public class ReviewController {
 		System.out.println("/view/review/updateReview");
 		//Business Logic
 		Review review = reviewService.getReview(reviewNo);
+		
+		/////////// 디비 입출력시 엔터처리 ////////////////
+		String reviewDetail = review.getReviewDetail();
+		reviewDetail = reviewDetail.replaceAll("<br>", "\n");
+		review.setReviewDetail(reviewDetail);
+		/////////// 디비 입출력시 엔터처리 ////////////////
 		
 		Festival festival = festivalService.getFestival(review.getFestivalNo());
 		
