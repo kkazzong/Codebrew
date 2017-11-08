@@ -56,6 +56,7 @@
 								 },
 								 context : this,
 								 success : function(JSONData, status) {
+									 
 									 location.reload(); 
 								
 								 }
@@ -140,6 +141,8 @@
 
 
 <!-- Modal -->
+<%-- <jsp:include page="/toolbar/toolbar.jsp"/> --%>
+<%-- <jsp:include page="/view/mypage/getMyPage.jsp"/> --%>
 <div class="modal fade" id="following" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -153,9 +156,9 @@
         <form class="form-horizontal-1" enctype="multipart/form-data">
 		
 		
-			
+	
   <input type="hidden" value="${sessionScope.user.userId}" id="sessionId" name="sessionId">
-  <input type="hidden" value="${user.userId}" id="userId" name="userId"> 
+ <input type="hidden" value="${user.userId}" id="userId" name="userId">  
 
 <!-- <div class="container">
     <div class="row profile">
@@ -164,7 +167,7 @@
 					<div class="row">
 					<!-- 	<div> -->
 						<c:set var="i" value="0" />
-							<c:forEach var="follow" items="${list5}">
+							<c:forEach var="follow" items="${list2}">
 								<c:set var="i" value="${ i+1 }" />
 								 <div class="col-xs-6 col-md-4">
 									<img class="img-circle" src="/resources/uploadFile/${follow.profileImage}" width="40" height="40"></div>
@@ -191,9 +194,9 @@
 								<br>
 							</c:forEach>
 			               
-			               <hr>
+			           
 			               </div>
-			               <hr>
+			           
 	
 	
 		

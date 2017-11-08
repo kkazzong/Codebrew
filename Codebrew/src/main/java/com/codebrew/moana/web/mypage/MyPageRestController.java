@@ -1,5 +1,6 @@
 package com.codebrew.moana.web.mypage;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,33 +50,136 @@ public class MyPageRestController {
 	}
 
 	@RequestMapping(value="json/addFollow/{requestId:.+}", method=RequestMethod.GET)
-	public void addFollow(@PathVariable String requestId, HttpSession session, Model model)throws Exception{
+	public void addFollow(@PathVariable String requestId, HttpSession session)throws Exception{
+		
+		//@RequestBody Follow follow,@RequestBody Search search
 		
 		System.out.println("myPageRest/json/addFollow : GET");
 		
 		String sessionId=((User)session.getAttribute("user")).getUserId();
 		
+		
+		
 		if(sessionId != requestId) {
 		followService.addFollow(sessionId, requestId);
-		Follow follow= followService.getFollow(sessionId, requestId);
+		//Follow follow= followService.getFollow(sessionId, requestId);
 		
-		model.addAttribute("follow", follow);//?? Follow로 보내면 왜 안될까??
+		//model.addAttribute("follow", follow);
+		//add 했으니깐 add 한 정보를 보내서 그사람 responseId가 내가 있다는 게 떠야함
+		//controller에서 데이터를 보냈기 때문에 model 이고, 우린 restController라서 리턴타입을 보내야 함
 		
-		}	
+		}
+		//Follow follow= followService.getFollow(sessionId, requestId);
+		//Follow follow= followService.getFollow(sessionId, requestId);
+	  //model.addAttribute("follow", follow);
+		
 }
 	
-	@RequestMapping(value="json/deleteFollow/{requestId}", method=RequestMethod.GET)
-	public void deleteFollow(@PathVariable String requestId, HttpSession session)throws Exception{
+	
+	
+	
+	
+	
+	
+	
+	
+	/*@RequestMapping(value="json/addFollow/{requestId:.+}", method=RequestMethod.GET)
+	public Follow addFollow(@PathVariable String requestId, HttpSession session)throws Exception{
+		
+		//@RequestBody Follow follow,@RequestBody Search search
+		
+		System.out.println("myPageRest/json/addFollow : GET");
+		
+		String sessionId=((User)session.getAttribute("user")).getUserId();
+		
+		
+		
+		if(sessionId != requestId) {
+		followService.addFollow(sessionId, requestId);
+		//Follow follow= followService.getFollow(sessionId, requestId);
+		
+		//model.addAttribute("follow", follow);
+		//add 했으니깐 add 한 정보를 보내서 그사람 responseId가 내가 있다는 게 떠야함
+		//controller에서 데이터를 보냈기 때문에 model 이고, 우린 restController라서 리턴타입을 보내야 함
+		
+		}
+		Follow follow= followService.getFollow(sessionId, requestId);
+		return follow;
+}
+	*/
+
+	/*@RequestMapping(value="json/addFollow/{requestId:.+}", method=RequestMethod.GET)
+	public Map<String,Object> addFollow(@PathVariable String requestId, HttpSession session, 
+			@RequestBody Follow follow, @RequestBody Search search)throws Exception{
+		
+		System.out.println("myPageRest/json/addFollow : GET");
+		
+		String sessionId=((User)session.getAttribute("user")).getUserId();
+		
+		
+		
+		if(sessionId != requestId) {
+		followService.addFollow(sessionId, requestId);
+		follow= followService.getFollow(sessionId, requestId);
+		
+		//model.addAttribute("follow", follow);
+		//add 했으니깐 add 한 정보를 보내서 그사람 responseId가 내가 있다는 게 떠야함
+		//controller에서 데이터를 보냈기 때문에 model 이고, 우린 restController라서 리턴타입을 보내야 함
+		
+		//return follow;
+		
+		
+	
+		
+		  sessionId=requestId;
+		}	
+		
+		
+         	
+		  //팔로잉11
+		  Map<String, Object>map1=followService.getFollowerList(search, sessionId);
+		  		
+		  //sessionId가 requestId로		
+		  		
+		  //팔로워22
+		  Map<String, Object>map2=followService.getFollowingList(search, sessionId);
+		
+		Map<String, Object> returnMap = new HashMap<String, Object>();
+		returnMap.put("list1", map1.get("list"));
+		returnMap.put("totalCount1", map1.get("totalCount"));
+		returnMap.put("list2", map2.get("list"));
+		returnMap.put("totalCount2", map2.get("totalCount"));
+		returnMap.put("follow", follow);
+		
+		//return follow;
+		return returnMap;
+}*/
+	
+	 @RequestMapping(value="json/deleteFollow/{requestId}", method=RequestMethod.GET)
+	 public Follow deleteFollow(@PathVariable String requestId, HttpSession session, Follow follow)throws Exception{
 		
 		System.out.println("myPageRest/json/deleteFollow: GET");
 		
 		String sessionId=((User)session.getAttribute("user")).getUserId();
 		
+		//followService.deleteFollow(sessionId, requestId);
+		
+		
+
+		if(sessionId != requestId) {
 		followService.deleteFollow(sessionId, requestId);
+		follow= followService.getFollow(sessionId, requestId);
+		
+		
+		}	
+		
+		
+		return follow;
+		
 	}
 		
 	
-	
+	/*
 	@RequestMapping(value="json/getFollowingList/{requestId}", method=RequestMethod.GET)
 	public Map<String,Object> getFollowingList(@ModelAttribute("search")Search search, HttpSession session,
 			@PathVariable String requestId)throws Exception{
@@ -166,7 +271,7 @@ public class MyPageRestController {
 		return map;
 	}
 		
-		
+		*/
 	
 
 

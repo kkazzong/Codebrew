@@ -18,62 +18,109 @@
 	
 	<script type="text/javascript">
 	
-	 $(function() {
+	  $(function() {
 		 
 			$("#profileFollow").on("click" , function() {
 				var requestId = $("#userId").val();
 			
 			 console.log("requestId는????"+requestId);
+			 
 				
-				$.ajax(
-					{
-						url : '/myPageRest/json/addFollow/'+requestId,
+				$.ajax({
+						url : "/myPageRest/json/addFollow/"+requestId,
+						method : "GET",
+						data:JSON.stringify({
+							requestId:requestId
+						}),
+						dataType : "json",
+						headers : {
+							 "Accept" : "application/json;charset=UTF-8",
+							 "Content-Type" : "application/json"
+						 },
+						 /* async:false; */
+						 context : this,
+						 success : function(JSONData, status) {
+							/*  $("#follow").val("following").css('background-color', '#3897f0').css('color', '#fff'); */
+							/* location.reload(); */
+							//console.log(this);
+							//console.log(JSON.stringify(JSONData));
+							//$(this).val('following');
+							alert(status);
+							alert(JSON.stringify(JSONData));
+							 //location.reload();
+							/* 팔로잉 됐다고 버튼이  바뀜 follow(팔로잉 안한거)--> following(팔로잉된거) */
+							// $("#profileFollow").text("Following");
+							
+							//location.reload();
+						     window.location.reload(true);
+						     //$('#reload').load("/myPage/getMyPage?requestId=${sessionScope.user.userId}");
+							// window.location.reload(true);
+						 } 
+					})
+			  });
+			
+	 });	
+	 
+	 
+	 
+	 $(function() {
+		 
+			$("#profileFollowing").on("click" , function() {
+				var requestId = $("#userId").val();
+			
+			 console.log("requestId는????"+requestId);
+			 
+				
+				$.ajax({
+						url : '/myPageRest/json/deleteFollow/'+requestId,
 						method : "GET",
 						dataType : "json",
 						headers : {
-							 "Accept" : "application/json",
+							 "Accept" : "application/json;charset=UTF-8",
 							 "Content-Type" : "application/json"
 						 },
 						 context : this,
 						 success : function(JSONData, status) {
 							/*  $("#follow").val("following").css('background-color', '#3897f0').css('color', '#fff'); */
 							/* location.reload(); */
-							$(this).val('following');
-							 
-						 }
-					}		
-				)
-			});
-		});	
-	 
-/* 	 $(function() {
+							//$(this).val('follow');
+							
+							 //$("#profileFollowing").text("Follow");
+							 location.reload();
+						  }
+					})
+			  });
+	
+	 });	 
+	  
+	/*  $(function() {
 		 
 		 var requestId = $("#userId").val();
 	
 			 
 	
-		 
+		 /* 
 			$( "#getFollowingList" ).on("click" , function() {
 				
-			
 				self.location="/myPage/getFollowingList?requestId="+requestId;
-			});  
+			});   */		
 			
-		/* 	$( "#following" ).on("click" , function() {
-				
+/* 
+			$( "#following" ).on("click" , function() {
 				
 				self.location="/myPage/getFollowingList?requestId="+requestId;
-			}); */
-			
-			
-			
-			
-	/* 		$( "#getFollowerList" ).on("click" , function() {
+			});  	 */
+		/* 	
+			$( "#getFollowerList" ).on("click" , function() {
 				self.location="/myPage/getFollowerList?requestId="+requestId;
 			});
-		
+		 */
+		 
+			/* $( "#follower" ).on("click" , function() {
+				self.location="/myPage/getFollowerList?requestId="+requestId;
+			});
 			
-		});  */
+		});   */
 	 
 	</script>
 	<style>
@@ -88,7 +135,7 @@
 			height:100%;
 		} */
 
-		/* Profile container */
+		
 		.profile {
 		  margin: 20px 0;
 		}
@@ -99,7 +146,7 @@
 		  padding: 20px 0 10px 0;
 		  background: #F1F3FA;
 		  border-radius : 4px;
-		  /* background: #fff; */
+		 
 		}
 		
 		.profile-usertitle {
@@ -174,7 +221,7 @@
 	
 	</head>
 	<body>
-	<%-- <jsp:include page="/toolbar/toolbar.jsp"/> --%>
+	 <jsp:include page="/toolbar/toolbar.jsp"/> 
 
 
 	
@@ -183,26 +230,56 @@
 	<jsp:include page="/view/mypage/getFollowerList.jsp"/>
 
 
-    <div class="container">
-      <div class="row profile">
+    <div class="container-fluid">
+    <!--   <div class="row profile"> -->
 		
 		<input type="hidden" id="sessionId" value="${sessionScope.user.userId}">
+            <div class="row"> 
+			 <div class="col-xs-6 col-md-4 col-md-offset-4">
+              <img class="img-circle" src="/resources/uploadFile/${user.profileImage}" width="100" height="100">
+              </div>
+			  <div class="clearfix visible-xs-block"></div>
         
         
         
         
+           <!--user-profile  -->
+			          
+			   <div class="col-xs-6 col-md-4 col-md-offset-4">                                                                                                                                                                                                                                                                                                   
+				<div class="profile-userbuttons">
+					<c:if test="${! empty sessionScope.user.userId }">
+						<c:if test="${sessionScope.user.userId != user.userId }">  <!--내가 딴 사람 마이페이지에 들어갔을때만 follow 버튼이 뜨는  조건  -->
+							 <c:choose>
+							 <c:when test="${empty follow.requestId }">
+								
+								 <!--나(sessionId) 이사람 requestId면 (팔로잉 목록에 없다면)-->
+									<button type="button" class="btn btn-sm" id="profileFollow" >Follow</button>			
+								</c:when>
+							     <c:otherwise>
+							      <!--나(sessionId) 이사람 requestId면 (팔로잉 목록에 있다면)-->
+								     <button type="button" class="btn btn-sm" id="profileFollowing">Following</button>
+							     </c:otherwise>
+						</c:choose>
+					</c:if> 
+				</c:if>
+			  </div>
+			</div>
+		
+			  
+			  
+			  
         
-		<div class="row">
+        
+	
 			
-			   		<div class="col-md-4 col-md-offset-4">
-            
-				<img class="img-circle" src="/resources/uploadFile/${user.profileImage}" width="100" height="100"></div>
-					
-					
-		            <br>
+			 <%--<div class="col-md-4 col-md-offset-4">
+             <img class="img-circle" src="/resources/uploadFile/${user.profileImage}" width="100" height="100"></div>
+			<br> --%>
 		            
 					<!-- SIDEBAR USER TITLE -->
-					<div class="profile-usertitle">
+				<!-- 	<div class="row"> -->
+					<div class="col-xs-6 col-md-4 col-md-offset-4">
+					<div class="profile-usertitle" >
 						
 						 <div class="profile-usertitle-name"> 
 						<!-- <div class="col-md-4 col-md-offset-4"> -->
@@ -226,30 +303,10 @@
 						
 						
 					</div>
-			
+			</div>
+	<!-- 	</div> -->
 	    
 			      
-			<!--user-profile  -->
-			                                                                                                                                                                                                                                                                                                                  
-				<div class="profile-userbuttons">
-					<c:if test="${! empty sessionScope.user.userId }">
-						<c:if test="${sessionScope.user.userId != user.userId }">  
-							 <c:choose>
-							 <c:when test="${empty follow.requestId }">
-								
-								 <!--나(sessionId) 이사람 requestId면 (팔로잉 목록에 없다면)-->
-									<button type="button" class="btn btn-sm" id="profileFollow" value="follow">Follow</button>			
-								</c:when>
-							     <c:otherwise>
-							      <!--나(sessionId) 이사람 requestId면 (팔로잉 목록에 있다면)-->
-								     <button type="button" class="btn btn-sm" id="profileFollowing" value="following">Following</button>
-							     </c:otherwise>
-						</c:choose>
-					</c:if> 
-				</c:if>
-			  </div>
-			
-		
 			
 			
 			
@@ -258,40 +315,43 @@
 			
 			
 			
-			
-			
-			
-				<div class="profile-usermenu">
+			  <div class="col-xs-6 col-md-4 col-md-offset-4">
+				<div class="profile-usermenu" id="reload">
 					<ul class="nav">
 						<li id="getFollowerList" class="test">
 							<input type="hidden" id="userId" name="userId" value="${user.userId}">
 							<a href="#">
 							<i class="fa fa-user-circle" aria-hidden="true" 
 							data-toggle="modal" data-target="#follower" > </i>
-							팔로워 </a>${totalCount6}
+							팔로잉</a> ${totalCount1}
+							
+							<jsp:include page="/view/mypage/getFollowingList.jsp"/>
+							
 						</li>
 				
 						<li id="getFollowingList" class="test">
-						 
 							<a href="#">
+							<input type="hidden" id="userId" name="userId" value="${user.userId}">
 							<i class="fa fa-user-circle-o" aria-hidden="true"
 							data-toggle="modal" data-target="#following" ></i>
-	
-							팔로잉</a>${totalCount5}
+							팔로워</a>${totalCount2}
+							
+							<jsp:include page="/view/mypage/getFollowerList.jsp"/>
+							
 						</li>
 					
 					</ul>
 				</div>
-				
-				
-				
-				
-			
-			
-			
-			
 			</div>
-		 </div>
-	</div>
+				
+				
+				
+			
+			
+			
+			
+</div>			
+</div>
+	
 </body>
 </html>
