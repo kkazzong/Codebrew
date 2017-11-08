@@ -226,13 +226,19 @@
 			});
 			
 			
-			socket.on('disconnect', function(){
+			/* socket.on('disconnect', function(){
 				println('웹 소켓 연결이 종료되었습니다.');
-			});
+			}); */
 			
 			socket.on('response', function(response){
 				console.log(JSON.stringify(response));
 				println('응답 메세지를 받았습니다. : ' + response.command + ', ' + response.code + ', ' + response.message);
+			});
+			
+			socket.on('disconnect',function(userList){
+				console.log(JSON.stringify(userList));
+				println('user list를 받았습니다. : ' + userList);
+				println('웹 소켓 연결이 종료되었습니다.');
 			});
 		}
 		
@@ -297,15 +303,16 @@
 			
 		
 		//채팅방 나갔을 때 이벤트 발생
-		$(window).unload(function() {
+		$(this).unload(function() {
 			
 			alert('Handler for .unload() called.');
+			//return 'Handler for .unload() called.';
 
-			var sender = $('#senderInput').val();
+			 var sender = $('#senderInput').val();
 			var recipient = $('#recipientInput').val();
-			var senNick = $('#senNick').val(); //////////senNick추가////////////////////
-			var data = $('#dataInput').val();
-			var time = $('#dataInputTime').val();
+			//var senNick = $('#senNick').val(); //////////senNick추가////////////////////
+			//var data = $('#dataInput').val();
+			//var time = $('#dataInputTime').val();
 			
 			var output3 = {
 					sender : sender,
@@ -313,7 +320,7 @@
 			};
 			
 			console.log('서버로 보낼 데이터 : ' + JSON.stringify(output3));
-			socket.emit('exit', output3)
+			socket.emit('exit', output3) ;
 		});
 		
 		
