@@ -266,8 +266,8 @@
 						<div class="col-md-4">
 							<input type="text" class="form-control" id="addr" name = "addr" placeholder="주소" value="${festival.addr }">
 							<input type="button" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
-							<!-- <input type="hidden" class="form-control" id="festivalLongitude" name="festivalLatitude">
-							<input type="hidden" class="form-control" id="festivalLatitude" name="festivalLongitude" > -->
+							<input type="hidden" class="form-control" id="festivalLongitude" name="festivalLatitude" value="${festival.festivalLatitude }">
+							<input type="hidden" class="form-control" id="festivalLatitude" name="festivalLongitude" value="${festival.festivalLongitude }">
 						</div>
 				</div>
 				
@@ -394,8 +394,8 @@
 			</div>
 				
 				
-		<input type = "hidden" class="form-control" id="festivalLongitude" name="festivalLongitude" value= "${festival.festivalLongitude }">
-		<input type = "hidden" class="form-control" id="festivalLatitude" name="festivalLatitude" value= "${festival.festivalLatitude }">
+		<%-- <input type = "hidden" class="form-control" id="festivalLongitude" name="festivalLongitude" value= "${festival.festivalLongitude }">
+		<input type = "hidden" class="form-control" id="festivalLatitude" name="festivalLatitude" value= "${festival.festivalLatitude }"> --%>
 		<input type = "hidden" class="form-control" id="festivalNo" name="festivalNo" value= "${festival.festivalNo }">
 		<input type = "hidden" class="form-control" id="contentTypeId" name="contentTypeId" value= "${festival.contentTypeId }">
 		<input type = "hidden" class="form-control" id="readCount" name="readCount" value= "${festival.readCount }">
