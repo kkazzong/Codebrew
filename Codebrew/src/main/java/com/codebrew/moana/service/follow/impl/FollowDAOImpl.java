@@ -81,6 +81,8 @@ public class FollowDAOImpl implements FollowDAO {
 	@Override
 	public int getFollowerTotalCount(Search search) throws Exception {
 		// TODO Auto-generated method stub
+		
+		System.out.println("followMapper가기 전 getFollowerTotalCount에서 써~~치는?"+search);
 		return sqlSession.selectOne("FollowMapper.getFollowerTotalCount", search);
 	}
 

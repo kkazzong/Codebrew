@@ -99,7 +99,7 @@ public class FollowServiceImpl implements FollowService {
 		// TODO Auto-generated method stub
 		
 		
-		search.setSearchKeyword(requestId);//내가 리퀘스트한 아디를 서치 컨디션에 넣기
+		search.setSearchKeyword(requestId);//내 아
 		
 		List<Follow> list= followDAO.getFollowingList(search);
 		int totalCount=followDAO.getFollowingTotalCount(search);
@@ -113,7 +113,7 @@ public class FollowServiceImpl implements FollowService {
 	}
 
 	@Override
-	public Map<String, Object> getFollwerList(Search search, String responseId) throws Exception {
+	public Map<String, Object> getFollowerList(Search search, String responseId) throws Exception {
 		// TODO Auto-generated method stub
 		
 		search.setSearchKeyword(responseId);//나를 response 하는 목록

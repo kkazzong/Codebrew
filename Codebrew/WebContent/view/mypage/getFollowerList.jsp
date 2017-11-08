@@ -46,13 +46,14 @@
 				
 				
 				 if( sessionId == userId ) { /* 그래서 세리일때만 나옴  */
-				$( ".btn.btn-sm" ).on("click" , function() {
+					 /*내 화면 모달창에서 add delete 하고 싶을때  */
+				$( ".btn.btn-sm" ).on("click" , function() {//맞팔이 안되어있는 버튼
 					var requestId = $("#follower").val();
 								
 					 f4f = $(this).val();
 					
 					
-					if( f4f == "Follow" ) {
+					if( f4f == "Follow" ) {//내 팔로워 목록에 맞팔이 안되있으니깐 추가하는거고
 						
 						$.ajax(
 								{
@@ -66,12 +67,14 @@
 									 context : this,
 									 success : function(JSONData, status) {
 										
-										 location.reload(); 
+										/*  location.reload(); */ 
+										this.val('Following');
+										location.reload();
 										  
 									 }
 								}		
 							)
-					} else  if( f4f == "Following" ) {
+					} else  if( f4f == "Following" ) {//내팔로워 목록에  맞팔이 되어있으니깐 삭제할수 있다.
 						$.ajax(
 								{
 									url : '/myPageRest/json/deleteFollow/'+requestId,
@@ -84,8 +87,9 @@
 									 context : this,
 									 success : function(JSONData, status) {
 										
-										location.reload(); 
-										
+										/* location.reload(); */ 
+										 this.val('Follow');
+										 location.reload();
 									 }
 								}		
 							)
@@ -102,23 +106,10 @@
 	<style>
 	 body {
 		padding-top : 70px;
-    }
-	
-	
-	/* 
-		.profile-pic img {
-		  float: none;
-		  margin: 0 auto;
-		  width:110px;
-		  height:120px;
-		  -webkit-border-radius: 50% !important;
-		  -moz-border-radius: 50% !important;
-		  border-radius: 50% !important;
-		} */
+    }	
 		
-		
-		.profile-content{
-			text-align:center;
+	.profile-content{
+		text-align:center;
 		}
 		
 		
@@ -179,15 +170,17 @@
 
 
 
-
-
+<%-- 
+<jsp:include page="/toolbar/toolbar.jsp"/> --%>
+<%-- <jsp:include page="/mypage/getMyPage.jsp"/> --%>
 <!-- Modal -->
- <input type="hidden" id="userId" value="${user.userId}">
+ <input type="hidden" value="${sessionScope.user.userId}" id="sessionId" name="sessionId">
+ <input type="hidden" value="${user.userId}" id="userId" name="userId">
 <div class="modal fade" id="follower" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="following">팔로워</h5>
+        <h5 class="modal-title" id="follower">팔로워</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -211,7 +204,7 @@
 				    <div class='row'>
 				   
 						<c:set var="i" value="0" />
-							<c:forEach var="follow" items="${list6}">
+							<c:forEach var="follow" items="${list1}">
 							
 							
 								<c:set var="i" value="${ i+1 }" />
@@ -246,9 +239,8 @@
 							   <br>
 							 </c:forEach>
 						
-							<hr>
 						</div>
-					  <hr>
+					
 				
 			
 		

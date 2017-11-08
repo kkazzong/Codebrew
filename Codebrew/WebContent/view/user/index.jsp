@@ -336,7 +336,7 @@ $(function() {
       
     <!-- carousel 끝 -->
 
-
+<a href="/view/user/getMyPage3.jsp">마이페이지</a>
   
 </body>
 
