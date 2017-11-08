@@ -63,6 +63,10 @@
 			
 			socket.emit('findChatList', output);
 			
+			
+			
+			
+			
 		});	
 		/////////////////////=============jQuery end================/////////////////////////
 		
@@ -117,10 +121,28 @@
 						
 						alert(senders[i]);
 						addToDiscussion(senders[i]);
+						
+						var output = {
+								sender : senders[i],
+								recipient : '${user.userId}'
+						};
+						
+						console.log('[findLastChat   ]서버로 보낼 데이터 : ' + JSON.stringify(output));
+						
+						if(socket == undefined){
+							alert('서버에 연결되어 있지 않습니다. 먼저 서버에 연결하세요.');
+							return;
+						}
+						
+						//socket.emit('findLastChat', output);
 					}
 					
 					//var senders = message[i].senders;
 					
+				});
+				
+				socket.on('findLastChat', function(message){
+					alert(JSON.stringify(message));
 				});
 				
 				////////////////////////////disconnect//////////////////////////////////
@@ -144,6 +166,7 @@
 			$('#result').append('<p>'+data+'</p>');
 		}
 		
+		
 		function addToDiscussion(message){
 			/* var msg = message.data;
 			var time = message.time;
@@ -151,18 +174,26 @@
 			var img;
 			var contents;
 			var recipient; */
-			var sender;
+		var sender = "";
 			
 				//alert("otehr");
 				///////////////recipient는 서버에서 받은걸로
 				img = 'default_profile_image.jpg';
 				//recipient = message.sender;
 				//sender = message.senNick;
-				sender = message;
+				sender = message+"";
 				
-				contents = '<div class="row">'
+				contents_old = '<div class="row">'
 							+'<div class="col-md-offset-2 col-md-8">'
-							+'<div class="panel panel-default">'
+							+'<div class="panel panel-default chatting">'
+							
+							+'<form name="form">'
+							+'<input type="hidden" name="recipient" value="'+sender+'">'
+							+'<input type="hidden" name="sender" value="${user.userId}">'
+							+'<button type="button" class="btn btn-default pull-right" '
+							+'onclick="javascript:chatPopup(${user.userId},'+sender+');">채팅하기</button>'
+							+'</form>'
+							
 							+'<div class="panel-body">'
 							+'<div class="col-md-2">'
 							+"<div class = 'avatar'>"
@@ -177,15 +208,65 @@
 							/* +'<time datetime="yyyy-mm-ddThh:mm:ss:Z">'+time+'</time>' */
 							+"</div>"
 							+'</div>'
-							+'</div>'
+							+'</div> '
 							+'</div>'
 							+'</div>'
 							+'</div> ';
+				
+				contents = '<div class="row">'
+								+'<div class="col-md-offset-2 col-md-8">'
+								+'<div class="panel panel-default chatting">'
+								
+								
+								+'<div class="panel-body"'
+								+"onclick=javascript:chatPopup('${user.userId}','"+sender+"');>"
+								/* +'<form name="form">'
+								+'<input type="hidden" name="recipient" value="'+sender+'">'
+								+'<input type="hidden" name="sender" value="${user.userId}">' */
+								/* +'<button type="button" class="btn btn-default pull-right" '
+								+'onclick="javascript:chatPopup(this.form);">채팅하기</button>' */
+								/* +'</form>' */
+								+'<div class="col-md-2">'
+								+"<div class = 'avatar'>"
+								+'<img width="100%" height="100%" src="/resources/image/chat/Messages-icon.png">'
+								+'</div>'
+								+'</div>'
+								+'<div class="col-md-10">'
+								+'<div>'+sender+'</div>'
+								+'<div class = "message">'
+								/* +'<p>' + msg + '</p>' */
+								/* +"<time datetime='2017-10-05 13:52'>"+time+"</time>" */
+								/* +'<time datetime="yyyy-mm-ddThh:mm:ss:Z">'+time+'</time>' */
+								+'</div>'
+								+'</div>'
+								+'</div>'
+								+'</div>'
+								+'</div>'
+								+'</div> ';
 								
 				console.log("추가할 HTML : " + contents);
-				$(".discussion").append(contents);
+				
+				//////////////////////////////////////클릭시 대화방 입장//////////////////////////////////////////////////////////
+				$(".discussion").append(contents).find(".panel-body").each(function(){}).on("click",function(){
+					//alert("클릭");
+				});
+				
 			
-			
+		}
+		
+		function chatPopup(sender, recipient) {
+			/* var url = "http://127.0.0.1:3000/public/client05.html"; */
+			alert("팝업");
+			var url = "/chat/getChatting?sender="+sender+"&recipient="+recipient;
+			var title = "chatPop";
+			var status = "toolbar=no,directories=no,scrollbars=yes,resizable=no,status=no,menubar=no,width=440, height=520, top=0,left=20";
+			window.open(url, title, status); //window.open(url,title,status); window.open 함수에 url을 앞에와 같이
+			//인수로  넣어도 동작에는 지장이 없으나 form.action에서 적용하므로 생략
+			//가능합니다.
+			//frm.target = title; //form.target 이 부분이 빠지면 form값 전송이 되지 않습니다. 
+			//frm.action = url; //form.action 이 부분이 빠지면 action값을 찾지 못해서 제대로 된 팝업이 뜨질 않습니다.
+			//frm.method = "post";
+			//frm.submit();
 		}
 		
 		
@@ -440,8 +521,18 @@
 	
 	
 	
-	
-	
+	<!-- chatting form -->
+	<%-- <form name="form">
+		<input type="hidden" name="recipient" value="${party.user.userId}">
+		<input type="hidden" name="sender" value="${user.userId}">
+			<button type='button' class='btn-sm btn-default pull-right'
+				onclick="javascript:chatPopup(this.form);">채팅하기</button>
+		<br>
+	</form> --%>
+
+
+
+
 	<!-- 채팅창 -->
 	<div id="chatList"></div>
 	

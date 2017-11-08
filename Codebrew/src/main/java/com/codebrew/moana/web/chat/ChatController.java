@@ -90,8 +90,8 @@ public class ChatController {
 		modelAndView.addObject("sender", dbSender);
 		modelAndView.addObject("recipient", dbRecipient);
 		
-		//modelAndView.setViewName("forward:/view/chat/chatting2.jsp");
-		modelAndView.setViewName("forward:/view/chat2/chatting.jsp");
+		modelAndView.setViewName("forward:/view/chat/chatting2.jsp");
+		//modelAndView.setViewName("forward:/view/chat2/chatting.jsp");
 		
 		return modelAndView;
 	}
