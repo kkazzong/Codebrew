@@ -43,13 +43,14 @@
 	<script type="text/javascript">
 	
 	<!--  // 검색 / page 두가지 경우 모두 Form 전송을 위해 JavaScript 이용 --> 
-	
+	//include 제거처리 완료
 	function fncGetList(currentPage) {
 		$("#currentPage").val(currentPage)
 	   	$("form[name='searchForm']").attr("method" , "POST").attr("action" , "/review/getReview").submit(); //그냥...화면 흔들자
 		//$("form[name='searchForm']").attr("method" , "POST").attr("action" , "/reply/getReplyList").submit(); //rest 로 하려다가...
 	}
 	
+	//include 제거처리 완료
 	function fucAddReply(){
 		
 		//Form 유효성 검증 : 빈 내용 X
@@ -69,6 +70,7 @@
 		//==> 검색 Event 연결처리부분
 		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2. $(#id) : 3.$(.className)
 		//==> 1과 3 방법 조합 : $("tagName.className:filter함수") 사용함.
+		//include 제거처리 완료
 		$("#searchReply").on("click", function(){
 			fncGetList(1);
 		});
@@ -78,6 +80,7 @@
 			fncAddReply();
 		}); */
 		
+		//include 제거처리 완료
 		$("#addReply").on("click", function(){
 
 			if($("#replyDetail").val() == null || $("#replyDetail").val() == ''){
@@ -107,8 +110,13 @@
 											"\nJSONData.reviewNo :: "+JSONData.reviewNo+
 											"\nJSONData.replyDetail :: "+JSONData.replyDetail+
 											"\nJSONData.replyRegDate :: "+JSONData.replyRegDate);
-								
-								fncGetList(1);
+								var replyHtml = $('tbody').html();
+								var newReply = '';
+								$('tbody').html(newReply + replyHtml);
+								if($('tbody tr').length == 11){
+									$($('tbody tr')[10]).remove();
+								}
+								//fncGetList(1);
 								
 								/* 
 								$.ajax(
@@ -225,140 +233,134 @@
    	<!-- 화면구성 div Start -->
    	<div class="container">
    			
-   			<!-- 'search' is only for 'Admin' menu -->
-	   			<div class="col-md-offset-4 col-md-4">
-	   				<form class="form-inline" name="searchForm">
-	   					<!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
-	   					<input type="hidden" id="currentPage" name="currentPage" value=""/>
-	   					<input type="hidden" name="reviewNo" value="${review.reviewNo }"/>
-   			<c:if test="sessionScope.user.role == 'a'">
-	   					<%-- 
-	   					<input name="menu" value="${param.menu }" type="hidden"/>
-	   					 --%>
-	   					<div class="form-group">
-	   						<select class="form-control" name="searchCondition">
-	   							<option value="0" ${! empty search.searchCondition && search.searchCondition==0 ? "selected" : "" }>축제이름</option>
-	   							<option value="1" ${! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>축제장소</option>
-	   							<option value="2" ${! empty search.searchCondition && search.searchCondition==2 ? "selected" : "" }>해시태그</option>
-	   						</select>
-	   					</div>
-	   					
-	   					<div class="form-group">
-	   						<label class="sr-only" for="searchKeyword">검색어</label>
-	   						<input type="text" class="form-control" id="searchKeyword" name="searchKeyword" placeholder="검색어" 
-	   								value="${! empty search.searchKeyword ? search.searchKeyword : '' }" >
-	   					</div>
-	   					
-	   					<button type="button" id = "searchReply" class="btn btn-default">검색</button>
-	   					
-	   				
-   			</c:if>
-	   				</form>
-	   			</div>
-   		</div>
-   		<!-- 화면구성 div End -->
+		<!-- 'search' is only for 'Admin' menu -->
+		<div class="col-md-offset-4 col-md-4">
+			<form class="form-inline" name="searchForm">
+				<!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
+				<input type="hidden" id="currentPage" name="currentPage" value=""/>
+				<input type="hidden" name="reviewNo" value="${review.reviewNo }"/>
+			<c:if test="sessionScope.user.role == 'a'">
+				<%-- 
+				<input name="menu" value="${param.menu }" type="hidden"/>
+				 --%>
+				<div class="form-group">
+					<select class="form-control" name="searchCondition">
+						<option value="0" ${! empty search.searchCondition && search.searchCondition==0 ? "selected" : "" }>축제이름</option>
+						<option value="1" ${! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>축제장소</option>
+						<option value="2" ${! empty search.searchCondition && search.searchCondition==2 ? "selected" : "" }>해시태그</option>
+					</select>
+				</div>
+				
+				<div class="form-group">
+					<label class="sr-only" for="searchKeyword">검색어</label>
+					<input type="text" class="form-control" id="searchKeyword" name="searchKeyword" placeholder="검색어" 
+							value="${! empty search.searchKeyword ? search.searchKeyword : '' }" >
+				</div>
+				
+				<button type="button" id = "searchReply" class="btn btn-default">검색</button>
+			</c:if>
+			</form>
+		</div>
+	</div>
+	<!-- 화면구성 div End -->
+	<!--  table 위쪽 검색 End -->
+   		
+	<!-- 댓글입력 form Start : 로그인한 사람만 댓글등록가능-->
+	<c:if test="${!empty sessionScope.user }">
+	<form class="form-horizontal" method="post" name="detailForm">
+		<div class="form-group">
+			<input type="hidden" id="reviewNo" name="reviewNo" value="${review.reviewNo }"/>
+			<input type="hidden" id="userId" name="userId" value="${sessionScope.user.userId }"/>
+			<!-- 
+			<label for="replyDetail" class="col-sm-offset-1 col-sm-3 control-label">댓글내용</label>
+			 -->
+			<div class="col-md-10">
+				<input type="text" class="form-control" id="replyDetail" name="replyDetail">
+			</div>
+			<div class="col-md-2">
+				<button type="button" id = "addReply" class="btn btn-primary pull pull-left">댓글등록</button>
+			</div>
+		</div>
+	</form>
+	</c:if>
+	<!-- 댓글입력 form End-->
    		
    		
-   		<!--  table 위쪽 검색 End -->
+	<!-- table Start -->
+	<table class="table table-hover table-striped" id="replyList">
    		
-   		<!-- 댓글입력 form Start : 로그인한 사람만 댓글등록가능-->
-   		<c:if test="${!empty sessionScope.user }">
-   		<form class="form-horizontal" method="post" name="detailForm">
-   			<div class="form-group">
-   				<input type="hidden" id="reviewNo" name="reviewNo" value="${review.reviewNo }"/>
-   				<input type="hidden" id="userId" name="userId" value="${sessionScope.user.userId }"/>
-   				<!-- 
-   				<label for="replyDetail" class="col-sm-offset-1 col-sm-3 control-label">댓글내용</label>
-   				 -->
-   				<div class="col-md-10">
-   					<input type="text" class="form-control" id="replyDetail" name="replyDetail">
-   				</div>
-   				<div class="col-md-2">
-   					<button type="button" id = "addReply" class="btn btn-primary pull pull-left">댓글등록</button>
-   				</div>
-   			</div>
-   		</form>
-   		</c:if>
-   		<!-- 댓글입력 form End-->
-   		
-   		
-   		<!-- table Start -->
-   		<table class="table table-hover table-striped" id="replyList">
-   		
-   			<thead>
-   				<tr>
-					<td align="left">
-						댓글내용
-					</td>
-					<td align="center">
-						댓글작성자
-					</td>
-					<td align="center">
-						등록일자
-					</td>
-					</tr>
-   			</thead>
+		<thead>
+			<tr>
+				<td align="left">
+					댓글내용
+				</td>
+				<td align="center">
+					댓글작성자
+				</td>
+				<td align="center">
+					등록일자
+				</td>
+			</tr>
+		</thead>
    			
-   			<tbody>
-	   			 <c:if test="${!empty review.replyList }">	
-	   				<c:set var="i" value="0"/>
-	   				<c:forEach var="replyList" items="${review.replyList }">
-	   					<c:set var="i" value="${i+1}"/>
-	   					<tr class="ct_list_pop">
-	   						<td align="left">
-	   							<div class="input-group">
-								<input type="text" class="form-control" id="replyDetail${replyList.replyNo }" aria-label="replyDetail" value="${replyList.replyDetail }" readonly>
-									<c:if test="${!empty sessionScope.user }">
-										<c:if test="${!(sessionScope.user.role == 'a' || sessionScope.user.userId == replyList.userId) }">
-											<div class="input-group-btn">
-												<button type="button" name="replyNoForReport" id="willBeReported" class="btn btn-secondary btn-sm btn-danger">
-									   				신고
-									   			</button>
-											</div>
-										</c:if>
+		<tbody>
+   			 <c:if test="${!empty review.replyList }">	
+   				<c:set var="i" value="0"/>
+   				<c:forEach var="replyList" items="${review.replyList }">
+   					<c:set var="i" value="${i+1}"/>
+   					<tr class="ct_list_pop">
+   						<td align="left">
+   							<div class="input-group">
+							<input type="text" class="form-control" id="replyDetail${replyList.replyNo }" aria-label="replyDetail" value="${replyList.replyDetail }" readonly>
+								<c:if test="${!empty sessionScope.user }">
+									<c:if test="${!(sessionScope.user.role == 'a' || sessionScope.user.userId == replyList.userId) }">
+										<div class="input-group-btn">
+											<button type="button" name="replyNoForReport" id="willBeReported" class="btn btn-secondary btn-sm btn-danger">
+								   				신고
+								   			</button>
+										</div>
 									</c:if>
-									<c:if test="${!empty sessionScope.user}" >
-										<c:if test="${sessionScope.user.role == 'a' || sessionScope.user.userId == replyList.userId }">
-											<div class="input-group-btn">
-									   			<button type="button" name="buttonForUpdate" id="updateReply${replyList.replyNo }" class="btn btn-secondary btn-sm btn-info" value="${replyList.replyNo }" style="display:inline">
-									   				수정
-									   			</button>
-									   			<button type="button" name="buttonForUpdate" id="updateCompReply${replyList.replyNo }" class="btn btn-secondary btn-sm btn-info" value="${replyList.replyNo }" style="display:none">
-									   				완료
-									   			</button>
-								   				<button type="button" name="buttonForDelete" id="deleteReply${replyList.replyNo }" class="btn btn-secondary btn-sm btn-warning" value="${replyList.replyNo }">
-								   					삭제
-								   				</button>
-											</div>
-								   		</c:if>
-								   	</c:if>
-   									<input type="hidden" name="reviewNo" value=${review.reviewNo }>
-									<span style="display: none" class="hidden_link">/review/getReview?reviewNo=${review.reviewNo }</span>
-								</div>
-	   						</td>
-	   						<td align="center" >
-	   							${replyList.userId }
-	   						</td>
-	   						<td align="center">
-	   							${replyList.replyRegDate }
-	   						</td>
-		   				</tr>
-	   				</c:forEach>
-   				</c:if>
+								</c:if>
+								<c:if test="${!empty sessionScope.user}" >
+									<c:if test="${sessionScope.user.role == 'a' || sessionScope.user.userId == replyList.userId }">
+										<div class="input-group-btn">
+								   			<button type="button" name="buttonForUpdate" id="updateReply${replyList.replyNo }" class="btn btn-secondary btn-sm btn-info" value="${replyList.replyNo }" style="display:inline">
+								   				수정
+								   			</button>
+								   			<button type="button" name="buttonForUpdate" id="updateCompReply${replyList.replyNo }" class="btn btn-secondary btn-sm btn-info" value="${replyList.replyNo }" style="display:none">
+								   				완료
+								   			</button>
+							   				<button type="button" name="buttonForDelete" id="deleteReply${replyList.replyNo }" class="btn btn-secondary btn-sm btn-warning" value="${replyList.replyNo }">
+							   					삭제
+							   				</button>
+										</div>
+							   		</c:if>
+							   	</c:if>
+  									<input type="hidden" name="reviewNo" value=${review.reviewNo }>
+								<span style="display: none" class="hidden_link">/review/getReview?reviewNo=${review.reviewNo }</span>
+							</div>
+   						</td>
+   						<td align="center" >
+   							${replyList.userId }
+   						</td>
+   						<td align="center">
+   							${replyList.replyRegDate }
+   						</td>
+	   				</tr>
+   				</c:forEach>
+  				</c:if>
 
 
-   			</tbody>   			
+  			</tbody>   			
    			
    		</table>
    		<!-- table End -->
    		
    		<div class="text-center">
-   		
-				<!-- PageNavigation Start -->
-				<jsp:include page="../../common/pageNavigator_new.jsp"/>
-				<!-- PageNavigation End -->
+			<!-- PageNavigation Start -->
+			<jsp:include page="../../common/pageNavigator_new.jsp"/>
+			<!-- PageNavigation End -->
    		</div>
-			
 
 </body>
 </html>
