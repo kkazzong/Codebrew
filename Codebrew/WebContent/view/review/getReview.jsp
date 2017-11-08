@@ -21,7 +21,7 @@
 	<style>
 	
  		body {
-            padding-top : 50px;
+            padding-top : 70px;
             background-color: #f2f4f6;
         }
         
@@ -48,7 +48,9 @@
         	margin-left: auto;
         	margin-right: auto;
         }
-        
+        .btn-reply {
+        	height: 25px;
+        }
 	</style>
 	
 	<!-- Bootstrap Dropdown Hover CSS -->
@@ -62,19 +64,189 @@
     <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDvESicBSzYYtr3_xNOvik6YvE4v6UxPOQ"></script>
     
     <!--  ///////////////////////// JavaScript ////////////////////////// -->
-	<script type="text/javascript">
+	<script>
+	
+	
+	//////////댓글include 없애면서 추가한 부분 start //////////
+	function fncGetList(currentPage) {
+		$("#currentPage").val(currentPage)
+	   	$("form[name='searchForm']").attr("method" , "POST").attr("action" , "/review/getReview").submit(); //그냥...화면 흔들자
+		//$("form[name='searchForm']").attr("method" , "POST").attr("action" , "/reply/getReplyList").submit(); //rest 로 하려다가...
+	}
 	
 	function fncAddReply() {
 		
 		//Form 유효성 검증
-		var replyDetail = $("input[name='replyDetail']").val();
+		var replyDetail = $("input[name='replyDetailLogIn']").val();
 		
-		if(replyDetail == null || replyDetail.length < 1){
-			alert("댓글내용을 입력한 후에 등록할 수 있습니다.")
-			return;
-		}
-		$("form").attr("method", "POST").attr("action", "/reply/addReply").submit();
+		$("form[name='detailForm']").attr("method", "POST").attr("action", "/reply/addReply").submit();
 	}
+	
+	/* function calculateDate(date){ //수정중 08112017
+		//Date dateNow = Date.now();
+		var timeOfReplyRegDate = $('.glyphicon-time').html(); //2017-11-04 12:
+	} */
+	
+	
+	$(function(){
+		
+		//$('.btn-reply').css("margin-left", '10px'); //참조용
+		//
+
+		//==> 검색 Event 연결처리부분
+		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2. $(#id) : 3.$(.className)
+		//==> 1과 3 방법 조합 : $("tagName.className:filter함수") 사용함.
+		$("#searchReply").on("click", function(){
+			fncGetList(1);
+		});
+		
+		$("#addReply").on("click", function(){
+			
+			alert("댓글등록 클릭");
+			alert($('#replyDetail').val());
+			
+			if($('#replyDetail').val() == null || $('#replyDetail').val() == ''){
+				alert('댓글 내용을 입력한 후에 댓글을 등록할 수 있습니다');
+			} else {
+				fncAddReply();
+			}
+		});
+		
+		/*
+		$("#addReply").on("click", function(){
+
+			if($("#replyDetail").val() == null || $("#replyDetail").val() == ''){
+				
+				alert("1. 댓글내용을 입력한 후에 댓글을 등록할 수 있습니다.");
+				return;
+				
+			}else{
+				
+				$.ajax(
+						{
+							url : "/replyRest/json/addReply", 
+							method : "POST", 
+							headers : {
+								"Accept" : "application/json", 
+								"Content-Type" : "application/json"
+							}, 
+							data : JSON.stringify({
+								userId : $("#userId").val(), 
+								reviewNo : $("#reviewNo").val(), 
+								replyDetail : $("#replyDetail").val()
+							}), 
+							datayType : "json", 
+							success : function(JSONData, status){
+								
+								alert("1. 댓글 등록 ajax완료!!!!");
+								console.log("JSONData.userId :: "+JSONData.userId+
+											"\nJSONData.replyNo :: "+JSONData.replyNo+
+											"\nJSONData.reviewNo :: "+JSONData.reviewNo+
+											"\nJSONData.replyDetail :: "+JSONData.replyDetail+
+											"\nJSONData.replyRegDate :: "+JSONData.replyRegDate);
+								
+								fncGetList(1);
+								
+								
+								$.ajax(
+										{
+											url : "/replyRest/json/getReplyList", 
+											method : "POST", 
+											headers : {
+												"Accept" : "application/json", 
+												"Content-Type" : "application/json"
+											}, 
+											data : JSON.stringify({
+												reviewNo : $("#reviewNo").val(), 
+												search : null
+											}), 
+											dataType : "json", 
+											success : function(JSONData, status){
+												
+												alert("2. 댓글 list를 불러오는 ajax 완료");
+												console.log("JSONData :: "+JSONData);
+												
+											}
+										}
+										
+								)
+								
+							}
+						}
+				)
+				
+			}
+			
+			
+		})
+		*/
+		
+		$(".btn-warning:contains('삭제')").on("click", function(){
+			alert("댓글삭제버튼클릭 :: replyNo :: "+$(this).val());
+			self.location="/reply/deleteReply?replyNo="+$(this).val();
+		});
+		
+		
+		var tempReplyNo;
+		var tempReviewNo;
+		$(".btn-info:contains('수정')").on("click", function(){
+			
+			//alert("1 :: 댓글수정하기버튼클릭"); //debugging
+			//alert("#updateReply${replyList.replyNo }");
+			tempReplyNo = $(this).val();
+			tempReviewNo = $("#reviewNo").val();
+			
+			//alert("임시reviewNo"+tempReviewNo);
+			//alert("임시댓글번호"+tempReplyNo);
+			
+			$("#updateReply"+tempReplyNo).attr('style', 'display:none');
+			$("#updateCompReply"+tempReplyNo).attr('style', 'display:inline');
+			
+			$("#replyDetail"+tempReplyNo).removeAttr("readonly")
+			.focus()
+			
+			//alert("2 :: focusing 부분"); //debugging
+			
+		});
+		
+		//please...do not handle more than one event in one button.........fuxx
+		$(".btn-info:contains('완료')").on("click", function(){
+			
+			//alert("3 :: 수정완료클릭 :: ajax 시작");
+			
+			$.ajax(
+					{
+						url : "/replyRest/json/updateReply", 
+						method : "POST", 
+						headers : {
+							"Accept" : "application/json", 
+							"Content-Type" : "application/json"
+						}, 
+						data : JSON.stringify({
+							replyNo : tempReplyNo, 
+							replyDetail : $("#replyDetail"+tempReplyNo).val()
+						}),
+						dataType : "json", 
+						success : function(JSONData, status){
+							//alert("4 :: ajax 완료"); //debugging
+							$("#replyDetail"+tempReplyNo).val(JSONData.replyDetail);
+							$("#replyDetail"+tempReplyNo).attr("readonly", true);
+							
+							//원상복귀....(보이는 건 다시 안보이게 & 안보이는건 다시 보이게)
+							$("#updateCompReply"+tempReplyNo).attr('style', 'display:none');
+							$("#updateReply"+tempReplyNo).attr('style', 'display:inline');
+						}
+					}
+			)
+			
+		});
+		
+		
+	});
+	
+	//////////댓글include 없애면서 추가한 부분 end //////////
+	
+	
 	
 	//맵 1단 : 맵을 초기화해주기 위한 함수 : test 중
 	var map_x = null;
@@ -147,10 +319,12 @@
         	
      	    //대중교통정보 불러오기 ajax
     		$(function(){
-    			 
+   				
+    			var defaultRadius = 350; //반경
+    			
    				$.ajax(
    						{
-   							url : "/reviewRest/json/getTransportListAtStation/"+map_x+"/"+map_y+"/"+"350", 
+   							url : "/reviewRest/json/getTransportListAtStation/"+map_x+"/"+map_y+"/"+defaultRadius, 
    							method : "GET", 
    							dataType : "json", 
    							headers : {
@@ -166,7 +340,13 @@
    									str += JSONData.subwayList[i]+", ";
    								}
    								str = str.substr(0, str.length-2);
+   								
    								$("#transportListAtStation").html(str);
+   								
+   								if(JSONData.busNoList.length == 0 && JSONData.subwayList.length == 0){
+   									$("#transportListAtStation").html("반경 "+defaultRadius+"m내에 관련 대중교통 정보가 없습니다.");
+   								}
+   								
    							}
    						}		
    				)
@@ -237,6 +417,52 @@
 			})
 			
 		});
+		
+		$(function(){
+			
+			$("#searchAgainWithDifferentRadius").on("click", function(){
+				
+				var radiusForTransportSearchAgain = $("#radiusForTransportSearchAgain").val();
+				alert("변경된 반경 "+radiusForTransportSearchAgain+"으로 재검색 합니다.");
+				
+				$("#transportListAtStation").html("반경 "+radiusForTransportSearchAgain+"으로 재검색 중입니다.");
+				
+				$.ajax(
+   						{
+   							url : "/reviewRest/json/getTransportListAtStation/"+map_x+"/"+map_y+"/"+radiusForTransportSearchAgain, 
+   							method : "GET", 
+   							dataType : "json", 
+   							headers : {
+   								"Accept" : "application/json", 
+   								"Content-Type" : "application/json"
+   							}, 
+   							success : function(JSONData, status){
+   								
+   								if(JSONData.busNoList.length != 0 || JSONData.subwayList.length != 0){
+   									
+	   								var str = "";
+	   								for(var i = 0; i < JSONData.busNoList.length; i ++) {
+	   									str += JSONData.busNoList[i]+", ";
+	   								}
+	   								for(var i = 0; i < JSONData.subwayList.length; i++) {
+	   									str += JSONData.subwayList[i]+", ";
+	   								}
+	   								str = str.substr(0, str.length-2);
+	   								
+	   								$("#transportListAtStation").html(str);
+   									
+   								}else{
+   									
+   									$("#transportListAtStation").html("반경 "+radiusForTransportSearchAgain+"m내에 관련 대중교통 정보가 없습니다.");
+   									
+   								}
+   								
+   							}
+   						}		
+   				)
+			})
+			
+		});
 	 
 	});
 	
@@ -255,27 +481,31 @@
    	<!-- 후기상세조회 화면구성 div Start -->
    	<div class="container">
 
-		<!-- page header -->
-		<div class="row">
-			<div class="col-md-offset-4 col-md-4">
-		   		<div class="page-header text-center">
-		   			<h3 class="text-info">후기상세조회</h3>
-		   			<h5 class="text-muted">후기 정보를 <strong class="text-danger">내놓으시길</strong>바랍니다.</h5>
-		   			<!-- 
-		   			<span class = "glyphicon glyphicon-road" id = "testButtonForTransport" role="button"></span>
-		   			 -->
-		   		</div>
+		<!-- page header start-->
+		<header>
+			<div class="row">
+				<div class="col-md-offset-4 col-md-4">
+			   		<div class="page-header text-center">
+			   			<h3 class="text-info">
+			   				<span class="glyphicon glyphicon-edit" aria-hidden="true">
+			   					후기상세조회
+			   				</span>
+			   			</h3>
+			   			<h5 class="text-muted">후기 정보를 <strong class="text-danger">내놓으시길</strong>바랍니다.</h5>
+			   		</div>
+				</div>
+				<!-- row end -->
 			</div>
-		</div>
+		</header>
+		<!-- page header end -->
+		
 		
 		<div class="row">
 			<div class="col-md-offset-2 col-md-8">
 			<!-- <div class="col-md-12"> -->
-				<div class="panel panel-primary">
+				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h3 class="panel-title text-center">후기제목 : ${review.reviewTitle }</h3>
-					</div>
-					<div class="panel-body">
 						<%--  
 						이렇게 하면 1번째 이미지 들어간다
 						<img width="100%" height="300" src="/resources/uploadFile/${review.reviewImageList[0].reviewImage }"> 
@@ -326,32 +556,46 @@
 						 -->
 						<!-- Carousel End -->
 						<hr>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		<div class="row">
+			<div class="col-md-offset-2 col-md-8">
+				<div class="panel panel-default">
+					<div class="panel-body text-center">
 						<div class="col-md-12">
 							<strong>
 								<span>축제명 : </span>
 								<span id="festivalNameIdForGoogleMap">${review.festivalName }</span>
 							</strong>
 						</div>
-						<c:if test="${sessionScope.user.userId == review.userId || sessionScope.user.role == 'a'}">
-						<div class="col-md-12">
-							<small>
-								<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
-								후기상태 : 
-								<c:if test="${review.checkCode == '1' || review.checkCode == '11' }">
-									심사중									
-								</c:if>
-								<c:if test="${review.checkCode == '2' || review.checkCode == '22' }">
-									통과
-								</c:if>
-								<c:if test="${review.checkCode == '4' || review.checkCode == '44' }">
-									반려									
-								</c:if>
-							</small>
+						
+						<div class="com-md=12">
+							<c:if test="${sessionScope.user.userId == review.userId || sessionScope.user.role == 'a'}">
+							<div class="col-md-12">
+								<small>
+									<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
+									후기상태 : 
+									<c:if test="${review.checkCode == '1' || review.checkCode == '11' }">
+										심사중									
+									</c:if>
+									<c:if test="${review.checkCode == '2' || review.checkCode == '22' }">
+										통과
+									</c:if>
+									<c:if test="${review.checkCode == '4' || review.checkCode == '44' }">
+										반려									
+									</c:if>
+								</small>
+							</div>
+							</c:if>
 						</div>
-						</c:if>
+						
 						<div class="col-md-12">
 							<small>
-								<span class="glyphicon glyphicon-time" aria-hidden="true">작성일시:</span>
+								<span class="glyphicon glyphicon-calendar" aria-hidden="true">작성일시:</span>
 								<span id="reviewRegDateIdForJS">${review.reviewRegDate }</span>
 							</small>
 						</div>
@@ -361,21 +605,50 @@
 								<span id="writerIdForJS">${review.userId }</span>
 							</small>
 						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- 지도 : 구글맵 -->
+		<div class="row">
+			<div class="col-md-offset-2 col-md-8">
+				<div class="panel panel-default">
+					<div class="panel-body text-center">
 						<div class="col-md-12">
 							<small>
 								<span class="glyphicon glyphicon-map-marker" aria-hidden="true">축제장소:</span>
 								<span id="addrIdForGoogleMap">${review.addr }</span>
 							</small>
 						</div>
-						<!-- 지도추가된부분 -->		
-						<div class="col-md-12" id="googleMap" style="width:100%;height:380px;"></div>
+						<div class="col-md-12" id="googleMap" style="width:100%;height:380px;">
+						</div>
 						<div class="col-md-12">
 							<small>
 								<span class="glyphicon glyphicon-road" aria-hidden="true">대중교통:</span>
 								<span id="transportListAtStation">교통정보 불러오는 중...</span>
+								<br>
+								<input type="number" id="radiusForTransportSearchAgain" min="100" max="3000" value="350"/>
+								<button type="button" class="btn btn-default btn-xs" id="searchAgainWithDifferentRadius">
+									재검색
+								</button>
+								(min:100 max:3000)
 							</small>
 						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- 축제에 대한 작성자가 제공하는 정보 -->
+		<div class="row">
+			<div class="col-md-offset-2 col-md-8">
+				<div class="panel panel-default">
+					<div class="panel-body">
 						<div class="col-md-12">
+							<h3>
+								<strong>축제후기</strong>
+							</h3>
 							<small>
 								<span class="glyphicon glyphicon-dashboard" aria-hidden="true">축제평점:</span>
 								<span id="reviewFestivalRatingForGoogleMap">${review.reviewFestivalRating }</span>
@@ -460,7 +733,19 @@
 							</small>
 							<br>
 						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+			
+						
+		<!-- 댓글 부분 Start -->
+		<div class="row">
+			<div class="col-md-offset-2 col-md-8">
+				<div class="panel panel-default">
+					<div class="panel-body">
 						<div class="col-md-12">
+							<%-- 
 							<small>
 								<!-- ToolBar Start /////////////////////////////////////-->
 								<jsp:include page="getReplyList.jsp" >
@@ -468,14 +753,159 @@
 								</jsp:include>
 							   	<!-- ToolBar End /////////////////////////////////////-->
 							</small>
+							 --%>
+							<!-- 여기서부터 수정해보자 삭제 가능 include 대신 구현-->
+							<h5 class="page-heading replyHeader">댓글</h5>
+							
+							<!-- 화면구성 div Start -->
+						   	<div class="container">
+								<!-- 'search' is only for 'Admin' menu -->
+								<div class="col-md-offset-4 col-md-4">
+									<form class="form-inline" name="searchForm">
+										<!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
+										<input type="hidden" id="currentPage" name="currentPage" value=""/>
+										<input type="hidden" name="reviewNo" value="${review.reviewNo }"/>
+									<c:if test="sessionScope.user.role == 'a'">
+										<%-- 
+										<input name="menu" value="${param.menu }" type="hidden"/>
+										 --%>
+										<div class="form-group">
+											<select class="form-control" name="searchCondition">
+												<option value="0" ${! empty search.searchCondition && search.searchCondition==0 ? "selected" : "" }>축제이름</option>
+												<option value="1" ${! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>축제장소</option>
+												<option value="2" ${! empty search.searchCondition && search.searchCondition==2 ? "selected" : "" }>해시태그</option>
+											</select>
+										</div>
+										
+										<div class="form-group">
+											<label class="sr-only" for="searchKeyword">검색어</label>
+											<input type="text" class="form-control" id="searchKeyword" name="searchKeyword" placeholder="검색어" 
+													value="${! empty search.searchKeyword ? search.searchKeyword : '' }" >
+										</div>
+										
+										<button type="button" id = "searchReply" class="btn btn-default">검색</button>
+									</c:if>
+									</form>
+								</div>
+							</div>
+							<!-- 화면구성 div End -->
+							<!--  table 위쪽 검색 End -->
+							
+							
+							<!-- 댓글입력 폼 -->
+							<!-- 댓글입력 form Start : 로그인한 사람만 댓글등록가능-->
+							<form class="form-horizontal" method="post" name="detailForm">
+								<div class="form-group">
+									<input type="hidden" id="reviewNo" name="reviewNo" value="${review.reviewNo }"/>
+									<input type="hidden" id="userId" name="userId" value="${sessionScope.user.userId }"/>
+									<!-- 
+									<label for="replyDetail" class="col-sm-offset-1 col-sm-3 control-label">댓글내용</label>
+									 -->
+									<c:if test="${user.userId != null }">
+									<div class="col-md-10">
+										<textarea class="form-control" id="replyDetail" name="replyDetail" placeholder='댓글을 등록해 주세요'></textarea>
+									</div>
+									</c:if>
+									<c:if test="${user.userId == null }">
+									<div class="col-md-10">
+										<textarea class="form-control" id="cannotUse" name="cannotUse" placeholder='로그인 후 댓글기능을 이용하세요'></textarea>
+									</div>
+									</c:if>
+									<div class="col-md-2">
+										<button type="button" class="btn btn-primary pull pull-left" <c:if test="${user.userId ==null}">disabled="disabled"</c:if> id="addReply">댓글등록</button>
+									</div>
+								</div>
+							</form>
+							<!-- 댓글입력 form End-->
+							<%-- 
+							<div class="reply-wrapper col-md-12">
+								<div id="reply-form" class="detailForm">
+									<c:if test="${user.userId != null }">
+										<textarea class="form-control" id="replyDetail" name="replyDetail" placeholder='댓글을 등록해 주세요'></textarea>
+									</c:if>
+									<c:if test="${user.userId == null }">
+										<textarea class="form-control" placeholder='로그인 후 이용해 주세요' readonly="readonly"></textarea>
+									</c:if>
+									<button type='button' id="addReply" class="btn btn-primary pull pull-left" <c:if test="${user.userId ==null}">disabled="disabled"</c:if> id="addCommentButton">댓글등록</button>
+								</div>
+								
+							</div>
+							 --%>
+							
 						</div>
+			
+						<c:if test="${!empty review.replyList }">
+							<c:set var="i" value="0"/>
+							<c:forEach var="replyList" items="${review.replyList }">
+								<c:set var="i" value="${i+1 }"/>
+								<div>
+									<div class="input-group">
+										<span class="glyphicon glyphicon-user" aria-hidden="true">	
+											${replyList.userId }
+										</span>
+									</div> 
+									<div class="input-group col-md-12">
+										<input type="text" class="form-control col-md-12" id="replyDetail${replyList.replyNo }" aria-label="replyDetail" value="${replyList.replyDetail }" readonly>
+												<input type="hidden" name="reviewNo" value=${review.reviewNo }>
+										<span style="display: none" class="hidden_link">/review/getReview?reviewNo=${review.reviewNo }</span>
+									</div>
+									<div class="input-group col-md-12">
+										<div class="pull-left">
+											<small>
+												<span class="glyphicon glyphicon-time" aria-hidden="true" id="replyRegDate${replyList.replyNo }">
+													${replyList.replyRegDate }
+												</span>
+											</small>
+										</div>
+										<div class="pull-right">
+										<small>
+										<c:if test="${!empty sessionScope.user}" >
+											<c:if test="${sessionScope.user.role == 'a' || sessionScope.user.userId == replyList.userId }">
+												<div class="input-group-btn col-md-12">
+										   			<button type="button" name="buttonForUpdate" id="updateReply${replyList.replyNo }" class="btn btn-secondary btn-sm btn-info btn-reply" value="${replyList.replyNo }" style="display:inline">
+										   				수정
+										   			</button>
+										   			<button type="button" name="buttonForCompUpdate" id="updateCompReply${replyList.replyNo }" class="btn btn-secondary btn-sm btn-info btn-reply" value="${replyList.replyNo }" style="display:none">
+										   				완료
+										   			</button>
+									   				<button type="button" name="buttonForDelete" id="deleteReply${replyList.replyNo }" class="btn btn-secondary btn-sm btn-warning btn-reply" value="${replyList.replyNo }">
+									   					삭제
+									   				</button>
+												</div>
+									   		</c:if>
+									   	</c:if>
+										<c:if test="${!empty sessionScope.user }">
+											<c:if test="${!(sessionScope.user.role == 'a' || sessionScope.user.userId == replyList.userId) }">
+												<div class="input-group-btn col-md-12">
+													<button type="button" name="replyNoForReport" id="willBeReported" class="btn btn-secondary btn-sm btn-danger btn-reply">
+										   				신고
+										   			</button>
+												</div>
+											</c:if>
+										</c:if>
+										</small>
+										</div>
+									</div>
+								</div>
+							</c:forEach>
+						</c:if>
+			
+		<!-- 댓글 부분 End -->
+		<!-- 여기까지 삭제 가능 include 대신 구현-->
 					</div>
+					
+				<div class="text-center">
+					<!-- PageNavigation Start -->
+					<jsp:include page="../../common/pageNavigator_new.jsp"/>
+					<!-- PageNavigation End -->
+		   		</div>
+			   		
 				</div>
 			</div>
 		</div>
-   		
-   	</div>
-   	<!-- 화면구성 div End -->
+	</div>
+   	<!-- 화면구성 div container End -->
+			
 
 </body>
 </html>
