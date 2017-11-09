@@ -91,7 +91,7 @@
 					var recNick = $('#recNick').val();
 					var data = $('#dataInput').val();
 					var time = $('#dataInputTime').val();
-					
+					var readCount = ${currentMemberCount}-1;
 					
 					var output = {
 							command : chatType,
@@ -103,6 +103,7 @@
 							type  : 'text',
 							data : data,
 							time : time,
+							readCount : readCount
 							
 					}
 					
@@ -133,7 +134,8 @@
 					var recNick = $('#recNick').val();
 					var data = $('#dataInput').val();
 					var time = $('#dataInputTime').val();
-					
+					var readCount = ${currentMemberCount}-1;
+					alert("${currentMemberCount}");
 					
 					var output = {
 							command : chatType,
@@ -144,7 +146,8 @@
 							recNick : recNick,
 							type  : 'text',
 							data : data,
-							time : time
+							time : time,
+							readCount : readCount
 					}
 					
 					console.log("서버로 보낼 데이터 : "+JSON.stringify(output));
@@ -217,12 +220,12 @@
 						var senderId = $("#idInput").val(); //sender 아이디
 						var senNick = "${user.nickname}"; /////////////////////새로추가 센닉
 						var hostId = "${party.user.userId}"; //party host 아이디
-						//alert("senderId ==> "+senderId);
-						//alert("hostId ==> "+hostId);
+						alert("senderId ==> "+senderId);
+						alert("hostId ==> "+hostId);
 						
 						if(senderId == hostId){
 							
-							//alert("[방만들기] 호스트");
+							alert("[방만들기] 호스트");
 							var roomId = $("#roomIdInput").val();
 							var roomName = $("#roomNameInput").val();
 							var id = $("#idInput").val();
@@ -250,7 +253,7 @@
 								
 								//$("#joinRoomBtn").on("click", function(){
 									
-									//alert("[방참여] 게스트");
+									alert("[방참여] 게스트");
 									var roomId = $("#roomIdInput").val();
 									
 									var output = {
@@ -305,7 +308,7 @@
 					console.log("groutdiscussion"+JSON.stringify(message));
 					
 					println('<p>수신 메세지 : ' + message.sender + ', ' + message.recipient + ', '
-							+ message.command + ', ' + message.type + ', ' + message.data +','+message.time+ '</p>');
+							+ message.command + ', ' + message.type + ', ' + message.data +','+message.time+','+message.readCount+ '</p>');
 					
 					var id = $('#idInput').val();
 					
@@ -517,7 +520,7 @@
 			var recipient;
 			var sender;
 			var time = message.time;
-			
+			var readCount = message.readCount
 			
 			if(writer == 'other'){
 				//img = '${recipient.profileImage}';
@@ -534,7 +537,7 @@
 							+"</div>"
 							+"<div class = 'message'>"
 							+"<p>" + msg + "</p>"
-							+"<p class='flag'>" + flag + "</p>"
+							+"<p class='flag'>" + readCount + "</p>"
 							/* +"<time datetime='2017-10-05 13:52'>"+time+"</time>" */
 							+"<time datetime='yyyy-mm-ddThh:mm:ss:Z'>"+time+"</time>"
 							+"</div>"
@@ -555,7 +558,7 @@
 							+"</div>"
 							+"<div class = 'message'>"
 							+"<p>" + msg + "</p>"
-							+"<p class='flag'>" + flag + "</p>"
+							+"<p class='flag'>" + readCount + "</p>"
 							+"<time datetime='yyyy-mm-ddThh:mm:ss:Z'>"+time+"</time>"
 							+"</div>"
 							+"</li>";
@@ -705,17 +708,17 @@
 	<form name="form">
 		
 		<!--//////////////// 그룹방방방방방 ////////////////-->
-		<%-- <input type="text" id="roomIdInput" value="${ party.partyNo }">
+		<input type="text" id="roomIdInput" value="${ party.partyNo }">
 		<input type="text" id="roomNameInput" value="${ party.partyName }">
 		<button id="createRoomBtn" type='button' class='btn-sm btn-default'>방만들기</button>
 		<input type="hidden" name="roomRecipient" value="ALL">
 		<button id="joinRoomBtn" type="button" class=" btn-default">방 입장</button>
-		<button id="leaveRoomBtn" type="button" class=" btn-default">방 나가기</button> --%>
+		<button id="leaveRoomBtn" type="button" class=" btn-default">방 나가기</button>
 	</form>
 	
-	<!-- <input type="hidden" id="chatType" value="groupChat">
+	<input type="hidden" id="chatType" value="groupChat">
 	그룹방 전용 메시지 : <input type="text" id="groutDataInput">
-	<button id="groupBtn" type="button" class=" btn-default">전송</button> -->
+	<button id="groupBtn" type="button" class=" btn-default">전송</button>
 	
 	
 	<div id="roomList"></div>
@@ -762,11 +765,11 @@
 	<hr/>
 	
 	<!-- 채팅 확인창 -->
-	<!-- <div id="currentDate"></div>
+	<div id="currentDate"></div>
 	<hr/>
 	<h4 class = "ui horizontal divider header">메세지</h4>
 	
-	<div class = "ui segment" id = "result"></div> -->
+	<div class = "ui segment" id = "result"></div>
 
 	<!-- 채팅창 -->
 	<ol class="discussion">
