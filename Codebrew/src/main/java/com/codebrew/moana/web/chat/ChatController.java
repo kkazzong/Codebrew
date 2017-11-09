@@ -129,7 +129,40 @@ public class ChatController {
 		return modelAndView;
 	}
 	
-	
+	//Get방식 추가
+	   @RequestMapping( value="getGroupChatting", method=RequestMethod.GET)
+	   public ModelAndView getGroupChat(@RequestParam("sender") String sender,
+	                                                         @RequestParam("roomId") String roomId) throws Exception {
+	      
+	      System.out.println("\n>>> /chat/getGroupChat :: GET start <<<");
+	      
+	      //sender, recipient 파라미터 출력
+	      System.out.println(">>> /chat/getGroupChatting :: POST :: sender 파라미터 \n"+sender);
+	      System.out.println(">>> /chat/getGroupChatting :: POST :: roomId 파라미터 \n"+roomId);
+	      
+	      int dbPartyNo = Integer.parseInt(roomId);
+	      
+	      User dbSender = userService.getUser(sender);
+	      Party dbParty = partyService.getParty(dbPartyNo, "");
+	      int currentMemberCount = partyService.getCurrentMemberCountByPartyNo(dbPartyNo);
+	      //도메인 출력
+	      System.out.println("\n<<< /chat/getChatting :: GET :: sender 도메인  \n"+dbSender);
+	      System.out.println("\n<<< /chat/getChatting :: GET :: party 도메인  \n"+dbParty);
+	      System.out.println("\n<<< /chat/getChatting :: GET :: currentMemberCount  \n"+currentMemberCount);
+	      
+	      
+	      //Model(data) & View(jsp)
+	      ModelAndView modelAndView = new ModelAndView();
+	      modelAndView.addObject("sender", dbSender);
+	      modelAndView.addObject("party", dbParty);
+	      modelAndView.addObject("currentMemberCount", currentMemberCount);
+	      
+	      //modelAndView.setViewName("forward:/view/chat/groupChatting.jsp");
+	      modelAndView.setViewName("forward:/view/chat2/groupChatting3.jsp");
+	      
+	      return modelAndView;
+	   }
+	   
 	//나의채팅목록
 	@RequestMapping( value="getChattingList")
 	public ModelAndView getChattingList(HttpSession session) throws Exception {

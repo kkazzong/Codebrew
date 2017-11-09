@@ -431,13 +431,6 @@
 	    #messages li { padding: 5px 10px; }
 	      
 	    #messages li:nth-child(odd) { background: #eee; } */
-	    
-	    .content {
-	    	padding : 10px;
-	    }
-	    .content-text {
-	    	margin-bottom : 10px;
-	    }
 	</style>
 </head>
 <body onbeforeunload="exit()">
@@ -445,15 +438,15 @@
 	<div class = "container">
 		<div id = "cardbox" class = "ui blue fluid card">
 			<div class = "content">
-				<span class = "left floated author col-xs-3">
+				<div class = "left floated author">
 					<img id = "iconImage" class = "ui avatar image" src = "/resources/image/chat/Messages-icon.png" width="45px" height="45px">
-				</span>
-				<span class="content-text col-xs-9">
-					<span id = "titleText" class = "header col-xs-3">MOANA</span>
-					<span id = "contentsText" class = "description col-xs-6">
+				</div>
+				<div>
+					<div id = "titleText" class = "header">MOANA</div>
+					<div id = "contentsText" class = "description">
 						${ sender.nickname } 님 채팅
-					</span>
-				</span>
+					</div>
+				</div>
 			</div>
 		</div>
 	
@@ -480,12 +473,14 @@
 	
 	
 	
+	<hr/>
+	
 	<!-- 채팅 확인창 -->
-	<!-- <div id="currentDate"></div>
+	<div id="currentDate"></div>
 	<hr/>
 	<h4 class = "ui horizontal divider header">메세지</h4>
 	
-	<div class = "ui segment" id = "result"></div> -->
+	<div class = "ui segment" id = "result"></div>
 
 	<!-- 채팅창 -->
 	<ol class="discussion">
