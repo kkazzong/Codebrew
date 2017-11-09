@@ -90,7 +90,7 @@
 				var time = $('#dataInputTime').val();
 				
 				var output = {sender : sender, recipient : recipient, senNick : senNick, command : 'chat', type  : 'text', data : data, time : time};
-				alert('서버로 보낼 데이터 : ' + JSON.stringify(output));
+				//alert('서버로 보낼 데이터 : ' + JSON.stringify(output));
 				
 				
 				if(socket == undefined){
@@ -99,7 +99,8 @@
 				}
 				
 				socket.emit('message', output);
-				addToDiscussion('self',data,time,"");
+				//==> 변경
+				//addToDiscussion('self',data,time,"");
 			});
 			
 			$("#dataInput").on('keydown',function(event){
@@ -124,7 +125,9 @@
 					}
 					
 					socket.emit('message', output);
-					addToDiscussion('self',data,time,"");
+					
+					//==> 변경
+					//addToDiscussion('self',data,time,"");
 				}
 			});
 			
@@ -195,9 +198,18 @@
 					console.log(JSON.stringify(message));
 					
 					println('<p>수신 메세지 : ' + message.sender + ', ' + message.recipient + ', '
-							+ message.command + ', ' + message.type + ', ' + message.data +','+message.time+ '</p>');
+							+ message.command + ', ' + message.type + ', ' + message.data +','+message.time+','+message.flag+'</p>');
 					
-					addToDiscussion('other', message.data, message.time, message.flag);
+					//addToDiscussion('other', message.data, message.time, message.flag);
+					//==>변경
+					var sessionId = "${user.userId}";
+					//alert(sessionId+','+message.sender);
+					
+					if(sessionId == message.sender) {
+						addToDiscussion('self', message.data, message.time, message.flag);
+					} else{
+						addToDiscussion('other', message.data, message.time, message.flag);
+					}
 				});
 				
 				
@@ -257,8 +269,13 @@
 			var recipient;
 			var sender;
 			
+			//==>추가
+			if(flag == '0'){
+				flag = "";
+			}
 			
 			if(writer == 'other'){
+				
 				
 				img = '${recipient.profileImage}';
 				recipient = '${recipient.nickname}';
@@ -291,6 +308,7 @@
 							+"</div>"
 							+"<div class = 'message'>"
 							+"<p>" + msg + "</p>"
+							+"<p>" + flag + "</p>"
 							+"<time datetime='yyyy-mm-ddThh:mm:ss:Z'>"+time+"</time>"
 							+"</div>"
 							+"</li>";
