@@ -35,6 +35,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.codebrew.moana.common.Page;
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Party;
+import com.codebrew.moana.service.domain.Ticket;
 import com.codebrew.moana.service.domain.User;
 import com.codebrew.moana.service.party.PartyService;
 
@@ -179,5 +180,76 @@ public class PartyRestController {
 		
 		return party;
 	}*/
+	
+	
+	///////////////////////////////////getParty 추가 했음/////////////////////////////////////////////////////////////////////////////////////
+	@RequestMapping( value="json/getParty/{partyNo}", method=RequestMethod.GET )
+	public Party getParty(@PathVariable("partyNo") String partyNo, @RequestParam(value="partyFlag", required=false) String partyFlag, HttpSession session) throws Exception {
+		
+		System.out.println("\n>>> /party/json/getParty :: GET start <<<");
+		
+		//partyNo, partyFlag 파라미터 출력
+		System.out.println(">>> /party/json/getParty :: GET :: partyNo 파라미터 \n"+partyNo);
+		System.out.println(">>> /party/json/getParty :: GET :: partyFlag 파라미터 \n"+partyFlag);
+		
+		
+		Search search = new Search();
+		
+		if(search.getCurrentPage() == 0){
+			search.setCurrentPage(1);
+		}
+		search.setPageSize(pageSize);
+
+		
+		//Business Logic
+		int dbPartyNo = Integer.parseInt(partyNo);
+		//Party dbParty = partyService.getGenderRatio(dbPartyNo);
+		//Ticket ticket = ticketService.getTicket(dbPartyNo, "2");
+		Party party = partyService.getParty(dbPartyNo, partyFlag);
+		
+		
+		/*party.setFemalePercentage(dbParty.getFemalePercentage());
+		party.setFemaleAgeAverage(dbParty.getFemaleAgeAverage());
+		party.setMalePercentage(dbParty.getMalePercentage());
+		party.setMaleAgeAverage(dbParty.getMaleAgeAverage());*/
+		
+		//party 도메인 출력
+		System.out.println("\n<<< /party/json/getParty :: GET :: party 도메인  \n"+party);
+		
+		//partyPlace Parsing
+		String dbPartyPlace = party.getPartyPlace();
+		int index = dbPartyPlace.indexOf(',');
+		
+		if( index != -1) {
+			dbPartyPlace = dbPartyPlace.substring(0, index);
+			party.setPartyPlace(dbPartyPlace);
+			
+			System.out.println("\n<<< /party/json/getParty :: GET :: psPartyPlace \n"+dbPartyPlace);
+		}
+		
+		System.out.println("\n<<< /partyjson//getParty :: GET :: party 도메인2 \n"+party);
+		
+		Map<String, Object> map = partyService.getPartyMemberList(dbPartyNo, search);
+		
+		/*Page resultPage = new Page(search.getCurrentPage(),((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+		System.out.println(resultPage);*/
+	
+		//user 
+		User user = (User)session.getAttribute("user");
+		System.out.println("\n<<< /party/getParty :: GET :: user 도메인 \n"+user);
+		
+		
+		//Model(data) & View(jsp)
+		//ModelAndView modelAndView = new ModelAndView();
+		//modelAndView.addObject("party", party);
+		//modelAndView.addObject("ticket", ticket);
+		//modelAndView.addObject("user", user);
+		
+		//modelAndView.addObject("list", map.get("list"));
+		//modelAndView.addObject("currentMemberCount", map.get("currentMemberCount"));
+		//modelAndView.setViewName("forward:/view/party/getParty.jsp");
+		
+		return party;
+	}
 }
 

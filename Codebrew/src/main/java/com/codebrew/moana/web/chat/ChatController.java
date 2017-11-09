@@ -125,6 +125,7 @@ public class ChatController {
 		return modelAndView;
 	}
 	
+	
 	//나의채팅목록
 	@RequestMapping( value="getChattingList")
 	public ModelAndView getChattingList(HttpSession session) throws Exception {

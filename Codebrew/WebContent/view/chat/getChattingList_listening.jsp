@@ -185,6 +185,17 @@
 				console.log('웹 소켓 서버에 연결되었습니다. : '+ url);
 				
 				
+				//////////////////////////////message////////////////////////////////
+				socket.on('message', function(message){
+					alert(JSON.stringify(message));
+					
+					//println('<p>수신 메세지 : ' + message.sender + ', ' + message.recipient + ', '
+						//	+ message.command + ', ' + message.type + ', ' + message.data +','+message.time+ '</p>');
+					
+					//addToDiscussion('other', message.data, message.time, message.flag);
+				});
+				
+				
 				////////////////////////////findChat//////////////////////////////////
 				socket.on('findChatList', function(message){
 					
