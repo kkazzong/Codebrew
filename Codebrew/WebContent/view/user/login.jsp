@@ -252,7 +252,7 @@
 					</div>
 					
 					
-					<div class="col-md-offset-3">
+					<div class="col-md-offset-2 col-md-7 col-xs-6">
 					<jsp:include page="/api/kakaoLogin.jsp" />
 				</div>
 				

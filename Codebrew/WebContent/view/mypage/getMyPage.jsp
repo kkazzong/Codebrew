@@ -337,9 +337,12 @@
 						<li id="getFollowerList" class="test">
 							<input type="hidden" id="userId" name="userId" value="${user.userId}">
 							<a href="#">
-							<i class="fa fa-user-circle" aria-hidden="true" 
+							<%-- <i class="fa fa-user-circle" aria-hidden="true" 
 							data-toggle="modal" data-target="#following" > </i>
-							팔로잉</a> ${totalCount1}
+							팔로잉</a> ${totalCount1} --%>
+							
+							<button type="button" class="btn btn-secondary" aria-hidden="true" 
+							data-toggle="modal" data-target="#following">팔로잉${totalCount1}</button></a>	
 							
 							<jsp:include page="/view/mypage/getFollowingList.jsp"/>
 							
@@ -348,9 +351,12 @@
 						<li id="getFollowingList" class="test">
 							<a href="#">
 							<input type="hidden" id="userId" name="userId" value="${user.userId}">
-							<i class="fa fa-user-circle-o" aria-hidden="true"
+							<%-- <i class="fa fa-user-circle-o" aria-hidden="true"
 							data-toggle="modal" data-target="#follower" ></i>
-							팔로워</a>${totalCount2}
+							팔로워</a>${totalCount2} --%>
+							
+							<button type="button" class="btn btn-secondary" aria-hidden="true" 
+							data-toggle="modal" data-target="#follower">팔로워${totalCount2}</button></a>	
 							
 							<jsp:include page="/view/mypage/getFollowerList.jsp"/>
 							
