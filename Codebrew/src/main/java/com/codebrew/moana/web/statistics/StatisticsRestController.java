@@ -1,5 +1,6 @@
 package com.codebrew.moana.web.statistics;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.codebrew.moana.service.domain.Party;
 import com.codebrew.moana.service.domain.Statistics;
 import com.codebrew.moana.service.statistics.StatisticsService;
 
@@ -81,6 +83,27 @@ public class StatisticsRestController {
 		List<Statistics> list = statisticsService.getStatistic(statistics);
 		
 		return list;
+	}
+	
+	@RequestMapping(value="json/getPartyCount", method=RequestMethod.GET)
+	public List<Statistics> getPartyCount() throws Exception {
+		
+		List<Statistics> list = statisticsService.getPartyCount();
+		
+		/*int index = 0;
+		List<Statistics> returnList = new ArrayList<Statistics>();
+		while(index < 4) {
+			returnList.add(list.get(index));
+			index++;
+		}*/
+		
+		return list;
+		//ModelAndView modelAndView = new ModelAndView();
+		//modelAndView.addObject("list", list);
+		//modelAndView.addObject("festivalList", map.get("festivalList"));
+		//modelAndView.setViewName("/view/statistics/getPartyCount.jsp");
+		//return modelAndView;
+		
 	}
 	
 	/*@RequestMapping(value="/json/getFestivalZzim", method=RequestMethod.GET)
