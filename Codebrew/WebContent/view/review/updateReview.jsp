@@ -20,6 +20,16 @@
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	
+	<!-- 별점매기기 소스 start -->
+	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../../resources/javascript/kartik-v-bootstrap-star-rating/css/star-rating.min.css" media="all" rel="stylesheet" type="text/css" />
+	<script src="../../resources/javascript/kartik-v-bootstrap-star-rating/js/star-rating.min.js" type="text/javascript"></script>
+	<!-- 이건 위에 있어서 혹시몰라 남겨둠...
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	별점매기기 소스 end -->
+
+	
 	<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
 	<!-- <script src="js/vendor/jquery.ui.widget.js"></script> -->
 	<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
@@ -263,9 +273,12 @@
 		<hr/>
 		
 		<div class="form-group">
-			<label for="reviewFestivalRating" class="col-sm-offset-1 col-sm-3 control-label">축제에대한 작성자의 평점</label>
-			<div class="col-sm-2">
-				<input type="number" class="form-control" id="reviewFestivalRating" name="reviewFestivalRating" value="${review.reviewFestivalRating }" min="1" max="10"> 
+			<label for="reviewFestivalRating" class="col-sm-offset-1 col-sm-3 control-label">축제평점</label>
+			<div class="col-md-6">
+				<%-- 
+				<input type="number" class="form-control" id="reviewFestivalRating" name="reviewFestivalRating" value="${review.reviewFestivalRating }" min="1" max="10">
+				--%>
+				<input type="number" id="reviewFestivalRating" class="form-control rating" name="reviewFestivalRating" value="${review.reviewFestivalRating }" data-min="0" data-max="5" data-step="1" data-size="xs" data-rtl="true">
 			</div>
 		</div>
 		

@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -246,28 +245,17 @@ public class ReviewController {
 			Date eachReplyRegDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").parse(replyList.get(i).getReplyRegDate());
 			long diffTime = (presentTime - eachReplyRegDateTime.getTime())/1000;
 			
-			if(diffTime < TIME_MAXIMUM.SEC)
-			{
+			if(diffTime < TIME_MAXIMUM.SEC) {
 				replyList.get(i).setReplyRegDate("바로 전");
-			}
-			else if((diffTime /= TIME_MAXIMUM.SEC) < TIME_MAXIMUM.MIN)
-			{
+			}else if((diffTime /= TIME_MAXIMUM.SEC) < TIME_MAXIMUM.MIN) {
 				replyList.get(i).setReplyRegDate(diffTime+"분 전");
-			}
-			else if((diffTime /= TIME_MAXIMUM.MIN) < TIME_MAXIMUM.HOUR)
-			{
+			}else if((diffTime /= TIME_MAXIMUM.MIN) < TIME_MAXIMUM.HOUR) {
 				replyList.get(i).setReplyRegDate(diffTime+"시간 전");
-			}
-			else if((diffTime /= TIME_MAXIMUM.HOUR) < TIME_MAXIMUM.DAY)
-			{
+			}else if((diffTime /= TIME_MAXIMUM.HOUR) < TIME_MAXIMUM.DAY) {
 				replyList.get(i).setReplyRegDate(diffTime+"일 전");
-			}
-			else if((diffTime /= TIME_MAXIMUM.DAY) < TIME_MAXIMUM.MONTH)
-			{
+			}else if((diffTime /= TIME_MAXIMUM.DAY) < TIME_MAXIMUM.MONTH) {
 				replyList.get(i).setReplyRegDate(diffTime+"달 전");
-			}
-			else
-			{
+			}else{
 				replyList.get(i).setReplyRegDate(diffTime+"년 전");
 			}
 		}
