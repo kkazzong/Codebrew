@@ -63,7 +63,7 @@ $(function() {
 							"Content-Type" : "application/json"
 						},
 						success : function(JSONData , status) {
-							alert("festivalNo..." + JSONData.festivalNo);
+							/* alert("festivalNo..." + JSONData.festivalNo); */
 							
 							$("#returnFestivalNo").val(JSONData.festivalNo);							
 							$("#returnFestivalName").val(JSONData.festivalName); 
@@ -85,6 +85,39 @@ $(function() {
 	
 </script>
 
+<style type="text/css">
+	body {
+			padding-top : 70px;
+			background-color: #f2f4f6;
+	    }
+	    
+	    .card {
+			margin-top : 50px;
+	    }
+	    
+	    .panel-primary>.panel-heading {
+	    	background-color: #000000;
+	    }
+	    
+	    .text-info {
+	    	color: #333333; 
+	    }
+	    
+	    .page-header {
+	    	border-bottom : 1px solid #f2f4f6;
+	    }
+	    
+	    
+	    .section {
+	    	margin-top : 400px;
+	    }
+	    
+	    em {
+	    	font-family: tahoma;
+	    }
+	    
+</style>
+
 </head>
 <body>
 	<div class="container">
@@ -94,7 +127,7 @@ $(function() {
   	<div class="col-md-12">
   	
   		<div class="page-header text-center">
-					<h3 class="text-info">popupListDB 임당 신사임당</h3>
+					<h3 class="text-info">축제를 검색해주세요.</h3>
 				</div>
 
 

@@ -168,10 +168,19 @@ $(function() {
 		
 		});
 	   
+	   fnc
+	   
 	   $(function(){
 		   $("#search").on("click",function(){
 				
 			   var festivalNo = $("#festivalNo").val();
+			   	var searchKeyword=$("#searchKeyword").val();
+				
+				if(searchKeyword == null || searchKeyword.length <1){
+					alert("축제명은 반드시 한 글자 이상 입력하셔야 합니다.");
+					return;
+				}
+				
 			   
 			   self.location="/festival/getFestivalDB?festivalNo="+festivalNo;
 		   });
@@ -220,6 +229,9 @@ $(function() {
 	.video-container embed { margin: 0;padding: 0; width: 100%; height: 45%;position: absolute; top: 0;left: 0; }
     
     
+    .glyphicon glyphicon-search{
+    font-size: 3.5em;
+    }
 
 </style>
 
@@ -233,9 +245,16 @@ $(function() {
 <!-- <body onload="fncGetWebSearch();"> -->
 <body>
 	
+  	<div class="container">
   	
+	  	<div class="row">
+	  	
+	  		<div class="col-md-12">
+	  		
+	  			<div class="form-group">
+	  		
   		<div class="page-header text-center">
-									<form class="form form-inline" id="searchForm" name="searchForm">
+									<form class="form-control" id="searchForm" name="searchForm">
 										<input type="hidden" id="currentPage" name="currentPage" value=""/>
 										<input type="hidden" id="festivalNo" name="festivalNo" value=""/>
 											<input class="form-control" id="searchKeyword" name="searchKeyword" type="text" 
@@ -244,11 +263,17 @@ $(function() {
 										    	<div class="glyphicon glyphicon-search" id="search" role="button"></div>
 									</form>
 								</div>
+				</div>
+				
+				
+						
 				
 				<!-- carousel  -->
-				
-				<div class="container">
 
+
+	
+					
+	<div class="container">
       <div id="myCarousel" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
           <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>

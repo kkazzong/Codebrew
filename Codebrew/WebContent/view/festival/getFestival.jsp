@@ -250,7 +250,7 @@ body {
 							</c:if>
 						<c:if test="${returnZzim == null }">
 							<div class="col-md-12">
-								<h1><span class="glyphicon glyphicon-heart-empty" aria-hidden="true" id="tag"></span></h1>
+								<h1><span class="glyphicon glyphicon-heart-empty" aria-hidden="true" id="tag" style="cursor: pointer;"></span></h1>
 							</div>
 						</c:if>
 						
