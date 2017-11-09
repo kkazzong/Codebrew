@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+		
+<mapper namespace = "PartyMapper">
+
+	<resultMap type="com.codebrew.moana.service.domain.Party" id="partySelectMap">
+		<result property="partyNo" column="party_no" jdbcType="NUMERIC"/>
+		<result property="partyName" column="party_name" jdbcType="VARCHAR"/>
+		<result property="festival.festivalNo" column="festival_no" jdbcType="NUMERIC"/>
+		<result property="festival.festivalName" column="festival_name" jdbcType="VARCHAR"/>
+		<result property="user.userId" column="user_id" jdbcType="VARCHAR"/>
+		<result property="user.nickname" column="nickname" jdbcType="VARCHAR"/>
+		<result property="user.profileImage" column="profile_image" jdbcType="VARCHAR"/>
+		<result property="partyDate" column="party_date" jdbcType="DATE"/>
+		<result property="partyTime" column="party_time" jdbcType="VARCHAR"/>
+		<result property="partyMemberLimit" column="party_member_limit" jdbcType="NUMERIC"/>
+		<result property="partyImage" column="party_image" jdbcType="VARCHAR"/>
+		<result property="partyDetail" column="party_detail" jdbcType="VARCHAR"/>
+		<result property="partyPlace" column="party_place" jdbcType="VARCHAR"/>
+		<result property="partyRegDate" column="party_reg_date" jdbcType="DATE"/>
+		<result property="deleteFlag" column="delete_flag" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap type="com.codebrew.moana.service.domain.PartyMember" id="partyMemberSelectMap">
+		<result property="partyMemberNo" column="member_no" jdbcType="NUMERIC"/>
+		<result property="party.partyNo" column="party_no" jdbcType="NUMERIC"/>
+		<result property="user.userId" column="user_id" jdbcType="VARCHAR"/>
+		<result property="role" column="role" jdbcType="VARCHAR"/>
+		<result property="age" column="age" jdbcType="NUMERIC"/>
+		<result property="gender" column="gender" jdbcType="VARCHAR"/>
+		<result property="party.partyName" column="party_name" jdbcType="VARCHAR"/>
+		<result property="user.nickname" column="nickname" jdbcType="VARCHAR"/>
+		<result property="user.profileImage" column="profile_image" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="addParty" parameterType="party" useGeneratedKeys="true" keyColumn="party_no" keyProperty="partyNo">
+		INSERT
+		INTO party(party_no
+					, party_name
+				    <if test="festival.festivalNo != 0">
+				    	,festival_no
+				    </if>
+				    , user_id
+				    , party_date
+				    , party_time
+				    , party_member_limit
+					<if test="partyImage != null">
+						, party_image
+					</if>
+					, party_detail
+					, party_place
+					, party_reg_date
+					, delete_flag)
+		VALUES(seq_party_party_no.nextval
+				,#{partyName:VARCHAR}
+				<if test="festival.festivalNo != 0">
+					,#{festival.festivalNo:NUMERIC}
+				</if>
+				,#{user.userId:VARCHAR}
+				,#{partyDate:DATE}
+				,#{partyTime:VARCHAR}
+				,#{partyMemberLimit:NUMERIC}
+				<if test="partyImage != null">
+					,#{partyImage:VARCHAR}
+				</if>
+				,#{partyDetail:VARCHAR}
+				,#{partyPlace:VARCHAR}
+				,SYSDATE
+				,#{deleteFlag:VARCHAR})
+	</insert>
+		
+	<select id="getParty" parameterType="int" resultMap="partySelectMap">
+		SELECT  p.party_no
+				, p.party_name
+				,f.festival_no
+				,f.festival_name
+				,u.user_id
+				,u.nickname
+				,u.profile_image
+				,TO_CHAR(p.party_date, 'yy/mm/dd' ) AS party_date 
+				,p.party_time
+				,p.party_member_limit 
+				,p.party_image
+				,p.party_detail 
+				,p.party_place 
+				,TO_CHAR(p.party_reg_date, 'yy/mm/dd') AS party_reg_date
+				,p.delete_flag
+		FROM party p
+			 ,users u
+		 	 ,festival f
+		
+		WHERE p.user_id = u.user_id
+		AND p.festival_no = f.festival_no(+)
+		AND p.party_no = #{value}
+	</select>
+	
+	
+	<update id="updateParty" parameterType="party">
+		UPDATE party
+		<set>
+			<if test="festival.festivalNo != 0">festival_no = #{festival.festivalNo}, </if>
+			<if test="partyName != null">party_name = #{partyName}, </if>
+			<if test="partyDate != null">party_date = #{partyDate}, </if>
+			<if test="partyTime != null">party_time = #{partyTime}, </if>
+			<if test="partyDetail != null">party_detail = #{partyDetail}, </if>
+			<if test="partyMemberLimit != null">party_member_limit = #{partyMemberLimit}, </if>
+			<if test="partyPlace != null">party_place = #{partyPlace}, </if>
+			<if test="partyImage != null">party_image = #{partyImage} </if>
+		</set>
+		WHERE party_no = #{partyNo}
+	</update>
+	
+	
+	<update id="updateDeleteFlag" parameterType="int">
+		UPDATE party
+		<set>
+			delete_flag = 'del'
+		</set>
+		WHERE party_no = #{value}
+	</update>
+	
+	
+	<delete id="cancelParty" parameterType="map">
+		DELETE
+		FROM party_member
+		WHERE party_no = #{partyNo}
+		AND user_id = #{userId}
+	</delete>
+	
+	
+	<update id="deleteMyPartyList" parameterType="map">
+		UPDATE party_member
+		<set>
+			delete_flag = 'del' 
+		</set>
+		WHERE party_no = #{partyNo}
+		AND user_id = #{userId}
+	</update>
+	
+	
+	<select  id="getPartyList" parameterType="com.codebrew.moana.common.Search" resultMap="partySelectMap">
+	  	SELECT *
+	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
+	  					FROM	(	SELECT p.party_no,
+	  									   p.party_image,
+	  									   f.festival_name,
+	  									   f.festival_no,
+	  									   p.party_name,
+	  									   u.nickname,
+	  									   u.profile_image,
+	  									   TO_CHAR(p.party_date, 'yy/mm/dd' ) AS party_date,
+	  									   p.party_time, 
+	  									   p.party_place
+									FROM party p, festival f, users u
+										
+									    <where>
+									        p.festival_no = f.festival_no(+)
+									        AND p.user_id = u.user_id
+									    	AND p.delete_flag IS NULL
+									    	AND p.party_date >= SYSDATE
+									    	
+											<if test="searchCondition == ''">
+												AND LOWER(p.party_name) LIKE LOWER('%${searchKeyword}%')
+											</if>
+											<if test="searchCondition != ''">
+										        <if test="searchCondition == 1 and searchKeyword =='' ">
+										            AND p.festival_no IS NULL
+										        </if>
+										        <if test="searchCondition == 1 and searchKeyword !='' ">
+										            AND p.festival_no IS NULL
+										            AND LOWER(p.party_name) LIKE LOWER('%${searchKeyword}%')
+										        </if>
+										        <if test="searchCondition == 2 and searchKeyword =='' ">
+										            AND p.festival_no IS NOT NULL
+										        </if>
+										        <if test="searchCondition == 2 and searchKeyword !='' ">
+										            AND p.festival_no IS NOT NULL
+										            AND LOWER(p.party_name) LIKE LOWER('%${searchKeyword}%')
+										        </if>
+										        <if test="searchCondition == 5 and searchKeyword !='' ">
+										        	AND p.festival_no LIKE '${searchKeyword}'
+										        </if>
+											</if>
+										
+										</where>
+										ORDER BY p.party_reg_date DESC  ) inner_table
+						WHERE ROWNUM &lt;= #{endRowNum} )
+		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 	
+	 </select>
+	 
+	 
+	 <select  id="getMyPartyList" parameterType="map" resultMap="partySelectMap">
+	  	SELECT *
+		FROM (	SELECT inner_table.*, ROWNUM AS row_seq
+		        FROM  party_member pm, (SELECT p.party_no AS party_no,
+		                                       p.party_image,
+		                                       f.festival_no,
+		                                       f.festival_name,
+		                                       p.party_name,
+		                                       u.user_id,
+		                                       u.nickname,
+		                                       u.profile_image,
+		                                       TO_CHAR(p.party_date, 'yy/mm/dd' ) AS party_date,
+		                                       p.party_time,
+		                                       p.party_place
+		                                FROM party p, festival f, users u
+		                                <where> 
+		                                	p.festival_no = f.festival_no(+)
+		                                	AND p.user_id = u.user_id
+		                                	<if test="search.searchCondition == '' and search.searchKeyword !=''">
+												AND LOWER(p.party_name) LIKE LOWER('%${searchKeyword}%')
+											</if>
+											<if test="search.searchCondition != ''">
+											     
+										        <if test="search.searchCondition == 3 and search.searchKeyword =='' ">
+										            AND p.party_date &lt; SYSDATE
+										        </if>
+										        <if test="search.searchCondition == 3 and search.searchKeyword !='' ">
+										            AND p.party_date &lt; SYSDATE
+										            AND LOWER(p.party_name) LIKE LOWER('%${searchKeyword}%')
+										        </if>
+										        <if test="search.searchCondition == 4 and search.searchKeyword =='' ">
+										            AND p.party_date >= SYSDATE
+										        </if>
+										        <if test="search.searchCondition == 4 and search.searchKeyword !='' ">
+										            AND p.party_date >= SYSDATE
+										            AND LOWER(p.party_name) LIKE LOWER('%${searchKeyword}%')
+										        </if>
+											    
+											</if>
+		                                </where>
+		                                ) inner_table
+		        <where>
+		        	pm.party_no = inner_table.party_no
+			        AND pm.user_id = #{userId:VARCHAR}
+			        AND pm.delete_flag IS NULL
+			        AND ROWNUM &lt;= #{search.endRowNum:NUMERIC}
+		        </where>
+		        ORDER BY inner_table.party_date ASC)
+		 <where>
+		 	row_seq BETWEEN #{search.startRowNum:NUMERIC} AND #{search.endRowNum:NUMERIC}
+		 </where>
+	  	
+	 </select>
+	 
+	 
+	 <select  id="getTotalCount"  parameterType="com.codebrew.moana.common.Search"	 resultType="int">
+	  	SELECT COUNT(*)
+	  	FROM(	SELECT 	*
+	  			FROM party p, festival f, users u
+				<where>
+			        p.festival_no = f.festival_no(+)
+			        AND p.user_id = u.user_id
+					AND p.delete_flag IS NULL
+					AND p.party_date >= SYSDATE
+					
+					<if test="searchCondition == ''">
+						AND LOWER(p.party_name) LIKE LOWER('%${searchKeyword}%')
+					</if>
+					<if test="searchCondition != ''">
+					    
+				        <if test="searchCondition == 1 and searchKeyword =='' ">
+				            AND p.festival_no IS NULL
+				        </if>
+				        <if test="searchCondition == 1 and searchKeyword !='' ">
+				            AND p.festival_no IS NULL
+				            AND LOWER(p.party_name) LIKE LOWER('%${searchKeyword}%')
+				        </if>
+				        <if test="searchCondition == 2 and searchKeyword =='' ">
+				            AND p.festival_no IS NOT NULL
+				        </if>
+				        <if test="searchCondition == 2 and searchKeyword !='' ">
+				            AND p.festival_no IS NOT NULL
+				            AND LOWER(p.party_name) LIKE LOWER('%${searchKeyword}%')
+				        </if>
+					    <if test="searchCondition == 5 and searchKeyword !='' ">
+				        	AND p.festival_no LIKE '${searchKeyword}'
+				        </if>
+					</if>
+				</where>
+			) countTable						
+	 </select>
+	 
+	 
+	 <select  id="getMyTotalCount"  parameterType="map"	 resultType="int">
+	  	SELECT COUNT(*)
+	  	FROM(	SELECT *
+		FROM (	SELECT inner_table.*, ROWNUM AS row_seq
+		        FROM  party_member pm, (SELECT p.party_no AS party_no,
+		                                       p.party_image,
+		                                       f.festival_no,
+		                                       f.festival_name,
+		                                       p.party_name,
+		                                       u.user_id,
+		                                       u.nickname,
+		                                       p.party_date AS party_date,
+		                                       p.party_time,
+		                                       p.party_place
+		                                FROM party p, festival f, users u
+		                                <where> 
+		                                	p.festival_no = f.festival_no(+)
+		                                	AND p.user_id = u.user_id
+		                                	AND p.delete_flag IS NULL
+			                                <if test="search.searchCondition == '' and search.searchKeyword !=''">
+												AND LOWER(p.party_name) LIKE LOWER('%${searchKeyword}%')
+											</if>
+											<if test="search.searchCondition != ''">
+											     
+										        <if test="search.searchCondition == 3 and search.searchKeyword =='' ">
+										            AND p.party_date &lt; SYSDATE
+										        </if>
+										        <if test="search.searchCondition == 3 and search.searchKeyword !='' ">
+										            AND p.party_date &lt; SYSDATE
+										            AND LOWER(p.party_name) LIKE LOWER('%${searchKeyword}%')
+										        </if>
+										        <if test="search.searchCondition == 4 and search.searchKeyword =='' ">
+										            AND p.party_date >= SYSDATE
+										        </if>
+										        <if test="search.searchCondition == 4 and search.searchKeyword !='' ">
+										            AND p.party_date >= SYSDATE
+										            AND LOWER(p.party_name) LIKE LOWER('%${searchKeyword}%')
+										        </if>
+											    
+											</if>
+		                                </where>
+		                                ) inner_table
+		        <where>
+		        	pm.party_no = inner_table.party_no
+			        AND pm.user_id = #{userId:VARCHAR}
+			        AND ROWNUM &lt;= #{search.endRowNum:NUMERIC}
+		        </where>
+		        ORDER BY inner_table.party_date ASC)
+		 <where>
+		 	row_seq BETWEEN #{search.startRowNum:NUMERIC} AND #{search.endRowNum:NUMERIC}
+		 </where>
+		 ) countTable			
+	 </select>
+	 
+	 
+	 <insert id="joinParty" parameterType="partyMember">
+		INSERT
+		INTO party_member(member_no, party_no, user_id, role, age, gender)
+		VALUES(seq_party_member_member_no.nextval
+				,#{party.partyNo:NUMERIC}
+				,#{user.userId:VARCHAR}
+				,#{role:VARCHAR}
+				,#{user.age:NUMERIC}
+				,#{user.gender:VARCHAR})		
+	</insert>
+	
+	
+	<select  id="getPartyMemberList" parameterType="map" resultMap="partyMemberSelectMap">
+	  	SELECT *
+	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
+	  					FROM		(	SELECT p.party_no, p.party_name, u.user_id, u.nickname, u.profile_image, pm.role, pm.age, pm.gender
+										FROM party_member pm, party p, users u
+										
+									    <where>
+									        pm.user_id = u.user_id
+									        AND pm.party_no = p.party_no
+									    	AND pm.party_no = #{partyNo}
+										
+									        <if test="search.searchKeyword != null and search.searchKeyword !='' ">
+									            AND u.nickname IN '%${search.searchKeyword}%'
+									        </if>
+									    
+										</where>
+										<if test="search.endRowNum == 0">
+										ORDER BY pm.role DESC  ) inner_table)
+										</if>
+										<if test="search.endRowNum != 0">
+										ORDER BY pm.role DESC  ) inner_table
+						WHERE ROWNUM &lt;= #{search.endRowNum} )
+		WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum}
+		</if>
+	 </select>
+	 
+	 
+	 <select  id="getCurrentMemberCount"  parameterType="map"	 resultType="int">
+	  	SELECT COUNT(*)
+	  	FROM(	SELECT 	*
+	  			FROM party_member pm, users u
+				<where>
+				
+					pm.user_id = u.user_id
+					AND pm.party_no = #{partyNo}
+					
+					<if test="search.searchKeyword != null and search.searchKeyword !='' ">
+			            AND u.nickname LIKE '%${search.searchKeyword}%'
+			        </if>
+				        
+				</where>
+			) countTable						
+	 </select>
+	 
+	 
+	 <select  id="getCurrentMemberCountByPartyNo"  parameterType="int"	 resultType="int">
+	  	SELECT COUNT(*)
+	  	FROM(	SELECT 	*
+	  			FROM party_member pm, users u
+				<where>
+				
+					pm.user_id = u.user_id
+					AND pm.party_no = #{value}
+					
+				</where>
+			) countTable						
+	 </select>
+	 
+	 
+	 <select  id="getGenderRatio" parameterType="int" resultMap="partyMemberSelectMap">
+	  	SELECT *
+	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
+	  					FROM		(	SELECT p.party_no, p.party_name, u.user_id, u.nickname, u.profile_image, pm.role, pm.age, pm.gender
+										FROM party_member pm, party p, users u
+										
+									    <where>
+									        pm.user_id = u.user_id
+									        AND pm.party_no = p.party_no
+									    	AND pm.party_no = #{value}
+										</where>
+										
+										ORDER BY pm.role DESC  ) inner_table)
+	</select>
+</mapper>

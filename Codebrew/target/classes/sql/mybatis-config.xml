@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE configuration
+ 		 PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+ 		"http://mybatis.org/dtd/mybatis-3-config.dtd">
+  						
+<!--	mybatis-config.xml :: MyBatis Framework  MetaData -->
+<configuration>
+
+	<!-- 기타 설정정보 :: [MyBatis_Home]/mybatis-3.2.1.pdf 참조 -->
+	<settings>
+		<setting name="callSettersOnNulls" value="false"/>
+	</settings>	
+	
+	<!-- FQCN(Full Qualified Class Name) Alias(별칭관리) -->
+	<typeAliases>
+		<typeAlias alias="user" type="com.codebrew.moana.service.domain.User" />
+		<typeAlias alias="follow" type="com.codebrew.moana.service.domain.Follow" />
+		<typeAlias alias="festival" type="com.codebrew.moana.service.domain.Festival" />
+		<typeAlias alias="review" type="com.codebrew.moana.service.domain.Review" />
+		<typeAlias alias="reply" type="com.codebrew.moana.service.domain.Reply" />
+		<typeAlias alias="image" type="com.codebrew.moana.service.domain.Image" />
+		<typeAlias alias="video" type="com.codebrew.moana.service.domain.Video" />
+		<typeAlias alias="good" type="com.codebrew.moana.service.domain.Good" />
+		<typeAlias alias="party" type="com.codebrew.moana.service.domain.Party" />
+		<typeAlias alias="partyMember" type="com.codebrew.moana.service.domain.PartyMember" />
+		<typeAlias alias="ticket" type="com.codebrew.moana.service.domain.Ticket" />
+		<typeAlias alias="purchase" type="com.codebrew.moana.service.domain.Purchase" />
+		<typeAlias alias="statistics" type="com.codebrew.moana.service.domain.Statistics" />
+		<typeAlias alias="search" type="com.codebrew.moana.common.Search" />
+		<typeAlias alias="page" type="com.codebrew.moana.common.Page" />
+		<typeAlias alias="zzim" type="com.codebrew.moana.service.domain.Zzim" />
+	</typeAliases>
+	
+	 <!-- SQL Definition :: file include -->
+	<mappers>
+		<mapper resource="sql/UserMapper.xml"/>
+		<mapper resource="sql/FollowMapper.xml"/>
+		<mapper resource="sql/FestivalMapper.xml"/>
+		<mapper resource="sql/ReviewMapper.xml"/>
+		<mapper resource="sql/ReplyMapper.xml"/>
+		<mapper resource="sql/PartyMapper.xml"/>
+		<mapper resource="sql/TicketMapper.xml"/>
+		<mapper resource="sql/PurchaseMapper.xml"/>
+		<mapper resource="sql/StatisticsMapper.xml"/>
+		<mapper resource="sql/ZzimMapper.xml"/>
+	</mappers>
+
+</configuration>

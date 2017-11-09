@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="ReviewMapper">
+
+<!-- review 관련하여 필요한 review Table 조회 : review(VO)는 user domain 객체와 festival domain 객체를 가진다. -->
+
+	<!-- TTL : 13 in the class , 13 Columns in the DB -->
+	<resultMap id="reviewSelectMap" type="review">
+		<result property="reviewNo" column="review_no" jdbcType="NUMERIC"/>
+		<result property="userId" column="user_id" jdbcType="VARCHAR"/>
+		<result property="festivalNo" column="festival_no" jdbcType="NUMERIC"/>
+		<result property="festivalName" column="festival_name" jdbcType="VARCHAR"/>
+		<result property="addr" column="addr" jdbcType="VARCHAR"/>
+		<result property="checkCode" column="check_code" jdbcType="VARCHAR"/>
+		<result property="reviewTitle" column="review_title" jdbcType="VARCHAR"/>
+		<result property="goodCount" column="good_count" jdbcType="NUMERIC"/>
+		<result property="reviewFestivalRating" column="review_festival_rating" jdbcType="NUMERIC"/>
+		<result property="reviewDetail" column="review_detail" jdbcType="VARCHAR"/>
+		<result property="reviewHashtag" column="review_hashtag" jdbcType="VARCHAR"/>
+		<result property="reviewRegDate" column="review_reg_date" jdbcType="DATE"/>
+		<!-- <result property="deleteFlag" column="delete_flag" jdbcType="VARCHAR"/> -->
+		
+		<!-- TTL : 5 Fields in the class , 5 Columns in the DB -->
+		<collection property="replyList" ofType="reply">
+			<result property="replyNo" column="reply_no" jdbcType="NUMERIC"/>
+			<result property="userId" column="reply_user_id" jdbcType="VARCHAR"/>
+			<result property="reviewNo" column="review_no" jdbcType="NUMERIC"/>
+			<result property="replyDetail" column="reply_detail" jdbcType="VARCHAR"/>
+			<result property="replyRegDate" column="reply_reg_date" jdbcType="DATE"/>
+		</collection>
+		<!-- TTL : 3 Fields in the class , 3 Columns in the DB -->
+		<collection property="reviewImageList" ofType="image">
+			<result property="imageNo" column="image_no" jdbcType="NUMERIC"/>
+			<result property="reviewNo" column="review_no" jdbcType="NUMERIC"/>
+			<result property="reviewImage" column="review_image" jdbcType="VARCHAR"/>
+		</collection>
+		<!-- TTL : 3 Fields in the class , 3 Columns in the DB -->
+		<collection property="reviewVideoList" ofType="video">
+			<result property="videoNo" column="video_no" jdbcType="NUMERIC"/>
+			<result property="reviewNo" column="review_no" jdbcType="NUMERIC"/>
+			<result property="reviewVideo" column="review_video" jdbcType="VARCHAR"/>
+		</collection>
+		
+	</resultMap>
+	
+	<resultMap id="replySelectMap" type="reply">
+		<result property="replyNo" column="reply_no" jdbcType="NUMERIC"/>
+		<result property="userId" column="user_id" jdbcType="VARCHAR"/>
+		<result property="reviewNo" column="review_no" jdbcType="NUMERIC"/>
+		<result property="replyDetail" column="reply_detail" jdbcType="VARCHAR"/>
+		<result property="replyRegDate" column="reply_reg_date" jdbcType="DATE"/>
+	</resultMap>
+	
+	<resultMap id="imageSelectMap" type="image">
+		<result property="imageNo" column="image_no" jdbcType="NUMERIC"/>
+		<result property="reviewNo" column="review_no" jdbcType="NUMERIC"/>
+		<result property="reviewImage" column="review_image" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap id="videoSelectMap" type="video">
+		<result property="videoNo" column="video_no" jdbcType="NUMERIC"/>
+		<result property="reviewNo" column="review_no" jdbcType="NUMERIC"/>
+		<result property="reviewVideo" column="review_video" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap id="goodSelectMap" type="good">
+		<result property="goodNo" column="good_no" jdbcType="NUMERIC"/>
+		<result property="reviewNo" column="review_no" jdbcType="NUMERIC"/>
+		<result property="userId" column="user_id" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<!-- 1 -->
+	<insert id="addReview" parameterType="review" useGeneratedKeys="true" keyProperty="reviewNo" keyColumn="review_no">
+		INSERT 
+			INTO review (
+						review_no, 
+						user_id, 
+						festival_no, 
+						festival_name, 
+						addr, 
+						check_code, 
+						review_title, 
+						good_count, 
+						review_festival_rating, 
+						review_detail, 
+						review_hashtag, 
+						review_reg_date, 
+						delete_flag
+						)
+			VALUES 	(
+					seq_review_review_no.nextval, 
+					#{userId:VARCHAR}, 
+					#{festivalNo:VARCHAR}, 
+					#{festivalName:VARCHAR}, 
+					#{addr:VARCHAR}, 
+					'1', 
+					#{reviewTitle:VARCHAR}, 
+					0, 
+					#{reviewFestivalRating:NUMERIC}, 
+					#{reviewDetail:VARCHAR}, 
+					#{reviewHashtag:VARCHAR}, 
+					SYSDATE, 
+					'1'
+					)
+	</insert>
+	
+	
+	<!-- 
+	checkCode
+	* "1" : 심사대기중
+	* "2" : 1->2 통과
+	* "4" : 1->4 반려
+	* "11" : 업데이트후심사중
+	* "22" : 11->22 통과
+	* "44" : 11->44반려
+	 -->
+	 <!-- 2 -->
+	<update id="updateReview" parameterType="review">
+		UPDATE 
+			review (
+					check_code, 
+					review_title, 
+					good_count, 
+					review_festival_rating, 
+					review_detail, 
+					review_hashtag, 
+					review_reg_date, 
+					delete_flag
+					)
+			VALUES 	(
+				<if test="checkCode==1">
+					'1', 
+				</if>
+				<if test="checkCode == 1 || checkCode==2 || checkCode==4 || checkCode==22 || checkCode==44">
+					'11', 
+				</if>
+					#{reviewTitle:VARCHAR}, 
+					0, 
+					#{reviewFestivalRating:NUMERIC}, 
+					#{reviewDetail:VARCHAR}, 
+					#{reviewHashtag:VARCHAR}, 
+					SYSDATE, 
+					'1'
+					)
+	</update>
+	 
+	<!-- 3 -->
+	<insert id="uploadReviewImage" parameterType="map" useGeneratedKeys="true" keyProperty="imageNo" keyColumn="image_no">
+		INSERT 
+			INTO image 	(
+						image_no, 
+						review_no, 
+						review_image
+						)
+		VALUES( seq_image_image_no.nextval, #{reviewNo}, #{reviewImage.reviewImage:VARCHAR})
+	</insert>
+	
+	<!-- 4 -->
+	<insert id="uploadReviewVideo" parameterType="map" useGeneratedKeys="true" keyProperty="videoNo" keyColumn="video_no">
+		INSERT 
+			INTO video 	(
+						video_no, 
+						review_no, 
+						review_video
+						)
+		VALUES( seq_video_video_no.nextval, #{reviewNo}, #{reviewVideo.reviewVideo:VARCHAR})
+	</insert>
+	
+	<!-- 
+	checkCode
+	* "1" : 심사대기중
+	* "2" : 1->2 통과
+	* "4" : 1->4 반려
+	* "11" : 업데이트후심사중
+	* "22" : 11->22 통과
+	* "44" : 11->44반려
+	 -->
+	 <!-- 5 -->
+	<update id="passCheckCode" parameterType="string">
+		UPDATE review SET
+			<if test="checkCode==1">
+				check_code = '2'			
+			</if>
+			<if test="checkCode==11">
+				check_code = '22'
+			</if>
+		WHERE review_no=#{reviewNo}
+	</update>
+
+	<!-- 6 -->
+	<update id="failCheckCode" parameterType="string">
+		UPDATE review SET
+			<if test = "checkCode==1">
+				check_code = '4'			
+			</if>
+			<if test = "checkCode==11">
+				check_code = '44'
+			</if>
+		WHERE review_no=#{reviewNo}
+	</update>
+	
+	<!-- 7 -->
+	<!-- 추가부분 reply쪽 paging처리 때문에 따로 빼서 받음 -->
+	<select id="getReview" parameterType="int" resultMap="reviewSelectMap">
+		SELECT
+			rv.review_no, 
+			rv.user_id, 
+			rv.festival_no,
+			rv.festival_name, 
+			rv.addr, 
+			rv.check_code, 
+			rv.review_title, 
+			rv.review_festival_rating, 
+			rv.review_detail, 
+			rv.review_hashtag, 
+			rv.review_reg_date, 
+			<!-- rp.reply_no, 
+			rp.user_id AS reply_user_id, 
+			rp.reply_detail, 
+			rp.reply_reg_date,  -->
+			i.review_image, 
+			v.review_video, 
+			g.good_count AS good_count
+		FROM review rv, festival f, 
+			(SELECT image_no, review_no, review_image FROM image WHERE review_no=#{reviewNo} ORDER BY review_no DESC) i, 
+			(SELECT video_no, review_no, review_video FROM video WHERE review_no=#{reviewNo} ORDER BY video_no DESC) v, 
+			(SELECT COUNT(good_no) good_count FROM good WHERE review_no=#{reviewNo}) g 
+			<!-- (SELECT reply_no, review_no, user_id, reply_detail, reply_reg_date FROM reply WHERE review_no=#{reviewNo} ORDER BY reply_no DESC) rp  -->
+		WHERE <!-- rv.review_no=rp.review_no(+)  -->
+		rv.review_no = i.review_no(+) 
+		AND rv.review_no = v.review_no(+) 
+		AND rv.festival_no = f.festival_no
+		AND rv.review_no = #{reviewNo}
+	</select>
+	
+	<!-- 8 -->
+	<select id="getReviewImage" parameterType="int" resultMap="imageSelectMap">
+		SELECT
+			image_no, 
+			review_no, 
+			review_image
+		FROM image 
+		WHERE review_no=#{reviewNo}
+	</select>
+	
+	<!-- 9 -->
+	<select id="getReviewVideo" parameterType="int" resultMap="videoSelectMap">
+		SELECT
+			video_no, 
+			review_no, 
+			review_video
+		FROM image 
+		WHERE review_no=#{reviewNo}
+	</select>
+	
+	
+	<!-- deleteReview -->
+	<!-- 
+	deleteFlag
+	* "2" : default = 보통
+	* "4" : 삭제됨 (checkCode와 헷갈리지 말라고...4(반려)로...)
+	 -->
+	 <!-- 10 -->
+	<update id="deleteReview" parameterType="int">
+		UPDATE review SET
+			delete_flag = '4'
+		WHERE review_no = #{reviewNo}
+	</update>
+	
+	<!-- 11 -->
+	<insert id="addGood" parameterType="good">
+		INSERT 
+			INTO good 	(
+						good_no, 
+						review_no, 
+						user_id
+						) 
+			VALUES 	(
+					seq_good_good_no.nextval, 
+					#{reviewNo}, 
+					#{userId}
+					)
+	</insert>
+	
+	<!-- 12 -->
+	<select id="checkGood" parameterType="good" resultMap="goodSelectMap">
+		SELECT *
+			FROM good 
+			WHERE review_no = #{reviewNo}
+			AND user_id = #{userId}
+	</select>
+	
+	<!-- 13 -->
+	<delete id="deleteGood" parameterType="good">
+		DELETE 
+			from good
+		WHERE review_no = #{reviewNo} 
+		AND user_id = #{userId}
+	</delete>
+	
+	<!-- 14 -->
+	<select id="getGoodCount" parameterType="int" resultType="int">
+		SELECT COUNT(*) 
+			FROM good
+			WHERE review_no = #{reviewNo}
+	</select>
+	
+	<!-- 15 -->
+	<select id="getReviewList" parameterType="search" resultMap="reviewSelectMap">
+		SELECT *
+			FROM (	SELECT inner_table.* , ROWNUM AS row_seq
+				FROM ( SELECT  rv.review_no, 
+								rv.festival_name, 
+								rv.review_title, 
+								rv.addr, 
+								rv.review_hashtag, 
+								i.review_image
+						FROM review rv, ( SELECT * FROM ( SELECT image.*, row_number() OVER (PARTITION BY review_no ORDER BY image_no ) rnum
+							             FROM image
+							             WHERE 1=1 ) 
+						WHERE rnum = 1) i 
+								<where>
+									rv.review_no = i.review_no 
+									AND (rv.check_code = '2' OR rv.check_code = '22') 
+									<if test="searchCondition != null ">
+										<!-- 축제이름 검색 -->
+								        <if test="searchCondition == 0 and searchKeyword !='' ">
+								            AND LOWER(rv.festival_name) LIKE LOWER('%${searchKeyword}%')
+								        </if>
+								        <!-- 축제장소 검색 -->
+								        <if test="searchCondition == 1 and searchKeyword !='' ">
+								            AND LOWER(rv.addr) LIKE LOWER('%${searchKeyword}%')
+								        </if>
+								        <!-- 해시태그 검색 -->
+								        <if test="searchCondition == 2 and searchKeyword !='' ">
+								        	AND LOWER(rv.review_hashtag) LIKE LOWER('%${searchKeyword}%') 
+								        </if>
+									</if>
+								</where>
+								ORDER BY rv.review_reg_date DESC ) inner_table
+						WHERE ROWNUM &lt;= #{endRowNum} )
+		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 	
+	</select>
+	
+	<!-- 16 -->
+	<select id="getMyReviewList" parameterType="map" resultMap="reviewSelectMap">
+		SELECT *
+			FROM (	SELECT inner_table.* , ROWNUM AS row_seq
+				FROM ( SELECT  rv.review_no, 
+								rv.festival_name, 
+								rv.review_title, 
+								rv.addr, 
+								rv.review_hashtag, 
+								rv.check_code, 
+								i.review_image
+						FROM review rv, ( SELECT * FROM ( SELECT image.*, row_number() OVER (PARTITION BY review_no ORDER BY image_no ) rnum
+							             FROM image
+							             WHERE 1=1 ) 
+						WHERE rnum = 1) i 
+								<where>
+									rv.review_no = i.review_no 
+									AND rv.user_id = #{userId} 
+									<if test="search.searchCondition != null ">
+										<!-- 축제이름 검색 -->
+								        <if test="search.searchCondition == 0 and search.searchKeyword !='' ">
+								            AND LOWER(rv.festival_name) LIKE LOWER('%${search.searchKeyword}%')
+								        </if>
+								        <!-- 축제장소 검색 -->
+								        <if test="search.searchCondition == 1 and search.searchKeyword !='' ">
+								            AND LOWER(rv.addr) LIKE LOWER('%${search.searchKeyword}%')
+								        </if>
+								        <!-- 해시태그 검색 -->
+								        <if test="search.searchCondition == 2 and search.searchKeyword !='' ">
+								        	AND LOWER(rv.review_hashtag) LIKE LOWER('%${search.searchKeyword}%') 
+								        </if>
+									</if>
+								</where>
+								ORDER BY rv.review_reg_date DESC ) inner_table
+						WHERE ROWNUM &lt;= #{search.endRowNum} )
+		WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum} 	
+	</select>
+	
+	<!-- 17 -->
+	<select id="getCheckReviewList" parameterType="search" resultMap="reviewSelectMap">
+		SELECT *
+			FROM (	SELECT inner_table.* , ROWNUM AS row_seq
+				FROM ( SELECT  rv.review_no, 
+								rv.festival_name, 
+								rv.review_title, 
+								rv.addr, 
+								rv.review_hashtag, 
+								rv.check_code, 
+								i.review_image
+						FROM review rv, ( SELECT * FROM ( SELECT image.*, row_number() OVER (PARTITION BY review_no ORDER BY image_no ) rnum
+							             FROM image
+							             WHERE 1=1 ) 
+						WHERE rnum = 1) i 
+								<where>
+									rv.review_no = i.review_no 
+									AND (rv.check_code = '1' OR rv.check_code = '11') 
+									<if test="searchCondition != null ">
+										<!-- 축제이름 검색 -->
+								        <if test="searchCondition == 0 and searchKeyword !='' ">
+								            AND LOWER(rv.festival_name) LIKE LOWER('%${searchKeyword}%')
+								        </if>
+								        <!-- 축제장소 검색 -->
+								        <if test="searchCondition == 1 and searchKeyword !='' ">
+								            AND LOWER(rv.addr) LIKE LOWER('%${searchKeyword}%')
+								        </if>
+								        <!-- 해시태그 검색 -->
+								        <if test="searchCondition == 2 and searchKeyword !='' ">
+								        	AND LOWER(rv.review_hashtag) LIKE LOWER('%${searchKeyword}%') 
+								        </if>
+									</if>
+								</where>
+								ORDER BY rv.review_reg_date DESC ) inner_table
+						WHERE ROWNUM &lt;= #{endRowNum} )
+		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 	
+	</select>
+	
+	<!-- 18 -->
+	<select id="getTotalCount" parameterType="search" resultType="int">
+		SELECT COUNT(*)
+		FROM(	SELECT 	*
+	  			FROM review rv, image i  
+	  			<where>
+				rv.review_no = i.review_no 
+				AND (rv.check_code = '2' OR rv.check_code = '22') 
+					<if test="searchCondition != null ">
+				        <if test="searchCondition == 0 and searchKeyword !='' ">
+				            AND rv.festival_name LIKE '%${searchKeyword}%'
+				        </if>
+				        <if test="searchCondition == 1 and searchKeyword !='' ">
+				            AND rv.addr LIKE '%${searchKeyword}%'
+				        </if>
+				        <if test="searchCondition == 2 and searchKeyword !='' ">
+				        	AND rv.review_hashtag LIKE '%{searchKeyword}%' 
+				        </if>
+					</if>
+	  			</where>
+				GROUP BY (rv.review_no) 
+			) countTable						
+	 </select>
+	 
+	 <!-- 19 -->
+	<select id="getMyReviewTotalCount" parameterType="map" resultType="int">
+		SELECT COUNT(*)
+		FROM(	SELECT 	*
+	  			FROM review rv, image i  
+	  			<where>
+				rv.review_no = i.review_no 
+				AND rv.user_id = #{userId} 
+					<if test="search.searchCondition != null ">
+				        <if test="search.searchCondition == 0 and search.searchKeyword !='' ">
+				            AND rv.festival_name LIKE '%${search.searchKeyword}%'
+				        </if>
+				        <if test="search.searchCondition == 1 and search.searchKeyword !='' ">
+				            AND rv.addr LIKE '%${search.searchKeyword}%'
+				        </if>
+				        <if test="search.searchCondition == 2 and search.searchKeyword !='' ">
+				        	AND rv.review_hashtag LIKE '%{search.searchKeyword}%' 
+				        </if>
+					</if>
+	  			</where>
+				GROUP BY (rv.review_no) 
+			) countTable	
+	 </select>
+	 
+	<!-- 20 -->
+	<select id="getCheckReviewTotalCount" parameterType="search" resultType="int">
+		SELECT COUNT(*)
+	  	FROM(	SELECT 	*
+	  			FROM review rv, image i  
+	  			<where>
+				rv.review_no = i.review_no 
+				AND (rv.check_code = '1' OR rv.check_code = '11') 
+					<if test="searchCondition != null ">
+				        <if test="searchCondition == 0 and searchKeyword !='' ">
+				            AND rv.festival_name LIKE '%${searchKeyword}%'
+				        </if>
+				        <if test="searchCondition == 1 and searchKeyword !='' ">
+				            AND rv.addr LIKE '%${searchKeyword}%'
+				        </if>
+				        <if test="searchCondition == 2 and searchKeyword !='' ">
+				        	AND rv.review_hashtag LIKE '%{searchKeyword}%' 
+				        </if>
+					</if>
+	  			</where>
+				GROUP BY (rv.review_no) 
+			) countTable	
+	 </select>
+	  
+</mapper>

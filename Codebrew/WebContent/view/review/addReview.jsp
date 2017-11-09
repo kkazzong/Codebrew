@@ -20,7 +20,25 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	
-	<!-- 아래 테스트 중 -->
+	<!-- 별점매기기 소스 start -->
+	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../../resources/javascript/kartik-v-bootstrap-star-rating/css/star-rating.min.css" media="all" rel="stylesheet" type="text/css" />
+	<script src="../../resources/javascript/kartik-v-bootstrap-star-rating/js/star-rating.min.js" type="text/javascript"></script>
+	<!-- 이건 위에 있어서 혹시몰라 남겨둠...
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	별점매기기 소스 end -->
+	
+	<!-- jQuery Image Upload하여 등록전 실시간으로 선택하여 업로드 가능 혹은 삭제 -->
+	<!-- 
+	<script src="../../resources/javascript/jquery.ui.widget.js" type="text/javascript"></script>
+	<script src="../../resources/javascript/jquery.iframe-transport.js" type="text/javascript"></script>
+	<script src="../../resources/javascript/jquery.fileupload.js" type="text/javascript"></script>
+	 -->
+	<!-- bootstrap은 위에서 cdn 처리 -->
+	<!-- jQuery Image Upload하여 등록전 실시간으로 선택하여 업로드 가능 혹은 삭제 End-->
+	
+	
+	<!-- 아래 테스트 중 sk editor 사용...안해 -->
 	<!-- <script type = "text/javascript" src="../../resources/javascript/ckeditor/ckeditor.js"></script> -->
 	
 	<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
@@ -67,6 +85,9 @@
         .imgs_wrap img {
         	max-width: 200px;
         }
+        
+
+
 		        
     </style>
     
@@ -144,7 +165,24 @@
 			$('#reviewHashtag').val("");
 		});
 		
+		//축제평점 별점으로 start
+		//initialize with defaults for star rating
+		//$("#input-id").rating();
 		
+		/* 
+		//initialize with plugin options for start rating
+		$("#input-id").rating(
+							{
+								min:1, 
+								max:5, 
+								step:0.5, 
+								data-size:'xs'
+							}
+						);
+		 */
+		 //축제평점 별점으로 end
+
+		 
 	});
 	
 	// 해시태그 등록
@@ -170,6 +208,7 @@
 			}
 		}) */
 	});
+	
 	
 	// 다중 이미지 미리보기 and 삭제(미완...)
 	// 이미지 정보를 담을 배열
@@ -213,7 +252,8 @@
 		});
 	}
 	
-	/* 파일 삭제 javascript : 배열에서는 삭제가 되는데...*/
+	/* 파일 삭제 javascript : 배열에서는 삭제가 되는데...그래서 일단 주석*/
+	/* 
 	function deleteImageAction(index) {
 		console.log("index : "+index);
 		sel_files.splice(index, 1); //테스트 이미지 몇개 들어가는지 계속해서 확인 요망
@@ -223,7 +263,7 @@
 		$(img_id).remove();
 		console.log(sel_files);
 	}
-	
+	 */
 	
 	/* 테스트중 ckeditor */
 	/* 
@@ -338,7 +378,10 @@
 				<div class="form-group">
 					<label for="reviewFestivalRating" class="col-md-3 control-label">축제평점</label>
 					<div class="col-md-6">
+						<!-- 되는거...근데 밋밋해 별점주기로 해보자
 						<input type="number" class="form-control" id="reviewFestivalRating" name="reviewFestivalRating" min="1" max="10"> 
+						-->
+						<input type="number" id="reviewFestivalRating" class="form-control rating" name="reviewFestivalRating" value="5" data-min="0" data-max="5" data-step="1" data-size="xs" data-rtl="true">
 					</div>
 				</div>
 				
@@ -347,11 +390,12 @@
 				<div class="form-group">
 					<label for="reviewImageList" class="col-md-3 control-label">후기사진</label>
 					<div class="col-md-6">
-						<!-- 
+						<!-- 위에 js는 남겨둬서... 현재는 지워도...상관없음
 						<a href="javascript:" onclick="fileUploadAction();" class="my_button">파일업로드</a>
 						-->
 						<button type="button" class="btn btn-primary" onclick="document.getElementById('uploadReviewImageList').click(); ">사진 업로드</button>
 						<input type="file" class="form-control" id="uploadReviewImageList" accept="image/*" name="uploadReviewImageList" style="display:none;" multiple/>
+						
 					</div>
 				</div>
 				

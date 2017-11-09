@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="PurchaseMapper">
+	<resultMap type="purchase" id="selectPurchaseMap">
+		<result property="purchaseNo" column="purchase_no" jdbcType="NUMERIC"/>
+		<result property="tid" column="tid" jdbcType="VARCHAR"/>
+		<result property="paymentNo" column="payment_no" jdbcType="VARCHAR"/>
+		<result property="paymentMethodType" column="payment_method_type" jdbcType="VARCHAR"/>
+		<result property="itemName" column="item_name" jdbcType="VARCHAR"/>
+		<result property="purchaseDate" column="purchase_date" jdbcType="TIMESTAMP" javaType="java.lang.String"/>
+		<result property="purchasePrice" column="purchase_price" jdbcType="NUMERIC"/>
+		<result property="purchaseCount" column="purchase_count" jdbcType="VARCHAR"/>
+		<result property="tranCode" column="tran_code" jdbcType="VARCHAR"/>
+		<result property="purchaseFlag" column="purchase_flag" jdbcType="VARCHAR"/>
+		<association property="user" javaType="com.codebrew.moana.service.domain.User">
+			<id property="userId" column="user_id" jdbcType="VARCHAR"/>
+			<result property="nickname" column="nickname" jdbcType="VARCHAR"/>
+		</association>
+		<association property="ticket" javaType="com.codebrew.moana.service.domain.Ticket">
+			<id property="ticketNo" column="ticket_no" jdbcType="NUMERIC"/>
+			<result property="ticketFlag" column="ticket_flag"/>
+			<result property="festival.festivalNo" column="festival_no" jdbcType="NUMERIC"/>
+			<result property="festival.festivalName" column="festival_name" jdbcType="VARCHAR"/>
+			<result property="festival.addr" column="addr" jdbcType="VARCHAR"/>
+			<result property="festival.startDate" column="start_date" jdbcType="VARCHAR"/>
+			<result property="festival.endDate" column="end_date" jdbcType="VARCHAR"/>
+			<result property="festival.festivalImage" column="festival_image" jdbcType="VARCHAR"/>
+			<result property="party.partyNo" column="party_no" jdbcType="NUMERIC"/>
+			<result property="party.partyName" column="party_name" jdbcType="VARCHAR"/>
+			<result property="party.partyPlace" column="party_place" jdbcType="VARCHAR"/>
+			<result property="party.partyDate" column="party_date" jdbcType="DATE"/>
+			<result property="party.partyImage" column="party_image" jdbcType="VARCHAR"/>
+			<result property="party.partyTime" column="party_time" jdbcType="VARCHAR"/>
+			<result property="ticketPrice" column="ticket_price" jdbcType="NUMERIC"/>
+			<result property="ticketCount" column="ticket_count" jdbcType="NUMERIC"/>
+		</association>
+		<association property="qrCode" javaType="com.codebrew.moana.service.domain.QRCode">
+			<result property="qrCodeImage" column="qr_code_image" jdbcType="VARCHAR"/>
+			<result property="qrCodeResult" column="qr_code_result" jdbcType="VARCHAR"/>
+		</association>
+	</resultMap>
+	
+	<insert id="addPurchase" parameterType="purchase" 
+		useGeneratedKeys="true" keyColumn="purchase_no" keyProperty="purchaseNo">
+		INSERT 
+		INTO purchase
+		(purchase_no,
+		user_id,
+		ticket_no,
+		payment_no,
+		payment_method_type,
+		item_name,
+		purchase_date,
+		purchase_price,
+		purchase_count,
+		tran_code,
+		qr_code_image,
+		purchase_flag)
+		VALUES (seq_purchase_purchase_no.NEXTVAL,
+						#{user.userId:VARCHAR},
+						#{ticket.ticketNo:NUMERIC},
+						<if test="paymentNo != null">
+							#{paymentNo:VARCHAR},
+						</if>
+						<if test="paymentNo == null">
+							seq_purchase_payment_no.NEXTVAL,
+						</if>
+						#{paymentMethodType:VARCHAR},
+						#{itemName:VARCHAR},
+						<if test="purchaseDate != null">
+							TO_TIMESTAMP(#{purchaseDate:TIMESTAMP}, 'yyyy-mm-dd hh24:mi:ss'),
+						</if>
+						<if test="purchaseDate == null">
+							SYSDATE,
+						</if>
+						#{purchasePrice:NUMERIC},
+						#{purchaseCount:NUMERIC},
+						'1',
+						#{qrCode.qrCodeImage:VARCHAR},
+						#{purchaseFlag:VARCHAR})
+	</insert>
+	
+	<update id="updateQrCode" parameterType="purchase">
+		UPDATE purchase
+		SET qr_code_image = #{qrCode.qrCodeImage:VARCHAR}
+		WHERE purchase_no = #{purchaseNo}
+	</update>
+	
+	<select id="getPurchase" parameterType="int" resultMap="selectPurchaseMap">
+		SELECT
+		pc.purchase_no AS purchase_no,
+		u.user_id AS user_id,
+		u.nickname AS nickname,
+		t.ticket_no AS ticket_no,
+		t.ticket_count AS ticket_count,
+		t.ticket_price AS ticket_price,
+		f.festival_no AS festival_no,
+		f.festival_name AS festival_name,
+		f.addr AS addr,
+		f.start_date AS start_date,
+		f.end_date AS end_date,
+		f.festival_image AS festival_image,
+		p.party_no AS party_no,
+		p.party_name AS party_name,
+		p.party_image AS party_image,
+		p.party_time As party_time,
+		p.party_place AS party_place,
+		pc.payment_no AS payment_no,
+		pc.payment_method_type AS payment_method_type,
+		pc.purchase_flag AS purchase_flag,
+		pc.item_name AS item_name,
+		TO_CHAR(pc.purchase_date, 'yyyy-mm-dd hh24:mm:ss') AS purchase_date,
+		pc.purchase_price AS purchase_price,
+		pc.purchase_count AS purchase_count,
+		pc.tran_code AS tran_code,
+		pc.qr_code_image AS qr_code_image
+		FROM users u, festival f, party p, ticket t, purchase pc
+		WHERE
+		pc.ticket_no = t.ticket_no
+		AND pc.user_id = u.user_id
+		AND t.festival_no = f.festival_no(+)
+		AND t.party_no = p.party_no(+)
+		AND pc.delete_flag IS NULL
+		AND pc.purchase_no = #{value}
+	</select>
+	
+	
+	<select id="getFestivalPurchaseList" parameterType="map" resultMap="selectPurchaseMap">
+		SELECT * 
+		FROM (SELECT inner_table.*, ROWNUM AS row_seq
+					FROM (SELECT
+								u.user_id AS user_id, u.nickname AS nickname,
+								t.ticket_no AS ticket_no,
+								t.ticket_count AS ticket_count,
+								t.ticket_price AS ticket_price,
+								f.festival_name AS festival_name,
+								f.addr AS addr,
+								f.start_date AS start_date,
+								f.end_date AS end_date,
+								f.festival_image AS festival_image,
+								pc.purchase_no AS purchase_no,
+								pc.payment_no AS payment_no,
+								pc.purchase_count AS purchase_count,
+								pc.purchase_price AS purchase_price,
+								pc.tran_code AS tran_code,
+								pc.purchase_flag AS purchase_flag,
+								pc.item_name AS item_name
+								FROM users u, festival f, ticket t, purchase pc
+								WHERE
+								pc.user_id = u.user_id
+								AND pc.ticket_no = t.ticket_no
+								AND t.festival_no = f.festival_no
+								AND pc.delete_flag IS NULL
+								AND u.user_id = #{userId} 
+								ORDER BY pc.purchase_no DESC) inner_table
+					WHERE ROWNUM &lt;= #{search.endRowNum})
+		WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum}
+	</select>
+	
+	<select id="getPartyPurchaseList" parameterType="map" resultMap="selectPurchaseMap">
+		SELECT * 
+		FROM (SELECT inner_table.*, ROWNUM AS row_seq
+					FROM (SELECT
+								u.user_id AS user_id,
+								u.nickname AS nickname,
+								t.ticket_no AS ticket_no,
+								t.ticket_count AS ticket_count,
+								t.ticket_price AS ticket_price,
+								p.party_name AS party_name,
+								p.party_date AS party_date,
+								p.party_time As party_time,
+								p.party_place AS party_place,
+								p.party_image AS party_image,
+								pc.purchase_no AS purchase_no,
+								pc.payment_no AS payment_no,
+								pc.purchase_count AS purchase_count,
+								pc.purchase_price AS purchase_price,
+								pc.tran_code AS tran_code,
+								pc.purchase_flag AS purchase_flag,
+								pc.item_name AS item_name
+								FROM users u, party p, ticket t, purchase pc
+								WHERE
+								pc.user_id = u.user_id
+								AND pc.ticket_no = t.ticket_no
+								AND t.party_no = p.party_no
+								AND pc.delete_flag IS NULL
+								AND u.user_id = #{userId}
+								ORDER BY pc.purchase_no DESC) inner_table
+					WHERE ROWNUM &lt;= #{search.endRowNum})
+		WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum}
+	</select>
+	
+	<select id="getPurchaseList" parameterType="map" resultMap="selectPurchaseMap">
+		SELECT * 
+		FROM (SELECT inner_table.*, ROWNUM AS row_seq
+      				FROM (SELECT
+								u.user_id AS user_id,
+								t.ticket_no AS ticket_no,
+								f.festival_name AS festival_name,
+								f.addr AS addr,
+								f.start_date AS start_date,
+								f.end_date AS end_date,
+								f.festival_image AS festival_image,
+								p.party_name AS party_name,
+								p.party_date AS party_date,
+								p.party_time As party_time,
+								p.party_place AS party_place,
+								p.party_image AS party_image,
+								pc.purchase_no AS purchase_no,
+								pc.payment_no AS payment_no,
+								pc.purchase_flag AS purchase_flag,
+								pc.item_name AS item_name,
+								TO_CHAR(pc.purchase_date, 'yyyy-mm-dd hh24:mi:ss') AS purchase_date,
+								pc.purchase_count AS purchase_count,
+								pc.purchase_price AS purchase_price,
+								pc.tran_code AS tran_code
+								FROM users u, festival f, party p, ticket t, purchase pc
+								WHERE pc.user_id = u.user_id
+								AND pc.ticket_no = t.ticket_no
+								AND t.festival_no = f.festival_no(+)
+								AND t.party_no = p.party_no(+)
+								AND pc.delete_flag IS NULL
+								AND u.user_id = #{userId}
+								<if test="search.searchCondition != null">
+									<choose>
+										<!-- 축제티켓검색 -->
+									  	<when test="search.searchCondition == 1">
+											AND pc.purchase_flag = 1
+										</when>
+										<!-- 파티티켓 -->
+										<when test="search.searchCondition == 2">
+											AND pc.purchase_flag = 2
+										</when>
+										<!-- 티켓명검색 -->
+										<when test="search.searchCondition == 5">
+											AND LOWER(pc.item_name) LIKE LOWER('%${search.searchKeyword}%')
+										</when>
+										<!-- 날짜별 검색 -->
+										<when test="search.searchCondition == 6">
+											<if test="search.endDate == null">
+												AND TO_CHAR(pc.purchase_date, 'yyyy-mm-dd') = #{search.startDate}
+											</if>
+											<if test="search.endDate != null">
+												AND TO_CHAR(pc.purchase_date, 'yyyy-mm-dd') BETWEEN #{search.startDate} AND #{search.endDate}
+											</if>
+										</when>
+									</choose>
+								</if>
+								<if test="arrange != null">
+									<choose>
+										<!-- 판매금액 ASC 오름차순 -->
+										<when test="arrange == 1">
+											ORDER BY pc.purchase_price
+										</when>
+										<!-- 판매금액 DESC 내림차순 -->
+										<when test="arrange == 2">
+											ORDER BY pc.purchase_price DESC
+										</when>
+										<!-- 판매수량 ASC 오름차순 -->
+										<when test="arrange == 3">
+											ORDER BY pc.purchase_count
+										</when>
+										<!-- 판매수량 DESC 내림차순 -->
+										<when test="arrange == 4">
+											ORDER BY pc.purchase_count DESC
+										</when>
+										<!-- 아이디 ASC 오름차순 -->
+										<when test="arrange == 5">
+											ORDER BY u.user_id
+										</when>
+										<!-- 아이디 DESC 내림차순 -->
+										<when test="arrange == 6">
+											ORDER BY u.user_id DESC
+										</when>
+									</choose>
+								</if>
+								<if test="arrange == null">
+									ORDER BY pc.purchase_no DESC
+								</if>) inner_table
+     				 WHERE ROWNUM &lt;= #{search.endRowNum})
+		WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum}
+	</select>
+	
+	<select id="getSaleList" parameterType="search" resultMap="selectPurchaseMap">
+		SELECT * 
+		FROM (SELECT inner_table.*, ROWNUM AS row_seq
+      				FROM (SELECT
+								u.user_id AS user_id,
+								t.ticket_no AS ticket_no,
+								t.ticket_flag AS ticket_flag,
+								pc.purchase_no AS purchase_no,
+								pc.item_name AS item_name,
+								TO_CHAR(pc.purchase_date, 'yyyy-mm-dd hh24:mi:ss') AS purchase_date,
+								pc.purchase_count AS purchase_count,
+								pc.purchase_price AS purchase_price,
+								pc.purchase_flag AS purchase_flag,
+								pc.tran_code AS tran_code
+								FROM users u, festival f, party p, ticket t, purchase pc
+								WHERE pc.user_id = u.user_id
+								AND pc.ticket_no = t.ticket_no
+								AND t.festival_no = f.festival_no(+)
+								AND t.party_no = p.party_no(+)
+								<if test="searchCondition != null">
+									<choose>
+										<!-- 구매번호검색 -->
+										<when test="searchCondition == 3">
+											AND pc.purchase_no = #{searchKeyword}
+										</when>
+										<!-- 회원아이디검색 -->
+										<when test="searchCondition == 4">
+											AND u.user_id LIKE '%${searchKeyword}%'
+										</when>
+										<!-- 티켓명검색 -->
+										<when test="searchCondition == 5">
+											AND LOWER(pc.item_name) LIKE LOWER('%${searchKeyword}%')
+										</when>
+									</choose>
+								</if>
+								<if test="arrange != null">
+									<choose>
+										<!-- 판매금액 ASC 오름차순 -->
+										<when test="arrange == 1">
+											ORDER BY pc.purchase_price
+										</when>
+										<!-- 판매금액 DESC 내림차순 -->
+										<when test="arrange == 2">
+											ORDER BY pc.purchase_price DESC
+										</when>
+										<!-- 판매수량 ASC 오름차순 -->
+										<when test="arrange == 3">
+											ORDER BY pc.purchase_count
+										</when>
+										<!-- 판매수량 DESC 내림차순 -->
+										<when test="arrange == 4">
+											ORDER BY pc.purchase_count DESC
+										</when>
+										<!-- 아이디 ASC 오름차순 -->
+										<when test="arrange == 5">
+											ORDER BY u.user_id
+										</when>
+										<!-- 아이디 DESC 내림차순 -->
+										<when test="arrange == 6">
+											ORDER BY u.user_id DESC
+										</when>
+									</choose>
+								</if>
+								<if test="arrange == null">
+									ORDER BY pc.purchase_no DESC
+								</if>) inner_table
+     				 WHERE ROWNUM &lt;= #{endRowNum})
+		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}
+	</select>
+	
+	<update id="updatePurchaseTranCode" parameterType="purchase">
+		UPDATE purchase
+		SET tran_code = #{tranCode}
+		WHERE purchase_no = #{purchaseNo}
+	</update>
+	
+	<update id="updatePurchaseDeleteFlag" parameterType="int">
+		UPDATE purchase
+		SET delete_flag = '1'
+		WHERE purchase_no = #{value}
+	</update>
+	
+	<select id="getTotalCount" parameterType="map" resultType="int">
+		SELECT COUNT(*)
+		FROM (
+		  SELECT purchase_no
+		  FROM purchase
+		  <where>
+			  <if test="userId != null">
+			  	 user_id = #{userId}
+				 AND delete_flag IS NULL
+			  </if>
+			  <if test="search.searchCondition != null">
+			  	<choose>
+				  	<!-- 축제티켓검색 -->
+				  	<when test="search.searchCondition == 1">
+						AND purchase_flag = 1
+					</when>
+					<!-- 파티티켓 -->
+					<when test="search.searchCondition == 2">
+						AND purchase_flag = 2
+					</when>
+					<!-- 구매번호검색 -->
+					<when test="search.searchCondition == 3">
+						AND purchase_no = #{search.searchKeyword}
+					</when>
+					<!-- 회원아이디검색 -->
+					<when test="search.searchCondition == 4">
+						AND user_id LIKE '%${search.searchKeyword}%'
+					</when>
+					<!-- 티켓명 검색 -->
+					<when test="search.searchCondition == 5">
+						AND item_name LIKE '%${search.searchKeyword}%'
+					</when>
+					<!-- 날짜별 검색 -->
+					<when test="search.searchCondition == 6">
+						<if test="search.endDate == null">
+							AND TO_CHAR(purchase_date, 'yyyy-mm-dd') = #{search.startDate}
+						</if>
+						<if test="search.endDate != null">
+							AND TO_CHAR(purchase_date, 'yyyy-mm-dd') BETWEEN #{search.startDate} AND #{search.endDate}
+						</if>
+					</when>
+				</choose>
+			  </if>
+			</where>
+		) countTable
+	</select>
+	
+	<select id="getPurchaseNo" parameterType="map" resultMap="selectPurchaseMap">
+		SELECT pc.purchase_no AS purchase_no
+		FROM ticket t, purchase pc
+		WHERE t.ticket_no = pc.ticket_no
+		AND pc.user_id = #{userId}
+		AND t.party_no = #{partyNo}
+	</select>
+	
+	
+</mapper>
