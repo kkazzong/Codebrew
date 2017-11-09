@@ -17,10 +17,10 @@
 <div id="custom-menu" class="navbar navbar-default navbar-fixed-top">
 	
 	<div class="container">
-	       
+		
 		<a class="navbar-brand" href="/index.jsp">
 			<!-- <img src="/resources/image/toolbarImage/pumpkin.png" alt="MOANA"> -->
-			<img src="/resources/image/toolbarImage/logo4.png" alt="MOANA">
+			<img src="/resources/image/toolbarImage/santa-claus-64.png" alt="MOANA" height="64">
 		</a>
 		
 		<!-- toolBar Button Start //////////////////////// -->
@@ -159,10 +159,10 @@
 			           </li>
 
 		             	<li><a href="#">${sessionScope.user.nickname}님</a></li>
-		             	<li><a href="#">로그아웃</a></li>
+		             	<li><a href="#">LogOut</a></li>
 	             	</c:if>
 	             	<c:if test="${empty user}">
-		                <li><a href="#">로그인</a></li>
+		                <li><a href="#">LogIn</a></li>
 	             	</c:if>
 	            </ul>
 		</div>
@@ -214,10 +214,10 @@
    		
    		//////로그인, 로그아웃//////
 		$(function(){
-		 	$("a:contains('로그인')").on("click" , function() {
+		 	$("a:contains('LogIn')").on("click" , function() {
 				self.location = "/user/login";
 			}); 
-		 	$("a:contains('로그아웃')").on("click" , function() {
+		 	$("a:contains('LogOut')").on("click" , function() {
 				self.location = "/user/logout";
 			}); 
 		 	
@@ -373,9 +373,44 @@
 	</script>  
 
 	<style>
+		/* 
 		.navbar-brand > img {
 				width : 45%;
-				heigth : 45%;
+				height : 45%;
 				padding-bottom: 3px;
 		}
+		*/
+		
+		* {
+			box-sizing: content-box;
+		}
+		 
+		.navbar-default {
+		    background-image: linear-gradient(to bottom,black 0,black 100%);
+		    box-shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 1px 5px rgba(0,0,0,.075);
+		}
+		
+		.dropdown-menu {
+			background-color: black;
+			color: white;
+		}
+		 
+		.dropdown-menu {
+			background-color: black;
+			color: white;
+		}
+		 
+		.dropdown-menu li a {
+			color: #eee;
+		}
+		
+		.navbar-nav>li>a {
+			line-height: 50px;
+		}
+		
+		.navbar-toggle {
+			margin-top: 20px;
+		}
+		
 	</style>
+	

@@ -16,6 +16,14 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	
+	<!-- 별점매기기 소스 start -->
+	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../../resources/javascript/kartik-v-bootstrap-star-rating/css/star-rating.min.css" media="all" rel="stylesheet" type="text/css" />
+	<script src="../../resources/javascript/kartik-v-bootstrap-star-rating/js/star-rating.min.js" type="text/javascript"></script>
+	<!-- 이건 위에 있어서 혹시몰라 남겨둠...
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	별점매기기 소스 end -->
 	 
 	<!--  ///////////////////////// CSS ////////////////////////// -->
 	<style>
@@ -51,6 +59,8 @@
         .btn-reply {
         	height: 25px;
         }
+        
+        
 	</style>
 	
 	<!-- Bootstrap Dropdown Hover CSS -->
@@ -62,6 +72,9 @@
 	
 	<!-- Load the Google API -->
     <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDvESicBSzYYtr3_xNOvik6YvE4v6UxPOQ"></script>
+    
+    <!-- sweet alert -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.2/sweetalert2.all.min.js"></script>
     
     <!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script>
@@ -78,7 +91,6 @@
 		
 		//Form 유효성 검증
 		var replyDetail = $("input[name='replyDetailLogIn']").val();
-		
 		$("form[name='detailForm']").attr("method", "POST").attr("action", "/reply/addReply").submit();
 	}
 	
@@ -90,8 +102,8 @@
 	
 	$(function(){
 		
-		//$('.btn-reply').css("margin-left", '10px'); //참조용
-		//
+		$('.clear-rating').css("display", 'none'); //참조용 : 이거 css 어거지로 집어 넣은거임...따라하지 마셈 : this css will be applied primarily 
+		
 
 		//==> 검색 Event 연결처리부분
 		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2. $(#id) : 3.$(.className)
@@ -102,11 +114,16 @@
 		
 		$("#addReply").on("click", function(){
 			
-			alert("댓글등록 클릭");
-			alert($('#replyDetail').val());
+			//alert("댓글등록 클릭");
+			//alert($('#replyDetail').val());
 			
 			if($('#replyDetail').val() == null || $('#replyDetail').val() == ''){
-				alert('댓글 내용을 입력한 후에 댓글을 등록할 수 있습니다');
+				//alert('댓글 내용을 입력한 후에 댓글을 등록할 수 있습니다');
+				swal({
+					title: "오류", 
+					text : "댓글 내용을 입력한 후에 댓글을 등록할 수 있습니다", 
+					icon : "error", 
+				});
 			} else {
 				fncAddReply();
 			}
@@ -182,7 +199,7 @@
 		*/
 		
 		$(".btn-warning:contains('삭제')").on("click", function(){
-			alert("댓글삭제버튼클릭 :: replyNo :: "+$(this).val());
+			//alert("댓글삭제버튼클릭 :: replyNo :: "+$(this).val());
 			self.location="/reply/deleteReply?replyNo="+$(this).val();
 		});
 		
@@ -396,6 +413,56 @@
 		/* var reviewNo = document.getElementById('reviewNo').getAttribute('value');
 		console.log(reviewNo); */
 		
+		$("#floatMarkerToCenter").on("click", function(){
+			
+			//alert("축제위치로 클릭");
+			
+			//맵 1단 : 맵을 초기화해주기 위한 함수 : test 중
+			var map_x = null;
+			var map_y = null;
+				
+			var mapOptions = {
+								zoom:16,
+								mapTypeId:google.maps.MapTypeId.ROADMAP
+							};
+			
+			//alert("여기까지");
+
+			//id가 'googleMap'인 <div> 태그 안에 새로운 맵을 만드는 코드이다. 파라미터인 mapProp를 이용한다.
+			var map = new google.maps.Map(document.getElementById("googleMap"), mapOptions);
+			
+			var address = $('#addrIdForGoogleMap').html(); //tag에서 받아오는 주소
+			var marker = null;
+	        var geocoder = new google.maps.Geocoder(); //google map의 Geocoder 객체 생성
+	        geocoder.geocode( { 'address': address}, function(results, status) {
+	        	if (status == google.maps.GeocoderStatus.OK) {
+	                map.setCenter(results[0].geometry.location);
+	                marker = new google.maps.Marker({
+	                                map: map,
+	                                icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png', // 마커로 사용할 이미지(변수 or URL)
+	                                title: address, // 마커에 마우스 포인트를 갖다댔을 때 뜨는 타이틀
+	                                position: results[0].geometry.location
+	                            });
+	                
+	                map_x = results[0].geometry.location.lng(); //밑에서 쓰기위해서 선언해준 변수에 값을 대입
+	                map_y = results[0].geometry.location.lat(); //밑에서 쓰기위해서 선언해준 변수에 값을 대입
+	                
+					var content = $('#festivalNameIdForGoogleMap').html()+"<br/><br/>"+"좋아요 : "+$('#goodCountForGoogleMap').html()+"<br/><br/>"+"축제평점 : "+$('#reviewFestivalRatingForGoogleMap').html(); // 말풍선 안에 들어갈 내용
+					
+	            	 // 마커를 클릭했을 때의 이벤트. 말풍선 뿅~
+	                var infowindow = new google.maps.InfoWindow({ content: content});
+	                google.maps.event.addListener(marker, "click", function() {infowindow.open(map,marker);});
+	            } else {
+	                alert("Geocode was not successful for the following reason: " + status);
+	            }
+	        	
+	        });
+			//Geocoding end*********************
+
+			google.maps.event.addDomListener(window, 'load', initialize);
+			
+		});
+		
 		//addGood ajax
 		$(function(){
 			
@@ -420,10 +487,15 @@
 		
 		$(function(){
 			
-			$("#searchAgainWithDifferentRadius").on("click", function(){
+			$("#searchAgainWithNewRadius").on("click", function(){
 				
 				var radiusForTransportSearchAgain = $("#radiusForTransportSearchAgain").val();
-				alert("변경된 반경 "+radiusForTransportSearchAgain+"으로 재검색 합니다.");
+				//alert("변경된 반경 "+radiusForTransportSearchAgain+"으로 재검색 합니다.");
+				swal({
+					title: "재검색", 
+					text: "변경된 반경 "+radiusForTransportSearchAgain+"으로 재검색 합니다.", 
+					icon: "info", 
+				});
 				
 				$("#transportListAtStation").html("반경 "+radiusForTransportSearchAgain+"으로 재검색 중입니다.");
 				
@@ -620,6 +692,9 @@
 								<span class="glyphicon glyphicon-map-marker" aria-hidden="true">축제장소:</span>
 								<span id="addrIdForGoogleMap">${review.addr }</span>
 							</small>
+							<small>
+								<button class="btn btn-default btn-xs" id="floatMarkerToCenter">다시 축제위치로</button>
+							</small>
 						</div>
 						<div class="col-md-12" id="googleMap" style="width:100%;height:380px;">
 						</div>
@@ -629,10 +704,10 @@
 								<span id="transportListAtStation">교통정보 불러오는 중...</span>
 								<br>
 								<input type="number" id="radiusForTransportSearchAgain" min="100" max="3000" value="350"/>
-								<button type="button" class="btn btn-default btn-xs" id="searchAgainWithDifferentRadius">
+								<button type="button" class="btn btn-default btn-xs" id="searchAgainWithNewRadius">
 									재검색
 								</button>
-								(min:100 max:3000)
+								(default:350 min:100 max:3000)
 							</small>
 						</div>
 					</div>
@@ -644,16 +719,26 @@
 		<div class="row">
 			<div class="col-md-offset-2 col-md-8">
 				<div class="panel panel-default">
-					<div class="panel-body">
+					<div class="panel-body text-center">
 						<div class="col-md-12">
 							<h3>
 								<strong>축제후기</strong>
 							</h3>
+						</div>
+						<div class="col-md-12 text-center">
 							<small>
-								<span class="glyphicon glyphicon-dashboard" aria-hidden="true">축제평점:</span>
-								<span id="reviewFestivalRatingForGoogleMap">${review.reviewFestivalRating }</span>
+								<span class="glyphicon glyphicon-dashboard" aria-hidden="true">축제평점</span>
+								<%-- 
+								<span id="reviewFestivalRatingForGoogleMap">${review.reviewFestivalRating } / 5
+								
+								</span>
+								--%>
 							</small>
 						</div>
+						<div class="col-md-12 text-middle">
+							<input type="number" id="reviewFestivalRating" class="rating" name="reviewFestivalRating" value="${review.reviewFestivalRating }" data-min="0" data-max="5" data-step="1" data-size="xs" data-rtl="true" readonly>
+						</div>
+						<hr>
 						<div class="col-md-12">
 							<small>
 								<span class="glyphicon glyphicon-heart-empty" aria-hidden="true">좋아요:</span>
@@ -665,7 +750,7 @@
 						</div>
 						<div class="col-md-12">
 							<small>
-								<span class="glyphicon glyphicon-book" aria-hidden="true">후기내용:</span>
+								<span class="glyphicon glyphicon-book" aria-hidden="true">후기내용</span><br>
 								<span id="reviewDetailForJS">${review.reviewDetail }</span>
 							</small>
 						</div>
@@ -677,8 +762,7 @@
 						</div>
 						<div class="col-md-12">
 							<small>
-								<span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span>
-									동영상
+								<span class="glyphicon glyphicon-facetime-video" aria-hidden="true">동영상</span><br>
 							</small>
 							<c:if test="${!empty review.reviewVideoList[0].reviewVideo }">
 								<c:set var="i" value="0"/>
@@ -838,55 +922,56 @@
 							<c:set var="i" value="0"/>
 							<c:forEach var="replyList" items="${review.replyList }">
 								<c:set var="i" value="${i+1 }"/>
-								<div>
-									<div class="input-group">
+									<div class="col-md-12">
 										<span class="glyphicon glyphicon-user" aria-hidden="true">	
 											${replyList.userId }
 										</span>
 									</div> 
-									<div class="input-group col-md-12">
+									<div class="col-md-12">
 										<input type="text" class="form-control col-md-12" id="replyDetail${replyList.replyNo }" aria-label="replyDetail" value="${replyList.replyDetail }" readonly>
 												<input type="hidden" name="reviewNo" value=${review.reviewNo }>
 										<span style="display: none" class="hidden_link">/review/getReview?reviewNo=${review.reviewNo }</span>
 									</div>
 									<div class="input-group col-md-12">
-										<div class="pull-left">
+										<div class="col-md-12">
+											<div class="pull-left">
+												<small>
+													<span class="glyphicon glyphicon-time" aria-hidden="true" id="replyRegDate${replyList.replyNo }">
+														${replyList.replyRegDate }
+													</span>
+												</small>
+											</div>
+											<div class="pull-right">
 											<small>
-												<span class="glyphicon glyphicon-time" aria-hidden="true" id="replyRegDate${replyList.replyNo }">
-													${replyList.replyRegDate }
-												</span>
-											</small>
-										</div>
-										<div class="pull-right">
-										<small>
-										<c:if test="${!empty sessionScope.user}" >
-											<c:if test="${sessionScope.user.role == 'a' || sessionScope.user.userId == replyList.userId }">
-												<div class="input-group-btn col-md-12">
-										   			<button type="button" name="buttonForUpdate" id="updateReply${replyList.replyNo }" class="btn btn-secondary btn-sm btn-info btn-reply" value="${replyList.replyNo }" style="display:inline">
-										   				수정
-										   			</button>
-										   			<button type="button" name="buttonForCompUpdate" id="updateCompReply${replyList.replyNo }" class="btn btn-secondary btn-sm btn-info btn-reply" value="${replyList.replyNo }" style="display:none">
-										   				완료
-										   			</button>
-									   				<button type="button" name="buttonForDelete" id="deleteReply${replyList.replyNo }" class="btn btn-secondary btn-sm btn-warning btn-reply" value="${replyList.replyNo }">
-									   					삭제
-									   				</button>
-												</div>
-									   		</c:if>
-									   	</c:if>
-										<c:if test="${!empty sessionScope.user }">
-											<c:if test="${!(sessionScope.user.role == 'a' || sessionScope.user.userId == replyList.userId) }">
-												<div class="input-group-btn col-md-12">
-													<button type="button" name="replyNoForReport" id="willBeReported" class="btn btn-secondary btn-sm btn-danger btn-reply">
-										   				신고
-										   			</button>
-												</div>
+											<c:if test="${!empty sessionScope.user}" >
+												<c:if test="${sessionScope.user.role == 'a' || sessionScope.user.userId == replyList.userId }">
+													<div class="input-group-btn col-md-12">
+											   			<button type="button" name="buttonForUpdate" id="updateReply${replyList.replyNo }" class="btn btn-secondary btn-sm btn-info btn-reply" value="${replyList.replyNo }" style="display:inline">
+											   				수정
+											   			</button>
+											   			<button type="button" name="buttonForCompUpdate" id="updateCompReply${replyList.replyNo }" class="btn btn-secondary btn-sm btn-info btn-reply" value="${replyList.replyNo }" style="display:none">
+											   				완료
+											   			</button>
+										   				<button type="button" name="buttonForDelete" id="deleteReply${replyList.replyNo }" class="btn btn-secondary btn-sm btn-warning btn-reply" value="${replyList.replyNo }">
+										   					삭제
+										   				</button>
+													</div>
+										   		</c:if>
+										   	</c:if>
+											<c:if test="${!empty sessionScope.user }">
+												<c:if test="${!(sessionScope.user.role == 'a' || sessionScope.user.userId == replyList.userId) }">
+													<div class="input-group-btn col-md-12">
+														<button type="button" name="replyNoForReport" id="willBeReported" class="btn btn-secondary btn-sm btn-danger btn-reply">
+											   				신고
+											   			</button>
+													</div>
+												</c:if>
 											</c:if>
-										</c:if>
-										</small>
+											</small>
+											</div>
 										</div>
 									</div>
-								</div>
+									<br>
 							</c:forEach>
 						</c:if>
 			
