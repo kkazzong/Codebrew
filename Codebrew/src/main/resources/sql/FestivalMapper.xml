@@ -345,16 +345,14 @@
 
 						 FROM festival
 						 
-						 where end_date &gt;= TO_CHAR(SYSDATE, 'yyyymmdd')
+						 <!-- where end_date &gt;= TO_CHAR(SYSDATE, 'yyyymmdd') -->
+						 where end_date &gt;= SYSDATE
 							and delete_flag is null
 						
 								order by read_count desc
 										
 		) inner_table
 		WHERE ROWNUM &lt;= 3 )
-		
-	
-							
 							
 	 </select>
 

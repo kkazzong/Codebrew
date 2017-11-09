@@ -276,7 +276,7 @@ $(function() {
 <title>Moana</title>
 </head>
 
-<%-- <jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	 --%>
+<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
 
 <!-- <body onload="fncGetWebSearch();"> -->
 <!-- <body background="./resources/image/ui/2.gif"> -->
