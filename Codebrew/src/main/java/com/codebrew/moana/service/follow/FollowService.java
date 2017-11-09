@@ -7,6 +7,7 @@ import com.codebrew.moana.service.domain.Follow;
 
 public interface FollowService {
 	
+	
 	public void addFollow(String responseId, String requestId)throws Exception;
 	
 	
@@ -16,9 +17,9 @@ public interface FollowService {
 	public Follow getFollow(String responseId, String requestId)throws Exception;
 	
 	
-	public Map<String, Object> getFollowingList(Search search,String requestId)throws Exception;
+	public Map<String, Object> getFollowingList(Search search, String responseId)throws Exception;
 	
 	
-	public Map<String, Object> getFollowerList(Search search,String responseId)throws Exception;
+	public Map<String, Object> getFollowerList(Search search, String requestId)throws Exception;
 
 }

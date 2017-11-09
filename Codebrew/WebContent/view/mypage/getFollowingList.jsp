@@ -42,31 +42,58 @@
 			console.log("userId는????"+userId);
 		
 			 if( sessionId == userId ) {
-				 $( ".btn.btn-info" ).on("click" , function() {
-					var requestId = $(this).next().val();
-				
-					
-					$.ajax(
-							{
-								url : '/myPageRest/json/deleteFollow/'+requestId,
-								dataType : "json",
-								headers : {
-									 "Accept" : "application/json",
-									 "Content-Type" : "application/json"
-								 },
-								 context : this,
-								 success : function(JSONData, status) {
-									 
-									 location.reload(); 
-								
-								 }
-							}		
-						)
-					}); 
-			 	}
-			});	
-		 
-	
+				 
+				 
+				 $(".btn:contains('Following')" ).each(function(){}).on("click" , function() {	
+						var requestId = $(this).val();
+						alert(requestId);
+						/* else  if( f4f == "Following" ) { *///내팔로워 목록에  맞팔이 되어있으니깐 삭제할수 있다.
+							
+						var flag = $(this).attr('class').trim();
+						
+						alert(flag);
+						
+							$.ajax({
+										type:'POST',
+										url : '/myPageRest/json/deleteFollow',
+										data : {requestId:requestId},
+										dataType : "json",
+										/* headers : {
+											 "Accept" : "application/json",
+											 "Content-Type" : "application/json"
+										 }, */
+									     context : this, 
+										 success : function(JSONData, status) {
+										
+											 //$("#tag").removeClass(".btn.btn-info.btn-sm").addClass(".btn.btn-sm");
+											 
+											 //$(this).removeClass("btn btn-info btn-sm pull-right").addClass("btn btn-sm pull-right");
+											//$('.btn.btn-info').removeClass('.btn.btn-info').addClass('.btn.btn-sm');
+											 
+											 	//$(this).reload();
+											/* location.reload(); */ 
+											// this.val('Follow');
+											//$("#followingButton").val("Follow").css('background-color', 'buttonface').css('color', '#fff');
+											 //location.reload();
+											 
+										  // $('#followingButton').removeClass("btn btn-info btn-sm pull-right").addClass("btn btn-sm pull-right");
+												//location.reload(); 
+										
+												//moveFollowing();
+												
+												
+											alert("context는 뭘까??"+this);//[object HTMLButtonElement]
+											
+										   $(this).removeClass("btn btn-info btn-sm pull-right").addClass("btn btn-sm pull-right").text("Follow");
+										 
+										 
+										 }
+									})
+							})
+					 }
+				});	
+			 
+
 		
 	
 	</script>
@@ -167,7 +194,7 @@
 					<div class="row">
 					<!-- 	<div> -->
 						<c:set var="i" value="0" />
-							<c:forEach var="follow" items="${list2}">
+							<c:forEach var="follow" items="${list1}">
 								<c:set var="i" value="${ i+1 }" />
 								 <div class="col-xs-6 col-md-4">
 									<img class="img-circle" src="/resources/uploadFile/${follow.profileImage}" width="40" height="40"></div>
@@ -176,16 +203,20 @@
 									<div class="col-xs-6 col-md-4">
 									<c:choose>
 										<c:when test="${ empty follow.nickname } ">
-											<input type="button" class="btn btn-sm pull-right" id="follow"
+											<%-- <input type="button" class="btn btn-sm pull-right" id="followButton"
 												value="Follow">
 											<input type="hidden" class="follow"
-												value="${follow.requestId }">
+												value="${follow.requestId }"> --%>
+								<button name="follow" type="button" class="btn btn-sm pull-right" value="${follow.requestId}">Follow</button>	
+												
 										</c:when>
 										<c:otherwise>
-											<input type="button" class="btn btn-info btn-sm pull-right"
-												id="following" value="Following">
+											<%-- <input type="button" class="btn btn-info btn-sm pull-right"
+												id="followingButton" value="Following">
 											<input type="hidden" class="follow"
-												value="${follow.requestId }">
+												value="${follow.requestId }"> --%>
+												
+								<button name="following" type="button" class="btn btn-info btn-sm pull-right" value="${follow.requestId}">Following</button>
 										</c:otherwise>
 									</c:choose>
 								</div>
@@ -207,7 +238,7 @@
 		</form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="window.location.reload()">닫기</button>
       </div>
     </div>
   </div>

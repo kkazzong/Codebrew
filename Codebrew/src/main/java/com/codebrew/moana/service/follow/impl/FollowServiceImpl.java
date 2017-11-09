@@ -80,11 +80,11 @@ public class FollowServiceImpl implements FollowService {
 			
 			followDAO.updateFollow(follow);
 			
-			followDAO.deleteFollow(map);
+			//followDAO.deleteFollow(map);//이건 맞팔만 해제
 			
 		}
 		
-		followDAO.deleteFollow(map);
+		followDAO.deleteFollow(map);//이건 진짜 삭제
 	}
 
 	
@@ -95,11 +95,11 @@ public class FollowServiceImpl implements FollowService {
 	}
 
 	@Override
-	public Map<String, Object> getFollowingList(Search search, String requestId) throws Exception {
+	public Map<String, Object> getFollowingList(Search search, String responseId) throws Exception {
 		// TODO Auto-generated method stub
 		
 		
-		search.setSearchKeyword(requestId);//내 아
+		search.setSearchKeyword(responseId);//내프로필 입장에서 responseId가 requestId임
 		
 		List<Follow> list= followDAO.getFollowingList(search);
 		int totalCount=followDAO.getFollowingTotalCount(search);
@@ -113,10 +113,10 @@ public class FollowServiceImpl implements FollowService {
 	}
 
 	@Override
-	public Map<String, Object> getFollowerList(Search search, String responseId) throws Exception {
+	public Map<String, Object> getFollowerList(Search search, String requestId) throws Exception {
 		// TODO Auto-generated method stub
 		
-		search.setSearchKeyword(responseId);//나를 response 하는 목록
+		search.setSearchKeyword(requestId);//내프로필 입장에서 responseId 는 requestId임
 		
 		List<Follow> list= followDAO.getFollowerList(search);
 		int totalCount=followDAO.getFollowerTotalCount(search);
