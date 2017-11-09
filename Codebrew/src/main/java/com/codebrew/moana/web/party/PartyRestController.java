@@ -88,41 +88,42 @@ public class PartyRestController {
 	
 	
 	
-	/*@RequestMapping( value="json/getPartyMemberList", method=RequestMethod.POST)
-	public Map<String, Object> getPartyMemberList(@PathVariable String partyNo, @ModelAttribute("search") Search search) throws Exception {
+	@RequestMapping( value="json/getMyPartyList", method= RequestMethod.POST)
+	public Map<String,Object> getMyPartyList( @ModelAttribute("search") Search search, HttpSession session) throws Exception{
 		
-		System.out.println("\n>>> /party/json/getPartyMemberList :: POST start <<<");
+		System.out.println("\n>>> /party/getMyPartyList :: POST start <<<");
 
-		//partyNo 파라미터 출력
-		System.out.println(">>> /party/json/getPartyMemberList :: POST :: partyNo 파라미터 \n"+partyNo);
-		//search 파라미터 도메인 출력
-		//System.out.println(">>> /party/json/getPartyMemberList :: POST :: search 도메인 파라미터 \n"+search);
-		
-		
+		//search 도메인 파라미터 출력
+		System.out.println(">>> /party/getMyPartyList :: POST :: search 도메인 파라미터 \n"+search);
+				
 		if(search.getCurrentPage() == 0){
 			search.setCurrentPage(1);
 		}
 		search.setPageSize(pageSize);
+		System.out.println("\n<<< /party/getMyPartyList :: POST :: currentPage\n"+search.getCurrentPage());
 		
-		System.out.println("\n<<< /party/json/getPartyList :: POST :: search 도메인\n"+search);
+		String userId = ((User)session.getAttribute("user")).getUserId();
+		System.out.println("\n<<< /party/getMyPartyList :: POST :: userId\n"+userId);
 		
 		
 		//Business Logic
-		int dbPartyNo = Integer.parseInt(partyNo);
-		Map<String, Object> map = partyService.getPartyMemberList(dbPartyNo, search);
+		Map<String, Object> map = partyService.getMyPartyList(search, userId);
 		
 		Page resultPage = new Page(search.getCurrentPage(),((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
 		
+		map.put("resultPage", resultPage);
+		map.put("search", search);
 		
 		//Model(data) & View(jsp)
 		//ModelAndView modelAndView = new ModelAndView();
 		//modelAndView.addObject("list", map.get("list"));
 		//modelAndView.addObject("resultPage", resultPage);
 		//modelAndView.addObject("search", search);
+		//modelAndView.setViewName("forward:/view/party/getMyPartyList.jsp");
 		
-				
 		return map;
-	}*/
+		
+	}
 	
 	@RequestMapping( value="json/getPartyMemberList/{partyNo}", method=RequestMethod.GET)
 	public Map<String, Object> getPartyMemberList(@PathVariable String partyNo) throws Exception {
