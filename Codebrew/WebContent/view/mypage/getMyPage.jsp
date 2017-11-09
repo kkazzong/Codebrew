@@ -27,34 +27,39 @@
 			 
 				
 				$.ajax({
-						url : "/myPageRest/json/addFollow/"+requestId,
-						method : "GET",
-						data:JSON.stringify({
-							requestId:requestId
-						}),
+					    type:'POST',
+						url : '/myPageRest/json/addFollow',
+						data: {requestId:requestId},
 						dataType : "json",
-						headers : {
-							 "Accept" : "application/json;charset=UTF-8",
+					 /* headers : {
+							 "Accept" : "application/json",
 							 "Content-Type" : "application/json"
-						 },
+						 }, */
 						 /* async:false; */
-						 context : this,
+						 /* context : this, */
 						 success : function(JSONData, status) {
 							/*  $("#follow").val("following").css('background-color', '#3897f0').css('color', '#fff'); */
 							/* location.reload(); */
 							//console.log(this);
 							//console.log(JSON.stringify(JSONData));
 							//$(this).val('following');
-							alert(status);
-							alert(JSON.stringify(JSONData));
+							//alert(status);
+							//alert(JSON.stringify(JSONData));
 							 //location.reload();
 							/* 팔로잉 됐다고 버튼이  바뀜 follow(팔로잉 안한거)--> following(팔로잉된거) */
-							// $("#profileFollow").text("Following");
+							//$("#profileFollow").text("Following").css('background-color', '#3897f0').css('color', '#fff');
 							
-							//location.reload();
-						     window.location.reload(true);
+							$("#profileFollow").removeClass("btn btn-sm").addClass("btn btn-info btn-sm").text("Following");
+							
+							//$(this).val("Following");
+							
+							
+							
+							location.reload();
+						     //window.location.reload(true);
 						     //$('#reload').load("/myPage/getMyPage?requestId=${sessionScope.user.userId}");
 							// window.location.reload(true);
+							//$('#content').html(JSON.stringify(JSONData));
 						 } 
 					})
 			  });
@@ -72,20 +77,29 @@
 			 
 				
 				$.ajax({
-						url : '/myPageRest/json/deleteFollow/'+requestId,
+						/* url : '/myPageRest/json/deleteFollow/'+requestId,
 						method : "GET",
 						dataType : "json",
 						headers : {
 							 "Accept" : "application/json;charset=UTF-8",
 							 "Content-Type" : "application/json"
 						 },
-						 context : this,
+						 context : this, */
+						 type:'POST',
+						 url : '/myPageRest/json/deleteFollow',
+						 data: {requestId:requestId},
+						 dataType : "json",
+						 
 						 success : function(JSONData, status) {
 							/*  $("#follow").val("following").css('background-color', '#3897f0').css('color', '#fff'); */
 							/* location.reload(); */
 							//$(this).val('follow');
+							alert(JSON.stringify(JSONData));
 							
-							 //$("#profileFollowing").text("Follow");
+							//$("#profileFollowing").text("Follow").css('background-color', '#3897f0').css('color', '#fff');
+							$("#profileFollowing").removeClass("btn btn-info btn-sm").addClass("btn btn-sm").text("Follow");
+							 
+							 //$(this).val("Follow");
 							 location.reload();
 						  }
 					})
@@ -99,16 +113,16 @@
 	
 			 
 	
-		 /* 
-			$( "#getFollowingList" ).on("click" , function() {
+		 
+			$( "#profileFollow" ).on("click" , function() {
 				
-				self.location="/myPage/getFollowingList?requestId="+requestId;
-			});   */		
+				self.location="/myPage/addFollow?requestId="+requestId;
+			});   		
 			
-/* 
-			$( "#following" ).on("click" , function() {
+ 
+			$( "#profileFollowing" ).on("click" , function() {
 				
-				self.location="/myPage/getFollowingList?requestId="+requestId;
+				self.location="/myPage/deleteFollow?requestId="+requestId;
 			});  	 */
 		/* 	
 			$( "#getFollowerList" ).on("click" , function() {
@@ -118,9 +132,11 @@
 		 
 			/* $( "#follower" ).on("click" , function() {
 				self.location="/myPage/getFollowerList?requestId="+requestId;
-			});
+			});*/
 			
-		});   */
+	//	});   
+	
+
 	 
 	</script>
 	<style>
@@ -224,14 +240,14 @@
 	 <jsp:include page="/toolbar/toolbar.jsp"/> 
 
 
-	
-
-	<jsp:include page="/view/mypage/getFollowingList.jsp"/>
-	<jsp:include page="/view/mypage/getFollowerList.jsp"/>
 
 
-    <div class="container-fluid">
+
+    <div class="container-fluid" id="content">
     <!--   <div class="row profile"> -->
+    
+  <%--   <jsp:include page="/view/mypage/getFollowingList.jsp"/>
+	<jsp:include page="/view/mypage/getFollowerList.jsp"/> --%>
 		
 		<input type="hidden" id="sessionId" value="${sessionScope.user.userId}">
             <div class="row"> 
@@ -257,7 +273,7 @@
 								</c:when>
 							     <c:otherwise>
 							      <!--나(sessionId) 이사람 requestId면 (팔로잉 목록에 있다면)-->
-								     <button type="button" class="btn btn-sm" id="profileFollowing">Following</button>
+								     <button type="button" class="btn btn-info btn-sm" id="profileFollowing">Following</button>
 							     </c:otherwise>
 						</c:choose>
 					</c:if> 
@@ -322,7 +338,7 @@
 							<input type="hidden" id="userId" name="userId" value="${user.userId}">
 							<a href="#">
 							<i class="fa fa-user-circle" aria-hidden="true" 
-							data-toggle="modal" data-target="#follower" > </i>
+							data-toggle="modal" data-target="#following" > </i>
 							팔로잉</a> ${totalCount1}
 							
 							<jsp:include page="/view/mypage/getFollowingList.jsp"/>
@@ -333,7 +349,7 @@
 							<a href="#">
 							<input type="hidden" id="userId" name="userId" value="${user.userId}">
 							<i class="fa fa-user-circle-o" aria-hidden="true"
-							data-toggle="modal" data-target="#following" ></i>
+							data-toggle="modal" data-target="#follower" ></i>
 							팔로워</a>${totalCount2}
 							
 							<jsp:include page="/view/mypage/getFollowerList.jsp"/>

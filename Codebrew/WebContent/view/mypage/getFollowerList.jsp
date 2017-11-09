@@ -47,57 +47,108 @@
 				
 				 if( sessionId == userId ) { /* 그래서 세리일때만 나옴  */
 					 /*내 화면 모달창에서 add delete 하고 싶을때  */
-				$( ".btn.btn-sm" ).on("click" , function() {//맞팔이 안되어있는 버튼
-					var requestId = $("#follower").val();
-								
-					 f4f = $(this).val();
+				//$("#tag" ).on("click" , function() {//맞팔이 안되어있는 follow를 클릭했을때
+				$(".btn:contains('Follow')" ).each(function(){}).on("click" , function() {
+					var requestId = $(this).val();//each(function(){})반복문마다 요소를 선택해서
+					alert(requestId);			
+					 //f4f = $(this).val();
+					var flag = $(this).attr('class').trim();
 					
+					alert(flag);
 					
-					if( f4f == "Follow" ) {//내 팔로워 목록에 맞팔이 안되있으니깐 추가하는거고
-						
-						$.ajax(
-								{
-									url : '/myPageRest/json/addFollow/'+requestId,
-									method : "GET",
+					//if( f4f == "Follow" ) {//내 팔로워 목록에 맞팔이 안되있으니깐 추가하는거고
+					 // if(${follow.f4f == 1})
+						$.ajax({
+									type:'POST',
+									url : '/myPageRest/json/addFollow',
+									data : {requestId:requestId},
 									dataType : "json",
-									headers : {
+								/* 	headers : {
 										 "Accept" : "application/json",
 										 "Content-Type" : "application/json"
-									 },
-									 context : this,
+									 }, */
+									 context : this, 
 									 success : function(JSONData, status) {
 										
+										 //alert(JSON.stringify(JSONData));
 										/*  location.reload(); */ 
-										this.val('Following');
-										location.reload();
-										  
+									   //$("#followButton").text("Following").css('background-color', '#3897f0').css('color', '#fff');
+										//location.reload();
+										alert("context는 머다??"+this);//[object HTMLButtonElement]
+									  // $(this).removeClass('.btn.btn-sm').addClass('.btn.btn-info'); 
+										
+									  
+									  //$('#followButton').onClick
+										//moveFollow();
+										//$(this).reload();
+										//$("#tag").removeClass(".btn btn-sm").addClass(".btn btn-info btn-sm");
+										
+										$(this).removeClass("btn btn-sm pull-right").addClass("btn btn-info btn-sm pull-right").text("Following");
 									 }
-								}		
-							)
-					} else  if( f4f == "Following" ) {//내팔로워 목록에  맞팔이 되어있으니깐 삭제할수 있다.
-						$.ajax(
-								{
-									url : '/myPageRest/json/deleteFollow/'+requestId,
-									method : "GET",
+								})
+					}); 
+					
+					
+				$(".btn:contains('Following')" ).each(function(){}).on("click" , function() {	
+					var requestId = $(this).val();
+					alert(requestId);
+					/* else  if( f4f == "Following" ) { *///내팔로워 목록에  맞팔이 되어있으니깐 삭제할수 있다.
+						
+					var flag = $(this).attr('class').trim();
+					
+					alert(flag);
+					
+						$.ajax({
+									type:'POST',
+									url : '/myPageRest/json/deleteFollow',
+									data : {requestId:requestId},
 									dataType : "json",
-									headers : {
+									/* headers : {
 										 "Accept" : "application/json",
 										 "Content-Type" : "application/json"
-									 },
-									 context : this,
+									 }, */
+								     context : this, 
 									 success : function(JSONData, status) {
-										
+									
+										 //$("#tag").removeClass(".btn.btn-info.btn-sm").addClass(".btn.btn-sm");
+										 alert("context는 뭘까??"+this);//[object HTMLButtonElement]
+										 //$(this).removeClass("btn btn-info btn-sm pull-right").addClass("btn btn-sm pull-right");
+										//$(this).removeClass('.btn.btn-info').addClass('.btn.btn-sm');
+										 
+										 	//$(this).reload();
 										/* location.reload(); */ 
-										 this.val('Follow');
-										 location.reload();
+										// this.val('Follow');
+										//$("#followingButton").val("Follow").css('background-color', 'buttonface').css('color', '#fff');
+										 //location.reload();
+										 
+									  $(this).removeClass("btn btn-info btn-sm pull-right").addClass("btn btn-sm pull-right").text("Follow");
+											//location.reload(); 
+									
+											//moveFollowing();
 									 }
-								}		
-							)
-						}
-					});
+								})
+						})
 				 }
 			});	
 		 
+	
+	/* function moveFollow(){
+	
+	var follow=$("#followButton").val();	
+		
+	 $("#followingButton").val(follow)	
+	 	
+	};
+	
+	function moveFollowing(){
+		
+	var following=$("#followingButton").val();
+	
+	$("#followButton").val(following)
+		
+	};
+	 */
+	
 	
 	
 	</script>
@@ -200,38 +251,41 @@
 				<div class="profile-content">
 					<div class="row">
 						<div> --%>
-			  <!-- <div class="profile-content">  -->
+			  <!-- <div class="profile-content"> -->
 				    <div class='row'>
 				   
 						<c:set var="i" value="0" />
-							<c:forEach var="follow" items="${list1}">
+							<c:forEach var="follow" items="${list2}">
 							
 							
 								<c:set var="i" value="${ i+1 }" />
-							    
-								<!--  <div class="profile-pic"
-									style="width: 10px; float: left; height: 15px;">  -->
-									
-									<!-- style="float:margin-left; margin:20px width=500px;"> -->
+				
 									
 									<div class="col-xs-6 col-md-4" ><img class="img-circle" src="/resources/uploadFile/${follow.profileImage}" width="40" height="40"></div>
-									<!--  class="img-responsive" alt=""  -->
+								
 									<input type="hidden" class="follow" value="${follow.responseId }">
 									 <div class="col-xs-6 col-md-4"  title="클릭 이동">${follow.nickname}</div>
 									 <div class="col-xs-6 col-md-4">
 									 <c:choose>
 										<c:when test="${follow.f4f == 1}">
-											<input type="button" class="btn btn-info btn-sm pull-right"
-												id="following" value="Following">
-											<input type="hidden" class="follow"
-												value="${follow.responseId }">
+											<%-- <input type="button" class="btn btn-info btn-sm pull-right" id="tag"
+												value="Following" aria-hidden="true">
+											<input type="hidden"
+												value="${follow.responseId }"> --%>
+												
+										<button name="following" type="button" class="btn btn-info btn-sm pull-right" value="${follow.responseId}">Following</button>
 										</c:when>
+										
+										
 										<c:otherwise>
-											<input type="button" class="btn btn-sm pull-right" id="follow"
-												value="Follow">
-											<input type="hidden" id="follower" class="follow"
-												value="${follow.responseId }">
+											<%-- <input type="button" class="btn btn-sm pull-right follow" id="tag"
+												value="Follow" aria-hidden="true">
+											<input type="hidden" name="follower" id="follower" 
+												value="${follow.responseId }"> --%>
+											<button name="follow" type="button" class="btn btn-sm pull-right" value="${follow.responseId}">Follow</button>
 										</c:otherwise>
+										
+										
 									</c:choose>
 							      </div>
 							    <br>
@@ -240,7 +294,7 @@
 							 </c:forEach>
 						
 						</div>
-					
+				<!-- 	</div> -->
 				
 			
 		
@@ -256,7 +310,7 @@
 		 </form> 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="window.location.reload()">닫기</button>
       </div>
     </div>
   </div>

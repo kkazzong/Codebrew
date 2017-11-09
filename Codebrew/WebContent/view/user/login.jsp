@@ -60,7 +60,7 @@
 	
 	
 
-		//============= "로그인"  Event 연결 =============
+		//============= "로그인"  Event 연결 ================================
 		$( function() {
 			
 			$("#userId").focus();
@@ -114,15 +114,15 @@
 			});
 		});	
 	   
-	 	
+	 	 
 	    //가입된 아이디로 로그인 하나 안하나 알려주는 ajax
-		 $(function(){
+		/*  $(function(){
 				
-			 $("input:text[name='userId']").on("keypress",function(){   
+			 $("input:text[name='userId']").on("keypress",function(){   */ 
 				
 				/*  $(".btn:contains('로그인')").on("click",function(){  */
 					
-					var userId=$("input[name='userId']").val();
+					/* var userId=$("input[name='userId']").val();
 					
 					$.ajax({
 						type:"POST",
@@ -141,8 +141,8 @@
 					    }
 					});		
 				});						
-		 }); 
-	 
+		 });  */
+	
 	    
 	 //입력한 아이디랑 비밀번호가 같은지 알려주는 ajax 
 		 //$(function(){

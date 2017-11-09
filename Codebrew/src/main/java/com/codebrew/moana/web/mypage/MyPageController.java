@@ -387,45 +387,41 @@ public class MyPageController {
 }
 	*/
 	
-/*	@RequestMapping(value="addFollow", method=RequestMethod.GET)
-	public ModelAndView addFollow(@RequestParam("requestId")String requestId, HttpSession session)throws Exception{
+
+	
+	
+	/*@RequestMapping(value="addFollow", method=RequestMethod.GET)
+	public void addFollow(@RequestParam("requestId") String requestId, HttpSession session)throws Exception{
 		
 		//@RequestBody Follow follow,@RequestBody Search search
 		
-		System.out.println("myPageRest/json/addFollow : GET");
+		System.out.println("myPage/addFollow : GET");
 		
 		String sessionId=((User)session.getAttribute("user")).getUserId();
 		
-		s
+		
 		
 		if(sessionId != requestId) {
 		followService.addFollow(sessionId, requestId);
-		Follow follow= followService.getFollow(sessionId, requestId);
+		//Follow follow= followService.getFollow(sessionId, requestId);
 		
+		//model.addAttribute("follow", follow);
 		//add 했으니깐 add 한 정보를 보내서 그사람 responseId가 내가 있다는 게 떠야함
 		//controller에서 데이터를 보냈기 때문에 model 이고, 우린 restController라서 리턴타입을 보내야 함
 		
 		}
 		//Follow follow= followService.getFollow(sessionId, requestId);
-	  
-		ModelAndView modelAndView=new ModelAndView();
-		return modelAndView;
-		
-		
-		
-}
+		//Follow follow= followService.getFollow(sessionId, requestId);
+	  //model.addAttribute("follow", follow);
+	
+	    ModelAndView modelAndView=new ModelAndView();
+	    modelAndView.setViewName("redirect:/view/mypage/getMyPage.jsp");
+	}
+	
+	
 	*/
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	@RequestMapping(value="getMyPage", method=RequestMethod.GET)
-	public ModelAndView getYourPage(@RequestParam("requestId")String requestId,HttpSession session
+	public ModelAndView getYourPage(@RequestParam(value="requestId", required=false)String requestId,HttpSession session
 			,@ModelAttribute("user")User user,@ModelAttribute("search")Search search)throws Exception{
 	
 		System.out.println("/myPage/getMyPage : GET");
@@ -466,12 +462,12 @@ public class MyPageController {
 	   
 		
 	  //팔로잉11
-	  Map<String, Object>map1=followService.getFollowerList(search, sessionId);
+	  Map<String, Object>map1=followService.getFollowingList(search, sessionId);
 	  		
 	  //sessionId가 requestId로		
 	  		
 	  //팔로워22
-	  Map<String, Object>map2=followService.getFollowingList(search, sessionId);
+	  Map<String, Object>map2=followService.getFollowerList(search, sessionId);
 		
 	//sessionId가 responseId로	
 		  
