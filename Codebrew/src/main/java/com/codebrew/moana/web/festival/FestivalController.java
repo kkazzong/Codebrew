@@ -661,7 +661,9 @@ public class FestivalController {
 
 				System.out.println("festivalCh..........." + festival);
 
-				modelAndView.setViewName("forward:/view/festival/updateFestival.jsp");
+//				modelAndView.setViewName("forward:/view/festival/updateFestival.jsp");
+//				modelAndView.setViewName("forward:/festival/getFestivalListDB?menu=db");
+				modelAndView.setViewName("forward:/festival/getFestivalDB?festivalNo="+festival.getFestivalNo());
 				modelAndView.addObject(festival);
 
 			} else {
@@ -670,7 +672,9 @@ public class FestivalController {
 
 				festivalService.updateFestival(festival);
 				System.out.println("festivalCh..........." + festival);
-				modelAndView.setViewName("forward:/view/festival/updateFestival.jsp");
+//				modelAndView.setViewName("forward:/view/festival/updateFestival.jsp");
+//				modelAndView.setViewName("forward:/festival/getFestivalListDB?menu=db");
+				modelAndView.setViewName("forward:/festival/getFestivalDB?festivalNo="+festival.getFestivalNo());
 				modelAndView.addObject(festival);
 
 			}
