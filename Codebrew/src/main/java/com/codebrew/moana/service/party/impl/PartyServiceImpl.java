@@ -168,6 +168,12 @@ public class PartyServiceImpl implements PartyService {
 		
 		return map;
 	}
+	
+	@Override
+	public int getCurrentMemberCountByPartyNo(int partyNo) throws Exception {
+		// TODO Auto-generated method stub
+		return partyDAO.getCurrentMemberCount(partyNo);
+	}
 
 
 	@Override

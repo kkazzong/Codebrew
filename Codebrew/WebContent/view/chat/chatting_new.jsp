@@ -132,14 +132,13 @@
 			});
 			
 			
+			//==> 일대일 채팅방 입장시 변경
 			//$("#loginButton").on('click', function(event){
 				//alert('로그인 버튼 클릭!!')
-				var id = $('#idInput').val();
-				var password = $('#passwordInput').val();
-				var alias = $('#senNick').val();
-				var today = $('#todayInput').val();
+				var senderId = $('#senderInput').val();
+				var recipientId = $('#recipientInput').val();
 				
-				var output = {id : id, password : password, alias : alias, today : today};
+				var output = {senderId : senderId, recipientId : recipientId};
 				console.log('서버로 보낼 데이터 : '+ JSON.stringify(output));
 				
 				if(socket == undefined){
@@ -147,7 +146,7 @@
 					return;
 				}
 				
-				socket.emit('login', output);
+				socket.emit('admit', output);
 				
 				
 			//});
@@ -194,6 +193,7 @@
 			socket.on('connect', function(){
 				println('웹 소켓 서버에 연결되었습니다. : '+ url);
 				
+				////////////////////////////실시간 채팅//////////////////////////////////
 				socket.on('message', function(message){
 					console.log(JSON.stringify(message));
 					
@@ -213,7 +213,7 @@
 				});
 				
 				
-				////////////////////////////채팅내용찾은거//////////////////////////////////
+				////////////////////////////DB에서 검색한 지난 채팅//////////////////////////////////
 				socket.on('findChat', function(message){
 					
 					console.log("FROM DB"+JSON.stringify(message));
@@ -233,6 +233,21 @@
 						
 					}
 					
+				});
+				
+				//==> 메세지 읽음 이벤트 추가
+				////////////////////////////상대방이 메세지 읽음 확인//////////////////////////////////
+				socket.on('msgConfirm', function(admit){
+					console.log('[msgConfirm] 상대방이 메세지 읽음');
+					
+					println('<p>수신 메세지 : ' + admit.senderId +'님이 메세지 읽음</p>');
+					
+					console.log('플래그 제대로 받아오는지 확인==> '+$("#flag").val());
+					
+					//if($('#flag').val() == "1"){
+						//println('<p>안읽음 표시 사라짐!</p>');
+						$('.flag').html("");
+					//}
 				});
 				
 				
@@ -308,7 +323,7 @@
 							+"</div>"
 							+"<div class = 'message'>"
 							+"<p>" + msg + "</p>"
-							+"<p>" + flag + "</p>"
+							+"<p class='flag'>" + flag + "</p>"
 							+"<time datetime='yyyy-mm-ddThh:mm:ss:Z'>"+time+"</time>"
 							+"</div>"
 							+"</li>";
