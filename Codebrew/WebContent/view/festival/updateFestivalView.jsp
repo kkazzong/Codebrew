@@ -45,8 +45,12 @@
 	
 	$(function() {
 		$("button:contains('수정')").on("click", function() {
-
-			fncUpdateFestival();
+			
+			if(confirm("축제를 수정하시겠습니까?")) {
+				fncUpdateFestival();
+			} else {
+				return;
+			}
 		});
 	});
 	
