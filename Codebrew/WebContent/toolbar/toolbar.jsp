@@ -20,7 +20,7 @@
 		
 		<a class="navbar-brand" href="/index.jsp">
 			<!-- <img src="/resources/image/toolbarImage/pumpkin.png" alt="MOANA"> -->
-			<img src="/resources/image/toolbarImage/santa-claus-64.png" alt="MOANA" height="64">
+			<img src="/resources/image/toolbarImage/santa-claus-64.png" alt="MOANA" height="45">
 		</a>
 		
 		<!-- toolBar Button Start //////////////////////// -->
@@ -373,18 +373,15 @@
 	</script>  
 
 	<style>
-		/* 
-		.navbar-brand > img {
-				width : 45%;
-				height : 45%;
-				padding-bottom: 3px;
-		}
-		*/
-		
+	
 		* {
-			box-sizing: content-box;
+			box-sizing: border-box;
 		}
 		 
+		.navbar-brand > img {
+				padding-bottom: 15px;
+		}
+		
 		.navbar-default {
 		    background-image: linear-gradient(to bottom,black 0,black 100%);
 		    box-shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 1px 5px rgba(0,0,0,.075);
@@ -405,11 +402,17 @@
 		}
 		
 		.navbar-nav>li>a {
-			line-height: 50px;
+			line-height: 35px;
+			padding-top: 10px;
+			padding-bottom: 10px;
 		}
 		
 		.navbar-toggle {
 			margin-top: 20px;
+		}
+		
+		.navbar-default .navbar-nav>li>a {
+			color: #cecece;
 		}
 		
 	</style>
