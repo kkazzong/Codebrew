@@ -132,10 +132,16 @@ public class ChatController {
 		System.out.println("\n>>> /chat/getChattingList :: POST start <<<");
 		
 		User sender = (User)session.getAttribute("user");
+		Search search = new Search();
+		search.setCurrentPage(1);
+		search.setPageSize(8);
+		search.setSearchCondition("4");
+		Map<String, Object> map = partyService.getMyPartyList(search, sender.getUserId());
 		ModelAndView modelAndView = new ModelAndView();
 		
 		if(sender != null) {
 			modelAndView.addObject("sender", sender);
+			modelAndView.addObject("list", map.get("list"));
 			modelAndView.setViewName("/view/chat/getChattingList.jsp");
 		} 
 		

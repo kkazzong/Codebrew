@@ -25,6 +25,33 @@
 		var port;
 		var socket;
 		
+		var partyList = [];
+		partyList = ${list};
+		console.log(">>>>>>>>>>파티리스트<<<<<<<<<<<");
+		console.log(partyList);
+		
+		function getMyPartyList(userId) {
+			
+			$.ajax({
+				
+				url : "/partyRest/json/getMyPartyList",
+				method : "POST",
+				headers : {
+					"Accept" : "application/json",
+					"Content-Type" : "application/json"
+				},
+				data : JSON.stringify({
+					searchCondition : 4
+				}),
+				dataType : "json",
+				success : function(JSONData) {
+					alert(JSON.stringify(JSONData));
+					
+				}				
+			});
+			
+		}
+		
 		/////////////////////============jQuery start================/////////////////////////
 		$(function(){
 			
@@ -474,6 +501,10 @@
 			</div>
 		</div>
 		
+		파티넘버
+		<c:forEach var="party" items="${list}">
+			${party.partyName}, ${party.partyNo}
+		</c:forEach>
 		
 		<%-- <div class="row">
 			<div class="col-md-offset-2 col-md-8">

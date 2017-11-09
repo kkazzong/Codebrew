@@ -270,7 +270,7 @@
 			
 			var url = "/chat/getGroupChatting";
 			var title = "groupChatPop";
-			var status = "toolbar=no,directories=no,scrollbars=yes,resizable=no,status=no,menubar=no,width=440, height=520, top=0,left=20";
+			var status = "toolbar=no,directories=no,scrollbars=yes,resizable=yes,status=no,menubar=no,width=440, height=520, top=0,left=20";
 			window.open("", title, status); //window.open(url,title,status); window.open 함수에 url을 앞에와 같이
 			//인수로  넣어도 동작에는 지장이 없으나 form.action에서 적용하므로 생략
 			//가능합니다.
