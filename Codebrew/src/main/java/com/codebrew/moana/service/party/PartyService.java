@@ -26,6 +26,8 @@ public interface PartyService {
 	
 	public Map<String, Object> getPartyMemberList(int partyNo, Search search) throws Exception;
 	
+	public int getCurrentMemberCountByPartyNo(int partyNo) throws Exception;
+	
 	public Party cancelParty(int partyNo, String userId) throws Exception;
 	
 	public void deleteMyPartyList(int partyNo, String userId) throws Exception;

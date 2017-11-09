@@ -90,7 +90,7 @@ public class ChatController {
 		modelAndView.addObject("sender", dbSender);
 		modelAndView.addObject("recipient", dbRecipient);
 		
-		modelAndView.setViewName("forward:/view/chat/chatting2.jsp");
+		modelAndView.setViewName("forward:/view/chat/chatting_new.jsp");
 		//modelAndView.setViewName("forward:/view/chat2/chatting.jsp");
 		
 		return modelAndView;
@@ -108,19 +108,23 @@ public class ChatController {
 		
 		int dbPartyNo = Integer.parseInt(partyNo);
 		
+		
 		User dbSender = userService.getUser(sender);
 		Party dbParty = partyService.getParty(dbPartyNo, "");
+		int currentMemberCount = partyService.getCurrentMemberCountByPartyNo(dbPartyNo);
 		//도메인 출력
 		System.out.println("\n<<< /chat/getChatting :: POST :: sender 도메인  \n"+dbSender);
 		System.out.println("\n<<< /chat/getChatting :: POST :: party 도메인  \n"+dbParty);
+		System.out.println("\n<<< /chat/getChatting :: POST :: currentMemberCount  \n"+currentMemberCount);
 		
 		
 		//Model(data) & View(jsp)
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("sender", dbSender);
 		modelAndView.addObject("party", dbParty);
+		modelAndView.addObject("currentMemberCount", currentMemberCount);
 		
-		modelAndView.setViewName("forward:/view/chat/groupChatting.jsp");
+		modelAndView.setViewName("forward:/view/chat2/groupChatting2.jsp");
 		
 		return modelAndView;
 	}

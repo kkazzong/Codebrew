@@ -446,7 +446,7 @@ body {
 											<button type='button' class='btn-sm btn-default pull-right' onclick="javascript:chatPopup(this.form);">채팅하기</button>
 										</c:if>
 										<c:if test="${user.userId == party.user.userId }">
-											<button type='button' class='btn-sm btn-default pull-right' onclick="javascript:chatPopup(this.form);">채팅목록보기</button>
+											<!-- <button type='button' class='btn-sm btn-default pull-right' onclick="javascript:chatPopup(this.form);">채팅목록보기</button> -->
 										</c:if>
 										<br>
 									</form>
