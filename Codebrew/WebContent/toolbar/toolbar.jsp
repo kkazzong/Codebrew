@@ -118,26 +118,14 @@
 	               <!-- </ul> -->
 	               
 	               
-	              <!-- 수정중 -->
+	              <!--검색창 수정중 -->
 	              	
-	              		<li>
-	              		
-				<%-- <div class="input-group text-center">
-					<input type="text" class="form-control  input-lg" id="searchKey" name="searchKeyword" 
-					value="${!empty search.searchKeyword ? search.searchKeyword : ''}"
-					placeholder="축제를 검색해보세요.">
-						<span class="input-group-btn">
-							<button id="sc" class="btn btn-default btn-lg btn-block" type="button">
-						    	<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-						    </button>
-						</span>
-				</div> --%>
+	    <!--           		<li>
 				
 				<div class="navbar-form navbar-left" role="search">
 				  <div class="form-group" >
 				    <input type="text" class="form-control" id="searchKey" name="searchKeyword" 
-					value="${!empty search.searchKeyword ? search.searchKeyword : ''}"
-					placeholder="축제를 검색해보세요.">
+					value="" placeholder="축제를 검색해보세요.">
 				  </div>
 				  <button id="sc" class="btn btn-default">
 				  	<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
@@ -150,7 +138,7 @@
 	              
 	              
 	             </ul>   
-	                 
+	                  -->
 	                 
 	             
 	             
@@ -243,7 +231,7 @@
 				   var festivalNo = $("#fNo").val();
 				   var searchKeyword = $("#searchKey").val();
 				   
-				   if(searchKeyword == null || searchKeyword.length <1){
+				   if(searchKeyword == null){
 						alert("축제명은 반드시 한 글자 이상 입력하셔야 합니다.");
 						return;
 					}
