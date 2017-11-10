@@ -2,6 +2,9 @@
 <<<<<<<=HEAD
 >>>>>>>=refs/heads/new/jooyoung
 eclipse.preferences.version=1
+<<<<<<< HEAD
 encoding//WebContent/view/chat/chatting.jsp=UTF-8
+=======
+>>>>>>> refs/heads/new/jooyoung
 encoding//WebContent/view/user/loginNew.jsp=UTF-8
 encoding//WebContent/view/user/oldGetMyPage.jsp=UTF-8
