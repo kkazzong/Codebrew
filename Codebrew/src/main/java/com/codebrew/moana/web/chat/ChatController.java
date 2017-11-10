@@ -158,9 +158,8 @@ public class ChatController {
       modelAndView.addObject("party", dbParty);
       modelAndView.addObject("currentMemberCount", currentMemberCount);
       
-      //modelAndView.setViewName("forward:/view/chat/groupChatting.jsp");
-      modelAndView.setViewName("forward:/view/chat2/groupChatting3.jsp");
-      
+      modelAndView.setViewName("forward:/view/chat/groupChatting.jsp");
+     
       return modelAndView;
    }
 	   
