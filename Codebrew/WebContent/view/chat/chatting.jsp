@@ -64,7 +64,8 @@
 		
 		//문서 로딩 후 실행
 		$(function(){
-			alert("chat/chatting.jsp");
+			
+			//alert("chat/chatting3.jsp");
 			//////오늘 날짜 출력
 			printDate();
 			
@@ -88,16 +89,8 @@
 				var data = $('#dataInput').val();
 				var time = $('#dataInputTime').val();
 				
-				var output = {
-						sender : sender,
-						recipient : recipient,
-						senNick : senNick,
-						command : 'chat',
-						type  : 'text',
-						data : data,
-						time : time
-				};
-				alert('서버로 보낼 데이터 : ' + JSON.stringify(output));
+				var output = {sender : sender, recipient : recipient, senNick : senNick, command : 'chat', type  : 'text', data : data, time : time};
+				//alert('서버로 보낼 데이터 : ' + JSON.stringify(output));
 				
 				
 				if(socket == undefined){
@@ -106,7 +99,8 @@
 				}
 				
 				socket.emit('message', output);
-				addToDiscussion('self',data,time);
+				//==> 변경
+				//addToDiscussion('self',data,time,"");
 			});
 			
 			$("#dataInput").on('keydown',function(event){
@@ -131,24 +125,20 @@
 					}
 					
 					socket.emit('message', output);
-					addToDiscussion('self',data,time);
+					
+					//==> 변경
+					//addToDiscussion('self',data,time,"");
 				}
 			});
 			
 			
+			//==> 일대일 채팅방 입장시 변경
 			//$("#loginButton").on('click', function(event){
 				//alert('로그인 버튼 클릭!!')
-				var id = $('#idInput').val();
-				var password = $('#passwordInput').val();
-				var senNick = $('#senNick').val();
-				var today = $('#todayInput').val();
+				var senderId = $('#senderInput').val();
+				var recipientId = $('#recipientInput').val();
 				
-				var output = {
-						id : id,
-						/* password : password, */
-						senNick : senNick,
-						/* today : today */
-				};
+				var output = {senderId : senderId, recipientId : recipientId};
 				console.log('서버로 보낼 데이터 : '+ JSON.stringify(output));
 				
 				if(socket == undefined){
@@ -156,8 +146,11 @@
 					return;
 				}
 				
-				socket.emit('login', output);
+				socket.emit('admit', output);
+				
+				
 			//});
+			
 			
 			
 				var sender = $('#senderInput').val();
@@ -171,6 +164,7 @@
 						recipient : recipient,
 						senNick : senNick,
 				};
+				
 				console.log('서버로 보낼 데이터 : ' + JSON.stringify(output2));
 				
 				if(socket == undefined){
@@ -180,10 +174,13 @@
 				
 				socket.emit('findChat', output2);
 				//addToDiscussion('self',data,time);
+				
+				//채팅방 입장시 이벤트 발생
+				//socket.emit('admit', output3);
 		});	
 	 
 		
-
+		
 		
 		// 서버에 연결하는 함수 정의
 		function connectToServer(){
@@ -196,17 +193,27 @@
 			socket.on('connect', function(){
 				println('웹 소켓 서버에 연결되었습니다. : '+ url);
 				
+				////////////////////////////실시간 채팅//////////////////////////////////
 				socket.on('message', function(message){
 					console.log(JSON.stringify(message));
 					
 					println('<p>수신 메세지 : ' + message.sender + ', ' + message.recipient + ', '
-							+ message.command + ', ' + message.type + ', ' + message.data +','+message.time+ '</p>');
+							+ message.command + ', ' + message.type + ', ' + message.data +','+message.time+','+message.flag+'</p>');
 					
-					addToDiscussion('other', message.data, message.time);
+					//addToDiscussion('other', message.data, message.time, message.flag);
+					//==>변경
+					var sessionId = "${user.userId}";
+					//alert(sessionId+','+message.sender);
+					
+					if(sessionId == message.sender) {
+						addToDiscussion('self', message.data, message.time, message.flag);
+					} else{
+						addToDiscussion('other', message.data, message.time, message.flag);
+					}
 				});
 				
 				
-				////////////////////////////채팅내용찾은거//////////////////////////////////
+				////////////////////////////DB에서 검색한 지난 채팅//////////////////////////////////
 				socket.on('findChat', function(message){
 					
 					console.log("FROM DB"+JSON.stringify(message));
@@ -219,25 +226,47 @@
 						
 						//alert(message[i].sender)
 						if(sessionId == message[i].sender) {
-							addToDiscussion('self', message[i].data, message[i].time);
+							addToDiscussion('self', message[i].data, message[i].time, message[i].flag);
 						} else {
-							addToDiscussion('other', message[i].data, message[i].time);
+							addToDiscussion('other', message[i].data, message[i].time, message[i].flag);
 						}
 						
 					}
 					
 				});
 				
+				//==> 메세지 읽음 이벤트 추가
+				////////////////////////////상대방이 메세지 읽음 확인//////////////////////////////////
+				socket.on('msgConfirm', function(admit){
+					console.log('[msgConfirm] 상대방이 메세지 읽음');
+					
+					println('<p>수신 메세지 : ' + admit.senderId +'님이 메세지 읽음</p>');
+					
+					console.log('플래그 제대로 받아오는지 확인==> '+$("#flag").val());
+					
+					//if($('#flag').val() == "1"){
+						//println('<p>안읽음 표시 사라짐!</p>');
+						$('.flag').html("");
+					//}
+				});
+				
 				
 			});
 			
-			socket.on('disconnect', function(){
+			
+			/* socket.on('disconnect', function(){
 				println('웹 소켓 연결이 종료되었습니다.');
-			});
+			}); */
 			
 			socket.on('response', function(response){
 				console.log(JSON.stringify(response));
 				println('응답 메세지를 받았습니다. : ' + response.command + ', ' + response.code + ', ' + response.message);
+			});
+			
+			socket.on('disconnect',function(userList){
+				console.log(JSON.stringify(userList));
+				println('user list를 받았습니다. : ' + userList);
+				println('웹 소켓 연결이 종료되었습니다.');
 			});
 		}
 		
@@ -248,15 +277,20 @@
 		}
 		
 		
-		function addToDiscussion(writer, msg, time){
-			println("addToDiscussion 호출됨 : " + writer + ", " + msg);
+		function addToDiscussion(writer, msg, time, flag){
+			println("addToDiscussion 호출됨 : " + writer + ", " + msg + ", " + flag);
 			var img;
 			var contents;
 			var recipient;
 			var sender;
 			
+			//==>추가
+			if(flag == '0'){
+				flag = "";
+			}
 			
 			if(writer == 'other'){
+				
 				
 				img = '${recipient.profileImage}';
 				recipient = '${recipient.nickname}';
@@ -268,8 +302,11 @@
 							+"</div>"
 							+"<div class = 'message'>"
 							+"<p>" + msg + "</p>"
+							+"<p>" + flag + "</p>"
 							/* +"<time datetime='2017-10-05 13:52'>"+time+"</time>" */
+							+"<div id=time>"
 							+"<time datetime='yyyy-mm-ddThh:mm:ss:Z'>"+time+"</time>"
+							+"</div>"
 							+"</div>"
 							+"</li>";
 								
@@ -281,13 +318,15 @@
 				img = '${sender.profileImage}';
 				sender = '${sender.nickname}';
 				
-				contents = "<li class = '"+writer+"'>"
+				contents = 
+							"<li class = '"+writer+"'>"
 							+"<div>"+sender+"</div>"
 							+"<div class = 'avatar'>"
 							+"<img class = 'img-circle' src = '/resources/uploadFile/" + img + "'width='40' length='40'/>"
 							+"</div>"
 							+"<div class = 'message'>"
 							+"<p>" + msg + "</p>"
+							+"<p class='flag'>" + flag + "</p>"
 							+"<time datetime='yyyy-mm-ddThh:mm:ss:Z'>"+time+"</time>"
 							+"</div>"
 							+"</li>";
@@ -300,17 +339,42 @@
 		}
 			
 		
-		
+		//채팅방 나갔을 때 이벤트 발생
+		function exit() {
+			
+			//$(this).unload(function() {
+				
+				//alert('Handler for .unload() called.');
+				//return 'Handler for .unload() called.';
+	
+				 var sender = $('#senderInput').val();
+				var recipient = $('#recipientInput').val();
+				//var senNick = $('#senNick').val(); //////////senNick추가////////////////////
+				//var data = $('#dataInput').val();
+				//var time = $('#dataInputTime').val();
+				
+				var output3 = {
+						sender : sender,
+						recipient : recipient
+				};
+				
+				console.log('서버로 보낼 데이터 : ' + JSON.stringify(output3));
+				socket.emit('exit', output3) ;
+			//});
+		}
 		
 		
 	</script>
 	
 	<style>
-	
+		time {
+			font-size: 10%;
+		}
+		
 		#titleText{
-			font-size : 1.4em;
+			font-size : 2.0em;
 			font-weight : bold;
-			color : #777;
+			color : #fff;
 		}
 		
 		#contentsText{
@@ -328,13 +392,20 @@
   			list-style : none;
   			background : #ededed;
   			margin : 0;
-  			padding : 0 0 50px 0;
+  			padding : 0 0 0 0;
+  			/* padding : 0 0 50px 0; */
   		}
   		
   		.discussion li{
   			padding : 0.5em;
   			overflow : hidden;
   			display : flex;
+  			margin-top:5px;
+			width:85%;
+			border-radius:5px;
+			padding:5px;
+			display:flex;
+			background-color:white;
   		}
   		
   		.discussion .avator{
@@ -350,7 +421,19 @@
   		.self{
   			justify-content : flex-end;
   			align-item : flex-end;
+  			
   		}
+  		/* .self:before{
+		    width: 0;
+		    height: 0;
+		    content:"";
+		    top:-5px;
+		    left:-14px;
+		    position:relative;
+		    border-style: solid;
+		    border-width: 0 13px 13px 0;
+		    border-color: transparent #ffffff transparent transparent; 
+		} */        
   		
   		////////////////////////////////////////////////////////////////////
   		* {
@@ -359,7 +442,11 @@
 	    
 	    body { 
 	    	font: 13px Helvetica, Arial;
-	    	background-color: #b4c9ed;
+	    	background-color: #e8e7b4;
+	    	padding:0px;
+	    	margin:0px;
+	    	width:100%;
+	    	height:100%;
 	    }
 	      
 	    #message { background: #ffffff; padding: 3px; position: fixed; bottom: 0; width: 100%; }
@@ -373,28 +460,92 @@
 	    #messages li { padding: 5px 10px; }
 	      
 	    #messages li:nth-child(odd) { background: #eee; } */
+	    
+	    /* .content {
+	    	padding : 10px;
+	    	width : 100%;
+	    } */
+	    #cardbox {
+	    	height : 70px;
+	    	background-color : #0f0e0e;
+	    }
+	    .content {
+		    position: relative;   
+		    width : 100%;
+		    height: 100%;
+		   
+		    /* margin: 10px auto; */
+		}
+		.content-text {
+		    position: absolute;   
+		   /*  width: 10px;
+		    height: 10px; */
+		   
+		    top: 0;               
+		    bottom: 0;            
+		    left: 0;              
+		    right: 0;             
+		    margin: auto; 
+		    padding: 20px;
+		    padding-left: 70px;
+		     
+		}
+		
+		.left.floated.author {
+			 position: absolute;   
+		   /*  width: 10px;
+		    height: 10px; */
+		   
+		    top: 0;               
+		    bottom: 0;            
+		    left: 0;              
+		    right: 0;             
+		    margin: auto; 
+		    padding: 20px;
+		    padding-left: 15px;
+		    
+			
+		}
+		
+		.left.floated.author.col-xs-3 {
+			 position: absolute;    
+		   /*  width: 10px;
+		    height: 10px; */
+		   
+		    top: 0;               
+		    bottom: 0;            
+		    left: 0;              
+		    right: 0;             
+		    margin: auto; 
+		    padding: 12px;
+		    padding-left: 15px;
+		    
+			
+		}
+		
+		
+		
 	</style>
 </head>
-<body>
+<body onbeforeunload="exit()">
 	
 	<div class = "container">
 		<div id = "cardbox" class = "ui blue fluid card">
 			<div class = "content">
-				<div class = "left floated author">
+				<span class = "left floated author col-xs-3">
 					<img id = "iconImage" class = "ui avatar image" src = "/resources/image/chat/Messages-icon.png" width="45px" height="45px">
-				</div>
-				<div>
-					<div id = "titleText" class = "header">MOANA</div>
-					<div id = "contentsText" class = "description">
-						${ sender.nickname } 님 채팅
-					</div>
-				</div>
+				</span>
+				<span class="content-text col-xs-6">
+					<span id = "titleText" class = "header col-xs-3">MOANA</span>
+					<span id = "contentsText" class = "description col-xs-6">
+						<%-- ${ sender.nickname }님 채팅 --%>
+					</span>
+				</span>
 			</div>
 		</div>
 	
 	<div>
 		<div class = "ui input">
-			<!-- <input type = "hidden" id = "hostInput" value = "localhost"> -->
 			<input type = "hidden" id = "hostInput" value = "192.168.0.4">
 		</div>
 		<div class = "ui input">
@@ -416,14 +567,12 @@
 	
 	
 	
-	<hr/>
-	
 	<!-- 채팅 확인창 -->
-	<div id="currentDate"></div>
+	<!-- <div id="currentDate"></div>
 	<hr/>
 	<h4 class = "ui horizontal divider header">메세지</h4>
 	
-	<div class = "ui segment" id = "result"></div>
+	<div class = "ui segment" id = "result"></div> -->
 
 	<!-- 채팅창 -->
 	<ol class="discussion">
@@ -450,6 +599,78 @@
 
 
 	</div>
+	
+	
+	<%-- <div class = "container">
+		<div id = "cardbox" class = "ui blue fluid card">
+			<div class = "content">
+				<div class = "left floated author col-xs-3">
+					<img id = "iconImage" class = "ui avatar image" src = "/resources/image/chat/Messages-icon.png" width="45px" height="45px">
+				</div>
+				<div class="content-text col-xs-9">
+					<span id = "titleText" class = "header col-xs-3">MOANA</span>
+					<span id = "contentsText" class = "description col-xs-6">
+						${ sender.nickname } 님 채팅
+					</span>
+				</div>
+			</div>
+		</div>
+	
+	<div>
+		<div class = "ui input">
+			<input type = "hidden" id = "hostInput" value = "localhost">
+		</div>
+		<div class = "ui input">
+			<input type = "hidden" id = "portInput" value = "3000">
+		</div>
+		<br><br>
+			<!-- <input type = "button" id = "connectButton" value = "연결하기"> -->
+	</div>
+	<br>
+	
+	<div>
+		<!-- 보낼 유저 정보 -->
+		<input type = "hidden" id = "idInput" value="${sender.userId}">
+		<input type = "hidden" id = "senNick" value="${sender.nickname}">
+		<input type = "hidden" id = "recNick" value="${recipient.nickname}">
+		<!-- <input type = "password" id = "passwordInput" value="1111"> -->
+		<!-- <input type = "text" id = "todayInput" > -->
+	</div>
+	
+	
+	
+	<!-- 채팅 확인창 -->
+	<!-- <div id="currentDate"></div>
+	<hr/>
+	<h4 class = "ui horizontal divider header">메세지</h4>
+	
+	<div class = "ui segment" id = "result"></div> -->
+
+	<!-- 채팅창 -->
+	<ol class="discussion">
+		
+	</ol>
+	
+	<div>
+		<div>
+			<!-- <span>보내는 사람 아이디 : </span> -->
+			<input type = "hidden" id = "senderInput" value="${sender.userId}">
+		</div>
+		<div>
+			<!-- <span>받는 사람 아이디 : </span> -->
+			<input type = "hidden" id = "recipientInput" value="${recipient.userId}">
+		</div>
+		<div id="message">
+			<input type = "text" id = "dataInput"/>
+			<button type = "button" id = "sendButton">전송</button>
+			<input type = "hidden" id = "dataInputTime">
+		</div>
+		<br>
+		
+	</div>
+
+
+	</div> --%>
 	
 </body>
 </html>

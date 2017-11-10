@@ -102,8 +102,7 @@
 							recNick : recNick,
 							type  : 'text',
 							data : data,
-							time : time,
-							
+							time : time
 					}
 					
 					console.log("서버로 보낼 데이터 : "+JSON.stringify(output));
@@ -164,16 +163,10 @@
 			
 			//$("#loginButton").on('click', function(event){
 				//alert('로그인 버튼 클릭!!')
+				var id = $('#idInput').val();
+				var alias = $('#senNick').val();
 				
-				//==> 변경
-				//var id = $('#idInput').val();
-				//var alias = $('#senNick').val();
-				var senderId = $('#senderInput').val();
-				var recipientId = $('#recipientInput').val();
-				
-				//var output = {id : id};
-				var output = {senderId : senderId, recipientId : recipientId};
-				
+				var output = {id : id};
 				console.log('서버로 보낼 데이터 : '+ JSON.stringify(output));
 				
 				if(socket == undefined){
@@ -181,9 +174,7 @@
 					return;
 				}
 				
-				//==> 변경
-				//socket.emit('login', output);
-				socket.emit('admit', output);
+				socket.emit('login', output);
 			//});
 			
 			
@@ -217,7 +208,7 @@
 						var senderId = $("#idInput").val(); //sender 아이디
 						var senNick = "${user.nickname}"; /////////////////////새로추가 센닉
 						var hostId = "${party.user.userId}"; //party host 아이디
-						//alert("senderId ==> "+senderId);
+						//alert("senderId ==> "+senderId+", hostId ==> "+hostId);
 						//alert("hostId ==> "+hostId);
 						
 						if(senderId == hostId){
@@ -283,17 +274,15 @@
 		
 		
 		
-		//==> 추가
-		var flag;
+		
 		// 서버에 연결하는 함수 정의
 		function connectToServer(){
 			
 			var options = {'forceNew' : true};
 			var url = 'http://' + host + ':' + port;
 			var senderId = $("#idInput").val();
-			
-			
-			
+			///////추가
+			//var joinMessage;
 			// 연결 요청
 			socket = io.connect(url, options);
 			
@@ -337,13 +326,13 @@
 							//addToDiscussion('other', message[i].message, message[i].time);
 							addToGroupDiscussion('other', message[i]);
 						}
-						
 					}
+					//addToJoin(joinMessage);
 					
 				});
 				
 				/////////////////////////////////그룹 방 리스트 받음////////////////////////////////////
-				/* socket.on('room', function(message){
+				socket.on('room', function(message){
 					
 					console.log("서버에서 받은 룸 데이터 : "+JSON.stringify(message));
 					
@@ -361,27 +350,12 @@
 							$("#roomList").append('<p>방 #'+i+' : '+message.rooms[i].id+', '+message.rooms[i].name+', '+message.rooms[i].owner+'</p>');
 						}
 						
+					} else if(message.command == 'join') {
+						
+						println('<p>방 현재 참여자수 : ' +message.count+ '</p>');
+						//joinMessage = message;
+						//addToJoin(message);
 					}
-					
-				}); */
-				
-				
-				socket.on('room', function(message){
-					
-					console.log("서버에서 받은 룸 데이터 : "+JSON.stringify(message));
-					
-					println('<p>room 이벤트 : ' +message.command+ '</p>');
-					println('<p>room 정보를 받았습니다 </p>');
-					println('<p>room 안에 client 수 : '+message.count+'</p>');
-					println('<p>파티 인원 수 : ${currentMemberCount} </p>');
-					//==> 추가
-					var partyMemberCount = message.count;
-					var partyMemberLimit = "${currentMemberCount}";
-					flag = partyMemberLimit;
-					
-					flag = flag-partyMemberCount;
-					
-					$('.flag').html(flag);
 					
 				});
 				
@@ -391,23 +365,11 @@
 					console.log("서버에서 받은 룸 데이터 : "+JSON.stringify(message));
 					
 					println('<p>방 이벤트 : ' +message.command+ '</p>');
-					println('<p>새로운 사람을 받았습니다 </p>');
-					println('<p>room 안에 client 수 : '+message.count+'</p>');
-					//==> 추가
-					partyMemberCount = message.count;
-					var partyMemberLimit = ${party.partyMemberLimit};
-					flag = partyMemberLimit;
-					flag = flag-partyMemberCount;
-					
-					$('.flag').html(flag);
-					
-					//방리스트
-					if(message.command == 'join') {
-						
-						 addToJoin(message);						
-					}
+					println('<p>새로운 사람을을를 받았습니다 </p>');
+					addToJoin(message);
 				});
-					
+				
+				
 				//////////////////////////////////호스트입장에서 다시 들어올때 //////////////////////
 				socket.on('duplicate', function(message){
 				
@@ -435,7 +397,17 @@
 				
 				});
 				
+				////////////////////////////게스트입장에서 방이 아직 안만들어져 있을때//////////////
+				socket.on('none', function(message){
 				
+					console.log("[그룹채팅] 서버에서 받은 룸 데이터 : "+JSON.stringify(message));
+					
+					println('<p>방 이벤트 : ' +message.command+ '</p>');
+					
+					//addToAlert();
+				
+				});
+			
 			socket.on('disconnect', function(){
 				println('웹 소켓 연결이 종료되었습니다.');
 			});
@@ -534,7 +506,6 @@
 							+"</div>"
 							+"<div class = 'message'>"
 							+"<p>" + msg + "</p>"
-							+"<p class='flag'>" + flag + "</p>"
 							/* +"<time datetime='2017-10-05 13:52'>"+time+"</time>" */
 							+"<time datetime='yyyy-mm-ddThh:mm:ss:Z'>"+time+"</time>"
 							+"</div>"
@@ -555,7 +526,6 @@
 							+"</div>"
 							+"<div class = 'message'>"
 							+"<p>" + msg + "</p>"
-							+"<p class='flag'>" + flag + "</p>"
 							+"<time datetime='yyyy-mm-ddThh:mm:ss:Z'>"+time+"</time>"
 							+"</div>"
 							+"</li>";
@@ -567,24 +537,6 @@
 			}
 		}
 		
-		/* function addToJoin(message){
-			println("addToGroupDiscussion 호출됨 : " +  msg);
-			
-				img = '${sender.profileImage}';
-				sender = '${sender.nickname}';
-				
-				contents = "<li class = '"+writer+"'>"
-							+"<div class = 'message'>"
-							+"<p>" + msg.senNick + "님 입장!</p>"
-							+"</div>"
-							+"</li>";
-								
-				println("추가할 HTML : " + contents);
-				$(".discussion").append(contents);
-				$("#dataInput").val("");
-				
-		} */
-			
 		
 		//////////////////////////입장시 알림/////////////////////////////////////
 		 function addToJoin(message){
@@ -615,7 +567,7 @@
 				
 				contents = "<ol class='alert'><li>"
 							+"<div class = 'message'>"
-							+"<p>방이 아직 개설되지 않았슴다ㅠㅠ</p>"
+							+"<p>방이 아직 개설되지 않았습니다ㅜㅜ 기다려주세요</p>"
 							+"</div>"
 							+"</li>"
 							+"</ol>";
@@ -624,17 +576,24 @@
 				$(".alert").append(contents);
 				$("#dataInput").val("");
 				
-		}
+		} 
+			
+		
+		
 		
 		
 	</script>
 	
 	<style>
 	
+		time {
+			font-size: 10%;
+		}
+		
 		#titleText{
-			font-size : 1.4em;
+			font-size : 2.0em;
 			font-weight : bold;
-			color : #777;
+			color : #fff;
 		}
 		
 		#contentsText{
@@ -652,13 +611,20 @@
   			list-style : none;
   			background : #ededed;
   			margin : 0;
-  			padding : 0 0 50px 0;
+  			padding : 0 0 0 0;
+  			/* padding : 0 0 50px 0; */
   		}
   		
   		.discussion li{
   			padding : 0.5em;
   			overflow : hidden;
   			display : flex;
+  			margin-top:5px;
+			width:85%;
+			border-radius:5px;
+			padding:5px;
+			display:flex;
+			background-color:white;
   		}
   		
   		.discussion .avator{
@@ -674,7 +640,19 @@
   		.self{
   			justify-content : flex-end;
   			align-item : flex-end;
+  			
   		}
+  		/* .self:before{
+		    width: 0;
+		    height: 0;
+		    content:"";
+		    top:-5px;
+		    left:-14px;
+		    position:relative;
+		    border-style: solid;
+		    border-width: 0 13px 13px 0;
+		    border-color: transparent #ffffff transparent transparent; 
+		} */        
   		
   		////////////////////////////////////////////////////////////////////
   		* {
@@ -683,7 +661,11 @@
 	    
 	    body { 
 	    	font: 13px Helvetica, Arial;
-	    	background-color: #b4c9ed;
+	    	background-color: #e8e7b4;
+	    	padding:0px;
+	    	margin:0px;
+	    	width:100%;
+	    	height:100%;
 	    }
 	      
 	    #message { background: #ffffff; padding: 3px; position: fixed; bottom: 0; width: 100%; }
@@ -697,6 +679,68 @@
 	    #messages li { padding: 5px 10px; }
 	      
 	    #messages li:nth-child(odd) { background: #eee; } */
+	    
+	    /* .content {
+	    	padding : 10px;
+	    	width : 100%;
+	    } */
+	    #cardbox {
+	    	height : 70px;
+	    	background-color : #0f0e0e;
+	    }
+	    .content {
+		    position: relative;   
+		    width : 100%;
+		    height: 100%;
+		   
+		    /* margin: 10px auto; */
+		}
+		.content-text {
+		    position: absolute;   
+		   /*  width: 10px;
+		    height: 10px; */
+		   
+		    top: 0;               
+		    bottom: 0;            
+		    left: 0;              
+		    right: 0;             
+		    margin: auto; 
+		    padding: 20px;
+		    padding-left: 70px;
+		     
+		}
+		
+		.left.floated.author {
+			 position: absolute;   
+		   /*  width: 10px;
+		    height: 10px; */
+		   
+		    top: 0;               
+		    bottom: 0;            
+		    left: 0;              
+		    right: 0;             
+		    margin: auto; 
+		    padding: 20px;
+		    padding-left: 15px;
+		    
+			
+		}
+		
+		.left.floated.author.col-xs-3 {
+			 position: absolute;    
+		   /*  width: 10px;
+		    height: 10px; */
+		   
+		    top: 0;               
+		    bottom: 0;            
+		    left: 0;              
+		    right: 0;             
+		    margin: auto; 
+		    padding: 12px;
+		    padding-left: 15px;
+		    
+			
+		}
 	</style>
 </head>
 <body>
@@ -705,48 +749,48 @@
 	<form name="form">
 		
 		<!--//////////////// 그룹방방방방방 ////////////////-->
-		<%-- <input type="text" id="roomIdInput" value="${ party.partyNo }">
-		<input type="text" id="roomNameInput" value="${ party.partyName }">
-		<button id="createRoomBtn" type='button' class='btn-sm btn-default'>방만들기</button>
+		<input type="hidden" id="roomIdInput" value="${ party.partyNo }">
+		<input type="hidden" id="roomNameInput" value="${ party.partyName }">
+		<!-- <button id="createRoomBtn" type='button' class='btn-sm btn-default'>방만들기</button> -->
 		<input type="hidden" name="roomRecipient" value="ALL">
-		<button id="joinRoomBtn" type="button" class=" btn-default">방 입장</button>
-		<button id="leaveRoomBtn" type="button" class=" btn-default">방 나가기</button> --%>
+		<!-- <button id="joinRoomBtn" type="button" class=" btn-default">방 입장</button>
+		<button id="leaveRoomBtn" type="button" class=" btn-default">방 나가기</button> -->
 	</form>
 	
-	<!-- <input type="hidden" id="chatType" value="groupChat">
-	그룹방 전용 메시지 : <input type="text" id="groutDataInput">
+	<input type="hidden" id="chatType" value="groupChat">
+	<!-- 그룹방 전용 메시지 : <input type="text" id="groutDataInput">
 	<button id="groupBtn" type="button" class=" btn-default">전송</button> -->
 	
 	
-	<div id="roomList"></div>
+	<!-- <div id="roomList"></div> -->
 	
 	
 	<div class = "container">
 		<div id = "cardbox" class = "ui blue fluid card">
 			<div class = "content">
-				<div class = "left floated author">
+				<span class = "left floated author col-xs-3">
 					<img id = "iconImage" class = "ui avatar image" src = "/resources/image/chat/Messages-icon.png" width="45px" height="45px">
-				</div>
-				<div>
-					<div id = "titleText" class = "header">MOANA</div>
-					<div id = "contentsText" class = "description">
-						${ sender.nickname } 님 채팅
-					</div>
-				</div>
+				</span>
+				<span class="content-text col-xs-6">
+					<span id = "titleText" class = "header col-xs-3">MOANA</span>
+					<span id = "contentsText" class = "description col-xs-6">
+						<%-- ${ sender.nickname }님 채팅 --%>
+					</span>
+				</span>
 			</div>
 		</div>
 	
 	<div>
 		<div class = "ui input">
-			<input type = "hidden" id = "hostInput" value = "localhost">
+			<input type = "hidden" id = "hostInput" value = "192.168.0.4">
 		</div>
 		<div class = "ui input">
 			<input type = "hidden" id = "portInput" value = "3000">
 		</div>
-		<br><br>
+		
 			<!-- <input type = "button" id = "connectButton" value = "연결하기"> -->
 	</div>
-	<br>
+	
 	
 	<div>
 		<!-- 보낼 유저 정보 -->
@@ -759,7 +803,7 @@
 	
 	
 	
-	<hr/>
+	
 	
 	<!-- 채팅 확인창 -->
 	<!-- <div id="currentDate"></div>
@@ -770,6 +814,9 @@
 
 	<!-- 채팅창 -->
 	<ol class="discussion">
+		
+	</ol>
+	<ol class="alert">
 		
 	</ol>
 	
@@ -787,7 +834,7 @@
 			<button type = "button" id = "sendButton">전송</button>
 			<input type = "hidden" id = "dataInputTime">
 		</div>
-		<br>
+		
 		
 	</div>
 

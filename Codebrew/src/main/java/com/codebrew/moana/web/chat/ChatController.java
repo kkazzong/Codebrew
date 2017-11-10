@@ -91,7 +91,7 @@ public class ChatController {
 		modelAndView.addObject("recipient", dbRecipient);
 		
 		
-		modelAndView.setViewName("forward:/view/chat/chatting_new.jsp");
+		modelAndView.setViewName("forward:/view/chat/chatting.jsp");
 		//modelAndView.setViewName("forward:/view/chat2/chatting.jsp");
 		
 		return modelAndView;
@@ -125,7 +125,7 @@ public class ChatController {
 		modelAndView.addObject("party", dbParty);
 		modelAndView.addObject("currentMemberCount", currentMemberCount);
 		
-		modelAndView.setViewName("forward:/view/chat2/groupChatting2.jsp");
+		modelAndView.setViewName("forward:/view/chat/groupChatting.jsp");
 		
 		return modelAndView;
 	}
