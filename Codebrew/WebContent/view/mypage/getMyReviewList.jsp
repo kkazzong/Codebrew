@@ -143,6 +143,9 @@
    	<!-- ToolBar End /////////////////////////////////////-->
    	
    	<!-- 화면구성 div Start -->
+   	
+   	<jsp:include page="/toolbar/toolbar.jsp"/>
+	 <jsp:include page="/view/user/getMyPageNew3.jsp"/>
    	<div class="container">
    	
    		<div class="row">
@@ -156,8 +159,8 @@
 		<!-- 데이터 수 -->
 		<div class="row">
 			<div class="col-md-12">
-				<h5>총 : ${resultPage3.totalCount} 건</h5>
-				<h5>현재 : ${resultPage3.currentPage} 페이지 / 총 : ${resultPage3.maxPage} 페이지</h5>
+				<h5>총 : ${resultPage.totalCount} 건</h5>
+				<h5>현재 : ${resultPage.currentPage} 페이지 / 총 : ${resultPage.maxPage} 페이지</h5>
 			</div>
 		</div>
 		
@@ -166,7 +169,7 @@
    		
    			<div class="col-md-6 text-left">
    				<p class="text-primary">
-   					전체  ${resultPage3.totalCount } 건수, 현재 ${resultPage3.currentPage}  페이지
+   					전체  ${resultPage.totalCount } 건수, 현재 ${resultPage.currentPage}  페이지
    				</p>
    			</div>
    			
@@ -201,7 +204,7 @@
    		
    		<!-- table Start -->
    		<div class="row">
-   			<c:forEach var="review" items="${list3}">
+   			<c:forEach var="review" items="${list}">
    				<c:set var="i" value="${i+1}"/>
    				<div class="col-md-6">
    					<div class="panel panel-primary">

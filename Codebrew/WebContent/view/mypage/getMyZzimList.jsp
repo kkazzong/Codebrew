@@ -95,7 +95,8 @@ body {
 
 </head>
 <body>
-
+    <jsp:include page="/toolbar/toolbar.jsp"/>
+	 <jsp:include page="/view/user/getMyPageNew3.jsp"/>
 	<div class="container">
 	
   	<div class="row">
@@ -117,9 +118,9 @@ body {
 		<br/>
 
 
-		전체 게시물 수 : ${resultPage1.totalCount }
+		전체 게시물 수 : ${resultPage.totalCount }
 		<br/>
-		현재 페이지 : ${resultPage1.currentPage }
+		현재 페이지 : ${resultPage.currentPage }
 		
 		<br/>
 		<br/>
@@ -175,7 +176,7 @@ body {
 
 		<div class="row">
 		
-		<c:forEach var="festival" items="${list1}">
+		<c:forEach var="festival" items="${list}">
 		
 			
 			<div class="col-md-6">

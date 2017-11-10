@@ -240,6 +240,7 @@
 	 <jsp:include page="/toolbar/toolbar.jsp"/> 
 
 
+	
 
 
 
@@ -250,36 +251,16 @@
 	<jsp:include page="/view/mypage/getFollowerList.jsp"/> --%>
 		
 		<input type="hidden" id="sessionId" value="${sessionScope.user.userId}">
-            <div class="row"> 
-			 <div class="col-xs-6 col-md-4 col-md-offset-4">
+         
+			<%--  <div class="col-xs-6 col-md-4 col-md-offset-4">
               <img class="img-circle" src="/resources/uploadFile/${user.profileImage}" width="100" height="100">
               </div>
-			  <div class="clearfix visible-xs-block"></div>
+			  <div class="clearfix visible-xs-block"></div> --%>
         
         
         
         
-           <!--user-profile  -->
-			          
-			   <div class="col-xs-6 col-md-4 col-md-offset-4">                                                                                                                                                                                                                                                                                                   
-				<div class="profile-userbuttons">
-					<c:if test="${! empty sessionScope.user.userId }">
-						<c:if test="${sessionScope.user.userId != user.userId }">  <!--내가 딴 사람 마이페이지에 들어갔을때만 follow 버튼이 뜨는  조건  -->
-							 <c:choose>
-							 <c:when test="${empty follow.requestId }">
-								
-								 <!--나(sessionId) 이사람 requestId면 (팔로잉 목록에 없다면)-->
-									<button type="button" class="btn btn-sm" id="profileFollow" >Follow</button>			
-								</c:when>
-							     <c:otherwise>
-							      <!--나(sessionId) 이사람 requestId면 (팔로잉 목록에 있다면)-->
-								     <button type="button" class="btn btn-info btn-sm" id="profileFollowing">Following</button>
-							     </c:otherwise>
-						</c:choose>
-					</c:if> 
-				</c:if>
-			  </div>
-			</div>
+          
 		
 			  
 			  
@@ -296,6 +277,10 @@
 				<!-- 	<div class="row"> -->
 					<div class="col-xs-6 col-md-4 col-md-offset-4">
 					<div class="profile-usertitle" >
+						
+						 <div class= "row profile">
+						 <img class="img-circle" src="/resources/uploadFile/${user.profileImage}" width="100" height="100">
+						</div>
 						
 						 <div class="profile-usertitle-name"> 
 						<!-- <div class="col-md-4 col-md-offset-4"> -->
@@ -316,9 +301,37 @@
 						<!-- <div class="col-md-4 col-md-offset-4"> -->
 							${user.userId}
 						</div>
+			
+			
+					
+			<div class="col-xs-6 col-md-4 col-md-offset-4">                                                                                                                                                                                                                                                                                                   
+				<div class="profile-userbuttons">
+					<c:if test="${! empty sessionScope.user.userId }">
+						<c:if test="${sessionScope.user.userId != user.userId }">  <!--내가 딴 사람 마이페이지에 들어갔을때만 follow 버튼이 뜨는  조건  -->
+							 <c:choose>
+							 <c:when test="${empty follow.requestId }">
+								
+								 <!--나(sessionId) 이사람 requestId면 (팔로잉 목록에 없다면)-->
+									<button type="button" class="btn btn-sm" id="profileFollow" >Follow</button>			
+								</c:when>
+							     <c:otherwise>
+							      <!--나(sessionId) 이사람 requestId면 (팔로잉 목록에 있다면)-->
+								     <button type="button" class="btn btn-info btn-sm" id="profileFollowing">Following</button>
+							     </c:otherwise>
+						</c:choose>
+					</c:if> 
+				</c:if>
+			  </div>
+			</div>
+					
+					
+					
+					
+					
 						
 						
-					</div>
+						
+			</div>
 			</div>
 	<!-- 	</div> -->
 	    

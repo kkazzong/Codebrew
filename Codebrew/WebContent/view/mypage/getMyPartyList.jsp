@@ -256,14 +256,19 @@
 </head>
 <!-- <body onload="startTime()"> -->
 <body>
+
+   <%--  <jsp:include page="/toolbar/toolbar.jsp"/>
+  
+	 <jsp:include page="/view/user/getMyPageNew3.jsp"/> --%>
 	<!-- ToolBar Start /////////////////////////////////////-->
 	<%-- <jsp:include page="/toolbar/toolbar.jsp" /> --%>
    	<!-- ToolBar End /////////////////////////////////////-->
    	
 	<!--  화면구성 div Start /////////////////////////////////////-->
+	
 	<div class="container">
 	  <div class="row">
-			<div class="col-md-12">
+			<div >
 				<div class="page-header text-center">
 					<h2 class="text-info">MY파티 리스트</h2>
 				</div>
@@ -271,17 +276,17 @@
 		</div>
 	  
 	  <!-- 목록 위 검색 Start /////////////////////////////////////-->
-	    <div class="row">
+	 <%--    <div class="row">
 	    
 		    <!-- 데이터 수 -->
 			<div class="row">
-				<div class="col-md-12">
+				<div>
 					<h5>총 : ${resultPage2.totalCount} 건 (${resultPage2.currentPage} / ${resultPage2.maxPage})</h5>
 				</div>
 			</div>
 		    
 		    <!-- 검색 -->
-			<div class="col-md-12 text-right">
+			<div >
 				<form class="form form-inline" id="searchForm" name="searchForm">
 					
 					<button type="button" class="btn btn-default" >진행중인 파티</button>
@@ -305,7 +310,7 @@
 		</div>
 	  <!-- 목록 위 검색 End /////////////////////////////////////-->
 	  
-	  <br/>
+	  <br/> --%>
 	  
 	  <!-- 목록 조회 Start /////////////////////////////////////-->
 	  <div class="row">
@@ -314,7 +319,7 @@
 		</c:if>
 			<c:forEach var="party" items="${list2}">
 				<c:set var="i" value="${i+1}"></c:set>
-				<div class="col-md-6">
+				<div >
 						<div class="panel panel-primary">
 							<div class="panel-heading">
 								
@@ -344,14 +349,14 @@
 									
 									<br>
 									<br>
-									<div class="col-md-12">
+									<div>
 									<img class="img-circle" src="/resources/uploadFile/${party.user.profileImage}" width="50" height="50">
 									${ party.user.nickname }
 									</div>
 									
 									
 									
-									<div class="col-md-12">
+									<div >
 										<h4>
 										<strong>
 											${party.partyName}
@@ -359,25 +364,25 @@
 										</h4>
 									</div>
 									<hr>
-									<div class="col-md-12">
+									<div >
 										<small>
 											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
 											${party.partyDate}
 										</small>
 									</div>
-									<div class="col-md-12">
+									<div >
 										<small>
 											<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
 											${party.partyTime}
 										</small>
 									</div>
-									<div class="col-md-12">
+									<div >
 										<small>
 											<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
 											${party.partyPlace}
 										</small>
 									</div>
-									<div class="col-md-12">
+									<div >
 										<small>
 											<c:if test="${ !empty party.festival.festivalName}">
 												<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
@@ -386,7 +391,7 @@
 										</small>
 									</div>
 									<br>
-									<div class="col-md-12">
+									<div>
 										<small>
 											<c:if test="${ !empty party.festival.festivalNo}">
 												<strong>#애프터 파티</strong>
@@ -407,6 +412,7 @@
 	
 		<!-- 목록 조회 End /////////////////////////////////////-->
 	  
+ 	</div>
  	</div>
  	<!--  화면구성 div End /////////////////////////////////////-->
  	
