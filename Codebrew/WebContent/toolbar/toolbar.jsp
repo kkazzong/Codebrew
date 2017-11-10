@@ -97,6 +97,7 @@
 		          </li>
 	                 
 	              <!-- 구매관리 DrowDown -->
+	                     <c:if test="${sessionScope.user.role == 'a'}">
 	              <li class="dropdown">
 	                <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
 	                    <span >Purchase</span>
@@ -104,18 +105,17 @@
 	                </a>
 	                <ul class="dropdown-menu">
 	                       <!-- <li><a href="#">my티켓</a></li> -->
-	                       <li><a href="#">축제통계</a></li>
+	                     <!--   <li><a href="#">축제통계</a></li>
 	                       <li><a href="#">평점통계</a></li>
-	                       <li><a href="#">참여자수통계</a></li>
-	                       <c:if test="${sessionScope.user.role == 'a'}">
-		                       <li class="divider"></li>
+	                       <li><a href="#">참여자수통계</a></li> -->
+		                      <!--  <li class="divider"></li> -->
 		                       <li><a href="#">판매목록</a></li>
 		                       <li><a href="#">판매통계</a></li>
-	                       </c:if>  
 	                   </ul>
 	                 </li>
+	                    </c:if>  
 	                 
-	               <!-- </ul> -->
+	               </ul>
 	               
 	               
 	              <!--검색창 수정중 -->
@@ -176,8 +176,8 @@
 	    
 	</div>
 </div>
-					<input type="hidden" id="currentPage" name="currentPage" value=""/>
-					<input type="hidden" id="fNo" name="festivalNo" value=""/>
+					<!-- <input type="hidden" id="currentPage" name="currentPage" value=""/>
+					<input type="hidden" id="fNo" name="festivalNo" value=""/> -->
 					
 
 		<!-- ToolBar End /////////////////////////////////////-->
@@ -188,7 +188,7 @@
    	/* 오토컴플릿 삽입 */
    	
    			///////////////////////////////////검색///////////////////////////////////////
-		$(function() {
+		/* $(function() {
 			
 				$("#searchKey").autocomplete({
 					source: function( request, response ) {
@@ -249,7 +249,7 @@
 					}
 				});
 			
-			});
+			}); */
    	
    	
 		

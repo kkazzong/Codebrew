@@ -18,21 +18,21 @@
 	<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+	<!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script> -->
 	
 	<!-- Bootstrap Dropdown Hover CSS -->
-	<link href="/resources/css/animate.min.css" rel="stylesheet">
-	<link href="/resources/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
+	<!-- <link href="/resources/css/animate.min.css" rel="stylesheet">
+	<link href="/resources/css/bootstrap-dropdownhover.min.css" rel="stylesheet"> -->
 
 	<!-- Bootstrap Dropdown Hover JS -->
-	<script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
+	<!-- <script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script> -->
 
 
 	<!-- ----------------------UI -->
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
         
-    <link rel="stylesheet" href="/resources/css/index/css/bootstrap.min.css">
+   <!--  <link rel="stylesheet" href="/resources/css/index/css/bootstrap.min.css"> -->
     <link rel="stylesheet" href="/resources/css/index/css/font-awesome.css">
     <link rel="stylesheet" href="/resources/css/index/css/animate.css">
     <link rel="stylesheet" href="/resources/css/index/css/templatemo_misc.css">
@@ -41,8 +41,8 @@
     <script src="/resources/css/index/js/vendor/modernizr-2.6.1-respond-1.1.0.min.js"></script>
 	
 	<!-- autocomplete -->
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+	<!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script> -->
 	
 	<script type="text/javascript">
 	
@@ -304,70 +304,6 @@
 			});
 		});
 		
-		
-		///////////////////////////////////검색///////////////////////////////////////
-		$(function() {
-			
-				$("#searchKeyword").autocomplete({
-					source: function( request, response ) {
-				        $.ajax( {
-				          url: "/festivalRest/json/getKeyword",
-				          method : "POST",
-				          headers : {
-								"Accept" : "application/json",
-								"Content-Type" : "application/json"
-						  },
-				          dataType: "json",
-				          data: JSON.stringify({
-				        	currentPage : "1",
-					        searchKeyword : $("#searchKeyword").val(),
-					        searchCondition : ""
-				          }),
-				          success: function( JSONData ) {
-				            response($.map(JSONData, function(value, key){
-				            	console.log(value.festivalNo);
-				            	
-				            	var festivalNo = value.festivalNo;
-				            	
-				            	$("#festivalNo").val(festivalNo);
-				            	
-				            		return {
-				            			label :  value.festivalName,
-				            			value : value.festivalName
-				            		}
-					        	}));
-					          }
-				        });
-				    }
-				});
-			});
-	   
-		   $(function(){
-				$("input:search[name='searchKeyword']").on('keydown',function(event){
-					
-					if(event.keyCode ==13){
-						event.preventDefault();
-						$( "#search"  ).click();
-					}
-				});
-			
-			});
-	   
-		   $(function(){
-			   $("#search").on("click",function(){
-					
-				   var festivalNo = $("#festivalNo").val();
-				   var searchKeyword = $("#searchKeyword").val();
-				   
-				   if(searchKeyword == null || searchKeyword.length <1){
-						alert("축제명은 반드시 한 글자 이상 입력하셔야 합니다.");
-						return;
-					}
-				   
-				   self.location="/festival/getFestivalDB?festivalNo="+festivalNo;
-			   });
-		   });
-	    
 	</script>
 
 
@@ -455,7 +391,7 @@
         </div> <!-- /.site-main -->
         
         
-        <div class="site-main" id="sTop">
+        <%-- <div class="site-main" id="sTop">
            
             <div class="site-slider">
                 <div class="slider">
@@ -463,29 +399,29 @@
                         <ul class="slides">
                             <li>
                             	<div class="col-md-12">
-									<div class="col-md-offset-2 col-md-7">		
-										<div class="page-header text-center">
-											<div class="input-group text-center">
-												<input type="hidden" id="currentPage" name="currentPage" value=""/>
-												<input type="hidden" id="festivalNo" name="festivalNo" value=""/>
-												<input type="search" class="form-control  input-lg" id="searchKeyword" name="searchKeyword" type="text" 
-												value="${!empty search.searchKeyword ? search.searchKeyword : ''}"
-												placeholder="축제를 검색해보세요.">
-													<span class="input-group-btn">
-														<button id="search" class="btn btn-default btn-lg btn-block" type="button">
-													    	<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-													    </button>
-													</span>
-											</div>
+								<div class="col-md-offset-2 col-md-8">		
+									<div class="page-header text-center">
+										<div class="input-group text-center">
+											<input type="hidden" id="currentPage" name="currentPage" value=""/>
+											<input type="hidden" id="festivalNo" name="festivalNo" value=""/>
+											<input type="search" class="form-control  input-lg" id="searchKey" name="searchKeyword" type="text" 
+											value="${!empty search.searchKeyword ? search.searchKeyword : ''}"
+											placeholder="축제를 검색해보세요.">
+												<span class="input-group-btn">
+													<button id="sc" class="btn btn-default btn-lg btn-block" type="button">
+												    	<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+												    </button>
+												</span>
 										</div>
 									</div>
 								</div>
+							</div>
                             </li>
                         </ul>
                     </div> <!-- /.flexslider -->
                 </div> <!-- /.slider -->
             </div> <!-- /.site-slider -->
-        </div> <!-- /.site-main -->
+        </div> <!-- /.site-main --> --%>
 
 
 		<div class="content-section" id="services">
