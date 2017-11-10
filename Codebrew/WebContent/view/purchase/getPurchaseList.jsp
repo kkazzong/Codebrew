@@ -393,12 +393,12 @@
 		    z-index : 100; */
 		    /* overflow-y: hidden;} } */
 		 body {
-			padding-top : 100px;
+			padding-top : 70px;
 			background-color: #f2f4f6;
-			padding-left: 30rem;
-		}
-			/* padding-left : 20rem;
-			background-color: #f2f4f6;
+			/* padding-left: 30rem; */
+		/* }
+			 padding-left : 20rem;
+			background-color: #f2f4f6; */
 	    } 
 	    
 	    .card {
@@ -451,7 +451,7 @@
 <body>
 	
 	<!-- 툴바 -->
-	<jsp:include page="/toolbar/toolbar_new2.jsp"></jsp:include>
+	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>
 	<%-- <jsp:include page="/toolbar/toolbar3.jsp"></jsp:include> --%>
 	<!-- 모달 -->
 	<jsp:include page="/view/purchase/filterModalUser.jsp"></jsp:include>
