@@ -186,7 +186,12 @@
 		function writeImage(index, name, image, addr, no, date) {
 			
 			index++;
-			var innerHtml = '<img src="/resources/uploadFile/'+image+'" alt="축제이미지">';
+			var innerHtml = "";
+			if(image.indexOf('http') != -1) {
+				innerHtml = '<img src='+image+' alt="축제이미지">';
+			} else {
+				innerHtml = '<img src="/resources/uploadFile/'+image+'" alt="축제이미지">';
+			}
 			$("#img"+index).html(innerHtml);
 			innerHtml = '<h2>'+name+'</h2>';
 			$("#name"+index).html(innerHtml);
