@@ -139,7 +139,7 @@
 		 var tag2="";
 		 var met="";
 
-		 $(function(){
+		  $(function(){
 			 
 			 $( '#tag' ).on("click", function() {
 				 
