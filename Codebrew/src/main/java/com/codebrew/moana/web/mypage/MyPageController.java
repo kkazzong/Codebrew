@@ -24,6 +24,7 @@ import com.codebrew.moana.common.Page;
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Festival;
 import com.codebrew.moana.service.domain.Follow;
+import com.codebrew.moana.service.domain.Party;
 import com.codebrew.moana.service.domain.User;
 import com.codebrew.moana.service.domain.Zzim;
 import com.codebrew.moana.service.festival.FestivalService;
@@ -548,11 +549,12 @@ public class MyPageController {
 	
 	
 	*/
+	
 	@RequestMapping(value="getMyPage", method=RequestMethod.GET)
-	public ModelAndView getYourPage(@RequestParam(value="requestId", required=false)String requestId,HttpSession session
+	public ModelAndView getMyPage(@RequestParam(value="requestId", required=false)String requestId, HttpSession session
 			,@ModelAttribute("user")User user,@ModelAttribute("search")Search search)throws Exception{
 	
-		System.out.println("/myPage/getMyPage : GET");
+		System.out.println("/myPage/getMyPage 수정 : GET");
 		
 		
 	  Map<String, Object>map=new HashMap<String, Object>();
@@ -603,7 +605,9 @@ public class MyPageController {
 	  //파티33
 	  Map<String, Object> map3 = partyService.getMyPartyList(search, sessionId);//원래 userId였음
 		
+
 		Page resultPage = new Page(search.getCurrentPage(),((Integer)map3.get("totalCount")).intValue(), pageUnit, pageSize);
+
 	  
 	  
 	
@@ -628,21 +632,27 @@ public class MyPageController {
 		System.out.println("팔로워리스트는????"+map2.get("list"));
 		System.out.println("팔로워토탈카운트는??"+map2.get("totalCount"));
 	
+	    //파티
+		modelAndView.addObject("list3", map3.get("list"));
+		modelAndView.addObject("resultPage", resultPage);
+		//modelAndView.addObject("search", search);
+	    //modelAndView.addObject("party",party); @ModelAttribute("party")Party party 지움 
 	    
-		
+	    System.out.println("파티리스트는???"+map3.get("list"));
+	    System.out.println("파티 토탈카운트는??"+resultPage.getTotalCount());
+	    //System.out.println("파티정보는???"+party);
+				
+	    System.out.println("오긴왔니???");
+	   //modelAndView.setViewName("forward:/view/mypage/mmm.jsp");
+	    
+	   //modelAndView.setViewName("forward:/view/mypage/getMyPage.jsp");
 	   
-				
-				
-				
-				modelAndView.addObject("list3", map3.get("list"));
-				modelAndView.addObject("resultPage", resultPage);
-				modelAndView.addObject("search", search);
-				//modelAndView.setViewName("forward:/view/mypage/getMyPartyList.jsp");
 				
 	    
 		//modelAndView.setViewName("forward:/view/mypage/mmm.jsp");
-	    
-	   modelAndView.setViewName("forward:/view/mypage/getMyPage.jsp");
+
+	   modelAndView.setViewName("forward:/view/mypage/twitter.jsp");
+
 		
 		return modelAndView;
 		
@@ -652,7 +662,7 @@ public class MyPageController {
 	
 	
 	
-	@RequestMapping(value = "getMyZzimList")
+	/*@RequestMapping(value = "getMyZzimList")
 	public ModelAndView getMyZzimList(@ModelAttribute("search") Search search,
 			@ModelAttribute("page") Page page, HttpServletRequest request) throws Exception {
 
@@ -721,9 +731,9 @@ public class MyPageController {
 		search.setSearchCondition("4");
 		
 		System.out.println("\n<<< /party/getMyPartyList :: GET :: search\n"+search);
-		/*System.out.println("\n<<< /party/getMyPartyList :: GET :: currentPage\n"+search.getCurrentPage());
+		System.out.println("\n<<< /party/getMyPartyList :: GET :: currentPage\n"+search.getCurrentPage());
 		System.out.println("\n<<< /party/getMyPartyList :: GET :: startPage\n"+search.getStartRowNum());
-		System.out.println("\n<<< /party/getMyPartyList :: GET :: endPage\n"+search.getEndRowNum());*/
+		System.out.println("\n<<< /party/getMyPartyList :: GET :: endPage\n"+search.getEndRowNum());
 		
 		
 		String userId = ((User)session.getAttribute("user")).getUserId();
@@ -741,7 +751,7 @@ public class MyPageController {
 		modelAndView.addObject("list", map.get("list"));
 		modelAndView.addObject("resultPage", resultPage);
 		modelAndView.addObject("search", search);
-	    /*modelAndView.setViewName("forward:/view/party/getMyPartyList.jsp");*/
+	    modelAndView.setViewName("forward:/view/party/getMyPartyList.jsp");
 		modelAndView.setViewName("forward:/view/mypage/getMyPartyList.jsp");
 		return modelAndView;
 	}
@@ -788,9 +798,9 @@ public class MyPageController {
 
 		User user = (User) session.getAttribute("user");
 
-		/*
+		
 		 * if(purchaseFlag == null) { purchaseFlag = "1"; //default is festival }
-		 */
+		 
 		System.out.println(purchaseFlag);
 		if (search.getCurrentPage() == 0) {
 			search.setCurrentPage(1);
@@ -843,7 +853,7 @@ public class MyPageController {
 		return modelAndView;
 	}
 	
-	
+	*/
 	
 	
 }
