@@ -159,6 +159,12 @@ public class ReviewDAOImpl implements ReviewDAO {
 		System.out.println("reviewDAO :: getReviewVideo");
 		return sqlSession.selectList("ReviewMapper.getReviewVideo", reviewNo);
 	}
+	
+	@Override //20
+	public void updateReviewGoodCount(Good good) throws Exception {
+		System.out.println("reviewDAO :: updateReviewGoodCount");
+		sqlSession.update("ReviewMapper.updateReviewGoodCount", good);
+	}
 
 	///////////////////////////////////////////////ODSay API////////////////////////////////////////////////////
 	

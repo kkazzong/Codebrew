@@ -28,13 +28,29 @@
 	<!--  ///////////////////////// CSS ////////////////////////// -->
 	<style>
 	
+		@import url(//fonts.googleapis.com/earlyaccess/nanumpenscript.css);
+ 
+		/* * {
+			font-family: 'Nanum Pen Script', cursive;
+			font-size: 22px;
+		}
+		
+		html {
+			font-family: 'Nanum Pen Script', cursive;
+			font-size: 22px;
+		} */
+	
  		body {
             padding-top : 70px;
             background-color: #f2f4f6;
         }
         
+        #getReviewMainImage {
+        	
+        }
+        
        	#carouselActive {
-        	width: 900px;
+       		width: -webkit-fill-available;
         	height: 600px;
         	display: block;
         	margin-left: auto;
@@ -42,7 +58,7 @@
         }
         
         #carouselInactive {
-        	width: 900px;
+       		width: -webkit-fill-available;
         	height: 600px;
         	display: block;
         	margin-left: auto;
@@ -55,7 +71,9 @@
         	display: block;
         	margin-left: auto;
         	margin-right: auto;
+        	margin-top: -50px;
         }
+        
         .btn-reply {
         	height: 25px;
         }
@@ -112,6 +130,14 @@
 			fncGetList(1);
 		});
 		
+		/* 이거 엔터가....nullString check가 안된다. ㅅㅂ
+		$("#replyDetail").on("keydown", function(event){
+			if(event.keyCode == '13'){
+				fncAddReply();
+			}
+		});
+		 */
+		
 		$("#addReply").on("click", function(){
 			
 			//alert("댓글등록 클릭");
@@ -122,7 +148,7 @@
 				swal({
 					title: "오류", 
 					text : "댓글 내용을 입력한 후에 댓글을 등록할 수 있습니다", 
-					icon : "error", 
+					type : "error", 
 				});
 			} else {
 				fncAddReply();
@@ -477,6 +503,18 @@
 								"Content-Type" : "application/json"
 							}, 
 							success : function(JSONData, status){
+								
+								if(JSONData.goodCount > $("#goodCountForGoogleMap").html()){
+									swal({
+										text: "'좋아요'가 추가되었습니다.", 
+										type: "success", 
+									});
+								}else{
+									swal({
+										text: "'좋아요'가 취소되었습니다.", 
+										type: "error", 
+									});
+								}
 								$("#goodCountForGoogleMap").html(JSONData.goodCount);
 							}
 						}		
@@ -494,7 +532,7 @@
 				swal({
 					title: "재검색", 
 					text: "변경된 반경 "+radiusForTransportSearchAgain+"으로 재검색 합니다.", 
-					icon: "info", 
+					type: "info", 
 				});
 				
 				$("#transportListAtStation").html("반경 "+radiusForTransportSearchAgain+"으로 재검색 중입니다.");
@@ -551,19 +589,20 @@
 	<input type="hidden" id="location_y" value="">
    	
    	<!-- 후기상세조회 화면구성 div Start -->
+   	<!-- 
    	<div class="container">
-
+	 -->
 		<!-- page header start-->
 		<header>
 			<div class="row">
 				<div class="col-md-offset-4 col-md-4">
 			   		<div class="page-header text-center">
-			   			<h3 class="text-info">
+			   			<h2 class="text-info">
 			   				<span class="glyphicon glyphicon-edit" aria-hidden="true">
 			   					후기상세조회
 			   				</span>
-			   			</h3>
-			   			<h5 class="text-muted">후기 정보를 <strong class="text-danger">내놓으시길</strong>바랍니다.</h5>
+			   			</h2>
+			   			<h4 class="text-muted">후기 정보를 <strong class="text-danger">내놓으시길</strong>바랍니다.</h4>
 			   		</div>
 				</div>
 				<!-- row end -->
@@ -572,12 +611,12 @@
 		<!-- page header end -->
 		
 		
-		<div class="row">
-			<div class="col-md-offset-2 col-md-8">
+		<div class="row" id="getReviewMainImage">
+			<!-- <div class="col-md-12" id="getReviewMainImage"> -->
 			<!-- <div class="col-md-12"> -->
-				<div class="panel panel-default">
+				<%-- <div class="panel panel-default">
 					<div class="panel-heading">
-						<h3 class="panel-title text-center">후기제목 : ${review.reviewTitle }</h3>
+						<h1 class="panel-title text-center">후기제목 : ${review.reviewTitle }</h1> --%>
 						<%--  
 						이렇게 하면 1번째 이미지 들어간다
 						<img width="100%" height="300" src="/resources/uploadFile/${review.reviewImageList[0].reviewImage }"> 
@@ -628,11 +667,12 @@
 						 -->
 						<!-- Carousel End -->
 						<hr>
-					</div>
+				<!-- 	</div>
 				</div>
-			</div>
+			</div> -->
 		</div>
 		
+	<div class="container">
 		
 		<div class="row">
 			<div class="col-md-offset-2 col-md-8">
@@ -724,47 +764,45 @@
 							<h3>
 								<strong>축제후기</strong>
 							</h3>
+							<hr>
 						</div>
 						<div class="col-md-12 text-center">
-							<small>
-								<span class="glyphicon glyphicon-dashboard" aria-hidden="true">축제평점</span>
-								<%-- 
-								<span id="reviewFestivalRatingForGoogleMap">${review.reviewFestivalRating } / 5
-								
-								</span>
-								--%>
-							</small>
+							<span class="glyphicon glyphicon-dashboard" aria-hidden="true"> 축제평점</span>
+							<%-- 
+							<span id="reviewFestivalRatingForGoogleMap">${review.reviewFestivalRating } / 5
+							
+							</span>
+							--%>
+							<hr>
 						</div>
 						<div class="col-md-12 text-middle">
 							<input type="number" id="reviewFestivalRating" class="rating" name="reviewFestivalRating" value="${review.reviewFestivalRating }" data-min="0" data-max="5" data-step="1" data-size="xs" data-rtl="true" readonly>
+							<hr>
 						</div>
 						<hr>
 						<div class="col-md-12">
-							<small>
-								<span class="glyphicon glyphicon-heart-empty" aria-hidden="true">좋아요:</span>
-								<span id="goodCountForGoogleMap">${review.goodCount }</span>
-								<c:if test="${!empty sessionScope.user }">
-									<span class = "glyphicon glyphicon-thumbs-up" id = "addGood" role="button"></span>
-								</c:if>
-							</small>
+							<span class="glyphicon glyphicon-heart-empty" aria-hidden="true"> 좋아요 : </span>
+							<span id="goodCountForGoogleMap">${review.goodCount }</span>
+							<c:if test="${!empty sessionScope.user }">
+								<span class = "glyphicon glyphicon-thumbs-up" id = "addGood" role="button"></span>
+							</c:if>
+							<hr>
 						</div>
 						<div class="col-md-12">
-							<small>
-								<span class="glyphicon glyphicon-book" aria-hidden="true">후기내용</span><br>
-								<span id="reviewDetailForJS">${review.reviewDetail }</span>
-							</small>
+							<span class="glyphicon glyphicon-book" aria-hidden="true"> 후기내용</span>
+							<br>
+							<br>
+							<span id="reviewDetailForJS">${review.reviewDetail }</span>
+							<hr>
 						</div>
 						<div class="col-md-12">
-							<small>
-								<span class="glyphicon glyphicon-tags" aria-hidden="true">해시태그:</span>
-								<span id="reviewHashtagForJS">${review.reviewHashtag }</span>
-							</small>
+							<span class="glyphicon glyphicon-tags" aria-hidden="true"> 해시태그 : </span>
+							<span id="reviewHashtagForJS">${review.reviewHashtag }</span>
+							<hr>
 						</div>
 						<div class="col-md-12">
-							<small>
-								<span class="glyphicon glyphicon-facetime-video" aria-hidden="true">동영상</span><br>
-							</small>
 							<c:if test="${!empty review.reviewVideoList[0].reviewVideo }">
+								<span class="glyphicon glyphicon-facetime-video" aria-hidden="true"> 동영상</span>
 								<c:set var="i" value="0"/>
 					  			<c:forEach var="listV" items="${review.reviewVideoList}">
 						   				<video controls >
