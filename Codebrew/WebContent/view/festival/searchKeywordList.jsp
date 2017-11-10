@@ -40,9 +40,9 @@
 		});
 });
 
-	function goSearch(){
+/* 	function goSearch(){
 		fncGetList(1);
-}
+} */
    
 	
 	$(function(){
@@ -67,7 +67,7 @@
    
    
 
-
+/* 
 	$(function() {
 
 		$("td:nth-child(1)").on("click", function() {
@@ -76,12 +76,24 @@
 
 			self.location = "/festival/getFestival?festivalNo=" + festivalNo;
 		});
+	}); */
+	
+	$(function() {
+
+		$(".panel-body").on("click", function() {
+
+		var festivalNo = $("p", this).text();
+
+		/* self.location = "/festival/getFestivalDB?festivalNo=" + festivalNo; */
+		self.location = "/festival/getFestivalDB?festivalNo=" + festivalNo;
 	});
+});
+
 	
 	
 	/* role='u'; */
 	
-	 function fncGetList(currentPage) {
+/* 	 function fncGetList(currentPage) {
 	   
 	    $("#currentPage").val(currentPage)
 	   
@@ -93,20 +105,9 @@
 		 $( "button:contains('검색')" ).on("click" , function() {
 			fncGetList(1);
 		});
-});
+}); */
 
-	$(function() {
-
-			$(".panel-body").on("click", function() {
-
-			var festivalNo = $("p", this).text();
-
-			/* self.location = "/festival/getFestivalDB?festivalNo=" + festivalNo; */
-			self.location = "/festival/getFestivalDB?festivalNo=" + festivalNo;
-		});
-	});
-	
-$(function(){
+/* $(function(){
 		
 		$("input:text[name='searchKeyword']").on('keydown',function(event){
 			
@@ -116,7 +117,7 @@ $(function(){
 			}
 		});
 	
-	});
+	}); */
 	
 </script>
 

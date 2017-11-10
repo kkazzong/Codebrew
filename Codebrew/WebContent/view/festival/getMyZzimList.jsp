@@ -2,10 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<%-- <%@include file="/view/festival/admin.jsp"%> --%>
-
-<%-- <%@include file="/view/festival/user.jsp"%> --%>
-
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -27,6 +23,9 @@
 
 	<!-- Bootstrap Dropdown Hover JS -->
 	<script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
+	
+	<!--card css  -->
+	<link rel="stylesheet" href="/resources/css/card.css">
 
 <script type="text/javascript">
 
@@ -46,7 +45,8 @@
 
 	$(function() {
 
-			$(".panel-body").on("click", function() {
+			/* $(".panel-body").on("click", function() { */
+			$(".getDB").on("click", function() {
 
 			var festivalNo = $("p", this).text();
 
@@ -166,14 +166,73 @@ body {
 		
 		<br/>
 		<br/>
-		
-		
-
+		<section>
 		<div class="row">
 		
 		<c:forEach var="festival" items="${list}">
 		
+			<c:if test="${festival.deleteFlag == null }">
 			
+			<div class="col-md-6">
+						<!-- <div class="panel panel-primary"> -->
+						<div class="card">
+							<div class="getDB">
+								<c:if test="${festival.festivalImage.contains('http://')==true }">
+									<img class="card-img-top" src="${festival.festivalImage }" width="100%" height="423" />
+								</c:if>
+								
+								<c:if test="${festival.festivalImage.contains('http://')==false }">
+									<img class="card-img-top" src="../../resources/uploadFile/${festival.festivalImage }" width="100%" height="423" />
+								</c:if>
+								
+								<div id="festivalNo" style="display: none">
+											<p>${festival.festivalNo }</p>
+								</div> 
+								</div>
+					<div class="card-body">
+					
+						<div class="festivalInfo">
+									
+									<div class="col-md-12">
+										<div class="deleteZzim">
+												<span class="pull-right glyphicon glyphicon-heart" 
+												style = " font-size:2.5em;  color: red;" id="tag"></span>
+											<input type="hidden" name="festivalNo" id="festivalNo" value="${festival.festivalNo }">
+											</div>
+										<h4><Strong>${festival.festivalName}</Strong></h4>
+									</div>
+									
+									
+									
+									<div class="col-md-12">
+										<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+										<Strong>${festival.startDate} ~ ${festival.endDate}</Strong>
+									</div>
+									
+									<div class="col-md-12">
+										 <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+										 <Strong>${festival.addr } </Strong>
+									</div>
+									
+									
+									</div>
+									
+							</div>
+						</div>
+				</div>	
+			
+			
+			</c:if>
+			
+			</c:forEach>
+		</div>
+		</section>
+		
+
+		<%-- <div class="row">
+		
+		<c:forEach var="festival" items="${list}">
+		
 			<div class="col-md-6">
 						<div class="panel panel-primary">
 							<div class="panel-heading">
@@ -225,8 +284,9 @@ body {
 			<input type = "hidden" class="form-control" id="userId" name="userId" value= "${user.userId }">	
 			
 			</c:forEach>
-		</div>
+		</div> --%>
 		
+		<input type = "hidden" class="form-control" id="userId" name="userId" value= "${user.userId }">
 		<input type = hidden id="currentPage" name = "currentPage" value = ${i } />
 			
 			<jsp:include page="../../common/pageNavigator_new.jsp"/>
