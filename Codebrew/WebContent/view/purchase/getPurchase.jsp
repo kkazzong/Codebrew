@@ -34,6 +34,9 @@
 	<!-- Include a polyfill for ES6 Promises (optional) for IE11 and Android browser -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
 	
+	<!-- 로딩 -->
+	<link href="/resources/css/loading.css" rel="stylesheet">
+	
 	<!-- 자바스크립트 -->
 	<script type="text/javascript">
 		

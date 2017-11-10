@@ -46,6 +46,7 @@
 	<!-- card css -->
 	<link rel="stylesheet" href="/resources/css/card.css">
 	
+	
 	<!-- 자바스크립트 -->
 	<script type="text/javascript">
 		
@@ -265,7 +266,7 @@
 			var userId = "${user.userId}";
 			
 			//autocomplete
-			/* $("#searchKeyword").autocomplete({
+			$("#searchKeyword").autocomplete({
 				source: function( request, response ) {
 			        $.ajax( {
 			          url: "/purchaseRest/json/getPurchaseList/${user.userId}/''",
@@ -296,7 +297,7 @@
 			          }
 			        } );
 			    }
-			}); */
+			});
 			
 			//판넬 높이 조절
 			var maxHeight = -1;
@@ -457,14 +458,30 @@
 	<jsp:include page="/view/purchase/filterModalUser.jsp"></jsp:include>
 	<%-- 서치컨디션 ${search.searchCondition } --%>
 	
-
+	<!-- 로오오오오딩 -->
+		<div class="container">
+		<div class="row">
+			<div id="loader">
+	    		<div class="dot"></div>
+				<div class="dot"></div>
+				<div class="dot"></div>
+				<div class="dot"></div>
+				<div class="dot"></div>
+				<div class="dot"></div>
+				<div class="dot"></div>
+				<div class="dot"></div>
+				<div class="lading"></div>
+			</div>
+		</div>
+	</div>
+	
 	<div class="container">
 	
 		<!-- page header -->
 		<div class="row">
 			<div class="col-md-12">
 				<div class="page-header text-center">
-					<h3 class="text-info"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;&nbsp;my티켓</h3>
+					<h3 class="text-info">my티켓</h3>
 				</div>
 			</div>
 		</div>
@@ -525,7 +542,7 @@
 									value="${!empty search.searchKeyword ? search.searchKeyword : ''}"
 									placeholder="축제 or 파티 이름으로 검색">
 						<span class="input-group-btn">
-					    	<button id="search" class="btn btn-default btn-lg btn-block" type="button">
+					    	<button id="search" class="btn btn-info btn-lg btn-block" type="button">
 					    		<!-- <span class="glyphicon glyphicon-search" aria-hidden="true"></span> -->
 					    		<!-- <img src="/resources/image/svg/si-glyph-magnifier-2.svg"/> -->
 					    		검색
@@ -533,7 +550,7 @@
 					    </span>
 					</div>
 				</form>
-			</div>
+			</div> 
 		</div>
 		</div>
 		
