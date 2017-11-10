@@ -5,6 +5,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
+<!-- autocomplete -->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+
 <!-- Bootstrap Dropdown Hover CSS -->
 <link href="/resources/css/animate.min.css" rel="stylesheet">
 <link href="/resources/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
@@ -111,34 +115,44 @@
 	                   </ul>
 	                 </li>
 	                 
-	                 <c:if test="${!empty user}">
-		                  <li class="dropdown">
-			                <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-			                    <span >나의채팅방</span>
-			                </a>
-		                </li>
-	                 </c:if>
+	               <!-- </ul> -->
+	               
+	               
+	              <!-- 수정중 -->
+	              	
+	              		<li>
+	              		
+				<%-- <div class="input-group text-center">
+					<input type="text" class="form-control  input-lg" id="searchKey" name="searchKeyword" 
+					value="${!empty search.searchKeyword ? search.searchKeyword : ''}"
+					placeholder="축제를 검색해보세요.">
+						<span class="input-group-btn">
+							<button id="sc" class="btn btn-default btn-lg btn-block" type="button">
+						    	<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+						    </button>
+						</span>
+				</div> --%>
+				
+				<div class="navbar-form navbar-left" role="search">
+				  <div class="form-group" >
+				    <input type="text" class="form-control" id="searchKey" name="searchKeyword" 
+					value="${!empty search.searchKeyword ? search.searchKeyword : ''}"
+					placeholder="축제를 검색해보세요.">
+				  </div>
+				  <button id="sc" class="btn btn-default">
+				  	<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+				  </button>
+				</div>
+	              		
+	              			
+	              		</li>
+	              	
+	              
+	              
+	             </ul>   
 	                 
-	                <!-- 관리자일때 -->
-	                <c:if test="${sessionScope.user.role == 'a'}">
-		                <li class="dropdown">
-			                <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-			                    <span >Manage</span>
-			                    <span class="caret"></span>
-			                </a>
-			                <ul class="dropdown-menu">
-			                    <li><a href="#">회원목록</a></li>
-			                    <li class="divider"></li>
-			                    <li><a href="#">축제등록</a></li>
-			                    <li class="divider"></li>
-			                    <li><a href="#">후기심사목록</a></li>
-			                    <!-- <li><a href="#">티켓판매목록</a></li>
-			                    <li><a href="#">판매통계</a></li> -->
-			                 </ul>
-		                 </li>
-	                 </c:if>
 	                 
-	             </ul>
+	             
 	             
 	             
 	             <ul class="nav navbar-nav navbar-right">
@@ -155,6 +169,10 @@
 			                    <li><a href="#">my파티</a></li>
 			                    <li><a href="#">my후기</a></li>
 			                    <li><a href="#">my티켓</a></li>
+			                    
+			                    <!-- 성경 : 추가사항 -->
+			                    <li><a href="#">회원목록</a></li>
+			                    
 			              </ul>
 			           </li>
 
@@ -169,44 +187,83 @@
 		<!-- dropdown hover END -->	       
 	    
 	</div>
-	
-	<!-- <div id="custom-bootstrap-menu" class="navbar navbar-default " role="navigation">
-	    <div class="container-fluid">
-	        <div class="navbar-header"><a class="navbar-brand" href="#">Brand</a>
-	            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-menubuilder"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-	            </button>
-	        </div>
-	        <div class="collapse navbar-collapse navbar-menubuilder">
-	            <ul class="nav navbar-nav navbar-left">
-	                <li><a href="#">Festival</a>
-	                </li>
-	                <li><a href="#">Party</a>
-	                </li>
-	                <li><a href="#">Review</a>
-	                </li>
-	                <li><a href="#">Purchase</a>
-	                </li>
-	                <li><a href="#">Manage</a>
-	                </li>
-	                <li><a href="#">MyPage</a>
-	                </li>
-	                <li><a href="#">Login</a>
-	                </li>
-	                <li><a href="#">Logout</a>
-	                </li>
-	            </ul>
-	        </div>
-	    </div>
-	</div> -->
-	
-	
-	
 </div>
+					<input type="hidden" id="currentPage" name="currentPage" value=""/>
+					<input type="hidden" id="fNo" name="festivalNo" value=""/>
+					
 
 		<!-- ToolBar End /////////////////////////////////////-->
    	
    	
    	<script type="text/javascript">
+   	
+   	/* 오토컴플릿 삽입 */
+   	
+   			///////////////////////////////////검색///////////////////////////////////////
+		$(function() {
+			
+				$("#searchKey").autocomplete({
+					source: function( request, response ) {
+				        $.ajax( {
+				          url: "/festivalRest/json/getKeyword",
+				          method : "POST",
+				          headers : {
+								"Accept" : "application/json",
+								"Content-Type" : "application/json"
+						  },
+				          dataType: "json",
+				          data: JSON.stringify({
+				        	currentPage : "1",
+					        searchKeyword : $("#searchKey").val(),
+					        searchCondition : ""
+				          }),
+				          success: function( JSONData ) {
+				            response($.map(JSONData, function(value, key){
+				            	console.log(value.festivalNo);
+				            	
+				            	var festivalNo = value.festivalNo;
+				            	
+				            	$("#fNo").val(festivalNo);
+				            	
+				            		return {
+				            			label :  value.festivalName,
+				            			value : value.festivalName
+				            		}
+					        	}));
+					          }
+				        });
+				    }
+				});
+			});
+   	
+
+		   $(function(){
+			   $("#sc").on("click",function(){
+					
+				   var festivalNo = $("#fNo").val();
+				   var searchKeyword = $("#searchKey").val();
+				   
+				   if(searchKeyword == null || searchKeyword.length <1){
+						alert("축제명은 반드시 한 글자 이상 입력하셔야 합니다.");
+						return;
+					}
+				   
+				   self.location="/festival/getFestivalDB?festivalNo="+festivalNo;
+			   });
+		   });
+		   
+		   $(function(){
+				$("#searchKey").on('keydown',function(event){
+					
+					if(event.keyCode ==13){
+						event.preventDefault();
+						$( "#sc"  ).click();
+					}
+				});
+			
+			});
+   	
+   	
 		
    		$(".dropdown").hover(function(){
    			$(this).toggleClass("mouse-on");

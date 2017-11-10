@@ -598,8 +598,9 @@ public class FestivalController {
 			return modelAndView;
 
 		} catch (Exception e) {
-
-			Festival festival = festivalService.getFestival(festivalNo);
+			
+			System.out.println("getFestivalDB Exception.........");
+			Festival festival = festivalService.getFestivalDB(festivalNo);
 			ModelAndView modelAndView = new ModelAndView();
 			modelAndView.addObject("festival", festival);
 			modelAndView.setViewName("forward:/view/festival/getFestival.jsp");
