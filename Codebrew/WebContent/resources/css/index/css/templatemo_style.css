@@ -366,7 +366,8 @@ hr {
   z-index: 9;
   width: 100%;
   text-align: center;
-  top: 380px;
+  /* top: 380px; */
+  top: 230px;
   left: 0;
 }
 .flexslider .slider-caption h2 {

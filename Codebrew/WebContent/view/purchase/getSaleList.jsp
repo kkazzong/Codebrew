@@ -1,7 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
-
+<c:if test="${ !empty user }">
+	<c:if test="${user.role != 'a' }">
+		<jsp:forward page="/index.jsp"></jsp:forward>
+	</c:if>
+</c:if>
 <!DOCTYPE html>
 <html>
 <head>
@@ -210,7 +214,7 @@
 <body>
 	
 	<!-- 툴바 -->
-	<jsp:include page="/toolbar/toolbar_new2.jsp"></jsp:include>
+	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>
 	
 	<!-- 모달 -->
 	<jsp:include page="/view/purchase/filterModal.jsp"></jsp:include>

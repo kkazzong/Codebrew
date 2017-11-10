@@ -2,6 +2,8 @@ package com.codebrew.moana.web.statistics;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.codebrew.moana.service.domain.Statistics;
+import com.codebrew.moana.service.domain.User;
 import com.codebrew.moana.service.statistics.StatisticsService;
 
 @Controller
@@ -26,7 +29,15 @@ public class StatisticsController {
 	}
 	
 	@RequestMapping(value="getStatistics", method=RequestMethod.GET)
-	public ModelAndView getStatistics(@RequestParam(value="statFlag",  required=false) String statFlag) {
+	public ModelAndView getStatistics(@RequestParam(value="statFlag",  required=false) String statFlag, HttpSession session) {
+		
+		ModelAndView modelAndView = new ModelAndView();
+		
+		User user = (User)session.getAttribute("user");
+		if(!user.getRole().equals("a")) {
+			modelAndView.setViewName("/index.jsp");
+			return modelAndView;
+		}
 		
 		System.out.println("statFlag => "+statFlag);
 		
@@ -37,7 +48,6 @@ public class StatisticsController {
 		Statistics statistics = new Statistics();
 		statistics.setStatFlag(statFlag);
 		
-		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("statistics", statistics);
 		modelAndView.setViewName("/view/statistics/getStatistics.jsp");
 		//modelAndView.setView(new RedirectView("/view/statistics/getStatistics.jsp"));
