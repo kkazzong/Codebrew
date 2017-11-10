@@ -258,11 +258,11 @@
 							<form id="deleteForm">
 									<input type="hidden" name="partyNo" value="${party.partyNo}">
 									
-									<%-- <c:if test="${search.searchCondition == '3' }"> --%>
+									<c:if test="${search.searchCondition == '3' }">
 										<button class="btn btn-xs btn-warning pull-right" type="button" value="${party.partyNo}">
 											<small><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></small>
 										</button>
-									<%-- </c:if> --%>
+									</c:if>
 							</form>
 							<div class="clearfix"></div>
 						<!-- </span> -->
