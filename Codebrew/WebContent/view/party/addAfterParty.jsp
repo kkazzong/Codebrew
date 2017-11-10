@@ -330,8 +330,9 @@
         } */
         
 		body {
-	     	padding-top : 70px;
-	    }
+			padding-top: 70px;
+			background-color: #f2f4f6;
+		}
 		.filebox label {
 		    display: inline-block;
 		    padding: .5em .75em;
