@@ -498,9 +498,11 @@ $(function() {
 <a href="/view/user/getProfile.jsp">다른프로젝트조</a>
 <br>
 <br>
-
-
-
+<a href="/view/user/twitter.jsp">트위터 형식</a>
+<br>
+<br>
+<br>
+<br>
 
   
 </body>

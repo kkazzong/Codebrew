@@ -600,6 +600,12 @@ public class MyPageController {
 	//sessionId가 responseId로	
 		  
 	
+	  //파티33
+	  Map<String, Object> map = partyService.getMyPartyList(search, sessionId);//원래 userId였음
+		
+		Page resultPage = new Page(search.getCurrentPage(),((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+	  
+	  
 	
 		ModelAndView modelAndView=new ModelAndView();
 		modelAndView.addObject("user", user);//마이페이지 왔을때 그사람의 정보
@@ -623,6 +629,16 @@ public class MyPageController {
 		System.out.println("팔로워토탈카운트는??"+map2.get("totalCount"));
 	
 	    
+		
+	   
+				
+				
+				
+				modelAndView.addObject("list", map.get("list"));
+				modelAndView.addObject("resultPage", resultPage);
+				modelAndView.addObject("search", search);
+				modelAndView.setViewName("forward:/view/mypage/getMyPartyList.jsp");
+				
 	    
 		//modelAndView.setViewName("forward:/view/mypage/mmm.jsp");
 	    
@@ -632,6 +648,9 @@ public class MyPageController {
 		
 	
     }
+	
+	
+	
 	
 	@RequestMapping(value = "getMyZzimList")
 	public ModelAndView getMyZzimList(@ModelAttribute("search") Search search,
