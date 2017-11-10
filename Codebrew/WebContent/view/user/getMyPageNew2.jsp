@@ -133,11 +133,11 @@ $(document).ready(function() {
 <div class="col-lg-6 col-sm-6">
     <div class="card hovercard">
         <div class="card-background">
-            <img class="card-bkimg" alt="" src="http://lorempixel.com/100/100/people/9/">
+            <img class="card-bkimg" alt="" src="/resources/uploadFile/user04profile.jpg">
             <!-- http://lorempixel.com/850/280/people/9/ -->
         </div>
         <div class="useravatar">
-            <img alt="" src="http://lorempixel.com/100/100/people/9/">
+            <img alt="" src="/resources/uploadFile/user04profile.jpg">
         </div>
         <div class="card-info"> <span class="card-title">Pamela Anderson</span>
 

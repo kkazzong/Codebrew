@@ -1,4 +1,7 @@
+=\=\=\=\=\=\=
+<<<<<<<=HEAD
+>>>>>>>=refs/heads/new/jooyoung
 eclipse.preferences.version=1
 encoding//WebContent/view/chat/chatting.jsp=UTF-8
-encoding//WebContent/view/user/getMyPage2.jsp=UTF-8
-encoding//WebContent/view/user/getMyPageNew.jsp=UTF-8
+encoding//WebContent/view/user/loginNew.jsp=UTF-8
+encoding//WebContent/view/user/oldGetMyPage.jsp=UTF-8

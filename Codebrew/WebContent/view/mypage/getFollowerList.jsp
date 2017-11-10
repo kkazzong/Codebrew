@@ -50,11 +50,11 @@
 				//$("#tag" ).on("click" , function() {//맞팔이 안되어있는 follow를 클릭했을때
 				$(".btn:contains('Follow')" ).each(function(){}).on("click" , function() {
 					var requestId = $(this).val();//each(function(){})반복문마다 요소를 선택해서
-					alert(requestId);			
+					//alert(requestId);			
 					 //f4f = $(this).val();
 					var flag = $(this).attr('class').trim();
 					
-					alert(flag);
+					//alert(flag);
 					
 					//if( f4f == "Follow" ) {//내 팔로워 목록에 맞팔이 안되있으니깐 추가하는거고
 					 // if(${follow.f4f == 1})
@@ -74,7 +74,7 @@
 										/*  location.reload(); */ 
 									   //$("#followButton").text("Following").css('background-color', '#3897f0').css('color', '#fff');
 										//location.reload();
-										alert("context는 머다??"+this);//[object HTMLButtonElement]
+										//alert("context는 머다??"+this);//[object HTMLButtonElement]
 									  // $(this).removeClass('.btn.btn-sm').addClass('.btn.btn-info'); 
 										
 									  
@@ -91,12 +91,12 @@
 					
 				$(".btn:contains('Following')" ).each(function(){}).on("click" , function() {	
 					var requestId = $(this).val();
-					alert(requestId);
+					//alert(requestId);
 					/* else  if( f4f == "Following" ) { *///내팔로워 목록에  맞팔이 되어있으니깐 삭제할수 있다.
 						
 					var flag = $(this).attr('class').trim();
 					
-					alert(flag);
+					//alert(flag);
 					
 						$.ajax({
 									type:'POST',
@@ -111,7 +111,7 @@
 									 success : function(JSONData, status) {
 									
 										 //$("#tag").removeClass(".btn.btn-info.btn-sm").addClass(".btn.btn-sm");
-										 alert("context는 뭘까??"+this);//[object HTMLButtonElement]
+										 //alert("context는 뭘까??"+this);//[object HTMLButtonElement]
 										 //$(this).removeClass("btn btn-info btn-sm pull-right").addClass("btn btn-sm pull-right");
 										//$(this).removeClass('.btn.btn-info').addClass('.btn.btn-sm');
 										 

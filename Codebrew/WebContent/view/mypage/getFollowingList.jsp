@@ -46,12 +46,12 @@
 				 
 				 $(".btn:contains('Following')" ).each(function(){}).on("click" , function() {	
 						var requestId = $(this).val();
-						alert(requestId);
+						//alert(requestId);
 						/* else  if( f4f == "Following" ) { *///내팔로워 목록에  맞팔이 되어있으니깐 삭제할수 있다.
 							
 						var flag = $(this).attr('class').trim();
 						
-						alert(flag);
+						//alert(flag);
 						
 							$.ajax({
 										type:'POST',
@@ -82,7 +82,7 @@
 												//moveFollowing();
 												
 												
-											alert("context는 뭘까??"+this);//[object HTMLButtonElement]
+											//alert("context는 뭘까??"+this);//[object HTMLButtonElement]
 											
 										   $(this).removeClass("btn btn-info btn-sm pull-right").addClass("btn btn-sm pull-right").text("Follow");
 										 
