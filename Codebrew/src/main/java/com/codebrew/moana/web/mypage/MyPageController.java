@@ -606,7 +606,9 @@ public class MyPageController {
 	  Map<String, Object> map3 = partyService.getMyPartyList(search, sessionId);//원래 userId였음
 		
 
+
 		Page resultPage = new Page(search.getCurrentPage(),((Integer)map3.get("totalCount")).intValue(), pageUnit, pageSize);
+
 
 	  
 	  
@@ -647,9 +649,6 @@ public class MyPageController {
 	    
 	   //modelAndView.setViewName("forward:/view/mypage/getMyPage.jsp");
 	   
-				
-	    
-		//modelAndView.setViewName("forward:/view/mypage/mmm.jsp");
 
 	   modelAndView.setViewName("forward:/view/mypage/twitter.jsp");
 
