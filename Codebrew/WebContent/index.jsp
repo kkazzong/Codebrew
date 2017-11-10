@@ -484,7 +484,7 @@
                     </div> <!-- /.heading-section -->
                 </div> <!-- /.row -->
                 <div class="row">
-                    <div class="col-md-2 col-sm-4">
+                    <div class="col-md-offset-1 col-md-2 col-sm-4">
                         <div class="service-item" id="service-1">
                             <div class="service-icon">
                                 <i class="fa fa-cubes"></i>
@@ -492,7 +492,7 @@
                             <div class="service-content">
                                 <div class="inner-service">
                                    <h3>Party</h3>
-                                   <p>Enjoy enjoying fun parties together, Please register yourself with the party and the last party doesn't appear on the list.</p> 
+                                   <p>Enjoy enjoying fun parties together, Please register yourself with the party.</p> 
                                 </div>
                             </div> <!-- /.service-content -->
                         </div> <!-- /#service-1 -->
@@ -505,7 +505,7 @@
                             <div class="service-content">
                                 <div class="inner-service">
                                    <h3>Festival</h3>
-                                   <p>It's a useful place to check for information about festivals in different regions. You can pre-empt the festival you want to go.</p> 
+                                   <p>It's a useful place to check for information about festivals in different regions.</p> 
                                 </div>
                             </div> <!-- /.service-content -->
                         </div> <!-- /#service-1 -->
@@ -518,7 +518,7 @@
                             <div class="service-content">
                                 <div class="inner-service">
                                    <h3>Review</h3>
-                                   <p>Don't miss the chance to share people's frank reviews. You can check the traffic information around the festival, and there is room for sharing ideas.</p> 
+                                   <p>Don't miss the chance to share people's frank reviews & traffic information.</p> 
                                 </div>
                             </div> <!-- /.service-content -->
                         </div> <!-- /#service-1 -->
@@ -531,7 +531,7 @@
                             <div class="service-content">
                                 <div class="inner-service">
                                    <h3>Ticket</h3>
-                                   <p>Anyone who wants to go to parties or festivals can easily purchase tickets at our site. To purchase tickets, you can use them after logging in.</p> 
+                                   <p>Anyone who wants to go to parties or festivals can easily purchase tickets. </p> 
                                 </div>
                             </div> <!-- /.service-content -->
                         </div> <!-- /#service-1 -->
@@ -544,8 +544,7 @@
                             <div class="service-content">
                                 <div class="inner-service">
                                    <h3>Chatting</h3>
-                                   <p>In Monana, we organized a forum for communication among members.
-You can chat or chat with each other. After attending the party, you can chat with the group.</p> 
+                                   <p>In Monana, we organized a forum for communication among members.</p> 
                                 </div>
                             </div> <!-- /.service-content -->
                         </div> <!-- /#service-1 -->
