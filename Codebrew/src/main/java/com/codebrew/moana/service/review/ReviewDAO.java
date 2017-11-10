@@ -85,4 +85,7 @@ public interface ReviewDAO {
 	//20
 	public Map<String, Object> getTransportListAtStation(double x, double y, int radius) throws Exception;
 	
+	//21
+	public void updateReviewGoodCount(Good good) throws Exception;
+	
 }

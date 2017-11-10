@@ -49,13 +49,16 @@ public interface ReviewService {
 	//12
 	public Good checkGood(Good good) throws Exception;
 	
-	//12
-	public List<Image> getReviewImage(int reviewNo) throws Exception;
-	
 	//13
-	public List<Video> getReviewVideo(int reviewNo) throws Exception;
+	public void updateReviewGoodCount(Good good) throws Exception;
 	
 	//14
+	public List<Image> getReviewImage(int reviewNo) throws Exception;
+	
+	//15
+	public List<Video> getReviewVideo(int reviewNo) throws Exception;
+	
+	//16
 	public Map<String, Object> getTransportListAtStation(double x, double y, int radius) throws Exception;
 	
 }
