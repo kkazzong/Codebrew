@@ -424,15 +424,15 @@ public class FestivalController {
 			search.setArrange("");
 		}
 
-		Date dt = new Date();
-
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
-
-		String currentDate = sdf.format(dt).toString();
-
-		if (search.getSearchKeyword() == null || search.getSearchKeyword() == "") {
-			search.setSearchKeyword(currentDate);
-		}
+//		Date dt = new Date();
+//
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+//
+//		String currentDate = sdf.format(dt).toString();
+//
+//		if (search.getSearchKeyword() == null || search.getSearchKeyword() == "") {
+//			search.setSearchKeyword(currentDate);
+//		}
 		
 		Map<String,Object> map = new HashMap<String,Object>();
 		

@@ -198,7 +198,7 @@ $(function() {
 			<div class="col-md-6">
 						<div class="panel panel-primary">
 							<div class="panel-heading">
-								<h3 class="panel-title pull-left">${i} ${festival.festivalName}</h3>
+								<h5 class="panel-title pull-left">${i} ${festival.festivalName}</h5>
 								<br/>
         						<div class="clearfix"></div>
 							</div>
