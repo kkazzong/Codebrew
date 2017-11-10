@@ -7,7 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
 
 
 <!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
@@ -15,14 +15,111 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-   
+      
 	
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+	 
+	 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"> 
 	  
 <title>마이페이지</title>
 </head>
 
+<script type="text/javascript">
+	
+	  $(function() {
+		 
+			$("#profileFollow").on("click" , function() {
+				var requestId = $("#userId").val();
+			
+			 console.log("requestId는????"+requestId);
+			 
+				
+				$.ajax({
+					    type:'POST',
+						url : '/myPageRest/json/addFollow',
+						data: {requestId:requestId},
+						dataType : "json",
+					 /* headers : {
+							 "Accept" : "application/json",
+							 "Content-Type" : "application/json"
+						 }, */
+						 /* async:false; */
+						 /* context : this, */
+						 success : function(JSONData, status) {
+							/*  $("#follow").val("following").css('background-color', '#3897f0').css('color', '#fff'); */
+							/* location.reload(); */
+							//console.log(this);
+							//console.log(JSON.stringify(JSONData));
+							//$(this).val('following');
+							//alert(status);
+							//alert(JSON.stringify(JSONData));
+							 //location.reload();
+							/* 팔로잉 됐다고 버튼이  바뀜 follow(팔로잉 안한거)--> following(팔로잉된거) */
+							//$("#profileFollow").text("Following").css('background-color', '#3897f0').css('color', '#fff');
+							
+							$("#profileFollow").removeClass("btn btn-sm").addClass("btn btn-info btn-sm").text("Following");
+							
+							//$(this).val("Following");
+							
+							
+							
+							location.reload();
+						     //window.location.reload(true);
+						     //$('#reload').load("/myPage/getMyPage?requestId=${sessionScope.user.userId}");
+							// window.location.reload(true);
+							//$('#content').html(JSON.stringify(JSONData));
+						 } 
+					})
+			  });
+			
+	 });	
+	 
+	 
+	 
+	 $(function() {
+		 
+			$("#profileFollowing").on("click" , function() {
+				var requestId = $("#userId").val();
+			
+			 console.log("requestId는????"+requestId);
+			 
+				
+				$.ajax({
+						/* url : '/myPageRest/json/deleteFollow/'+requestId,
+						method : "GET",
+						dataType : "json",
+						headers : {
+							 "Accept" : "application/json;charset=UTF-8",
+							 "Content-Type" : "application/json"
+						 },
+						 context : this, */
+						 type:'POST',
+						 url : '/myPageRest/json/deleteFollow',
+						 data: {requestId:requestId},
+						 dataType : "json",
+						 
+						 success : function(JSONData, status) {
+							/*  $("#follow").val("following").css('background-color', '#3897f0').css('color', '#fff'); */
+							/* location.reload(); */
+							//$(this).val('follow');
+							alert(JSON.stringify(JSONData));
+							
+							//$("#profileFollowing").text("Follow").css('background-color', '#3897f0').css('color', '#fff');
+							$("#profileFollowing").removeClass("btn btn-info btn-sm").addClass("btn btn-sm").text("Follow");
+							 
+							 //$(this).val("Follow");
+							 location.reload();
+						  }
+					})
+			  });
+	
+	 });	 
+	  
+	
+
+	 
+	</script>
 
 <style>
 body {
@@ -164,12 +261,12 @@ body {
 	float: right;
 	margin: 22px;
 }
-.userprofile.social {
-	background: url(/resources/uploadFile/light22.jpg) no-repeat top center;
+ .userprofile.social {
+	background: url(/resources/uploadFile/light22.jpeg) no-repeat top center;
 	background-size: 100%;
 	padding: 50px 0;
 	margin: 0
-}
+} 
 .userprofile.social .username {
 	color: #ffffff
 }
@@ -419,9 +516,10 @@ body {
     overflow: visible;
 }
 </style>
+<jsp:include page="/toolbar/toolbar.jsp"/> 
 <body>
 
-<jsp:include page="/toolbar/toolbar.jsp"/> 
+
 
 
 <div class="container">
@@ -430,16 +528,18 @@ body {
 <div class="row">
       <div class="col-md-12 text-center ">
         <div class="panel panel-default">
-          <div class="userprofile social ">
+          <div class="userprofile social">
             <div class="userpic"> <img src="/resources/uploadFile/${user.profileImage}" alt="" class="userpicimg"> </div>
             <h3 class="username">${user.nickname}</h3>
             <p>${user.userId}</p>
             <p> ${user.gender == 'm' ? '남자':'여자'}</p>
              <p>${user.age }</p>
-            <div class="socials tex-center"> <a href="" class="btn btn-circle btn-primary ">
-            <i class="fa fa-facebook"></i></a> <a href="" class="btn btn-circle btn-danger ">
+            <div class="socials text-center"> 
+            <a href="" class="btn btn-circle btn-primary"> <i class="fa fa-facebook"></i></a> 
+            <a href="/user/updateUser" class="btn btn-circle btn-danger ">
             <i class="fa fa-google-plus"></i></a> <a href="" class="btn btn-circle btn-info ">
-            <i class="fa fa-twitter"></i></a> <a href="" class="btn btn-circle btn-warning "><i class="fa fa-envelope"></i></a>
+            <i class="fa fa-twitter"></i></a> <a href="" class="btn btn-circle btn-warning ">
+            <i class="fa fa-envelope"></i></a>
             </div>
           </div>
           
@@ -482,34 +582,31 @@ body {
             
             
             
-            
+               
             	<c:if test="${! empty sessionScope.user.userId }">
 						<c:if test="${sessionScope.user.userId != user.userId }">  <!--내가 딴 사람 마이페이지에 들어갔을때만 follow 버튼이 뜨는  조건  -->
 							 <c:choose>
 							 <c:when test="${empty follow.requestId }">
 								
 								 <!--나(sessionId) 이사람 requestId면 (팔로잉 목록에 없다면)-->
-									<button type="button" class="btn btn-sm" id="profileFollow" >Follow</button>			
+									<button type="button" class="btn btn-sm followbtn" id="profileFollow" >Follow</button>			
 								</c:when>
 							     <c:otherwise>
 							      <!--나(sessionId) 이사람 requestId면 (팔로잉 목록에 있다면)-->
-								     <button type="button" class="btn btn-info btn-sm" id="profileFollowing">Following</button>
+								     <button type="button" class="btn btn-primary followbtn" id="profileFollowing">Following</button>
 							     </c:otherwise>
 						</c:choose>
 					</c:if> 
 				</c:if>
             
            <!-- <button class="btn btn-primary followbtn">Follow</button> -->
-          
+         
           </div>
           <div class="clearfix"></div>
         </div>
       </div>
       <!-- /.col-md-12 -->
-     <jsp:include page="/view/mypage/getMyPartyList.jsp"/>
-          
-     
-       
+   
       
           
           
@@ -518,20 +615,21 @@ body {
       </div>
       
       
-  
+ 
    <!-- Status Upload  --> 
        
-        <div class="panel panel-default">
+      <!--   <div class="panel panel-default">
           <div class="btn-group pull-right postbtn">
             <button type="button" class="dotbtn dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="dots"></span> </button>
             <ul class="dropdown-menu pull-right" role="menu">
               <li><a href="javascript:void(0)">Hide this</a></li>
               <li><a href="javascript:void(0)">Report</a></li>
             </ul>
-          </div>
+          </div> -->
       
       
         
-
+<jsp:include page="/view/mypage/getMyPartyList.jsp"/>
 </body>
+  
 </html>
