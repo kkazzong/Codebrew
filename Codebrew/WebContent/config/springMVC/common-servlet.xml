@@ -42,6 +42,8 @@
 			<mvc:mapping path="/user/**"/>
 			<mvc:mapping path="/festival/**"/>
 			<mvc:mapping path="/purchase/**"/>
+			<mvc:mapping path="/review/**"/>
+			<mvc:mapping path="/party/**"/>
 			<mvc:mapping path="/userRest/**"/>
 			<mvc:mapping path="/statistics/**"/>
 			<mvc:mapping path="/chat/getChattingList"/>
@@ -51,6 +53,10 @@
 			<mvc:exclude-mapping path="/festival/getFestivalListDB"/>
 			<mvc:exclude-mapping path="/statistics/getFestivalZzim"/>
 			<mvc:exclude-mapping path="/userRest/json/getUser"/>
+			<mvc:exclude-mapping path="/review/getReview"/>
+			<mvc:exclude-mapping path="/review/getReviewList"/>
+			<mvc:exclude-mapping path="/party/getParty"/>
+			<mvc:exclude-mapping path="/party/getPartyList"/>
 			<bean class="com.codebrew.moana.common.web.LogonCheckInterceptor" />
    		</mvc:interceptor>
 

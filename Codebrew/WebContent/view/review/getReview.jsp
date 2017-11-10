@@ -122,7 +122,6 @@
 		
 		$('.clear-rating').css("display", 'none'); //참조용 : 이거 css 어거지로 집어 넣은거임...따라하지 마셈 : this css will be applied primarily 
 		
-
 		//==> 검색 Event 연결처리부분
 		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2. $(#id) : 3.$(.className)
 		//==> 1과 3 방법 조합 : $("tagName.className:filter함수") 사용함.
@@ -740,7 +739,7 @@
 						</div>
 						<div class="col-md-12">
 							<small>
-								<span class="glyphicon glyphicon-road" aria-hidden="true">대중교통:</span>
+								<span class="glyphicon glyphicon-road" aria-hidden="true"> 대중교통정보:</span>
 								<span id="transportListAtStation">교통정보 불러오는 중...</span>
 								<br>
 								<input type="number" id="radiusForTransportSearchAgain" min="100" max="3000" value="350"/>
@@ -784,7 +783,9 @@
 							<span class="glyphicon glyphicon-heart-empty" aria-hidden="true"> 좋아요 : </span>
 							<span id="goodCountForGoogleMap">${review.goodCount }</span>
 							<c:if test="${!empty sessionScope.user }">
-								<span class = "glyphicon glyphicon-thumbs-up" id = "addGood" role="button"></span>
+								<h3>
+									<span class = "glyphicon glyphicon-thumbs-up" id = "addGood" role="button"></span>
+								</h3>
 							</c:if>
 							<hr>
 						</div>
