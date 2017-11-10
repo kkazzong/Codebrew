@@ -601,9 +601,9 @@ public class MyPageController {
 		  
 	
 	  //파티33
-	  Map<String, Object> map = partyService.getMyPartyList(search, sessionId);//원래 userId였음
+	  Map<String, Object> map3 = partyService.getMyPartyList(search, sessionId);//원래 userId였음
 		
-		Page resultPage = new Page(search.getCurrentPage(),((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+		Page resultPage = new Page(search.getCurrentPage(),((Integer)map3.get("totalCount")).intValue(), pageUnit, pageSize);
 	  
 	  
 	
@@ -634,10 +634,10 @@ public class MyPageController {
 				
 				
 				
-				modelAndView.addObject("list", map.get("list"));
+				modelAndView.addObject("list3", map3.get("list"));
 				modelAndView.addObject("resultPage", resultPage);
 				modelAndView.addObject("search", search);
-				modelAndView.setViewName("forward:/view/mypage/getMyPartyList.jsp");
+				//modelAndView.setViewName("forward:/view/mypage/getMyPartyList.jsp");
 				
 	    
 		//modelAndView.setViewName("forward:/view/mypage/mmm.jsp");

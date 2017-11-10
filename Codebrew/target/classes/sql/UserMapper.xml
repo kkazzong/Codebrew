@@ -187,7 +187,7 @@
 
 
    <!--코코넛 업데이트  -->
-   <update id="updateCoconut" parameterType="string">
+   <update id="updateCoconut" parameterType="user">
    UPDATE users
    
    <set>

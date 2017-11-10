@@ -6,15 +6,18 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Good;
 import com.codebrew.moana.service.domain.Image;
 import com.codebrew.moana.service.domain.Review;
+import com.codebrew.moana.service.domain.User;
 import com.codebrew.moana.service.domain.Video;
 import com.codebrew.moana.service.review.ReviewDAO;
 import com.codebrew.moana.service.review.ReviewService;
+import com.codebrew.moana.service.user.UserDAO;
 
 @Service("reviewServiceImpl")
 public class ReviewServiceImpl implements ReviewService {
@@ -29,6 +32,13 @@ public class ReviewServiceImpl implements ReviewService {
 	@Qualifier("ODSayAPIDAOImpl")
 	private ReviewDAO ODSayAPIDAO;
 	
+	///Field
+	@Autowired
+	@Qualifier("userDAOImpl")
+	private UserDAO userDAO;
+	
+	@Value("#{coconutProperties['reviewCoconut']}")
+	int reviewCoconut;
 	
 	public void setReviewDAO(ReviewDAO reviewDAO){
 		this.reviewDAO = reviewDAO;
@@ -145,6 +155,13 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override //8
 	public void passCheckCode(Review review) throws Exception {
+		
+		String userId = review.getUserId(); // parameter로 받은 review 작성자의 id로
+		User user = userDAO.getUser(userId); // User객체 가져온다.
+		int originalCoconutCount = user.getCoconutCount(); // 가져온 User 객체가 원래 가지고 있는 ttl coconutCount에다가
+		user.setCoconutCount(originalCoconutCount+reviewCoconut); // review가 통과될 때 coconut을 지급한다.
+		userDAO.updateCoconut(user);
+		
 		reviewDAO.passCheckCode(review);
 	}
 

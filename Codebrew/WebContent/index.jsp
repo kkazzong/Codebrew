@@ -18,21 +18,21 @@
 	<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+	<!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script> -->
 	
 	<!-- Bootstrap Dropdown Hover CSS -->
-	<link href="/resources/css/animate.min.css" rel="stylesheet">
-	<link href="/resources/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
+	<!-- <link href="/resources/css/animate.min.css" rel="stylesheet">
+	<link href="/resources/css/bootstrap-dropdownhover.min.css" rel="stylesheet"> -->
 
 	<!-- Bootstrap Dropdown Hover JS -->
-	<script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
+	<!-- <script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script> -->
 
 
 	<!-- ----------------------UI -->
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
         
-    <link rel="stylesheet" href="/resources/css/index/css/bootstrap.min.css">
+   <!--  <link rel="stylesheet" href="/resources/css/index/css/bootstrap.min.css"> -->
     <link rel="stylesheet" href="/resources/css/index/css/font-awesome.css">
     <link rel="stylesheet" href="/resources/css/index/css/animate.css">
     <link rel="stylesheet" href="/resources/css/index/css/templatemo_misc.css">
@@ -41,8 +41,8 @@
     <script src="/resources/css/index/js/vendor/modernizr-2.6.1-respond-1.1.0.min.js"></script>
 	
 	<!-- autocomplete -->
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+	<!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script> -->
 	
 	<script type="text/javascript">
 	
@@ -186,12 +186,19 @@
 		function writeImage(index, name, image, addr, no, date) {
 			
 			index++;
-			var innerHtml = '<img src="/resources/uploadFile/'+image+'" alt="축제이미지">';
+			var innerHtml = "";
+			if(image.indexOf('http') != -1) {
+				innerHtml = '<img src='+image+' alt="축제이미지">';
+			} else {
+				innerHtml = '<img src="/resources/uploadFile/'+image+'" alt="축제이미지">';
+			}
 			$("#img"+index).html(innerHtml);
+			innerHtml = '<input type="hidden" name="festivalNo" value="'+no+'">';
+			$("#no"+index).html(innerHtml);
 			innerHtml = '<h2>'+name+'</h2>';
 			$("#name"+index).html(innerHtml);
 			innerHtml = '<p>'+addr+'</p>'
-							+'<p>'+date+'</p>]';
+							+'<p>'+date+'</p>';
 			$("#addr"+index).html(innerHtml);
 			innerHtml = '<a href="#" class="slider-btn">상세보기'
 							+'<input type="hidden" name="festivalNo" value="'+no+'">'
@@ -289,72 +296,14 @@
 				self.location = "/chat/getChattingList";
 			});
 			
+			//이미지클릭
+			$(".overlay").on("click", function(){
+				var fno = $(this).find("input:hidden[name='festivalNo']").val();
+				alert(fno);
+				self.location="/festival/getFestivalDB?festivalNo="+fno;
+			});
 		});
 		
-		
-		///////////////////////////////////검색///////////////////////////////////////
-		$(function() {
-			
-				$("#searchKeyword").autocomplete({
-					source: function( request, response ) {
-				        $.ajax( {
-				          url: "/festivalRest/json/getKeyword",
-				          method : "POST",
-				          headers : {
-								"Accept" : "application/json",
-								"Content-Type" : "application/json"
-						  },
-				          dataType: "json",
-				          data: JSON.stringify({
-				        	currentPage : "1",
-					        searchKeyword : $("#searchKeyword").val(),
-					        searchCondition : ""
-				          }),
-				          success: function( JSONData ) {
-				            response($.map(JSONData, function(value, key){
-				            	console.log(value.festivalNo);
-				            	
-				            	var festivalNo = value.festivalNo;
-				            	
-				            	$("#festivalNo").val(festivalNo);
-				            	
-				            		return {
-				            			label :  value.festivalName,
-				            			value : value.festivalName
-				            		}
-					        	}));
-					          }
-				        });
-				    }
-				});
-			});
-	   
-		   $(function(){
-				$("input:search[name='searchKeyword']").on('keydown',function(event){
-					
-					if(event.keyCode ==13){
-						event.preventDefault();
-						$( "#search"  ).click();
-					}
-				});
-			
-			});
-	   
-		   $(function(){
-			   $("#search").on("click",function(){
-					
-				   var festivalNo = $("#festivalNo").val();
-				   var searchKeyword = $("#searchKeyword").val();
-				   
-				   if(searchKeyword == null || searchKeyword.length <1){
-						alert("축제명은 반드시 한 글자 이상 입력하셔야 합니다.");
-						return;
-					}
-				   
-				   self.location="/festival/getFestivalDB?festivalNo="+festivalNo;
-			   });
-		   });
-	    
 	</script>
 
 
@@ -362,6 +311,7 @@
 	
 		body {
 	            padding-top : 65px;
+	            background-color: #f2f4f6;
 	            /* padding-left : 50px; */
 	            /* color: #3b3b3b; */
 	            /* background-color: #E0E0F8; */
@@ -374,6 +324,11 @@
 		  -webkit-border-radius: 50%;
 		  -moz-border-radius: 50%;
 		}
+		
+		/* .visible-xs, .visible-sm, .visible-md, .visible-lg {
+			display: block!important;
+		} */
+		
 	</style>
 
 	<title>Moana</title>
@@ -384,7 +339,6 @@
 <body>
 
 	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
-
 	<div class="site-main" id="sTop">
            
             <div class="site-slider">
@@ -392,7 +346,7 @@
                     <div class="flexslider">
                         <ul class="slides">
                             <li>
-                                <div class="overlay"></div>
+                                <div class="overlay"><div id="no1"></div></div>
                                <!--  <img src="/resources/css/index/images/slide1.jpg" alt=""> -->
                                <div id="img1"></div>
                                 <div class="slider-caption visible-md visible-lg">
@@ -405,7 +359,7 @@
                                 </div>
                             </li>
                             <li>
-                                <div class="overlay"></div>
+                                <div class="overlay"><div id="no2"></div></div>
                                 <!-- <img src="/resources/css/index/images/slide2.jpg" alt=""> -->
                                 <div id="img2"></div>
                                 <div class="slider-caption visible-md visible-lg">
@@ -418,7 +372,7 @@
                                 </div>
                             </li>
                             <li>
-                                <div class="overlay"></div>
+                                <div class="overlay"><div id="no3"></div></div>
                                 <!-- <img src="/resources/css/index/images/slide3.jpg" alt=""> -->
                                 <div id="img3"></div>
                                 <div class="slider-caption visible-md visible-lg">
@@ -437,7 +391,7 @@
         </div> <!-- /.site-main -->
         
         
-        <div class="site-main" id="sTop">
+        <%-- <div class="site-main" id="sTop">
            
             <div class="site-slider">
                 <div class="slider">
@@ -445,29 +399,29 @@
                         <ul class="slides">
                             <li>
                             	<div class="col-md-12">
-									<div class="col-md-offset-2 col-md-7">		
-										<div class="page-header text-center">
-											<div class="input-group text-center">
-												<input type="hidden" id="currentPage" name="currentPage" value=""/>
-												<input type="hidden" id="festivalNo" name="festivalNo" value=""/>
-												<input type="search" class="form-control  input-lg" id="searchKeyword" name="searchKeyword" type="text" 
-												value="${!empty search.searchKeyword ? search.searchKeyword : ''}"
-												placeholder="축제를 검색해보세요.">
-													<span class="input-group-btn">
-														<button id="search" class="btn btn-default btn-lg btn-block" type="button">
-													    	<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-													    </button>
-													</span>
-											</div>
+								<div class="col-md-offset-2 col-md-8">		
+									<div class="page-header text-center">
+										<div class="input-group text-center">
+											<input type="hidden" id="currentPage" name="currentPage" value=""/>
+											<input type="hidden" id="festivalNo" name="festivalNo" value=""/>
+											<input type="search" class="form-control  input-lg" id="searchKey" name="searchKeyword" type="text" 
+											value="${!empty search.searchKeyword ? search.searchKeyword : ''}"
+											placeholder="축제를 검색해보세요.">
+												<span class="input-group-btn">
+													<button id="sc" class="btn btn-default btn-lg btn-block" type="button">
+												    	<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+												    </button>
+												</span>
 										</div>
 									</div>
 								</div>
+							</div>
                             </li>
                         </ul>
                     </div> <!-- /.flexslider -->
                 </div> <!-- /.slider -->
             </div> <!-- /.site-slider -->
-        </div> <!-- /.site-main -->
+        </div> <!-- /.site-main --> --%>
 
 
 		<div class="content-section" id="services">
@@ -479,7 +433,7 @@
                     </div> <!-- /.heading-section -->
                 </div> <!-- /.row -->
                 <div class="row">
-                    <div class="col-md-2 col-sm-4">
+                    <div class="col-md-offset-1 col-md-2 col-sm-4">
                         <div class="service-item" id="service-1">
                             <div class="service-icon">
                                 <i class="fa fa-cubes"></i>
@@ -487,7 +441,7 @@
                             <div class="service-content">
                                 <div class="inner-service">
                                    <h3>Party</h3>
-                                   <p>Enjoy enjoying fun parties together, Please register yourself with the party and the last party doesn't appear on the list.</p> 
+                                   <p>Enjoy enjoying fun parties together, Please register yourself with the party.</p> 
                                 </div>
                             </div> <!-- /.service-content -->
                         </div> <!-- /#service-1 -->
@@ -500,7 +454,7 @@
                             <div class="service-content">
                                 <div class="inner-service">
                                    <h3>Festival</h3>
-                                   <p>It's a useful place to check for information about festivals in different regions. You can pre-empt the festival you want to go.</p> 
+                                   <p>It's a useful place to check for information about festivals in different regions.</p> 
                                 </div>
                             </div> <!-- /.service-content -->
                         </div> <!-- /#service-1 -->
@@ -513,7 +467,7 @@
                             <div class="service-content">
                                 <div class="inner-service">
                                    <h3>Review</h3>
-                                   <p>Don't miss the chance to share people's frank reviews. You can check the traffic information around the festival, and there is room for sharing ideas.</p> 
+                                   <p>Don't miss the chance to share people's frank reviews & traffic information.</p> 
                                 </div>
                             </div> <!-- /.service-content -->
                         </div> <!-- /#service-1 -->
@@ -526,7 +480,7 @@
                             <div class="service-content">
                                 <div class="inner-service">
                                    <h3>Ticket</h3>
-                                   <p>Anyone who wants to go to parties or festivals can easily purchase tickets at our site. To purchase tickets, you can use them after logging in.</p> 
+                                   <p>Anyone who wants to go to parties or festivals can easily purchase tickets. </p> 
                                 </div>
                             </div> <!-- /.service-content -->
                         </div> <!-- /#service-1 -->
@@ -539,8 +493,7 @@
                             <div class="service-content">
                                 <div class="inner-service">
                                    <h3>Chatting</h3>
-                                   <p>In Monana, we organized a forum for communication among members.
-You can chat or chat with each other. After attending the party, you can chat with the group.</p> 
+                                   <p>In Monana, we organized a forum for communication among members.</p> 
                                 </div>
                             </div> <!-- /.service-content -->
                         </div> <!-- /#service-1 -->
@@ -862,6 +815,7 @@ You can chat or chat with each other. After attending the party, you can chat wi
                 </div> <!-- /.row -->
             </div> <!-- /.container -->
         </div> <!-- /#footer -->
+        
         
         <script src="/resources/css/index/js/vendor/jquery-1.11.0.min.js"></script>
         <script>window.jQuery || document.write('<script src="/resources/css/index/js/vendor/jquery-1.11.0.min.js"><\/script>')</script>

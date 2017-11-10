@@ -1,15 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-        
+    
 <!--  ///////////////////////// JSTL  ////////////////////////// -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="kr">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>My파티 목록 조회</title>
-
+	
 	<!-- 참조 : http://getbootstrap.com/css/   참조 -->
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -23,13 +23,7 @@
 	
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
-
-	<!-- Jquery DatePicker -->
-	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	
-	<!-- <script src="date.js" type="text/javascript"></script>
-	<script src="time.js" type="text/javascript"></script> -->
 	
 	<!--  ///////////////////////// JavaScript ////////////////////////// -->
     <script type="text/javascript">
@@ -107,23 +101,10 @@
 		});
 		
 		
-		//=============    판넬  Event  처리 		=============
+		//=============    파티 상세조회  Event  처리 		=============
 		$(function(){	
-			
-			/* 판넬 높이 조절 */
-			var maxHeight = -1;
-	
-			$('.panel').each(function() {
-				maxHeight = maxHeight > $(this).height() ? maxHeight : $(this).height();
-			});
-	
-			$('.panel').each(function() {
-				 $(this).height(maxHeight);
-			});
-			
-			
 			/* 파티 상세 조회 */
-			$(".panel-body").on("click", function(){
+			$(".gallery-item").on("click", function(){
 				console.log($(this).find("input:hidden[name='partyNo']").val());
 				var partyNo = $(this).find("input:hidden[name='partyNo']").val()
 				self.location = "/party/getParty?partyNo="+partyNo;
@@ -142,369 +123,194 @@
 			
 		});
 		
-		//=============    파티 삭제  Event  처리 		=============
-		/* $(function(){
-			$("button:contains('파티 삭제')").on("click", function() {
-				var partyNo = $( "input[name=partyNo]", $(this) ).val();
-				self.location="/party/deleteParty?partyNo=";
 		
-			});
-		}); */
-		
-		
-		//=============    파티 참여 취소  Event  처리 		=============
-		/* $(function(){
-			$("button:contains('파티 참여 취소')").on("click", function() {
-				
-				var partyNo = $(this).val();
-				console.log("파티 참여 취소 :: partyNo :: "+partyNo);
-				self.location="/party/cancelParty?partyNo="+partyNo;
-		
-			});
-		}); */
-		
-		
-		//=============    티켓 구매 취소  Event  처리 		=============
-		/* $(function(){
-			$("button:contains('티켓 구매 취소')").on("click", function() {
-				var partyNo = $( "input[name=partyNo]", $(this) ).val();
-				self.location="/purchase/cancelPurchase";
-		
-			});
-		}); */
-		
-		
-		//=============    현재 시간  Event  처리 		=============
-		 /* function time(){
-		
-		    var today = new Date();
-		    var y = today.getFullYear();
-		    console.log("y = "+y);
-		    var m = today.getMonth()+1;
-		    console.log("m = "+m);
-		    var d = today.getDate();
-		    console.log("d = "+d);
-		    m = checkTime(m);
-		    d = checkTime(d);
-		    
-		    var t = setTimeout(time, 500);
-		    console.log(y + "/" + m + "/" + d);
-		    return y + "/" + m + "/" + d;
-		}
-		
-		function checkTime(i){
-		
-		    if (i < 10) {i = "0" + i}; // 숫자가 10보다 작을 경우 앞에 0을 붙여줌
-		    console.log("i = "+i);
-		    return i;
-		} 
-
-		*/
-		/*
-		$(function compareTime(){
-			
-			var partyDate = $( "partyDate", $(this) ).text();
-			var now = time();
-			console.log("partyDate = "+partyDate);
-			console.log("now = "+now);
-			//var parPartyDate = Date.parse(partyDate);
-			var result = now - partyDate;
-			console.log("now - partyDate = "+result)
-			/* var result = time().compareTo(partyDate); 
-			var deleteButton = "<button type='button' class='btn btn-default' >삭제</button>";
-			var cancelButton = "<button type='button' class='btn btn-default' >참여취소</button>";
-
-			if(result > 0){
-				
-				$(".caption").append(deleteButton);
-			}else{
-				$(".caption").append(cancelButton);
-			}
-		}); */
 		
 		
 		
 	</script>
 	
-	
 	<!--  ///////////////////////// CSS ////////////////////////// -->
 	<style type="text/css">
-		
-		body {
-	     	padding-top : 70px;
-	    }
-	    
-	    .panel {
-			margin-top : 50px;
-	    }
-	    
-	    .panel-primary>.panel-heading {
-    		background-color: #000000;
-    	}
-	    
-		.panel-heading h2 {
-		    white-space: nowrap;
-		    overflow: hidden;
-		    text-overflow: ellipsis;
-		    line-height: normal;
-		    width: 75%;
-		    padding-top: 8px;
-		}
-	    
-	    @import url("http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,400italic");
-    @import url("//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css");
-    body {
-		padding: 60px 0px;
-		background-color: rgb(220, 220, 220);
-	}
-    
-    .event-list {
-		list-style: none;
-		font-family: 'Lato', sans-serif;
-		margin: 0px;
-		padding: 0px;
-	}
-	.event-list > li {
-		background-color: rgb(255, 255, 255);
-		box-shadow: 0px 0px 5px rgb(51, 51, 51);
-		box-shadow: 0px 0px 5px rgba(51, 51, 51, 0.7);
-		padding: 0px;
-		margin: 0px 0px 20px;
-	}
-	.event-list > li > time {
-		display: inline-block;
-		width: 100%;
-		color: rgb(255, 255, 255);
-		background-color: rgb(197, 44, 102);
-		padding: 5px;
-		text-align: center;
-		text-transform: uppercase;
-	}
-	.event-list > li:nth-child(even) > time {
-		background-color: rgb(165, 82, 167);
-	}
-	.event-list > li > time > span {
-		display: none;
-	}
-	.event-list > li > time > .day {
-		display: block;
-		font-size: 40pt;
-		font-weight: 100;
-		line-height: 1;
-	}
-	.event-list > li time > .month {
-		display: block;
-		font-size: 18pt;
-		font-weight: 500;
-		line-height: 1;
-	}
-	.event-list > li time > .year {
-		display: block;
-		font-size: 24pt;
-		font-weight: 500;
-		line-height: 1;
-	}
-	.event-list > li > img {
-		width: 100%;
-	}
-	.event-list > li > .info {
-		padding-top: 5px;
-		text-align: center;
-	}
-	.event-list > li > .info > .title {
-		font-size: 17pt;
-		font-weight: 700;
-		margin: 0px;
-	}
-	.event-list > li > .info > .desc {
-		font-size: 13pt;
-		font-weight: 300;
-		margin: 0px;
-	}
-	.event-list > li > .info > ul,
-	.event-list > li > .social > ul {
-		display: table;
-		list-style: none;
-		margin: 10px 0px 0px;
-		padding: 0px;
-		width: 100%;
-		text-align: center;
-		
-	}
-	.event-list > li > .social > ul {
-		margin: 0px;
-	}
-	.event-list > li > .info > ul > li,
-	.event-list > li > .social > ul > li {
-		display: table-cell;
-		cursor: pointer;
-		color: rgb(30, 30, 30);
-		font-size: 11pt;
-		font-weight: 300;
-        padding: 3px 0px;
-	}
-    .event-list > li > .info > ul > li > a {
-		display: block;
-		width: 100%;
-		color: rgb(30, 30, 30);
-		text-decoration: none;
-	} 
-    .event-list > li > .social > ul > li {    
-        padding: 0px;
-    }
-    .event-list > li > .social > ul > li > a {
-        padding: 3px 0px;
-	} 
-	.event-list > li > .info > ul > li:hover,
-	.event-list > li > .social > ul > li:hover {
-		color: rgb(30, 30, 30);
-		background-color: rgb(200, 200, 200);
-	}
-	.edit a,
-	.confirm a,
-	.delete a {
-		display: block;
-		width: 100%;
-		color: rgb(75, 110, 168) !important;
-	}
-	.confirm a {
-		color: rgb(79, 213, 248) !important;
-	}
-	.delete a {
-		color: rgb(221, 75, 57) !important;
-	}
-	.edit:hover a {
-		color: rgb(255, 255, 255) !important;
-		background-color: rgb(75, 110, 168) !important;
-	}
-	.confirm:hover a {
-		color: rgb(255, 255, 255) !important;
-		background-color: rgb(79, 213, 248) !important;
-	}
-	.delete:hover a {
-		color: rgb(255, 255, 255) !important;
-		background-color: rgb(221, 75, 57) !important;
-	}
 
-	@media (min-width: 768px) {
-		.event-list > li {
-			position: relative;
-			display: block;
-			width: 100%;
-			height: 120px;
-			padding: 0px;
-		}
-		.event-list > li > time,
-		.event-list > li > img  {
-			display: inline-block;
-		}
-		.event-list > li > time,
-		.event-list > li > img {
-			width: 120px;
-			float: left;
-		}
-		.event-list > li > .info {
-			background-color: rgb(245, 245, 245);
-			overflow: hidden;
-		}
-		.event-list > li > time,
-		.event-list > li > img {
-			width: 120px;
-			height: 120px;
-			padding: 0px;
-			margin: 0px;
-		}
-		.event-list > li > .info {
-			position: relative;
-			height: 120px;
-			text-align: left;
-			padding-right: 40px;
-		}	
-		.event-list > li > .info > .title, 
-		.event-list > li > .info > .desc {
-			padding: 0px 10px;
-		}
-		.event-list > li > .info > ul {
-			position: absolute;
-			left: 0px;
-			bottom: 0px;
-		}
-		.event-list > li > .social {
-			position: absolute;
-			top: 0px;
-			right: 0px;
-			display: block;
-			width: 40px;
-		}
-        .event-list > li > .social > ul {
-            border-left: 1px solid rgb(230, 230, 230);
-        }
-		.event-list > li > .social > ul > li {			
-			display: block;
-            padding: 0px;
-		}
-		.event-list > li > .social > ul > li > a {
-			display: block;
-			width: 40px;
-			padding: 10px 0px 9px;
-		}
+	@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+	
+	*{
+	  margin:0;
+	  padding:0;
+	  box-sizing: border-box;
+	  font-family: 'Open Sans', Arial, sans-serif;
+	}
+	
+	.container{
+	  padding: 2rem;
+	}
+	.gallery{
+	  width: 100%;
+	  max-width: 960px;
+	  min-height: 100vh;
+	  margin: 2rem auto;
+	  
+	  display: -webkit-box;
+	  display: -webkit-flex;
+	  display: -ms-flexbox;
+	  display: flex;
+	  
+	  -webkit-flex-wrap: wrap;
+	      -ms-flex-wrap: wrap;
+	          flex-wrap: wrap;
+	  
+	  -webkit-box-pack: center;
+	  -webkit-justify-content: center;
+	      -ms-flex-pack: center;
+	          justify-content: center;
+	}
+	
+	.gallery-item{
+	  box-shadow: 2px 2px 8px -1px #001b63;
+	  width: 300px;
+	  height: 300px;
+	  margin: 10px;
+	  background: #000;
+	  position: relative;
+	  cursor: pointer;
+	  overflow: hidden;
+	}
+	
+	.gallery-item-image{
+	  position: absolute;
+	  width: 100%;
+	  height: 100%;
+	  background: lightblue;
+	  z-index:20;
+	  -webkit-transition:all .5s ease;
+	  transition: all .5s ease;
+	  bottom:0;
+	  overflow: hidden;
+	
+	}
+	
+	.gallery-item:hover .gallery-item-image{
+	  bottom: 80px;
+	}
+	
+	.gallery-item-description{
+	  color:white;
+	  font-size: .8rem;
+	  width: 100%;
+	  height: 90px;
+	  padding: .5rem .8rem;
+	  background: #002484;
+	  position: absolute;
+	  bottom:0;
+	  /* margin-bottom:10px; */
+	}
+	
+	body {
+	padding-top: 70px;
+	background-color: #f2f4f6;
 	}
 	</style>
 	
 </head>
-<!-- <body onload="startTime()"> -->
+
 <body>
+
+<div class="container">
 	<!-- ToolBar Start /////////////////////////////////////-->
-		<jsp:include page="/toolbar/toolbar.jsp" /> 
+	 <%-- <jsp:include page="/toolbar/toolbar.jsp" />  --%>
    	<!-- ToolBar End /////////////////////////////////////-->
-   	
-	<!--  화면구성 div Start /////////////////////////////////////-->
-	
-	    <div class="container">
-		<div class="row">
-			<c:if test="${empty list}">
-				<%-- <jsp:include page="/view/purchase/noResult.jsp"></jsp:include> --%>
-			</c:if>
-				<c:forEach var="party" items="${list}">
-					<c:set var="i" value="${i+1}"></c:set>
-					
-			<div class="[ col-xs-12 col-sm-offset-2 col-sm-6 ]">
-				<ul class="event-list">
-					<li>
-						<time datetime="2014-07-31 1600">
-							<span class="day">04</span>
-							<span class="month">Mayıs</span>
-							<span class="year">2017</span>
-							<span class="time">13:57</span>
-						</time>
-						<img alt="Duyar Kimya Ziyaret" src="http://scontent.cdninstagram.com/t51.2885-19/s150x150/16229470_1105297716245462_9037530429749460992_n.jpg" />
-						<div class="info">
-							<h2 class="title">Duyar Kimya Ziyaret</h2>
-							<p class="desc">Crm Programı Kurulum</p>
-							<ul>
-								<li style="width:33%;">100  <span class="fa fa-male"></span></li>
-								<li style="width:34%;">80 <span class="fa fa-child"></span></li>
-							</ul>
+
+
+  <div class="gallery">
+  	<!-- 목록 조회 Start /////////////////////////////////////-->
+	 <!--  <div class="row"> -->
+		
+			<c:forEach var="party" items="${list}">
+				<c:set var="i" value="${i+1}"></c:set>
+				
+					<div class="gallery-item">
+				      <div class="gallery-item-image">
+				        <img width="100%" height="100%" src="/resources/uploadFile/${party.partyImage}">
+				      </div>
+				      <div class="gallery-item-description">
+				        <h3>${ party.partyName }
+				        	<input type="hidden" name="partyNo" value="${party.partyNo}">
+				        </h3>
+				        <div class='col-xs-10'>
+				        <!-- <span> -->
+				        	<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+							${party.partyDate}
+							&nbsp; 
+							<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+							${party.partyTime}
+							&nbsp;
+							<c:if test="${ !empty party.festival.festivalNo}">
+								<strong>#애프터 파티</strong>
+							</c:if>
+							<c:if test="${ empty party.festival.festivalNo}">
+								<strong>#파티</strong>
+							</c:if>
+						<!-- </span> -->
 						</div>
-						<div class="social">
-							<ul>
-								<li class="edit" style="width:33%;"><a href="#"><span class="fa fa-pencil-square-o"></span></a></li>
-								<li class="confirm" style="width:34%;"><a href="#"><span class="fa fa-check"></span></a></li>
-								<li class="delete" style="width:33%;"><a href="#"><span class="fa fa-trash-o"></span></a></li>
-							</ul>
+						<div class='col-xs-2 '>
+						<!-- <span> -->
+							<!-- 삭제버튼 -->
+							<form id="deleteForm">
+									<input type="hidden" name="partyNo" value="${party.partyNo}">
+									
+									<%-- <c:if test="${search.searchCondition == '3' }"> --%>
+										<button class="btn btn-xs btn-warning pull-right" type="button" value="${party.partyNo}">
+											<small><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></small>
+										</button>
+									<%-- </c:if> --%>
+							</form>
+							<div class="clearfix"></div>
+						<!-- </span> -->
 						</div>
-					</li>
-				</ul>
-			</div>
+					</div>
+				  </div>
+						
 			</c:forEach>
-		</div>
+		<!-- </div> -->
 	</div>
+</div>
+		
 	
-	
- 	<!--  화면구성 div End /////////////////////////////////////-->
- 	
- 	<!-- PageNavigation Start... -->
-	<jsp:include page="../../common/pageNavigator_new.jsp"/>
-	<!-- PageNavigation End... -->
+		<!-- 목록 조회 End /////////////////////////////////////-->
+    
+
+    <!-- <div class="gallery-item">
+      <div class="gallery-item-image">
+        <img src="http://www.blueb.co.kr/SRC2/_image/v01.jpg"></div>
+      <div class="gallery-item-description">
+        <h3>Image title</h3><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos, quia.</span></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-item-image">
+        <img src="http://www.blueb.co.kr/SRC2/_image/w02.jpg"></div>
+      <div class="gallery-item-description">
+        <h3>Image title</h3><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos, quia.</span></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-item-image">
+        <img src="http://www.blueb.co.kr/SRC2/_image/w03.jpg"></div>
+      <div class="gallery-item-description">
+        <h3>Image title</h3><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos, quia.</span></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-item-image">
+        <img src="http://www.blueb.co.kr/SRC2/_image/s_01.jpg"></div>
+      <div class="gallery-item-description">
+        <h3>Image title</h3><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos, quia.</span></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-item-image">
+        <img src="http://www.blueb.co.kr/SRC2/_image/s_02.jpg"></div>
+      <div class="gallery-item-description">
+        <h3>Image title</h3><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos, quia.</span></div>
+    </div>
+  </div> -->
+</div>
+
 </body>
 </html>

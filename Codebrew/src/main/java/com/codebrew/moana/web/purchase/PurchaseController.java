@@ -182,8 +182,16 @@ public class PurchaseController {
 	}
 	
 	@RequestMapping(value = "getSaleList")
-	public ModelAndView getSaleList(@ModelAttribute("search") Search search) {
+	public ModelAndView getSaleList(@ModelAttribute("search") Search search, HttpSession session) {
 
+		ModelAndView modelAndView = new ModelAndView();
+
+		User user = (User)session.getAttribute("user");
+		if(!user.getRole().equals("a")) {
+			modelAndView.setViewName("/index.jsp");
+			return modelAndView;
+		}
+		
 		System.out.println(search);
 		
 		if (search.getCurrentPage() == 0) {
@@ -196,7 +204,6 @@ public class PurchaseController {
 		Page resultPage = new Page(search.getCurrentPage(), ((Integer) (map.get("totalCount"))).intValue(), pageUnit,
 				pageSize);
 
-		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("list", map.get("list"));
 		modelAndView.addObject("resultPage", resultPage);
 		modelAndView.addObject("search", search);

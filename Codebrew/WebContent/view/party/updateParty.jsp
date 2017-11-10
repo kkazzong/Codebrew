@@ -257,8 +257,9 @@
 	<style type="text/css">
 		
 		body {
-	     	padding-top : 70px;
-	    }
+			padding-top: 70px;
+			background-color: #f2f4f6;
+		}
 	    
 	    #festivalNameDiv {
 			display: none;

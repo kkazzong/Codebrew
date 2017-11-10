@@ -2,6 +2,11 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<c:if test="${sessionScope.user.role !='a' }">
+	<%-- <jsp:forward page="../../index.jsp"/> --%>
+	<jsp:forward page="../../index.jsp"/>
+</c:if>
+
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -217,13 +222,23 @@
 
 <jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
 
-	<div class="row">
+<!-- 	<div class="row">
 		<div class="col-md-12">
 		
 			<h1 class="bg-primary text-center">
 				축제등록
 			</h1>
-			
+			 -->
+			 
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="page-header text-center">
+					<h3 class="text-info"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>축제 등록</h3>
+				</div>
+			</div>
+		</div>
+		 
 				<form class="form-horizontal" method="post" name="detailForm" enctype="multipart/form-data">
 					<div class = "form-group">
 	
@@ -403,6 +418,6 @@
 				
 			</form>
 		</div>
-	</div>
+	<!-- </div> -->
 </body>
 </html>
