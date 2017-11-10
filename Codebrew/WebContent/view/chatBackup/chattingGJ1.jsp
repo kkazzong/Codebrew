@@ -65,6 +65,8 @@
 		//문서 로딩 후 실행
 		$(function(){
 			
+			alert("여기로 포워딩왓음");
+			//$("#scrollDiv").scrollTop($("#scrollDIv")[0].scrollHeight);
 			//alert("chat/chatting3.jsp");
 			//////오늘 날짜 출력
 			printDate();
@@ -386,14 +388,18 @@
 			overflow : auto;
 		}
 		
+		///////////////////////////////////////////////////////////////
+		#scrollDiv { height:510px; overflow:scroll; }
+
+		
 		////////////////////////////////////////////////////////////////////
 		
 		.discussion{
   			list-style : none;
   			background : #ededed;
   			margin : 0;
-  			padding : 0 0 0 0;
-  			/* padding : 0 0 50px 0; */
+  			/* padding : 0 0 0 0; */
+  			padding : 0 0 100px 0; 
   		}
   		
   		.discussion li{
@@ -402,6 +408,18 @@
   			display : flex;
   			margin-top:5px;
 			width:85%;
+			border-radius:5px;
+			padding:5px;
+			display:flex;
+			background-color:white;
+  		}
+  		
+  		.discussion li.other{
+  			padding : 0.5em;
+  			overflow : hidden;
+  			display : flex;
+  			margin-top:5px;
+			width:fit-content;
 			border-radius:5px;
 			padding:5px;
 			display:flex;
@@ -418,11 +436,12 @@
   			width : 100%;
   		}
   		
-  		.self{
+  		 .self{
+  		 	width:fit-content !important;
   			justify-content : flex-end;
   			align-item : flex-end;
   			
-  		}
+  		} 
   		/* .self:before{
 		    width: 0;
 		    height: 0;
@@ -573,9 +592,11 @@
 	<div class = "ui segment" id = "result"></div> -->
 
 	<!-- 채팅창 -->
+	<div id="scrollDiv" style="overflow:auto;">
 	<ol class="discussion">
 		
 	</ol>
+	</div>
 	
 	<div>
 		<div>
