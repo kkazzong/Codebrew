@@ -328,7 +328,8 @@
 								rv.addr, 
 								rv.review_hashtag, 
 								rv.review_festival_rating, 
-								i.review_image
+								rv.good_count, 
+								i.review_image 
 						FROM review rv, ( SELECT * FROM ( SELECT image.*, row_number() OVER (PARTITION BY review_no ORDER BY image_no ) rnum
 							             FROM image
 							             WHERE 1=1 ) 

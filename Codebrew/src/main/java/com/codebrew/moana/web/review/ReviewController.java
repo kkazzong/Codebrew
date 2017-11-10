@@ -479,27 +479,39 @@ public class ReviewController {
 	}
 	
 	@RequestMapping(value="getCheckReviewList")
-	public ModelAndView getCheckReviewList( @ModelAttribute("search") Search search)
+	public ModelAndView getCheckReviewList( @ModelAttribute("search") Search search, 
+											HttpSession session)
 											throws Exception {
 		
 		System.out.println("/view/review/getCheckReviewList");
 		
-		if(search.getCurrentPage() == 0){
-			search.setCurrentPage(1);
+		System.out.println("((User)(session.getAttribute('user'))).getRole() :: "+((User)(session.getAttribute("user"))).getRole());
+		
+		if(((User)(session.getAttribute("user"))).getRole().equals("a")){
+			
+			if(search.getCurrentPage() == 0){
+				search.setCurrentPage(1);
+			}
+			search.setPageSize(pageSize);
+			
+			// Business logic 수행
+			Map<String, Object> map = reviewService.getCheckReviewList(search);
+			Page resultPage = new Page(search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+			System.out.println("\ngetCheckReviewList resultPage :: "+resultPage);
+			
+			ModelAndView modelAndView = new ModelAndView();
+			modelAndView.addObject("list", map.get("list"));
+			modelAndView.addObject("resultPage", resultPage);
+			modelAndView.addObject("search", search);
+			modelAndView.setViewName("/view/review/getCheckReviewList.jsp");
+			return modelAndView;
+
+		} else {
+			ModelAndView modelAndView = new ModelAndView();
+			modelAndView.setViewName("/index.jsp");
+			return modelAndView;
 		}
-		search.setPageSize(pageSize);
 		
-		// Business logic 수행
-		Map<String, Object> map = reviewService.getCheckReviewList(search);
-		Page resultPage = new Page(search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
-		System.out.println("\ngetCheckReviewList resultPage :: "+resultPage);
-		
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("list", map.get("list"));
-		modelAndView.addObject("resultPage", resultPage);
-		modelAndView.addObject("search", search);
-		modelAndView.setViewName("/view/review/getCheckReviewList.jsp");
-		return modelAndView;
 		
 	}
 	
