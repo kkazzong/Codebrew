@@ -174,12 +174,12 @@ public class MyPageController {
 		
 		return modelAndView;
 	}
-	
-	/*@RequestMapping(value="getMyPage", method=RequestMethod.GET)
+/*	
+	@RequestMapping(value="getMyPage", method=RequestMethod.GET)
 	public ModelAndView getMyPage(@RequestParam("requestId")String requestId, 
 			@RequestParam(value = "purchaseFlag", required = false) String purchaseFlag,
-			HttpSession session, @ModelAttribute("user")User user, @ModelAttribute("search") Search search,
-			@ModelAttribute("page") Page page, HttpServletRequest request)throws Exception{
+			HttpSession session, @ModelAttribute("user")User user, @ModelAttribute("search") Search search
+			)throws Exception{
 	
 		System.out.println("/myPage/getMyPage : GET");
 		
@@ -255,7 +255,7 @@ public class MyPageController {
 				pageSize);
 			
 		
-		//파티 222
+		//파티 333
 		Map<String, Object> map2 = partyService.getMyPartyList(search, sessionId);//원래 userId 였음
 		Page resultPage2 = new Page(search.getCurrentPage(), ((Integer) map2.get("totalCount")).intValue(), pageUnit,
 				pageSize);	
@@ -283,7 +283,7 @@ public class MyPageController {
 		
 		
 		//팔로워66
-		Map<String, Object>map6=followService.getFollwerList(search, sessionId);
+		Map<String, Object>map6=followService.getFollowerList(search, sessionId);
 		
 	
 		ModelAndView modelAndView=new ModelAndView();
@@ -306,9 +306,9 @@ public class MyPageController {
 		System.out.println("축제리스트는????"+list1);
 		
 		//파티
-		modelAndView.addObject("list2", map2.get("list"));
-		modelAndView.addObject("resultPage2", resultPage2);
-		modelAndView.addObject("search2", search2);
+		modelAndView.addObject("list3", map2.get("list"));
+		modelAndView.addObject("resultPage3", resultPage2);
+		modelAndView.addObject("search3", search2);
 		
 		System.out.println("파티리스트는?????" +map2.get("list"));
 		
@@ -345,17 +345,145 @@ public class MyPageController {
 		System.out.println("팔로워리스트는????"+map6.get("list"));
 		System.out.println("팔로워토탈카운트는??"+map6.get("list"));
 		
-		modelAndView.setViewName("forward:/view/mypage/getMyPage.jsp");
+		//modelAndView.setViewName("forward:/view/mypage/getMyPage.jsp");
 		
-		modelAndView.setViewName("forward:/view/user/getMyPage2.jsp"); //테스트
+		modelAndView.setViewName("forward:/view/mypage/mmm.jsp"); //테스트
 		
 		return modelAndView;
 		
 	
 }
-	
 	*/
+/*	
+	@RequestMapping(value="getMyPage", method=RequestMethod.GET)
+	public ModelAndView getMyPage(@RequestParam("requestId")String requestId, 
+			@RequestParam(value = "purchaseFlag", required = false) String purchaseFlag,
+			HttpSession session, @ModelAttribute("user")User user, @ModelAttribute("search") Search search
+			)throws Exception{
 	
+		System.out.println("/myPage/getMyPage : GET");
+		
+		
+		//팔로잉, 팔로워
+	    Map<String, Object>map=new HashMap<String, Object>();
+	    map.put("requestId", requestId);
+	    map.put("sessionId", ((User)session.getAttribute("user")).getUserId());
+		
+	    Follow follow=followService.getFollow(map.get("sessionId").toString(), requestId);
+	    
+		String sessionId="";
+		if(session.getAttribute("user") !=null) {
+		
+			sessionId=((User)session.getAttribute("user")).getUserId();
+		}
+		
+		System.out.println("세션아디는???"+sessionId);
+		System.out.println("리퀘스트아이디는???"+requestId);
+		  if(requestId !=null) {//팔로잉 하는 사람이 있으면
+			
+			if(sessionId.indexOf("requestId")== -1) {
+				sessionId=requestId;
+			}
+			
+		}
+		
+		System.out.println("세션아디가 뭘로 변했나??"+sessionId);
+		
+		
+		user=userService.getUser(sessionId);
+		
+		System.out.println("세션"+user);
+		
+		
+		
+		
+		//공통
+		if (search.getCurrentPage() == 0) {
+			search.setCurrentPage(1);
+		}
+		search.setPageSize(pageSize);
+		
+	
+		
+
+		
+	
+			
+		
+		//파티 333
+		Map<String, Object> map2 = partyService.getMyPartyList(search, sessionId);//원래 userId 였음
+		Page resultPage2 = new Page(search.getCurrentPage(), ((Integer) map2.get("totalCount")).intValue(), pageUnit,
+				pageSize);	
+		
+		Search search2=new Search();
+		search2.setSearchCondition("4");
+	
+				
+	
+		
+		
+		//팔로잉55
+		Map<String, Object>map5=followService.getFollowingList(search, sessionId);
+		
+		
+		
+		//팔로워66
+		Map<String, Object>map6=followService.getFollowerList(search, sessionId);
+		*/
+	
+		/*ModelAndView modelAndView=new ModelAndView();
+		
+		//팔로우
+	    modelAndView.addObject("follow",follow);
+	    
+	    System.out.println("팔로우는????"+follow);
+	    
+	    //공통
+	    modelAndView.addObject("search", search);
+	    modelAndView.addObject("user", user);
+	    
+	    System.out.println("마이페이지속 유저는 누구???"+user);
+	    
+	    //축제
+		modelAndView.addObject("list1", list1);
+		modelAndView.addObject("resultPage1", resultPage1);
+		
+		System.out.println("축제리스트는????"+list1);
+		
+		//파티
+		modelAndView.addObject("list3", map2.get("list"));
+		modelAndView.addObject("resultPage3", resultPage2);
+		modelAndView.addObject("search3", search2);
+		
+		System.out.println("파티리스트는?????" +map2.get("list"));
+		
+		
+	
+		
+		
+		//팔로잉
+		modelAndView.addObject("list5", map5.get("list"));
+		modelAndView.addObject("totalCount5",map5.get("totalCount"));
+		
+		System.out.println("팔로잉리스트는????"+map5.get("list"));
+		System.out.println("팔로잉토탈카운트는??"+map5.get("totalCount"));
+		
+		//팔로워
+		modelAndView.addObject("list6", map6.get("list"));
+		modelAndView.addObject("totalCount6",map6.get("totalCount"));
+		
+		
+		System.out.println("팔로워리스트는????"+map6.get("list"));
+		System.out.println("팔로워토탈카운트는??"+map6.get("list"));
+		
+		//modelAndView.setViewName("forward:/view/mypage/getMyPage.jsp");
+		
+		modelAndView.setViewName("forward:/view/mypage/mmm.jsp"); //테스트
+		
+		return modelAndView;
+		
+	
+}*/
 	
   /*@RequestMapping(value="getYourPage", method=RequestMethod.GET)
 	public ModelAndView getYourPage(@RequestParam("userId")String userId,HttpSession session
@@ -496,14 +624,205 @@ public class MyPageController {
 	
 	    
 	    
+		//modelAndView.setViewName("forward:/view/mypage/mmm.jsp");
 	    
-	    
-		modelAndView.setViewName("forward:/view/mypage/getMyPage.jsp");
+	   modelAndView.setViewName("forward:/view/mypage/getMyPage.jsp");
 		
 		return modelAndView;
 		
 	
     }
+	
+	@RequestMapping(value = "getMyZzimList")
+	public ModelAndView getMyZzimList(@ModelAttribute("search") Search search,
+			@ModelAttribute("page") Page page, HttpServletRequest request) throws Exception {
+
+		
+		System.out.println("getzzimSearch............" + search);
+		
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
+		
+		System.out.println("세션"+user);
+		
+		if (search.getCurrentPage() == 0) {
+			search.setCurrentPage(1);
+		}
+		search.setPageSize(pageSize);
+
+		Zzim zzim = new Zzim();
+		zzim.setUserId(user.getUserId());
+		
+		Map<String, Object> map = festivalService.getMyZzimList(search, user.getUserId());
+		
+		List<Festival> list = new ArrayList<Festival>();
+		
+		int listSize = ((List<Zzim>) map.get("list")).size();
+		
+		for(int i =0; i<listSize ; i++){
+			
+			System.out.println("listSize......." +  listSize);
+			
+			Zzim returnZzim = ((List<Zzim>) map.get("list")).get(i);
+			
+			Festival festival = festivalService.getFestivalDB(returnZzim.getFestivalNo());
+			
+			list.add(festival);
+			
+		}
+		
+		Page resultPage = new Page(search.getCurrentPage(), ((Integer) map.get("totalCount")).intValue(), pageUnit,
+				pageSize);
+
+		ModelAndView modelAndView = new ModelAndView();
+
+		modelAndView.setViewName("forward:/view/mypage/getMyZzimList.jsp");
+		
+		modelAndView.addObject("search", search);
+		modelAndView.addObject("list", list);
+		modelAndView.addObject("resultPage", resultPage);
+		
+
+		return modelAndView;
+
+
+	}
+	
+	@RequestMapping( value="getMyPartyList", method=RequestMethod.GET)
+	public ModelAndView getMyPartyList( HttpSession session ) throws Exception {
+		
+		System.out.println("\n>>> /party/getMyPartyList :: GET start <<<");
+		
+		Search search = new Search();
+		
+		if(search.getCurrentPage() == 0){
+			search.setCurrentPage(1);
+		}
+		search.setPageSize(pageSize);
+		search.setSearchCondition("4");
+		
+		System.out.println("\n<<< /party/getMyPartyList :: GET :: search\n"+search);
+		/*System.out.println("\n<<< /party/getMyPartyList :: GET :: currentPage\n"+search.getCurrentPage());
+		System.out.println("\n<<< /party/getMyPartyList :: GET :: startPage\n"+search.getStartRowNum());
+		System.out.println("\n<<< /party/getMyPartyList :: GET :: endPage\n"+search.getEndRowNum());*/
+		
+		
+		String userId = ((User)session.getAttribute("user")).getUserId();
+		System.out.println("\n<<< /party/getMyPartyList :: GET :: userId\n"+userId);
+		
+		
+		//Business Logic
+		Map<String, Object> map = partyService.getMyPartyList(search, userId);
+		
+		Page resultPage = new Page(search.getCurrentPage(),((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+		
+		
+		//Model(data) & View(jsp)
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("list", map.get("list"));
+		modelAndView.addObject("resultPage", resultPage);
+		modelAndView.addObject("search", search);
+	    /*modelAndView.setViewName("forward:/view/party/getMyPartyList.jsp");*/
+		modelAndView.setViewName("forward:/view/mypage/getMyPartyList.jsp");
+		return modelAndView;
+	}
+	
+	@RequestMapping( value="getMyPartyList", method= RequestMethod.POST)
+	public ModelAndView getMyPartyList( @ModelAttribute("search") Search search, HttpSession session) throws Exception{
+		
+		System.out.println("\n>>> /party/getMyPartyList :: POST start <<<");
+
+		//search 도메인 파라미터 출력
+		System.out.println(">>> /party/getMyPartyList :: POST :: search 도메인 파라미터 \n"+search);
+				
+		if(search.getCurrentPage() == 0){
+			search.setCurrentPage(1);
+		}
+		search.setPageSize(pageSize);
+		System.out.println("\n<<< /party/getMyPartyList :: POST :: currentPage\n"+search.getCurrentPage());
+		
+		String userId = ((User)session.getAttribute("user")).getUserId();
+		System.out.println("\n<<< /party/getMyPartyList :: POST :: userId\n"+userId);
+		
+		
+		//Business Logic
+		Map<String, Object> map = partyService.getMyPartyList(search, userId);
+		
+		Page resultPage = new Page(search.getCurrentPage(),((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+		
+		
+		//Model(data) & View(jsp)
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("list", map.get("list"));
+		modelAndView.addObject("resultPage", resultPage);
+		modelAndView.addObject("search", search);
+		modelAndView.setViewName("forward:/view/mypage/getMyPartyList.jsp");
+		
+		return modelAndView;
+		
+	}
+	
+	@RequestMapping(value = "getPurchaseList")
+	public ModelAndView getPurchaseList(HttpSession session,
+																	@ModelAttribute("search") Search search,
+																	@RequestParam(value = "purchaseFlag", required = false) String purchaseFlag) {
+
+		User user = (User) session.getAttribute("user");
+
+		/*
+		 * if(purchaseFlag == null) { purchaseFlag = "1"; //default is festival }
+		 */
+		System.out.println(purchaseFlag);
+		if (search.getCurrentPage() == 0) {
+			search.setCurrentPage(1);
+		}
+		search.setPageSize(pageSize);
+		
+		System.out.println(search);
+		Map<String, Object> map = purchaseService.getPurchaseList(user.getUserId(), purchaseFlag, search);
+
+		Page resultPage = new Page(search.getCurrentPage(), ((Integer) (map.get("totalCount"))).intValue(), pageUnit, pageSize);
+		System.out.println(resultPage);
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("list", map.get("list"));
+		modelAndView.addObject("resultPage", resultPage);
+		modelAndView.addObject("search", search);
+		modelAndView.addObject("purchaseFlag", purchaseFlag);
+
+		modelAndView.setViewName("/view/mypage/getPurchaseList.jsp");
+		//modelAndView.setViewName("/view/purchase/getPurchaseListTest.jsp");
+		
+		return modelAndView;
+	}
+	
+	@RequestMapping(value="getMyReviewList")
+	public ModelAndView getMyReviewList( @ModelAttribute("search") Search search,   
+										HttpSession session) throws Exception{
+		
+		System.out.println("/view/review/getMyReviewList");
+		
+		if(search.getCurrentPage() == 0){
+			search.setCurrentPage(1);
+		}
+		search.setPageSize(pageSize);
+		
+		// Business logic 수행
+		String userId = ((User)(session.getAttribute("user"))).getUserId();
+		Map<String, Object> map = reviewService.getMyReviewList(search, userId);
+		Page resultPage = new Page(search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+		System.out.println(resultPage);
+		
+		// Model과 View 연결 : 확인 요망
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("list", map.get("list"));
+		modelAndView.addObject("resultPage", resultPage);
+		modelAndView.addObject("search", search);
+		modelAndView.addObject("userId", userId);
+		
+		modelAndView.setViewName("/view/mypage/getMyReviewList.jsp");
+		
+		return modelAndView;
+	}
 	
 	
 	
