@@ -193,10 +193,12 @@
 				innerHtml = '<img src="/resources/uploadFile/'+image+'" alt="축제이미지">';
 			}
 			$("#img"+index).html(innerHtml);
+			innerHtml = '<input type="hidden" name="festivalNo" value="'+no+'">';
+			$("#no"+index).html(innerHtml);
 			innerHtml = '<h2>'+name+'</h2>';
 			$("#name"+index).html(innerHtml);
 			innerHtml = '<p>'+addr+'</p>'
-							+'<p>'+date+'</p>]';
+							+'<p>'+date+'</p>';
 			$("#addr"+index).html(innerHtml);
 			innerHtml = '<a href="#" class="slider-btn">상세보기'
 							+'<input type="hidden" name="festivalNo" value="'+no+'">'
@@ -294,6 +296,12 @@
 				self.location = "/chat/getChattingList";
 			});
 			
+			//이미지클릭
+			$(".overlay").on("click", function(){
+				var fno = $(this).find("input:hidden[name='festivalNo']").val();
+				alert(fno);
+				self.location="/festival/getFestivalDB?festivalNo="+fno;
+			});
 		});
 		
 		
@@ -367,6 +375,7 @@
 	
 		body {
 	            padding-top : 65px;
+	            background-color: #f2f4f6;
 	            /* padding-left : 50px; */
 	            /* color: #3b3b3b; */
 	            /* background-color: #E0E0F8; */
@@ -379,6 +388,11 @@
 		  -webkit-border-radius: 50%;
 		  -moz-border-radius: 50%;
 		}
+		
+		/* .visible-xs, .visible-sm, .visible-md, .visible-lg {
+			display: block!important;
+		} */
+		
 	</style>
 
 	<title>Moana</title>
@@ -389,7 +403,6 @@
 <body>
 
 	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
-
 	<div class="site-main" id="sTop">
            
             <div class="site-slider">
@@ -397,7 +410,7 @@
                     <div class="flexslider">
                         <ul class="slides">
                             <li>
-                                <div class="overlay"></div>
+                                <div class="overlay"><div id="no1"></div></div>
                                <!--  <img src="/resources/css/index/images/slide1.jpg" alt=""> -->
                                <div id="img1"></div>
                                 <div class="slider-caption visible-md visible-lg">
@@ -410,7 +423,7 @@
                                 </div>
                             </li>
                             <li>
-                                <div class="overlay"></div>
+                                <div class="overlay"><div id="no2"></div></div>
                                 <!-- <img src="/resources/css/index/images/slide2.jpg" alt=""> -->
                                 <div id="img2"></div>
                                 <div class="slider-caption visible-md visible-lg">
@@ -423,7 +436,7 @@
                                 </div>
                             </li>
                             <li>
-                                <div class="overlay"></div>
+                                <div class="overlay"><div id="no3"></div></div>
                                 <!-- <img src="/resources/css/index/images/slide3.jpg" alt=""> -->
                                 <div id="img3"></div>
                                 <div class="slider-caption visible-md visible-lg">
@@ -866,6 +879,7 @@
                 </div> <!-- /.row -->
             </div> <!-- /.container -->
         </div> <!-- /#footer -->
+        
         
         <script src="/resources/css/index/js/vendor/jquery-1.11.0.min.js"></script>
         <script>window.jQuery || document.write('<script src="/resources/css/index/js/vendor/jquery-1.11.0.min.js"><\/script>')</script>
