@@ -156,11 +156,13 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override //10
 	public void addGood(Good good) throws Exception {
 		reviewDAO.addGood(good);
+		reviewDAO.updateReviewGoodCount(good);
 	}
 
 	@Override //11
 	public void deleteGood(Good good) throws Exception {
 		reviewDAO.deleteGood(good);
+		reviewDAO.updateReviewGoodCount(good);
 	}
 	
 	@Override //12
@@ -168,17 +170,22 @@ public class ReviewServiceImpl implements ReviewService {
 		return reviewDAO.checkGood(good);
 	}
 	
-	@Override //13
+	@Override //13 만약에 10, 11되면 필요없음 안되면 rest controller에서 수정 : 둘다 됨 혹시 몰라서 남겨둠.
+	public void updateReviewGoodCount(Good good) throws Exception {
+		reviewDAO.updateReviewGoodCount(good);
+	}
+	
+	@Override //14
 	public List<Image> getReviewImage(int reviewNo) throws Exception {
 		return reviewDAO.getReviewImage(reviewNo);
 	}
 	
-	@Override //14
+	@Override //15
 	public List<Video> getReviewVideo(int reviewNo) throws Exception {
 		return reviewDAO.getReviewVideo(reviewNo);
 	}
 	
-	@Override //15
+	@Override //16
 	public Map<String, Object> getTransportListAtStation(double x, double y, int radius) throws Exception {
 		return ODSayAPIDAO.getTransportListAtStation(x, y, radius);
 	}

@@ -302,14 +302,14 @@
 	<jsp:include page="../../toolbar/toolbar.jsp" />
    	<!-- ToolBar End /////////////////////////////////////-->
 
+	<!-- 모달 -->
+	<%--  
+	<jsp:include page="getFestivalListDBmodal.jsp"></jsp:include>
+	 --%>
 
 <!-- ////////// 화면구성 div Start ////////// -->
 <div class="container">
 
-	<!-- 모달 -->
-	<%-- 
-	<jsp:include page="/view/festival/popupListDB.jsp"></jsp:include>
-	 --%>
 	  
 	<div class="row">
 	
@@ -317,7 +317,7 @@
 		
 	<h1 class="bg-primary text-center">후기등록양식</h1>
 	<p align="center">
-	<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
+	<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target=".bs-example-modal-sm">
 		축제검색
 	</button>
 	 </p>

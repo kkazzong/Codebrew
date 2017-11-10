@@ -139,10 +139,12 @@ public class ReviewRestController {
 		if(reviewService.checkGood(returnGood) == null || reviewService.checkGood(returnGood).equals("")){
 			System.out.println("좋아요 + 1");
 			reviewService.addGood(returnGood);
+			//reviewService.updateReviewGoodCount(returnGood);
 			return reviewService.getReview(reviewNo);
 		}else{
 			System.out.println("좋아요 - 1");
 			reviewService.deleteGood(returnGood);
+			//reviewService.updateReviewGoodCount(returnGood);
 			return reviewService.getReview(reviewNo);
 		}
 	}

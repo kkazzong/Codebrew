@@ -309,7 +309,16 @@
 			WHERE review_no = #{reviewNo}
 	</select>
 	
-	<!-- 15 -->
+	<!-- 12, 13, 14 할때마다 15 -->
+	<update id="updateReviewGoodCount" parameterType="good">
+		UPDATE review r
+		SET r.good_count = (SELECT COUNT(g.review_no) AS good_count
+							FROM good g
+							WHERE g.review_no = #{reviewNo})
+		WHERE r.review_no = #{reviewNo}
+	</update>
+	
+	<!-- 16 -->
 	<select id="getReviewList" parameterType="search" resultMap="reviewSelectMap">
 		SELECT *
 			FROM (	SELECT inner_table.* , ROWNUM AS row_seq
@@ -318,6 +327,7 @@
 								rv.review_title, 
 								rv.addr, 
 								rv.review_hashtag, 
+								rv.review_festival_rating, 
 								i.review_image
 						FROM review rv, ( SELECT * FROM ( SELECT image.*, row_number() OVER (PARTITION BY review_no ORDER BY image_no ) rnum
 							             FROM image
@@ -346,7 +356,7 @@
 		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 	
 	</select>
 	
-	<!-- 16 -->
+	<!-- 17 -->
 	<select id="getMyReviewList" parameterType="map" resultMap="reviewSelectMap">
 		SELECT *
 			FROM (	SELECT inner_table.* , ROWNUM AS row_seq
@@ -384,7 +394,7 @@
 		WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum} 	
 	</select>
 	
-	<!-- 17 -->
+	<!-- 18 -->
 	<select id="getCheckReviewList" parameterType="search" resultMap="reviewSelectMap">
 		SELECT *
 			FROM (	SELECT inner_table.* , ROWNUM AS row_seq
@@ -422,7 +432,7 @@
 		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 	
 	</select>
 	
-	<!-- 18 -->
+	<!-- 19 -->
 	<select id="getTotalCount" parameterType="search" resultType="int">
 		SELECT COUNT(*)
 		FROM(	SELECT 	*
@@ -446,7 +456,7 @@
 			) countTable						
 	 </select>
 	 
-	 <!-- 19 -->
+	 <!-- 20 -->
 	<select id="getMyReviewTotalCount" parameterType="map" resultType="int">
 		SELECT COUNT(*)
 		FROM(	SELECT 	*
@@ -470,7 +480,7 @@
 			) countTable	
 	 </select>
 	 
-	<!-- 20 -->
+	<!-- 21 -->
 	<select id="getCheckReviewTotalCount" parameterType="search" resultType="int">
 		SELECT COUNT(*)
 	  	FROM(	SELECT 	*
@@ -493,5 +503,6 @@
 				GROUP BY (rv.review_no) 
 			) countTable	
 	 </select>
+	 
 	  
 </mapper>

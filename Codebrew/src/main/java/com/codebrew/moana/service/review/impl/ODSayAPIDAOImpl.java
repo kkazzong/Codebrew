@@ -375,5 +375,11 @@ public class ODSayAPIDAOImpl implements ReviewDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public void updateReviewGoodCount(Good good) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

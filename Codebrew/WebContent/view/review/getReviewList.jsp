@@ -83,7 +83,7 @@
 		//enter key 검색 : 뒤의 on부터
 		$("#searchKeyword").on("keydown", function(event){
 			if(event.keyCode == '13'){
-				alert("검색버튼 클릭 : val = "+$("#searchKeyword").val());
+				//alert("검색버튼 클릭 : val = "+$("#searchKeyword").val());
 				if($("#searchKeyword").val() == ''){
 					event.preventDefault();
 					alert("검색어를 입력해주세요");
