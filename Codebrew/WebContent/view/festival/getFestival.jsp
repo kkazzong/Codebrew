@@ -256,7 +256,7 @@ body {
 						
 						<div class="col-md-12">
 							<c:if test="${returnZzim != null }">
-								<h1><span class="glyphicon glyphicon-heart" aria-hidden="true" id="tag"></span></h1>
+								<h1><span class="glyphicon glyphicon-heart" aria-hidden="true" id="tag" style="cursor: pointer;"></span></h1>
 							</c:if>
 						</div>
 				  	</div>
