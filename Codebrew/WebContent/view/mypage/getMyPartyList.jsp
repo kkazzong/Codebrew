@@ -256,37 +256,32 @@
 </head>
 <!-- <body onload="startTime()"> -->
 <body>
-
-   <%--  <jsp:include page="/toolbar/toolbar.jsp"/>
-  
-	 <jsp:include page="/view/user/getMyPageNew3.jsp"/> --%>
 	<!-- ToolBar Start /////////////////////////////////////-->
-	<%-- <jsp:include page="/toolbar/toolbar.jsp" /> --%>
+	 <jsp:include page="/toolbar/toolbar.jsp" /> 
    	<!-- ToolBar End /////////////////////////////////////-->
    	
 	<!--  화면구성 div Start /////////////////////////////////////-->
-	
 	<div class="container">
-	   <!-- <div class="row">
-			<div >
+	  <div class="row">
+			<div class="col-md-12">
 				<div class="page-header text-center">
 					<h2 class="text-info">MY파티 리스트</h2>
 				</div>
 			</div>
-		</div>  -->
+		</div>
 	  
 	  <!-- 목록 위 검색 Start /////////////////////////////////////-->
-	    <!-- <div class="row"> -->
+	    <div class="row">
 	    
 		    <!-- 데이터 수 -->
-		<%-- 	<div class="row">
-				<div>
-					<h5>총 : ${resultPage2.totalCount} 건 (${resultPage2.currentPage} / ${resultPage2.maxPage})</h5>
+			<div class="row">
+				<div class="col-md-12">
+					<h5>총 : ${resultPage.totalCount} 건 (${resultPage.currentPage} / ${resultPage.maxPage})</h5>
 				</div>
 			</div>
 		    
-		    <!-- 검색 -->
-			<div >
+	<%-- 	    <!-- 검색 -->
+			<div class="col-md-12 text-right">
 				<form class="form form-inline" id="searchForm" name="searchForm">
 					
 					<button type="button" class="btn btn-default" >진행중인 파티</button>
@@ -307,10 +302,11 @@
 				</form>
 			</div>
 	    	
-		</div> --%>
+		</div>
 	  <!-- 목록 위 검색 End /////////////////////////////////////-->
 	  
-	  <br/> 
+	  <br/> --%>
+	  
 	  <!-- 목록 조회 Start /////////////////////////////////////-->
 	  <div class="row">
 		<c:if test="${empty list3}">
@@ -318,15 +314,15 @@
 		</c:if>
 			<c:forEach var="party" items="${list3}">
 				<c:set var="i" value="${i+1}"></c:set>
-				<div >
+				<div class="col-md-6">
 						<div class="panel panel-primary">
 							<div class="panel-heading">
 								
 								<%-- ${ party.user.profileImage} --%>
-								<%-- <h3 class="panel-title pull-left">
+								<h3 class="panel-title pull-left">
 									<img class="img-circle" src="/resources/uploadFile/${party.user.profileImage}" width="50" height="50">
-									${ party.user.nickname }
-								</h3> --%>
+									&nbsp; ${ party.user.nickname }
+								</h3>
 								
         						<!-- 삭제버튼 -->
 								<form id="deleteForm">
@@ -345,17 +341,7 @@
 								<input type="hidden" name="partyNo" value="${party.partyNo}">
 									<img width="100%" height="100%" src="/resources/uploadFile/${party.partyImage}">
 									<!-- <hr> -->
-									
-									<br>
-									<br>
-									<div>
-									<img class="img-circle" src="/resources/uploadFile/${party.user.profileImage}" width="50" height="50">
-									${ party.user.nickname }
-									</div>
-									
-									
-									
-									<div >
+									<div class="col-md-12">
 										<h4>
 										<strong>
 											${party.partyName}
@@ -363,25 +349,25 @@
 										</h4>
 									</div>
 									<hr>
-									<div >
+									<div class="col-md-12">
 										<small>
 											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
 											${party.partyDate}
 										</small>
 									</div>
-									<div >
+									<div class="col-md-12">
 										<small>
 											<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
 											${party.partyTime}
 										</small>
 									</div>
-									<div >
+									<div class="col-md-12">
 										<small>
 											<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
 											${party.partyPlace}
 										</small>
 									</div>
-									<div >
+									<div class="col-md-12">
 										<small>
 											<c:if test="${ !empty party.festival.festivalName}">
 												<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
@@ -390,7 +376,7 @@
 										</small>
 									</div>
 									<br>
-									<div>
+									<div class="col-md-12">
 										<small>
 											<c:if test="${ !empty party.festival.festivalNo}">
 												<strong>#애프터 파티</strong>
@@ -412,11 +398,10 @@
 		<!-- 목록 조회 End /////////////////////////////////////-->
 	  
  	</div>
- 	
  	<!--  화면구성 div End /////////////////////////////////////-->
  	
  	<!-- PageNavigation Start... -->
-	<%-- <jsp:include page="../../common/pageNavigator_new.jsp"/> --%>
+	<jsp:include page="../../common/pageNavigator_new.jsp"/>
 	<!-- PageNavigation End... -->
 </body>
 </html>

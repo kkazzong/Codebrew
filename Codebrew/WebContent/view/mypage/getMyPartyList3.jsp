@@ -225,7 +225,7 @@
   	<!-- 목록 조회 Start /////////////////////////////////////-->
 	 <!--  <div class="row"> -->
 		
-			<c:forEach var="party" items="${list3}">
+			<c:forEach var="party" items="${list}">
 				<c:set var="i" value="${i+1}"></c:set>
 				
 					<div class="gallery-item">
@@ -310,7 +310,7 @@
         <h3>Image title</h3><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos, quia.</span></div>
     </div>
   </div> -->
-
+</div>
 
 </body>
 </html>

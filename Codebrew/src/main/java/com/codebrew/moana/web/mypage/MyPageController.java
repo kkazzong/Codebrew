@@ -552,7 +552,8 @@ public class MyPageController {
 	
 	@RequestMapping(value="getMyPage", method=RequestMethod.GET)
 	public ModelAndView getMyPage(@RequestParam(value="requestId", required=false)String requestId, HttpSession session
-			,@ModelAttribute("user")User user,@ModelAttribute("search")Search search)throws Exception{
+			,@ModelAttribute("user")User user,@ModelAttribute("search")Search search,
+			@ModelAttribute("party")Party party)throws Exception{
 	
 		System.out.println("/myPage/getMyPage 수정 : GET");
 		
@@ -565,6 +566,12 @@ public class MyPageController {
 		   
     //일단 화면에서 받은 requestId(userId)와 나 sessionId상태로 getFollow를 가져온다
     //이사람과 내가 팔로우 되어있는지 안되어있는지 판단하기 위해...add 두번가면 무결성에러..니깐...
+    
+   
+    
+    
+    
+    
     
     String sessionId="";
 	if(session.getAttribute("user") !=null) {
@@ -601,13 +608,16 @@ public class MyPageController {
 		
 	//sessionId가 responseId로	
 		  
-	
-	  //파티33
-	  Map<String, Object> map3 = partyService.getMyPartyList(search, sessionId);//원래 userId였음
+	 Search search2=new Search();
+	 
+	 if (search2.getCurrentPage() == 0) {
+			search2.setCurrentPage(1);
+		}
+		search2.setPageSize(pageSize);
 		
-
-
-		Page resultPage = new Page(search.getCurrentPage(),((Integer)map3.get("totalCount")).intValue(), pageUnit, pageSize);
+	  //파티33
+	  Map<String, Object> map3 = partyService.getMyPartyList(search2, sessionId);//원래 userId였음
+	  Page resultPage = new Page(search2.getCurrentPage(),((Integer)map3.get("totalCount")).intValue(), pageUnit, pageSize);
 
 
 	  
@@ -637,12 +647,13 @@ public class MyPageController {
 	    //파티
 		modelAndView.addObject("list3", map3.get("list"));
 		modelAndView.addObject("resultPage", resultPage);
-		//modelAndView.addObject("search", search);
-	    //modelAndView.addObject("party",party); @ModelAttribute("party")Party party 지움 
+		modelAndView.addObject("search", search2);
+	    modelAndView.addObject("party",party); 
+	    
 	    
 	    System.out.println("파티리스트는???"+map3.get("list"));
 	    System.out.println("파티 토탈카운트는??"+resultPage.getTotalCount());
-	    //System.out.println("파티정보는???"+party);
+	    System.out.println("파티정보는???"+party);
 				
 	    System.out.println("오긴왔니???");
 	   //modelAndView.setViewName("forward:/view/mypage/mmm.jsp");
