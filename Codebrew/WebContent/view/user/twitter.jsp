@@ -506,7 +506,7 @@ body {
         </div>
       </div>
       <!-- /.col-md-12 -->
-     <jsp:include page="/view/mypage/getMyPartyList.jsp"/>
+     <jsp:include page="/view/mypage/getMyPartyList3.jsp"/>
           
      
        
@@ -520,7 +520,7 @@ body {
       
   
    <!-- Status Upload  --> 
-       
+      <!--  
         <div class="panel panel-default">
           <div class="btn-group pull-right postbtn">
             <button type="button" class="dotbtn dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="dots"></span> </button>
@@ -528,7 +528,7 @@ body {
               <li><a href="javascript:void(0)">Hide this</a></li>
               <li><a href="javascript:void(0)">Report</a></li>
             </ul>
-          </div>
+          </div> -->
       
       
         

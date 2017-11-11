@@ -7,11 +7,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-
+<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 
 <!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
-	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -573,7 +574,7 @@ body {
               </li>
               
               <li role="presentation">
-                <h3>${resultPage.totalCount }<br>
+                <h3>${resultPage.totalCount}<br>
                   <small>Party Activity</small> </h3>
               </li>
             </ul>
@@ -602,7 +603,7 @@ body {
            <!-- <button class="btn btn-primary followbtn">Follow</button> -->
          
           </div>
-          <div class="clearfix"></div>
+          <div class="clearfix"></div> 
         </div>
       </div>
       <!-- /.col-md-12 -->
@@ -629,7 +630,7 @@ body {
       
       
         
-<jsp:include page="/view/mypage/getMyPartyList.jsp"/>
+<jsp:include page="/view/mypage/getMyPartyList3.jsp"/>
 </body>
   
 </html>
