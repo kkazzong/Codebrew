@@ -160,7 +160,7 @@
 					<div class="col-md-12">
 						<form class="form form-inline">
 							<div class="form-group">
-								<label for="기간 선택">기간 선택</label>
+								<!-- <label for="기간 선택">기간 선택</label> -->
 								<!-- <input class="form-control" type="text" name="startDate">
 								<input class="form-control" type="text" name="endDate"> -->
 								<div class="input-group">

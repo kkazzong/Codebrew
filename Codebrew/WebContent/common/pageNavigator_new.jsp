@@ -1,5 +1,5 @@
-<%@ page contentType="text/html; charset=EUC-KR" %>
-<%@ page pageEncoding="EUC-KR"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -7,29 +7,29 @@
 <div class="container text-center">
 		 
 		 <nav>
-		  <!-- Å©±âÁ¶Àý :  pagination-lg pagination-sm-->
+		  <!-- í¬ê¸°ì¡°ì ˆ :  pagination-lg pagination-sm-->
 		  <ul class="pagination" >
 		    
-		    <!--  <<== ÁÂÃø nav -->
+		    <!--  <<== ì¢Œì¸¡ nav -->
 		  	<c:if test="${ resultPage.currentPage <= resultPage.pageUnit }">
 		 		<li class="disabled">
 		      <a href="#" aria-label="Previous">
-		        <span aria-hidden="true" class="pager">Previous</span>
+		        <span aria-hidden="true" class="pager">Â«</span>
 		      </a>
 			</c:if>
 			<c:if test="${ resultPage.currentPage > resultPage.pageUnit }">
 				<li>
 				<a href="javascript:fncGetList('${ resultPage.currentPage-1}')" aria-label="Previous">
-		        <span aria-hidden="true" class="pager">Previous</span>
+		        <span aria-hidden="true" class="pager">Â«</span>
 		      </a>
 			</c:if>
 		    </li>
 		    
-		    <!--  Áß¾Ó  -->
+		    <!--  ì¤‘ì•™  -->
 			<c:forEach var="i"  begin="${resultPage.beginUnitPage}" end="${resultPage.endUnitPage}" step="1">
 				
 				<c:if test="${ resultPage.currentPage == i }">
-					<!--  ÇöÀç page °¡¸£Å³°æ¿ì : active -->
+					<!--  í˜„ìž¬ page ê°€ë¥´í‚¬ê²½ìš° : active -->
 				    <li class="active">
 				    	<a href="javascript:fncGetList('${ i }');">${ i }<span class="sr-only">(current)</span></a>
 				    </li>
@@ -42,17 +42,17 @@
 				</c:if>
 			</c:forEach>
 		    
-		     <!--  ¿ìÃø nav==>> -->
+		     <!--  ìš°ì¸¡ nav==>> -->
 		     <c:if test="${ resultPage.endUnitPage >= resultPage.maxPage }">
 		  		<li class="disabled">
 		      <a href="#" aria-label="Next">
-		        <span aria-hidden="true" class="pager">Next</span>
+		        <span aria-hidden="true" class="pager">Â»</span>
 		      </a>
 			</c:if>
 			<c:if test="${ resultPage.endUnitPage < resultPage.maxPage }">
 				<li>
 				 <a href="javascript:fncGetList('${resultPage.endUnitPage+1}')" aria-label="Next">
-		        <span aria-hidden="true" class="pager">Next</span>
+		        <span aria-hidden="true" class="pager">Â»</span>
 		      </a>
 			</c:if>
 		    </li>
@@ -61,7 +61,11 @@
 		
 </div>
  
-
+<style>
+	.pagination>li>a, .pagination>li>span { border-radius: 50% !important;margin: 0 5px;}
+	.pagination>.active>a, .pagination>.active>a:hover {background-color: #000000; border-color: #000000;}
+	.pagination>li>a {color: #000000;}
+</style>
 
 <!-- <div class="container">
 		<nav>
