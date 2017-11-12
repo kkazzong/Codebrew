@@ -5,7 +5,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
-
 <!-- autocomplete -->
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
@@ -36,7 +35,6 @@
 		        <span class="icon-bar"></span>
 		        <span class="icon-bar"></span>
 		    </button>
-		    <!-- <a class="navbar-brand" href="#">Login dropdown</a> -->
 		</div>
 		
 		<!-- toolBar Button End //////////////////////// -->
@@ -170,56 +168,9 @@
 		             	<li><a href="#">LogOut</a></li>
 	             	</c:if>
 	             	<c:if test="${empty user}">
-		               <!--  <li><a href="#">LogIn</a></li> -->
-		    
-		    
-		               
-		  <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Login</b> <span class="caret"></span></a>
-			  <ul id="login-dp" class="dropdown-menu">
-				<li>
-					 <div class="row">
-							<div class="col-md-12">
-								Login via
-								<div class="social-buttons">
-									<!-- <a href="#" class="btn btn-fb"> --><jsp:include page="/api/kakaoLogin.jsp"></jsp:include><!-- </a> -->
-									<!-- <a href="#" class="btn btn-tw"><i class="fa fa-twitter"></i> Twitter</a> -->
-								</div>
-                                or
-								 <form class="form" role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">
-										<div class="form-group">
-											 <label class="sr-only" for="exampleInputEmail2">Email address</label>
-											 <input type="email" class="form-control" name="userId" id="userId" placeholder="Email address" required>
-										</div>
-										<div class="form-group">
-											 <label class="sr-only" for="exampleInputPassword2">Password</label>
-											 <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
-                                             <div class="help-block text-right"><a href="/user/findUser" id="findUser">Forget the id or password?</a></div>
-										</div>
-										<div class="form-group">
-											 <button type="submit" class="btn btn-primary btn-block" id="sign">Sign in</button>
-										</div>
-									
-								 </form>
-							</div>
-							<div class="bottom text-center">
-								New here ? <a href="#"><b>Join</b></a>
-							</div>
-					 </div>
-				</li>
-			</ul>
-        </li>
+		                <li><a href="#">LogIn</a></li>
 	             	</c:if>
 	            </ul>
-	            
-	            
-	            
-	 
-	            
-	            
-	            
-	            
-	            
 		</div>
 		<!-- dropdown hover END -->	       
 	    
@@ -308,9 +259,9 @@
    		
    		//////로그인, 로그아웃//////
 		$(function(){
-		 /* 	$("a:contains('LogIn')").on("click" , function() {
+		 	$("a:contains('LogIn')").on("click" , function() {
 				self.location = "/user/login";
-			});  */
+			}); 
 		 	$("a:contains('LogOut')").on("click" , function() {
 				self.location = "/user/logout";
 			}); 
@@ -463,80 +414,6 @@
 			});
 			
    		});
-  		
-  		
-  		
-   		$( function() {
-			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			$("a[href='#' ]:contains('Join')").on("click" , function() {
-				self.location = "/user/confirmUser"
-			});
-		});
-   		
-   		
-   	
-		$( function() {
-			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			$("#findUser").on("click" , function() {
-				self.location = "/user/findUser"
-			});
-		});
-   		
-		
-		
-$( function() {
-			
-			$("#userId").focus();
-			
-			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			$("#sign").on("click" , function() {
-				var userId=$("#userId").val();
-				var password=$("#password").val();
-				
-			
-				
-				if(userId == null || userId.length <1) {
-					alert('ID 를 입력하지 않으셨습니다.');
-					$("#userId").focus();
-					return;
-				}
-				
-				if(password == null || password.length <1) {
-					alert('패스워드를 입력하지 않으셨습니다.');
-					$("#password").focus();
-					return;
-				}
-				
-				
-				$.ajax({
-					type:"POST",
-					url:"/userRest/json/getUser", 
-			        data :{userId:userId},//요청과 함께 서버에 보내는 string 또는 map
-					dataType:"json",//서버에서 받는 데이터형식
-				    success: function(JSONData,status){
-				    	console.log(status);
-				    	console.log(JSON.stringify(JSONData)); //json string 형식으로 변환해주는거
-				    	
-				    	var pw=JSONData.password;
-				
-				    if(pw != password){
-				     /* $("span.col-id-checkPassword").html("비밀번호가 틀렸습니다.").css("color","blue"); */
-				     alert("비밀번호가 틀렸습니다.")
-				     event.preventDefault();
-				     return;
-				    } else{
-			         //$("span.col-id-checkPassword").remove();
-				    	$("form").attr("method","POST").attr("action","/user/login").submit();
-				      }
-				    }
-				    
-			    });
-				
-			});
-		});	
-	   
-		
-		
    		
 	</script>  
 
@@ -582,60 +459,6 @@ $( function() {
 		.navbar-default .navbar-nav>li>a {
 			color: #cecece;
 		}
-		
-	/*주영이가 추가함  */	
-		#login-dp{
-    min-width: 250px;
-    padding: 14px 14px 0;
-    overflow:hidden;
-    background-color:rgba(255,255,255,.8);
-}
-#login-dp .help-block{
-    font-size:12px    
-}
-#login-dp .bottom{
-    background-color:rgba(255,255,255,.8);
-    border-top:1px solid #ddd;
-    clear:both;
-    padding:14px;
-}
-#login-dp .social-buttons{
-    margin:12px 0    
-}
-#login-dp .social-buttons a{
-    width: 49%;
-}
-#login-dp .form-group {
-    margin-bottom: 10px;
-}
-.btn-fb{
-    color: #fff;
-    background-color:#3b5998;
-}
-.btn-fb:hover{
-    color: #fff;
-    background-color:#496ebc 
-}
-.btn-tw{
-    color: #fff;
-    background-color:#55acee;
-}
-.btn-tw:hover{
-    color: #fff;
-    background-color:#59b5fa;
-}
-
-@media(max-width:768px){
-    #login-dp{
-        background-color: inherit;
-        color: #fff;
-    }
-    #login-dp .bottom{
-        background-color: inherit;
-        border-top:0 none;
-    }
-}
-
 		
 	</style>
 	

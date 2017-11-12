@@ -1,27 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%-- <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> --%>
 	
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">  
+	
 
 <!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> 
       
 	
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
-	 
-	 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"> 
+
 	  
 <title>마이페이지</title>
 </head>
@@ -123,12 +121,12 @@
 	</script>
 
 <style>
-body {
+ body {
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
     background-color: #f0f3f5;
     margin-top:40px;
-}
+} 
 /*==============================*/
 /*====== siderbar user profile =====*/
 /*==============================*/
@@ -263,7 +261,7 @@ body {
 	margin: 22px;
 }
  .userprofile.social {
-	background: url(/resources/uploadFile/light22.jpeg) no-repeat top center;
+    background: url(/resources/uploadFile/f424d0ed-341f-4c47-9670-cd959a19ba2f1510036321585.jpg) no-repeat top center; 
 	background-size: 100%;
 	padding: 50px 0;
 	margin: 0
@@ -350,16 +348,17 @@ body {
 }
 
 
-
+/* 
 .btn-circle {
-    width: 30px;
-    height: 30px;
-    padding: 6px 0;
-    border-radius: 15px;
+    width: 40px;
+    height: 40px;
+    padding: 10px 3;
+    border-radius: 10px;
     text-align: center;
-    font-size: 12px;
-    line-height: 1.428571429;
-}
+    font-size: 15px;
+    line-height: 2;
+    position: center;
+} */
 
 .page-header.small {
     position: relative;
@@ -370,10 +369,17 @@ body {
 
 .favorite i {
     color: #eb3147;
+    text-align: center;
+    position: center;
 }
 
 .btn i {
-    font-size: 17px;
+    font-size: 21px;
+    position: center;
+}
+
+.i{
+  text-aligh: center;
 }
 
 .panel {
@@ -517,30 +523,40 @@ body {
     overflow: visible;
 }
 </style>
-<jsp:include page="/toolbar/toolbar.jsp"/> 
-<body>
 
+<body>
+<jsp:include page="/toolbar/toolbar.jsp"/> 
 
 
 
 <div class="container">
 <input type="hidden" id="sessionId" value="${sessionScope.user.userId}">
          
-<div class="row">
+<div class="row"> 
       <div class="col-md-12 text-center ">
         <div class="panel panel-default">
-          <div class="userprofile social">
+          <div class="userprofile social" ><!--background="/resources/uploadFile/light22.jpeg"  -->
             <div class="userpic"> <img src="/resources/uploadFile/${user.profileImage}" alt="" class="userpicimg"> </div>
             <h3 class="username">${user.nickname}</h3>
-            <p>${user.userId}</p>
-            <p> ${user.gender == 'm' ? '남자':'여자'}</p>
-             <p>${user.age }</p>
+           <%--  <h3 class="username">${user.userId}</h3> --%>
+            <h3 class="username">
+            <c:if test="${user.gender == 'm'}">
+            <i class="fa fa-mars" aria-hidden="true"></i>
+            </c:if>
+            <c:if test="${user.gender == 'f'}">
+            <i class="fa fa-venus" aria-hidden="true"></i>
+            </c:if>
+            
+            </h3>
+            <%-- <h3 class="username">${user.age}</h3> --%>
+            <h3 class="username"><i class="fa fa-lemon-o" aria-hidden="true"></i>${user.coconutCount}</h3>
+            
+     
             <div class="socials text-center"> 
-            <a href="" class="btn btn-circle btn-primary"> <i class="fa fa-facebook"></i></a> 
-            <a href="/user/updateUser" class="btn btn-circle btn-danger ">
-            <i class="fa fa-google-plus"></i></a> <a href="" class="btn btn-circle btn-info ">
-            <i class="fa fa-twitter"></i></a> <a href="" class="btn btn-circle btn-warning ">
-            <i class="fa fa-envelope"></i></a>
+            <a href="/user/updateUser?userId=${sessionScope.user.userId }" class="btn btn-circle btn-primary" title="회원정보수정"><i class="fa fa-cog" aria-hidden="true"></i></a> 
+            <a href="" class="btn btn-circle btn-danger" title="채팅"><i class="fa fa-weixin"aria-hidden="true"></i></a> 
+           <!--  <a href="" class="btn btn-circle btn-info "><i class=""></i></a>  -->
+            <!-- <a href="" class="btn btn-circle btn-warning "><i class="fa fa-envelope" aria-hidden="true"></i></a> -->
             </div>
           </div>
           
@@ -575,7 +591,7 @@ body {
               
               <li role="presentation">
                 <h3>${resultPage.totalCount}<br>
-                  <small>Party Activity</small> </h3>
+                  <middle>Party Activity</middle> </h3>
               </li>
             </ul>
             
@@ -613,7 +629,7 @@ body {
           
           
         </div>
-      </div>
+   </div> 
       
       
  

@@ -141,43 +141,44 @@
 	  font-family: 'Open Sans', Arial, sans-serif;
 	}
 	
-	.container{
+/* 	 .container{
 	  padding: 2rem;
-	}
-	.gallery{
-	  width: 100%;
-	  max-width: 960px;
+	} */
+	 .gallery{
+	 /*   width: 100%;
+	  max-width: 1130px;
 	  min-height: 100vh;
-	  margin: 2rem auto;
+	   margin: 1px;   */
 	  
-	  display: -webkit-box;
+	  display: -webkit-box; 
 	  display: -webkit-flex;
 	  display: -ms-flexbox;
 	  display: flex;
 	  
-	  -webkit-flex-wrap: wrap;
+	   -webkit-flex-wrap: wrap; 
 	      -ms-flex-wrap: wrap;
 	          flex-wrap: wrap;
 	  
-	  -webkit-box-pack: center;
+	 -webkit-box-pack: center; 
 	  -webkit-justify-content: center;
 	      -ms-flex-pack: center;
 	          justify-content: center;
-	}
+	} 
 	
 	.gallery-item{
 	  box-shadow: 2px 2px 8px -1px #001b63;
-	  width: 300px;
-	  height: 300px;
+	  width: 360px;
+	  height: 360px; 
 	  margin: 10px;
 	  background: #000;
-	  position: relative;
+	  position: relative; 
 	  cursor: pointer;
 	  overflow: hidden;
 	}
 	
 	.gallery-item-image{
-	  position: absolute;
+	 position: absolute; 
+	 
 	  width: 100%;
 	  height: 100%;
 	  background: lightblue;
@@ -202,13 +203,13 @@
 	  background: #002484;
 	  position: absolute;
 	  bottom:0;
-	  /* margin-bottom:10px; */
+	 /*   margin-bottom:10px;  */
 	}
 	
-	body {
+	 body {
 	padding-top: 70px;
 	background-color: #f2f4f6;
-	}
+	} 
 	</style>
 	
 </head>
@@ -225,7 +226,7 @@
   	<!-- 목록 조회 Start /////////////////////////////////////-->
 	 <!--  <div class="row"> -->
 		
-			<c:forEach var="party" items="${list}">
+			<c:forEach var="party" items="${list3}">
 				<c:set var="i" value="${i+1}"></c:set>
 				
 					<div class="gallery-item">

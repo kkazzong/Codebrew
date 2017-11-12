@@ -217,7 +217,7 @@
 
 <div class="container">
 	<!-- ToolBar Start /////////////////////////////////////-->
-	 <%-- <jsp:include page="/toolbar/toolbar.jsp" />  --%>
+	 <jsp:include page="/toolbar/toolbar.jsp" /> 
    	<!-- ToolBar End /////////////////////////////////////-->
 
 
@@ -225,7 +225,7 @@
   	<!-- 목록 조회 Start /////////////////////////////////////-->
 	 <!--  <div class="row"> -->
 		
-			<c:forEach var="party" items="${list3}">
+			<c:forEach var="party" items="${list}">
 				<c:set var="i" value="${i+1}"></c:set>
 				
 					<div class="gallery-item">
