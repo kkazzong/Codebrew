@@ -144,26 +144,26 @@
 /* 	 .container{
 	  padding: 2rem;
 	} */
-	 .gallery{
-	 /*   width: 100%;
+	  .gallery{
+	 /* width: 100%;
 	  max-width: 1130px;
 	  min-height: 100vh;
-	   margin: 1px;   */
+	   margin: 1px;    */
 	  
 	  display: -webkit-box; 
 	  display: -webkit-flex;
 	  display: -ms-flexbox;
-	  display: flex;
+	  display: flex;  
 	  
 	   -webkit-flex-wrap: wrap; 
-	      -ms-flex-wrap: wrap;
-	          flex-wrap: wrap;
+	   -ms-flex-wrap: wrap; 
+	   flex-wrap: wrap;  
 	  
-	 -webkit-box-pack: center; 
+	  -webkit-box-pack: center; 
 	  -webkit-justify-content: center;
-	      -ms-flex-pack: center;
-	          justify-content: center;
-	} 
+	   -ms-flex-pack: center;
+	   justify-content: center; 
+	}  
 	
 	.gallery-item{
 	  box-shadow: 2px 2px 8px -1px #001b63;
@@ -203,10 +203,10 @@
 	  background: #002484;
 	  position: absolute;
 	  bottom:0;
-	 /*   margin-bottom:10px;  */
+	/* margin-bottom:10px;  */
 	}
 	
-	 body {
+  body {
 	padding-top: 70px;
 	background-color: #f2f4f6;
 	} 
@@ -216,11 +216,12 @@
 
 <body>
 
-<div class="container">
+<!-- <div class="container" > -->
 	<!-- ToolBar Start /////////////////////////////////////-->
 	 <%-- <jsp:include page="/toolbar/toolbar.jsp" />  --%>
    	<!-- ToolBar End /////////////////////////////////////-->
 
+ <div class="col-md-8 col-md-offset-2">
 
   <div class="gallery">
   	<!-- 목록 조회 Start /////////////////////////////////////-->
@@ -311,7 +312,7 @@
         <h3>Image title</h3><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos, quia.</span></div>
     </div>
   </div> -->
-</div>
+
 
 </body>
 </html>

@@ -194,7 +194,7 @@
 										<div class="form-group">
 											 <label class="sr-only" for="exampleInputPassword2">Password</label>
 											 <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
-                                             <div class="help-block text-right"><a href="/user/findUser" id="findUser"><b style="color:gray;">Forget the id or password?</b></a></div>
+                                             <div class="help-block text-right"><a href="/user/findUser" id="findUser">Forget the id or password?</a></div>
 										</div>
 										<div class="form-group">
 											 <button type="submit" class="btn btn-primary btn-block" id="sign">Sign in</button>
@@ -203,7 +203,7 @@
 								 </form>
 							</div>
 							<div class="bottom text-center">
-					    <b style="color:gray;">new here?</b> <a href="#"><b style="color:gray;">Join</b></a>
+								New here ? <a href="#"><b>Join</b></a>
 							</div>
 					 </div>
 				</li>
@@ -551,7 +551,7 @@ $( function() {
 		}
 		
 		.navbar-default {
-		    background-image: linear-gradient(to bottom,black 0,black 100%)  !important; 
+		    background-image: linear-gradient(to bottom,black 0,black 100%);
 		    box-shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 1px 5px rgba(0,0,0,.075);
 		}
 		
@@ -584,8 +584,7 @@ $( function() {
 		}
 		
 	/*주영이가 추가함  */	
-  
-  #login-dp{
+		#login-dp{
     min-width: 250px;
     padding: 14px 14px 0;
     overflow:hidden;
@@ -596,7 +595,7 @@ $( function() {
 }
 #login-dp .bottom{
     background-color:rgba(255,255,255,.8);
-    border-top:1px solid #ddd; 
+    border-top:1px solid #ddd;
     clear:both;
     padding:14px;
 }
@@ -631,10 +630,10 @@ $( function() {
         background-color: inherit;
         color: #fff;
     }
-     #login-dp .bottom{
+    #login-dp .bottom{
         background-color: inherit;
         border-top:0 none;
-    } 
+    }
 }
 
 		

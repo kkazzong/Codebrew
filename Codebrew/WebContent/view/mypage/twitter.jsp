@@ -7,8 +7,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">  
-	
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">  
+	 
 
 <!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
@@ -121,12 +121,12 @@
 	</script>
 
 <style>
- body {
+  body {
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
-    background-color: #f0f3f5;
+    background-color: #f0f3f5; 
     margin-top:40px;
-} 
+}  
 /*==============================*/
 /*====== siderbar user profile =====*/
 /*==============================*/
@@ -348,7 +348,7 @@
 }
 
 
-/* 
+/*  
 .btn-circle {
     width: 40px;
     height: 40px;
@@ -358,7 +358,7 @@
     font-size: 15px;
     line-height: 2;
     position: center;
-} */
+}  */
 
 .page-header.small {
     position: relative;
@@ -518,10 +518,10 @@
     float: left;
 }
 
-.media-body {
+ .media-body {
     color: #607D8B;
     overflow: visible;
-}
+} 
 </style>
 
 <body>
@@ -625,10 +625,10 @@
       <!-- /.col-md-12 -->
    
       
-          
-          
+        
           
         </div>
+       
    </div> 
       
       
@@ -643,10 +643,10 @@
               <li><a href="javascript:void(0)">Report</a></li>
             </ul>
           </div> -->
+   <jsp:include page="/view/mypage/getMyPartyList3.jsp"/> 
+              
       
-      
-        
-<jsp:include page="/view/mypage/getMyPartyList3.jsp"/>
+
 </body>
   
 </html>
