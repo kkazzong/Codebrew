@@ -24,12 +24,12 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
 
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
 <!-- Jquery DatePicker -->
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <!-- chart -->
 <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
@@ -39,7 +39,12 @@
 <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
 
 
-
+<!-- sweet alert -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.2/sweetalert2.all.min.js"></script>
+<!-- Include a polyfill for ES6 Promises (optional) for IE11 and Android browser -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
+	
+	
 <!--  ///////////////////////// JavaScript ////////////////////////// -->
 <script type="text/javascript">
 
@@ -69,8 +74,6 @@
 
 		});
 	});
-	
-
 	
 	
 	
@@ -151,7 +154,7 @@
 	
 	$(function() {
 		$("#host").on("click", function() {
-					//self.location="http://127.0.0.1:3000/public/client04.html";
+					self.location="/myPage/getMyPage";
 					/* var self = "${user.userId}";
 					var other = "${party.user.userId}"; */
 					//window.open('http://127.0.0.1:3000/chat', '채팅팝업', 'width=440, height=520, scrollbars=yes');
@@ -456,7 +459,7 @@ body {
 							</div>
 
 							<div class="col-xs-12">
-								<%@include file="/view/party/getPartyMemberList.jsp"%>
+								<%@include file="/view/party/getPartyMemberList5.jsp"%>
 								
 								<small><span class="glyphicon glyphicon-star"></span> 파티에 참여한 사람들</small>
 								<div id="currentMemberCountDiv"></div>
@@ -465,14 +468,17 @@ body {
 								
 								<div class="col-md-6 text-center">
 									<div class="info">
-										<div class="hover01 column">
-											<div>
-												<figure id="ratioLock">
-													<img
-														src="../../resources/image/buttonImage/ratio_lock_icon.png"
-														width="35%" height="35%" data-toggle="modal"
-														data-target="#exampleModal2">
-												</figure>
+										<div id="partyRatioButtonDiv">
+											<div class="hover01 column">
+												<div>
+													<!-- <figure id="ratioLock">
+														<img
+															src="../../resources/image/buttonImage/ratio_lock_icon.png" width="35%" height="35%">
+													</figure> -->
+													<figure id='ratioLock'>
+														<img src='../../resources/image/buttonImage/ratio_lock_icon.png' width='35%' height='35%' data-toggle='modal' data-target='#exampleModal2'>
+													</figure>
+												</div>
 											</div>
 										</div>
 										<%@include file="/view/party/getGenderRatio.jsp"%>
@@ -499,8 +505,7 @@ body {
 												<div>
 													<figure id="memberLock">
 														<img
-															src='../../resources/image/buttonImage/member_lock_icon.png'
-															width='35%' height='35%'>
+															src='../../resources/image/buttonImage/member_lock_icon.png' width='35%' height='35%'>
 													</figure>
 												</div>
 											</div>

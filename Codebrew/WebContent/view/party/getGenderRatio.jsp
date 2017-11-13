@@ -7,199 +7,288 @@
 	
 		//============= "파티 비율 확인하기"  Event 처리 및  연결 =============
 		$(function(){
-			$("#ratioLock > img").on("click", function() {
-				//self.location="/partyRest/json/getGenderRatio/${party.partyNo}";
-				console.log("파티 비율 확인하기 버튼 클릭.....");
-				var partyNo = $("#partyNo").val();
-				console.log("partyNo :: "+partyNo);
-				$.getJSON( "/partyRest/json/getGenderRatio/"+partyNo,
-							//{ partyNo : $("#partyNo").val() },
-							function(JSONData, status){
-								console.log(status);
-								console.log("JSONData : "+JSON.stringify(JSONData));
-								
-								console.log("JSONData.femalePercentage : "+JSONData.femalePercentage);
-								console.log("JSONData.femaleAgeAverage : "+JSONData.femaleAgeAverage);
-								console.log("JSONData.malePercentage : "+JSONData.malePercentage);
-								console.log("JSONData.maleAgeAverage : "+JSONData.maleAgeAverage);
-								console.log("JSONData.partyName : "+JSONData.partyName);
-								
-								var html =  "<div class='row'>"
-											+"<div class='col-xs-6'><strong>여자 나이 평균 "+JSONData.femaleAgeAverage+"살</strong></div>"
-											+"<div class='col-xs-6'><strong>남자 나이 평균 "+JSONData.maleAgeAverage+"살</strong></div>"
-											+"</div>"
-								$("form.form-horizontal-2").html(html);
-								
-								if(JSONData.femalePercentage>JSONData.malePercentage){
-								var chart = AmCharts.makeChart("chartdiv",
-										{
-										    "type": "serial",
-										    "theme": "light",
-										    "dataProvider": [{
-										        "name": "여자",
-										        "points": JSONData.femalePercentage,
-										        "color": "#DB4C3C",
-										        /* "bullet": "https://www.amcharts.com/lib/images/faces/D02.png" */
-										       "bullet": "/resources/image/ui/female_up.png"
-										    },{
-										        "name": "남자",
-										        "points": JSONData.malePercentage,
-										        "color": "#7F8DA9",
-										        /* "bullet": "https://www.amcharts.com/lib/images/faces/A04.png" */
-										        "bullet": "/resources/image/ui/male.png"
-										    }],
-										    "valueAxes": [{
-										        "maximum": 120,
-										        "minimum": 0,
-										        "axisAlpha": 0,
-										        "dashLength": 4,
-										        "position": "left"
-										    }],
-										    "startDuration": 1,
-										    "graphs": [{
-										        "balloonText": "<span style='font-size:13px;'>[[category]]: <b>[[value]]</b></span>",
-										        "bulletOffset": 10,
-										        "bulletSize": 52,
-										        "colorField": "color",
-										        "cornerRadiusTop": 8,
-										        "customBulletField": "bullet",
-										        "fillAlphas": 0.8,
-										        "lineAlpha": 0,
-										        "type": "column",
-										        "valueField": "points"
-										    }],
-										    "marginTop": 0,
-										    "marginRight": 0,
-										    "marginLeft": 0,
-										    "marginBottom": 20,
-										    "autoMargins": false,
-										    "categoryField": "name",
-										    "categoryAxis": {
-										        "axisAlpha": 0,
-										        "gridAlpha": 0,
-										        "inside": true,
-										        "tickLength": 0
-										    },
-										    "export": {
-										    	"enabled": true
-										     }
-										});
-								 }else if(JSONData.femalePercentage<JSONData.malePercentage){
-									 
-									 var chart = AmCharts.makeChart("chartdiv",
-												{
-												    "type": "serial",
-												    "theme": "light",
-												    "dataProvider": [{
-												        "name": "여자",
-												        "points": JSONData.femalePercentage,
-												        "color": "#DB4C3C",
-												        /* "bullet": "https://www.amcharts.com/lib/images/faces/D02.png" */
-												       "bullet": "/resources/image/ui/female.png"
-												    },{
-												        "name": "남자",
-												        "points": JSONData.malePercentage,
-												        "color": "#7F8DA9",
-												        /* "bullet": "https://www.amcharts.com/lib/images/faces/A04.png" */
-												        "bullet": "/resources/image/ui/male_up.png"
-												    }],
-												    "valueAxes": [{
-												        "maximum": 120,
-												        "minimum": 0,
-												        "axisAlpha": 0,
-												        "dashLength": 4,
-												        "position": "left"
-												    }],
-												    "startDuration": 1,
-												    "graphs": [{
-												        "balloonText": "<span style='font-size:13px;'>[[category]]: <b>[[value]]</b></span>",
-												        "bulletOffset": 10,
-												        "bulletSize": 52,
-												        "colorField": "color",
-												        "cornerRadiusTop": 8,
-												        "customBulletField": "bullet",
-												        "fillAlphas": 0.8,
-												        "lineAlpha": 0,
-												        "type": "column",
-												        "valueField": "points"
-												    }],
-												    "marginTop": 0,
-												    "marginRight": 0,
-												    "marginLeft": 0,
-												    "marginBottom": 20,
-												    "autoMargins": false,
-												    "categoryField": "name",
-												    "categoryAxis": {
-												        "axisAlpha": 0,
-												        "gridAlpha": 0,
-												        "inside": true,
-												        "tickLength": 0
-												    },
-												    "export": {
-												    	"enabled": true
-												     }
-												});
-								 }else{
-									 
-									 var chart = AmCharts.makeChart("chartdiv",
-												{
-												    "type": "serial",
-												    "theme": "light",
-												    "dataProvider": [{
-												        "name": "여자",
-												        "points": JSONData.femalePercentage,
-												        "color": "#DB4C3C",
-												        /* "bullet": "https://www.amcharts.com/lib/images/faces/D02.png" */
-												       "bullet": "/resources/image/ui/female.png"
-												    },{
-												        "name": "남자",
-												        "points": JSONData.malePercentage,
-												        "color": "#7F8DA9",
-												        /* "bullet": "https://www.amcharts.com/lib/images/faces/A04.png" */
-												        "bullet": "/resources/image/ui/male.png"
-												    }],
-												    "valueAxes": [{
-												        "maximum": 120,
-												        "minimum": 0,
-												        "axisAlpha": 0,
-												        "dashLength": 4,
-												        "position": "left"
-												    }],
-												    "startDuration": 1,
-												    "graphs": [{
-												        "balloonText": "<span style='font-size:13px;'>[[category]]: <b>[[value]]</b></span>",
-												        "bulletOffset": 10,
-												        "bulletSize": 52,
-												        "colorField": "color",
-												        "cornerRadiusTop": 8,
-												        "customBulletField": "bullet",
-												        "fillAlphas": 0.8,
-												        "lineAlpha": 0,
-												        "type": "column",
-												        "valueField": "points"
-												    }],
-												    "marginTop": 0,
-												    "marginRight": 0,
-												    "marginLeft": 0,
-												    "marginBottom": 20,
-												    "autoMargins": false,
-												    "categoryField": "name",
-												    "categoryAxis": {
-												        "axisAlpha": 0,
-												        "gridAlpha": 0,
-												        "inside": true,
-												        "tickLength": 0
-												    },
-												    "export": {
-												    	"enabled": true
-												     }
-												});
-								 }
-							});
-				
-			});
-		});
+			
+			$("#ratioModal").modal('hide');
+			
+			console.log(">>> getGenderRatio.jsp 로딩.....");
+			
+			var partyNo = $("#partyNo").val();
+			console.log("partyNo :: "+partyNo);
+			
+			$.getJSON( "/partyRest/json/getGenderRatio/"+partyNo,
+						//{ partyNo : $("#partyNo").val() },
+						function(JSONData, status){
+							console.log(status);
+							console.log("JSONData : "+JSON.stringify(JSONData));
+							
+							console.log("JSONData.femalePercentage : "+JSONData.femalePercentage);
+							console.log("JSONData.femaleAgeAverage : "+JSONData.femaleAgeAverage);
+							console.log("JSONData.malePercentage : "+JSONData.malePercentage);
+							console.log("JSONData.maleAgeAverage : "+JSONData.maleAgeAverage);
+							console.log("JSONData.partyName : "+JSONData.partyName);
+							
+							var html =  "<div class='row'>"
+										+"<div class='col-xs-6'><strong>여자 나이 평균 "+JSONData.femaleAgeAverage+"살</strong></div>"
+										+"<div class='col-xs-6'><strong>남자 나이 평균 "+JSONData.maleAgeAverage+"살</strong></div>"
+										+"</div>"
+							$("form.form-horizontal-2").html(html);
+							
+							if(JSONData.femalePercentage>JSONData.malePercentage){
+							var chart = AmCharts.makeChart("chartdiv",
+									{
+									    "type": "serial",
+									    "theme": "light",
+									    "dataProvider": [{
+									        "name": "여자",
+									        "points": JSONData.femalePercentage,
+									        "color": "#DB4C3C",
+									        /* "bullet": "https://www.amcharts.com/lib/images/faces/D02.png" */
+									       "bullet": "/resources/image/ui/female_up.png"
+									    },{
+									        "name": "남자",
+									        "points": JSONData.malePercentage,
+									        "color": "#7F8DA9",
+									        /* "bullet": "https://www.amcharts.com/lib/images/faces/A04.png" */
+									        "bullet": "/resources/image/ui/male.png"
+									    }],
+									    "valueAxes": [{
+									        "maximum": 120,
+									        "minimum": 0,
+									        "axisAlpha": 0,
+									        "dashLength": 4,
+									        "position": "left"
+									    }],
+									    "startDuration": 1,
+									    "graphs": [{
+									        "balloonText": "<span style='font-size:13px;'>[[category]]: <b>[[value]]</b></span>",
+									        "bulletOffset": 10,
+									        "bulletSize": 52,
+									        "colorField": "color",
+									        "cornerRadiusTop": 8,
+									        "customBulletField": "bullet",
+									        "fillAlphas": 0.8,
+									        "lineAlpha": 0,
+									        "type": "column",
+									        "valueField": "points"
+									    }],
+									    "marginTop": 0,
+									    "marginRight": 0,
+									    "marginLeft": 0,
+									    "marginBottom": 20,
+									    "autoMargins": false,
+									    "categoryField": "name",
+									    "categoryAxis": {
+									        "axisAlpha": 0,
+									        "gridAlpha": 0,
+									        "inside": true,
+									        "tickLength": 0
+									    },
+									    "export": {
+									    	"enabled": true
+									     }
+									});
+							 }else if(JSONData.femalePercentage<JSONData.malePercentage){
+								 
+								 var chart = AmCharts.makeChart("chartdiv",
+											{
+											    "type": "serial",
+											    "theme": "light",
+											    "dataProvider": [{
+											        "name": "여자",
+											        "points": JSONData.femalePercentage,
+											        "color": "#DB4C3C",
+											        /* "bullet": "https://www.amcharts.com/lib/images/faces/D02.png" */
+											       "bullet": "/resources/image/ui/female.png"
+											    },{
+											        "name": "남자",
+											        "points": JSONData.malePercentage,
+											        "color": "#7F8DA9",
+											        /* "bullet": "https://www.amcharts.com/lib/images/faces/A04.png" */
+											        "bullet": "/resources/image/ui/male_up.png"
+											    }],
+											    "valueAxes": [{
+											        "maximum": 120,
+											        "minimum": 0,
+											        "axisAlpha": 0,
+											        "dashLength": 4,
+											        "position": "left"
+											    }],
+											    "startDuration": 1,
+											    "graphs": [{
+											        "balloonText": "<span style='font-size:13px;'>[[category]]: <b>[[value]]</b></span>",
+											        "bulletOffset": 10,
+											        "bulletSize": 52,
+											        "colorField": "color",
+											        "cornerRadiusTop": 8,
+											        "customBulletField": "bullet",
+											        "fillAlphas": 0.8,
+											        "lineAlpha": 0,
+											        "type": "column",
+											        "valueField": "points"
+											    }],
+											    "marginTop": 0,
+											    "marginRight": 0,
+											    "marginLeft": 0,
+											    "marginBottom": 20,
+											    "autoMargins": false,
+											    "categoryField": "name",
+											    "categoryAxis": {
+											        "axisAlpha": 0,
+											        "gridAlpha": 0,
+											        "inside": true,
+											        "tickLength": 0
+											    },
+											    "export": {
+											    	"enabled": true
+											     }
+											});
+							 }else{
+								 
+								 var chart = AmCharts.makeChart("chartdiv",
+											{
+											    "type": "serial",
+											    "theme": "light",
+											    "dataProvider": [{
+											        "name": "여자",
+											        "points": JSONData.femalePercentage,
+											        "color": "#DB4C3C",
+											        /* "bullet": "https://www.amcharts.com/lib/images/faces/D02.png" */
+											       "bullet": "/resources/image/ui/female.png"
+											    },{
+											        "name": "남자",
+											        "points": JSONData.malePercentage,
+											        "color": "#7F8DA9",
+											        /* "bullet": "https://www.amcharts.com/lib/images/faces/A04.png" */
+											        "bullet": "/resources/image/ui/male.png"
+											    }],
+											    "valueAxes": [{
+											        "maximum": 120,
+											        "minimum": 0,
+											        "axisAlpha": 0,
+											        "dashLength": 4,
+											        "position": "left"
+											    }],
+											    "startDuration": 1,
+											    "graphs": [{
+											        "balloonText": "<span style='font-size:13px;'>[[category]]: <b>[[value]]</b></span>",
+											        "bulletOffset": 10,
+											        "bulletSize": 52,
+											        "colorField": "color",
+											        "cornerRadiusTop": 8,
+											        "customBulletField": "bullet",
+											        "fillAlphas": 0.8,
+											        "lineAlpha": 0,
+											        "type": "column",
+											        "valueField": "points"
+											    }],
+											    "marginTop": 0,
+											    "marginRight": 0,
+											    "marginLeft": 0,
+											    "marginBottom": 20,
+											    "autoMargins": false,
+											    "categoryField": "name",
+											    "categoryAxis": {
+											        "axisAlpha": 0,
+											        "gridAlpha": 0,
+											        "inside": true,
+											        "tickLength": 0
+											    },
+											    "export": {
+											    	"enabled": true
+											     }
+											});
+							 }
+						});
+			
 		
+		/* 파티 멤버 리스트 보기 버튼 */
+		$("#ratioLock > img").on("click", function() {
+			if(sessionId !=""){
+				var getPartyRatioList = "<div class='hover01 column'>"
+										+"<div>"
+										+"<figure id='ratioLock'><img src='../../resources/image/buttonImage/ratio_lock_icon.png' width='35%' height='35%' data-toggle='modal' data-target='#ratioModal'></figure>"
+										+"</div>"
+										+"</div>";		
+					
+				
+				
+				console.log("코코넛 차감후 파티 비율 보기 실행");
+				
+				swal.queue([{
+					 title: '코코넛을 사용해 파티 참여자의 비율을 확인할 수 있어요!',
+					  text: "코코넛 3개를 사용하시겠습니까?",
+					  type: 'info',
+					  showCancelButton: true,
+					  confirmButtonColor: '#9adbf9',
+					  cancelButtonColor: '#b5bcbf',
+					  confirmButtonText: '네!',
+					  cancelButtonText: '아니오',
+					  showLoaderOnConfirm: true,
+					  preConfirm: function () {
+					    return new Promise(function (resolve) {
+					    	
+					    	$.postJSON = function(url, data, callback) {
+					    	    return jQuery.ajax({
+				                        url: '/userRest/json/updateCoconut/'+sessionId+'/1',
+				                        method : "POST",
+				                        headers: { 
+				                            'Accept': 'application/json',
+				                            'Content-Type': 'application/json' 
+				                        },
+				       				    dataType : "json",
+				                        
+				                        success: function(data){
+				                        }
+				                    }
+				            )
+					    	}
+					     /*  $.getJSON('/userRest/json/updateCoconut/'+sessionId+'/1') */
+					        .done(function (data) {
+					        	$("#ratioModal").modal('show');
+					            resolve()
+					        })
+					    })
+					  }
+					}])
+					
+					
+				/* swal({
+					  title: '코코넛을 사용해 파티 참여자의 비율을 확인할 수 있어요!',
+					  text: "코코넛 3개를 사용하시겠습니까?",
+					  type: 'info',
+					  showCancelButton: true,
+					  confirmButtonColor: '#9adbf9',
+					  cancelButtonColor: '#b5bcbf',
+					  confirmButtonText: '네!',
+					  cancelButtonText: '아니오' 
+					})
+					.then(function () {
+						
+						$("#ratioModal").modal('show');
+						
+						$.get('userRest/json/updateCoconut/'+sessionId+'/1')
+				        .done(function (data) {
+				          swal.insertQueueStep(data.ip)
+				          resolve()
+				        })
+					}) */
+				
+			}else{
+				/* 로그인 하지 않은 경우 */
+				console.log("로그인 후 이용 가능한 서비스 실행");
+			
+				swal({
+					  title: '파티 멤버 리스트',
+					  text: "로그인 후 이용할 수 있어요!",	  
+					  type: 'info',
+					  confirmButtonColor: '#9adbf9',
+					  confirmButtonText: 'ok',
+					})
+				
+			}
+		});		
+	});
+	
 		
 		
 	</script> 
@@ -207,19 +296,9 @@
 	   
 <!--  화면구성 div Start /////////////////////////////////////-->
 
-<!-- Button trigger modal -->
-<!-- <div class="col-md-offset-4 col-md-4 text-center" > -->
-	<!-- <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal2">
-	  확인하기
-	</button> -->
-	<!-- <img src="../../resources/image/buttonImage/ratio_lock_icon.png" width="20%" height="20%" data-toggle="modal" data-target="#exampleModal2"> -->
-	
-	
-	
-<!-- </div> -->
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="ratioModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
