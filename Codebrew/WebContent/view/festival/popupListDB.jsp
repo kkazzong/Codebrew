@@ -18,7 +18,6 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <script type="text/javascript">
-
    function fncGetList(currentPage) {
 	   
 	    $("#currentPage").val(currentPage)
@@ -29,10 +28,10 @@
    
    $(function(){
 		 $( "button:contains('검색')" ).on("click" , function() {
+			alert("검색누름");
 			fncGetList(1);
 		});
 });
-
 	
 $(function(){
 		
@@ -48,10 +47,8 @@ $(function(){
 	
 	
 $(function() {
-
 	/* $(".panel-body").on("click", function() { */
 		$(".getDB").on("click", function() {
-
 		var festivalNo = $("p", this).text();
 		 
 			$.ajax( 
@@ -284,57 +281,6 @@ $(function() {
 			
 			<jsp:include page="../../common/pageNavigator_new.jsp"/>
 			
-			<%-- <div class="col-md-6">
-						<div class="panel panel-primary">
-							<div class="panel-heading">
-								<h5 class="panel-title pull-left">${i} ${festival.festivalName}</h5>
-								<br/>
-        						<div class="clearfix"></div>
-							</div>
-							
-					<div class="panel-body">
-							
-					<c:if test="${festival.festivalImage.contains('http://')==true }">
-					
-					<img src="${festival.festivalImage }" width="100%"height="300" />
-					
-					</c:if>
-					
-					<c:if test="${festival.festivalImage.contains('http://')==false }">
-					
-					<img src="../../resources/uploadFile/${festival.festivalImage }" width="100%"height="300" />
-					
-					</c:if>
-					
-					<br/>
-									<div id="festivalNo" style="display: none">
-										<p>${festival.festivalNo }</p>
-									</div> 
-						<br />
-									
-									<div class="col-md-12">
-											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-											 <Strong>${festival.startDate} ~ ${festival.endDate}</Strong>
-											 <br/>
-											 <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
-											 <Strong>${festival.addr } </Strong>
-									</div>
-							</div>
-						</div>
-				</div>	
-			
-			
-			</c:if>
-			
-			</c:forEach>
-		</div>
-		
-		
-		
-		
-		<input type = hidden id="currentPage" name = "currentPage" value = ${i } />
-			
-			<jsp:include page="../../common/pageNavigator_new.jsp"/> --%>
 			
 				</form>
 	</div>

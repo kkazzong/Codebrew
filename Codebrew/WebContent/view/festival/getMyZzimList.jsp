@@ -26,6 +26,11 @@
 	
 	<!--card css  -->
 	<link rel="stylesheet" href="/resources/css/card.css">
+	
+			<!-- jQuery ui -->
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+	
 
 <script type="text/javascript">
 
@@ -88,8 +93,34 @@ $(function(){
 
 <style type="text/css">
 body {
-		padding-top : 70px;
-    }
+			padding-top : 70px;
+			background-color: #f2f4f6;
+	    }
+	    
+	    .card {
+			margin-top : 50px;
+	    }
+	    
+	    .panel-primary>.panel-heading {
+	    	background-color: #000000;
+	    }
+	    
+	    .text-info {
+	    	color: #333333; 
+	    }
+	    
+	    .page-header {
+	    	border-bottom : 1px solid #f2f4f6;
+	    }
+	    
+	    
+	    .section {
+	    	margin-top : 400px;
+	    }
+	    
+	    em {
+	    	font-family: tahoma;
+	    }
    </style>
 
 </head>

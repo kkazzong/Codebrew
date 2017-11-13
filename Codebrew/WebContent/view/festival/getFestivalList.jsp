@@ -23,6 +23,15 @@
 
 	<!-- Bootstrap Dropdown Hover JS -->
 	<script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
+	
+	<!-- card css -->
+	<link rel="stylesheet" href="/resources/css/card.css">
+	
+			<!-- jQuery ui -->
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+	
+	
 
 <script type="text/javascript">
 
@@ -168,10 +177,6 @@ $(function(){
 		</div> 
 	<form>
 
-<%-- 
-		전체 게시물 수 : ${resultPage.totalCount }
-		<br/>
-		현재 페이지 : ${resultPage.currentPage } --%>
 		
 			    지역검색
 				  <div class="form-group">
@@ -208,48 +213,8 @@ $(function(){
 				</select>
 				</div>
 				
-				
-				<!--수정중..  -->
-				
-			
-<%-- 					<div class="glyphicon glyphicon-cog">지역검색</div>
-					
-			<div class="areaCodePick">
-				  <div class="form-group">
-				  	<input type="hidden" >
-				    <select class="form-control" name="searchCondition">
-				    <!-- <select class="form-control" name="searchCondition"> -->
-				    <option value="">전지역</option>
-				</select>
-				</div>
-			</div>	
-				 <div class="form-group">
-				    <select class="form-control" name="sigunguCode" >
-				    <option value="">전체시군구</option>
-				</select>
-				</div>
-			
-				정렬
-				  <div class="form-group">
-				    <select class="form-control" name="arrange" >
-					<option value="" ${ ! empty search.arrange && search.arrange=="" ? "selected" : "" }>>정렬</option>
-					<option value="A" ${ ! empty search.arrange && search.arrange=="A" ? "selected" : "" }>>제목</option>
-					<option value="B" ${ ! empty search.arrange && search.arrange=="B" ? "selected" : "" }>>조회순</option>
-					<option value="C" ${ ! empty search.arrange && search.arrange=="C" ? "selected" : "" }>>최근시작일순</option>
-					<option value="D" ${ ! empty search.arrange && search.arrange=="D" ? "selected" : "" }>>축제종료일순</option>
-				</select>
-				</div> --%>
-				
-				
-			<%-- 	 <div class="form-group">
-				    <label class="sr-only" for="searchKeyword">검색어</label>
-				    <input type="text" class="form-control" id="searchKeyword" name="searchKeyword"  placeholder="검색어"
-				    			 value="${! empty search.searchKeyword ? search.searchKeyword : '' }"  >
-				  </div> --%>
-
-		
-		<button type="button" class="btn btn-default btn-block" id="APISearch">검색</button>
-		<button type="button" class="btn btn-default btn-block">축제명으로 찾기</button>
+		<button type="button" class="btn btn-info btn-block" id="APISearch">검색</button>
+		<button type="button" class="btn btn-info btn-block">축제명으로 찾기</button>
 		
 		<div class="row">
 			<div class="col-md-12">

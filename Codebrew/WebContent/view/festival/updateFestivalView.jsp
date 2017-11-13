@@ -241,9 +241,14 @@
 	<div class="row">
 		<div class="col-md-12">
 		
-			<h1 class="bg-primary text-center">
-				축제등록
-			</h1>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="page-header text-center">
+					<h3 class="text-info"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>축제수정</h3>
+				</div>
+			</div>
+		</div> 
 			
 				<form class="form-horizontal" method="post" name="detailForm" enctype="multipart/form-data">
 					<div class = "form-group">
@@ -317,7 +322,7 @@
 				<div class = "form-group">
 					<label for ="festivalDetail" class="col-sm-offset-1 col-sm-3 control-label">내용을 입력하세요</label>
 						<div class="col-md-4">
-							<textarea rows="10" cols="54" name="festivalDetail">${festival.festivalDetail }</textarea>
+							<textarea rows="10" class="form-control" cols="54" name="festivalDetail">${festival.festivalDetail }</textarea>
 						</div>	
 				</div>
 				
@@ -326,8 +331,7 @@
 				<div class = "form-group">
 					<label for ="orgPhone" class="col-sm-offset-1 col-sm-3 control-label">연락처</label>
 						<div class="col-md-4">
-							<%-- <input type = "text" class="form-control" id="orgPhone" name="orgPhone" value= "${festival.orgPhone }"> --%>
-							<textarea rows="2" cols="54" name="orgPhone">${festival.orgPhone }</textarea>
+							<textarea rows="2" cols="54" class="form-control" name="orgPhone">${festival.orgPhone }</textarea>
 						</div>	
 				</div>
 				
@@ -336,7 +340,7 @@
 				<div class = "form-group">
 					<label for ="ageLimit" class="col-sm-offset-1 col-sm-3 control-label">연령제한</label>
 						<div class="col-md-4">
-							<textarea rows="2" cols="54" name="ageLimit">${festival.ageLimit }</textarea>
+							<textarea rows="2" cols="54" class="form-control" name="ageLimit">${festival.ageLimit }</textarea>
 						</div>	
 				</div>
 			
@@ -346,7 +350,7 @@
 			
 					<label for ="bookingPlace" class="col-sm-offset-1 col-sm-3 control-label">예매처</label>
 						<div class="col-sm-4">
-							<textarea rows="2" cols="54" name="bookingPlace">${festival.bookingPlace }</textarea>
+							<textarea rows="2" cols="54" class="form-control" name="bookingPlace">${festival.bookingPlace }</textarea>
 						</div>	
 				</div>
 				
@@ -356,7 +360,7 @@
 				<div class = "form-group">
 						<label for ="program" class="col-sm-offset-1 col-sm-3 control-label">행사프로그램</label>
 							<div class="col-md-4">
-								<textarea rows="2" cols="54" name="program">${festival.program }</textarea>
+								<textarea rows="2" cols="54" class="form-control" name="program">${festival.program }</textarea>
 							</div>	
 				</div>
 				
@@ -366,7 +370,7 @@
 				<div class = "form-group">
 					<label for ="playTime" class="col-sm-offset-1 col-sm-3 control-label">공연시간</label>
 						<div class="col-md-4">
-							<textarea rows="2" cols="54" name="playTime">${festival.playTime }</textarea>
+							<textarea rows="2" cols="54" class="form-control" name="playTime">${festival.playTime }</textarea>
 						</div>	
 				</div>
 				
@@ -375,7 +379,7 @@
 				<div class = "form-group">
 					<label for ="spendTimeFestival" class="col-sm-offset-1 col-sm-3 control-label">관람소요시간</label>
 						<div class="col-md-4">
-							<textarea rows="2" cols="54" name="spendTimeFestival">${festival.spendTimeFestival }</textarea>
+							<textarea rows="2" cols="54" class="form-control" name="spendTimeFestival">${festival.spendTimeFestival }</textarea>
 						</div>	
 				</div>
 				
@@ -384,7 +388,7 @@
 			<div class = "form-group">
 				<label for ="subEvent" class="col-sm-offset-1 col-sm-3 control-label">부대행사</label>
 					<div class="col-md-4">
-						<textarea rows="2" cols="54" name="subEvent">${festival.subEvent }</textarea>
+						<textarea rows="2" cols="54" class="form-control" name="subEvent">${festival.subEvent }</textarea>
 					</div>	
 			</div>
 			
@@ -393,7 +397,7 @@
 			<div class = "form-group">
 				<label for ="useTimeFestival" class="col-sm-offset-1 col-sm-3 control-label">이용요금</label>
 					<div class="col-md-4">
-						<textarea rows="2" cols="54" name="useTimeFestival">${festival.useTimeFestival }</textarea>
+						<textarea rows="2" cols="54" class="form-control" name="useTimeFestival">${festival.useTimeFestival }</textarea>
 					</div>	
 			</div>
 			
@@ -402,7 +406,7 @@
 			<div class = "form-group">
 				<label for ="ticketPrice" class="col-sm-offset-1 col-sm-3 control-label">티켓가격</label>
 					<div class="col-md-4">
-						<input type = "text" class="form-control" id="ticketPrice" name="ticketPrice" value= "${festival.ticketPrice }">
+						<input type = "text" class="form-control" class="form-control" id="ticketPrice" name="ticketPrice" value= "${festival.ticketPrice }">
 					</div>	
 			</div>
 			
@@ -410,7 +414,7 @@
 			<div class = "form-group">
 				<label for ="ticketCount" class="col-sm-offset-1 col-sm-3 control-label">티켓수량</label>
 					<div class="col-md-4">
-						<input type = "text" class="form-control" id="ticketCount" name="ticketCount" value= "${festival.ticketCount }">
+						<input type = "text" class="form-control" class="form-control" id="ticketCount" name="ticketCount" value= "${festival.ticketCount }">
 					</div>	
 			</div>
 				
@@ -428,13 +432,13 @@
 			<div class="form-group">
 				<div class="col-sm-offset-4  col-sm-4 text-center">
 				<c:if test="${festival.isNull==true }">
-					<button type="button" class="btn btn-primary">재등록</button>
+					<button type="button" class="btn btn-info">재등록</button>
 				</c:if>
 				
 				<c:if test="${festival.isNull==false }">
-					<button type="button" class="btn btn-primary">수정</button>
+					<button type="button" class="btn btn-info">수정</button>
 				</c:if>
-					<input type = "button" class="btn btn-primary" id = "back" name = "back" value = "내용삭제"/>
+					<input type = "button" class="btn btn-info" id = "back" name = "back" value = "내용삭제"/>
 				</div>
 			</div>
 					
@@ -442,5 +446,6 @@
 			</form>
 		</div>
 	</div>
+</div>
 </body>
 </html>
