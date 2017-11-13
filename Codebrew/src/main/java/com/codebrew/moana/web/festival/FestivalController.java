@@ -64,6 +64,12 @@ public class FestivalController {
 	@Value("#{imageRepositoryProperties['fileRoot']}")
 	String fileRoot;
 	
+//	public void sleep(int time){
+//	    try {
+//	      Thread.sleep(time);
+//	    } catch (InterruptedException e) { }
+//	}
+//	
 //	@RequestMapping(value = "/deleteZzim/{festivalNo}/{userId:.+}" , method = RequestMethod.GET)
 	@RequestMapping(value = "/deleteZzim/{userId}/{festivalNo}" , method = RequestMethod.GET)
 	public ModelAndView deleteZzim(@PathVariable ("festivalNo") int festivalNo, @PathVariable ("userId") String userId)
@@ -170,7 +176,8 @@ public class FestivalController {
 		if (menu.equals("db")) {
 			modelAndView.setViewName("forward:/view/festival/getFestivalListDB.jsp");
 		} else {
-			modelAndView.setViewName("forward:/view/festival/popupListDB.jsp");
+			modelAndView.setViewName("forward:/view/festival/popupListDB2.jsp");
+//			modelAndView.setViewName("forward:/view/festival/modalTest.jsp");
 		}
 
 		return modelAndView;
@@ -299,7 +306,7 @@ public class FestivalController {
 
 			System.out.println("writeFestival: " + festival);
 
-			modelAndView.setViewName("forward:/view/festival/addFestival.jsp");
+			modelAndView.setViewName("forward:/view/festival/getFestival.jsp");
 			modelAndView.addObject(festival);
 
 		} else {
@@ -310,7 +317,7 @@ public class FestivalController {
 			festivalService.writeFestival(festival);
 			System.out.println("writeFestival: " + festival);
 
-			modelAndView.setViewName("forward:/view/festival/addFestival.jsp");
+			modelAndView.setViewName("forward:/view/festival/getFestival.jsp");
 			modelAndView.addObject(festival);
 
 		}

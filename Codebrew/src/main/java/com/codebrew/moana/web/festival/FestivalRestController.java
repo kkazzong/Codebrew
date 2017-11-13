@@ -13,12 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.codebrew.moana.common.Page;
 import com.codebrew.moana.common.Search;
 import com.codebrew.moana.service.domain.Contents;
 import com.codebrew.moana.service.domain.Festival;
+import com.codebrew.moana.service.domain.Statistics;
 import com.codebrew.moana.service.domain.Zzim;
 import com.codebrew.moana.service.festival.FestivalService;
+import com.codebrew.moana.service.statistics.StatisticsService;
 import com.codebrew.moana.service.ticket.TicketService;
 
 @RestController
@@ -32,6 +36,10 @@ public class FestivalRestController {
 	@Autowired
 	@Qualifier("ticketServiceImpl")
 	private TicketService ticketService;
+	
+	@Autowired
+	@Qualifier("statisticsServiceImpl")
+	private StatisticsService statisticsService;
 
 	@Value("#{commonProperties['pageUnit']}")
 	int pageUnit;
@@ -45,6 +53,37 @@ public class FestivalRestController {
 		// TODO Auto-generated constructor stub
 		System.out.println(this.getClass());
 	}
+	
+	@RequestMapping(value = "/json/getFestivalListDB")
+	public Map<String, Object> getFestivalListDB(@RequestBody Search search) throws Exception {
+
+		System.out.println("search 확인 : " + search);
+
+		if (search.getCurrentPage() == 0) {
+			search.setCurrentPage(1);
+		}
+		search.setPageSize(pageSize);
+
+		Map<String, Object> map = festivalService.getFestivalListDB(search);
+
+		Page resultPage = new Page(search.getCurrentPage(), ((Integer) map.get("totalCount")).intValue(), pageUnit,
+				pageSize);
+
+		List<Statistics> list = statisticsService.getFestivalZzim();
+		
+		map.put("search", search);
+		map.put("list", map.get("list"));
+		map.put("resultPage", resultPage);
+		map.put("statList", list);
+		
+		System.out.println("map확인..." + map);
+
+
+		return map;
+
+	}
+	
+	
 	
 	@RequestMapping(value = "/json/getSigunguCode/{areaCode}")
 	public Map<String, Object> getSigunguCode (@PathVariable ("areaCode") String areaCode) throws Exception {

@@ -48,6 +48,38 @@
 	
 	<script type="text/javascript">
 	
+	
+	var sel_file;
+
+	$(document).ready(function(){
+		$("#festivalImage").on("change",handleImgFileSelect);
+	});
+
+	function handleImgFileSelect(e){
+		var files = e.target.files;
+		var filesArr = Array.prototype.slice.call(files);
+		
+		filesArr.forEach(function(f){
+			if(!f.type.match("image.*")){
+				alert("확장자는 이미지 확장자만 가능합니다.")
+				return;
+			}
+			
+			sel_file = f;
+			
+			var reader = new FileReader();
+			reader.onload = function(e){
+				$("#img").attr("src",e.target.result);
+			}
+			
+			reader.readAsDataURL(f);
+		});
+	}
+
+	
+	
+	
+	
 	$(function() {
 		$("button:contains('등록')").on("click", function() {
 
@@ -61,6 +93,8 @@
 		var startDate=$("#startDate").val();
 		var endDate=$("#endDate").val();
 		var addr=$("#addr").val();
+		var ticketPrice=$("#ticketPrice").val();
+		var ticketCount=$("#ticketCount").val();
 		
 		if(festivalName == null || festivalName.length <1){
 			alert("축제명은 반드시 한 글자 이상 입력하셔야 합니다.");
@@ -80,6 +114,14 @@
 		if(addr == null || addr.length <1){
 			alert("장소를 입력하세요.");
 			return;
+		}
+		
+		if(ticketPrice == null || ticketPrice == ''){
+			var ticketPrice=$("#ticketPrice").val(0);
+		}
+		
+		if(ticketCount == null || ticketCount ==''){
+			var ticketCount=$("#ticketCount").val(0);
 		}
 		
 		$('form').attr("method","POST").attr("enctype", "multipart/form-data").attr("action", "/festival/writeFestival").submit();
@@ -222,14 +264,6 @@
 
 <jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
 
-<!-- 	<div class="row">
-		<div class="col-md-12">
-		
-			<h1 class="bg-primary text-center">
-				축제등록
-			</h1>
-			 -->
-			 
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
@@ -264,10 +298,22 @@
 						<label for ="file" class="col-sm-offset-1 col-sm-3 control-label">이미지</label>
 						
 							<div class="col-md-4">
-								<img src="${festival.festivalImage }" width="400" height="300"/>
+							
+							<c:if test="${festival.festivalImage.contains('http://')==true }">
+									<img src="${festival.festivalImage }" width="400" height="300" />
+								</c:if>
+								
+								<c:if test="${festival.festivalImage.contains('http://')==false }">
+									<img src="../../resources/uploadFile/${festival.festivalImage }" width="400" height="300" />
+								</c:if>
+								<%-- <img src="${festival.festivalImage }" width="400" height="300"/> --%>
 									<input type = "hidden" class="form-control" id="festivalImage" name="festivalImage" value= "${festival.festivalImage }">
 										<input type="file" id="festivalImage" name="file" class="form-control">
+											<img id="img"/>
+										
+										
 							</div>	
+							
 						</div>
 			
 				<hr/>
@@ -316,7 +362,6 @@
 				<div class = "form-group">
 					<label for ="orgPhone" class="col-sm-offset-1 col-sm-3 control-label">연락처</label>
 						<div class="col-md-4">
-							<%-- <input type = "text" class="form-control" id="orgPhone" name="orgPhone" value= "${festival.orgPhone }"> --%>
 							<textarea rows="5" cols="54" class="form-control" name="orgPhone">${festival.orgPhone }</textarea>
 						</div>	
 				</div>
@@ -418,6 +463,5 @@
 				
 			</form>
 		</div>
-	<!-- </div> -->
 </body>
 </html>

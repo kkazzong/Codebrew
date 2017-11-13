@@ -134,6 +134,12 @@
 			self.location = "/festival/updateFestivalView?festivalNo="+${festival.festivalNo}+"&isNull="+${festival.isNull};
 		});
 	});
+		
+		$(function() {
+			$("button:contains('모달')").on("click", function() {
+			self.location = "/view/festival/modalTest.jsp";
+		});
+	});
 
 		 var tag="";
 		 var tag2="";
@@ -193,6 +199,11 @@ body {
     	width: 100;
     	height: 100;
     }
+    
+   .panel-primary > .panel-heading {
+	    	background-image :linear-gradient(to bottom,#333 0,#333 100%);
+	    }
+    
 		
 </style>
 	
@@ -200,6 +211,8 @@ body {
 <body>
 
 <jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
+
+<%-- <jsp:include page="/view/festival/modalTest.jsp"></jsp:include> --%>
 
 <div class="container">
 	
@@ -256,7 +269,7 @@ body {
 						
 						<div class="col-md-12">
 							<c:if test="${returnZzim != null }">
-								<h1><span class="glyphicon glyphicon-heart" aria-hidden="true" id="tag" style="cursor: pointer;"></span></h1>
+								<h1><span class="glyphicon glyphicon-heart" style = "color: red;" aria-hidden="true" id="tag" style="cursor: pointer;"></span></h1>
 							</c:if>
 						</div>
 				  	</div>
@@ -515,18 +528,14 @@ body {
 								<tr>
 									<td class="col-md-3 active"><h4>티켓가격</h4></td>
 									<td><h4>
-										<c:if test= "${user.role=='u' }" >
 											${festival.ticketPrice }
-										</c:if>
 									</h4></td>
 								</tr>
 								
 								<tr>
 									<td class="col-md-3 active"><h4>티켓수량</h4></td>
 									<td><h4>
-										<c:if test= "${user.role=='u' }" >
 											${festival.ticketCount }
-										</c:if>
 									</h4></td>
 								</tr>
 							</table>
@@ -595,6 +604,8 @@ body {
 				</div>
 			</div>
 		</div>
+		
+	<button class="btn btn-default btn-lg" data-toggle="modal" data-target=".bs-example-modal-sm" type="button">버튼</button>
 		
 	
 			
