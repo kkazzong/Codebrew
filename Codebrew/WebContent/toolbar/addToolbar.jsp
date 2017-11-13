@@ -56,7 +56,7 @@
 		                <span>Festival</span>
 		                <span class="caret"></span>
 		              </a>
-			              <ul class="dropdown-menu toolbar">
+			              <ul class="dropdown-menu">
 							<li><a href="#">축제목록</a></li>
 							<!-- <li><a href="#">my찜</a></li> -->
 		                 <c:if test="${sessionScope.user.role == 'a'}">
@@ -73,7 +73,7 @@
 		                 <span>Party</span>
 		                 <span class="caret"></span>
 		              </a>
-		              <ul class="dropdown-menu toolbar">
+		              <ul class="dropdown-menu">
 		                  <!-- <li><a href="#">my파티</a></li> -->
 		                  <li><a href="#">파티등록</a></li>
 		                  <li><a href="#">파티목록</a></li>
@@ -88,7 +88,7 @@
 		             	<span>Review</span>
 		             	<span class="caret"></span>
 		             </a>
-		             <ul class="dropdown-menu toolbar">
+		             <ul class="dropdown-menu">
 						<li><a href="#">후기등록</a></li>
 						<li><a href="#">후기목록</a></li>
 						<c:if test="${sessionScope.user.role == 'a'}">
@@ -106,7 +106,7 @@
 	                    <span >Purchase</span>
 	                    <span class="caret"></span>
 	                </a>
-	                <ul class="dropdown-menu toolbar">
+	                <ul class="dropdown-menu">
 	                       <!-- <li><a href="#">my티켓</a></li> -->
 	                     <!--   <li><a href="#">축제통계</a></li>
 	                       <li><a href="#">평점통계</a></li>
@@ -154,7 +154,7 @@
 			                 <span>MyPage</span>
 			                 <span class="caret"></span>
 			              </a>
-			              <ul class="dropdown-menu toolbar">
+			              <ul class="dropdown-menu">
 			                    <li><a href="#">마이페이지</a></li> 
 			                    <li><a href="#">my찜</a></li>
 			                    <li><a href="#">my파티</a></li>
@@ -177,7 +177,7 @@
 		               
 		  <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Login</b> <span class="caret"></span></a>
-			  <ul id="login-dp" class="dropdown-menu toolbar">
+			  <ul id="login-dp" class="dropdown-menu">
 				<li>
 					 <div class="row">
 							<div class="col-md-12">
@@ -492,7 +492,7 @@ $( function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			$("#sign").on("click" , function() {
 				var userId=$("#loginUserId").val();
-				var Password=$("#loginPassword").val();
+				var password=$("#loginPassword").val();
 				
 			
 				
@@ -508,8 +508,11 @@ $( function() {
 					return;
 				}
 				
+				$("#loginForm").attr("method","POST").attr("action","/user/login").submit();
+			});
 				
-				$.ajax({
+        });
+				/* $.ajax({
 					type:"POST",
 					url:"/userRest/json/getUser", 
 			        data :{userId:userId},//요청과 함께 서버에 보내는 string 또는 map
@@ -520,27 +523,27 @@ $( function() {
 				    	
 				    	var pw=JSONData.password;
 				
-				    if(pw != Password){
+				    if(pw != password){
 				     /* $("span.col-id-checkPassword").html("비밀번호가 틀렸습니다.").css("color","blue"); */
-				     alert("비밀번호가 틀렸습니다.")
-				     event.preventDefault();
-				     return;
-				    } else{
+				    // alert("비밀번호가 틀렸습니다.")
+				     //event.preventDefault();
+				     //return;
+				  //  } else{ 
 			         //$("span.col-id-checkPassword").remove();
 			       /*   alert("여기옴") */
-				    	$("#loginForm").attr("method","POST").attr("action","/user/login").submit();
+				    	//$("#loginForm").attr("method","POST").attr("action","/user/login").submit();
 			      /*    alert("저기옴") */
-			      //form에 아디를 지정해 findUser.jsp의 폼과 중복되지 않게 하고, findUser.jsp에 id=userId인걸 id=email로 바꿈
+			      //form에 아디를 지정해 findUser.jsp의 폼과 중복되지 않게 하고, findUser.jsp에 id=userId인걸 id=email로 바꿈(무결성에러..)
 			      
 			      
-				      }
+			/* 	      }
 				    }
 				    
 			    });
 				
 			});
 		});	
-	   
+	    */
 		
 		
    		
@@ -561,17 +564,17 @@ $( function() {
 		    box-shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 1px 5px rgba(0,0,0,.075);
 		}
 		
-		.dropdown-menu.toolbar {
+		.dropdown-menu {
 			background-color: black;
 			color: white;
 		}
 		 
-		.dropdown-menu.toolbar {
+		.dropdown-menu {
 			background-color: black;
 			color: white;
 		}
 		 
-		.dropdown-menu.toolbar li a {
+		.dropdown-menu li a {
 			color: #eee;
 		}
 		
