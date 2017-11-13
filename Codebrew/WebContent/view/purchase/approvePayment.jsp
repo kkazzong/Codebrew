@@ -28,13 +28,19 @@
 				if(payType == 'phone') {
 					self.location = "/purchase/getPurchaseList?userId=${user.userId}";
 				} else {
-					opener.parent.location="/purchase/getPurchaseList?userId=${user.userId}";
+					//opener.parent.location="/purchase/getPurchaseList?userId=${user.userId}";
 					//익스플로러경우 닫기할때 alert창 안뜨게 하기위해..
-					window.open("about:blank", "_self").close();
+					//window.open("about:blank", "_self").close();
 				}
 			});
 			
+			
 		});
+			function layerClose(){
+				 $("#popLayer").css("display","none");
+				 $("body").css("overflow","auto");
+				 window.parent.location = "/purchase/getPurchaseList?userId=${user.userId}";
+			}
 	</script>
 	
 	<!-- CSS -->
@@ -180,7 +186,7 @@
 		<!-- 확인버튼 -->
 		<div class="row">
 			<div class="col-md-offset-3 col-md-6">
-				<button class="btn btn-default btn-lg btn-block" type="button">확인</button>
+				<button class="btn btn-default btn-lg btn-block" type="button" onclick="javascript:layerClose();">확인</button>
 			</div>
 		</div>
 	
