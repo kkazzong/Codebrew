@@ -374,16 +374,31 @@
    								"Content-Type" : "application/json"
    							}, 
    							success : function(JSONData, status){
-   								var str = "";
-   								for(var i = 0; i < JSONData.busNoList.length; i ++) {
-   									str += JSONData.busNoList[i]+", ";
-   								}
-   								for(var i = 0; i < JSONData.subwayList.length; i++) {
-   									str += JSONData.subwayList[i]+", ";
-   								}
-   								str = str.substr(0, str.length-2);
    								
-   								$("#transportListAtStation").html(str);
+   								if(JSONData.busNoList.length != 0){
+   									var busStr = "";
+   									for(var i = 0; i < JSONData.busNoList.length; i++) {
+   										busStr += JSONData.busNoList[i]+", ";
+   									}
+   									busStr = busStr.substr(0, busStr.length-2);
+   								}
+   								if(JSONData.subwayList.length != 0){
+   									var subwayStr = "";
+   									for(var i = 0; i < JSONData.subwayList.length; i++) {
+   										subwayStr += JSONData.subwayList[i]+", ";
+   									}
+   									subwayStr = subwayStr.substr(0, subwayStr.length-2);
+   								}
+   								
+   								if(JSONData.busNoList.length != 0 && JSONData.subwayList.length == 0) {
+	   								$("#transportListAtStation").html("<br><img src=../../resources/images/transport/BlackBus.PNG width=24 height=24>"+"버스 : "+busStr);   									
+   								}
+   								if(JSONData.subwayList.length != 0 && JSONData.busNoList.length == 0) {
+	   								$("#transportListAtStation").html("<br><img src=../../resources/images/transport/BlackSubway.PNG width=24 height=24>"+"지하철 : "+subwayStr);   									
+   								}
+   								if(JSONData.subwayList.length != 0 && JSONData.busNoList.length != 0) {
+	   								$("#transportListAtStation").html("<br><img src=../../resources/images/transport/BlackBus.PNG width=24 height=24>"+"버스 : "+busStr+"<br>"+"<img src=../../resources/images/transport/BlackSubway.PNG width=24 height=24>"+"지하철 : "+subwayStr);   									
+   								}
    								
    								if(JSONData.busNoList.length == 0 && JSONData.subwayList.length == 0){
    									$("#transportListAtStation").html("반경 "+defaultRadius+"m내에 관련 대중교통 정보가 없습니다.");
@@ -534,7 +549,7 @@
 					type: "info", 
 				});
 				
-				$("#transportListAtStation").html("반경 "+radiusForTransportSearchAgain+"으로 재검색 중입니다.");
+				$("#transportListAtStation").html("반경 "+radiusForTransportSearchAgain+"m로 재검색 중입니다.");
 				
 				$.ajax(
    						{
@@ -547,24 +562,36 @@
    							}, 
    							success : function(JSONData, status){
    								
-   								if(JSONData.busNoList.length != 0 || JSONData.subwayList.length != 0){
-   									
-	   								var str = "";
-	   								for(var i = 0; i < JSONData.busNoList.length; i ++) {
-	   									str += JSONData.busNoList[i]+", ";
-	   								}
-	   								for(var i = 0; i < JSONData.subwayList.length; i++) {
-	   									str += JSONData.subwayList[i]+", ";
-	   								}
-	   								str = str.substr(0, str.length-2);
-	   								
-	   								$("#transportListAtStation").html(str);
-   									
-   								}else{
-   									
-   									$("#transportListAtStation").html("반경 "+radiusForTransportSearchAgain+"m내에 관련 대중교통 정보가 없습니다.");
-   									
+   								
+   								if(JSONData.busNoList.length != 0){
+   									var busStr = "";
+   									for(var i = 0; i < JSONData.busNoList.length; i++) {
+   										busStr += JSONData.busNoList[i]+", ";
+   									}
+   									busStr = busStr.substr(0, busStr.length-2);
    								}
+   								if(JSONData.subwayList.length != 0){
+   									var subwayStr = "";
+   									for(var i = 0; i < JSONData.subwayList.length; i++) {
+   										subwayStr += JSONData.subwayList[i]+", ";
+   									}
+   									subwayStr = subwayStr.substr(0, subwayStr.length-2);
+   								}
+   								
+   								if(JSONData.busNoList.length != 0 && JSONData.subwayList.length == 0) {
+	   								$("#transportListAtStation").html("<br><img src=../../resources/images/transport/BlackBus.PNG width=24 height=24>"+"버스 : "+busStr);   									
+   								}
+   								if(JSONData.subwayList.length != 0 && JSONData.busNoList.length == 0) {
+	   								$("#transportListAtStation").html("<br><img src=../../resources/images/transport/BlackSubway.PNG width=24 height=24>"+"지하철 : "+subwayStr);   									
+   								}
+   								if(JSONData.subwayList.length != 0 && JSONData.busNoList.length != 0) {
+	   								$("#transportListAtStation").html("<br><img src=../../resources/images/transport/BlackBus.PNG width=24 height=24>"+"버스 : "+busStr+"<br>"+"<img src=../../resources/images/transport/BlackSubway.PNG width=24 height=24>"+"지하철 : "+subwayStr);   									
+   								}
+   								
+   								if(JSONData.busNoList.length == 0 && JSONData.subwayList.length == 0){
+   									$("#transportListAtStation").html("반경 "+defaultRadius+"m내에 관련 대중교통 정보가 없습니다.");
+   								}
+   								
    								
    							}
    						}		
@@ -739,7 +766,7 @@
 						</div>
 						<div class="col-md-12">
 							<small>
-								<span class="glyphicon glyphicon-road" aria-hidden="true"> 대중교통정보:</span>
+								<span class="glyphicon glyphicon-road" aria-hidden="true"> 대중교통정보</span>
 								<span id="transportListAtStation">교통정보 불러오는 중...</span>
 								<br>
 								<input type="number" id="radiusForTransportSearchAgain" min="100" max="3000" value="350"/>
