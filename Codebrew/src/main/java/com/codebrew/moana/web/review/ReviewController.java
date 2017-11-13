@@ -115,7 +115,7 @@ public class ReviewController {
 			List<Image> uploadImageList = new ArrayList<Image>();
 			for(MultipartFile multipartFile : uploadReviewImage){
 				Image eachImage = new Image();
-				String fileName = "Taehoon"+UUID.randomUUID().toString()+System.currentTimeMillis()+multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."), multipartFile.getOriginalFilename().length());
+				String fileName = "review"+UUID.randomUUID().toString()+System.currentTimeMillis()+multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."), multipartFile.getOriginalFilename().length());
 				eachImage.setReviewImage(fileName); //각각의 이미지 fileName을 setting
 				
 				uploadImageList.add(eachImage); //생성한 list에 setting이 끝난 각각의 Image 객체를 넣어줌
