@@ -3,6 +3,7 @@
 
 
 <!--  ///////////////////////// JavaScript ////////////////////////// -->
+	
 	<script type="text/javascript"> 
 	
 		var sessionId = "${user.userId}";
@@ -31,10 +32,8 @@
 		//============= "파티멤버보기"  Event 처리 및  연결 =============
 		$(function(){
 			
-			
-			
 			/* $("button:contains('파티멤버보기')").on("click", function() { */
-				console.log("파티멤버보기 버튼 클릭.....");
+				console.log(">>> getPartyMemberList.jsp 로딩.....");
 				console.log("partyNo :: "+$("#partyNo").val());
 				
 				console.log("sessionId :: "+sessionId);
@@ -45,7 +44,7 @@
 				//============= "파티멤버보기"  Event 처리 및  연결 =============
 				$(function(){
 					/* $("button:contains('파티멤버보기')").on("click", function() {  */
-						console.log("파티멤버보기 버튼 클릭.....");
+						console.log("파티 멤버 리스트 불러오기.....");
 						console.log("partyNo :: "+$("#partyNo").val());
 						
 						var sessionId = "${user.userId}";
@@ -95,27 +94,96 @@
 												console.log(partyMemberList);
 												
 												/* 파티 멤버 리스트 보기 버튼 */
-												if (sessionId == JSONData.list[i].user.userId){
-									  				console.log("if문 안 파티 멤버 리스트 보기 버튼");
-										  			
-									  				/* 파티 멤버 리스트 보기 버튼 */
-													/* var getPartyMemberList = "<button type='button' class='btn btn-primary btn-block' data-toggle='modal' data-target='#exampleModal'>"
-																 +"파티멤버보기"
-																 +"</button>"; */
-																 
-													var getPartyMemberList = "<div class='hover01 column'>"
-																			+"<div>"
-																			+"<figure id='memberLock'><img src='../../resources/image/buttonImage/member_lock_icon.png' width='35%' height='35%' data-toggle='modal' data-target='#exampleModal'></figure>"
-																			+"</div>"
-																			+"</div>"			 
-																 
-												    $("#partyMemberListButtonDiv").html(getPartyMemberList);
-												    
-												    console.log(getPartyMemberList);
-												    
-												    
-												 
-									  			}
+												if(sessionId !=""){
+													if (sessionId == JSONData.list[i].user.userId){
+														
+														
+										  				console.log("if문 안 파티 멤버 리스트 보기 실행");
+											  			
+										  				/* 파티 멤버 리스트 보기 버튼 */
+														/* var getPartyMemberList = "<button type='button' class='btn btn-primary btn-block' data-toggle='modal' data-target='#exampleModal'>"
+																	 +"파티멤버보기"
+																	 +"</button>"; */
+																	 
+														var getPartyMemberList = "<div class='hover01 column'>"
+																				+"<div>"
+																				+"<figure id='memberLock'><img src='../../resources/image/buttonImage/member_lock_icon.png' width='35%' height='35%' data-toggle='modal' data-target='#exampleModal'></figure>"
+																				+"</div>"
+																				+"</div>"			 
+																	 
+													    $("#partyMemberListButtonDiv").html(getPartyMemberList);
+													    
+													    console.log(getPartyMemberList);
+													    
+													    return;
+													    
+													}else{
+														
+														$("#partyMemberListButtonDiv").on('click', function(){
+															/* 애프터 파티 */
+															console.log("애프터 파티 참여 후 이용 가능한 서비스 실행");
+											  				if("${party.festival.festivalNo}" != ""){	
+																swal({
+																	  title: '파티 참여 후 이용 가능한 서비스에요!',
+																	  text: "애프터 파티에 참여하시겠습니까?",
+																	  type: 'info',
+																	  showCancelButton: true,
+																	  confirmButtonColor: '#9adbf9',
+																	  cancelButtonColor: '#b5bcbf',
+																	  confirmButtonText: '네!',
+																	  cancelButtonText: '아니오' 
+																	})
+																	/* .then(function () {
+																	  	'Welcome!',
+																	    '애프터 파티에 참여하셨습니다.',
+																	    'success'
+																	    
+																	}) */
+																	.then(function () {
+																		self.location = '/party/joinParty?partyNo=${party.partyNo}'
+																	})
+											  				}else{
+											  						
+											  					console.log("파티 참여 후 이용 가능한 서비스 실행");
+											  					swal({
+																	  title: '파티 참여 후 이용 가능한 서비스에요!',
+																	  text: "파티에 참여하시겠습니까?",
+																	  type: 'info',
+																	  showCancelButton: true,
+																	  confirmButtonColor: '#9adbf9',
+																	  cancelButtonColor: '#b5bcbf',
+																	  confirmButtonText: '네!',
+																	  cancelButtonText: '아니오' 
+																	}).then(function () {
+																	  
+																		self.location = '/purchase/addPurchase?partyNo=${party.partyNo}'
+																	 
+																	})
+											  				}
+														});
+													}
+												}else{
+													$("#partyMemberListButtonDiv").on('click', function(){
+														
+														console.log("로그인 후 이용 가능한 서비스 실행");
+														swal({
+															  title: '파티 멤버 리스트',
+															  /* text: "로그인 페이지로 이동하시겠습니까?", */
+															  text: "로그인 후 이용해주세요!",	  
+															  type: 'info',
+															  /* showCancelButton: true, */
+															  confirmButtonColor: '#9adbf9',
+															  /* cancelButtonColor: '#b5bcbf', */
+															  confirmButtonText: 'ok',
+															  /* cancelButtonText: '아니오' */ 
+															})
+															/* .then(function () {
+															  
+																self.location = '/user/login'
+															 
+															}) */
+													});
+												}
 									  		}
 								  }
 								});
