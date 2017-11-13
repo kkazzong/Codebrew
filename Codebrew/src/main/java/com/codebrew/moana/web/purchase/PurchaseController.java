@@ -133,19 +133,23 @@ public class PurchaseController {
 	}
 	
 	@RequestMapping(value = "getPurchase", method = RequestMethod.GET)
-	public ModelAndView getPurchase(@RequestParam("purchaseNo") int purchaseNo) {
+	public ModelAndView getPurchase(/*@RequestParam("purchaseNo") int purchaseNo*/ @RequestParam("purchaseNo") String purchaseNo) {
 
-		System.out.println(purchaseNo);
-
-		Purchase purchase = purchaseService.getPurchase(purchaseNo);
-		Ticket ticket = ticketService.getTicketByTicketNo(purchase.getTicket().getTicketNo());
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("purchase", purchase);
-		modelAndView.addObject("ticket", ticket);
-		modelAndView.setViewName("/view/purchase/getPurchase.jsp");
+		System.out.println(purchaseNo);
+		try {
+			Purchase purchase = purchaseService.getPurchase(Integer.parseInt(purchaseNo));
+			Ticket ticket = ticketService.getTicketByTicketNo(purchase.getTicket().getTicketNo());
+			modelAndView.addObject("purchase", purchase);
+			modelAndView.addObject("ticket", ticket);
+			modelAndView.setViewName("/view/purchase/getPurchase.jsp");
+		} catch (Exception e) {
+			e.printStackTrace();
+			modelAndView.setViewName("/view/purchase/noResult.jsp");
+			return modelAndView;
+		}
 		//modelAndView.setViewName("/view/purchase/getPurchaseTest.jsp");
 		return modelAndView;
-
 	}
 	
 	@RequestMapping(value = "getPurchaseList")
