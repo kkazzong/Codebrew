@@ -528,6 +528,9 @@ public class TourAPIDAOImpl implements FestivalDAO {
 		List<Festival> list = new ArrayList<Festival>();
 
 		JSONObject jsonobj = (JSONObject) JSONValue.parse(sb.toString());
+		
+		System.out.println("sb확인............" + sb);
+		
 		JSONObject jsonobj2 = (JSONObject) jsonobj.get("response");
 
 		JSONObject jsonobj3 = (JSONObject) jsonobj2.get("body");

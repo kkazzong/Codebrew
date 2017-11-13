@@ -55,7 +55,7 @@
 		});
 	});
 	
-$(function(){
+ $(function(){
 		
 		$("input:text[name='searchKeyword']").on('keydown',function(event){
 			
@@ -162,8 +162,66 @@ function fncGetSigunguCode(areaCode){
 
 //}//javascript
 
+  $(function() {
+			
+				$("#searchKeyword").autocomplete({
+					source: function( request, response ) {
+				        $.ajax( {
+				          url: "/festivalRest/json/getKeyword",
+				          method : "POST",
+				          headers : {
+								"Accept" : "application/json",
+								"Content-Type" : "application/json"
+						  },
+				          dataType: "json",
+				          data: JSON.stringify({
+				        	currentPage : "1",
+					        searchKeyword : $("#searchKeyword").val(),
+					        searchCondition : ""
+				          }),
+				          success: function( JSONData ) {
+				            response($.map(JSONData, function(value, key){
+				            	console.log(value.festivalNo);
+				            	
+				            	var festivalNo = value.festivalNo;
+				            	
+				            	$("#festivalNo").val(festivalNo);
+				            	
+				            		return {
+				            			label :  value.festivalName,
+				            			value : value.festivalName
+				            		}
+					        	}));
+					          }
+				        });
+				    }
+				});
+			});
+   	
 
-	
+	/* 	   $(function(){
+			   $("#DBSearch").on("click",function(){
+					
+				   var festivalNo = $("#festivalNo").val();
+				   var searchKeyword = $("#searchKeyword").val();
+				   
+				   
+				   self.location="/festival/getFestivalDB?festivalNo="+festivalNo;
+			   });
+		   });
+		    */
+		/*    $(function(){
+				$("#searchKeyword").on('keydown',function(event){
+					
+					if(event.keyCode ==13){
+						event.preventDefault();
+						$( "#DBSearch"  ).click();
+					}
+				});
+			
+			}); 
+   	 */
+
 	
 	
 </script>
