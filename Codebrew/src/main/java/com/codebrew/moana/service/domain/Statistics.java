@@ -14,6 +14,10 @@ public class Statistics {
 	private String name;
 	private String image; //이미지
 	private String addr; //주소
+	private String partyCount;
+	private String festivalCount;
+	private String reviewCount;
+	private String userCount;
 	
 	// Constructor
 	public Statistics() {
@@ -107,11 +111,46 @@ public class Statistics {
 		this.image = image;
 	}
 
+	public String getPartyCount() {
+		return partyCount;
+	}
+
+	public void setPartyCount(String partyCount) {
+		this.partyCount = partyCount;
+	}
+
+	public String getFestivalCount() {
+		return festivalCount;
+	}
+
+	public void setFestivalCount(String festivalCount) {
+		this.festivalCount = festivalCount;
+	}
+
+	public String getReviewCount() {
+		return reviewCount;
+	}
+
+	public void setReviewCount(String reviewCount) {
+		this.reviewCount = reviewCount;
+	}
+
+	public String getUserCount() {
+		return userCount;
+	}
+
+	public void setUserCount(String userCount) {
+		this.userCount = userCount;
+	}
+
 	@Override
 	public String toString() {
 		return "Statistics [purchase=" + purchase + ", totalPrice=" + totalPrice + ", totalCount=" + totalCount
 				+ ", statFlag=" + statFlag + ", statDate=" + statDate + ", startDate=" + startDate + ", endDate="
-				+ endDate + ", referNo=" + referNo + ", name=" + name + ", image=" + image + ", addr=" + addr + "]";
+				+ endDate + ", referNo=" + referNo + ", name=" + name + ", image=" + image + ", addr=" + addr
+				+ ", partyCount=" + partyCount + ", festivalCount=" + festivalCount + ", reviewCount=" + reviewCount
+				+ ", userCount=" + userCount + "]";
 	}
+
 
 }

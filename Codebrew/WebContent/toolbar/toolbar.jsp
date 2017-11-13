@@ -55,7 +55,7 @@
 		                <span>Festival</span>
 		                <span class="caret"></span>
 		              </a>
-			              <ul class="dropdown-menu">
+			              <ul class="dropdown-menu toolbar">
 							<li><a href="#">축제목록</a></li>
 							<!-- <li><a href="#">my찜</a></li> -->
 		                 <c:if test="${sessionScope.user.role == 'a'}">
@@ -72,7 +72,7 @@
 		                 <span>Party</span>
 		                 <span class="caret"></span>
 		              </a>
-		              <ul class="dropdown-menu">
+		              <ul class="dropdown-menu toolbar">
 		                  <!-- <li><a href="#">my파티</a></li> -->
 		                  <li><a href="#">파티등록</a></li>
 		                  <li><a href="#">파티목록</a></li>
@@ -87,7 +87,7 @@
 		             	<span>Review</span>
 		             	<span class="caret"></span>
 		             </a>
-		             <ul class="dropdown-menu">
+		             <ul class="dropdown-menu toolbar">
 						<li><a href="#">후기등록</a></li>
 						<li><a href="#">후기목록</a></li>
 						<c:if test="${sessionScope.user.role == 'a'}">
@@ -105,7 +105,7 @@
 	                    <span >Purchase</span>
 	                    <span class="caret"></span>
 	                </a>
-	                <ul class="dropdown-menu">
+	                <ul class="dropdown-menu toolbar">
 	                       <!-- <li><a href="#">my티켓</a></li> -->
 	                     <!--   <li><a href="#">축제통계</a></li>
 	                       <li><a href="#">평점통계</a></li>
@@ -153,7 +153,7 @@
 			                 <span>MyPage</span>
 			                 <span class="caret"></span>
 			              </a>
-			              <ul class="dropdown-menu">
+			              <ul class="dropdown-menu toolbar">
 			                    <li><a href="#">마이페이지</a></li> 
 			                    <li><a href="#">my찜</a></li>
 			                    <li><a href="#">my파티</a></li>
@@ -176,7 +176,7 @@
 		               
 		  <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Login</b> <span class="caret"></span></a>
-			  <ul id="login-dp" class="dropdown-menu">
+			  <ul id="login-dp" class="dropdown-menu toolbar">
 				<li>
 					 <div class="row">
 							<div class="col-md-12">
@@ -555,17 +555,17 @@ $( function() {
 		    box-shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 1px 5px rgba(0,0,0,.075);
 		}
 		
-		.dropdown-menu {
+		.dropdown-menu.toolbar {
 			background-color: black;
 			color: white;
 		}
 		 
-		.dropdown-menu {
+		.dropdown-menu.toolbar {
 			background-color: black;
 			color: white;
 		}
 		 
-		.dropdown-menu li a {
+		.dropdown-menu.toolbar li a {
 			color: #eee;
 		}
 		
