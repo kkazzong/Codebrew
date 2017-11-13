@@ -3,7 +3,7 @@
     
 <script type="text/javascript">
 
-	function printClock() {
+	function printClock(flag) {
 
 		var clock = document.getElementById("clock"); // 출력할 장소 선택
 		var currentDate = new Date(); // 현재시간
@@ -26,7 +26,11 @@
 		var innerHTML = calendar + " "+ currentHours + ":" + currentMinute +
 		":" + currentSeconds +" <span style='font-size:12px;'>" + amPm+ "</span>"; //날짜를 출력해 줌
 		
-		$("#clock").html(innerHTML);
+		if(flag == 'stat') {
+			$($(".clock")[1]).html(innerHTML);
+		} else {
+			$($(".clock")[0]).html(innerHTML);
+		}
 
 		//setTimeout("printClock()", 1000); // 1초마다 printClock() 함수 호출
 	}
@@ -49,11 +53,11 @@
 
 <style type="text/css">
 
-	#clock {
+	.clock {
 		font-size : 12px;
 		text-align : center;
 	}
 	
 </style>
-<span id="clock"></span>
+<span class="clock"></span>
 

@@ -19,7 +19,7 @@
 		    		labels : {
 		    			fontColor : "#000000"
 		    		}
-		    	},
+		    	}/* ,
 		        scales: {
 		        	xAxes : [{
 		        		 ticks: {
@@ -31,7 +31,7 @@
 				                beginAtZero:true
 				         }
 		            }]
-		        }
+		        } */
 		    }
 		});
 		
@@ -152,7 +152,7 @@
 		  //alert($(this).val());
 			fncSearchChartData(3, $(this).val());
 		});
-		
+	  
  	});
 
 
@@ -161,23 +161,32 @@
 </script>
 <style type="text/css">
 	#quarterChart {
-		width: 100%;
-		height: 100%;
+		/* width: 100%;
+		height: 100%;  */
+		margin-top: 13px;
 		/* display: none; */
 	}
 </style>
 
 	<!-- 기간별 검색 -->
-	<form class="form form-inline">
-		<div class="form-group">
-			<label for="년도 선택">년도 선택</label>
-			<div class="input-group">
-				<select class="form-control" name="statDate">
-					<option>년도선택</option>
-				</select>
+	<div class="row">
+			<div class="col-md-offset-3 col-md-6">
+				<div class="row">
+					<div class="col-md-12">
+						<form class="form form-inline">
+							<div class="form-group">
+								<label for="년도 선택">년도 선택</label>
+								<div class="input-group">
+									<select class="form-control form-group" name="statDate">
+										<option>년도선택</option>
+									</select>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
 			</div>
 		</div>
-	</form>
 	
 	<!-- 차트도화지 -->
-	<canvas id="quarterChart" ></canvas>
+	<canvas id="quarterChart" width="600" height="333" ></canvas>

@@ -415,8 +415,7 @@ public class FestivalController {
 	}
 
 	@RequestMapping(value = "searchKeywordList", method = RequestMethod.GET)
-	public ModelAndView searchKeywordList(@ModelAttribute("search") Search search, @ModelAttribute("page") Page page,
-			@RequestParam (value = "menu", required = false) String menu)
+	public ModelAndView searchKeywordList(@ModelAttribute("search") Search search, @ModelAttribute("page") Page page)
 			throws Exception {
 
 		System.out.println("컨트롤러 들어옴");
@@ -425,23 +424,19 @@ public class FestivalController {
 			search.setArrange("");
 		}
 
-		Date dt = new Date();
-
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
-
-		String currentDate = sdf.format(dt).toString();
-
-		if (search.getSearchKeyword() == null || search.getSearchKeyword() == "") {
-			search.setSearchKeyword(currentDate);
-		}
+//		Date dt = new Date();
+//
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+//
+//		String currentDate = sdf.format(dt).toString();
+//
+//		if (search.getSearchKeyword() == null || search.getSearchKeyword() == "") {
+//			search.setSearchKeyword(currentDate);
+//		}
 		
 		Map<String,Object> map = new HashMap<String,Object>();
 		
-		if(menu.equals("db")){
-			map = festivalService.getFestivalListDB(search);
-		}else{
 			map = festivalService.searchKeywordList(search);
-		}
 		
 		Page resultPage = new Page(search.getCurrentPage(), ((Integer) map.get("totalCount")).intValue(), pageUnit,
 				pageSize);

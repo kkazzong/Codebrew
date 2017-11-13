@@ -15,7 +15,10 @@
 		<result property="endDate" column="end_date" jdbcType="VARCHAR"/>
 		<result property="referNo" column="refer_no" jdbcType="NUMERIC"/>
 		<result property="imageName" column="image_name" jdbcType="VARCHAR"/>
-		<result property="addr" column="addr" jdbcType="VARCHAR"/>
+		<result property="partyCount" column="party_count" jdbcType="VARCHAR"/>
+		<result property="festivalCount" column="festival_count" jdbcType="VARCHAR"/>
+		<result property="reviewCount" column="review_count" jdbcType="VARCHAR"/>
+		<result property="userCount" column="user_count" jdbcType="VARCHAR"/>
 		<!-- <association property="purchase" javaType="purchase">
 			<id property="purchaseNo" column="purchase_no" jdbcType="NUMERIC"/>
 			<result property="purchaseMethodType" column="purchase_method_type" jdbcType="VARCHAR"/>
@@ -97,7 +100,7 @@
 		ORDER BY 1
 	</select>
 	
-	<select id="getMonthlyTotalSaleAmountStat" resultMap="selectStatisticsMap">
+	<select id="getMonthlyTotalSaleAmountStat" parameterType="search" resultMap="selectStatisticsMap">
 		SELECT
 		vt.purchase_date AS stat_date,
 		vt.purchase_price AS total_price,
@@ -109,7 +112,18 @@
 					SUM(purchase_price) AS purchase_price,
 					SUM(purchase_count) AS purchase_count
 					FROM purchase
-          			WHERE to_char(purchase_date, 'yyyy') = to_char(SYSDATE, 'yyyy')  
+					<where>
+						<if test="searchCondition != null">
+							<choose>
+								<when test="searchCondition == 1"> <!-- 올해, 전년도 -->
+			          			  to_char(purchase_date, 'yyyy') >= to_char(add_months(SYSDATE,-12), 'yyyy')  
+								</when>
+								<when test="searchCondition == 2"><!-- 옿해만 -->
+			          			  to_char(purchase_date, 'yyyy') = to_char(SYSDATE, 'yyyy')  
+								</when>
+							</choose>
+						</if>
+					</where>
 					GROUP BY to_char(purchase_date, 'yyyy-mm')
 					ORDER BY purchase_date
 					) vt,
@@ -132,7 +146,8 @@
 					SUM(purchase_count) AS purchase_count
 					FROM purchase
 					<where>
-          				to_char(purchase_date, 'yyyy') = to_char(SYSDATE, 'yyyy')  
+          				<!-- to_char(purchase_date, 'yyyy') = to_char(SYSDATE, 'yyyy')   -->
+							to_char(purchase_date, 'yyyy') >= to_char(add_months(SYSDATE,-12), 'yyyy')  
           				<if test="startDate != null and endDate == null">
 		          			AND to_char(purchase_date,'yyyy-mm') = #{startDate}
 						</if> 
@@ -266,5 +281,34 @@
 					ORDER BY total_count DESC
 					)vt
 		WHERE ROWNUM BETWEEN 1 AND 3
+	</select>
+	
+	<!-- 총갯수 -->
+	<select id="getTotalCount" resultMap="selectStatisticsMap">
+		SELECT 
+		pt.party_count,
+		ft.festival_count,
+		rv.review_count,
+		u.user_count
+		FROM (
+					SELECT COUNT(party_no) AS party_count
+					FROM party
+					WHERE delete_flag IS NULL
+					) pt,
+					(
+					SELECT COUNT(festival_no) AS festival_count
+					FROM festival
+					WHERE delete_flag IS NULL
+					) ft,
+					(
+					SELECT COUNT(review_no) AS review_count
+					FROM review
+					WHERE delete_flag = 1
+					) rv,
+					(
+					SELECT COUNT(user_id) AS user_count
+					FROM users
+					WHERE role NOT IN ('d')
+					) u
 	</select>
 </mapper>

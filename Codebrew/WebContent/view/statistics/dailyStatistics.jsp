@@ -9,7 +9,9 @@
 	var dailyChart;
 	
 	function fncDailyChart() {
-		
+		/* if(dailyChart != null) {
+			dailyChart.clear();
+		} */
 		dailyChart = new Chart('dailyChart', {
 		    type: 'bar',
 		    data: dailyChartData,
@@ -17,10 +19,11 @@
 		        legend: { 
 		        	display: true 
 		        },
-		        title: {
+		        /* title: {
 		          display: true,
 		          text: ' 판매통계'
-		        },
+		        }, */
+		  
 		        scales: {
 		            xAxes: [{
 		                type : "category",
@@ -148,7 +151,8 @@
 <style type="text/css">
 	#dailyChart {
 		width: 100%;
-		height: 100%;
+		height: 333px;
+		margin-top: 13px;
 		/* display: none; */
 	}
 </style>
@@ -160,7 +164,7 @@
 					<div class="col-md-12">
 						<form class="form form-inline">
 							<div class="form-group">
-								<label for="기간 선택">기간 선택</label>
+								<!-- <label for="기간 선택">기간 선택</label> -->
 								<!-- <input class="form-control" type="text" name="startDate">
 								<input class="form-control" type="text" name="endDate"> -->
 								<div class="input-group">
@@ -180,4 +184,4 @@
 		</div>
 		
 		<!-- 차트도화지 -->
-		<canvas id="dailyChart"></canvas>
+		<canvas id="dailyChart"  width="600" height="333"  ></canvas>

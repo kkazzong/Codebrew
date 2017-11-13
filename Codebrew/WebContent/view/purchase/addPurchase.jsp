@@ -220,7 +220,7 @@
 		}
 		
 		//// 카카오페이 결제준비 호출 function
-		function fncPayment(selectedCount, purchasePrice, purchaseFlag){
+		function fncPayment(selectedCount, purchasePrice, purchaseFlag, e){
 	
 			var ticketNo = $("input:hidden[name='ticketNo']").val();
 			var userId = $("input:hidden[name='userId']").val();
@@ -256,12 +256,27 @@
 					
 					console.log(JSON.stringify(data));
 					var url = data.nextRedirectPcUrl;
-					window.open(url,'kakaoPay','toolbar=no, directories=no, scrollbars=no, status=yes, scrollbars=no,width=426,height=510,  resizable=yes, direction=yes, location=no, menubar=no, toolbar=no, titlebar=yes');
+					showPopup(url);
+					//window.open(url,'kakaoPay','toolbar=no, directories=no, scrollbars=no, status=no, scrollbars=no,width=426,height=510,  resizable=no, direction=no, location=no, menubar=no, toolbar=no, titlebar=no');
 				}
 				
 			});
 			
 		}
+		
+		//////////////레이어팝업 배경
+		function wrapWindowByMask(){
+			//화면의 높이와 너비를 구한다.
+			var maskHeight = $(document).height();  
+			var maskWidth = $(window).width();
+	
+			//마스크의 높이와 너비를 화면 것으로 만들어 전체 화면을 채운다.
+			$('#mask').css({'width':maskWidth,'height':maskHeight});  
+	    	//마스크의 투명도 처리
+	         $('#mask').fadeTo("slow",0.8);    
+		}
+
+
 		
 		$(function(){
 			
@@ -287,9 +302,9 @@
 			});
 			
 			//카카오페이 클릭 시
-			$("#kakaoPay").on("click",function(){
+			$("#kakaoPay").on("click",function(event){
 				
-				fncPayment(selectedCount, purchasePrice, purchaseFlag);
+				fncPayment(selectedCount, purchasePrice, purchaseFlag, event);
 				
 			});
 			
@@ -372,8 +387,22 @@
 				
 			});
 			
+			
 		});
 	
+			////////////////////////////////레이어팝업
+			jQuery.fn.center = function () {
+			    this.css("position","absolute");
+			    this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) + $(window).scrollTop()) + "px");
+			    this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) + $(window).scrollLeft()) + "px");
+			    return this;
+			}
+			var showPopup = function(url) {
+				$("#kakaoUrl").attr("src", url);
+				$("#popLayer").show();
+				wrapWindowByMask();
+				$("#popLayer").center();
+			}
 	</script>
 	
 	<!-- CSS 시작 -->
@@ -421,6 +450,41 @@
 			border-top: 1px solid rgba(255,255,255,.15);
 		}
 		
+		/*           레이어 팝 업              */
+		.layer {
+			display:none;
+		    position: fixed;
+		    width: 448px;
+		    left: 50%;
+		   /*  margin-left: -40%; */ /* half of width */
+		    height: 810px;
+		    top: 50%;
+		    margin-top: -150px; /* half of height */
+		    overflow: visible;
+		
+		    /* decoration */
+		    border: 1px solid #000;
+		    background-color: #eee;
+		    padding: 1em;
+		    box-sizing: border-box;
+		}
+		
+		@media (max-width: 1000px) {
+		    .layer {
+		        width: 80%;
+		        margin-left: -40%;
+		    }
+		}
+		
+		#mask { /* position:absolute; z-index:9000; background-color:#000; display:none; left:0; top:0; */
+			display:none;
+	        background-color:black;
+    	    position:absolute;
+        	left:0px;
+        	top:0px;
+
+		 }
+
 		/* 화면 디버그용 */
 	   /*  div {
 			border : 3px solid #D6CDB7;
@@ -731,6 +795,12 @@
 		</div>
 	</div>
 	
+	<!-- 카카오레이어팝업 -->
+	<div id="mask">
+	</div> 
+		<div id="popLayer" class="js-layer  layer">
+			<iframe id="kakaoUrl" frameborder="0" allowTransparency="true"  width="100%" height="100%" src=""></iframe>
+		</div>
 </body>
 
 </html>

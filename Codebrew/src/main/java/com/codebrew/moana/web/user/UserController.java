@@ -1,5 +1,6 @@
 package com.codebrew.moana.web.user;
 
+import java.io.File;
 import java.sql.Date;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.codebrew.moana.common.Page;
@@ -65,9 +67,18 @@ public class UserController {
 
 		User dbUser = userService.getUser(user.getUserId());
 		// user:내가 입력한 정보 /dbUser:디비에서 가져온 정보 / session 세션에 담고 있는 정보
-		if (user.getPassword().equals(dbUser.getPassword())) {
+		
+	 System.out.println("user 정보는?"+user);
+	 System.out.println("dbUser정보는? "+dbUser);
+	 
+		//탈퇴한 회원 걸러줌
+	   if(dbUser.getRole().indexOf("d")== -1) {
+		
+		 if (user.getPassword().equals(dbUser.getPassword())) {
 			session.setAttribute("user", dbUser);
-		}
+		 }
+		
+	   }
 
 		ModelAndView modelAndView = new ModelAndView();
 		// modelAndView.addObject("user", user);//??
@@ -103,28 +114,44 @@ public class UserController {
 
 	// 진짜 회원가입
 	@RequestMapping(value = "addUser", method = RequestMethod.POST)
-	public ModelAndView addUser(@ModelAttribute("user") User user) throws Exception {
+	public ModelAndView addUser(@ModelAttribute("user") User user,
+			@RequestParam("uploadFile") MultipartFile uploadFile) throws Exception {
 		// 도메인으로 넣어줘야 됨->근데 무결성 제약조건...., @ModelAttribute("auth")Auth auth ->이래두 무결성제약조건
 
 		// 이미 데이터가 들어간거 였음 ㅜㅜ 오라클 껐다켜보기 ㅜㅜ
 		System.out.println("/user/addUser : POST");
 
-		// @RequestParam("file") MultipartFile file
-		/*
-		 * File UploadFile=new File(profileImageDir,file.getOriginalFilename());
-		 * 
-		 * user.setProfileImage(file.getOriginalFilename());
-		 * 
-		 * file.transferTo(UploadFile);
-		 */
+	
+		if(uploadFile !=null) {
+		
+		 File file=new File(profileImageDir+uploadFile.getOriginalFilename());
+		  
+		 user.setProfileImage(uploadFile.getOriginalFilename());
+		 
+		 uploadFile.transferTo(file);
+		 
+		}
+		 
 
 		// user.setBirth(Date.valueOf("2017-10-16")); //데이트 형식 맞게 넣어주세여
 
 		// user.setUserId(auth.getAuthId());
-
+		
 		System.out.println("authId가 userId로 들어갔나요?" + user);
-
-		userService.addUser(user);
+		
+		User dbUser = userService.getUser(user.getUserId());
+		
+		if(dbUser.getUserId() != null) {
+			
+			System.out.println("이미 가입한 회원"+dbUser.getUserId());
+			userService.updateUser(dbUser);
+			
+		}else {
+		
+          System.out.println("새로가입한 회원임"+user.getUserId());
+		  userService.addUser(user);
+		
+		} 
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("redirect:/view/user/login.jsp");
@@ -309,11 +336,13 @@ public class UserController {
 
 		System.out.println("/user/findPwd : POST");
 
+		//user.setUserId(user.getEmail());
+		
 		userService.findPwd(user);
 		// 리턴할 필요없을거 같음
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("redirect:/view/user/login.jsp");
+		modelAndView.setViewName("redirect:/index.jsp");
 		return modelAndView;
 	}
 
@@ -416,6 +445,10 @@ public class UserController {
 	     //userService.updateUser((User)session.getAttribute("user"));
 		//여기서 고친정보말구 세션에 남아있는 kakaoUser정보가 들어가서 업데이트 됨 .updateUser는 return value: null
 	     userService.updateUser(user);
+	     
+	     user=userService.getUser(user.getUserId());
+	     
+	     session.setAttribute("user", user);
 	     
 	     //session.setAttribute("user", user);
 		

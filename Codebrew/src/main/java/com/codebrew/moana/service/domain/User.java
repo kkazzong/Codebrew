@@ -2,6 +2,8 @@ package com.codebrew.moana.service.domain;
 
 import java.sql.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class User {
 	
 
@@ -18,20 +20,21 @@ public class User {
 	private String nickname;
 	private Date regDate;
 	private int coconutCount;
+	private MultipartFile uploadFile;
+	
+ 
 	
 	
 	public User() {
 		
 	}
-	
-	
+
 
 
 
 	public String getUserId() {
 		return userId;
 	}
-
 
 
 
@@ -43,11 +46,9 @@ public class User {
 
 
 
-
 	public String getUserName() {
 		return userName;
 	}
-
 
 
 
@@ -59,11 +60,9 @@ public class User {
 
 
 
-
 	public String getPassword() {
 		return password;
 	}
-
 
 
 
@@ -75,11 +74,9 @@ public class User {
 
 
 
-
 	public String getProfileImage() {
 		return profileImage;
 	}
-
 
 
 
@@ -91,11 +88,9 @@ public class User {
 
 
 
-
 	public String getRole() {
 		return role;
 	}
-
 
 
 
@@ -107,11 +102,9 @@ public class User {
 
 
 
-
 	public String getPhone() {
 		return phone;
 	}
-
 
 
 
@@ -123,11 +116,9 @@ public class User {
 
 
 
-
 	public String getGender() {
 		return gender;
 	}
-
 
 
 
@@ -139,11 +130,9 @@ public class User {
 
 
 
-
 	public Date getBirth() {
 		return birth;
 	}
-
 
 
 
@@ -155,11 +144,9 @@ public class User {
 
 
 
-
 	public int getAge() {
 		return age;
 	}
-
 
 
 
@@ -171,11 +158,9 @@ public class User {
 
 
 
-
 	public String getLocationFlag() {
 		return locationFlag;
 	}
-
 
 
 
@@ -187,11 +172,9 @@ public class User {
 
 
 
-
 	public String getNickname() {
 		return nickname;
 	}
-
 
 
 
@@ -203,11 +186,9 @@ public class User {
 
 
 
-
 	public Date getRegDate() {
 		return regDate;
 	}
-
 
 
 
@@ -219,11 +200,9 @@ public class User {
 
 
 
-
 	public int getCoconutCount() {
 		return coconutCount;
 	}
-
 
 
 
@@ -235,20 +214,31 @@ public class User {
 
 
 
+	public MultipartFile getUploadFile() {
+		return uploadFile;
+	}
+
+
+
+
+	public void setUploadFile(MultipartFile uploadFile) {
+		this.uploadFile = uploadFile;
+	}
+
+
+
 
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", userName=" + userName + ", password=" + password + ", profileImage="
 				+ profileImage + ", role=" + role + ", phone=" + phone + ", gender=" + gender + ", birth=" + birth
 				+ ", age=" + age + ", locationFlag=" + locationFlag + ", nickname=" + nickname + ", regDate=" + regDate
-				+ ", coconutCount=" + coconutCount + "]";
+				+ ", coconutCount=" + coconutCount + ", uploadFile=" + uploadFile + "]";
 	}
 
 
-
-
 	
-
+	
 
 
 }

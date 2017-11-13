@@ -5,6 +5,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
+
 <!-- autocomplete -->
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
@@ -18,6 +19,7 @@
 
 
 <!-- ToolBar Start /////////////////////////////////////-->
+
 <div id="custom-menu" class="navbar navbar-default navbar-fixed-top">
 	
 	<div class="container">
@@ -35,6 +37,7 @@
 		        <span class="icon-bar"></span>
 		        <span class="icon-bar"></span>
 		    </button>
+		    <!-- <a class="navbar-brand" href="#">Login dropdown</a> -->
 		</div>
 		
 		<!-- toolBar Button End //////////////////////// -->
@@ -53,7 +56,7 @@
 		                <span>Festival</span>
 		                <span class="caret"></span>
 		              </a>
-			              <ul class="dropdown-menu">
+			              <ul class="dropdown-menu toolbar">
 							<li><a href="#">축제목록</a></li>
 							<!-- <li><a href="#">my찜</a></li> -->
 		                 <c:if test="${sessionScope.user.role == 'a'}">
@@ -70,7 +73,7 @@
 		                 <span>Party</span>
 		                 <span class="caret"></span>
 		              </a>
-		              <ul class="dropdown-menu">
+		              <ul class="dropdown-menu toolbar">
 		                  <!-- <li><a href="#">my파티</a></li> -->
 		                  <li><a href="#">파티등록</a></li>
 		                  <li><a href="#">파티목록</a></li>
@@ -85,7 +88,7 @@
 		             	<span>Review</span>
 		             	<span class="caret"></span>
 		             </a>
-		             <ul class="dropdown-menu">
+		             <ul class="dropdown-menu toolbar">
 						<li><a href="#">후기등록</a></li>
 						<li><a href="#">후기목록</a></li>
 						<c:if test="${sessionScope.user.role == 'a'}">
@@ -103,7 +106,7 @@
 	                    <span >Purchase</span>
 	                    <span class="caret"></span>
 	                </a>
-	                <ul class="dropdown-menu">
+	                <ul class="dropdown-menu toolbar">
 	                       <!-- <li><a href="#">my티켓</a></li> -->
 	                     <!--   <li><a href="#">축제통계</a></li>
 	                       <li><a href="#">평점통계</a></li>
@@ -151,7 +154,7 @@
 			                 <span>MyPage</span>
 			                 <span class="caret"></span>
 			              </a>
-			              <ul class="dropdown-menu">
+			              <ul class="dropdown-menu toolbar">
 			                    <li><a href="#">마이페이지</a></li> 
 			                    <li><a href="#">my찜</a></li>
 			                    <li><a href="#">my파티</a></li>
@@ -168,9 +171,56 @@
 		             	<li><a href="#">LogOut</a></li>
 	             	</c:if>
 	             	<c:if test="${empty user}">
-		                <li><a href="#">LogIn</a></li>
+		               <!--  <li><a href="#">LogIn</a></li> -->
+		    
+		    
+		               
+		  <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Login</b> <span class="caret"></span></a>
+			  <ul id="login-dp" class="dropdown-menu toolbar">
+				<li>
+					 <div class="row">
+							<div class="col-md-12">
+								Login via
+								<div class="social-buttons">
+									<!-- <a href="#" class="btn btn-fb"> --><jsp:include page="/api/kakaoLogin.jsp"></jsp:include><!-- </a> -->
+									<!-- <a href="#" class="btn btn-tw"><i class="fa fa-twitter"></i> Twitter</a> -->
+								</div>
+                                or
+								 <form class="form" id="loginForm" role="form" method="post" action="/user/login" accept-charset="UTF-8" id="login-nav">
+										<div class="form-group">
+											 <label class="sr-only" for="exampleInputEmail2">Email address</label>
+											 <input type="email" class="form-control" id="loginUserId" name="userId"  placeholder="Email address" required>
+										</div>
+										<div class="form-group">
+											 <label class="sr-only" for="exampleInputPassword2">Password</label>
+											 <input type="password" class="form-control" id="loginPassword" name="password" placeholder="Password" required>
+                                             <div class="help-block text-right"><a href="/user/findUser" id="findUser"><b style="color:gray;">Forget the id or password?</b></a></div>
+										</div>
+										<div class="form-group">
+											 <button type="submit" class="btn btn-primary btn-block" id="sign">Sign in</button>
+										</div>
+									
+								 </form>
+							</div>
+							<div class="bottom text-center">
+					    <b style="color:gray;">new here?</b> <a href="#"><b style="color:gray;">Join</b></a>
+							</div>
+					 </div>
+				</li>
+			</ul>
+        </li>
 	             	</c:if>
 	            </ul>
+	            
+	            
+	            
+	 
+	            
+	            
+	            
+	            
+	            
 		</div>
 		<!-- dropdown hover END -->	       
 	    
@@ -259,9 +309,9 @@
    		
    		//////로그인, 로그아웃//////
 		$(function(){
-		 	$("a:contains('LogIn')").on("click" , function() {
+		 /* 	$("a:contains('LogIn')").on("click" , function() {
 				self.location = "/user/login";
-			}); 
+			});  */
 		 	$("a:contains('LogOut')").on("click" , function() {
 				self.location = "/user/logout";
 			}); 
@@ -414,6 +464,85 @@
 			});
 			
    		});
+  		
+  		
+  		
+   		$( function() {
+			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+			$("a[href='#' ]:contains('Join')").on("click" , function() {
+				self.location = "/user/confirmUser"
+			});
+		});
+   		
+   		
+   	
+		$( function() {
+			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+			$("#findUser").on("click" , function() {
+				self.location = "/user/findUser"
+			});
+		});
+   		
+		
+		
+$( function() {
+			
+			$("#loginUserId").focus();
+			
+			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+			$("#sign").on("click" , function() {
+				var userId=$("#loginUserId").val();
+				var Password=$("#loginPassword").val();
+				
+			
+				
+				if(userId == null || userId.length <1) {
+					alert('ID 를 입력하지 않으셨습니다.');
+					$("#loginUserId").focus();
+					return;
+				}
+				
+				if(password == null || password.length <1) {
+					alert('패스워드를 입력하지 않으셨습니다.');
+					$("#loginPassword").focus();
+					return;
+				}
+				
+				
+				$.ajax({
+					type:"POST",
+					url:"/userRest/json/getUser", 
+			        data :{userId:userId},//요청과 함께 서버에 보내는 string 또는 map
+					dataType:"json",//서버에서 받는 데이터형식
+				    success: function(JSONData,status){
+				    	console.log(status);
+				    	console.log(JSON.stringify(JSONData)); //json string 형식으로 변환해주는거
+				    	
+				    	var pw=JSONData.password;
+				
+				    if(pw != Password){
+				     /* $("span.col-id-checkPassword").html("비밀번호가 틀렸습니다.").css("color","blue"); */
+				     alert("비밀번호가 틀렸습니다.")
+				     event.preventDefault();
+				     return;
+				    } else{
+			         //$("span.col-id-checkPassword").remove();
+			       /*   alert("여기옴") */
+				    	$("#loginForm").attr("method","POST").attr("action","/user/login").submit();
+			      /*    alert("저기옴") */
+			      //form에 아디를 지정해 findUser.jsp의 폼과 중복되지 않게 하고, findUser.jsp에 id=userId인걸 id=email로 바꿈
+			      
+			      
+				      }
+				    }
+				    
+			    });
+				
+			});
+		});	
+	   
+		
+		
    		
 	</script>  
 
@@ -428,21 +557,21 @@
 		}
 		
 		.navbar-default {
-		    background-image: linear-gradient(to bottom,black 0,black 100%);
+		    background-image: linear-gradient(to bottom,black 0,black 100%)  !important; 
 		    box-shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 1px 5px rgba(0,0,0,.075);
 		}
 		
-		.dropdown-menu {
+		.dropdown-menu.toolbar {
 			background-color: black;
 			color: white;
 		}
 		 
-		.dropdown-menu {
+		.dropdown-menu.toolbar {
 			background-color: black;
 			color: white;
 		}
 		 
-		.dropdown-menu li a {
+		.dropdown-menu.toolbar li a {
 			color: #eee;
 		}
 		
@@ -459,6 +588,61 @@
 		.navbar-default .navbar-nav>li>a {
 			color: #cecece;
 		}
+		
+	/*주영이가 추가함  */	
+  
+  #login-dp{
+    min-width: 250px;
+    padding: 14px 14px 0;
+    overflow:hidden;
+    background-color:rgba(255,255,255,.8);
+}
+#login-dp .help-block{
+    font-size:12px    
+}
+#login-dp .bottom{
+    background-color:rgba(255,255,255,.8);
+    border-top:1px solid #ddd; 
+    clear:both;
+    padding:14px;
+}
+#login-dp .social-buttons{
+    margin:12px 0    
+}
+#login-dp .social-buttons a{
+    width: 49%;
+}
+#login-dp .form-group {
+    margin-bottom: 10px;
+}
+.btn-fb{
+    color: #fff;
+    background-color:#3b5998;
+}
+.btn-fb:hover{
+    color: #fff;
+    background-color:#496ebc 
+}
+.btn-tw{
+    color: #fff;
+    background-color:#55acee;
+}
+.btn-tw:hover{
+    color: #fff;
+    background-color:#59b5fa;
+}
+
+@media(max-width:768px){
+    #login-dp{
+        background-color: inherit;
+        color: #fff;
+    }
+     #login-dp .bottom{
+        background-color: inherit;
+        border-top:0 none;
+    } 
+}
+
 		
 	</style>
 	

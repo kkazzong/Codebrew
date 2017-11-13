@@ -194,7 +194,8 @@
 		  <div class="form-group">
 		    <label for="userId" class="col-sm-offset-1 col-sm-3 control-label">아이디</label>
 		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="userId" name="userId" placeholder="이메일주소로 입력해주세요">
+		    <input type="text" class="form-control" id="email" name="userId" placeholder="이메일주소로 입력해주세요"> 
+		    <!--    <input type="text" class="form-control" id="email" name="email" placeholder="이메일주소로 입력해주세요"> -->
 			</div>
 		  </div>
 		  		  	  
@@ -211,7 +212,7 @@
 		      <button type="button" class="btn btn-primary"  >비밀번호찾기</button>
 			 
 		  </div>
-		  
+		  </div>
 		  <span class="col-password-check"></span>
 		</form>
 		

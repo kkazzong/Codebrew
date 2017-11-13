@@ -217,7 +217,7 @@
 
 <div class="container">
 	<!-- ToolBar Start /////////////////////////////////////-->
-	 <%-- <jsp:include page="/toolbar/toolbar.jsp" />  --%>
+	 <jsp:include page="/toolbar/toolbar.jsp" /> 
    	<!-- ToolBar End /////////////////////////////////////-->
 
 
@@ -310,7 +310,7 @@
         <h3>Image title</h3><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos, quia.</span></div>
     </div>
   </div> -->
-</div>
+
 
 </body>
 </html>

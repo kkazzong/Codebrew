@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.json.simple.JSONArray;
@@ -32,7 +33,7 @@ public class StatisticsDAOImpl implements StatisticsDAO{
 
 	@Override
 	public List<Statistics> getDailyTotalSaleAmountStat() throws Exception {
-		writeJson(sqlSession.selectList("StatisticsMapper.getDailyTotalSaleAmountStat"));
+		//writeJson(sqlSession.selectList("StatisticsMapper.getDailyTotalSaleAmountStat"));
 		return sqlSession.selectList("StatisticsMapper.getDailyTotalSaleAmountStat");
 	}
 	
@@ -50,6 +51,7 @@ public class StatisticsDAOImpl implements StatisticsDAO{
 	public List<Statistics> getMonthlyTotalSaleAmountStat(Statistics statistics) throws Exception {
 		return sqlSession.selectList("StatisticsMapper.getMonthlyTotalSaleAmountStat2", statistics);
 	}
+	
 	
 	@Override
 	public List<Statistics> getQuarterTotalSaleAmountStat() throws Exception {
@@ -111,6 +113,11 @@ public class StatisticsDAOImpl implements StatisticsDAO{
 			}
 		}
 		
+	}
+
+	@Override
+	public List<Statistics> getTotalCount() throws Exception {
+		return sqlSession.selectList("StatisticsMapper.getTotalCount");
 	}
 
 	

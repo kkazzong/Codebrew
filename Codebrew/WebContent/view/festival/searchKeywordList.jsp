@@ -40,23 +40,20 @@
 		});
 });
 
-	function goSearch(){
-		fncGetList(1);
-}
+
    
 	
-	$(function(){
+/* 	$(function(){
 		
 		$("input:text[name='searchKeyword']").on('keydown',function(event){
 			
 			if(event.keyCode ==13){
-				/* alert("dpsxj") */
 				event.preventDefault();
 				$( "button:contains('검색')" ).click();
 			}
 		});
 	
-	});
+	}); */
 	
 	$(function(){
 		$("button:contains('뒤로가기')").on("click", function(){
@@ -67,7 +64,7 @@
    
    
 
-
+/* 
 	$(function() {
 
 		$("td:nth-child(1)").on("click", function() {
@@ -76,12 +73,48 @@
 
 			self.location = "/festival/getFestival?festivalNo=" + festivalNo;
 		});
+	}); */
+	
+	$(function() {
+
+		$(".panel-body").on("click", function() {
+
+		var festivalNo = $("p", this).text();
+
+		/* self.location = "/festival/getFestivalDB?festivalNo=" + festivalNo; */
+		self.location = "/festival/getFestivalDB?festivalNo=" + festivalNo;
 	});
+});
+	
+	$(function() {
+
+		/* $(".panel-body").on("click", function() { */
+			$(".getAPI").on("click", function() {
+
+		var festivalNo = $("p", this).text();
+
+		/* self.location = "/festival/getFestivalDB?festivalNo=" + festivalNo; */
+		self.location = "/festival/getFestival?festivalNo=" + festivalNo;
+	});
+});
+
+$(function(){
+	
+	$("input:text[name='searchKeyword']").on('keydown',function(event){
+		
+		if(event.keyCode ==13){
+			event.preventDefault();
+			$( "#APISearch" ).click();
+		}
+	});
+
+});
+
 	
 	
 	/* role='u'; */
 	
-	 function fncGetList(currentPage) {
+/* 	 function fncGetList(currentPage) {
 	   
 	    $("#currentPage").val(currentPage)
 	   
@@ -93,20 +126,9 @@
 		 $( "button:contains('검색')" ).on("click" , function() {
 			fncGetList(1);
 		});
-});
+}); */
 
-	$(function() {
-
-			$(".panel-body").on("click", function() {
-
-			var festivalNo = $("p", this).text();
-
-			/* self.location = "/festival/getFestivalDB?festivalNo=" + festivalNo; */
-			self.location = "/festival/getFestivalDB?festivalNo=" + festivalNo;
-		});
-	});
-	
-$(function(){
+/* $(function(){
 		
 		$("input:text[name='searchKeyword']").on('keydown',function(event){
 			
@@ -116,26 +138,58 @@ $(function(){
 			}
 		});
 	
-	});
+	}); */
 	
 </script>
+
+
+<style type="text/css">
+	body {
+			padding-top : 70px;
+			background-color: #f2f4f6;
+	    }
+	    
+	    .card {
+			margin-top : 50px;
+	    }
+	    
+	    .panel-primary>.panel-heading {
+	    	background-color: #000000;
+	    }
+	    
+	    .text-info {
+	    	color: #333333; 
+	    }
+	    
+	    .page-header {
+	    	border-bottom : 1px solid #f2f4f6;
+	    }
+	    
+	    
+	    .section {
+	    	margin-top : 400px;
+	    }
+	    
+	    em {
+	    	font-family: tahoma;
+	    }
+	    
+   </style>
 
 </head>
 <body>
 
 <jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
 
-
+<div class="container">
+ 	<div class="row">
+  	
+  	<div class="col-md-12">
+  	
+  		<div class="page-header text-center">
+					<h3 class="text-info">축제정보</h3>
+				</div>
 	<form>
-	
-	
-	<br/>
-	<br/>
-	<br/>
-	
-	<strong><font size="7">검색허셈</font></strong>
-	<br/>
-	<br/>
 	
 
 		전체 게시물 수 : ${resultPage.totalCount }
@@ -191,58 +245,83 @@ $(function(){
 				    			 value="${! empty search.searchKeyword ? search.searchKeyword : '' }"  >
 				  </div>
 
-		<button type="button" class="btn btn-default">검색</button>
+		<button type="button" class="btn btn-default" id="APISearch">검색</button>
 		
 		<br/>
 		<br/>
 		
-		<br/>
-		<br/>
-		
+		<section>
+		<div class="row">		
 		<c:forEach var="festival" items="${list}">
 		
 		<c:if test= "${festival.isNull==true }">
 	 
-			<strong><font size="7">썸띵스 우롱차임 다시검색허셈</font></strong>
-			<br/>
-			<br/>
+			<strong><font size="7" class = "text-center">
+				검색결과가 없거나 존재하지 않는 데이터입니다.
+			</font></strong>
 			
 		</c:if>
 		
-		<c:if test= "${festival.isNull==false }">
-		
-			<br />
-			<table>
-				<tr>
-					<td><img src="${festival.festivalImage }" width="300"
-						height="300" /> <br />
-						<div id="festivalNo" style="display: none">
-							<p>${festival.festivalNo }</p>
-						</div> <span> ${festival.festivalName } </span> <br /></td>
-				</tr>
-			</table>
-			<div>축제기간 ${festival.startDate } ~ ${festival.endDate }</div>
-			<br />
-			<br />
-		
-		</c:if>	
-		</c:forEach>
-		
-		<%-- </c:if> --%>
-		
-		
+		<c:if test="${festival.deleteFlag == null }">
 			
-			<input type = hidden id="currentPage" name = "currentPage" value = ${i } />
+			<div class="col-md-6">
+						<!-- <div class="panel panel-primary"> -->
+						<div class="card">
+							<div class="getAPI">
+								<c:if test="${festival.festivalImage.contains('http://')==true }">
+									<img class="card-img-top" src="${festival.festivalImage }" width="100%" height="423" />
+								</c:if>
+								
+								<c:if test="${festival.festivalImage.contains('http://')==false }">
+									<img class="card-img-top" src="../../resources/uploadFile/${festival.festivalImage }" width="100%" height="423" />
+								</c:if>
+								
+								<div id="festivalNo" style="display: none">
+											<p>${festival.festivalNo }</p>
+								</div> 
+								</div>
+					<div class="card-body">
+					
+						<div class="festivalInfo">
+									
+									<div class="col-md-12">
+											<h5><Strong>${festival.festivalName}</Strong></h5>
+									</div>
+									
+									<div class="col-md-12">
+										<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+										<Strong>${festival.startDate} ~ ${festival.endDate}</Strong>
+									</div>
+									
+									<div class="col-md-12">
+										 <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+										 <Strong>${festival.addr } </Strong>
+									</div>
+									
+									
+									</div>
+									
+							</div>
+						</div>
+				</div>	
 			
 			
-			<jsp:include page="../../common/pageNavigator.jsp"/>
+			</c:if>
 			
+			</c:forEach>
+		</div>
+		</section>
+		
+		<input type = hidden id="currentPage" name = "currentPage" value = ${i } />
+			
+			<jsp:include page="../../common/pageNavigator_new.jsp"/>
+			
+				</form>
+	</div>
+	</div>
 	
-
+	</div>
 	
-	
-	</form>
-
 
 </body>
 </html>

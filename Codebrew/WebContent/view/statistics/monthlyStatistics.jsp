@@ -43,28 +43,45 @@
 		
 		//JSON data 만큼 datas에 push
 		var datas = [];
+		var datasLast = [];
+		var current = JSONData.current;
+		var last = JSONData.last;
 		
-		for(var i = 0; i < JSONData.length; i++) {
+		
+		for(var i = 0; i < current.length; i++) {
 			datas.push({
-				"statDate" : JSONData[i].statDate,
-				"y" : JSONData[i].totalPrice
-			})
+				"statDate" : current[i].statDate,
+				"y": current[i].totalPrice
+			});
+		}
+		for(var i = 0; i < last.length; i++) {
+			datasLast.push({
+				"statDate" : last[i].statDate,
+				"y": last[i].totalPrice
+			});
 		}
 		
 		var label = [];
 		
 		for(var i = 0; i < datas.length; i++) {
 			label[i] = datas[i].statDate+"";
-		}
+		}  
 		
 		monthlyChartData = {
 			labels : label,	
-			datasets : [{
-				label : "판매금액",	
-				backgroundColor : "rgba(179,181,198,0.7)",
-				borderColor : "rgba(179,181,198,1)",
-				pointBorderColor : "#fff",
-				pointBackgroundColor : "rgba(179,181,198,1)",
+			datasets : [
+				{
+					label : "전년도 판매금액",	
+					borderColor : "#8e5ea2",
+					pointBorderColor : "#8e5ea2",
+					fill : false,
+					data : datasLast
+				},
+				{
+				label : "올해 판매금액",	
+				borderColor : "#42bcf4",
+				pointBorderColor : "#42bcf4",
+				fill : false,
 				data : datas
 			} ]
 		};
@@ -76,14 +93,53 @@
 		fncMonthlyChart();
 
 	}
+	
+	function fncSearchMonthlyChartData(statFlag, statDate) {
+		//alert(statFlag+","+statDate);
+		$.ajax({
+			
+			url : "/statisticsRest/json/getMonthlyStatistics",
+			method : "POST",
+			data : JSON.stringify({
+				statFlag : statFlag,
+				statDate : statDate
+			}),
+			dataType : "json",
+			headers : {
+				"Accept" : "application/json",
+				"Content-Type" : "application/json"
+			},
+			success : function(JSONData, status){
+				//alert(status+","+statFlag);
+				console.log(status);
+				console.log(JSON.stringify(JSONData));
+				
+				switch(statFlag) {
+					
+					case 2 :
+					case "2" :
+						monthlyChart.destroy();
+						fncMonthlyChartDrow(JSONData);
+						break;
+					
+				}
+				
+				$("input:hidden[name='statFlag']").val(JSONData.current[0].statFlag);
+			}
+			
+		});
+		
+	}
+	
 
 	///////////////////////////////////////////Ajax로 차트 데이터 겟겟/////////////////////////////////////////////////////
 
 	var monthlyChartData = function() {
-
+		
 		$.ajax({
 
-			url : "/statisticsRest/json/getStatistics/2",
+			/* url : "/statisticsRest/json/getStatistics/2", */
+			url : "/statisticsRest/json/getMonthlyStatistics",
 			method : "get",
 			dataType : "json",
 			headers : {
@@ -95,36 +151,6 @@
 				console.log("먼슬리차트=> " + JSON.stringify(JSONData));
 
 				fncMonthlyChartDrow(JSONData);
-
-				/* //JSON data 만큼 datas에 push
-				var datas = [];
-				
-				for(var i = 0; i < JSONData.length; i++) {
-					datas.push({
-						"statDate" : JSONData[i].statDate,
-						"y" : JSONData[i].totalPrice
-					})
-				}
-				
-				var label = [];
-				
-				for(var i = 0; i < datas.length; i++) {
-					label[i] = datas[i].statDate+"";
-				}
-				
-				monthlyChartData = {
-					labels : label,	
-					datasets : [{
-						label : "판매금액",	
-						data : datas
-					}]	
-				};
-				
-				console.log("월별 차트그리기 데이터 ");
-				console.log(monthlyChartData);
-				
-				//차트그리기 call
-				fncMonthlyChart(); */
 
 			}
 		});
@@ -199,7 +225,7 @@
 		//// 날짜 골랐을때
 		$("#monthlySelect").on("apply.daterangepicker", function(picker) {
 			console.log($(this).val());
-			fncSearchChartData(2, $(this).val());
+			fncSearchMonthlyChartData(2, $(this).val());
 		});
 
 		$("#monthlySelect").on("cancel.daterangepicker", function(picker) {
@@ -212,7 +238,8 @@
 <style type="text/css">
 	#monthlyChart {
 		width: 100%;
-		height: 100%;
+		/* height: 100%; */
+		margin-top: 13px;
 		/* display: none; */
 	}
 	table.ui-datepicker-calendar { 
@@ -221,21 +248,29 @@
 </style>
 
 	<!-- 기간별 검색 -->
-	<form class="form form-inline">
-		<div class="form-group">
-			<label for="월별 선택">월별 선택</label>
-			<div class="input-group">
-				<input id="monthlySelect" class="form-control" type="text" name="startDate">
-				<div class="input-group-addon">
-					<span class="glyphicon glyphicon-calendar"></span>
+	<div class="row">
+			<div class="col-md-offset-3 col-md-6">
+				<div class="row">
+					<div class="col-md-12">
+						<form class="form form-inline">
+							<div class="form-group">
+								<!-- <label for="월별 선택">월별 선택</label> -->
+								<div class="input-group">
+									<input id="monthlySelect" class="form-control" type="text" name="startDate">
+									<div class="input-group-addon">
+										<span class="glyphicon glyphicon-calendar"></span>
+									</div>
+									<!-- <input id="monthEndDate" class="form-control" type="text" name="endDate">
+									<div class="input-group-addon">
+										<span class="glyphicon glyphicon-calendar"></span>
+									</div> -->
+								</div>
+							</div>
+						</form>
+					</div>
 				</div>
-				<!-- <input id="monthEndDate" class="form-control" type="text" name="endDate">
-				<div class="input-group-addon">
-					<span class="glyphicon glyphicon-calendar"></span>
-				</div> -->
 			</div>
 		</div>
-	</form>
 	
 	<!-- 차트도화지 -->
-	<canvas id="monthlyChart" ></canvas>
+	<canvas id="monthlyChart" width="600" height="333"  ></canvas>
