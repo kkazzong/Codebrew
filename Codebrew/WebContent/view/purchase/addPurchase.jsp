@@ -5,6 +5,11 @@
 <%-- <%@ include file="/data/purchase/partyData.jsp" %> --%>
 <%-- <%@ include file="/data/purchase/userData.jsp" %> --%>
 <%-- <%@ include file="/data/purchase/sessionData.jsp" %> --%>
+<!-- 기본티켓, 무료티켓 수량이 0일때 (품절)-->
+					<c:if test="${ticket.ticketFlag != 'nolimit' and ticket.ticketCount == 0}">
+					 	품절인디용권디용
+						<jsp:forward page="soldOutTicket.jsp"></jsp:forward>
+					</c:if>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -697,10 +702,11 @@
 					</div>
 					
 					<!-- 수량 정보 -->
-					<!-- 기본티켓, 무료티켓 수량이 0일때 (품절)-->
+					<%-- <!-- 기본티켓, 무료티켓 수량이 0일때 (품절)-->
 					<c:if test="${ticket.ticketFlag != 'nolimit' and ticket.ticketCount == 0}">
-						<jsp:include page="soldOutTicket.jsp"></jsp:include>
-					</c:if>
+					 	품절인디용권디용
+						<jsp:forward page="soldOutTicket.jsp"></jsp:forward>
+					</c:if> --%>
 							
 					<!-- 구매정보 -->
 					<div class="panel panel-primary">

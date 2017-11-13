@@ -74,13 +74,13 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 	public int addPurchase(Purchase purchase, String path) throws Exception {
 		String flag = purchase.getTicket().getTicketFlag();
 		System.out.println("@@@@@@@@@@"+flag);
-		Ticket ticket = null;
+		Ticket ticket = ticketDAO.getTicketByTicketNo(purchase.getTicket().getTicketNo());
 		// 기본티켓, 무료티켓일때
-		if (purchase.getTicket().getTicketFlag() == null || purchase.getTicket().getTicketFlag().equals("free")) {
+		if (ticket.getTicketFlag() == null || ticket.getTicketFlag().equals("free")) {
 
 			// 원래 티켓 수량
 			//int originTicketCount = purchase.getTicket().getTicketCount();
-			ticket = ticketDAO.getTicketByTicketNo(purchase.getTicket().getTicketNo());
+			//ticket = ticketDAO.getTicketByTicketNo(purchase.getTicket().getTicketNo());
 			int originTicketCount =ticket.getTicketCount();
 			
 			// 구매할 티켓 수량
@@ -168,19 +168,20 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 	public int updatePurchaseTranCode(Purchase purchase) throws Exception {
 			
 		Ticket ticket = ticketDAO.getTicketByTicketNo(purchase.getTicket().getTicketNo());
+		int updateTicketResult = 0;
 		// 무제한티켓이 아닐때 수량 업뎃
 		if (ticket.getTicketFlag() == null || ticket.getTicketFlag().equals("free")) {
-
+			
+			System.out.println("@ @ @ 무료티켓 or 기본티켓 @ @ @ @ ");
 			int plusCount = ticket.getTicketCount() + purchase.getPurchaseCount();
 			ticket.setTicketCount(plusCount);
 
-			int updateTicketResult = ticketDAO.updateTicketCount(ticket);
-			if (updateTicketResult == 1) {
-				if (purchase.getPurchaseFlag().equals("2")) {
-					partyDAO.cancelParty(ticket.getParty().getPartyNo(), purchase.getUser().getUserId());
-				}
-			}
+			updateTicketResult = ticketDAO.updateTicketCount(ticket);
 		}
+			if (purchase.getPurchaseFlag().equals("2")) {
+				System.out.println("@ @ @ 파티티켓이라 캔슬파티! @ @ @");
+				partyDAO.cancelParty(ticket.getParty().getPartyNo(), purchase.getUser().getUserId());
+			}
 		return sqlSession.update("PurchaseMapper.updatePurchaseTranCode", purchase);
 	}
 
