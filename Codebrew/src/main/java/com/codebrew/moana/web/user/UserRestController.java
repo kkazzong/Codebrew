@@ -55,6 +55,19 @@ public class UserRestController {
 		
 	}
 	
+	
+    //입력한 아이디와 비밀번호가 맞는지 알려주려고 만든 거
+	@RequestMapping(value="json/getLoginUser", method=RequestMethod.POST)
+	public User getLoginUser(@RequestParam("requestId")String requestId)throws Exception{
+		
+		System.out.println("/userRest/json/getUser : GET");
+		
+		return userService.getUser(requestId);
+		
+	}
+	
+	
+	
 	/*//api로그인할때 필요한 login() 폼으로 받을거니깐 post
 	@RequestMapping(value="json/login", method=RequestMethod.POST)
 	public User login(@RequestBody User user, HttpSession session)throws Exception{

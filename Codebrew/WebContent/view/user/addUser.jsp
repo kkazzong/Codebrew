@@ -1,14 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 
 
 <!DOCTYPE html>
 
-<html lang="ko">
+<html>
 	
 <head>
-	<meta charset="UTF-8">
+<<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	
 	<!-- 참조 : http://getbootstrap.com/css/   참조 -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -17,33 +17,36 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	
-	<!--datePicker-->
+	<!-- <script src="/resources/js/jquery.min.js"></script> -->
+	
+	
+	 <!--datePicker-->
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-   
 	
-	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
-	
-	
-	
-	
-    <!-- Jquery DatePicker -->
-	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<!-- Jquery DatePicker -->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>  
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    
-    
-    
-    <!-- Bootstrap Dropdown Hover CSS -->
-<link href="/resources/css/animate.min.css" rel="stylesheet">
-<link href="/resources/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
+	
+	
+	
 
-<!-- Bootstrap Dropdown Hover JS -->
-<script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
-<style type="text/css">
-	body {
-       padding-top : 50px;
-    }
-</style>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script> 
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+		
+		
+	
+	
+
+
+     <!-- Bootstrap Dropdown Hover CSS -->
+   <!-- <link href="/css/animate.min.css" rel="stylesheet">
+   <link href="/css/bootstrap-dropdownhover.min.css" rel="stylesheet">  -->
+   
+    <!-- Bootstrap Dropdown Hover JS-->
+   <!-- <script src="/javascript/bootstrap-dropdownhover.min.js"></script>   -->
+   
+
+
 	<!--  ///////////////////////// CSS ////////////////////////// -->
 	
     
@@ -120,7 +123,7 @@
 		
 		
 		//==>"이메일" 유효성Check  Event 처리 및 연결
-		 $(function() {
+	/* 	 $(function() {
 			 
 			 $("input[name='userId']").on("change" , function() {
 				
@@ -131,7 +134,10 @@
 			     }
 			});
 			 
-		});	
+		 }); */
+			 /* $( "input[name='birth']" ).datepicker(); */
+			 
+	/* 	});	 */
 	
 		
 		function getAge(){
@@ -153,7 +159,7 @@
 	   
 	
 		 
-	
+	/* 
  
 	  $( function() {
 	       $( "#datepicker" ).datepicker({
@@ -177,9 +183,32 @@
 	       });   
 	       
 	      
+	    }); 
+		 */
+	   
+	  
+	  $( function() {
+	        $( "input[name='birth']" ).datepicker(); 
+			$.datepicker.setDefaults({
+		           dateFormat: 'yy-mm-dd',
+		           monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+		           monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+		           dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+		           dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+		           dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+		           showMonthAfterYear: true,
+		           yearSuffix: '년',
+		           changeMonth: true,
+		           changeYear : true,
+		           buttonImageOnly: true,
+		           buttonText: "Select date",
+		           showOn: "button",
+		           buttonImage: "/resources/image/ui/small_cal.jpg", 
+		           yearRange : "1900:2017"
+		       }); 
 	    });
 		
-	  
+		
 	
 
 
@@ -213,9 +242,11 @@
 				
 				});
 			});
+	
 		});
-			
+		
 	</script>
+	
 	<style type="text/css">
 	body {
 		padding-top : 70px;
@@ -252,7 +283,7 @@
     
 </head>
 
-<body>
+<body bgcolor="#ffffff" text="#000000">
 
 
 	<!-- ToolBar Start /////////////////////////////////////-->
@@ -307,7 +338,7 @@
 		  
 		  
 		   <div class="form-group">
-		    <label for="nickame" class="col-sm-offset-1 col-sm-3 control-label">닉네임</label>
+		    <label for="nickname" class="col-sm-offset-1 col-sm-3 control-label">닉네임</label>
 		    <div class="col-sm-4">
 		      <input type="text" class="form-control" id="nickname" name="nickname" placeholder="닉네임">
 		    </div>

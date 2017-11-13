@@ -492,7 +492,7 @@ $( function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			$("#sign").on("click" , function() {
 				var userId=$("#loginUserId").val();
-				var Password=$("#loginPassword").val();
+				var password=$("#loginPassword").val();
 				
 			
 				
@@ -508,8 +508,11 @@ $( function() {
 					return;
 				}
 				
+				$("#loginForm").attr("method","POST").attr("action","/user/login").submit();
+			});
 				
-				$.ajax({
+        });
+				/* $.ajax({
 					type:"POST",
 					url:"/userRest/json/getUser", 
 			        data :{userId:userId},//요청과 함께 서버에 보내는 string 또는 map
@@ -520,27 +523,27 @@ $( function() {
 				    	
 				    	var pw=JSONData.password;
 				
-				    if(pw != Password){
+				    if(pw != password){
 				     /* $("span.col-id-checkPassword").html("비밀번호가 틀렸습니다.").css("color","blue"); */
-				     alert("비밀번호가 틀렸습니다.")
-				     event.preventDefault();
-				     return;
-				    } else{
+				    // alert("비밀번호가 틀렸습니다.")
+				     //event.preventDefault();
+				     //return;
+				  //  } else{ 
 			         //$("span.col-id-checkPassword").remove();
 			       /*   alert("여기옴") */
-				    	$("#loginForm").attr("method","POST").attr("action","/user/login").submit();
+				    	//$("#loginForm").attr("method","POST").attr("action","/user/login").submit();
 			      /*    alert("저기옴") */
-			      //form에 아디를 지정해 findUser.jsp의 폼과 중복되지 않게 하고, findUser.jsp에 id=userId인걸 id=email로 바꿈
+			      //form에 아디를 지정해 findUser.jsp의 폼과 중복되지 않게 하고, findUser.jsp에 id=userId인걸 id=email로 바꿈(무결성에러..)
 			      
 			      
-				      }
+			/* 	      }
 				    }
 				    
 			    });
 				
 			});
 		});	
-	   
+	    */
 		
 		
    		

@@ -533,7 +533,7 @@
 <input type="hidden" id="sessionId" value="${sessionScope.user.userId}">
          
 <div class="row"> 
-      <div class="col-md-12 text-center ">
+      <div class="col-md-12 text-center "><!-- col-xs-12 -->
         <div class="panel panel-default">
           <div class="userprofile social" ><!--background="/resources/uploadFile/light22.jpeg"  -->
             <div class="userpic"> <img src="/resources/uploadFile/${user.profileImage}" alt="" class="userpicimg"> </div>
