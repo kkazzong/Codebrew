@@ -187,10 +187,11 @@
 			
 			index++;
 			var innerHtml = "";
+			var errorSrc = "/resources/uploadFile/default_index_image.jpeg"
 			if(image.indexOf('http') != -1) {
 				innerHtml = '<img src='+image+' alt="축제이미지">';
 			} else {
-				innerHtml = '<img src="/resources/uploadFile/'+image+'" alt="축제이미지">';
+				innerHtml = '<img src="/resources/uploadFile/'+image+'" onError="this.src='+"'"+errorSrc+"'"+'" alt="축제이미지dl">';
 			}
 			$("#img"+index).html(innerHtml);
 			innerHtml = '<input type="hidden" name="festivalNo" value="'+no+'">';
