@@ -243,7 +243,7 @@
 			
 			var reader = new FileReader();
 			reader.onload = function(e) {
-				var html = "<a href=\"javascript:void(0);\" onclick=\"deleteImageAction("+index+")\" id=\"img_id_"+index+"\"><img width='100px' height='100px' src=\"" + e.target.result + "\" data-file = '"+f.name+"' class='selProductFile' title='Click to remove'></a>";
+				var html = "<a href=\"javascript:void(0);\" onclick=\"deleteImageAction("+index+")\" id=\"img_id_"+index+"\"><img width='200px' height='200px' src=\"" + e.target.result + "\" data-file = '"+f.name+"' class='selProductFile' title='Click to remove'></a>";
 				$(".imgs_wrap").append(html);
 				index++;
 				
@@ -312,15 +312,20 @@
 
 	  
 	<div class="row">
-	
-		<div class="col-md-offset-2 col-md-8">
-		
-	<h1 class="bg-primary text-center">후기등록양식</h1>
-	<p align="center">
-	<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target=".bs-example-modal-sm">
-		축제검색
-	</button>
-	 </p>
+		<div class="col-md-12">
+			<div class="page-header text-center">
+			<h3 class="text-info"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> 후기 등록</h3>
+				<small>축제 후기를 공유해요.</small>
+				<br>
+				<br>
+				<p>
+					<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target=".bs-example-modal-sm">
+						축제검색
+					</button>
+				</p>
+			</div>
+		</div>
+	</div>
 	<!-- ////////// form Start ////////// -->
 		
 			<form class="form-horizontal" method="post" name="detailForm" enctype="multipart/form-data">
@@ -461,8 +466,6 @@
 			
 			</form>
 			<!-- form End -->
-		</div>
-	</div>
 
 </div>
 <!-- ////////// 화면구성 div End ////////// -->
