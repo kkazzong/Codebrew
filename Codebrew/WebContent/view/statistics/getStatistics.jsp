@@ -47,6 +47,41 @@
 	<!-- 자바스크립트 -->
 	<script type="text/javascript">
 		
+		var totalCount = [];
+		////////////////////////////////////////////getTotalCount////////////////////////////////////////////
+		function fncGetTotalCount() {
+			$.ajax({
+				
+				url : "/statisticsRest/json/getTotalCount",
+				method : "GET",
+				dataType : "json",
+				headers : {
+					"Accept" : "application/json",
+					"Content-Type" : "application/json"
+				},
+				success : function(JSONData, status){
+					//alert(status+","+statFlag);
+					console.log(status);
+					console.log(JSON.stringify(JSONData));
+					for(var i = 0; i < JSONData.length; i++) {
+						/* totalCount.push({
+							"partyCount" : JSONData[i].partyCount,
+							"festivalCount" : JSONData[i].festivalCount,
+							"reviewCount" : JSONData[i].reviewCount,
+							"userCount" : JSONData[i].userCount
+						}); */
+						$("#partyCount").html(JSONData[i].partyCount+"건");
+						$("#festivalCount").html(JSONData[i].festivalCount+"건");
+						$("#reviewCount").html(JSONData[i].reviewCount+"건");
+						$("#userCount").html(JSONData[i].userCount+"명");
+					}
+					console.log(totalCount);
+				}
+			});
+			
+			//setTimeout("fncGetTotalCount()", 10000);
+		}
+		
 		/////////////////////////////////////////////amChart getData////////////////////////////////////////////////////////
 		var datas = [];
 		
@@ -76,7 +111,6 @@
 						case "1" :
 							dailyChart.destroy();
 							fncDailyChartDrow(JSONData);
-							dailyChart.update();
 							break;
 						
 						case 2 :
@@ -94,6 +128,12 @@
 							
 					}
 					
+					if($("iframe").length > 3) {
+						$($("iframe")[0]).remove();		
+					} 
+					
+					
+					//alert($("#dailyChart").length);
 					$("input:hidden[name='statFlag']").val(JSONData[0].statFlag);
 					
 					//JSON data 만큼 datas에 push
@@ -171,6 +211,10 @@
 			//getChartData(statFlag);
 			//chartData3();
 			dailyChartData();
+			monthlyChartData();
+			quarterChartData();
+		
+			fncGetTotalCount();
 			
 			
 			// tab 선택시
@@ -188,19 +232,21 @@
 				} else if(statFlag.indexOf('Monthly') != -1) {
 					console.log("monthly click");
 					$("input:hidden[name='statFlag']").val(2);
-					monthlyChartData();
+					//fncMonthlyChart();
 					//getChartData(2);
 					//chartLine.validateData();
 					//chartData1();
 				} else if(statFlag.indexOf('Quarter') != -1) {
 					console.log("quarter click");
 					$("input:hidden[name='statFlag']").val(3);
-					quarterChartData();
+					//fncQuarterChartData();
 					//getChartData(3);
 					//chartData2();
 				} 
 				
 			});
+			
+			
 			
 			//datepicker 설정
 			/* $.datepicker.setDefaults({
@@ -249,10 +295,6 @@
 			           '지난 30일': [moment().subtract(29, 'days'), moment()],
 			           '이번 달': [moment().startOf('month'), moment().endOf('month')],
 			           '저번 달': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-			      },
-				  function(start, end, label) {
-			    	console.log(start)
-			    	//alert("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
 			      }
 			});
 			
@@ -272,9 +314,26 @@
 				////alert("새로고침")
 				var statFlag2 = $("input:hidden[name='statFlag']").val();
 				
-				fncSearchChartData(statFlag2, '');
+				if(statFlag2 == '2') {
+					fncSearchMonthlyChartData(statFlag2, '');
+				} else {
+					fncSearchChartData(statFlag2, '');
+				}
 				
-				printClock();
+				printClock("stat");
+				
+			});
+			
+			$("#refreshCount").on("click", function(){
+				
+				////alert("새로고침")
+				//var statFlag2 = $("input:hidden[name='statFlag']").val();
+				
+				//fncSearchChartData(statFlag2, '');
+				
+				fncGetTotalCount();
+				
+				printClock("count");
 				
 			});
 			
@@ -289,6 +348,10 @@
 			background-color: #f2f4f6;
 	    }
 	    
+	    .content {
+	    	margin-top : 30px;
+	    }
+	    
 		.ui-datepicker-trigger {
 			width : 20px;
 			height : 20px;
@@ -298,14 +361,26 @@
 	    	color: #333333; 
 	    }
 	    
-	    .page-header {
-	    	border-bottom : 1px solid #f2f4f6;
-	    }
-	    
 	   #refreshClock {
 	    	margin-top: 50px;
 	    }
 		
+		.dropdown-menu {
+			background-color : #f5f5f5;
+		}
+		
+		.panel-body > .title {
+			font-size: 18px;
+			font-weight: bold;
+		}
+		
+		.statistics {
+			margin-top: 13px;
+		}
+	    
+	    .page-header {
+	    	border-bottom : 1px solid #fff;
+	    }
 		/* div {
 			border : 3px solid #D6CDB7;
 			margin0top : 10px;
@@ -314,23 +389,93 @@
 	</style>
 	
 </head>
+	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
 
 <body>
 
 	<!-- 툴바 -->
-	<jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
 	
 	
 	<div class="content">
 		
 		<!-- page header -->
-		<div class="row">
+		<!-- <div class="row">
 			<div class="col-md-offset-4 col-md-4">
 				<div class="page-header text-center">
 					<h3 class="text-info"><span class="glyphicon glyphicon-object-align-bottom" aria-hidden="true"></span> 판매통계</h3>
 				</div>
 			</div>
+		</div> -->
+		
+		<div id="refreshClock2" class="row">
+			<!-- <div class="col-md-offset-3 col-md-6"> -->
+				<div class="row">
+					<div class="col-md-offset-2 col-md-8">
+						<button id="refreshCount" class="btn btn-default btn-xs">
+							<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> 
+						</button>
+						<small>최근 새로고침 : <jsp:include page="/view/statistics/clock.jsp"></jsp:include> </small>
+					</div>
+				</div>			
+			<!-- </div> -->
 		</div>
+		<div class="row">
+			<div class="col-md-offset-2 col-md-8 text-center">
+				<div class="col-md-3">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="col-md-5">
+								<span class="glyphicon glyphicon-tent" aria-hidden="true"></span>
+							</div>
+							<div class="col-md-7">
+								<p class="title">Party</p>
+								<p id="partyCount">0</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="col-md-5">
+								<span class="glyphicon glyphicon-cd" aria-hidden="true"></span>
+							</div>
+							<div class="col-md-7">
+								<p class="title">Festival</p>
+								<p id="festivalCount">0</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="col-md-5">
+								<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+							</div>
+							<div class="col-md-7">
+								<p class="title">Review</p>
+								<p id="reviewCount">0</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="col-md-5">
+								<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+							</div>
+							<div class="col-md-7">
+								<p class="title">User</p>
+								<p id="userCount">0</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
 		
 		<!-- 현재날짜, 시각 -->
 		<%-- <div class="row">
@@ -343,10 +488,26 @@
 			</div>
 		</div>		 --%>
 		
+		<!-- <div class="row">
+			<div class="col-md-offset-4 col-md-4">
+				<div class="page-header text-center">
+					<h3 class="text-info"><span class="glyphicon glyphicon-object-align-bottom" aria-hidden="true"></span> 판매통계</h3>
+				</div>
+			</div>
+		</div> -->
+		
 		<!-- 버튼 1: 일단위, 2: 월단위, 3:분기단위 -->
-		<div class="row">
+		<div	class="row">
+			<div class="col-md-offset-2 col-md-8">
+				<div class="panel panel-default">
+					<div class="panel-body stat">
+						<div class="page-header text-center">
+					<h3 class="text-info"><span class="glyphicon glyphicon-object-align-bottom" aria-hidden="true"></span> 판매통계</h3>
+				</div>
+						
+		<!-- <div class="row">
 			<div class="col-md-offset-3 col-md-6">
-				<div class="row">
+				<div class="row"> -->
 					<!-- Tab -->
 					<ul class="nav nav-tabs" role="tablist">
 					    <li role="presentation" class="active">
@@ -359,13 +520,13 @@
 					    	<a href="#quarter" aria-controls="messages" role="tab" data-toggle="tab">Quarter</a>
 					    </li>
 					 </ul>
-				</div>
+				<!-- </div>
 			</div>
-		</div>		
+		</div>		 -->
 		
 		<input type="hidden" name="statFlag" value="${statistics.statFlag}">
 		
-		<div id="refreshClock" class="row">
+		<%-- <div id="refreshClock" class="row">
 			<div class="col-md-offset-3 col-md-6">
 				<div class="row">
 					<div class="col-md-12">
@@ -376,41 +537,57 @@
 					</div>
 				</div>			
 			</div>
-		</div>
+		</div> --%>
 		
 		<!-- 통계차트 -->
-		<div class="row">
-			<div class="col-md-offset-3 col-md-6">
+		<!-- <div class="row">
+			<div class="col-md-offset-3 col-md-6"> -->
 				<div class="row">
-					<div class="col-md-12">
+					<div class="col-md-12 statistics">
 						<!-- Tab 내용 -->
 						<div class="tab-content">
 							<!-- 일단위 판매통계 -->
 						    <div role="tabpanel" class="tab-pane active" id="daily">
-						    	<div class="page-header">
-								</div>
 								<!-- <div id="chartDiv"></div> -->
 								<jsp:include page="/view/statistics/dailyStatistics.jsp"></jsp:include>
 						    </div>
 						    <!-- 월단위 판매통계 -->
 						    <div role="tabpanel" class="tab-pane" id="monthly">
-						    	<div class="page-header">
-								</div>
 								<!-- <div id="chartLine"></div> -->
 								<jsp:include page="/view/statistics/monthlyStatistics.jsp"></jsp:include>
 						    </div>
 						    <!-- 분기단위 판매통계 -->
 						    <div role="tabpanel" class="tab-pane" id="quarter">
-						    	<div class="page-header">
-								</div>
 						    	<!-- <div id="chartPie"></div> --> 
 						    	<jsp:include page="/view/statistics/quarterStatistics.jsp"></jsp:include>
 						    </div>
  						 </div>
 					</div>
 				</div>
+			<!-- </div>
+		</div> -->
+		
+		<div id="refreshClock" class="row">
+			<!-- <div class="col-md-offset-3 col-md-6"> -->
+				<div class="row">
+					<div class="col-md-offset-1 col-md-11">
+						<button id="refresh" class="btn btn-default btn-xs">
+							<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> 
+						</button>
+						<small>최근 새로고침 : <jsp:include page="/view/statistics/clock.jsp"></jsp:include> </small>
+					</div>
+				</div>			
+			<!-- </div> -->
+		</div>
+		
+		
+					</div>
+				</div>
 			</div>
 		</div>
+		
+		
+		
 	</div>
 	
 </body>
