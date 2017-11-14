@@ -70,7 +70,9 @@
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			$("a[href='#' ]").on("click" , function() {
 				
-				self.location = "/index.jsp"
+				
+					
+				self.location = "/user/withdrawUser?userId=${sessionScope.user.userId}";
 				
 				//$("form")[0].reset();
 				//history.go(-1);
@@ -222,7 +224,11 @@
 		   <div class="form-group">
 		    <label for="userName" class="col-sm-offset-1 col-sm-3 control-label">이름</label>
 		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="userName" name="userName" value="${user.userName}" placeholder="변경회원이름">
+		      <input type="text" class="form-control" id="userName" name="userName" value="${user.userName}" placeholder="변경회원이름" readOnly>
+		       <span id="helpBlock" class="help-block">
+		      <strong class="text-danger">이름은 수정불가</strong>
+		      </span>
+		   
 		    </div>
 		  </div>
 		  
@@ -231,12 +237,12 @@
     <label for="gender" class="col-sm-offset-1 col-sm-3 control-label">성별</label>
 	 <span class="col-sm-2">
     <label>
-      <input type="radio" id="gender" name="gender" value="m">남자
+      <input type="radio" id="gender" name="gender" value="m" readOnly>남자
     </label>
     </span>
     <span class="col-sm-2">
     <label>
-      <input type="radio" id="gender" name="gender" value="f"  >여자
+      <input type="radio" id="gender" name="gender" value="f" readOnly >여자
     </label>
     
   </span>
@@ -254,7 +260,11 @@
 		   <div class="form-group">
 		    <label for="age" class="col-sm-offset-1 col-sm-3 control-label">나이</label>
 		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="age" name="age" value="${user.age}" placeholder="${user.age}">
+		      <input type="text" class="form-control" id="age" name="age" value="${user.age}" placeholder="${user.age}" readonly>
+		       <span id="helpBlock" class="help-block">
+		      <strong class="text-danger">나이는 수정불가</strong>
+		      </span>
+		      
 		    </div>
 		  </div>
 		  
@@ -271,7 +281,7 @@
 		  <div class="form-group">
 		    <div class="col-sm-offset-4  col-sm-4 text-center">
 		      <button type="button" class="btn btn-primary"  >수 &nbsp;정</button>
-			  <a class="btn btn-primary btn" href="#" role="button">인덱스화면으로</a>
+			  <a class="btn btn-primary btn" href="#" role="button">탈&nbsp;퇴</a>
 		    </div>
 		  </div>
 		</form>

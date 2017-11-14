@@ -57,7 +57,7 @@
 							/* 팔로잉 됐다고 버튼이  바뀜 follow(팔로잉 안한거)--> following(팔로잉된거) */
 							//$("#profileFollow").text("Following").css('background-color', '#3897f0').css('color', '#fff');
 							
-							$("#profileFollow").removeClass("btn btn-sm").addClass("btn btn-info btn-sm").text("Following");
+							$("#profileFollow").removeClass("btn btn-sm").addClass("btn btn-info").text("Following");
 							
 							//$(this).val("Following");
 							
@@ -102,10 +102,10 @@
 							/*  $("#follow").val("following").css('background-color', '#3897f0').css('color', '#fff'); */
 							/* location.reload(); */
 							//$(this).val('follow');
-							alert(JSON.stringify(JSONData));
+							//alert(JSON.stringify(JSONData));
 							
 							//$("#profileFollowing").text("Follow").css('background-color', '#3897f0').css('color', '#fff');
-							$("#profileFollowing").removeClass("btn btn-info btn-sm").addClass("btn btn-sm").text("Follow");
+							$("#profileFollowing").removeClass("btn btn-info").addClass("btn btn-sm").text("Follow");
 							 
 							 //$(this).val("Follow");
 							 location.reload();
@@ -117,6 +117,24 @@
 	  
 	
 
+	 
+	//============= "일대일 채팅"  Event 처리 및  연결 =============
+		function chatPopup(frm) {
+			/* var url = "http://127.0.0.1:3000/public/client05.html"; */
+			var url = "/chat/getChatting";
+			var title = "chatPop";
+			var status = "toolbar=no,directories=no,scrollbars=yes,resizable=no,status=no,menubar=no,width=440, height=520, top=0,left=20";
+			window.open("", title, status); //window.open(url,title,status); window.open 함수에 url을 앞에와 같이
+			//인수로  넣어도 동작에는 지장이 없으나 form.action에서 적용하므로 생략
+			//가능합니다.
+			frm.target = title; //form.target 이 부분이 빠지면 form값 전송이 되지 않습니다. 
+			frm.action = url; //form.action 이 부분이 빠지면 action값을 찾지 못해서 제대로 된 팝업이 뜨질 않습니다.
+			frm.method = "post";
+			frm.submit();
+		} 
+	 
+	 
+	 
 	 
 	</script>
 
@@ -296,7 +314,7 @@
 /*==============================*/
 /*====== Recently connected  heading =====*/
 /*==============================*/
-.memberblock {
+/* .memberblock {
 	width: 100%;
 	float: left;
 	clear: both;
@@ -345,7 +363,7 @@
     font-size: 15px;
     border-radius: 0;
     border-color: #e1eaef;
-}
+} */
 
 
 /*  
@@ -360,6 +378,32 @@
     position: center;
 }  */
 
+.btn-sm{
+  
+	float: right;
+	margin: 22px;
+	
+	width: 100px;
+    height: 100px;
+    padding: 10px 3;
+    text-size:50px;
+
+ }
+
+
+ .btn-info{
+   
+	float: right;
+	margin: 22px;
+	
+    width: 100px;
+    height: 100px;
+ 
+ }
+ 
+ 
+ 
+ 
 .page-header.small {
     position: relative;
     line-height: 22px;
@@ -551,10 +595,21 @@
             <%-- <h3 class="username">${user.age}</h3> --%>
             <h3 class="username"><i class="fa fa-lemon-o" aria-hidden="true"></i>${user.coconutCount}</h3>
             
-     
+          
             <div class="socials text-center"> 
+             <form name="form">
             <a href="/user/updateUser?userId=${sessionScope.user.userId }" class="btn btn-circle btn-primary" title="회원정보수정"><i class="fa fa-cog" aria-hidden="true"></i></a> 
-            <a href="" class="btn btn-circle btn-danger" title="채팅"><i class="fa fa-weixin"aria-hidden="true"></i></a> 
+       
+            <button type="button" class="btn btn-circle btn-danger" title="채팅" onclick="javascript:chatPopup(this.form);"><i class="fa fa-weixin"aria-hidden="true"></i></button>
+            
+            
+            <input type="hidden" name="recipient" value="${user.userId}">
+			<input type="hidden" name="sender" value="${sessionScope.user.userId}">
+			<%-- <c:if test="${user.userId != party.user.userId }">
+			<button type='button' class='btn-sm btn-default pull-right' onclick="javascript:chatPopup(this.form);">채팅하기</button>
+			</c:if>  --%>
+           </form>
+            
            <!--  <a href="" class="btn btn-circle btn-info "><i class=""></i></a>  -->
             <!-- <a href="" class="btn btn-circle btn-warning "><i class="fa fa-envelope" aria-hidden="true"></i></a> -->
             </div>
@@ -606,11 +661,11 @@
 							 <c:when test="${empty follow.requestId }">
 								
 								 <!--나(sessionId) 이사람 requestId면 (팔로잉 목록에 없다면)-->
-									<button type="button" class="btn btn-sm followbtn" id="profileFollow" >Follow</button>			
+									<button type="button" class="btn btn-sm" id="profileFollow" >Follow</button>			
 								</c:when>
 							     <c:otherwise>
 							      <!--나(sessionId) 이사람 requestId면 (팔로잉 목록에 있다면)-->
-								     <button type="button" class="btn btn-primary followbtn" id="profileFollowing">Following</button>
+								     <button type="button" class="btn btn-info" id="profileFollowing">Following</button>
 							     </c:otherwise>
 						</c:choose>
 					</c:if> 

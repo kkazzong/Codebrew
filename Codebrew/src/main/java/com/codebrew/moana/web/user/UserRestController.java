@@ -239,6 +239,7 @@ public class UserRestController {
 	}
 	*/
 	
+
 	//업데이트 코코넛	
 	/*@RequestMapping(value="json/updateCoconut/{flag}", method=RequestMethod.POST)
 	public User updateCoconut(@PathVariable("flag") String flag,
@@ -355,5 +356,6 @@ public class UserRestController {
 		
 		return user;
 	}  
+
 	
 }
