@@ -14,19 +14,14 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-	<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width" />
-	<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	
-	<!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script> -->
-	
 	<!-- Bootstrap Dropdown Hover CSS -->
-	<!-- <link href="/resources/css/animate.min.css" rel="stylesheet">
-	<link href="/resources/css/bootstrap-dropdownhover.min.css" rel="stylesheet"> -->
+	<link href="/resources/css/animate.min.css" rel="stylesheet">
+	<link href="/resources/css/bootstrap-dropdownhover.min.css" rel="stylesheet"> 
 
 	<!-- Bootstrap Dropdown Hover JS -->
-	<!-- <script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script> -->
+	<script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script> 
 
 
 	<!-- ----------------------UI -->
@@ -189,9 +184,9 @@
 			var innerHtml = "";
 			var errorSrc = "/resources/uploadFile/default_index_image.jpeg"
 			if(image.indexOf('http') != -1) {
-				innerHtml = '<img src='+image+' alt="축제이미지">';
+				innerHtml = '<img height="1254px" src='+image+' alt="축제이미지">';
 			} else {
-				innerHtml = '<img src="/resources/uploadFile/'+image+'" onError="this.src='+"'"+errorSrc+"'"+'" alt="축제이미지dl">';
+				innerHtml = '<img height="1254px" src="/resources/uploadFile/'+image+'" onError="this.src='+"'"+errorSrc+"'"+'" alt="축제이미지dl">';
 			}
 			$("#img"+index).html(innerHtml);
 			innerHtml = '<input type="hidden" name="festivalNo" value="'+no+'">';
@@ -300,9 +295,24 @@
 			//이미지클릭
 			$(".overlay").on("click", function(){
 				var fno = $(this).find("input:hidden[name='festivalNo']").val();
-				alert(fno);
+				//alert(fno);
 				self.location="/festival/getFestivalDB?festivalNo="+fno;
 			});
+			
+			$(".dropdown").on("click", function(){
+				//alert("드롭다운");
+				$(this).addClass("open");
+			});
+			
+			/* $(".navbar-toggle").on("click", function(){
+				alert("드롭다운");
+				$(this).attr("aria-expanded","false");
+				$(this).attr("class","navbar-toggle collapsed");
+				$("#target").attr("class","navbar-collapse collapse");
+				$("#target").attr("aria-expanded","false");
+				alert($("#target").attr("class")+"///"+$("#target").attr("aria-expanded"));
+				//$(this).find("#target").removeClass("in");
+			}); */
 		});
 		
 	</script>
