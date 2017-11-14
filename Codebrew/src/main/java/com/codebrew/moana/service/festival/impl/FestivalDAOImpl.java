@@ -151,6 +151,13 @@ public class FestivalDAOImpl implements FestivalDAO {
 		
 		return  sqlSession.selectOne("ZzimMapper.getTotalCountZzim", map);
 	}
+	
+
+	@Override
+	public int getTotalZzim(int festivalNo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("ZzimMapper.getTotalZzim",festivalNo);
+	}
 		
 
 	
@@ -202,5 +209,6 @@ public class FestivalDAOImpl implements FestivalDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }

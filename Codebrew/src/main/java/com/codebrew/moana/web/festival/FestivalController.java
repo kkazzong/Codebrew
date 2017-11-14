@@ -176,7 +176,7 @@ public class FestivalController {
 		if (menu.equals("db")) {
 			modelAndView.setViewName("forward:/view/festival/getFestivalListDB.jsp");
 		} else {
-			modelAndView.setViewName("forward:/view/festival/popupListDB2.jsp");
+			modelAndView.setViewName("forward:/view/festival/popupListDB.jsp");
 //			modelAndView.setViewName("forward:/view/festival/modalTest.jsp");
 		}
 
@@ -582,6 +582,8 @@ public class FestivalController {
 			zzim.setUserId(user.getUserId());
 
 			Zzim returnZzim = festivalService.getZzim(zzim);
+			
+			int totalZzim = festivalService.getTotalZzim(festivalNo);
 
 			Ticket ticket = ticketService.getTicket(festivalNo, "1");
 
@@ -589,7 +591,10 @@ public class FestivalController {
 			festival.setTicketPrice(ticket.getTicketPrice());
 
 			ModelAndView modelAndView = new ModelAndView();
-
+			
+			
+			modelAndView.addObject("totalZzim", totalZzim);
+			
 			modelAndView.addObject("festival", festival);
 			modelAndView.addObject("returnZzim", returnZzim);
 			modelAndView.addObject("ticket", ticket);

@@ -169,8 +169,6 @@
 				return false;
 				}
 		}
-		 
-			
 		
 		$('form').attr("method","POST").attr("enctype", "multipart/form-data").attr("action", "/festival/writeFestival").submit();
 	}

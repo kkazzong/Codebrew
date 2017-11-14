@@ -185,8 +185,78 @@ public class FestivalRestController {
 		return map;
 
 	}
-
+	
+	
 	@RequestMapping(value = "/json/addZzim/{userId}/{festivalNo}")
+	public Map<String,Object> addZzim(@PathVariable("userId") String userId, @PathVariable("festivalNo") int festivalNo)
+			throws Exception {
+
+		System.out.println("json/addZzim........");
+		System.out.println("festivalNo : " + festivalNo);
+		System.out.println("userId : " + userId);
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+
+		Zzim returnZzim = new Zzim(userId, festivalNo);
+
+		if (festivalService.getZzim(returnZzim) == null) {
+
+			System.out.println("addZzim 댐");
+
+			festivalService.addZzim(returnZzim);
+			
+			int getTotalZzim = festivalService.getTotalZzim(festivalNo);
+			System.out.println("getTotalZzim................" + getTotalZzim);
+			
+			map.put("returnZzim", returnZzim);
+			map.put("totalZzim", getTotalZzim);
+					
+			return map;
+
+		} else {
+
+			System.out.println("deleteZzim~~~~~~~~~~~");
+
+			festivalService.deleteZzim(returnZzim);
+			
+			returnZzim = null;
+			
+			int getTotalZzim = festivalService.getTotalZzim(festivalNo);
+			System.out.println("getTotalZzim................" + getTotalZzim);
+			
+			map.put("returnZzim", returnZzim);
+			map.put("totalZzim", getTotalZzim);
+
+			return map;
+
+		}
+
+	}
+
+	@RequestMapping(value = "/json/deleteZzim/{userId}"+"/{festivalNo}")
+	public Zzim deleteZzim(@PathVariable("userId") String userId, @PathVariable("festivalNo") int festivalNo)
+			throws Exception {
+
+		System.out.println("json/deleteZzim........");
+
+		System.out.println("deleteZzim userId........." + userId + "," + festivalNo);
+
+		Zzim returnZzim = new Zzim(userId, festivalNo);
+
+		festivalService.deleteZzim(returnZzim);
+		
+		int getTotalZzim = festivalService.getTotalZzim(festivalNo);
+		System.out.println("getTotalZzim................" + getTotalZzim);
+
+		// returnZzim=null;
+
+		System.out.println("returnZzim 확인 : " + returnZzim);
+
+		return returnZzim;
+
+	}
+
+	/*@RequestMapping(value = "/json/addZzim/{userId}/{festivalNo}")
 	public Zzim addZzim(@PathVariable("userId") String userId, @PathVariable("festivalNo") int festivalNo)
 			throws Exception {
 
@@ -201,6 +271,10 @@ public class FestivalRestController {
 			System.out.println("addZzim 댐");
 
 			festivalService.addZzim(returnZzim);
+			
+			int getTotalZzim = festivalService.getTotalZzim(festivalNo);
+			System.out.println("getTotalZzim................" + getTotalZzim);
+					
 
 			return returnZzim;
 
@@ -209,6 +283,9 @@ public class FestivalRestController {
 			System.out.println("deleteZzim~~~~~~~~~~~");
 
 			festivalService.deleteZzim(returnZzim);
+			
+			int getTotalZzim = festivalService.getTotalZzim(festivalNo);
+			System.out.println("getTotalZzim................" + getTotalZzim);
 
 			returnZzim = null;
 
@@ -229,6 +306,9 @@ public class FestivalRestController {
 		Zzim returnZzim = new Zzim(userId, festivalNo);
 
 		festivalService.deleteZzim(returnZzim);
+		
+		int getTotalZzim = festivalService.getTotalZzim(festivalNo);
+		System.out.println("getTotalZzim................" + getTotalZzim);
 
 		// returnZzim=null;
 
@@ -236,7 +316,7 @@ public class FestivalRestController {
 
 		return returnZzim;
 
-	}
+	}*/
 
 	@RequestMapping(value = "json/getZzim", method = RequestMethod.GET)
 	public Zzim getZzim(@RequestParam String userId, @RequestParam int festivalNo) throws Exception {

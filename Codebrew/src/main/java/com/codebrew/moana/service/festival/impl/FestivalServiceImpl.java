@@ -220,5 +220,11 @@ public class FestivalServiceImpl implements FestivalService{
 		
 		return map;
 	}
+
+	@Override
+	public int getTotalZzim(int festivalNo) throws Exception {
+		// TODO Auto-generated method stub
+		return festivalDAO.getTotalZzim(festivalNo);
+	}
 	
 }

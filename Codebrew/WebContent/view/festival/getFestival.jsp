@@ -166,6 +166,9 @@
 									"Content-Type" : "application/json"
 								},
 								success : function(JSONData , status) {
+										
+									console.log("JSONData...." + JSONData.totalZzim);
+									
 									
 									
 									 if($("#tag").attr("class")=="glyphicon glyphicon-heart"){
@@ -177,6 +180,10 @@
 									 }
 									$( "#tag" ).removeClass(tag2);
 									$( "#tag" ).addClass(tag);
+									
+									$(".totalZzim").text(JSONData.totalZzim);
+									
+									
 
 								}
 						});
@@ -263,13 +270,17 @@ body {
 							</c:if>
 						<c:if test="${returnZzim == null }">
 							<div class="col-md-12">
-								<h1><span class="glyphicon glyphicon-heart-empty" aria-hidden="true" id="tag" style="cursor: pointer;"></span></h1>
+								<h1><span class="glyphicon glyphicon-heart-empty" aria-hidden="true" id="tag"style = "color: red;" style="cursor: pointer;"></span></h1>
+								<%-- <input class="totalZzim" value="${totalZzim }"> --%>
+								<p class="totalZzim">${totalZzim }</p>
 							</div>
 						</c:if>
 						
 						<div class="col-md-12">
 							<c:if test="${returnZzim != null }">
 								<h1><span class="glyphicon glyphicon-heart" style = "color: red;" aria-hidden="true" id="tag" style="cursor: pointer;"></span></h1>
+								<%-- <input class="totalZzim" value="${totalZzim }"> --%>
+								<p class="totalZzim">${totalZzim }</p>
 							</c:if>
 						</div>
 				  	</div>

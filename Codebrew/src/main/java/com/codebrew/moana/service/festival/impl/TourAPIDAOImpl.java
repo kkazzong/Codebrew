@@ -897,4 +897,10 @@ public class TourAPIDAOImpl implements FestivalDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public int getTotalZzim(int festivalNo) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
