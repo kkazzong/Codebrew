@@ -159,6 +159,16 @@
 						 ) countTable						
 						
 	 </select>
+	 
+	 
+	 	<select  id="getTotalZzim"  parameterType="zzim"	 resultType="int">
+	 	
+	 	select count(*) from zzim where festival_no= #{festivalNo:NUMERIC}
+	 	
+						
+	 </select>
+	 
+	 
 
 
 </mapper>	

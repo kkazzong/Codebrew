@@ -55,4 +55,6 @@ public interface FestivalDAO {
 	public Contents kakaoWeb(String festivalName0) throws Exception;
 	
 	public Contents kakaoWeb(String festivalName0,String festivalName1,String festivalName2) throws Exception;
+	
+	public int getTotalZzim(int festivalNo) throws Exception;
 }

@@ -85,6 +85,10 @@
 	
 	function fncWriteFestival() {
 		
+		var frm = document.detailForm ;
+		var tp = frm.ticketPrice.value ;
+		var tc = frm.ticketCount.value ;
+		
 		var festivalName=$("#festivalName").val();
 		var startDate=$("#startDate").val();
 		var endDate=$("#endDate").val();
