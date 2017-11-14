@@ -5,6 +5,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
+	
 
 <!-- autocomplete -->
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -168,6 +169,8 @@
 			           </li>
 
 		             	<li><a href="#">${sessionScope.user.nickname}님</a></li>
+		             	<li><img id="coconut" src="/resources/image/toolbarImage/571497.png" alt="MOANA" height="30">
+		             	<b id="coconutCount">${sessionScope.user.coconutCount}</b></li>
 		             	<li><a href="#">LogOut</a></li>
 	             	</c:if>
 	             	<c:if test="${empty user}">
@@ -547,7 +550,16 @@ $( function() {
 	</script>  
 
 	<style>
-	
+		
+		#coconut{
+			padding-top: 18px; 
+		}
+		
+		#coconutCount {
+			padding-top: 48px; 
+		}
+		
+		
 		* {
 			box-sizing: border-box;
 		}
