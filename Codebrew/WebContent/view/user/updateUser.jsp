@@ -83,19 +83,21 @@
 		
 			 
 		
-		//=============이메일" 유효성Check  Event 처리 =============
-		 $(function() {
+		//성별 체크
+	 	 $(function() {
 			 
-			 $("input[name='email']").on("change" , function() {
-					
-				 var email=$("input[name='email']").val();
-			    
-				 if(email != "" && (email.indexOf('@') < 1 || email.indexOf('.') == -1) ){
-			    	alert("이메일 형식이 아닙니다.");
-			     }
-			});
+			 /* $("#gender > option[value={}]").attr("selected", "true") */
+			 var gender=$("input[name='gender']").val();
+			 
+			 $("input:radio[name='gender']").attr("checked","checked");
 			 
 		});	
+		
+		
+		
+	
+		
+		
 		
 		///////////////////////////////////////////////////////////////////////
 		function fncUpdateUser() {
@@ -237,12 +239,12 @@
     <label for="gender" class="col-sm-offset-1 col-sm-3 control-label">성별</label>
 	 <span class="col-sm-2">
     <label>
-      <input type="radio" id="gender" name="gender" value="m" readOnly>남자
+      <input type="radio" id="gender" name="gender" value="${user.gender }"  disabled>남자
     </label>
     </span>
     <span class="col-sm-2">
     <label>
-      <input type="radio" id="gender" name="gender" value="f" readOnly >여자
+      <input type="radio" id="gender" name="gender" value="${user.gender }" disabled>여자
     </label>
     
   </span>

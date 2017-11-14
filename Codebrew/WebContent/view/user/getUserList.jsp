@@ -45,13 +45,23 @@
 		
 		
 		//============= "검색"  Event  처리 =============	
-		 $(function() {
+		/*  $(function() {
 			 //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			 //$( "button.btn.btn-default" ).on("click" , function() {
 			//	fncGetUserList(1);
 			//});
-		 });
+		 }); */
 		
+		$(".btn:contains('검색')").on("click", function() {
+			
+			if($("#searchKeyword").val() == ''){
+				alert("검색어를 입력해주세요");
+				return;
+				
+			}
+			fncGetList(1);
+		});
+		 
 		
 		//============= userId 에 회원정보보기  Event  처리(Click) =============	
 		 $(function() {
@@ -123,7 +133,7 @@
 	<style type="text/css">
 	
 		body {
-			font-family: "Helvetica Neue", Helvetica, Arial;
+		  font-family: "Helvetica Neue", Helvetica, Arial;
 		  font-size: 14px;
 		  line-height: 20px;
 		  font-weight: 400;
