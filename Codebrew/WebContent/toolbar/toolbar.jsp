@@ -182,8 +182,9 @@
 			                    <!-- <li><a href="#">my파티</a></li> -->
 			                    <li><a href="#">my후기</a></li>
 			                    <li><a href="#">my티켓</a></li>
+			                     <li><a href="#">my채팅</a></li>
 			                    
-			                    <li><a href="#">회원검색</a></li>
+			                    <!-- <li><a href="#">회원검색</a></li> -->
 			                    
 			              </ul>
 			           </li>
@@ -397,6 +398,16 @@
 			
 			$("li > a:contains('판매통계')").bind('click', function(){
 				self.location = "/statistics/getStatistics";
+			});
+			
+		});
+  		
+	//////채팅관리//////
+		$(function(){
+			
+		
+			$("li > a:contains('my채팅')").bind('click', function(){
+				self.location = "/chat/getChattingList";
 			});
 			
 		});
