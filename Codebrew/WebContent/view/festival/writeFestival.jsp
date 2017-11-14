@@ -89,6 +89,11 @@
 	
 	function fncWriteFestival() {
 		
+			
+		var frm = document.detailForm ;
+		var tp = frm.ticketPrice.value ;
+		var tc = frm.ticketCount.value ;
+		
 		var festivalName=$("#festivalName").val();
 		var startDate=$("#startDate").val();
 		var endDate=$("#endDate").val();
@@ -116,13 +121,56 @@
 			return;
 		}
 		
-		if(ticketPrice == null || ticketPrice == ''){
+		/* if(ticketPrice == null || ticketPrice == ''){
 			var ticketPrice=$("#ticketPrice").val(0);
-		}
+		} */
 		
-		if(ticketCount == null || ticketCount ==''){
+		//자바스크립트 정규식 숫자 / 길이 체크!
+		if( tp == "" ){
+			
+			alert ( " 숫자를 입력해주세요" )
+			frm.tp.value="";
+			frm.tp.focus();
+			return false;
+			
+		}else{
+			
+			var num_check=/^[0-9]*$/;
+			if(!num_check.test(tp)) {
+				
+				alert ( "숫자만 입력할 수 있습니다." );
+				frm.tp.value="";
+				frm.tp.focus();
+				return false;
+				}
+		 
+			}
+		
+	/* 	if(ticketCount == null || ticketCount ==''){
 			var ticketCount=$("#ticketCount").val(0);
+		} */
+		
+		//자바스크립트 정규식 숫자 / 길이 체크!
+		if( tc == "" ){
+			
+			alert ( " 숫자를 입력해주세요" )
+			frm.tc.value="";
+			frm.tc.focus();
+			return false;
+			
+		}else{
+			
+			var num_check=/^[0-9]*$/;
+			if(!num_check.test(tc)) {
+				
+				alert ( "숫자만 입력할 수 있습니다." );
+				frm.tc.value="";
+				frm.tc.focus();
+				return false;
+				}
 		}
+		 
+			
 		
 		$('form').attr("method","POST").attr("enctype", "multipart/form-data").attr("action", "/festival/writeFestival").submit();
 	}
@@ -263,7 +311,6 @@
 <body>
 
 <jsp:include page="/toolbar/toolbar.jsp"></jsp:include>	
-
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
@@ -299,17 +346,18 @@
 						
 							<div class="col-md-4">
 							
-							<c:if test="${festival.festivalImage.contains('http://')==true }">
+							<%-- <c:if test="${festival.festivalImage.contains('http://')==true }">
 									<img src="${festival.festivalImage }" width="400" height="300" />
 								</c:if>
 								
 								<c:if test="${festival.festivalImage.contains('http://')==false }">
 									<img src="../../resources/uploadFile/${festival.festivalImage }" width="400" height="300" />
 								</c:if>
-								<%-- <img src="${festival.festivalImage }" width="400" height="300"/> --%>
-									<input type = "hidden" class="form-control" id="festivalImage" name="festivalImage" value= "${festival.festivalImage }">
-										<input type="file" id="festivalImage" name="file" class="form-control">
-											<img id="img"/>
+								<img src="${festival.festivalImage }" width="400" height="300"/> --%>
+								<img id="img" width="360" height="300"/>
+									<input type = "hidden" class="form-control" name="festivalImage" value= "${festival.festivalImage }">
+										<input type="file" id="festivalImage" name="file" class="form-control btn-info">
+											
 										
 										
 							</div>	
@@ -321,8 +369,8 @@
 				<div class="form-group">
 					<label for="addr" class="col-sm-offset-1 col-sm-3 control-label">개최장소</label>
 						<div class="col-md-4">
-							<input type="text" class="form-control" id="addr" name = "addr" placeholder="주소">
-							<input type="button" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
+							<input type="text" class="form-control" readonly="readonly" id="addr" name = "addr" placeholder="주소">
+							<input type="button" class="btn-info" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
 							<input type="hidden" class="form-control" id="festivalLongitude" name="festivalLatitude">
 							<input type="hidden" class="form-control" id="festivalLatitude" name="festivalLongitude" >
 						</div>
@@ -333,7 +381,7 @@
 				<div class = "form-group">
 					<label for ="startDate" class="col-sm-offset-1 col-sm-3 control-label">축제시작일자</label>
 						<div class="col-md-4">
-							<input type = "text" class="form-control" id="startDate" name="startDate" value= "${festival.startDate }">
+							<input type = "text" class="form-control" readonly="readonly" id="startDate" name="startDate" placeholder="날짜를 선택해주세요." value= "${festival.startDate }">
 						</div>	
 				</div>
 				
@@ -343,7 +391,7 @@
 				<div class = "form-group">
 					<label for ="endDate" class="col-sm-offset-1 col-sm-3 control-label">축제종료일자</label>
 						<div class="col-md-4">
-							<input type = "text" class="form-control" id="endDate" name="endDate" value= "${festival.endDate }">
+							<input type = "text" class="form-control" readonly="readonly" placeholder="날짜를 선택해주세요." id="endDate" name="endDate" value= "${festival.endDate }">
 						</div>	
 					
 				</div>
@@ -455,8 +503,8 @@
 				
 			<div class="form-group">
 				<div class="col-sm-offset-4  col-md-4 text-center">
-					<button type="button" class="btn btn-primary">등록</button>
-					<input type = "button" class="btn btn-primary" id = "back" name = "back" value = "취소"/>
+					<button type="button" class="btn btn-info">등록</button>
+					<input type = "button" class="btn btn-info" id = "back" name = "back" value = "취소"/>
 				</div>
 			</div>
 					

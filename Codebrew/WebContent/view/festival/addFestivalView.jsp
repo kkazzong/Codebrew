@@ -44,16 +44,16 @@
 	<script type="text/javascript">
 	
 	var sel_file;
-	
-	$('document').ready(function(){
+
+	$(document).ready(function(){
 		$("#festivalImage").on("change",handleImgFileSelect);
 	});
-	
-	function handleImgfileSelect(e){
+
+	function handleImgFileSelect(e){
 		var files = e.target.files;
 		var filesArr = Array.prototype.slice.call(files);
 		
-		fileArr.forEach(function(f){
+		filesArr.forEach(function(f){
 			if(!f.type.match("image.*")){
 				alert("확장자는 이미지 확장자만 가능합니다.")
 				return;
@@ -69,14 +69,7 @@
 			reader.readAsDataURL(f);
 		});
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 	$(function() {
@@ -116,6 +109,51 @@
 			alert("장소를 입력하세요.");
 			return;
 		}
+		
+		/* if(ticketPrice == null || ticketPrice == ''){
+		var ticketPrice=$("#ticketPrice").val(0);
+	} */
+	
+	//자바스크립트 정규식 숫자 / 길이 체크!
+	if( tp == "" ){
+		
+		alert ( " 숫자를 입력해주세요" )
+		frm.tp.value="";
+		frm.tp.focus();
+		return false;
+		
+	}else{
+		
+		var num_check=/^[0-9]*$/;
+		if(!num_check.test(tp)) {
+			
+			alert ( "숫자만 입력할 수 있습니다." );
+			frm.tp.value="";
+			frm.tp.focus();
+			return false;
+			}
+	 
+		}
+	
+	//자바스크립트 정규식 숫자 / 길이 체크!
+	if( tc == "" ){
+		
+		alert ( " 숫자를 입력해주세요" )
+		frm.tc.value="";
+		frm.tc.focus();
+		return false;
+		
+	}else{
+		
+		var num_check=/^[0-9]*$/;
+		if(!num_check.test(tc)) {
+			
+			alert ( "숫자만 입력할 수 있습니다." );
+			frm.tc.value="";
+			frm.tc.focus();
+			return false;
+			}
+	}
 		
 		$('form').attr("method","POST").attr("enctype", "multipart/form-data").attr("action", "/festival/addFestival").submit();
 	}
@@ -298,31 +336,47 @@
 	
 						<label for ="file" class="col-sm-offset-1 col-sm-3 control-label">이미지</label>
 						
-							<div class="col-md-4">
+							<%--원래거 <div class="col-md-4">
 								<img src="${festival.festivalImage }" width="400" height="300"/>
 									<input type = "hidden" class="form-control" id="festivalImage" name="festivalImage" value= "${festival.festivalImage }">
-							<input type="file" id="festivalImage" name="file" class="form-control">
+							<input type="file" id="festivalImage" name="file" class="form-control"> --%>
 							
-							<div>
-								<div class="img_wrap">
-								
-									<img id = "img">
-									
-								</div>
-							</div>
+							
+							<%-- 이미지 미리보기
+							<img id="img" width="360" height="300"/>
+									<input type = "hidden" class="form-control" name="festivalImage" value= "${festival.festivalImage }">
+										<input type="file" id="festivalImage" name="file" class="form-control">
+											 --%>
+											 
+				 <c:if test="${festival.festivalImage.contains('http://')==true }">
+				 <div class="col-md-4">
+					<img id="img" src="${festival.festivalImage }" width="360" height="300"/>
+					<input type = "hidden" class="form-control" name="festivalImage" value= "${festival.festivalImage }">
+					<input type="file" id="festivalImage" name="file" class="form-control btn-info" value="${festival.festivalImage }">
+					<%-- <input type = "hidden" class="form-control" id="festivalImage" name="festivalImage" value= "${festival.festivalImage }"> --%>
+				</div>
+				</c:if>
+				
+				<c:if test="${festival.festivalImage.contains('http://')==false }">
+				<div class="col-md-4">
+					<img id="img" src="../../resources/uploadFile/${festival.festivalImage }" width="360" height="300"/>
+					<input type = "hidden" class="form-control" name="festivalImage" value= "${festival.festivalImage }">
+					<input type="file" id="festivalImage" name="file" class="form-control btn-info" value= "${festival.festivalImage }" >
+					<%-- <input type = "hidden" class="form-control" id="festivalImage" name="festivalImage" value= "${festival.festivalImage }"> --%>
+				</div>
+				</c:if>
 							
 			
 		</div>	
 		
-	</div>
 				
 				<hr/>
 				
 				<div class="form-group">
 					<label for="addr" class="col-sm-offset-1 col-sm-3 control-label">개최장소</label>
 						<div class="col-md-4">
-							<input type="text" class="form-control" id="addr" name = "addr" placeholder="주소" value="${festival.addr }">
-							<input type="button" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
+							<input type="text" class="form-control" id="addr" readonly="readonly" name = "addr" placeholder="주소" value="${festival.addr }">
+							<input type="button" class="btn-info" role="button" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
 							<input type="hidden" class="form-control" id="festivalLongitude" name="festivalLatitude" value="${festival.festivalLatitude }">
 							<input type="hidden" class="form-control" id="festivalLatitude" name="festivalLongitude" value="${festival.festivalLongitude }">
 						</div>
@@ -333,7 +387,7 @@
 				<div class = "form-group">
 					<label for ="startDate" class="col-sm-offset-1 col-sm-3 control-label">축제시작일자</label>
 						<div class="col-md-4">
-							<input type = "text" class="form-control" id="startDate" name="startDate" value= "${festival.startDate }">
+							<input type = "text" class="form-control" readonly="readonly" id="startDate" name="startDate" placeholder="날짜를 선택해주세요." value= "${festival.startDate }">
 						</div>	
 				</div>
 				
@@ -343,7 +397,7 @@
 				<div class = "form-group">
 					<label for ="endDate" class="col-sm-offset-1 col-sm-3 control-label">축제종료일자</label>
 						<div class="col-md-4">
-							<input type = "text" class="form-control" id="endDate" name="endDate" value= "${festival.endDate }">
+							<input type = "text" class="form-control" readonly="readonly" id="endDate" name="endDate" placeholder="날짜를 선택해주세요." value= "${festival.endDate }">
 						</div>	
 					
 				</div>
@@ -463,8 +517,8 @@
 				
 			<div class="form-group">
 				<div class="col-sm-offset-4  col-sm-4 text-center">
-					<button type="button" class="btn btn-primary">등록</button>
-					<input type = "button" id = "back" name = "back" value = "취소"/>
+					<button type="button" class="btn btn-info">등록</button>
+					<input type = "button" class="btn btn-info" id = "back" name = "back" value = "취소"/>
 				</div>
 			</div>
 					
