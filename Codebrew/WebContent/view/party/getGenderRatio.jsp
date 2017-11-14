@@ -227,26 +227,44 @@
 					  preConfirm: function () {
 					    return new Promise(function (resolve) {
 					    	
-					    	$.postJSON = function(url, data, callback) {
-					    	    return jQuery.ajax({
-				                        url: '/userRest/json/updateCoconut/'+sessionId+'/1',
+					    	/* $.ajax({
+					    	  			url: '/userRest/json/updateCoconut/1',
 				                        method : "POST",
 				                        headers: { 
 				                            'Accept': 'application/json',
 				                            'Content-Type': 'application/json' 
 				                        },
+				                        data : {user : {}},
 				       				    dataType : "json",
 				                        
-				                        success: function(data){
+				                        success: function(JSONData){
+				                        	console.log(status);
+									 		console.log("JSONData : "+JSON.stringify(JSONData));
+				                        	
 				                        }
 				                    }
-				            )
-					    	}
-					     /*  $.getJSON('/userRest/json/updateCoconut/'+sessionId+'/1') */
+				            ).done(function (data) {
+					        	$("#ratioModal").modal('show');
+					            resolve()
+					        })  */
+					    	
+					    	$.ajax({
+					    		url: "/userRest/json/updateCoconut/"+sessionId+"/1",
+					    		method : "GET",
+					    		headers : {
+									"Accept" : "application/json",
+									"Content-Type" : "application/json"
+								},
+								dataType : "json" ,
+					    		success: function(JSONData){
+		                        	console.log(status);
+							 		console.log("JSONData : "+JSON.stringify(JSONData));
+								}
+					    		})
 					        .done(function (data) {
 					        	$("#ratioModal").modal('show');
 					            resolve()
-					        })
+					        }) 
 					    })
 					  }
 					}])

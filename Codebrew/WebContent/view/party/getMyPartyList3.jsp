@@ -166,7 +166,7 @@
 	}
 	
 	.gallery-item{
-	  box-shadow: 2px 2px 8px -1px #001b63;
+	  box-shadow: 2px 2px 8px -1px #00030c;
 	  width: 300px;
 	  height: 300px;
 	  margin: 10px;
@@ -199,7 +199,7 @@
 	  width: 100%;
 	  height: 90px;
 	  padding: .5rem .8rem;
-	  background: #002484;
+	  background: #726a6a;
 	  position: absolute;
 	  bottom:0;
 	  /* margin-bottom:10px; */
