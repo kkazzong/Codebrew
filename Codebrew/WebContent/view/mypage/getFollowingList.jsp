@@ -182,7 +182,7 @@
       <div class="modal-body">
         <form class="form-horizontal-1" enctype="multipart/form-data">
 		
-		
+	
 	
   <input type="hidden" value="${sessionScope.user.userId}" id="sessionId" name="sessionId">
  <input type="hidden" value="${user.userId}" id="userId" name="userId">  
@@ -191,15 +191,16 @@
     <div class="row profile">
        <div class="col-md-9">
 	          	<div class="profile-content"> -->
-					<div class="row">
+	         
+					<div class="row" id="userDiv">
 					<!-- 	<div> -->
 						<c:set var="i" value="0" />
 							<c:forEach var="follow" items="${list1}">
 								<c:set var="i" value="${ i+1 }" />
-								 <div class="col-xs-6 col-md-4">
-									<img class="img-circle" src="/resources/uploadFile/${follow.profileImage}" width="40" height="40"></div>
+								 <div class="col-xs-6 col-md-4" id="userImage">
+									<img class="img-circle" src="/resources/uploadFile/${follow.profileImage}" width="40" height="40"></div><br>
 									<input type="hidden" class="follow" name="follow" value="${follow.requestId }">
-										<div class="col-xs-6 col-md-4" title="클릭 이동">${follow.nickname}</div>
+										<div class="col-xs-6 col-md-4" id="userNick" title="클릭 이동">${follow.nickname}(${follow.requestId })</div><br>
 									<div class="col-xs-6 col-md-4">
 									<c:choose>
 										<c:when test="${ empty follow.nickname } ">
@@ -221,13 +222,14 @@
 									</c:choose>
 								</div>
 								<br>
-								<br>
-								<br>
+							   <br>
+							
+								
+								
 							</c:forEach>
-			               
-			           
+			              
 			               </div>
-			           
+			          
 	
 	
 		

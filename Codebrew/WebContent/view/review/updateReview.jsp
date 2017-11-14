@@ -10,7 +10,7 @@
 	<!-- 참조 : http://getbootstrap.com/css/   참조 -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	
-	<title>후기등록화면</title>
+	<title>후기수정</title>
 	
 	<!-- <link rel="stylesheet" href="/css/admin.css" type="text/css"> -->
 	
@@ -77,6 +77,16 @@
 		var reviewTitle = $("input[name='reviewTitle']").val();
 		var reviewDetail = $("textarea[name='reviewDetail']").val();
 		var reviewImageList = $("input[name='uploadReviewImageList']").val();
+		//var reviewImageList = $($("input:file[name='uploadReviewImageList']")[0]).val();
+		//var reviewImageList = [];
+		
+		/* $("input[name='uploadReviewImageList']").each(function(index, e) {
+			alert(index);	
+			reviewImageList.push($(this).attr("value"));
+			alert(reviewImageList);
+		});
+		
+		alert("reviewImageList :: "+reviewImageList); */
 		
 		if(reviewTitle == null || reviewTitle.length<1){
 			alert("후기제목은 반드시 입력하여야 합니다.");
@@ -143,6 +153,18 @@
 	// 이미지 정보를 담을 배열
 	var sel_files = [];
 	
+	var reviewImageSize = ${review.reviewImageList.size()}; //type int : 2
+	
+	console.log(reviewImageSize);
+	//console.log(sel_files);
+	
+	/////sel_files에다가 정보를 넣기/////
+	<c:forEach items="${review.reviewImageList}" var="list">
+		sel_files.push("../../resources/uploadFile/"+"${list.reviewImage}");
+	</c:forEach>
+	
+	console.log(sel_files);
+	
 	$(document).ready(function(){
 		$("#uploadReviewImageList").on("change", handleImgsFilesSelect);
 	});
@@ -171,7 +193,7 @@
 			
 			var reader = new FileReader();
 			reader.onload = function(e) {
-				var html = "<a href=\"javascript:void(0);\" onclick=\"deleteImageAction("+index+")\" id=\"img_id_"+index+"\"><img width='100px' height='100px' src=\"" + e.target.result + "\" data-file = '"+f.name+"' class='selProductFile' title='Click to remove'></a>";
+				var html = "<a href=\"javascript:void(0);\" onclick=\"deleteImageAction("+index+")\" id=\"img_id_"+index+"\"><img width='200px' height='200px' src=\"" + e.target.result + "\" data-file = '"+f.name+"' class='selProductFile' title='Click to remove'></a> ";
 				$(".imgs_wrap").append(html);
 				index++;
 				
@@ -180,7 +202,7 @@
 		});
 	}
 	
-	function deleteImageAction(index) {
+	/* function deleteImageAction(index) {
 		console.log("index : "+index);
 		sel_files.splice(index, 1); //테스트 이미지 몇개 들어가는지 계속해서 확인 요망
 
@@ -188,7 +210,7 @@
 		var img_id = "#img_id_"+index;
 		$(img_id).remove();
 		console.log(sel_files);
-	}
+	} */
 	
 	
 	</script>
@@ -288,14 +310,25 @@
 			<label for="reviewImageList" class="col-sm-offset-1 col-sm-3 control-label">후기사진</label>
 			<div class="col-sm-3">
 				<button type="button" class="btn btn-primary" onclick="document.getElementById('uploadReviewImageList').click(); ">사진 업로드</button>
-				<input type="file" class="form-control" id="uploadReviewImageList" accept="image/*" name="uploadReviewImageList" style="display:none;" multiple/>
+				<input type="file" class="form-control" id="uploadReviewImageList" accept="image/*" name="uploadReviewImageList" style="display:none;" value="${review.reviewImageList }" multiple/>
 			</div>
 		</div>
 		
 		<div class="form-group text-center">
 			<div class="imgs_wrap" align="center">
+				<c:if test="${empty review.reviewImageList }">
 				<small class="text-danger">사진은 반드시 1장 이상 업로드해야 합니다</small><br>
+				</c:if>
+				<c:if test="${!empty review.reviewImageList }">
+					<c:set var="i" value="0"/>
+					<c:forEach var="uploadReviewImageList" items="${review.reviewImageList }">
+						<c:set var="i" value="${i+1}"/>
+							<img src="../../resources/uploadFile/${review.reviewImageList[i-1].reviewImage }" id="img" width="200" height="200">
+					</c:forEach>
+				</c:if>
+				<!-- 
 				<small>이미지 미리보기</small>
+				 -->
 				<img id="img" align="middle"/>
 			</div>
 		</div>
@@ -315,6 +348,8 @@
 				<input type="file" class="form-control" id="uploadReviewVideoList" accept="video/*" name="uploadReviewVideoList" multiple/>			
 			</div>
 		</div>
+		<!-- updateVideo -->
+		
 		
 		<div class="form-group">
 			<label for="toBeHashtag" class="col-sm-offset-1 col-sm-3 control-label">해시태그를 입력</label>

@@ -148,25 +148,7 @@
 	                  -->
 	                 
 	             
-	             <!-- 가정추가부분 회원검색-->
-	              <form class="navbar-form navbar-left form-inline">
-	              	<input type="hidden" id="mainSearchCurrentPage" name="mainSearchCurrentPage" value=""/>
-						<select id="mainSearchSelect" name="mainSearchSelect" class="form-control">
-							<option value="1">회원</option>
-							<option value="2">축제</option>
-							<option value="3">파티</option>
-							<option value="4">후기</option>
-						</select>												        
-			        <div class="input-group">
-				          <input type="text" id="mainSearchKeyword" name="mainSearchKeyword" class="form-control" placeholder="검색어 입력">
-				          <span class="input-group-btn">
-						    	<button id="mainSearchButton" class="btn btn-info btn-block" type="button">
-						    		<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-						    	</button>
-						    </span>
-			        </div>
-			      </form>
-			      
+	             
 	             
 	             <ul class="nav navbar-nav navbar-right">
 	             	<c:if test="${!empty user}">
@@ -182,9 +164,8 @@
 			                    <!-- <li><a href="#">my파티</a></li> -->
 			                    <li><a href="#">my후기</a></li>
 			                    <li><a href="#">my티켓</a></li>
-			                     <li><a href="#">my채팅</a></li>
 			                    
-			                    <!-- <li><a href="#">회원검색</a></li> -->
+			                    <li><a href="#">회원검색</a></li>
 			                    
 			              </ul>
 			           </li>
@@ -258,51 +239,73 @@
    	
    	
    	<script type="text/javascript">
-   		
-   		var mainSearchSelect;
-		var mainSearchKeyword;
-		
-		function fncMainSearchAll(select, keyword) {
-			//alert("fnc콜")
-			var formHtml = '<form id="mainSearchForm">'
-					+'<input type="hidden" name="searchKeyword" value="'+keyword+'">'
-					+'<input type="hidden" name="searchCondition" value="'+select+'">'
-					+'</form>';
-			$("body").append(formHtml);
-			$("#mainSearchForm").attr("method", "POST").attr("action", "/search/getSearchList").submit();
-						
-		}
-   		
-   		///////////////////////////메인 검색 function/////////////////////////////////////
-   		$(function(){
-   			
-   			$("#mainSearchButton").on("click", function(){
-   				console.log("[[[툴바검색]]]"+$("#mainSearchSelect").val()+",,"+$("#mainSearchKeyword").val());
-   				mainSearchSelect = $("#mainSearchSelect").val();
-   				mainSearchKeyword = $("#mainSearchKeyword").val();
-   				fncMainSearchAll(mainSearchSelect, mainSearchKeyword);
-   			});
-   			
-   			$("#mainSearchKeyword").on("keydown", function(e){
-   				
-   				if(e.keyCode == '13') {
-   					if($(this).val() == '') {
-   						alert("검색어를 입력해주세요");
-   						e.preventDefault();
-   						return;
-   					} else {
-   						
-	   					//alert("엔터클릭");
-	   					mainSearchSelect = $("#mainSearchSelect").val();
-	   					mainSearchKeyword = $("#mainSearchKeyword").val();
-	   					fncMainSearchAll(mainSearchSelect, mainSearchKeyword);
-	   					e.preventDefault();
-   					}
-   				}
-   				
-   			})
-   			
-   		});
+   	
+   	/* 오토컴플릿 삽입 */
+   	
+   			///////////////////////////////////검색///////////////////////////////////////
+		/* $(function() {
+			
+				$("#searchKey").autocomplete({
+					source: function( request, response ) {
+				        $.ajax( {
+				          url: "/festivalRest/json/getKeyword",
+				          method : "POST",
+				          headers : {
+								"Accept" : "application/json",
+								"Content-Type" : "application/json"
+						  },
+				          dataType: "json",
+				          data: JSON.stringify({
+				        	currentPage : "1",
+					        searchKeyword : $("#searchKey").val(),
+					        searchCondition : ""
+				          }),
+				          success: function( JSONData ) {
+				            response($.map(JSONData, function(value, key){
+				            	console.log(value.festivalNo);
+				            	
+				            	var festivalNo = value.festivalNo;
+				            	
+				            	$("#fNo").val(festivalNo);
+				            	
+				            		return {
+				            			label :  value.festivalName,
+				            			value : value.festivalName
+				            		}
+					        	}));
+					          }
+				        });
+				    }
+				});
+			});
+   	
+
+		   $(function(){
+			   $("#sc").on("click",function(){
+					
+				   var festivalNo = $("#fNo").val();
+				   var searchKeyword = $("#searchKey").val();
+				   
+				   if(searchKeyword == null){
+						alert("축제명은 반드시 한 글자 이상 입력하셔야 합니다.");
+						return;
+					}
+				   
+				   self.location="/festival/getFestivalDB?festivalNo="+festivalNo;
+			   });
+		   });
+		   
+		   $(function(){
+				$("#searchKey").on('keydown',function(event){
+					
+					if(event.keyCode ==13){
+						event.preventDefault();
+						$( "#sc"  ).click();
+					}
+				});
+			
+			}); */
+   	
    	
 		
    		$(".dropdown").hover(function(){
@@ -398,16 +401,6 @@
 			
 			$("li > a:contains('판매통계')").bind('click', function(){
 				self.location = "/statistics/getStatistics";
-			});
-			
-		});
-  		
-	//////채팅관리//////
-		$(function(){
-			
-		
-			$("li > a:contains('my채팅')").bind('click', function(){
-				self.location = "/chat/getChattingList";
 			});
 			
 		});

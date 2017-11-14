@@ -27,6 +27,7 @@
         .card {
         	margin-top : 50px;
         }
+        
 	</style>
 	
 	<!-- jQuery UI toolTip 사용 CSS-->
@@ -41,6 +42,8 @@
 	<!-- Bootstrap Dropdown Hover JS -->
 	<script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
 	
+	<!-- card css -->
+	<link rel="stylesheet" href="/resources/css/card.css">
 	
 	<!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
@@ -197,14 +200,17 @@
    				<c:set var="i" value="${i+1}"/>
    				<div class="col-md-6">
    					<div class="card">
+   						<!-- my 후기목록 -->
    						<a href="#">
    							<input type="hidden" name="reviewNo" value="${review.reviewNo }">
    							<c:if test="${!empty review.reviewImageList }">
-   								<img width="100%" height="300" src="/resources/uploadFile/${review.reviewImageList[0].reviewImage}">
+   								<img width="100%" height="423" src="/resources/uploadFile/${review.reviewImageList[0].reviewImage}">
    							</c:if>
    						</a>
+   						
    						<div class="card-body">
-   							<h3 class="panel-title pull-left">${i}번 : ${review.festivalName } 
+   							<div class="col-md-12">
+   							${i}번 : ${review.festivalName } 
    								<c:if test = "${review.checkCode == '1' || review.checkCode == '11' }">
    								<span style="color:pink">
 									: 심사중
@@ -220,14 +226,13 @@
 									: 반려
 								</span>
 								</c:if>
-   							</h3>
    							<form name="deleteForm"> 
    								<input type="hidden" name="reviewNo" value="${review.reviewNo}"> <!-- post방식 이라 form으로 -->
    								<button id = "deleteReview" class="btn btn-default pull-right" type="button" value="${review.reviewNo }">
    									<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
    								</button>
    							</form>
-   							<hr>
+   							</div>
    							<div class="col-md-12">
    								<strong>
    									${review.festivalName }
@@ -253,6 +258,7 @@
    							</div>
    							<hr>
    						</div>
+   						
    					</div>
    				</div>
    			</c:forEach>

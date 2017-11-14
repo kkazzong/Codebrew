@@ -108,7 +108,7 @@
 	<select id="getUserList" parameterType="search" resultMap="userSelectMap">
 	SELECT *
 	FROM( SELECT inner_table.*, ROWNUM AS row_seq
-	FROM( SELECT user_id, user_name, nickname, phone, gender, age, coconut_count, user_reg_date
+	FROM( SELECT user_id, user_name, nickname, phone, gender, age, coconut_count, user_reg_date, profile_image
 	FROM users
 	<if test="searchCondition !=null">
 	<where>

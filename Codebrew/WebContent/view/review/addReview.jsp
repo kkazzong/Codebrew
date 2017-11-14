@@ -106,6 +106,8 @@
 		var reviewDetail = $("textarea[name='reviewDetail']").val();
 		var reviewImageList = $("input[name='uploadReviewImageList']").val();
 		
+		alert("reviewImageList :: "+reviewImageList);
+		
 		if(reviewTitle == null || reviewTitle.length<1){
 			alert("후기제목은 반드시 입력하여야 합니다.");
 			return;
@@ -365,7 +367,7 @@
 				<div class="form-group">
 					<label for="reviewTitle" class="col-md-3 control-label">후기제목</label>
 					<div class="col-md-6">
-						<input type="text" class="form-control" id="reviewTitle" name="reviewTitle"/>
+						<input type="text" class="form-control" id="reviewTitle" name="reviewTitle" maxlength="90"/>
 					</div>
 				</div>
 				

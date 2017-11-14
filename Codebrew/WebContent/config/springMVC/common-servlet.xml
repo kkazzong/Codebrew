@@ -47,6 +47,7 @@
 			<mvc:mapping path="/userRest/**"/>
 			<mvc:mapping path="/statistics/**"/>
 			<mvc:mapping path="/chat/getChattingList"/>
+			<mvc:mapping path="/myPage/getMyPage"/>
 			<!-- 로그인안한 회원이어도 접근 가능 -->
 			<mvc:exclude-mapping path="/user/kakaoLogin"/>
 			<mvc:exclude-mapping path="/festival/getFestivalDB"/>

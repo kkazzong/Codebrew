@@ -41,6 +41,8 @@
 	<!-- Bootstrap Dropdown Hover JS -->
 	<script src="/resources/javascript/bootstrap-dropdownhover.min.js"></script>
 	
+	<!-- card css -->
+	<link rel="stylesheet" href="/resources/css/card.css">
 	
 	<!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
@@ -200,18 +202,19 @@
    								<img width="100%" height="423" src="/resources/uploadFile/${review.reviewImageList[0].reviewImage}">
    							</c:if>
    						</a>
-   							<form name="checkForm">
-								<input type="hidden" name="reviewNo" value="${review.reviewNo}"> <!-- post........ -->
-   								<c:if test = "${sessionScope.user.role == 'a' }">
-   								<button id = "fail" class="btn btn-danger pull-right" type="button" value="${review.reviewNo }">
-   									<span class="glyphicon glyphicon-remove-circle" aria-hidden="true" style="color:whitesmoke"></span>
-   								</button>
-   								<button id = "pass" class="btn btn-success pull-right" type="button" value="${review.reviewNo }">
-   									<span class="glyphicon glyphicon-ok-circle" aria-hidden="true" style="color:whitesmoke"></span>
-   								</button>
-   								</c:if>
-   							</form>
-   							
+					
+						<form name="checkForm">
+						<input type="hidden" name="reviewNo" value="${review.reviewNo}"> <!-- post........ -->
+							<c:if test = "${sessionScope.user.role == 'a' }">
+							<button id = "fail" class="btn btn-danger pull-right" type="button" value="${review.reviewNo }">
+								<span class="glyphicon glyphicon-remove-circle" aria-hidden="true" style="color:whitesmoke"></span>
+							</button>
+							<button id = "pass" class="btn btn-success pull-right" type="button" value="${review.reviewNo }">
+								<span class="glyphicon glyphicon-ok-circle" aria-hidden="true" style="color:whitesmoke"></span>
+							</button>
+							</c:if>
+						</form>
+						
    						<div class="card-body">
    							<div class="col-md-12">
    								<strong>

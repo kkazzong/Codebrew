@@ -311,50 +311,6 @@
 .nopaddingbtm {
 	margin-bottom: 0
 }
-/*==============================*/
-/*====== Recently connected  heading =====*/
-/*==============================*/
-/* .memberblock {
-	width: 100%;
-	float: left;
-	clear: both;
-	margin-bottom: 15px
-}
-.member {
-	width: 24%;
-	float: left;
-	margin: 2px 1% 2px 0;
-	background: #ffffff;
-	border: 1px solid #d8d0c3;
-	padding: 3px;
-	position: relative;
-	overflow: hidden
-}
-.memmbername {
-	position: absolute;
-	bottom: -30px;
-	background: rgba(0, 0, 0, 0.8);
-	color: #ffffff;
-	line-height: 30px;
-	padding: 0 5px;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	overflow: hidden;
-	width: 100%;
-	font-size: 11px;
-	transition: 0.5s ease all;
-}
-.member:hover .memmbername {
-	bottom: 0
-}
-.member img {
-	width: 100%;
-	transition: 0.5s ease all;
-}
-.member:hover img {
-	opacity: 0.8;
-	transform: scale(1.2)
-}
 
 .panel-default>.panel-heading {
     color: #607D8B;
@@ -363,7 +319,7 @@
     font-size: 15px;
     border-radius: 0;
     border-color: #e1eaef;
-} */
+} 
 
 
 /*  
@@ -378,28 +334,28 @@
     position: center;
 }  */
 
-.btn-sm{
+.followbtn{
   
 	float: right;
 	margin: 22px;
+	margin-bottom: 15px;
 	
-	width: 100px;
-    height: 100px;
-    padding: 10px 3;
-    text-size:50px;
+	width: 200px;
+    height: 50px;
+  
+    font-size:300px;
+  }
 
- }
 
-
- .btn-info{
+/*  .btn-info{
    
 	float: right;
 	margin: 22px;
+	margin-bottom: 15px;
 	
-    width: 100px;
-    height: 100px;
- 
- }
+	width: 200px;
+    height: 50px; 
+  } */
  
  
  
@@ -661,11 +617,11 @@
 							 <c:when test="${empty follow.requestId }">
 								
 								 <!--나(sessionId) 이사람 requestId면 (팔로잉 목록에 없다면)-->
-									<button type="button" class="btn btn-sm" id="profileFollow" >Follow</button>			
+									<button type="button" class="btn btn-sm followbtn" id="profileFollow" style="font-size:20px">Follow</button>			
 								</c:when>
 							     <c:otherwise>
 							      <!--나(sessionId) 이사람 requestId면 (팔로잉 목록에 있다면)-->
-								     <button type="button" class="btn btn-info" id="profileFollowing">Following</button>
+								     <button type="button" class="btn btn-info followbtn" id="profileFollowing" style="font-size:20px">Following</button>
 							     </c:otherwise>
 						</c:choose>
 					</c:if> 
