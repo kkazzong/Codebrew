@@ -284,7 +284,7 @@ body {
 				  	<div id="map" style="width:200;height:350px;"></div>
 						<p>
 							<!-- <button onclick="setCenter()" class="btn btn-primary" >지도 중심좌표 이동시키기</button> --> 
-							<button onclick="panTo()" class="btn btn-primary" >축제장소로 이동</button>
+							<button onclick="panTo()" class="btn btn-info" >축제장소로 이동</button>
 						</p>
 					</div>
 			  	</div>
@@ -565,7 +565,7 @@ body {
 				<c:if test="${ticket==null }">
 				
 					<c:if test="${festival.isNull==true }">
-						<button type="button" class="btn btn-primary vertical-align-middle">재등록</button>
+						<button type="button" class="btn btn-info vertical-align-middle">재등록</button>
 					</c:if>
 					
 				</c:if>
@@ -573,18 +573,18 @@ body {
 			<c:if test="${ticket==null }">
 			
 				<c:if test="${festival.isNull==false }">
-					<button type="button" class="btn btn-primary vertical-align-middle">등록하기</button>
+					<button type="button" class="btn btn-info vertical-align-middle">등록하기</button>
 				</c:if>
 				
 			</c:if>
 			
 			<c:if test="${ticket!=null }">
 			
-				<button type="button" class="btn btn-primary vertical-align-middle">수정하기</button>
-				<button type="button" class="btn btn-primary vertical-align-middle">삭제하기</button>
+				<button type="button" class="btn btn-info vertical-align-middle">수정하기</button>
+				<button type="button" class="btn btn-info vertical-align-middle">삭제하기</button>
 			</c:if>
 			
-				<button type="button" class="btn btn-primary vertical-align-middle" id = "back" name = "back">뒤로</button>
+				<button type="button" class="btn btn-info vertical-align-middle" id = "back" name = "back">뒤로</button>
 				
 			</c:if>
 		</div>
@@ -605,7 +605,6 @@ body {
 			</div>
 		</div>
 		
-	<button class="btn btn-default btn-lg" data-toggle="modal" data-target=".bs-example-modal-sm" type="button">버튼</button>
 		
 	
 			

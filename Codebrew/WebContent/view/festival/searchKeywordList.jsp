@@ -250,7 +250,7 @@ $(function(){
 				    			 value="${! empty search.searchKeyword ? search.searchKeyword : '' }"  >
 				  </div>
 
-		<button type="button" class="btn btn-default" id="APISearch">검색</button>
+		<button type="button" class="btn btn-info btn-block" id="APISearch">검색</button>
 		
 		<br/>
 		<br/>
