@@ -257,22 +257,49 @@
    	
    	
    	<script type="text/javascript">
-   	
-   	
+   		
+   		var mainSearchSelect;
+		var mainSearchKeyword;
+		
+		function fncMainSearchAll(select, keyword) {
+			//alert("fnc콜")
+			var formHtml = '<form id="mainSearchForm">'
+					+'<input type="hidden" name="searchKeyword" value="'+keyword+'">'
+					+'<input type="hidden" name="searchCondition" value="'+select+'">'
+					+'</form>';
+			$("body").append(formHtml);
+			$("#mainSearchForm").attr("method", "POST").attr("action", "/search/getSearchList").submit();
+						
+		}
+   		
    		///////////////////////////메인 검색 function/////////////////////////////////////
    		$(function(){
    			
    			$("#mainSearchButton").on("click", function(){
    				console.log("[[[툴바검색]]]"+$("#mainSearchSelect").val()+",,"+$("#mainSearchKeyword").val());
-   				var select = $("#mainSearchSelect").val();
-   				var keyword = $("#mainSearchKeyword").val();
-   				var formHtml = '<form id="mainSearchForm">'
-   										+'<input type="hidden" name="searchKeyword" value="'+keyword+'">'
-   										+'<input type="hidden" name="searchCondition" value="'+select+'">'
-   										+'</form>';
-   				$("body").append(formHtml);
-   				$("#mainSearchForm").attr("method", "POST").attr("action", "/search/getSearchList").submit();
+   				mainSearchSelect = $("#mainSearchSelect").val();
+   				mainSearchKeyword = $("#mainSearchKeyword").val();
+   				fncMainSearchAll(mainSearchSelect, mainSearchKeyword);
    			});
+   			
+   			$("#mainSearchKeyword").on("keydown", function(e){
+   				
+   				if(e.keyCode == '13') {
+   					if($(this).val() == '') {
+   						alert("검색어를 입력해주세요");
+   						e.preventDefault();
+   						return;
+   					} else {
+   						
+	   					//alert("엔터클릭");
+	   					mainSearchSelect = $("#mainSearchSelect").val();
+	   					mainSearchKeyword = $("#mainSearchKeyword").val();
+	   					fncMainSearchAll(mainSearchSelect, mainSearchKeyword);
+	   					e.preventDefault();
+   					}
+   				}
+   				
+   			})
    			
    		});
    	
