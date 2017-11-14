@@ -294,7 +294,7 @@ public class FestivalController {
 
 		if (file.getSize() > 0) {
 
-			System.out.println("size=0 으로 들어옴!! ");
+			System.out.println("size>0 으로 들어옴!! ");
 
 			File UploadedFile = new File(fileRoot, file.getOriginalFilename());
 
@@ -306,7 +306,7 @@ public class FestivalController {
 
 			System.out.println("writeFestival: " + festival);
 
-			modelAndView.setViewName("forward:/view/festival/getFestival.jsp");
+			modelAndView.setViewName("forward:/view/festival/getFestivalListDB?menu=db");
 			modelAndView.addObject(festival);
 
 		} else {
@@ -317,7 +317,7 @@ public class FestivalController {
 			festivalService.writeFestival(festival);
 			System.out.println("writeFestival: " + festival);
 
-			modelAndView.setViewName("forward:/view/festival/getFestival.jsp");
+			modelAndView.setViewName("forward:/view/festival/getFestivalListDB?menu=db");
 			modelAndView.addObject(festival);
 
 		}

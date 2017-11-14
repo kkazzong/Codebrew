@@ -371,7 +371,7 @@ function fncGetSigunguCode(areaCode){
 				    			 value="${! empty search.searchKeyword ? search.searchKeyword : '' }"  >
 				  </div>
 
-		<button type="button" class="btn btn-default btn-block" id="DBSearch">검색</button>
+		<button type="button" class="btn btn-info btn-block" id="DBSearch">검색</button>
 		
 		<div class="row">
 			<div class="col-md-12">
