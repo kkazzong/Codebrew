@@ -149,6 +149,20 @@ public class ReviewRestController {
 		}
 	}
 	
+	//이미 내가 '좋아요'를 눌렀는지 안눌렀는지 확인하기 위한 ajax method를 위한 rest
+	@RequestMapping(value = "/json/getGood/{userId}/{reviewNo}")
+	public Good getGood(@PathVariable("userId") String userId, 
+						@PathVariable("reviewNo") int reviewNo)
+						throws Exception {
+		
+		System.out.println("Review RestController :: getGood");
+		System.out.println("\n\nreviewNo :: \n"+reviewNo);
+		System.out.println("\n\nuserId :: \n"+userId);
+		
+		return reviewService.getGood(userId, reviewNo);
+		
+	}
+	
 	//
 	@RequestMapping(value="/json/getTransportListAtStation/{x}/{y}/{radius}")
 	public Map<String, Object> getTransportListAtStation(@PathVariable("x") double x, 

@@ -74,9 +74,9 @@
         	margin-top: -50px;
         }
         
-        .btn-reply {
+        /* .btn-reply {
         	height: 25px;
-        }
+        } */
         
         
 	</style>
@@ -417,6 +417,7 @@
 	}
 	google.maps.event.addDomListener(window, 'load', initialize);
 	
+	
 	//Event 걸어주기
 	$(function() {
 		
@@ -523,13 +524,16 @@
 										text: "'좋아요'가 추가되었습니다.", 
 										type: "success", 
 									});
+									$("#forGetGoodLocation").html("<small>이미'좋아요'했는데~~~</small>");
+									$("#goodCountForGoogleMap").html(JSONData.goodCount);
 								}else{
 									swal({
 										text: "'좋아요'가 취소되었습니다.", 
 										type: "error", 
 									});
+									$("#forGetGoodLocation").html("");
+									$("#goodCountForGoogleMap").html(JSONData.goodCount);
 								}
-								$("#goodCountForGoogleMap").html(JSONData.goodCount);
 							}
 						}		
 				)
@@ -589,7 +593,7 @@
    								}
    								
    								if(JSONData.busNoList.length == 0 && JSONData.subwayList.length == 0){
-   									$("#transportListAtStation").html("반경 "+defaultRadius+"m내에 관련 대중교통 정보가 없습니다.");
+   									$("#transportListAtStation").html("반경 "+radiusForTransportSearchAgain+"m내에 관련 대중교통 정보가 없습니다.");
    								}
    								
    								
@@ -599,6 +603,35 @@
 			})
 			
 		});
+	 
+	});
+	
+	
+	//내가 좋아요를 이미 눌렀는지 안눌렀는지...확인
+	$(document).ready(function(){
+		
+		var tempUserIdForReadyFunc = "${sessionScope.user.userId}";
+		
+		if((tempUserIdForReadyFunc != "") && (tempUserIdForReadyFunc != null)){
+			
+			$.ajax(
+					{
+						url : "/reviewRest/json/getGood/${sessionScope.user.userId}/${review.reviewNo}", 
+						method : "GET", 
+						dataType : "json", 
+						headers : {
+							"Accept" : "application/json", 
+							"Content-Type" : "application/json"
+						}, 
+						success : function(JSONData, status){
+							
+							if(tempUserIdForReadyFunc == JSONData.userId){
+								$("#forGetGoodLocation").html("<small>이미'좋아요'했는데~~~</small>");
+							}
+						}
+					}
+				)
+		}
 	 
 	});
 	
@@ -794,19 +827,16 @@
 						</div>
 						<div class="col-md-12 text-center">
 							<span class="glyphicon glyphicon-dashboard" aria-hidden="true"> 축제평점</span>
-							<%-- 
-							<span id="reviewFestivalRatingForGoogleMap">${review.reviewFestivalRating } / 5
-							
-							</span>
-							--%>
-							<hr>
 						</div>
+						<hr>
 						<div class="col-md-12 text-middle">
 							<input type="number" id="reviewFestivalRating" class="rating" name="reviewFestivalRating" value="${review.reviewFestivalRating }" data-min="0" data-max="5" data-step="1" data-size="xs" data-rtl="true" readonly>
 							<hr>
 						</div>
 						<hr>
 						<div class="col-md-12">
+							<span id="forGetGoodLocation"></span>
+							<br>
 							<span class="glyphicon glyphicon-heart-empty" aria-hidden="true"> 좋아요 : </span>
 							<span id="goodCountForGoogleMap">${review.goodCount }</span>
 							<c:if test="${!empty sessionScope.user }">
@@ -945,24 +975,26 @@
 							<!-- 댓글입력 폼 -->
 							<!-- 댓글입력 form Start : 로그인한 사람만 댓글등록가능-->
 							<form class="form-horizontal" method="post" name="detailForm">
-								<div class="form-group">
-									<input type="hidden" id="reviewNo" name="reviewNo" value="${review.reviewNo }"/>
-									<input type="hidden" id="userId" name="userId" value="${sessionScope.user.userId }"/>
-									<!-- 
-									<label for="replyDetail" class="col-sm-offset-1 col-sm-3 control-label">댓글내용</label>
-									 -->
-									<c:if test="${user.userId != null }">
-									<div class="col-md-10">
-										<textarea class="form-control" id="replyDetail" name="replyDetail" placeholder='댓글을 등록해 주세요'></textarea>
-									</div>
-									</c:if>
-									<c:if test="${user.userId == null }">
-									<div class="col-md-10">
-										<textarea class="form-control" id="cannotUse" name="cannotUse" placeholder='로그인 후 댓글기능을 이용하세요'></textarea>
-									</div>
-									</c:if>
-									<div class="col-md-2">
-										<button type="button" class="btn btn-primary pull pull-left" <c:if test="${user.userId ==null}">disabled="disabled"</c:if> id="addReply">댓글등록</button>
+								<div class="col-md-12">
+									<div class="form-group pull-right">
+										<input type="hidden" id="reviewNo" name="reviewNo" value="${review.reviewNo }"/>
+										<input type="hidden" id="userId" name="userId" value="${sessionScope.user.userId }"/>
+										<!-- 
+										<label for="replyDetail" class="col-sm-offset-1 col-sm-3 control-label">댓글내용</label>
+										 -->
+										<c:if test="${user.userId != null }">
+										<div class="col-md-10 pull-left">
+											<textarea class="form-control" id="replyDetail" name="replyDetail" placeholder='댓글을 등록해 주세요' style="margin: 0px -10px 0px 0px; width: 450px; height: 80px;"></textarea>
+										</div>
+										</c:if>
+										<c:if test="${user.userId == null }">
+										<div class="col-md-10 pull-left">
+											<textarea class="form-control" id="cannotUse" name="cannotUse" placeholder='로그인 후 댓글기능을 이용하세요'></textarea>
+										</div>
+										</c:if>
+										<div class="col-md-2">
+											<button type="button" class="btn btn-primary pull pull-left" <c:if test="${user.userId ==null}">disabled="disabled"</c:if> id="addReply">댓글등록</button>
+										</div>
 									</div>
 								</div>
 							</form>
@@ -1000,40 +1032,44 @@
 									</div>
 									<div class="input-group col-md-12">
 										<div class="col-md-12">
-											<div class="pull-left">
+											<div class="col-md-9">
 												<small>
 													<span class="glyphicon glyphicon-time" aria-hidden="true" id="replyRegDate${replyList.replyNo }">
 														${replyList.replyRegDate }
 													</span>
 												</small>
 											</div>
-											<div class="pull-right">
-											<small>
-											<c:if test="${!empty sessionScope.user}" >
-												<c:if test="${sessionScope.user.role == 'a' || sessionScope.user.userId == replyList.userId }">
-													<div class="input-group-btn col-md-12">
-											   			<button type="button" name="buttonForUpdate" id="updateReply${replyList.replyNo }" class="btn btn-secondary btn-sm btn-info btn-reply" value="${replyList.replyNo }" style="display:inline">
-											   				수정
-											   			</button>
-											   			<button type="button" name="buttonForCompUpdate" id="updateCompReply${replyList.replyNo }" class="btn btn-secondary btn-sm btn-info btn-reply" value="${replyList.replyNo }" style="display:none">
-											   				완료
-											   			</button>
-										   				<button type="button" name="buttonForDelete" id="deleteReply${replyList.replyNo }" class="btn btn-secondary btn-sm btn-warning btn-reply" value="${replyList.replyNo }">
-										   					삭제
-										   				</button>
-													</div>
-										   		</c:if>
-										   	</c:if>
-											<c:if test="${!empty sessionScope.user }">
-												<c:if test="${!(sessionScope.user.role == 'a' || sessionScope.user.userId == replyList.userId) }">
-													<div class="input-group-btn col-md-12">
-														<button type="button" name="replyNoForReport" id="willBeReported" class="btn btn-secondary btn-sm btn-danger btn-reply">
-											   				신고
-											   			</button>
-													</div>
+											<div class="col-md-3">
+												<small>
+												<c:if test="${!empty sessionScope.user }">
+													<c:if test="${!(sessionScope.user.role == 'a' || sessionScope.user.nickname == replyList.userId) }">
+														<div class="col-offset-10 col-md-2">
+															<div class="input-group-btn">
+																<button type="button" name="replyNoForReport" id="willBeReported" class="btn btn-secondary btn-sm btn-danger btn-reply">
+													   				신고
+													   			</button>
+															</div>
+														</div>
+													</c:if>
 												</c:if>
-											</c:if>
-											</small>
+												<c:if test="${!empty sessionScope.user}" >
+													<c:if test="${sessionScope.user.role == 'a' || sessionScope.user.nickname == replyList.userId }">
+														<div class="col-md-12">
+															<div class="input-group-btn">
+													   			<button type="button" name="buttonForUpdate" id="updateReply${replyList.replyNo }" class="btn btn-secondary btn-sm btn-info btn-reply" value="${replyList.replyNo }" style="display:inline">
+													   				수정
+													   			</button>
+													   			<button type="button" name="buttonForCompUpdate" id="updateCompReply${replyList.replyNo }" class="btn btn-secondary btn-sm btn-info btn-reply" value="${replyList.replyNo }" style="display:none">
+													   				완료
+													   			</button>
+												   				<button type="button" name="buttonForDelete" id="deleteReply${replyList.replyNo }" class="btn btn-secondary btn-sm btn-warning btn-reply" value="${replyList.replyNo }">
+												   					삭제
+												   				</button>
+															</div>
+														</div>
+											   		</c:if>
+											   	</c:if>
+												</small>
 											</div>
 										</div>
 									</div>

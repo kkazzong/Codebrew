@@ -187,6 +187,11 @@ public class ReviewServiceImpl implements ReviewService {
 		return reviewDAO.checkGood(good);
 	}
 	
+	@Override //12-1
+	public Good getGood(String userId, int reviewNo) throws Exception {
+		return reviewDAO.getGood(userId, reviewNo);
+	}
+	
 	@Override //13 만약에 10, 11되면 필요없음 안되면 rest controller에서 수정 : 둘다 됨 혹시 몰라서 남겨둠.
 	public void updateReviewGoodCount(Good good) throws Exception {
 		reviewDAO.updateReviewGoodCount(good);
