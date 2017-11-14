@@ -71,6 +71,9 @@ public class ReviewController {
 	@Value("#{commonProperties['pageSize']}")
 	int pageSize;
 	
+	@Value("#{imageRepositoryProperties['reviewUploadFilesDir']}")
+	String reviewUploadFilesDir;
+	
 	public static class TIME_MAXIMUM{
 		public static final int SEC = 60;
         public static final int MIN = 60;
@@ -105,7 +108,7 @@ public class ReviewController {
 		/*
 		 * upload Image List List<multipartFile> : view에서 javaScript로 사진을 무조건 1장이상 올리게 했기 때문에 조건절 간단하게 써줌
 		 */
-		String filePath1 = "C:\\Users\\Admin\\git\\Codebrew\\Codebrew\\WebContent\\resources\\uploadFile\\"; // 실제 directory 경로로 파일을 영구적으로 저장하기 위함이다. 관리가 되는 폴더
+		String filePath1 = reviewUploadFilesDir; // 실제 directory 경로로 파일을 영구적으로 저장하기 위함이다. 관리가 되는 폴더(commonProperties로 관리한다)
 		String filePath2 = session.getServletContext().getRealPath("/")+"\\resources\\uploadFile\\"; //실제 folder가 아닌 tomcat의 임시 서버로서 add후 바로 get을 했을때 이미지를 볼 수 있도록 한다.
 		
 		System.out.println("\n\n\nfilePath :: \n"+filePath2);
@@ -158,7 +161,7 @@ public class ReviewController {
 			List<Video> uploadVideoList = new ArrayList<Video>();
 			for(MultipartFile multipartFile : uploadReviewVideo){
 				Video eachVideo = new Video();
-				String fileName = UUID.randomUUID().toString()+System.currentTimeMillis()+multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."), multipartFile.getOriginalFilename().length());
+				String fileName = "review"+UUID.randomUUID().toString()+System.currentTimeMillis()+multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."), multipartFile.getOriginalFilename().length());
 				eachVideo.setReviewVideo(fileName); //각각의 이미지 fileName을 setting
 				
 				uploadVideoList.add(eachVideo); //생성한 list에 setting이 끝난 각각의 video 객체를 넣어줌
@@ -238,8 +241,17 @@ public class ReviewController {
 		
 		long presentTime = System.currentTimeMillis();
 		
-		//test
+		String replyUserId;
+		User replyUser;
+		String eachUserNickname;
+		
+		//id가 아닌 nickname 노출, 정확한 날짜가 아닌 대략적인 날짜 노출
 		for(int i = 0; i < replyList.size(); i++){
+			
+			replyUserId = replyList.get(i).getUserId();
+			replyUser = userService.getUser(replyUserId);
+			eachUserNickname = replyUser.getNickname();
+			replyList.get(i).setUserId(eachUserNickname);
 			
 			System.out.println("\nreplyList.get(i).getReplyRegDate() :: \n"+replyList.get(i).getReplyRegDate());
 			Date eachReplyRegDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").parse(replyList.get(i).getReplyRegDate());
@@ -293,7 +305,7 @@ public class ReviewController {
 		review.setReviewDetail(reviewDetail);
 		/////////// 디비 입출력시 엔터처리 ////////////////
 		
-		Festival festival = festivalService.getFestival(review.getFestivalNo());
+		Festival festival = festivalService.getFestivalDB(review.getFestivalNo());
 		
 		// Model 과 View 연결
 		ModelAndView modelAndView = new ModelAndView();
@@ -313,7 +325,7 @@ public class ReviewController {
 		
 		System.out.println("updateReview processing...");
 		
-		String filePath1 = "C:\\Users\\Admin\\git\\Codebrew\\Codebrew\\WebContent\\resources\\uploadFile\\"; // 실제 directory 경로로 파일을 영구적으로 저장하기 위함이다.
+		String filePath1 = reviewUploadFilesDir; // 실제 directory 경로로 파일을 영구적으로 저장하기 위함이다.
 		String filePath2 = session.getServletContext().getRealPath("/")+"\\resources\\uploadFile\\"; //실제 folder가 아닌 tomcat의 임시 서버로서 add후 바로 get을 했을때 이미지를 볼 수 있도록 한다.
 		
 		System.out.println("\n\n\nfilePath :: \n"+filePath2);
@@ -321,9 +333,12 @@ public class ReviewController {
 		if(uploadReviewImage != null && uploadReviewImage.size() > 0){
 			
 			List<Image> uploadImageList = new ArrayList<Image>();
+			
 			for(MultipartFile multipartFile : uploadReviewImage){
+				
 				Image eachImage = new Image();
-				String fileName = UUID.randomUUID().toString()+System.currentTimeMillis()+multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."), multipartFile.getOriginalFilename().length());
+				
+				String fileName = "review"+UUID.randomUUID().toString()+System.currentTimeMillis()+multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."), multipartFile.getOriginalFilename().length());
 				eachImage.setReviewImage(fileName); //각각의 이미지 fileName을 setting
 				
 				uploadImageList.add(eachImage); //생성한 list에 setting이 끝난 각각의 Image 객체를 넣어줌
@@ -332,7 +347,7 @@ public class ReviewController {
 				File file2 = new File(filePath2+fileName); // 2nd Path : Tomcat의 temporary folder 경로+fileName
 				//File file2 = new File(filePath2, fileName);
 				
-				System.out.println("\n\n\n\n\nmultipartFile :: Image :: "+multipartFile+"\n\n\n\n\n");
+				System.out.println("\n\n\nmultipartFile :: Image :: \n"+multipartFile+"\n\n\n\n\n");
 				multipartFile.transferTo(file2);
 				
 				FileInputStream fis = null;
@@ -366,7 +381,7 @@ public class ReviewController {
 			List<Video> uploadVideoList = new ArrayList<Video>();
 			for(MultipartFile multipartFile : uploadReviewVideo){
 				Video eachVideo = new Video();
-				String fileName = UUID.randomUUID().toString()+System.currentTimeMillis()+multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."), multipartFile.getOriginalFilename().length());
+				String fileName = "review"+UUID.randomUUID().toString()+System.currentTimeMillis()+multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."), multipartFile.getOriginalFilename().length());
 				eachVideo.setReviewVideo(fileName); //각각의 이미지 fileName을 setting
 				
 				uploadVideoList.add(eachVideo); //생성한 list에 setting이 끝난 각각의 video 객체를 넣어줌
