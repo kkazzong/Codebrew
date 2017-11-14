@@ -70,55 +70,25 @@
 										$("form.form-horizontal-1").append(partyMemberList); 
 										console.log(partyMemberList);
 										
-										/* 파티 멤버 리스트 보기 버튼 */
-										if(sessionId !=""){
-											
 										
-											/* 파티에 참여하지 않은 경우 */
-											$("#memberLock").on("click", function(){
-												
-												if("${party.festival.festivalNo}" != ""){
-													/* 애프터 파티 */
-													console.log("애프터 파티 참여 후 이용 가능한 서비스 실행");
-													swal({
-														  title: '파티 참여 후 이용 가능한 서비스에요!',
-														  text: "애프터 파티에 참여하시겠습니까?",
-														  type: 'info',
-														  showCancelButton: true,
-														  confirmButtonColor: '#9adbf9',
-														  cancelButtonColor: '#b5bcbf',
-														  confirmButtonText: '네!',
-														  cancelButtonText: '아니오' 
-														})
-														/* .then(function () {
-														  	'Welcome!',
-														    '애프터 파티에 참여하셨습니다.',
-														    'success'
-														    
-														}) */
-														.then(function () {
-															self.location = '/party/joinParty?partyNo=${party.partyNo}'
-														})
-								  				}else{
-								  					/*파티 */	
-								  					console.log("파티 참여 후 이용 가능한 서비스 실행");
-								  					swal({
-														  title: '파티 참여 후 이용 가능한 서비스에요!',
-														  text: "파티에 참여하시겠습니까?",
-														  type: 'info',
-														  showCancelButton: true,
-														  confirmButtonColor: '#9adbf9',
-														  cancelButtonColor: '#b5bcbf',
-														  confirmButtonText: '네!',
-														  cancelButtonText: '아니오' 
-														}).then(function () {
-														  
-															self.location = '/purchase/addPurchase?partyNo=${party.partyNo}'
-														 
-														})
-								  				}
-											});
-											
+							  		}
+						  }
+						});
+					
+			
+				$.ajax(
+						{ url : "/partyRest/json/getPartyMemberList/${party.partyNo}",
+						  method : "GET",
+						  dataType : "json",
+						  success : function(JSONData, status){
+							  		console.log(status);
+							 		console.log("JSONData : "+JSON.stringify(JSONData));
+							  		
+							  		for(i=0 ; i<JSONData.list.length ; i++){
+							  			console.log("for문 안");
+							  			
+							  			/* 파티 멤버 리스트 보기 버튼 */
+										if(sessionId !=""){
 											if (sessionId == JSONData.list[i].user.userId){
 												/* 파티에 참여한 경우 */
 												console.log("if문 안 파티 멤버 리스트 보기 실행");
@@ -134,6 +104,53 @@
 											    
 											    return;
 											    
+											}else{
+												
+												/* 파티에 참여하지 않은 경우 */
+												$("#memberLock").on("click", function(){
+													
+													if("${party.festival.festivalNo}" != ""){
+														/* 애프터 파티 */
+														console.log("애프터 파티 참여 후 이용 가능한 서비스 실행");
+														swal({
+															  title: '파티 참여 후 이용 가능한 서비스에요!',
+															  text: "애프터 파티에 참여하시겠습니까?",
+															  type: 'info',
+															  showCancelButton: true,
+															  confirmButtonColor: '#9adbf9',
+															  cancelButtonColor: '#b5bcbf',
+															  confirmButtonText: '네!',
+															  cancelButtonText: '아니오' 
+															})
+															/* .then(function () {
+															  	'Welcome!',
+															    '애프터 파티에 참여하셨습니다.',
+															    'success'
+															    
+															}) */
+															.then(function () {
+																self.location = '/party/joinParty?partyNo=${party.partyNo}'
+															})
+									  				}else{
+									  					/*파티 */	
+									  					console.log("파티 참여 후 이용 가능한 서비스 실행");
+									  					swal({
+															  title: '파티 참여 후 이용 가능한 서비스에요!',
+															  text: "파티에 참여하시겠습니까?",
+															  type: 'info',
+															  showCancelButton: true,
+															  confirmButtonColor: '#9adbf9',
+															  cancelButtonColor: '#b5bcbf',
+															  confirmButtonText: '네!',
+															  cancelButtonText: '아니오' 
+															}).then(function () {
+															  
+																self.location = '/purchase/addPurchase?partyNo=${party.partyNo}'
+															 
+															})
+									  				}
+												});
+												
 											}
 													
 										}else{
@@ -155,8 +172,7 @@
 							  		}
 						  }
 						});
-					
-			
+				
 				
 				$.ajax(
 						{ url : "/partyRest/json/getPartyMemberList/${party.partyNo}",

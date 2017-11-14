@@ -240,7 +240,7 @@ public class UserRestController {
 	*/
 	
 	//업데이트 코코넛	
-	@RequestMapping(value="json/updateCoconut/{flag}", method=RequestMethod.POST)
+	/*@RequestMapping(value="json/updateCoconut/{flag}", method=RequestMethod.POST)
 	public User updateCoconut(@PathVariable("flag") String flag,
 							  @RequestBody User user)throws Exception{
 		
@@ -249,8 +249,39 @@ public class UserRestController {
 		// 1이면 파티 ------ 수량까기
 		// 2이면 후기 ------ 수량더하기
 		
-		/*user=userService.getUser(user.getUserId());*/
+		user=userService.getUser(user.getUserId());
 		
+		int originCoconut=userService.getUser(user.getUserId()).getCoconutCount();
+		
+		int updateCoconut=user.getCoconutCount();
+		
+		if(flag.equals("1")) { //파티인경우
+			user.setCoconutCount(originCoconut+updateCoconut);
+		} else { //후기인경우
+			if(originCoconut >= updateCoconut) {
+				user.setCoconutCount(originCoconut-updateCoconut);
+			} else {
+				user.setCoconutCount(updateCoconut-originCoconut);
+			}
+		}
+		
+		userService.updateCoconut(user);
+		
+		return user;
+	}*/
+	
+	@RequestMapping(value="json/updateCoconut/{flag}", method=RequestMethod.POST)
+	public User updateCoconut(@PathVariable("flag") String flag,
+							  HttpSession session)throws Exception{
+		
+		System.out.println("/userRest/json/updateCoconut : POST");
+		System.out.println("flag->>>>>"+flag);
+		System.out.println("session->>>>>"+session);
+		// 1이면 파티 ------ 수량까기
+		// 2이면 후기 ------ 수량더하기
+		
+		/*user=userService.getUser(user.getUserId());*/
+		User user = (User)session.getAttribute("user");
 		int originCoconut=userService.getUser(user.getUserId()).getCoconutCount();
 		
 		int updateCoconut=user.getCoconutCount();
@@ -271,9 +302,7 @@ public class UserRestController {
 	}
 	
 	
-	
-	
-	@RequestMapping(value="json/updateCoconut/{userId}/{flag}", method=RequestMethod.GET)
+	/*@RequestMapping(value="json/updateCoconut/{userId}/{flag}", method=RequestMethod.GET)
 	public User updateCoconut(@PathVariable("userId") String userId,
 			@PathVariable("flag") String flag, @RequestBody User user)throws Exception{
 		
@@ -282,9 +311,36 @@ public class UserRestController {
 		// 1이면 파티 ------ 수량까기
 		// 2이면 후기 ------ 수량더하기
 		
-		/*user=userService.getUser(user.getUserId());*/
+		user=userService.getUser(user.getUserId());
 		
 		int originCoconut=userService.getUser(user.getUserId()).getCoconutCount();
+		
+	
+		
+		if(flag.equals("1")) { //파티인경우
+			user.setCoconutCount(originCoconut-partyCoconut);
+		} else { //후기인경우
+		   user.setCoconutCount(originCoconut+reviewCoconut);
+			
+		}
+		
+		userService.updateCoconut(user);
+		
+		return user;
+	}  */
+	
+	@RequestMapping(value="json/updateCoconut/{userId}/{flag}", method=RequestMethod.GET)
+	public User updateCoconut(@PathVariable("userId") String userId,
+			@PathVariable("flag") String flag)throws Exception{
+		
+		System.out.println("/userRest/json/updateCoconut : POST");
+		System.out.println("flag->>>>>"+flag);
+		// 1이면 파티 ------ 수량까기
+		// 2이면 후기 ------ 수량더하기
+		
+		/*user=userService.getUser(user.getUserId());*/
+		User user = userService.getUser(userId);
+		int originCoconut=user.getCoconutCount();
 		
 	
 		

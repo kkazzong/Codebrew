@@ -8,7 +8,7 @@
 		//============= "파티 비율 확인하기"  Event 처리 및  연결 =============
 		$(function(){
 			
-			$("#ratioModal").modal('hide');
+			//$("#ratioModal").modal('hide');
 			
 			console.log(">>> getGenderRatio.jsp 로딩.....");
 			
@@ -227,15 +227,14 @@
 					  preConfirm: function () {
 					    return new Promise(function (resolve) {
 					    	
-					    	/* $.ajax({
+					    	$.ajax({
 					    	  			url: '/userRest/json/updateCoconut/1',
 				                        method : "POST",
 				                        headers: { 
 				                            'Accept': 'application/json',
 				                            'Content-Type': 'application/json' 
 				                        },
-				                        data : {user : {}},
-				       				    dataType : "json",
+				                        dataType : "json",
 				                        
 				                        success: function(JSONData){
 				                        	console.log(status);
@@ -246,9 +245,9 @@
 				            ).done(function (data) {
 					        	$("#ratioModal").modal('show');
 					            resolve()
-					        })  */
+					        })
 					    	
-					    	$.ajax({
+					    	/* $.ajax({
 					    		url: "/userRest/json/updateCoconut/"+sessionId+"/1",
 					    		method : "GET",
 					    		headers : {
@@ -264,7 +263,7 @@
 					        .done(function (data) {
 					        	$("#ratioModal").modal('show');
 					            resolve()
-					        }) 
+					        }) */ 
 					    })
 					  }
 					}])
