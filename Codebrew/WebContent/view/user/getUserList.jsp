@@ -27,17 +27,12 @@
    <script src="/javascript/bootstrap-dropdownhover.min.js"></script>
    
    
-   <!-- jQuery UI toolTip 사용 CSS-->
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <!-- jQuery UI toolTip 사용 JS-->
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+   <!-- jQuery ui -->
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
 	
-	<!--  ///////////////////////// CSS ////////////////////////// -->
-	<style>
-	  body {
-            padding-top : 50px;
-        }
-    </style>
+	<link rel="stylesheet" href="/resources/css/badge.css">
+	
     
      <!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
@@ -72,7 +67,7 @@
 			});
 						
 			//==> userId LINK Event End User 에게 보일수 있도록 
-			$( "td:nth-child(2)" ).css("color" , "red");
+			//$( "td:nth-child(2)" ).css("color" , "red");
 			
 		});	
 		
@@ -124,6 +119,53 @@
 		});	
 	
 	</script>
+	
+	<style type="text/css">
+	
+		body {
+			font-family: "Helvetica Neue", Helvetica, Arial;
+		  font-size: 14px;
+		  line-height: 20px;
+		  font-weight: 400;
+		  color: #3b3b3b;
+		  padding-top : 70px;
+		  -webkit-font-smoothing: antialiased;
+		  font-smoothing: antialiased;
+		  background-color: #f2f4f6;
+	    }
+	    
+	     .text-info {
+	    	color: #333333; 
+	    }
+	    
+	    .page-header {
+	    	border-bottom : 1px solid #f2f4f6;
+	    }
+	    
+	    .table {
+	    	margin-top: 70px;
+	    }
+	    
+	    .table>thead>tr>th {
+	    	font-weight: 900;
+			color: #ffffff;
+			background: #ea6153;
+	    	text-align: center;
+	    }
+	    
+	    .table>tbody>tr>td {
+	    	font-size: 17px;
+	    }
+	    
+	    .thead-dark th{color:#fff;background-color:#212529;border-color:#32383e}
+	    /* div {
+			border : 3px solid #D6CDB7;
+			margin0top : 10px;
+		} */
+	
+	</style>
+	
+	
 	
 </head>
 
@@ -212,14 +254,25 @@
 			<c:set var="i" value="${ i+1 }" />
 			<tr>
 			  <td align="center">${ i }</td>
-			  <td align="left"  title="Click : 회원정보 확인">${user.nickname}</td>
-			  <td align="left">${user.userId}</td>
+			  <td align="center"><span class="badge badge-pill badge-warning">${user.nickname}</span></td>
+			  <td align="center">
+			  <span class="badge badge-pill badge-info"> ${user.userId}</span>
+			  </td>
 			   <td align="left">${user.phone}</td>
 			   <td align="left">${user.gender == 'm'? '남자' :'여자'}</td>
 			   <td align="left">${user.age}살</td>
 			   <td align="left">${user.coconutCount}</td>
 			   <td align="left">${user.regDate}</td>
-			  <td align="left">${user.role == 'd'? '탈퇴' : '회원'}</td>
+			  <td align="left">
+			  <c:choose>
+			  <c:when test="${user.role == u}">
+			 <span class="badge badge-pill badge-default">회원</span>
+			  </c:when>
+			   <c:when test="${user.role == d}">
+			<span class="badge badge-pill badge-danger">탈퇴</span>
+			  </c:when>
+			  </c:choose>
+			  </td>
 			</tr>
           </c:forEach>
         
