@@ -148,25 +148,7 @@
 	                  -->
 	                 
 	             
-	             <!-- 가정추가부분 회원검색-->
-	              <form class="navbar-form navbar-left form-inline">
-	              	<input type="hidden" id="mainSearchCurrentPage" name="mainSearchCurrentPage" value=""/>
-						<select id="mainSearchSelect" name="mainSearchSelect" class="form-control">
-							<option value="1">회원</option>
-							<option value="2">축제</option>
-							<option value="3">파티</option>
-							<option value="4">후기</option>
-						</select>												        
-			        <div class="input-group">
-				          <input type="text" id="mainSearchKeyword" name="mainSearchKeyword" class="form-control" placeholder="검색어 입력">
-				          <span class="input-group-btn">
-						    	<button id="mainSearchButton" class="btn btn-info btn-block" type="button">
-						    		<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-						    	</button>
-						    </span>
-			        </div>
-			      </form>
-			      
+	             
 	             
 	             <ul class="nav navbar-nav navbar-right">
 	             	<c:if test="${!empty user}">
@@ -258,23 +240,72 @@
    	
    	<script type="text/javascript">
    	
+   	/* 오토컴플릿 삽입 */
    	
-   		///////////////////////////메인 검색 function/////////////////////////////////////
-   		$(function(){
-   			
-   			$("#mainSearchButton").on("click", function(){
-   				console.log("[[[툴바검색]]]"+$("#mainSearchSelect").val()+",,"+$("#mainSearchKeyword").val());
-   				var select = $("#mainSearchSelect").val();
-   				var keyword = $("#mainSearchKeyword").val();
-   				var formHtml = '<form id="mainSearchForm">'
-   										+'<input type="hidden" name="searchKeyword" value="'+keyword+'">'
-   										+'<input type="hidden" name="searchCondition" value="'+select+'">'
-   										+'</form>';
-   				$("body").append(formHtml);
-   				$("#mainSearchForm").attr("method", "POST").attr("action", "/search/getSearchList").submit();
-   			});
-   			
-   		});
+   			///////////////////////////////////검색///////////////////////////////////////
+		/* $(function() {
+			
+				$("#searchKey").autocomplete({
+					source: function( request, response ) {
+				        $.ajax( {
+				          url: "/festivalRest/json/getKeyword",
+				          method : "POST",
+				          headers : {
+								"Accept" : "application/json",
+								"Content-Type" : "application/json"
+						  },
+				          dataType: "json",
+				          data: JSON.stringify({
+				        	currentPage : "1",
+					        searchKeyword : $("#searchKey").val(),
+					        searchCondition : ""
+				          }),
+				          success: function( JSONData ) {
+				            response($.map(JSONData, function(value, key){
+				            	console.log(value.festivalNo);
+				            	
+				            	var festivalNo = value.festivalNo;
+				            	
+				            	$("#fNo").val(festivalNo);
+				            	
+				            		return {
+				            			label :  value.festivalName,
+				            			value : value.festivalName
+				            		}
+					        	}));
+					          }
+				        });
+				    }
+				});
+			});
+   	
+
+		   $(function(){
+			   $("#sc").on("click",function(){
+					
+				   var festivalNo = $("#fNo").val();
+				   var searchKeyword = $("#searchKey").val();
+				   
+				   if(searchKeyword == null){
+						alert("축제명은 반드시 한 글자 이상 입력하셔야 합니다.");
+						return;
+					}
+				   
+				   self.location="/festival/getFestivalDB?festivalNo="+festivalNo;
+			   });
+		   });
+		   
+		   $(function(){
+				$("#searchKey").on('keydown',function(event){
+					
+					if(event.keyCode ==13){
+						event.preventDefault();
+						$( "#sc"  ).click();
+					}
+				});
+			
+			}); */
+   	
    	
 		
    		$(".dropdown").hover(function(){
