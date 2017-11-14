@@ -273,6 +273,7 @@ public class UserRestController {
 	
 	@RequestMapping(value="json/updateCoconut/{flag}", method=RequestMethod.POST)
 	public User updateCoconut(@PathVariable("flag") String flag,
+			
 							  HttpSession session)throws Exception{
 		
 		System.out.println("/userRest/json/updateCoconut : POST");
@@ -282,19 +283,16 @@ public class UserRestController {
 		// 2이면 후기 ------ 수량더하기
 		
 		/*user=userService.getUser(user.getUserId());*/
-		User user = (User)session.getAttribute("user");
-		int originCoconut=userService.getUser(user.getUserId()).getCoconutCount();
+		User user = userService.getUser(((User)session.getAttribute("user")).getUserId());
+		int originCoconut=user.getCoconutCount();
 		
-		int updateCoconut=user.getCoconutCount();
+	
 		
 		if(flag.equals("1")) { //파티인경우
-			user.setCoconutCount(originCoconut+updateCoconut);
+			user.setCoconutCount(originCoconut-partyCoconut);
 		} else { //후기인경우
-			if(originCoconut >= updateCoconut) {
-				user.setCoconutCount(originCoconut-updateCoconut);
-			} else {
-				user.setCoconutCount(updateCoconut-originCoconut);
-			}
+		   user.setCoconutCount(originCoconut+reviewCoconut);
+			
 		}
 		
 		userService.updateCoconut(user);
