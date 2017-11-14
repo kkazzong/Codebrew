@@ -327,6 +327,12 @@ public class ODSayAPIDAOImpl implements ReviewDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public Good getGood(String userId, int reviewNo) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public int getTotalCount(Search search) throws Exception {

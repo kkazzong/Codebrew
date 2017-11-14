@@ -109,6 +109,15 @@ public class ReviewDAOImpl implements ReviewDAO {
 		return sqlSession.selectOne("ReviewMapper.checkGood", good);
 	}
 	
+	@Override //10-2, 11-2
+	public Good getGood(String userId, int reviewNo) throws Exception {
+		System.out.println("reviewDAO :: getGood");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userId", userId);
+		map.put("reviewNo", reviewNo);
+		return sqlSession.selectOne("ReviewMapper.getGood", map);
+	}
+	
 	@Override //12
 	public int getTotalCount(Search search) throws Exception {
 		System.out.println("reviewDAO :: getTotalCount");

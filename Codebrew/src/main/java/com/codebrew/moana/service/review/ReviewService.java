@@ -49,6 +49,9 @@ public interface ReviewService {
 	//12
 	public Good checkGood(Good good) throws Exception;
 	
+	//12-1
+	public Good getGood(String userId, int reviewNo) throws Exception;
+	
 	//13
 	public void updateReviewGoodCount(Good good) throws Exception;
 	

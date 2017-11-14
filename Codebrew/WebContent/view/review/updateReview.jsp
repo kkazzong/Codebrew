@@ -132,6 +132,13 @@
 		$("input:text[name='festivalNo']").on("keydown", function(){
 			console.log($(this).val());
 		});
+		
+		//등록예정인 해시태그들 삭제
+		$("button.btn.btn-primary:contains('삭제')").on("click", function(){
+			alert($('#reviewHashtag').val());
+			$('#reviewHashtag').val("");
+		});
+		
 	});
 	
 	$(document).ready(function(){
@@ -139,10 +146,10 @@
 			if(key.keyCode == 13){ //키 값이 13(enter)면 실행
 				alert("hashtag로 등록됩니다.");
 				console.log($(this).val());	
-				var innerHtml = $("input:text[name=uploadHashtag]").val();
-				innerHtml += "#"+$(this).val()+";";
+				var innerHtml = $("input:text[name=reviewHashtag]").val();
+				innerHtml += "#"+$(this).val();
 				
-				$("input:text[name=uploadHashtag]").val(innerHtml);
+				$("input:text[name=reviewHashtag]").val(innerHtml);
 				$(this).val("");
 			}
 			

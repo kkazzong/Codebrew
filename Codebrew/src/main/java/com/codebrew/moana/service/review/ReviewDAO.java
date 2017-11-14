@@ -58,6 +58,9 @@ public interface ReviewDAO {
 	//10-1, 11-1
 	public Good checkGood(Good good) throws Exception;
 	
+	//10-2, 11-2
+	public Good getGood(String userId, int reviewNo) throws Exception;
+	
 	//12
 	public int getTotalCount(Search search) throws Exception;
 	

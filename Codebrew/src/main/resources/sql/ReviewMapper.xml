@@ -261,7 +261,7 @@
 	<!-- deleteReview -->
 	<!-- 
 	deleteFlag
-	* "2" : default = 보통
+	* "1" : default = 보통
 	* "4" : 삭제됨 (checkCode와 헷갈리지 말라고...4(반려)로...)
 	 -->
 	 <!-- 10 -->
@@ -289,15 +289,23 @@
 	<!-- 12 -->
 	<select id="checkGood" parameterType="good" resultMap="goodSelectMap">
 		SELECT *
-			FROM good 
-			WHERE review_no = #{reviewNo}
-			AND user_id = #{userId}
+		FROM good 
+		WHERE review_no = #{reviewNo}
+		AND user_id = #{userId}
+	</select>
+	
+	<!-- 12-1 -->
+	<select id="getGood" parameterType="map" resultMap="goodSelectMap">
+		SELECT *
+		FROM good 
+		WHERE review_no = #{reviewNo} 
+		AND user_id =#{userId}
 	</select>
 	
 	<!-- 13 -->
 	<delete id="deleteGood" parameterType="good">
 		DELETE 
-			from good
+		FROM good
 		WHERE review_no = #{reviewNo} 
 		AND user_id = #{userId}
 	</delete>
