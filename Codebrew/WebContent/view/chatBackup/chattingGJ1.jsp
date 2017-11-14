@@ -9,11 +9,15 @@
 	
 	<title>채팅 클라이언트 01</title>
 	
-	<link href = "./semantic.min.css" rel = "stylesheet">
+	<!-- <link href = "./semantic.min.css" rel = "stylesheet"> -->
+	
+	 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>
 	
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
-	<script src = "semantic.min.js"></script>
+	<!-- <script src = "semantic.min.js"></script> -->
 	<script>
 	
 		///////////////////////////시간
@@ -297,18 +301,33 @@
 				img = '${recipient.profileImage}';
 				recipient = '${recipient.nickname}';
 			
-				contents = "<li class = '"+writer+"'>"
+				/* contents = "<li class = '"+writer+"'>"
 							+"<div>"+recipient+"</div>"
 							+"<div class = 'avatar'>"
-							+"<img class = 'img-circle' src = '/resources/uploadFile/" + img + "'width='40' length='40'/>"
+							+"<img class = 'ui avatar image' src = '/resources/uploadFile/" + img + "'width='40' length='40'/>"
 							+"</div>"
 							+"<div class = 'message'>"
 							+"<p>" + msg + "</p>"
 							+"<p>" + flag + "</p>"
-							/* +"<time datetime='2017-10-05 13:52'>"+time+"</time>" */
+							/* +"<time datetime='2017-10-05 13:52'>"+time+"</time>" 
 							+"<div id=time>"
 							+"<time datetime='yyyy-mm-ddThh:mm:ss:Z'>"+time+"</time>"
 							+"</div>"
+							+"</div>"
+							+"</li>"; */
+				
+				contents = "<li class = '"+writer+"'>"
+							+"<div class='nickname'>"+recipient+"</div>"
+							+"<a class = 'avatar'>"
+							+"<img class = 'ui avatar image' src = '/resources/uploadFile/" + img + "'width='40' length='40'/>"
+							+"</a>"
+							+"<div class = 'message'>"
+							+"<div class='ui segment other'>" + msg + "</div>"
+							+"<p>" + flag + "</p>"
+							+"</div>"
+							/* +"<time datetime='2017-10-05 13:52'>"+time+"</time>" */
+							+"<div id='time'>"
+							+"<time datetime='yyyy-mm-ddThh:mm:ss:Z'>"+time+"</time>"
 							+"</div>"
 							+"</li>";
 								
@@ -320,18 +339,35 @@
 				img = '${sender.profileImage}';
 				sender = '${sender.nickname}';
 				
-				contents = 
+				/* contents = 
 							"<li class = '"+writer+"'>"
 							+"<div>"+sender+"</div>"
 							+"<div class = 'avatar'>"
-							+"<img class = 'img-circle' src = '/resources/uploadFile/" + img + "'width='40' length='40'/>"
+							/* +"<img class = 'img-circle' src = '/resources/uploadFile/" + img + "'width='40' length='40'/>" 
+							+"<img class = 'ui avatar image' src = '/resources/uploadFile/" + img + "'width='40' length='40'/>"
 							+"</div>"
 							+"<div class = 'message'>"
 							+"<p>" + msg + "</p>"
 							+"<p class='flag'>" + flag + "</p>"
 							+"<time datetime='yyyy-mm-ddThh:mm:ss:Z'>"+time+"</time>"
 							+"</div>"
-							+"</li>";
+							+"</li>"; */
+							
+					contents = 
+								"<li class = '"+writer+"'>"
+								+"<div class='flag'>1</div>"
+								+"<div id='selfTime'>"
+								+"<time datetime='yyyy-mm-ddThh:mm:ss:Z'>"+time+"</time>"
+								+"</div>"
+								+"<div class = 'message'>"
+								+"<p class='nickname self'>"+sender+"</p>"
+								+"<div class='ui segment self'>" + msg + "</div>"
+								+"</div>"
+								+"<a class = 'avatar'>"
+								/* +"<img class = 'img-circle' src = '/resources/uploadFile/" + img + "'width='40' length='40'/>" */
+								+"<img class = 'ui avatar image' src = '/resources/uploadFile/" + img + "'width='40' length='40'/>"
+								+"</a>"
+								+"</li>";
 								
 				println("추가할 HTML : " + contents);
 				$(".discussion").append(contents);
@@ -369,14 +405,70 @@
 	</script>
 	
 	<style>
-		time {
-			font-size: 10%;
+	
+		 body { 
+	    	/* font: 13px Helvetica, Arial; */
+	    	background-color: #cbdce5;
+	    	padding:0px;
+	    	margin:0px;
+	    	width:100%;
+	    	height:100%;
+	    }
+	    
+	    
+		.nickname {
+			font-size: 0.8em;
+			color : rgb(111, 113, 114);
 		}
 		
+		.nickname.self {
+			font-size: 0.8em;
+			color :rgb(111, 113, 114);
+		}
+		
+		.flag {
+			font-size: 0.8em;
+			color : rgb(225, 216, 104);
+			margin-top : 25px;
+			margin-right : 4px;
+		}
+		
+		#time {
+			font-size: 0.8em;
+			color : rgb(111, 113, 114);
+			margin-left : 3px;
+			margin-top : 13px;
+		}
+		
+		#selfTime {
+			font-size: 0.8em;
+			color : rgb(111, 113, 114);
+			margin-right : 3px;
+			margin-top : 25px;
+		}
+		.ui.segment.other{
+			position: relative;
+		    box-shadow: 0 0 0 1px rgba(39,41,43,.15), 0 1px 2px 0 rgba(0,0,0,.05);
+		    padding : 0.4rem;
+		    border-radius: .2857rem;
+		    border: none;
+		}
+		
+		.ui.segment.self {
+		    position: relative;
+		    background-color: #f3ca2d;
+		    box-shadow: 0 0 0 1px rgba(39,41,43,.15), 0 1px 2px 0 rgba(0,0,0,.05);
+		     margin-right: 10px;
+   		 	margin-top: -10px;
+		    padding : 0.4rem;
+		    border-radius: .2857rem;
+		    border: none;
+		}
+		///////////////////////////////////////////////////////////////////////
 		#titleText{
-			font-size : 2.0em;
+			font-size : 1.4em;
 			font-weight : bold;
-			color : #fff;
+			color : #777;
 		}
 		
 		#contentsText{
@@ -388,42 +480,20 @@
 			overflow : auto;
 		}
 		
-		///////////////////////////////////////////////////////////////
-		#scrollDiv { height:510px; overflow:scroll; }
-
-		
 		////////////////////////////////////////////////////////////////////
 		
 		.discussion{
   			list-style : none;
   			background : #ededed;
   			margin : 0;
-  			/* padding : 0 0 0 0; */
-  			padding : 0 0 100px 0; 
+  			/* padding : 0 0 50px 0; */
+  			padding : 0 0 0 0;
   		}
   		
   		.discussion li{
   			padding : 0.5em;
   			overflow : hidden;
   			display : flex;
-  			margin-top:5px;
-			width:85%;
-			border-radius:5px;
-			padding:5px;
-			display:flex;
-			background-color:white;
-  		}
-  		
-  		.discussion li.other{
-  			padding : 0.5em;
-  			overflow : hidden;
-  			display : flex;
-  			margin-top:5px;
-			width:fit-content;
-			border-radius:5px;
-			padding:5px;
-			display:flex;
-			background-color:white;
   		}
   		
   		.discussion .avator{
@@ -436,114 +506,17 @@
   			width : 100%;
   		}
   		
-  		 .self{
-  		 	width:fit-content !important;
+  		.self{
   			justify-content : flex-end;
   			align-item : flex-end;
-  			
-  		} 
-  		/* .self:before{
-		    width: 0;
-		    height: 0;
-		    content:"";
-		    top:-5px;
-		    left:-14px;
-		    position:relative;
-		    border-style: solid;
-		    border-width: 0 13px 13px 0;
-		    border-color: transparent #ffffff transparent transparent; 
-		} */        
-  		
-  		////////////////////////////////////////////////////////////////////
-  		* {
-  			margin: 0; padding: 0; box-sizing: border-box; 
   		}
-	    
-	    body { 
-	    	font: 13px Helvetica, Arial;
-	    	background-color: #e8e7b4;
-	    	padding:0px;
-	    	margin:0px;
-	    	width:100%;
-	    	height:100%;
-	    }
+  		
+  		///////////////////////////////////////////////////////////////////////////
+  		 #message { background: #ffffff; padding: 3px; position: fixed; bottom: 0; width: 100%; }
 	      
-	    #message { background: #ffffff; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-	      
-	    #message input { border: none; padding: 10px; width: 70%; margin-right: 5%; }
-	      
-	    #message button { width: 15%; background: #ff5959; border: none; padding: 10px; }
-	      
-	    /* #messages { list-style-type: none; margin: 0; padding: 0; }
-	      
-	    #messages li { padding: 5px 10px; }
-	      
-	    #messages li:nth-child(odd) { background: #eee; } */
-	    
-	    /* .content {
-	    	padding : 10px;
-	    	width : 100%;
-	    } */
-	    #cardbox {
-	    	height : 70px;
-	    	background-color : #0f0e0e;
-	    }
-	    .content {
-		    position: relative;   
-		    width : 100%;
-		    height: 100%;
-		   
-		    /* margin: 10px auto; */
-		}
-		.content-text {
-		    position: absolute;   
-		   /*  width: 10px;
-		    height: 10px; */
-		   
-		    top: 0;               
-		    bottom: 0;            
-		    left: 0;              
-		    right: 0;             
-		    margin: auto; 
-		    padding: 20px;
-		    padding-left: 70px;
-		     
-		}
-		
-		.left.floated.author {
-			 position: absolute;   
-		   /*  width: 10px;
-		    height: 10px; */
-		   
-		    top: 0;               
-		    bottom: 0;            
-		    left: 0;              
-		    right: 0;             
-		    margin: auto; 
-		    padding: 20px;
-		    padding-left: 15px;
-		    
-			
-		}
-		
-		.left.floated.author.col-xs-3 {
-			 position: absolute;    
-		   /*  width: 10px;
-		    height: 10px; */
-		   
-		    top: 0;               
-		    bottom: 0;            
-		    left: 0;              
-		    right: 0;             
-		    margin: auto; 
-		    padding: 12px;
-		    padding-left: 15px;
-		    
-			
-		}
-		
-		
-		
+	    #message input { border: none; padding: 10px; width: 75%;/*  margin-right: 5%; */ }
+	       
+	  #message button { width: 23%;  border: none; /* padding: 10px; */ } 
 	</style>
 </head>
 <body onbeforeunload="exit()">
@@ -607,10 +580,12 @@
 			<!-- <span>받는 사람 아이디 : </span> -->
 			<input type = "hidden" id = "recipientInput" value="${recipient.userId}">
 		</div>
-		<div id="message">
-			<input type = "text" id = "dataInput"/>
-			<button type = "button" id = "sendButton">전송</button>
-			<input type = "hidden" id = "dataInputTime">
+		<div id="message" class="ui form">
+			<div class="field">
+				<input type = "text" id = "dataInput"/>
+				<button class="ui yellow button" type = "button" id = "sendButton">전송</button>
+				<input type = "hidden" id = "dataInputTime">
+			</div>
 		</div>
 		
 	</div>
