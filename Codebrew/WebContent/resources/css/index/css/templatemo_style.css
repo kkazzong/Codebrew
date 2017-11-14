@@ -367,7 +367,8 @@ hr {
   width: 100%;
   text-align: center;
   /* top: 380px; */
-  top: 230px;
+  /* top: 230px; */
+  top: 45%;
   left: 0;
 }
 .flexslider .slider-caption h2 {
@@ -397,12 +398,14 @@ hr {
 }
 @media screen and (min-width: 989px) {
   .flexslider .slider-caption {
-    top: 230px;
+    /* top: 230px; */
+    top: 45%;
   }
 }
 @media screen and (min-width: 1200px) {
   .flexslider .slider-caption {
-    top: 380px;
+    /* top: 380px; */
+    top: 45%;
   }
 }
 @media screen and (max-width: 1199px) {

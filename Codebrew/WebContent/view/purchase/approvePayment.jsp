@@ -36,11 +36,11 @@
 			
 			
 		});
-			function layerClose(){
-				 $("#popLayer").css("display","none");
-				 $("body").css("overflow","auto");
-				 window.parent.location = "/purchase/getPurchaseList?userId=${user.userId}";
-			}
+		function layerClose(){
+			 $("#popLayer").css("display","none");
+			 $("body").css("overflow","auto");
+			 window.parent.location = "/purchase/getPurchaseList?userId=${user.userId}";
+		}
 	</script>
 	
 	<!-- CSS -->

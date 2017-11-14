@@ -55,6 +55,7 @@
 		
 		//// 아임포트 휴대폰결제
 		function fncPhonePay(selectedCount, purchasePrice, purchaseFlag) {
+			wrapWindowByMask();
 			
 			console.log("핸드폰 결제"+selectedCount+","+purchasePrice+","+purchaseFlag);
 			var ticketNo = ${ticket.ticketNo};
@@ -79,10 +80,10 @@
 			    buyer_tel : "${user.phone}",
 			  /*   buyer_addr : '',
 			    buyer_postcode : '123-456', */
-			    m_redirect_url : 'http://127.0.0.1:8080/purchase/approvePurchase'
+			    m_redirect_url : 'http://127.0.0.1:8080/purchaseRest/json/iamport/approvePurchase'
 			}, function(rsp) {
 			    if ( rsp.success ) {
-			    	
+			    	$("#wrap").css("top","250px");
 			    	$.ajax({
 			    		
 			    		url : "/purchaseRest/json/iamport/approvePayment",
@@ -392,6 +393,22 @@
 				
 			});
 			
+			////////////////레이어팝업 사이즈조절
+			$(window).resize(function(){
+				console.log($(window).width());
+				$("#mask").css("width" , $(window).width());
+				$("#mask").css("height",$(document).height());
+				if($(window).width() < 963) {
+					$("#popLayer").css("left","0%");
+					$("#popLayer").css("width" , $(window).width());
+				} else {
+					$("#popLayer").css("width","447px");
+					$("#popLayer").css("left","40%");
+					
+				}
+				//$("#popLayer").css("heigth" , $(window).heigth());
+			}) 
+			
 			
 		});
 	
@@ -405,6 +422,8 @@
 			var showPopup = function(url) {
 				$("#kakaoUrl").attr("src", url);
 				$("#popLayer").show();
+				//$("#popLayer").css("width" , $(window).width());
+				//$("#popLayer").css("height" , $(window).height());
 				wrapWindowByMask();
 				$("#popLayer").center();
 			}
@@ -460,13 +479,13 @@
 			display:none;
 		    position: fixed;
 		    width: 448px;
-		    left: 50%;
+		    left: 50%; 
 		   /*  margin-left: -40%; */ /* half of width */
-		    height: 810px;
-		    top: 50%;
-		    margin-top: -150px; /* half of height */
+		     height: 710px; 
+		    top: 35%; 
+		    margin-top: -150px;  /* half of height */
 		    overflow: visible;
-		
+			z-index : 6;
 		    /* decoration */
 		    border: 1px solid #000;
 		    background-color: #eee;
@@ -474,12 +493,22 @@
 		    box-sizing: border-box;
 		}
 		
-		@media (max-width: 1000px) {
+		/* @media (max-width: 930px) {
 		    .layer {
-		        width: 80%;
-		        margin-left: -40%;
+		    	margin-top:-75%;
+		        width: 90%;
+		        margin-left: -10%;
+				margin-right: -5%;
 		    }
 		}
+		
+		@media (max-width: 930px) {
+		    #mask {
+		    	margin-top:50%;
+		        width: 80%;
+		        margin-left: -10%;
+		    }
+		} */
 		
 		#mask { /* position:absolute; z-index:9000; background-color:#000; display:none; left:0; top:0; */
 			display:none;
@@ -487,7 +516,7 @@
     	    position:absolute;
         	left:0px;
         	top:0px;
-
+			z-index: 3;
 		 }
 
 		/* 화면 디버그용 */

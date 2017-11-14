@@ -25,16 +25,23 @@
 			//익스플로러경우 닫기할때 alert창 안뜨게 하기위해..
 			window.open("about:blank", "_self").close();
 		});
-		
 	});
+	function layerClose(){
+		window.parent.location.reload();
+	}
 </script>
+<style type="text/css">
+	body {
+		padding-top: 310px;
+	}
+</style>
 </head>
 <body>
 	<div class="container">
 		<div class="col-md-12 text-center">
 			<h4>결제가 취소 되었습니다.</h4> 
 			<hr>
-			<button class="btn btn-lg" type="button">닫기</button>
+			<button class="btn btn-lg" type="button" onclick="javascript:layerClose();">닫기</button>
 		</div>
 	</div>
 </body>
