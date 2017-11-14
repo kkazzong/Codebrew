@@ -135,6 +135,13 @@ public class PartyController {
 		//partyTime = hour + minutes
 		party.setPartyTime(party.getHour()+"시 "+party.getMinutes()+"분");
 		
+		/////////// 디비 입출력시 엔터처리 ////////////////
+		String partyDetail = party.getPartyDetail();
+		partyDetail = partyDetail.replaceAll("\n", "<br>");
+		System.out.println("\n<<< /party/addParty :: POST :: partyDetail \n"+partyDetail);
+		party.setPartyDetail(partyDetail);
+		/////////// 디비 입출력시 엔터처리 ////////////////
+		
 		
 		//Business Logic
 		/* 세션 */

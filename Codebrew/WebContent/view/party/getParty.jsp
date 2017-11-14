@@ -154,11 +154,9 @@
 	
 	$(function() {
 		$("#host").on("click", function() {
-					self.location="/myPage/getMyPage";
-					/* var self = "${user.userId}";
-					var other = "${party.user.userId}"; */
-					//window.open('http://127.0.0.1:3000/chat', '채팅팝업', 'width=440, height=520, scrollbars=yes');
-
+			var hostId = "${party.user.userId}";
+			self.location="/myPage/getMyPage?requestId="+hostId;
+					
 		});
 	});
 
@@ -400,7 +398,7 @@ body {
 							<div class="col-md-12">
 								<small><span class="glyphicon glyphicon-star"></span>&nbsp; 파티 설명</small>
 								<br><br>
-								&nbsp;&nbsp;&nbsp;&nbsp;${party.partyDetail}
+								${party.partyDetail}
 							</div>
 						</div>
 					</div>
@@ -437,6 +435,7 @@ body {
 										<br>
 										&nbsp;&nbsp;&nbsp;&nbsp; <img class="img-circle" src="/resources/uploadFile/${party.user.profileImage}" width="50" height="50">
 										<span id="userDiv">${ party.user.nickname }</span>
+										<%-- <input type="hidden" name="recipient" value="${party.user.userId}"> --%>
 										<!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<button type='button' class='btn btn-default'>채팅하기</button> -->
 									</p>
