@@ -125,6 +125,7 @@ body {
 
 </head>
 <body>
+	 <jsp:include page="/toolbar/toolbar.jsp"></jsp:include>
 
 	<div class="container">
 	
@@ -138,7 +139,6 @@ body {
 
 	<form>
 	
-	 <jsp:include page="/toolbar/toolbar.jsp"></jsp:include>
 		<br/>
 		<br/>
 		<br/>
