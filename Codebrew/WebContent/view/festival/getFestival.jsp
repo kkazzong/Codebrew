@@ -270,7 +270,7 @@ body {
 							</c:if>
 						<c:if test="${returnZzim == null }">
 							<div class="col-md-12">
-								<h1><span class="glyphicon glyphicon-heart-empty" aria-hidden="true" id="tag"style = "color: red;" style="cursor: pointer;"></span></h1>
+								<h1><span class="glyphicon glyphicon-heart-empty" aria-hidden="true" id="tag"style = "color: red; cursor: pointer;"></span></h1>
 								<%-- <input class="totalZzim" value="${totalZzim }"> --%>
 								<p class="totalZzim">${totalZzim }</p>
 							</div>
@@ -278,7 +278,7 @@ body {
 						
 						<div class="col-md-12">
 							<c:if test="${returnZzim != null }">
-								<h1><span class="glyphicon glyphicon-heart" style = "color: red;" aria-hidden="true" id="tag" style="cursor: pointer;"></span></h1>
+								<h1><span class="glyphicon glyphicon-heart" style = "color: red; cursor: pointer;" aria-hidden="true" id="tag" ></span></h1>
 								<%-- <input class="totalZzim" value="${totalZzim }"> --%>
 								<p class="totalZzim">${totalZzim }</p>
 							</c:if>
@@ -295,7 +295,7 @@ body {
 				  	<div id="map" style="width:200;height:350px;"></div>
 						<p>
 							<!-- <button onclick="setCenter()" class="btn btn-primary" >지도 중심좌표 이동시키기</button> --> 
-							<button onclick="panTo()" class="btn btn-info" >축제장소로 이동</button>
+							<button onclick="panTo()" class="btn btn-info" >원위치</button>
 						</p>
 					</div>
 			  	</div>
@@ -606,11 +606,11 @@ body {
 			<div class="col-md-12">
 				<div class="col-md-offset-4 col-md-4">
 				  	<c:if test="${user.role!='a' }">
-						<button type="button" class="btn btn-primary vertical-align-middle">애프터파티 조회</button>
+						<button type="button" class="btn btn-info vertical-align-middle">애프터파티 조회</button>
 							<c:if test="${ticket.ticketFlag!='del'}">
-								<button type="button" class="btn btn-primary vertical-align-middle">티켓구매</button>
+								<button type="button" class="btn btn-info vertical-align-middle">티켓구매</button>
 							</c:if>
-						<button type="button" class="btn btn-primary vertical-align-middle" id = "back" name = "back">뒤로</button>
+						<button type="button" class="btn btn-info vertical-align-middle" id = "back" name = "back">뒤로</button>
 					</c:if>
 				</div>
 			</div>

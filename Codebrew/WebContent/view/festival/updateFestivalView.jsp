@@ -56,6 +56,10 @@
 	
 	function fncUpdateFestival() {
 		
+		var frm = document.detailForm ;
+		var tp = frm.ticketPrice.value ;
+		var tc = frm.ticketCount.value ;
+		
 		var festivalName=$("#festivalName").val();
 		var startDate=$("#startDate").val();
 		var endDate=$("#endDate").val();
@@ -80,6 +84,50 @@
 			alert("장소를 입력하세요.");
 			return;
 		}
+		/* if(ticketPrice == null || ticketPrice == ''){
+		var ticketPrice=$("#ticketPrice").val(0);
+	} */
+	
+	//자바스크립트 정규식 숫자 / 길이 체크!
+	if( tp == "" ){
+		
+		alert ( " 숫자를 입력해주세요" )
+		frm.tp.value="";
+		frm.tp.focus();
+		return false;
+		
+	}else{
+		
+		var num_check=/^[0-9]*$/;
+		if(!num_check.test(tp)) {
+			
+			alert ( "숫자만 입력할 수 있습니다." );
+			frm.tp.value="";
+			frm.tp.focus();
+			return false;
+			}
+	 
+		}
+	
+	//자바스크립트 정규식 숫자 / 길이 체크!
+	if( tc == "" ){
+		
+		alert ( " 숫자를 입력해주세요" )
+		frm.tc.value="";
+		frm.tc.focus();
+		return false;
+		
+	}else{
+		
+		var num_check=/^[0-9]*$/;
+		if(!num_check.test(tc)) {
+			
+			alert ( "숫자만 입력할 수 있습니다." );
+			frm.tc.value="";
+			frm.tc.focus();
+			return false;
+			}
+	}
 		
 		$('form').attr("method","POST").attr("enctype", "multipart/form-data").attr("action", "/festival/updateFestival").submit();
 	}
@@ -275,13 +323,31 @@
 	
 						<label for ="file" class="col-sm-offset-1 col-sm-3 control-label">이미지</label>
 						
-							<div class="col-md-4">
+							<%-- <div class="col-md-4">
 								<img src="${festival.festivalImage }" width="345" height="300"/>
 									<input type = "hidden" class="form-control" id="festivalImage" name="festivalImage" value= "${festival.festivalImage }">
-							<input type="file" id="festivalImage" name="file" class="form-control">
+							<input type="file" id="festivalImage" name="file" class="form-control"> --%>
+							
+				<c:if test="${festival.festivalImage.contains('http://')==true }">
+				 <div class="col-md-4">
+					<img id="img" src="${festival.festivalImage }" width="360" height="300"/>
+					<input type = "hidden" class="form-control" name="festivalImage" value= "${festival.festivalImage }">
+					<input type="file" id="festivalImage" name="file" class="form-control btn-info" value="${festival.festivalImage }">
+					<%-- <input type = "hidden" class="form-control" id="festivalImage" name="festivalImage" value= "${festival.festivalImage }"> --%>
+				</div>
+				</c:if>
+				
+				<c:if test="${festival.festivalImage.contains('http://')==false }">
+				<div class="col-md-4">
+					<img id="img" src="../../resources/uploadFile/${festival.festivalImage }" width="360" height="300"/>
+					<input type = "hidden" class="form-control" name="festivalImage" value= "${festival.festivalImage }">
+					<input type="file" id="festivalImage" name="file" class="form-control btn-info" value= "${festival.festivalImage }" >
+					<%-- <input type = "hidden" class="form-control" id="festivalImage" name="festivalImage" value= "${festival.festivalImage }"> --%>
+				</div>
+				</c:if>
 							
 			
-		</div>	
+		<!-- </div>	 -->
 		
 	</div>
 				
@@ -291,7 +357,7 @@
 					<label for="addr" class="col-sm-offset-1 col-sm-3 control-label">개최장소</label>
 						<div class="col-md-4">
 							<input type="text" class="form-control" id="addr" name = "addr" placeholder="주소" value="${festival.addr }">
-							<input type="button" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
+							<input type="button" class="btn-info" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
 							<input type="hidden" class="form-control" id="festivalLongitude" name="festivalLatitude" value="${festival.festivalLatitude }">
 							<input type="hidden" class="form-control" id="festivalLatitude" name="festivalLongitude" value="${festival.festivalLongitude }" >
 						</div>
