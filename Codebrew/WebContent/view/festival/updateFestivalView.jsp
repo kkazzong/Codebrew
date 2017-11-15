@@ -323,17 +323,11 @@
 	
 						<label for ="file" class="col-sm-offset-1 col-sm-3 control-label">이미지</label>
 						
-							<%-- <div class="col-md-4">
-								<img src="${festival.festivalImage }" width="345" height="300"/>
-									<input type = "hidden" class="form-control" id="festivalImage" name="festivalImage" value= "${festival.festivalImage }">
-							<input type="file" id="festivalImage" name="file" class="form-control"> --%>
-							
 				<c:if test="${festival.festivalImage.contains('http://')==true }">
 				 <div class="col-md-4">
 					<img id="img" src="${festival.festivalImage }" width="360" height="300"/>
 					<input type = "hidden" class="form-control" name="festivalImage" value= "${festival.festivalImage }">
 					<input type="file" id="festivalImage" name="file" class="form-control btn-info" value="${festival.festivalImage }">
-					<%-- <input type = "hidden" class="form-control" id="festivalImage" name="festivalImage" value= "${festival.festivalImage }"> --%>
 				</div>
 				</c:if>
 				
@@ -342,13 +336,8 @@
 					<img id="img" src="../../resources/uploadFile/${festival.festivalImage }" width="360" height="300"/>
 					<input type = "hidden" class="form-control" name="festivalImage" value= "${festival.festivalImage }">
 					<input type="file" id="festivalImage" name="file" class="form-control btn-info" value= "${festival.festivalImage }" >
-					<%-- <input type = "hidden" class="form-control" id="festivalImage" name="festivalImage" value= "${festival.festivalImage }"> --%>
 				</div>
 				</c:if>
-							
-			
-		<!-- </div>	 -->
-		
 	</div>
 				
 				<hr/>
