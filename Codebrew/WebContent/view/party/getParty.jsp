@@ -458,7 +458,7 @@ body {
 							</div>
 
 							<div class="col-xs-12">
-								<%@include file="/view/party/getPartyMemberList5.jsp"%>
+								<%@include file="/view/party/getPartyMemberList6.jsp"%>
 								
 								<small><span class="glyphicon glyphicon-star"></span> 파티에 참여한 사람들</small>
 								<div id="currentMemberCountDiv"></div>

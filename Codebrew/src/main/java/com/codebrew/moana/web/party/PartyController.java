@@ -115,16 +115,42 @@ public class PartyController {
 				
 				if(uploadfile != null){
 					String partyImage = uploadfile.getOriginalFilename();
-					System.out.println("uploaded file name :: "+partyImage);
+					System.out.println("\nuploaded file name :: "+partyImage);
 					
-					String fileDirectory = partyImageDir;
-					System.out.println("uploaded file Directory :: "+fileDirectory);
+					String orgFileDirectory = partyImageDir;
+					System.out.println("\nuploaded file Directory :: "+orgFileDirectory);
+					
+					//WAS 배포 경로
+					String disFileDirectory = session.getServletContext().getRealPath("/")+"\\resources\\uploadFile\\";
+					System.out.println("\nWAS distributed file Directory :: "+disFileDirectory);
+					
 					
 					if(partyImage != null && !partyImage.equals("")){
 						partyImage = System.currentTimeMillis()+"_"+partyImage;
 						
-						File file = new File(fileDirectory+partyImage);
-						uploadfile.transferTo(file);
+						File orgFile = new File(orgFileDirectory+partyImage);
+						File disFile = new File(disFileDirectory+partyImage);
+						uploadfile.transferTo(disFile);
+						
+						FileInputStream fis = null;
+						FileOutputStream fos = null; 
+
+						try {
+							fis = new FileInputStream(disFile); // 원본파일
+							fos = new FileOutputStream(orgFile); // 복사위치
+							   
+							byte[] buffer = new byte[1024];
+							int readcount = 0;
+							  
+							while((readcount=fis.read(buffer)) != -1) {
+								fos.write(buffer, 0, readcount); // 파일 복사 
+							}
+						} catch(Exception e) {
+							e.printStackTrace();
+						} finally {
+							fis.close();
+							fos.close();
+						}
 						
 						party.setPartyImage(partyImage);
 					}
@@ -381,6 +407,13 @@ public class PartyController {
 		Party party = partyService.getParty(dbPartyNo, partyFlag);
 		Ticket ticket = ticketService.getTicket(dbPartyNo, "2");
 		
+		/////////// 디비 입출력시 엔터처리 ////////////////
+		String partyDetail = party.getPartyDetail();
+		partyDetail = partyDetail.replaceAll("<br>", "\n");
+		party.setPartyDetail(partyDetail);
+		/////////// 디비 입출력시 엔터처리 ////////////////
+		
+		
 		//Model(data) & View(jsp)
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("party", party);
@@ -392,7 +425,7 @@ public class PartyController {
 	
 	
 	@RequestMapping( value="updateParty", method=RequestMethod.POST)
-	public ModelAndView updateParty(@ModelAttribute("party") Party party, HttpServletRequest request) throws Exception {
+	public ModelAndView updateParty(@ModelAttribute("party") Party party, HttpServletRequest request, HttpSession session) throws Exception {
 		
 		System.out.println("\n>>> /party/updateParty :: POST start <<<");
 		
@@ -405,16 +438,42 @@ public class PartyController {
 		
 		if(uploadfile != null){
 			String partyImage = uploadfile.getOriginalFilename();
-			System.out.println("uploaded file name :: "+partyImage);
+			System.out.println("\nuploaded file name :: "+partyImage);
 			
-			String fileDirectory = partyImageDir;
-			System.out.println("uploaded file Directory :: "+fileDirectory);
+			String orgFileDirectory = partyImageDir;
+			System.out.println("\nuploaded file Directory :: "+orgFileDirectory);
+			
+			//WAS 배포 경로
+			String disFileDirectory = session.getServletContext().getRealPath("/")+"\\resources\\uploadFile\\";
+			System.out.println("\nWAS distributed file Directory :: "+disFileDirectory);
+			
 			
 			if(partyImage != null && !partyImage.equals("")){
 				partyImage = System.currentTimeMillis()+"_"+partyImage;
 				
-				File file = new File(fileDirectory+partyImage);
-				uploadfile.transferTo(file);
+				File orgFile = new File(orgFileDirectory+partyImage);
+				File disFile = new File(disFileDirectory+partyImage);
+				uploadfile.transferTo(disFile);
+				
+				FileInputStream fis = null;
+				FileOutputStream fos = null; 
+
+				try {
+					fis = new FileInputStream(disFile); // 원본파일
+					fos = new FileOutputStream(orgFile); // 복사위치
+					   
+					byte[] buffer = new byte[1024];
+					int readcount = 0;
+					  
+					while((readcount=fis.read(buffer)) != -1) {
+						fos.write(buffer, 0, readcount); // 파일 복사 
+					}
+				} catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+					fis.close();
+					fos.close();
+				}
 				
 				party.setPartyImage(partyImage);
 			}
@@ -422,6 +481,14 @@ public class PartyController {
 		
 		//partyTime = hour + minutes
 		party.setPartyTime(party.getHour()+"시 "+party.getMinutes()+"분");
+		
+		/////////// 디비 입출력시 엔터처리 ////////////////
+		String partyDetail = party.getPartyDetail();
+		partyDetail = partyDetail.replaceAll("\n", "<br>");
+		System.out.println("\n<<< /party/addParty :: POST :: partyDetail \n"+partyDetail);
+		party.setPartyDetail(partyDetail);
+		/////////// 디비 입출력시 엔터처리 ////////////////
+		
 		
 		//Business Logic
 		/* 티켓 수정 */
