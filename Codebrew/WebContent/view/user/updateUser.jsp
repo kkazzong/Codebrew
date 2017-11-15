@@ -59,7 +59,7 @@
 		//============= "수정"  Event 연결 =============
 		 $(function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			$( "button.btn.btn-primary" ).on("click" , function() {
+			$( "#update" ).on("click" , function() {
 				fncUpdateUser();
 			});
 		});	
@@ -122,10 +122,9 @@
 			}
 		
 				
-			$("form").attr("method" , "POST").attr("action" , "/user/updateUser").submit();
+			$("#updateUser").attr("method" , "POST").attr("action" , "/user/updateUser").submit();
 		}
-	
-		
+
 		//ajax 닉네임 중복확인
 		$(function(){
 			
@@ -155,7 +154,19 @@
 			});
 		});
 		
-				
+		 //============= "사진 미리보기"  Event 처리 및  연결 =============
+		function getUploadFilePrivew(html, $target) {
+		    if (html.files && html.files[0]) {
+		        var reader = new FileReader();
+		        reader.onload = function (e) {
+		            $target.css('display', '');
+		            //$target.css('background-image', 'url(\"' + e.target.result + '\")'); // 배경으로 지정시
+		            $target.html('<img src="' + e.target.result + '"width="80%" border="0" alt="" />');
+		        	console.log("사진미리보기 출력=====> "+e.target.result);
+		        }
+		        reader.readAsDataURL(html.files[0]);
+		    }
+		}		
 		
 		
 	</script>
@@ -183,7 +194,7 @@
 	   
 	    
 	    <!-- form Start /////////////////////////////////////-->
-		<form class="form-horizontal">
+		<form class="form-horizontal" enctype="multipart/form-data" id="updateUser">
 		
 		  <div class="form-group">
 		    <label for="userId" class="col-sm-offset-1 col-sm-3 control-label">아 이 디</label>
@@ -218,7 +229,7 @@
 		  <div class="form-group">
 		    <label for="nickname" class="col-sm-offset-1 col-sm-3 control-label">닉네임</label>
 		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="nickname" name="nickname" value="${user.nickname}" placeholder="변경회원이름">
+		      <input type="text" class="form-control" id="nickname" name="nickname"  placeholder="${user.nickname}">
 		    </div>
 		  </div>
 		  
@@ -239,7 +250,7 @@
     <label for="gender" class="col-sm-offset-1 col-sm-3 control-label">성별</label>
 	 <span class="col-sm-2">
     <label>
-      <input type="radio" id="gender" name="gender" value="${user.gender }"  disabled>남자
+      <input type="radio" id="gender" name="gender" value="${user.gender}"  disabled>남자
     </label>
     </span>
     <span class="col-sm-2">
@@ -254,7 +265,7 @@
 		  <div class="form-group">
 		    <label for="profileImage" class="col-sm-offset-1 col-sm-3 control-label">프로필사진</label>
 		    <div class="col-sm-4">
-		      <input type="file" class="form-control" id="profileImage" name="profileImage"  value="${user.profileImage}"  placeholder="사진을 올려주세요" >
+		      <input type="file" class="form-control" id="uploadFile" name="uploadFile"   placeholder="사진을 올려주세요" >
 		    </div>
 		  </div>
 		  
@@ -273,7 +284,7 @@
 		     <div class="form-group">
 		    <label for="phone" class="col-sm-offset-1 col-sm-3 control-label">휴대폰번호</label>
 		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="phone" name="phone" value="${user.phone}" placeholder="${user.phone}">
+		      <input type="text" class="form-control" id="phone" name="phone"  placeholder="${user.phone}">
 		    </div>
 		  </div>
 		  
@@ -282,7 +293,7 @@
 		  
 		  <div class="form-group">
 		    <div class="col-sm-offset-4  col-sm-4 text-center">
-		      <button type="button" class="btn btn-primary"  >수 &nbsp;정</button>
+		      <button type="button" class="btn btn-primary" id="update" >수 &nbsp;정</button>
 			  <a class="btn btn-primary btn" href="#" role="button">탈&nbsp;퇴</a>
 		    </div>
 		  </div>

@@ -15,7 +15,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <!--   <link rel="stylesheet" href="/resources/demos/style.css"> -->
+
 	
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
@@ -225,8 +225,7 @@
 <jsp:include page="/toolbar/toolbar.jsp"/> --%>
 <%-- <jsp:include page="/mypage/getMyPage.jsp"/> --%>
 <!-- Modal -->
- <input type="hidden" value="${sessionScope.user.userId}" id="sessionId" name="sessionId">
- <input type="hidden" value="${user.userId}" id="userId" name="userId">
+
 <div class="modal fade" id="follower" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -242,7 +241,8 @@
 		
 		
 	
-  
+   <input type="hidden" value="${sessionScope.user.userId}" id="sessionId" name="sessionId">
+  <input type="hidden" value="${user.userId}" id="userId" name="userId">
   
 		<%-- <div class="container">
 		<div class="row profile">
@@ -252,20 +252,20 @@
 					<div class="row">
 						<div> --%>
 			  <!-- <div class="profile-content"> -->
-				    <div class='row'>
+				    <!-- <div class='row' id="userDiv"> -->
 				   
 						<c:set var="i" value="0" />
 							<c:forEach var="follow" items="${list2}">
-							
-							
 								<c:set var="i" value="${ i+1 }" />
-				
-									
-									<div class="col-xs-6 col-md-4" ><img class="img-circle" src="/resources/uploadFile/${follow.profileImage}" width="40" height="40"></div>
+								
+				              <div class="row" id="userDiv"><!--반복문안에 div row를 넣어야 그리드대로 정렬됨 -->
+								
+									<div class="col-xs-2" id="userImage" >
+									<img class="img-circle" src="/resources/uploadFile/${follow.profileImage}" width="30" height="30"></div>
 								
 									<input type="hidden" class="follow" value="${follow.responseId }">
-									 <div class="col-xs-6 col-md-4"  title="클릭 이동">${follow.nickname}</div>
-									 <div class="col-xs-6 col-md-4">
+									 <div class="col-xs-6" id="userNick" title="클릭 이동">${follow.nickname}</div>
+									 <div class="col-xs-4">
 									 <c:choose>
 										<c:when test="${follow.f4f == 1}">
 											<%-- <input type="button" class="btn btn-info btn-sm pull-right" id="tag"
@@ -288,13 +288,12 @@
 										
 									</c:choose>
 							      </div>
-							    <br>
-							   <br>
-							   <br>
+							 </div>
+							 
 							 </c:forEach>
-						
+					</form>
 						</div>
-				<!-- 	</div> -->
+	
 				
 			
 		
@@ -307,8 +306,7 @@
 			
 			
 			
-		 </form> 
-      </div>
+
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="window.location.reload()">닫기</button>
       </div>

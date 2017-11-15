@@ -48,7 +48,7 @@ public class UserController {
 	@Value("#{imageRepositoryProperties['profileImageDir']}")
 	String profileImageDir;
 
-	// 로그인 화면
+/*	// 로그인 화면
 	@RequestMapping(value = "login", method = RequestMethod.GET)
 	public ModelAndView login() throws Exception {
 
@@ -57,14 +57,48 @@ public class UserController {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("redirect:/view/user/login.jsp");
 		return modelAndView;
-	}
-
-	// 로그인
+	}*/
+	
+	/*
 	@RequestMapping(value = "login", method = RequestMethod.POST)
 	public ModelAndView login(@ModelAttribute("user") User user, HttpSession session) throws Exception {
 
 		System.out.println("/user/login : POST");
 
+		User dbUser = userService.getUser(user.getUserId());
+		// user:내가 입력한 정보 /dbUser:디비에서 가져온 정보 / session 세션에 담고 있는 정보
+		
+	 System.out.println("user 정보는?"+user);
+	 System.out.println("dbUser정보는? "+dbUser);
+	 
+		//탈퇴한 회원 걸러줌
+	   if(dbUser.getRole().indexOf("d")== -1) {
+		
+		 if (user.getPassword().equals(dbUser.getPassword())) {
+			session.setAttribute("user", dbUser);
+		 }
+		
+	   }
+
+		ModelAndView modelAndView = new ModelAndView();
+		// modelAndView.addObject("user", user);//??
+		modelAndView.setViewName("redirect:/index.jsp");
+		return modelAndView;
+	}
+	
+*/
+	// 로그인
+	@RequestMapping(value = "login", method = RequestMethod.POST)
+	public ModelAndView login(@RequestParam("loginPassword")String loginPassword,
+			@RequestParam("loginUserId")String loginUserId,
+			@ModelAttribute("user") User user, HttpSession session) throws Exception {
+
+		System.out.println("/user/login : POST");
+
+		user.setUserId(loginUserId);
+		user.setPassword(loginPassword);
+		
+		
 		User dbUser = userService.getUser(user.getUserId());
 		// user:내가 입력한 정보 /dbUser:디비에서 가져온 정보 / session 세션에 담고 있는 정보
 		
@@ -154,7 +188,7 @@ public class UserController {
 		} 
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("redirect:/view/user/login.jsp");
+		modelAndView.setViewName("redirect:/index.jsp");//"redirect:/user/login.jsp"
 		return modelAndView;
 	}
 
@@ -197,10 +231,26 @@ public class UserController {
 
 	// 진짜 회원정보 수정
 	@RequestMapping(value = "updateUser", method = RequestMethod.POST)
-	public ModelAndView updateUser(@ModelAttribute("user") User user, HttpSession session) throws Exception {
+	public ModelAndView updateUser(@ModelAttribute("user") User user, 
+			@RequestParam("uploadFile") MultipartFile uploadFile, HttpSession session) throws Exception {
 
 		System.out.println("/user/updateUser : POST");
 
+		
+		  if(uploadFile !=null) {
+			
+			 File file=new File(profileImageDir+uploadFile.getOriginalFilename());
+			  
+			 user.setProfileImage(uploadFile.getOriginalFilename());
+			 
+			 uploadFile.transferTo(file);
+			 System.out.println("업데이트 사진");
+			}
+		
+		
+		
+		
+		
 		// 비즈니스로직
 		userService.updateUser(user);
 
@@ -254,13 +304,21 @@ public class UserController {
 		if (search.getCurrentPage() == 0) {
 			search.setCurrentPage(1);
 		}
+		
+		
+		 
+		/*search.setPageSize(((Integer) map.get("totalCount")).intValue()/pageUnit+1);
+*/
 		search.setPageSize(pageSize);
-
-		// 비즈니스로직 수행
+		
 		Map<String, Object> map = userService.getUserList(search);
+		 
 
 		Page resultPage = new Page(search.getCurrentPage(), ((Integer) map.get("totalCount")).intValue(), pageSize,
 				pageUnit);
+		 
+		/* Page resultPage = new Page(search.getCurrentPage(), ((Integer) map.get("totalCount")).intValue(), search.getPageSize(),
+					pageUnit);*/
 
 		System.out.println(resultPage);
 
@@ -428,7 +486,8 @@ public class UserController {
 
 	// 타계정 회원가입
 	@RequestMapping(value = "addExtraUser", method = RequestMethod.POST)
-	public ModelAndView addExtraUser(@ModelAttribute("user")User user,HttpSession session) throws Exception {
+	public ModelAndView addExtraUser(@ModelAttribute("user")User user,
+			@RequestParam("uploadFile") MultipartFile uploadFile,HttpSession session) throws Exception {
 
 	
 		//modelAndView.addObject("user", addExtraUser);<--위에서 심어줬는데 중복되지 않을까? 
@@ -444,6 +503,21 @@ public class UserController {
 		 
 	     //userService.updateUser((User)session.getAttribute("user"));
 		//여기서 고친정보말구 세션에 남아있는 kakaoUser정보가 들어가서 업데이트 됨 .updateUser는 return value: null
+		
+		 if(uploadFile !=null) {
+				
+			 File file=new File(profileImageDir+uploadFile.getOriginalFilename());
+			  
+			 user.setProfileImage(uploadFile.getOriginalFilename());
+			 
+			 uploadFile.transferTo(file);
+			 
+			}
+		
+		
+		
+		
+		
 	     userService.updateUser(user);
 	     
 	     user=userService.getUser(user.getUserId());

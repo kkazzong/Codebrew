@@ -192,16 +192,20 @@
        <div class="col-md-9">
 	          	<div class="profile-content"> -->
 	         
-					<div class="row" id="userDiv">
+			
 					<!-- 	<div> -->
 						<c:set var="i" value="0" />
 							<c:forEach var="follow" items="${list1}">
+							
 								<c:set var="i" value="${ i+1 }" />
-								 <div class="col-xs-6 col-md-4" id="userImage">
-									<img class="img-circle" src="/resources/uploadFile/${follow.profileImage}" width="40" height="40"></div><br>
+								
+							    <div class="row" id="userDiv">
+								
+								 <div class="col-xs-2" id="userImage">
+									<img class="img-circle" src="/resources/uploadFile/${follow.profileImage}" width="30" height="30"></div>
 									<input type="hidden" class="follow" name="follow" value="${follow.requestId }">
-										<div class="col-xs-6 col-md-4" id="userNick" title="클릭 이동">${follow.nickname}(${follow.requestId })</div><br>
-									<div class="col-xs-6 col-md-4">
+										<div class="col-xs-6" id="userNick" title="클릭 이동">${follow.nickname}</div>
+									<div class="col-xs-4">
 									<c:choose>
 										<c:when test="${ empty follow.nickname } ">
 											<%-- <input type="button" class="btn btn-sm pull-right" id="followButton"
@@ -221,13 +225,13 @@
 										</c:otherwise>
 									</c:choose>
 								</div>
-								<br>
-							   <br>
+								
 							
 								
-								
+								<hr>
+							</div>
 							</c:forEach>
-			              
+			              </form>
 			               </div>
 			          
 	
@@ -237,8 +241,8 @@
 			
 				
 			
-		</form>
-      </div>
+	
+
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="window.location.reload()">닫기</button>
       </div>

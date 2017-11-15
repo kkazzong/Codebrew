@@ -29,10 +29,10 @@
     <script type="text/javascript">
 	
 		//=============    검색 / page 두가지 경우 모두  Event  처리	 =============	
-		function fncGetList(currentPage) {
+		/* function fncGetList(currentPage) {
 				$("#currentPage").val(currentPage)
 				$("form").attr("method" , "POST").attr("action", "/party/getMyPartyList").submit();
-		} 
+		}  *///이거 지워줘야 폼이 겹치지 않아서 제대로 정보 받아옴
 		
 		$(function(){
 			$("#search").on("click", function() {
@@ -111,7 +111,7 @@
 			});
 			
 			/* 파티 삭제 */
-			$(".pull-right").each(function(){}).on("click", function(){
+			$("#deleteParty").each(function(){}).on("click", function(){
 				
 				if(confirm("파티목록에서 삭제하시겠습니까?")) {
 					$(this).parents("#deleteForm").attr("method", "post").attr("action", "/party/deleteMyPartyList").submit();
@@ -261,7 +261,7 @@
 									<input type="hidden" name="partyNo" value="${party.partyNo}">
 									
 									<%-- <c:if test="${search.searchCondition == '3' }"> --%>
-										<button class="btn btn-xs btn-warning pull-right" type="button" value="${party.partyNo}">
+										<button class="btn btn-xs btn-warning pull-right" id="deleteParty" type="button" value="${party.partyNo}">
 											<small><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></small>
 										</button>
 									<%-- </c:if> --%>

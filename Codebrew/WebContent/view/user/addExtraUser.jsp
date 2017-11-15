@@ -173,6 +173,22 @@
 			
 			
 			});
+			
+			
+			 //============= "사진 미리보기"  Event 처리 및  연결 =============
+			function getUploadFilePrivew(html, $target) {
+			    if (html.files && html.files[0]) {
+			        var reader = new FileReader();
+			        reader.onload = function (e) {
+			            $target.css('display', '');
+			            //$target.css('background-image', 'url(\"' + e.target.result + '\")'); // 배경으로 지정시
+			            $target.html('<img src="' + e.target.result + '"width="80%" border="0" alt="" />');
+			        	console.log("사진미리보기 출력=====> "+e.target.result);
+			        }
+			        reader.readAsDataURL(html.files[0]);
+			    }
+			}	
+			
 				
 	</script>
 	
@@ -221,7 +237,7 @@
 		</div>
 	    
 	    <!-- form Start /////////////////////////////////////-->
-		<form class="form-horizontal">
+		<form class="form-horizontal" enctype="multipart/form-data">
 		
 		 <div class="form-group">
 		    <label for="userId" class="col-sm-offset-1 col-sm-3 control-label">아이디</label>
@@ -279,7 +295,7 @@
 		    <div class="form-group">
 		    <label for="profileImage" class="col-sm-offset-1 col-sm-3 control-label">프로필사진</label>
 		    <div class="col-sm-4">
-		      <input type="file" class="form-control" id="profileImage" name="profileImage"  value="${user.profileImage}"  placeholder="사진을 올려주세요" >
+		      <input type="file" class="form-control" id="uploadFile" name="uploadFile"  placeholder="사진을 올려주세요" >
 		    </div>
 		  </div>
 		  

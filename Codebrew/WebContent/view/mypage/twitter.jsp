@@ -338,24 +338,29 @@
   
 	float: right;
 	margin: 22px;
-	margin-bottom: 15px;
+	margin-bottom: 20px;
 	
 	width: 200px;
     height: 50px;
   
-    font-size:300px;
+   
   }
 
 
-/*  .btn-info{
-   
-	float: right;
-	margin: 22px;
-	margin-bottom: 15px;
-	
-	width: 200px;
-    height: 50px; 
-  } */
+#userDiv {
+	height: 40px;
+}
+#userRole {
+	padding: 10px;
+}
+#userNick {
+	padding: 10px;
+}
+
+
+.modal-body {
+	background-color : #fff8d6;
+}
  
  
  
@@ -522,6 +527,16 @@
     color: #607D8B;
     overflow: visible;
 } 
+
+/* 
+#mask {  
+  position:absolute;  
+  left:0;
+  top:0;
+  z-index:9000;  
+  background-color:#000;  
+  display:none;  
+} */
 </style>
 
 <body>
@@ -529,14 +544,23 @@
 
 
 
-<div class="container">
+<div class="container" >
 <input type="hidden" id="sessionId" value="${sessionScope.user.userId}">
          
 <div class="row"> 
       <div class="col-md-12 text-center "><!-- col-xs-12 -->
         <div class="panel panel-default">
           <div class="userprofile social" ><!--background="/resources/uploadFile/light22.jpeg"  -->
-            <div class="userpic"> <img src="/resources/uploadFile/${user.profileImage}" alt="" class="userpicimg"> </div>
+            <div class="userpic"> 
+            
+            <c:if test="${user.password !='null' }">
+            <img src="/resources/uploadFile/${user.profileImage}" alt="" class="userpicimg">
+            </c:if>
+            <c:if test="${user.password == 'null' }">
+            <img src="${user.profileImage}" alt="" class="userpicimg">
+            </c:if>
+            
+             </div>
             <h3 class="username">${user.nickname}</h3>
            <%--  <h3 class="username">${user.userId}</h3> --%>
             <h3 class="username">
@@ -631,15 +655,16 @@
          
           </div>
           <div class="clearfix"></div> 
+        
         </div>
       </div>
       <!-- /.col-md-12 -->
    
-      
+       <%-- <jsp:include page="/view/mypage/getMyPartyList3.jsp"/>  --%>
         
           
         </div>
-       
+       <%-- <jsp:include page="/view/mypage/getMyPartyList3.jsp"/>  --%>
    </div> 
       
       
@@ -654,10 +679,10 @@
               <li><a href="javascript:void(0)">Report</a></li>
             </ul>
           </div> -->
-   <jsp:include page="/view/mypage/getMyPartyList3.jsp"/> 
-              
       
-
+  <jsp:include page="/view/mypage/getMyPartyList3.jsp"/>  
+              
+  
 </body>
   
 </html>
