@@ -53,7 +53,6 @@ public class FestivalServiceImpl implements FestivalService{
 		return map;
 	}
 
-
 	@Override
 	public Festival getFestival(int festivalNo) throws Exception {
 		// TODO Auto-generated method stub
@@ -184,7 +183,6 @@ public class FestivalServiceImpl implements FestivalService{
 		
 		return map;
 	}
-
 	
 	@Override
 	public Map<String, Object> getInitListDB() throws Exception {
