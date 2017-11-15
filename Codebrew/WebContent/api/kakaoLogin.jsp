@@ -9,7 +9,7 @@
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 
 
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script> 
+<!-- <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>  -->
 
 </head>
 <body>
