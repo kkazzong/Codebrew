@@ -526,7 +526,7 @@
 		
 		.ui.image.label {
 			    width: 100%!important;
-			    height: 47px;
+			    height: 37px;
 			        background: #c1c9d1;
 		}
 		
@@ -558,7 +558,7 @@
 			width: 100%;
 			height: 50px;
 			z-index: 3333;
-			background-color: #d6e2ed;
+			background-color: #f0f0f0;
 		} 
 		
 		/* //컨테이너 */
