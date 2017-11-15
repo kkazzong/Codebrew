@@ -69,6 +69,12 @@
 		//문서 로딩 후 실행
 		$(function(){
 			
+			
+			//////////////////////////////////////////////스크롤/////////////////////////////////////////////////////////////
+			//console.log($(document).height());
+			//$("body").scrollTop($(document).height());
+			
+			
 			alert("여기로 포워딩왓음");
 			//$("#scrollDiv").scrollTop($("#scrollDIv")[0].scrollHeight);
 			//alert("chat/chatting3.jsp");
@@ -92,12 +98,13 @@
 				var sender = $('#senderInput').val();
 				var recipient = $('#recipientInput').val();
 				var senNick = $('#senNick').val(); //////////senNick추가////////////////////
+				var recNick = $('#recNick').val();
 				var data = $('#dataInput').val();
 				var time = $('#dataInputTime').val();
 				
-				var output = {sender : sender, recipient : recipient, senNick : senNick, command : 'chat', type  : 'text', data : data, time : time};
+				var output = {sender : sender, recipient : recipient, senNick : senNick,
+						recNick : recNick, command : 'chat', type  : 'text', data : data, time : time};
 				//alert('서버로 보낼 데이터 : ' + JSON.stringify(output));
-				
 				
 				if(socket == undefined){
 					alert('서버에 연결되어 있지 않습니다. 먼저 서버에 연결하세요.');
@@ -216,6 +223,7 @@
 					} else{
 						addToDiscussion('other', message.data, message.time, message.flag);
 					}
+					$("html").scrollTop($(document).height());
 				});
 				
 				
@@ -238,6 +246,9 @@
 						}
 						
 					}
+					
+					console.log($(document).height()+",,"+$(window).height());
+					$("html").scrollTop($(document).height());
 					
 				});
 				
@@ -317,12 +328,13 @@
 							+"</li>"; */
 				
 				contents = "<li class = '"+writer+"'>"
-							+"<div class='nickname'>"+recipient+"</div>"
 							+"<a class = 'avatar'>"
 							+"<img class = 'ui avatar image' src = '/resources/uploadFile/" + img + "'width='40' length='40'/>"
 							+"</a>"
 							+"<div class = 'message'>"
-							+"<div class='ui segment other'>" + msg + "</div>"
+							+"<div class='nickname'>"+recipient+"</div>" 
+							/* +"<div class='ui segment other'>" + msg + "</div>" */
+							+"<div class='ui left pointing label other'>" + msg + "</div>"
 							+"<p>" + flag + "</p>"
 							+"</div>"
 							/* +"<time datetime='2017-10-05 13:52'>"+time+"</time>" */
@@ -360,8 +372,9 @@
 								+"<time datetime='yyyy-mm-ddThh:mm:ss:Z'>"+time+"</time>"
 								+"</div>"
 								+"<div class = 'message'>"
-								+"<p class='nickname self'>"+sender+"</p>"
-								+"<div class='ui segment self'>" + msg + "</div>"
+								/* +"<p class='nickname self'>"+sender+"</p>" */
+								/* +"<div class='ui segment self'>" + msg + "</div>" */
+								+"<div class='ui right pointing label'>" + msg + "</div>"
 								+"</div>"
 								+"<a class = 'avatar'>"
 								/* +"<img class = 'img-circle' src = '/resources/uploadFile/" + img + "'width='40' length='40'/>" */
@@ -408,7 +421,7 @@
 	
 		 body { 
 	    	/* font: 13px Helvetica, Arial; */
-	    	background-color: #cbdce5;
+	    	background-color: #99b8d366;
 	    	padding:0px;
 	    	margin:0px;
 	    	width:100%;
@@ -419,6 +432,7 @@
 		.nickname {
 			font-size: 0.8em;
 			color : rgb(111, 113, 114);
+			padding-left: 10px;
 		}
 		
 		.nickname.self {
@@ -429,41 +443,136 @@
 		.flag {
 			font-size: 0.8em;
 			color : rgb(225, 216, 104);
-			margin-top : 25px;
+			margin-top : 12px;
 			margin-right : 4px;
 		}
 		
+		/*다른사람시간*/
 		#time {
-			font-size: 0.8em;
+			font-size: 0.7em;
 			color : rgb(111, 113, 114);
 			margin-left : 3px;
-			margin-top : 13px;
+			margin-top : 24px;
 		}
 		
 		#selfTime {
-			font-size: 0.8em;
+			font-size: 0.7em;
 			color : rgb(111, 113, 114);
 			margin-right : 3px;
-			margin-top : 25px;
+			margin-top : 12px;
 		}
-		.ui.segment.other{
+		
+		/* .ui.segment.other{
 			position: relative;
+			background-color:#eeeded;
 		    box-shadow: 0 0 0 1px rgba(39,41,43,.15), 0 1px 2px 0 rgba(0,0,0,.05);
 		    padding : 0.4rem;
 		    border-radius: .2857rem;
 		    border: none;
+		} */
+		
+	/* 	///다른사람 메시지창 */
+		.ui.left.pointing.label.other {
+			    background-color: #f0f0f0;
+			    border-color: #f0f0f0;
+			    color: rgba(0,0,0,.85);
+			    font-weight: 100;
+			   /*  margin-top: 9px; */
+		}
+		.ui.left.pointing.label.other:before {
+			    background-color: #f0f0f0;
 		}
 		
-		.ui.segment.self {
+		
+		/* .ui.segment.self {
 		    position: relative;
-		    background-color: #f3ca2d;
+		    background-color: #000000;
+		    color : #fff;
 		    box-shadow: 0 0 0 1px rgba(39,41,43,.15), 0 1px 2px 0 rgba(0,0,0,.05);
 		     margin-right: 10px;
    		 	margin-top: -10px;
 		    padding : 0.4rem;
 		    border-radius: .2857rem;
 		    border: none;
+		} */
+		
+		/* //내꺼 메시지창 */
+		.ui.label {
+			background-color: #1b1c1d;
+    		border-color: #1b1c1d;
+    		color: #f0f0f0;
+    		font-weight: 100;
 		}
+		.ui.pointing.label:before {
+			 background-color: #1b1c1d;
+		}
+		
+		/* //상단타이틀 */
+		.ui.basic.image.label.title {
+			background-color:#1b0d06cc;
+			border-color: #1b0d06cc; 
+			width : 100%!important;
+		}
+		
+		.ui.image.label {
+			    width: 100%!important;
+			    height: 47px;
+			        background: #c1c9d1;
+		}
+		
+		/* //상단이미지 */
+		#iconImage {
+			margin-top : auto;
+			margin-left : auto;
+		   /*  width: 10px;*/
+		}
+		
+		/* //상단이름 */
+		#otherTitle {
+			margin-top : auto;
+			margin-left : auto;
+			font-weight: 700;
+			color: black;
+		}
+		
+		/* //상단박스 */
+		#labelbox {
+			position: fixed;
+			z-index: 3333;
+		}
+		
+		/* //채팅메시지전체 */
+		 #message {
+			position: fixed;
+			bottom: 0;
+			width: 100%;
+			height: 50px;
+			z-index: 3333;
+			background-color: #d6e2ed;
+		} 
+		
+		/* //컨테이너 */
+		#container {
+
+			min-height: 100%; 
+			position: relative;
+		
+		}
+		
+		html,body { height: 100%; margin: 0; padding: 0; }
+
+		/* //메시지 오 */
+		.discussion {
+			padding-top: 18px;
+			padding-bottom: 50px;
+			padding-left: inherit;
+		}
+		
+		.field {
+			padding-top: 7px;
+    		padding-left: 5px;
+		}
+		
 		///////////////////////////////////////////////////////////////////////
 		#titleText{
 			font-size : 1.4em;
@@ -514,7 +623,7 @@
   		///////////////////////////////////////////////////////////////////////////
   		 #message { background: #ffffff; padding: 3px; position: fixed; bottom: 0; width: 100%; }
 	      
-	    #message input { border: none; padding: 10px; width: 75%;/*  margin-right: 5%; */ }
+	    #message input { border: none; padding: 10px; width: 73%;/*  margin-right: 5%; */ }
 	       
 	  #message button { width: 23%;  border: none; /* padding: 10px; */ } 
 	</style>
@@ -522,7 +631,7 @@
 <body onbeforeunload="exit()">
 	
 	<div class = "container">
-		<div id = "cardbox" class = "ui blue fluid card">
+		<%-- <div id = "cardbox" class = "ui blue fluid card">
 			<div class = "content">
 				<span class = "left floated author col-xs-3">
 					<img id = "iconImage" class = "ui avatar image" src = "/resources/image/chat/Messages-icon.png" width="45px" height="45px">
@@ -530,10 +639,24 @@
 				<span class="content-text col-xs-6">
 					<span id = "titleText" class = "header col-xs-3">MOANA</span>
 					<span id = "contentsText" class = "description col-xs-6">
-						<%-- ${ sender.nickname }님 채팅 --%>
+						${ sender.nickname }님 채팅
 					</span>
 				</span>
 			</div>
+		</div> --%>
+		
+		<div id="labelbox" class = "ui image label title">
+			<!-- <div class = "content"> -->
+				<!-- <span class = "left floated author col-xs-3"> -->
+					<img id="iconImage" src = "/resources/image/chat/Messages-icon.png" ><span id="otherTitle">${recipient.nickname}</span>
+				<!-- </span> -->
+				<!-- <span class="content-text col-xs-6">
+					<span id = "titleText" class = "header col-xs-3">MOANA</span>
+					<span id = "contentsText" class = "description col-xs-6"> -->
+						<%-- ${ sender.nickname }님 채팅 --%>
+					<!-- </span>
+				</span> -->
+			<!-- </div> -->
 		</div>
 	
 	<div>
@@ -583,7 +706,7 @@
 		<div id="message" class="ui form">
 			<div class="field">
 				<input type = "text" id = "dataInput"/>
-				<button class="ui yellow button" type = "button" id = "sendButton">전송</button>
+				<button class="ui black button" type = "button" id = "sendButton">전송</button>
 				<input type = "hidden" id = "dataInputTime">
 			</div>
 		</div>
