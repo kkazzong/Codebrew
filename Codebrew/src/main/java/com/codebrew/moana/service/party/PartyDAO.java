@@ -27,11 +27,17 @@ public interface PartyDAO {
 	// SELECT LIST
 	public List<Party> getMyPartyList(Search search, String userId) throws Exception;
 	
+	// SELECT LIST
+	public List<Party> getMyPartyListByUserId(String userId) throws Exception;
+	
 	// SELECT ONE
 	public int getTotalCount(Search search) throws Exception ;
 	
 	// SELECT ONE
 	public int getMyTotalCount(Search search, String userId) throws Exception ;
+	
+	// SELECT ONE
+	public int getMyTotalCountByUserId(String userId) throws Exception ;
 	
 	/////////////////////////////////////////////////////////////////////////
 	

@@ -245,6 +245,58 @@
 		 	row_seq BETWEEN #{search.startRowNum:NUMERIC} AND #{search.endRowNum:NUMERIC}
 		 </where>
 	  	
+	 </select> 
+	 
+	 
+	 <select  id="getMyPartyListByUserId" parameterType="string" resultMap="partySelectMap">
+	  	<!-- SELECT *
+		FROM (	SELECT inner_table.*, ROWNUM AS row_seq
+		        FROM  party_member pm, (SELECT p.party_no AS party_no,
+		                                       p.party_image,
+		                                       f.festival_no,
+		                                       f.festival_name,
+		                                       p.party_name,
+		                                       u.user_id,
+		                                       u.nickname,
+		                                       u.profile_image,
+		                                       TO_CHAR(p.party_date, 'yy/mm/dd' ) AS party_date,
+		                                       p.party_time,
+		                                       p.party_place
+		                                FROM party p, festival f, users u
+		                                
+		                                ) inner_table
+		        <where>
+		        	pm.party_no = inner_table.party_no
+			        AND pm.user_id = #{value}
+			        AND pm.delete_flag IS NULL
+			        
+		        </where>
+		        ORDER BY inner_table.party_date ASC) -->
+		SELECT *
+		FROM (	SELECT inner_table.*, ROWNUM AS row_seq
+		        FROM  party_member pm, (SELECT p.party_no AS party_no,
+		                                       p.party_image,
+		                                       f.festival_no,
+		                                       f.festival_name,
+		                                       p.party_name,
+		                                       u.user_id,
+		                                       u.nickname,
+		                                       u.profile_image,
+		                                       TO_CHAR(p.party_date, 'yy/mm/dd' ) AS party_date,
+		                                       p.party_time,
+		                                       p.party_place
+		                                FROM party p, festival f, users u
+		                                WHERE p.festival_no = f.festival_no(+)
+                                        AND p.user_id = u.user_id
+		                                ) inner_table
+		        <where>
+		        	pm.party_no = inner_table.party_no
+			        AND pm.user_id = #{value}
+			        AND pm.delete_flag IS NULL
+			        
+		        </where>
+		        ORDER BY inner_table.party_date ASC)
+	  	
 	 </select>
 	 
 	 
@@ -337,6 +389,35 @@
 		 <where>
 		 	row_seq BETWEEN #{search.startRowNum:NUMERIC} AND #{search.endRowNum:NUMERIC}
 		 </where>
+		 ) countTable			
+	 </select> 
+	 
+	 <select  id="getMyTotalCountByUserId"  parameterType="string"	 resultType="int">
+	  	SELECT COUNT(*)
+	  	FROM(	SELECT *
+		FROM (	SELECT inner_table.*, ROWNUM AS row_seq
+		        FROM  party_member pm, (SELECT p.party_no AS party_no,
+		                                       p.party_image,
+		                                       f.festival_no,
+		                                       f.festival_name,
+		                                       p.party_name,
+		                                       u.user_id,
+		                                       u.nickname,
+		                                       p.party_date AS party_date,
+		                                       p.party_time,
+		                                       p.party_place
+		                                FROM party p, festival f, users u
+		                                <where> 
+		                                	p.festival_no = f.festival_no(+)
+		                                	AND p.user_id = u.user_id
+		                                	AND p.delete_flag IS NULL
+			                           </where>
+		                                ) inner_table
+		        <where>
+		        	pm.party_no = inner_table.party_no
+			        AND pm.user_id = #{userId:VARCHAR}
+			    </where>
+		        ORDER BY inner_table.party_date ASC)
 		 ) countTable			
 	 </select>
 	 

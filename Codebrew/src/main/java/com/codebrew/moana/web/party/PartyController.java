@@ -623,7 +623,7 @@ public class PartyController {
 		
 		
 		//Business Logic
-		Map<String, Object> map = partyService.getMyPartyList(search, userId);
+		Map<String, Object> map = partyService.getMyPartyListByUserId(userId);
 		
 		Page resultPage = new Page(search.getCurrentPage(),((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
 		
