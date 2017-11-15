@@ -9,46 +9,62 @@
 	
 <head>
     <meta charset="UTF-8">
-
-   
 	
 	<!-- 참조 : http://getbootstrap.com/css/   참조 -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	
-	 
-	
 	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
-
 	
 	
+	<!--datePicker-->
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+   
 	
 	
-	
-	 <!--datePicker-->
-	 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">  
-	
-	<!-- Jquery DatePicker -->
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>  
+	    <!-- Jquery DatePicker -->
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	
-	<!--  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script> -->
+	<!--캘린더  -->
+	<script type="text/javascript" src="/resources/javascript/calendar.js"></script>
+	
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 		
+	<style type="text/css">
+	body {
+		padding-top : 70px;
+    }
+    .btn {
+		/*링크 클릭시 파란색 안남도록 */
+		text-decoration : none;
+		border : 0;
+		outline : 0;
+	}
+ 
+	.glyphicon {
+		font-size: 20px;
+	}
+	form > img {
+		width : 100%;
+		height : 300px
+	}
 	
-     <!-- Bootstrap Dropdown Hover CSS -->
-   <link href="/css/animate.min.css" rel="stylesheet">
-   <link href="/css/bootstrap-dropdownhover.min.css" rel="stylesheet"> 
-   
-    <!-- Bootstrap Dropdown Hover JS-->
-    <script src="/javascript/bootstrap-dropdownhover.min.js"></script>  
-   
+
+	
 
 
-	<!--  ///////////////////////// CSS ////////////////////////// -->
+</style>
+
 	
+	
+	<!-- ToolBar Start /////////////////////////////////////-->
+	<jsp:include page="/toolbar/toolbar.jsp" /><!--툴바 바디에 있던걸 올려봄  -->
+   	<!-- ToolBar End /////////////////////////////////////-->
+
     
      <!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
@@ -66,34 +82,9 @@
 		$(function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			$("#cancel").on("click" , function() {
-				$("form")[0].reset();
+				$("addUserForm")[0].reset();
 			});
 		});	
-	
-		
-		 $( function() {
-		       $( "#datepicker" ).datepicker({
-		    	   changeMonth: true, 
-		           changeYear: true,
-			       dateFormat: 'yy-mm-dd',
-			       monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-			       monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-			       dayNames: ['일', '월', '화', '수', '목', '금', '토'],
-			       dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
-			       dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
-			       showMonthAfterYear: true,
-			       yearSuffix: '년',
-			       changeMonth: true,
-			       changeYear : true,
-			       buttonImageOnly: true,
-			       buttonText: "Select date",
-			       showOn: "button",
-			       buttonImage: "/resources/image/ui/small_cal.jpg",
-			       yearRange : "1970:2017"
-		       });   
-		       
-		      
-		    }); 
 		
 		
 		
@@ -103,7 +94,7 @@
 		function fncAddUser() {
 			
 			var nickname=$("input[name='nickname']").val();
-			var pw=$("input[name='password']").val();
+			var pw=$("#password").val();
 			var pw_confirm=$("input[name='passwordCheck']").val();
 			var name=$("input[name='userName']").val();
 			
@@ -133,8 +124,8 @@
 				
 	       
 			
-			$("form").attr("method" , "POST").attr("action" , "/user/addUser").submit();
-		}
+			$("#addUserForm").attr("method" , "POST").attr("action" , "/user/addUser").submit();
+		};
 		
 		
 		
@@ -186,12 +177,9 @@
 			$("input[name='age']").val(age)
 		};
 	   
-	
-		 
-	
  
-	/*   $( function() {
-	       $( ".datepicker" ).datepicker({
+	   /* $( function() {
+	       $("#datepicker").datepicker({
 	    	   changeMonth: true, 
 	           changeYear: true,
 		       dateFormat: 'yy-mm-dd',
@@ -212,8 +200,8 @@
 	       });   
 	       
 	      
-	    }); 
-		 */
+	    });  */
+	
 	   
 	  
 	  /* $( function() {
@@ -273,53 +261,61 @@
 			});
 	
 		});
+	    
+	    
+	  //============= "사진 미리보기"  Event 처리 및  연결 =============
+		function getUploadFilePrivew(html, $target) {
+		    if (html.files && html.files[0]) {
+		        var reader = new FileReader();
+		        reader.onload = function (e) {
+		            $target.css('display', '');
+		            //$target.css('background-image', 'url(\"' + e.target.result + '\")'); // 배경으로 지정시
+		            $target.html('<img src="' + e.target.result + '"width="80%" border="0" alt="" />');
+		        	console.log("사진미리보기 출력=====> "+e.target.result);
+		        }
+		        reader.readAsDataURL(html.files[0]);
+		    }
+		}
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
 		
 	</script>
 	
-	<style type="text/css">
-	body {
-		padding-top : 70px;
-    }
-    .btn {
-		/*링크 클릭시 파란색 안남도록 */
-		text-decoration : none;
-		border : 0;
-		outline : 0;
-	}
- 
-	.glyphicon {
-		font-size: 20px;
-	}
-	form > img {
-		width : 100%;
-		height : 300px
-	}
 	
-	/* .white-popup {
-	  position: relative;
-	  background: #FFF;
-	  padding: 20px;
-	  width: auto;
-	  max-width: 500px;
-	  margin: 20px auto;
-	}
-	 */
 	
-
-
-</style>
+	
+	
+	
 			
     
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
 
+<!--    @RenderBody()
+   
+   @Scripts.Render("~/bundles/jquery")
+   
+   @RenderSection("scripts", required: false) -->
+
+
+
+
+
+
+
 
 	<!-- ToolBar Start /////////////////////////////////////-->
-	<jsp:include page="/toolbar/toolbar.jsp" />
+	<%-- <jsp:include page="/toolbar/toolbar.jsp" /> --%>
    	<!-- ToolBar End /////////////////////////////////////-->
   
-
+   
 	<!--  화면구성 div Start /////////////////////////////////////-->
 	<div class="container">
 	
@@ -333,7 +329,7 @@
 		</div>
 		
 		<!-- form Start /////////////////////////////////////-->
-		<form class="form-horizontal">
+		<form name="detailForm" class="form-horizontal" id="addUserForm" enctype="multipart/form-data">
 		
 		  <div class="form-group">
 		    <label for="userId" class="col-sm-offset-1 col-sm-3 control-label">아 이 디</label>
@@ -384,17 +380,29 @@
 		  <div class="form-group">
 		    <label for="uploadFile" class="col-sm-offset-1 col-sm-3 control-label">프로필이미지</label>
 		    <div class="col-sm-4">
-		      <input type="file" class="form-control" id="uploadFile" name="uploadFile" >
+		      <input type="file" class="form-control" id="uploadFile" name="uploadFile"  placeholder="사진을 올려주세요" >
 		    </div>
 		  </div>
 		  
-		  <div class="form-group">
+	     <!--  <div class="form-group">
+		    <label for="birth" class="col-sm-offset-1 col-sm-3 control-label">생년월일</label>
+		    <div class="col-sm-4">
+		    <input type="text" id="datepicker" class="form-control" readonly="readonly" name="birth" onchange="getAge();">
+		    </div>
+		  </div> -->
+		  
+		<!--     <div class="form-group">
 		    <label for="birth" class="col-sm-offset-1 col-sm-3 control-label">생년월일</label>
 		    <div class="col-sm-4">
 		    <input type="text" id="datepicker" class="form-control"  readonly="readonly" name="birth" onchange="getAge();" >
+		    <img src="/resources/image/buttonImage/ct_icon_date.gif" width="15" height="15" 
+			onclick="show_calendar('document.detailForm.birth', document.detailForm.birth.value)"/>
+		    
 		    </div>
-		  </div>
-		  <input type="hidden" name="age">
+		  </div>  -->
+		  
+		  
+		
 		
 		  
 	<div class="form-group">
@@ -407,6 +415,10 @@
         </span>
 	</div>
 	
+	<!--   <input type="hidden" name="age"> -->
+	
+	  
+
 	
 		 
 		  <div class="form-group">

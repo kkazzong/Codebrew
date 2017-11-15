@@ -297,6 +297,10 @@ public class UserRestController {
 		
 		userService.updateCoconut(user);
 		
+		
+		User dbUser=userService.getUser(user.getUserId());
+		session.setAttribute("user", dbUser);
+		
 		return user;
 	}
 	
@@ -330,7 +334,7 @@ public class UserRestController {
 	
 	@RequestMapping(value="json/updateCoconut/{userId}/{flag}", method=RequestMethod.GET)
 	public User updateCoconut(@PathVariable("userId") String userId,
-			@PathVariable("flag") String flag)throws Exception{
+			@PathVariable("flag") String flag, HttpSession session)throws Exception{
 		
 		System.out.println("/userRest/json/updateCoconut : POST");
 		System.out.println("flag->>>>>"+flag);
@@ -351,6 +355,9 @@ public class UserRestController {
 		}
 		
 		userService.updateCoconut(user);
+		
+		User dbUser=userService.getUser(user.getUserId());
+		session.setAttribute("user", dbUser);
 		
 		return user;
 	}  

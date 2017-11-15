@@ -49,7 +49,12 @@
 			<mvc:mapping path="/chat/getChattingList"/>
 			<mvc:mapping path="/myPage/getMyPage"/>
 			<!-- 로그인안한 회원이어도 접근 가능 -->
+			<mvc:exclude-mapping path="/user/addUser"/>
+			<mvc:exclude-mapping path="/user/updateUser"/>
+			<mvc:exclude-mapping path="/user/addExtraUser"/>
+			<mvc:exclude-mapping path="/user/confirmUser"/>
 			<mvc:exclude-mapping path="/user/kakaoLogin"/>
+			
 			<mvc:exclude-mapping path="/festival/getFestivalDB"/>
 			<mvc:exclude-mapping path="/festival/getFestivalListDB"/>
 			<mvc:exclude-mapping path="/statistics/getFestivalZzim"/>
