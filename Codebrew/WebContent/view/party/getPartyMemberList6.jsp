@@ -166,9 +166,11 @@
 							  			/* 파티 멤버 리스트 출력*/
 							  			var partyMemberList =/* "<p class='userDiv'>" */
 							  								"<div class='row' id='userDiv'>"
-															+"<input type='hidden' id='userId' name='userId' value='"+JSONData.list[i].user.userId+"'>"
-															+"<div class='col-xs-2' id='userImage'>"
+															/* +"<div class='col-xs-2' id='userImage'>" */
+															+"<div class='col-xs-2 userImageProfile' id='userImage'>"
 																+"<img class='img-circle' src='/resources/uploadFile/"+JSONData.list[i].user.profileImage+"' width='50' height='50'>"
+																/* +"<input type='hidden' id='userId' name='userId' value='"+JSONData.list[i].user.userId+"'>" */
+																+"<input type='hidden' id='userId' name='userMemberId' value='"+JSONData.list[i].user.userId+"'>"
 															+"</div>"
 															+"<div class='col-xs-7' id='userNick'>"
 															+JSONData.list[i].user.nickname
@@ -180,7 +182,16 @@
 															+"<hr>"
 															/* +"</p>" */;
 											
-										$("form.form-horizontal-1").append(partyMemberList); 
+										$("form.form-horizontal-1").append(partyMemberList).find(".userImageProfile").on("click" , function() {	
+											 //alert("click");
+											 
+											 //var userId = $('input[name=userId]', $(this)).val();
+											 var userId = $(this).find('input[name=userMemberId]').val();
+											alert(userId);
+											
+											self.location="/myPage/getMyPage?requestId="+userId;
+									
+										});; 
 										console.log(partyMemberList);
 										
 										
@@ -359,7 +370,7 @@
 		
 		//============= "주최자"  Event 처리 및  연결 =============
 		$(function(){
-			 $("#userDiv" ).each(function(){}).on("click" , function() {	
+			 $(".userImageProfile" ).each(function(){}).on("click" , function() {	
 				 alert("click");
 			 
 				 var userId = $('input[name=userId]', $(this)).val();

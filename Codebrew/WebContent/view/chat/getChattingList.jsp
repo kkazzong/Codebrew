@@ -34,14 +34,15 @@
 			$.ajax({
 				
 				url : "/partyRest/json/getMyPartyList",
-				method : "POST",
+				/* method : "POST", */
+				method : "GET",
 				headers : {
 					"Accept" : "application/json",
 					"Content-Type" : "application/json"
 				},
-				data : JSON.stringify({
+				/* data : JSON.stringify({
 					searchCondition : 4
-				}),
+				}), */
 				dataType : "json",
 				success : function(JSONData) {
 					//console.log(JSON.stringify(JSONData.list));

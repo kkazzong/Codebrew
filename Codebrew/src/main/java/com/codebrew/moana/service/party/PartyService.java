@@ -20,6 +20,8 @@ public interface PartyService {
 	
 	public Map<String, Object> getMyPartyList(Search search, String userId) throws Exception;
 	
+	public Map<String, Object> getMyPartyListByUserId(String userId) throws Exception;
+	
 	/////////////////////////////////////////////////////////////////////////////
 	
 	public Party joinParty(PartyMember partyMember) throws Exception;

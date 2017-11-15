@@ -89,6 +89,12 @@ public class PartyDAOImpl implements PartyDAO {
 		
 		return sqlSession.selectList("PartyMapper.getMyPartyList", map);
 	}
+	
+	@Override
+	public List<Party> getMyPartyListByUserId(String userId) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("PartyMapper.getMyPartyListByUserId", userId);
+	}
 
 
 	@Override
@@ -107,6 +113,12 @@ public class PartyDAOImpl implements PartyDAO {
 		map.put("search", search);
 		
 		return sqlSession.selectOne("PartyMapper.getMyTotalCount", map);
+	}
+	
+	@Override
+	public int getMyTotalCountByUserId(String userId) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("PartyMapper.getMyTotalCountByUserId", userId);
 	}
 	
 	///////////////////////////////////////////////////////////////////////////

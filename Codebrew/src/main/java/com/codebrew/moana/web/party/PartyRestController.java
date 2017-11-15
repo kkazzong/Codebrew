@@ -88,6 +88,43 @@ public class PartyRestController {
 	}
 	
 	
+	@RequestMapping( value="json/getMyPartyList", method=RequestMethod.GET)
+	public Map<String, Object> getMyPartyList( HttpSession session ) throws Exception {
+		
+		System.out.println("\n>>> json/party/getMyPartyList :: GET start <<<");
+		
+		Search search = new Search();
+		
+		if(search.getCurrentPage() == 0){
+			search.setCurrentPage(1);
+		}
+		search.setPageSize(pageSize);
+		search.setSearchCondition("4");
+		
+		System.out.println("\n<<< json/party/getMyPartyList :: GET :: search\n"+search);
+		
+		String userId = ((User)session.getAttribute("user")).getUserId();
+		System.out.println("\n<<< json/party/getMyPartyList :: GET :: userId\n"+userId);
+		
+		
+		//Business Logic
+		Map<String, Object> map = partyService.getMyPartyListByUserId(userId);
+		
+		Page resultPage = new Page(search.getCurrentPage(),((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+		
+		
+		//Model(data) & View(jsp)
+		/*ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("list", map.get("list"));
+		modelAndView.addObject("resultPage", resultPage);
+		modelAndView.addObject("search", search);*/
+	    /*modelAndView.setViewName("forward:/view/party/getMyPartyList.jsp");*/
+		/*modelAndView.setViewName("forward:/view/party/getMyPartyList3.jsp");
+		return modelAndView;*/
+		
+		return map;
+	}
+	
 	
 	@RequestMapping( value="json/getMyPartyList", method= RequestMethod.POST)
 	public Map<String,Object> getMyPartyList( @ModelAttribute("search") Search search, HttpSession session) throws Exception{

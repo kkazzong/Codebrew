@@ -117,6 +117,19 @@ public class PartyServiceImpl implements PartyService {
 		
 		return map;
 	}
+	
+	@Override
+	public Map<String, Object> getMyPartyListByUserId(String userId) throws Exception {
+		// TODO Auto-generated method stub
+		List<Party> list = partyDAO.getMyPartyListByUserId(userId);
+		int totalCount = partyDAO.getMyTotalCountByUserId(userId);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list );
+		map.put("totalCount", new Integer(totalCount));
+		
+		return map;
+	}
 
 	/////////////////////////////////////////////////////////////////////////////////
 	
