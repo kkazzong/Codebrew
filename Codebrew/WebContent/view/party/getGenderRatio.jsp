@@ -214,81 +214,57 @@
 				
 				console.log("코코넛 차감후 파티 비율 보기 실행");
 				
-				swal.queue([{
-					 title: '코코넛을 사용해 파티 참여자의 비율을 확인할 수 있어요!',
-					  text: "코코넛 3개를 사용하시겠습니까?",
-					  type: 'info',
-					  showCancelButton: true,
-					  confirmButtonColor: '#9adbf9',
-					  cancelButtonColor: '#b5bcbf',
-					  confirmButtonText: '네!',
-					  cancelButtonText: '아니오',
-					  showLoaderOnConfirm: true,
-					  preConfirm: function () {
-					    return new Promise(function (resolve) {
+				var coconutCount = ${user.coconutCount};
+				
+				if( coconutCount>3){
+					swal.queue([{
+						 title: '코코넛을 사용해\n파티 참여자의 비율을\n확인해보세요!',
+						  text: '현재 코코넛 '+coconutCount+'개를 보유하고 있습니다. 코코넛 3개를 사용하시겠습니까?',
+						  type: 'info',
+						  showCancelButton: true,
+						  confirmButtonColor: '#9adbf9',
+						  cancelButtonColor: '#b5bcbf',
+						  confirmButtonText: '네!',
+						  cancelButtonText: '아니오',
+						  showLoaderOnConfirm: true,
+						  preConfirm: function () {
+						    return new Promise(function (resolve) {
+						    	
+						    	$.ajax({
+						    	  			url: '/userRest/json/updateCoconut/1',
+					                        method : "POST",
+					                        headers: { 
+					                            'Accept': 'application/json',
+					                            'Content-Type': 'application/json' 
+					                        },
+					                        dataType : "json",
+					                        
+					                        success: function(JSONData){
+					                        	console.log(status);
+										 		console.log("JSONData : "+JSON.stringify(JSONData));
+					                        	
+					                        }
+					                    }
+					            ).done(function (data) {
+						        	$("#ratioModal").modal('show');
+						            resolve()
+						        })
 					    	
-					    	$.ajax({
-					    	  			url: '/userRest/json/updateCoconut/1',
-				                        method : "POST",
-				                        headers: { 
-				                            'Accept': 'application/json',
-				                            'Content-Type': 'application/json' 
-				                        },
-				                        dataType : "json",
-				                        
-				                        success: function(JSONData){
-				                        	console.log(status);
-									 		console.log("JSONData : "+JSON.stringify(JSONData));
-				                        	
-				                        }
-				                    }
-				            ).done(function (data) {
-					        	$("#ratioModal").modal('show');
-					            resolve()
-					        })
-					    	
-					    	/* $.ajax({
-					    		url: "/userRest/json/updateCoconut/"+sessionId+"/1",
-					    		method : "GET",
-					    		headers : {
-									"Accept" : "application/json",
-									"Content-Type" : "application/json"
-								},
-								dataType : "json" ,
-					    		success: function(JSONData){
-		                        	console.log(status);
-							 		console.log("JSONData : "+JSON.stringify(JSONData));
-								}
-					    		})
-					        .done(function (data) {
-					        	$("#ratioModal").modal('show');
-					            resolve()
-					        }) */ 
 					    })
 					  }
 					}])
 					
+				}else{
 					
-				/* swal({
-					  title: '코코넛을 사용해 파티 참여자의 비율을 확인할 수 있어요!',
-					  text: "코코넛 3개를 사용하시겠습니까?",
-					  type: 'info',
-					  showCancelButton: true,
-					  confirmButtonColor: '#9adbf9',
-					  cancelButtonColor: '#b5bcbf',
-					  confirmButtonText: '네!',
-					  cancelButtonText: '아니오' 
+					swal({
+						 title: '코코넛 부족..',
+						  text: '파티 참여자 비율을 확인하려면 코코넛 3개가 필요합니다. 부족한 코코넛은 후기 작성을 통해 얻을 수 있어요!',
+						  type: 'error'
 					})
-					.then(function () {
-						
-						$("#ratioModal").modal('show');
-						
-						$.get('userRest/json/updateCoconut/'+sessionId+'/1')
-				        .done(function (data) {
-				          swal.insertQueueStep(data.ip)
-				          resolve()
-				        })
-					}) */
+				}
+					
+					
+				
 				
 			}else{
 				/* 로그인 하지 않은 경우 */

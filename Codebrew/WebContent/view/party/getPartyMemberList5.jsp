@@ -58,7 +58,7 @@
 																+"<img class='img-circle' src='/resources/uploadFile/"+JSONData.list[i].user.profileImage+"' width='50' height='50'>"
 															+"</div>"
 															+"<div class='col-xs-7' id='userNick'>"
-															+JSONData.list[i].user.nickname+"&nbsp;"+"( "+JSONData.list[i].user.userId+" )"
+															+JSONData.list[i].user.nickname
 															+"</div>"
 															+"<div class='col-xs-3' id='userRole'>"
 														 	+JSONData.list[i].role 
@@ -194,6 +194,7 @@
 								  				var joinParty = "<button type='button' class='btn btn-primary btn-block' id='afterPartyBtn'>애프터파티 참여</button>"
 								  					
 								  				$("#partyButtonDiv").html(joinParty).on("click", function() {
+								  					/* alert('애프터 파티를 참여하시겠습니까?'); */
 								  					self.location="/party/joinParty?partyNo=${party.partyNo}";
 								  				});
 							  						
@@ -204,8 +205,25 @@
 										    		var cancelParty = "<button type='button' class='btn btn-primary btn-block'>파티참여취소</button>";
 										    		
 										    		$("#partyButtonDiv").html(cancelParty).on("click", function() {
-														
-										    			self.location="/party/cancelParty?partyNo=${party.partyNo}";
+										    			/* alert('애프터 파티 참여를 취소하시겠습니까?'); */
+										    			
+										    			swal({
+										    				  title: '애프터 파티 취소!',
+															  text: "파티 참여를 취소하시겠습니까?",
+															  type: 'warning',
+															  showCancelButton: true,
+															  confirmButtonColor: '#9adbf9',
+															  cancelButtonColor: '#b5bcbf',
+															  confirmButtonText: '네!',
+															  cancelButtonText: '아니오',
+															 
+															}).then(function () {
+															  	
+																self.location='/party/cancelParty?partyNo=${party.partyNo}'
+															 
+															})
+															
+															/* self.location='/party/cancelParty?partyNo=${party.partyNo}'; */
 										    			
 													});
 										    		
@@ -224,7 +242,7 @@
 										    		var purchaseTicket = "<button type='button' class='btn btn-primary btn-block'>파티티켓구매</button>"
 									    			
 										    		$("#partyButtonDiv").html(purchaseTicket).on("click", function() {
-									    				
+										    			alert('파티 티켓을  구매하시겠습니까?');
 														var partyNo = $("#partyNo").val();
 														console.log("파티티켓구매 :: partyNo :: "+partyNo);
 														
@@ -245,6 +263,7 @@
 									    			fncGetPurchaseNo(sessionId, partyNo);
 									    			/// 파티참여취소 버튼 클릭 시 바로 getPurchase로 이동
 									    			$("#partyButtonDiv").html(cancelPurchase).on("click", function(){
+									    				alert('티켓구매를 취소하시겠습니까?');
 									    				self.location = "/purchase/getPurchase?purchaseNo="+purchaseNo;
 									    			});
 										    	

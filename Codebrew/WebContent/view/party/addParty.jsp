@@ -40,6 +40,7 @@
 			var ticketCount=$("input[name='ticketCount']").val();
 			var ticketPrice=$("input[name='ticketPrice']").val();
 			var festivalNo=$("input[name='festival.festivalNo']").val();
+			var partyFlag=$("#partyFlag").val();
 			
 			var checkNum = /\d/g;
 			
@@ -67,7 +68,7 @@
 				alert("파티장소는 반드시 입력하셔야 합니다.");
 				return;
 			}
-			if(festivalNo == 0){
+			if(partyFlag == '1'){
 				if(ticketCount != 0 && checkNum.test(ticketCount) == false){
 					alert("티켓 수량은 반드시 숫자로 입력하셔야 합니다.");
 					return;
@@ -81,7 +82,11 @@
 						alert("티켓 수량이 무제한인 경우 티켓 가격을 반드시 입력하셔야 합니다.");
 						return;
 				}
-			}	
+			}
+			if(partyFlag =='2' && festivalNo == 0){
+				alert("애프터 파티의 경우 축제를 반드시 입력하셔야 합니다.");
+				return;
+			}
 			
 			
 			$("form").attr("method", "POST").attr("action", "/party/addParty").submit();

@@ -209,6 +209,12 @@
 	padding-top: 70px;
 	background-color: #f2f4f6;
 	}
+	
+	h3 {
+		white-space:nowrap;
+		text-overflow:ellipsis;
+		overflow:hidden;
+	}
 	</style>
 	
 </head>
