@@ -293,6 +293,8 @@
 			var purchaseFlag = $("input:hidden[name='purchaseFlag']").val(); //1-축제,2-파티
 			console.log("축제입니까 파티입니까 : "+purchaseFlag);
 			
+			
+			
 			//구매수량 선택 시
 			$("select").on("change",function(){
 				
@@ -301,7 +303,10 @@
 					$("#purchase").removeAttr("disabled");
 				}
 				
-				selectedCount = $("select option:selected").val();
+				//selectedCount = $("select option:selected").val();
+				selectedCount = $("#countSelect option:selected").val();
+				//alert($("select").html());
+				//alert($("select option:selected").html());
 				purchasePrice = selectedCount * ticketPrice;
 				fncCheckPurchase(ticketPrice, selectedCount, purchasePrice);
 				
@@ -310,6 +315,12 @@
 			//카카오페이 클릭 시
 			$("#kakaoPay").on("click",function(event){
 				
+				if(selectedCount == undefined) {
+					selectedCount = $("#countSelect").val();
+				}
+				if(purchasePrice == undefined) {
+					purchasePrice = $("#purchasePrice").html().trim();
+				}
 				fncPayment(selectedCount, purchasePrice, purchaseFlag, event);
 				
 			});
@@ -317,6 +328,12 @@
 			//핸드폰 결제 클릭 시
 			$("#danal").on("click",function(){
 				
+				if(selectedCount == undefined) {
+					selectedCount = $("#countSelect").val();
+				}
+				if(purchasePrice == undefined) {
+					purchasePrice = $("#purchasePrice").html().trim();
+				}
 				fncPhonePay(selectedCount, purchasePrice, purchaseFlag);
 				
 			});
@@ -324,6 +341,12 @@
 			//계좌이체 클릭 시
 			$("#bank").on("click",function(){
 				
+				if(selectedCount == undefined) {
+					selectedCount = $("#countSelect").val();
+				}
+				if(purchasePrice == undefined) {
+					purchasePrice = $("#purchasePrice").html().trim();
+				}
 				fncReadyTransfer(selectedCount, purchasePrice, purchaseFlag);
 
 			});
@@ -337,8 +360,12 @@
 	
 					selectedCount = $("#purchaseCount").html().trim();
 					$("input:hidden[name='purchaseCount']").val(selectedCount);
+					if(purchasePrice == undefined) {
+						purchasePrice = $("#purchasePrice").html().trim();
+					}
 					$("input:hidden[name='purchasePrice']").val(AddComma(purchasePrice));
-					console.log(selectedCount+"개, "+purchasePrice+"원");
+					
+					alert(selectedCount+"개, "+purchasePrice+"원");
 					$("form").attr("method", "POST").attr("action", "/purchase/addPurchase").submit();
 					
 				} else {
@@ -692,16 +719,26 @@
 											<div class="col-md-6 text-center">
 												<h4>수량</h4>
 											</div>
-											<div class="col-md-6 text-center">
-												<div class="form-group form-inline">
-													<select id="countSelect" class="form-control input-lg" name="ticketCount">
-														<option value="" selected>선택하세요</option>
-															<c:forEach begin="1" end="${ticket.ticketCount}" var="i" step="1">
-																<option>${i}</option>
-															</c:forEach>
-													</select>
+											<c:if test="${!empty ticket.festival}">
+												<div class="col-md-6 text-center">
+													<div class="form-group form-inline">
+														<select id="countSelect" class="form-control input-lg" name="ticketCount">
+															<option value="" selected>선택하세요</option>
+																<c:forEach begin="1" end="${ticket.ticketCount}" var="i" step="1">
+																	<option>${i}</option>
+																</c:forEach>
+														</select>
+													</div>
 												</div>
-											</div>
+											</c:if>
+											<c:if test="${!empty ticket.party}">
+												<div class="col-md-6 text-center">
+													<div class="form-group form-inline">
+														<input id="countSelect" class="form-control" type="text" readonly="readonly" value="1">장 <br>
+														<small>남은 수량 : ${ticket.ticketCount - 1}장</small>
+													</div>
+												</div>
+											</c:if>
 										</div>
 									</c:if>
 									<!-- 무제한티켓이면서 수량 0일때 -->	
@@ -711,17 +748,27 @@
 												<div class="col-md-6 text-center">
 													<h4>수량</h4>
 												</div>
+												<c:if test="${!empty ticket.festival }">
+													<div class="col-md-6 text-center">
+														<div class="input-group">
+															<span class="input-group-addon">
+																<span id="minus" class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+															</span>
+															<input type="text" class="form-control" name="ticketCount" value="0" placeholder="0" readonly>
+															<span class="input-group-addon">
+																<span id="plus" class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+															</span>
+														</div>
+													</div>
+												</c:if>
+												<c:if test="${!empty ticket.party}">
 												<div class="col-md-6 text-center">
-													<div class="input-group">
-														<span class="input-group-addon">
-															<span id="minus" class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-														</span>
-														<input type="text" class="form-control" name="ticketCount" value="0" placeholder="0" readonly>
-														<span class="input-group-addon">
-															<span id="plus" class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-														</span>
+													<div class="form-group form-inline">
+														<input id="countSelect" class="form-control" type="text" readonly="readonly" value="1">장 <br>
+														<small>남은 수량 : 무제한</small>
 													</div>
 												</div>
+											</c:if>
 											</div>
 										</div>
 									</c:if>
@@ -751,13 +798,23 @@
 									<td class="col-md-3"><h4>아이디</h4></td>
 									<td><h4>${user.userId}</h4></td>
 								</tr>
-								<tr>
-									<td class="col-md-3"><h4>구매수량</h4></td>
-									<td><h4><span id="purchaseCount">0</span>장</h4></td>
-								</tr>
+									<tr>
+										<td class="col-md-3"><h4>구매수량</h4></td>
+										<c:if test="${!empty ticket.festival}">
+											<td><h4><span id="purchaseCount">0</span>장</h4></td>
+										</c:if>
+										<c:if test="${!empty ticket.party}">
+											<td><h4><span id="purchaseCount">1</span>장</h4></td>
+										</c:if>
+									</tr>
 								<tr>
 									<td class="col-md-3"><h4>결제금액</h4></td>
-									<td><h4><span id="purchasePrice">0</span>원</h4></td>
+									<c:if test="${!empty ticket.festival}">
+										<td><h4><span id="purchasePrice">0</span>원</h4></td>
+									</c:if>
+									<c:if test="${!empty ticket.party}">
+										<td><h4><span id="purchasePrice">${ticket.ticketPrice}</span>원</h4></td>
+									</c:if>
 								</tr>
 							</table>
 						</div>
@@ -779,9 +836,16 @@
 								<div class="panel panel-default">
 									<div class="panel-body">
 										카카오페이
-										<button id="kakaoPay" class="btn btn-link btn-block" disabled="disabled" type="button">
-											 <img src="../../resources/image/buttonImage/kakaopay.png">
-										</button>
+										<c:if test="${!empty ticket.festival}">
+											<button id="kakaoPay" class="btn btn-link btn-block" disabled="disabled" type="button">
+												 <img src="../../resources/image/buttonImage/kakaopay.png">
+											</button>
+										</c:if>
+										<c:if test="${!empty ticket.party}">
+											<button id="kakaoPay" class="btn btn-link btn-block" type="button">
+												 <img src="../../resources/image/buttonImage/kakaopay.png">
+											</button>
+										</c:if>
 									</div>
 								</div>
 							</div>
@@ -791,9 +855,16 @@
 								<div class="panel panel-default">
 									<div class="panel-body">
 										휴대폰결제
-										<button id="danal" class="thumbnail btn btn-link btn-block" disabled="disabled" type="button">
-											<img width="120" height="51" src="../../resources/image/buttonImage/danal.jpg">
-										</button>
+										<c:if test="${!empty ticket.festival}">
+											<button id="danal" class="thumbnail btn btn-link btn-block" disabled="disabled" type="button">
+												<img width="120" height="51" src="../../resources/image/buttonImage/danal.jpg">
+											</button>
+										</c:if>
+										<c:if test="${!empty ticket.party}">
+											<button id="danal" class="thumbnail btn btn-link btn-block" type="button">
+												<img width="120" height="51" src="../../resources/image/buttonImage/danal.jpg">
+											</button>
+										</c:if>
 									</div>
 								 </div>
 							</div>
@@ -812,9 +883,16 @@
 								<button class="btn btn-default btn-lg btn-block" type="button">뒤로가기</button>
 							</div>
 							<div class="col-md-6">
-								<button id="purchase" class="btn btn-primary btn-lg btn-block" disabled="disabled" type="button">
-									구매하기
-								</button>
+								<c:if test="${!empty ticket.festival}">
+									<button id="purchase" class="btn btn-primary btn-lg btn-block" disabled="disabled" type="button">
+										구매하기
+									</button>
+								</c:if>
+								<c:if test="${!empty ticket.party}">
+									<button id="purchase" class="btn btn-primary btn-lg btn-block" type="button">
+										구매하기
+									</button>
+								</c:if>
 							</div>
 						</div>
 					</c:if>
