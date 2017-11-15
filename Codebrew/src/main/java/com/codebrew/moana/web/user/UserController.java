@@ -105,6 +105,16 @@ public class UserController {
 	 System.out.println("user 정보는?"+user);
 	 System.out.println("dbUser정보는? "+dbUser);
 	 
+	 ModelAndView modelAndView = new ModelAndView();
+	 
+	 if(dbUser ==null) {
+		 
+		 modelAndView.setViewName("redirect:/user/findUser.jsp"); 
+	 }
+	 
+	 
+	 
+	 
 		//탈퇴한 회원 걸러줌
 	   if(dbUser.getRole().indexOf("d")== -1) {
 		
@@ -114,7 +124,7 @@ public class UserController {
 		
 	   }
 
-		ModelAndView modelAndView = new ModelAndView();
+		//ModelAndView modelAndView = new ModelAndView();
 		// modelAndView.addObject("user", user);//??
 		modelAndView.setViewName("redirect:/index.jsp");
 		return modelAndView;
@@ -175,15 +185,15 @@ public class UserController {
 		
 		User dbUser = userService.getUser(user.getUserId());
 		
-		if(dbUser.getUserId() != null) {
+		if(dbUser.getUserId() == null) {
 			
-			System.out.println("이미 가입한 회원"+dbUser.getUserId());
-			userService.updateUser(dbUser);
+		     System.out.println("새로가입한 회원임"+user.getUserId());
+			  userService.addUser(user);
 			
 		}else {
 		
-          System.out.println("새로가입한 회원임"+user.getUserId());
-		  userService.addUser(user);
+			System.out.println("이미 가입한 회원"+dbUser.getUserId());
+			userService.updateUser(dbUser);
 		
 		} 
 
@@ -314,8 +324,8 @@ public class UserController {
 		Map<String, Object> map = userService.getUserList(search);
 		 
 
-		Page resultPage = new Page(search.getCurrentPage(), ((Integer) map.get("totalCount")).intValue(), pageSize,
-				pageUnit);
+		Page resultPage = new Page(search.getCurrentPage(), ((Integer) map.get("totalCount")).intValue(), pageUnit,
+				pageSize);
 		 
 		/* Page resultPage = new Page(search.getCurrentPage(), ((Integer) map.get("totalCount")).intValue(), search.getPageSize(),
 					pageUnit);*/
