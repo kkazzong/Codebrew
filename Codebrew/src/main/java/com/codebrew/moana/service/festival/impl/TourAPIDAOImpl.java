@@ -39,28 +39,28 @@ public class TourAPIDAOImpl implements FestivalDAO {
 	private SqlSession sqlSession;
 
 	@Value("#{keyProperties['tourKey']}")
-	String tourKey;
+	private String tourKey;
 
 	@Value("#{keyProperties['tourURL']}")
-	String tourURL;
+	private String tourURL;
 
 	@Value("#{keyProperties['detailCommonBasicForm']}")
-	String detailCommonBasicForm;
+	private String detailCommonBasicForm;
 
 	@Value("#{keyProperties['detailIntroBasicForm']}")
-	String detailIntroBasicForm;
+	private String detailIntroBasicForm;
 
 	@Value("#{keyProperties['searchFestivalBasicForm']}")
-	String searchFestivalBasicForm;
+	private String searchFestivalBasicForm;
 
 	@Value("#{keyProperties['searchKeywordBasicForm']}")
-	String searchKeywordBasicForm;
+	private String searchKeywordBasicForm;
 
 	@Value("#{keyProperties['openWeatherMapURL']}")
-	String openWeatherMapURL;
+	private String openWeatherMapURL;
 
 	@Value("#{keyProperties['openWeatherMapKey']}")
-	String openWeatherMapKey;
+	private String openWeatherMapKey;
 
 	private Festival festival;
 	private Weather weather;

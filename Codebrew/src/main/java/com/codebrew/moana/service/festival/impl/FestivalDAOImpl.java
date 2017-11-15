@@ -58,7 +58,6 @@ public class FestivalDAOImpl implements FestivalDAO {
 
 		return sqlSession.selectOne("FestivalMapper.getTotalCount", search);
 	}
-	
 
 	@Override
 	public Festival getFestivalDB(int festivalNo) throws Exception {
