@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -432,6 +431,7 @@
 				var members = message.members;
 				var roomId = message.roomId;
 				var senNicks = message.senNicks;
+				var roomName = message.roomName;
 				var img = "/resources/image/chat/group.png"; ///default 이미지
 				//var roomName = partyName;
 				
@@ -446,6 +446,7 @@
 								+'</div>'
 								+'</div>'
 								+'<div class="col-md-10">'
+								+'<div>'+roomName+'</div>'
 								+'<div>'+senNicks+'</div>'
 								+'<div id="'+roomId+'" class = "groupmessage">'
 								 +'<p><h4>' + message.data + '</h4></p>' 
@@ -582,7 +583,7 @@
 	
 	
 	<!-- 로그인시 서버에 보낼 정보 -->
-	<input type = "hidden" id = "hostInput" value = "localhost">
+	<input type = "hidden" id = "hostInput" value = "192.168.0.54">
 	<input type = "hidden" id = "portInput" value = "3000">
 	<!-- 보낼 유저 정보 -->
 	<input type = "hidden" id = "sender" value="${sender.userId}">
