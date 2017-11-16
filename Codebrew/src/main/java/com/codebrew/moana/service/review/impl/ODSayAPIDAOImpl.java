@@ -130,6 +130,35 @@ public class ODSayAPIDAOImpl implements ReviewDAO {
 		List<String> busNoList = new ArrayList<String>();
 		List<String> subwayList = new ArrayList<String>();
 		
+		/*
+		버스노선 타입 현재 2017-11-16 기준 TTL : 16Type
+		type	노선명	type	노선명
+		1		일반		12		지선
+		2		좌석		13		순환
+		3		마을버스	14		광역
+		4		직행좌석	15		급행
+		5		공항버스	20		농어촌버스
+		6		간선급행	21		제주도 시외형버스
+		10		외곽		22		경기도 시외형버스
+		11		간선		26		급행간선
+		*/
+		List<String> busNoList1 = new ArrayList<String>();
+		List<String> busNoList2 = new ArrayList<String>();
+		List<String> busNoList3 = new ArrayList<String>();
+		List<String> busNoList4 = new ArrayList<String>();
+		List<String> busNoList5 = new ArrayList<String>();
+		List<String> busNoList6 = new ArrayList<String>();
+		List<String> busNoList10 = new ArrayList<String>();
+		List<String> busNoList11 = new ArrayList<String>();
+		List<String> busNoList12 = new ArrayList<String>();
+		List<String> busNoList13 = new ArrayList<String>();
+		List<String> busNoList14 = new ArrayList<String>();
+		List<String> busNoList15 = new ArrayList<String>();
+		List<String> busNoList20 = new ArrayList<String>();
+		List<String> busNoList21 = new ArrayList<String>();
+		List<String> busNoList22 = new ArrayList<String>();
+		List<String> busNoList26 = new ArrayList<String>();
+		
 //		System.out.println("stationClassList에서 값 빼오기 테스트 :: "+stationClassList.get(2));
 		
 		for(int i = 0; i < stationIDList.size(); i++){
@@ -177,14 +206,58 @@ public class ODSayAPIDAOImpl implements ReviewDAO {
 				JSONArray busResultJsonArray = (JSONArray)busResultJsonObj.get("lane");
 //				System.out.println("\n\nbusResultJsonArray :: \n"+busResultJsonArray);
 				
-				for(int j = 0; j < busResultJsonArray.size(); j++){
-					JSONObject returnBusNoJsonObj = (JSONObject)busResultJsonArray.get(j);
+//				System.out.println("\n\nbusResultJsonArray.size() :: \n"+busResultJsonArray.size()+"\n");
+				
+				for(int j = 0; j < busResultJsonArray.size(); j++){ 
+					JSONObject returnBusInfoJsonObj = (JSONObject)busResultJsonArray.get(j);
 //					System.out.println("\n\n이 버스정류장을 지나는 버스 :: "+(i+1)+"번 째 버스번호 :: "+returnBusNoJsonObj.get("busNo"));
-					if(!busNoList.contains(returnBusNoJsonObj.get("busNo").toString())){ // 중복체크
-						busNoList.add(returnBusNoJsonObj.get("busNo").toString()); // add
+					
+//					System.out.println("\nfor문안에 있는 버스하나의 타입 :: \n"+returnBusInfoJsonObj.get("type").toString()+"\n");
+//					System.out.println("\nfor문안에 있는 버스하나의 넘버 :: \n"+returnBusInfoJsonObj.get("busNo").toString()+"\n");
+					
+					//busNoAndBusTypeMap.put(returnBusInfoJsonObj.get("type").toString(), returnBusInfoJsonObj.get("busNo").toString()); // map에 type와 busNo를 매핑하여 넣음
+					
+					if(!busNoList.contains(returnBusInfoJsonObj.get("busNo").toString())){ // 중복체크하여 없으면
+						busNoList.add(returnBusInfoJsonObj.get("busNo").toString()); // add
+
+						if(returnBusInfoJsonObj.get("type").toString().equals("1")){
+							busNoList1.add(returnBusInfoJsonObj.get("busNo").toString());
+						}else if(returnBusInfoJsonObj.get("type").toString().equals("2")){
+							busNoList2.add(returnBusInfoJsonObj.get("busNo").toString());
+						}else if(returnBusInfoJsonObj.get("type").toString().equals("3")){
+							busNoList3.add(returnBusInfoJsonObj.get("busNo").toString());
+						}else if(returnBusInfoJsonObj.get("type").toString().equals("4")){
+							busNoList4.add(returnBusInfoJsonObj.get("busNo").toString());
+						}else if(returnBusInfoJsonObj.get("type").toString().equals("5")){
+							busNoList5.add(returnBusInfoJsonObj.get("busNo").toString());
+						}else if(returnBusInfoJsonObj.get("type").toString().equals("6")){
+							busNoList6.add(returnBusInfoJsonObj.get("busNo").toString());
+						}else if(returnBusInfoJsonObj.get("type").toString().equals("10")){
+							busNoList10.add(returnBusInfoJsonObj.get("busNo").toString());
+						}else if(returnBusInfoJsonObj.get("type").toString().equals("11")){
+							busNoList11.add(returnBusInfoJsonObj.get("busNo").toString());
+						}else if(returnBusInfoJsonObj.get("type").toString().equals("12")){
+							busNoList12.add(returnBusInfoJsonObj.get("busNo").toString());
+						}else if(returnBusInfoJsonObj.get("type").toString().equals("13")){
+							busNoList13.add(returnBusInfoJsonObj.get("busNo").toString());
+						}else if(returnBusInfoJsonObj.get("type").toString().equals("14")){
+							busNoList14.add(returnBusInfoJsonObj.get("busNo").toString());
+						}else if(returnBusInfoJsonObj.get("type").toString().equals("15")){
+							busNoList15.add(returnBusInfoJsonObj.get("busNo").toString());
+						}else if(returnBusInfoJsonObj.get("type").toString().equals("20")){
+							busNoList20.add(returnBusInfoJsonObj.get("busNo").toString());
+						}else if(returnBusInfoJsonObj.get("type").toString().equals("21")){
+							busNoList21.add(returnBusInfoJsonObj.get("busNo").toString());
+						}else if(returnBusInfoJsonObj.get("type").toString().equals("22")){
+							busNoList22.add(returnBusInfoJsonObj.get("busNo").toString());
+						}else if(returnBusInfoJsonObj.get("type").toString() .equals("26")){
+							busNoList26.add(returnBusInfoJsonObj.get("busNo").toString());
+						}
+						
 					}
 				}
-
+				
+				
 			}else if(stationClassList.get(i) == 2){
 				
 				// https://api.odsay.com/api/subwayStationInfo?stationID=550
@@ -248,8 +321,24 @@ public class ODSayAPIDAOImpl implements ReviewDAO {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("stationNameList", stationNameList);
 		map.put("stationIDList", stationIDList);
-		map.put("busNoList", busNoList);
 		map.put("subwayList", subwayList);
+		//map.put("busNoList", busNoList);
+		map.put("busNoList1", busNoList1);
+		map.put("busNoList2", busNoList2);
+		map.put("busNoList3", busNoList3);
+		map.put("busNoList4", busNoList4);
+		map.put("busNoList5", busNoList5);
+		map.put("busNoList6", busNoList6);
+		map.put("busNoList10", busNoList10);
+		map.put("busNoList11", busNoList11);
+		map.put("busNoList12", busNoList12);
+		map.put("busNoList13", busNoList13);
+		map.put("busNoList14", busNoList14);
+		map.put("busNoList15", busNoList15);
+		map.put("busNoList20", busNoList20);
+		map.put("busNoList21", busNoList21);
+		map.put("busNoList22", busNoList22);
+		map.put("busNoList26", busNoList26);
 		
 		return map;
 	
