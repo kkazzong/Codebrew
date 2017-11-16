@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -467,7 +466,7 @@
 		
 		///////////////////////////////////////////////////////채팅 팝업 띄우기/////////////////////////////////////////////////////
 		function chatPopup(sender, recipient) {
-			//alert("팝업");
+			//alert("팝업 샌더-"+sender+", 리시피언트-"+recipient);
 			var url = "/chat/getChatting?sender="+sender+"&recipient="+recipient;
 			var title = "chatPop";
 			var status = "toolbar=no,directories=no,scrollbars=yes,resizable=no,status=no,menubar=no,width=440, height=520, top=0,left=20";
@@ -582,7 +581,7 @@
 	
 	
 	<!-- 로그인시 서버에 보낼 정보 -->
-	<input type = "hidden" id = "hostInput" value = "localhost">
+	<input type = "hidden" id = "hostInput" value = "192.168.0.4">
 	<input type = "hidden" id = "portInput" value = "3000">
 	<!-- 보낼 유저 정보 -->
 	<input type = "hidden" id = "sender" value="${sender.userId}">

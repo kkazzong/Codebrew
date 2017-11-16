@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -119,6 +118,29 @@
 			
 		}
 		
+		///추가
+		function findLastChat(senders) {
+			
+			for(var i = 0; i < senders.length; i ++) {
+				
+				
+				var output = {
+						sender : senders[i].sender,
+						recipient : '${user.userId}' ////////////////나!
+				};
+				
+				console.log('[findLastChat   ]서버로 보낼 데이터 : ' + JSON.stringify(output));
+				
+				if(socket == undefined){
+					alert('서버에 연결되어 있지 않습니다. 먼저 서버에 연결하세요.');
+					return;
+				} 
+				
+				socket.emit('findLastChat', output);
+			}
+			
+		}
+		
 		/////////////////////============jQuery start================/////////////////////////
 		$(function(){
 			
@@ -220,31 +242,40 @@
 						
 						console.log("메시지 주고받은 사람--> "+message[i].senders);
 						senders = message[i].senders;
-						
+						//alert(senders[0]);
 						data = message[i].data;
 						time = message[i].time;
 						//addToDiscussion(message[i]);
 						
+						if(senders[0].sender == "${user.userId}") {
+							alert("센더가 나다")
+							senders[0] = {
+									sender : message[i].recipient,
+									senNick : message[i].recNick
+							}
+						}
+						
+						addToDiscussion(senders[0], data, time);
+						findLastChat(senders);
 					} 
 					
-					for(var i = 0; i < senders.length; i ++) {
-						
-						addToDiscussion(senders[i], data, time);
-						
-						var output = {
-								sender : senders[i].sender,
-								recipient : '${user.userId}' ////////////////나!
-						};
-						
-						console.log('[findLastChat   ]서버로 보낼 데이터 : ' + JSON.stringify(output));
-						
-						if(socket == undefined){
-							alert('서버에 연결되어 있지 않습니다. 먼저 서버에 연결하세요.');
-							return;
-						} 
-						
-						socket.emit('findLastChat', output);
-					}
+						/* for(var i = 0; i < senders.length; i ++) {
+							
+							
+							var output = {
+									sender : senders[i].sender,
+									recipient : '${user.userId}' ////////////////나!
+							};
+							
+							console.log('[findLastChat   ]서버로 보낼 데이터 : ' + JSON.stringify(output));
+							
+							if(socket == undefined){
+								alert('서버에 연결되어 있지 않습니다. 먼저 서버에 연결하세요.');
+								return;
+							} 
+							
+							socket.emit('findLastChat', output);
+						} */
 					
 				});
 				
@@ -467,7 +498,7 @@
 		
 		///////////////////////////////////////////////////////채팅 팝업 띄우기/////////////////////////////////////////////////////
 		function chatPopup(sender, recipient) {
-			//alert("팝업");
+			//alert("팝업 샌더-"+sender+", 리시피언트-"+recipient);
 			var url = "/chat/getChatting?sender="+sender+"&recipient="+recipient;
 			var title = "chatPop";
 			var status = "toolbar=no,directories=no,scrollbars=yes,resizable=no,status=no,menubar=no,width=440, height=520, top=0,left=20";
@@ -567,7 +598,7 @@
 		<div class="row">
 			<div class="col-md-offset-2 col-md-6">
 				<h1>Chatting List</h1>
-				<small> ${sender.nickname}의 채팅목록</small>
+				<h3> ${sender.nickname}의 채팅목록</h3>
 			</div>
 		</div>
 		
@@ -582,7 +613,7 @@
 	
 	
 	<!-- 로그인시 서버에 보낼 정보 -->
-	<input type = "hidden" id = "hostInput" value = "localhost">
+	<input type = "hidden" id = "hostInput" value = "192.168.0.7">
 	<input type = "hidden" id = "portInput" value = "3000">
 	<!-- 보낼 유저 정보 -->
 	<input type = "hidden" id = "sender" value="${sender.userId}">
