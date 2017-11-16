@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -617,7 +616,7 @@
 	
 	
 	<!-- 로그인시 서버에 보낼 정보 -->
-	<input type = "hidden" id = "hostInput" value = "localhost">
+	<input type = "hidden" id = "hostInput" value = "192.168.0.54">
 	<input type = "hidden" id = "portInput" value = "3000">
 	<!-- 보낼 유저 정보 -->
 	<input type = "hidden" id = "sender" value="${sender.userId}">
