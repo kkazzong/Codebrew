@@ -164,7 +164,9 @@ public class UserController {
 
 		// 이미 데이터가 들어간거 였음 ㅜㅜ 오라클 껐다켜보기 ㅜㅜ
 		System.out.println("/user/addUser : POST");
-
+        
+		
+		System.out.println("업로드업로드위"+uploadFile);
 	
 		if(uploadFile !=null) {
 		
@@ -175,8 +177,10 @@ public class UserController {
 		 uploadFile.transferTo(file);
 		 
 		}
+		
+		System.out.println("업로드업로드아래"+uploadFile);
 		 
-
+  
 		// user.setBirth(Date.valueOf("2017-10-16")); //데이트 형식 맞게 넣어주세여
 
 		// user.setUserId(auth.getAuthId());
@@ -185,12 +189,15 @@ public class UserController {
 		
 		User dbUser = userService.getUser(user.getUserId());
 		
-		if(dbUser.getUserId() == null) {
+		
+		System.out.println("디비유저"+dbUser);
+		
+		if(dbUser == null) {//null안에 필드에 또 무언가를 찾으려고 해서 안됨 (dbUser.getUserId() == null)
 			
 		     System.out.println("새로가입한 회원임"+user.getUserId());
 			  userService.addUser(user);
 			
-		}else if(dbUser.getUserId() != null){
+		}else if(dbUser != null){
 		
 			System.out.println("이미 가입한 회원"+dbUser.getUserId());
 			userService.updateUser(dbUser);
