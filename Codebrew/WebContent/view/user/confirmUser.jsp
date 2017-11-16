@@ -88,53 +88,25 @@
 		
 	
 	
-	/*  $(function(){
-		  $(".btn:contains('확인')").on("click", function(){
-	        $("form").attr("method","POST").attr("action","/user/confirmUser").submit();
+	 $(function(){
+		$(".btn:contains('확인')").on("click", function(){
+			
+		 //var authId=$("input[name='authId']").val();
+		 //self.location = "/user/addUser";
+		//self.location = "/user/addUser?authId="+authId;//@@@@@@@@@@@@
+	    $("form").attr("method","POST").attr("action","/user/confirmUser").submit();
 		}) 	
 		
-	}); */
+	});
 		
-	
-	 
-	 
-	 var authCode = ""; //인증번호 전역변수.. 전역변수를 지정하면 메소드 안을 실행하고 나서 바뀐 값으로 또 쓸수 있다.
+	var authCode = ""; //인증번호 전역변수.. 전역변수를 지정하면 메소드 안을 실행하고 나서 바뀐 값으로 또 쓸수 있다.
 	
      $(function(){
 			
 		$(".btn:contains('인증하기')")	.on("click", function(){
 			
 			var authId=$("input[name='authId']").val();
-			var authCode=$("input[name='auchCode']").val();
-			var userId=$("input[name='authId']").val();
-			
-			
-			$.ajax({
-				type:"POST",
-				url:"/userRest/json/checkUserId", //+userId로 get방식으로 보내면 data:를 안써줘도 됨
-				//pathVariable과 GET POST 방식은 상관없다
-				data :{userId:userId},//요청과 함께 서버에 보내는 string 또는 map
-               //json.stringify({}) 이런식으로 쓰면 제이슨으로 가기 때문에 headers설정이랑 매치해줘야함 {,} 스트링타입으로 가는거
-			   dataType:"json",//서버에서 받는 데이터형식
-			    success: function(JSONData,status){
-			    	console.log(status);
-			    	console.log(JSON.stringify(JSONData)); //json string 형식으로 변환해주는거
-			    	
-		    	  if(JSONData == false){
-		    		  
-		    		  alert("데이터 트루 폴스 오냐?")
-			    		$("span.col-id-check").html("이미 가입된 아이디입니다.").css("color","blue");
-		    	  }else{
-		    		  $("span.col-id-check").remove();
-		    	  }
-			    }//success
-			})//ajax
-			
-			
-			
-			
-			
-			
+			//var authCode=$("input[name='auchCode']").val();
 			
 			alert(authId);
 			
@@ -157,14 +129,10 @@
 				alert("인증번호를 전송했습니다.");
 				console.log(JSON.stringify(JSONData));//받는정보
 				
-<<<<<<< HEAD
-				//var authCode = JSONData.authCode;//제이슨으로 받아온거
-=======
 				var authCode = JSONData.authCode;
 				 if(authCode != JSONData.authCode){
 					$("span.col-id-checkAuthCode").html("인증번호를 다시 확인해주세요").css("color","red");
 					event.preventDefault();
-					console.log("확이중..");
 					return;
 				}else{
 					/* $("span.col-id-checkAuthCode").remove(); */
@@ -174,31 +142,10 @@
 			//콘솔에 이렇게 옴
 			
 			}
->>>>>>> refs/heads/new/sungkyoung
 				
-				$(".btn:contains('확인')").on("click", function(){
-				
-				 if(authCode != JSONData.authCode){
-					$("span.col-id-checkAuthCode").html("인증번호를 다시 확인해주세요").css("color","red");
-				}else(authCode == JSONDate.authCode){
-					$("span.col-id-checkAuthCode").remove();
-					
-				  $("form").attr("method","POST").attr("action","/user/confirmUser").submit();
-				} 
-				//{"authId":"skale83@naver.com","authCode":"c067bf517dcf47aab5fff3cc3d22f79e"}
-			
-			  })
-			  
-			}
+			})
 			
 		})
-<<<<<<< HEAD
-		
-		});
-		
-     });
-
-=======
 			
 		});
 		 
@@ -261,24 +208,17 @@
 		});   */
 		 
 		  
->>>>>>> refs/heads/new/sungkyoung
 		 //이미 가입된 아디로 본인인증을 하려고 할 경우 ajax
-<<<<<<< HEAD
-		/*  $( function(){
-=======
 		  $(function(){
->>>>>>> refs/heads/new/sungkyoung
 				
 				$("input:text[name='authId']").on("keyup",function(){
 					var userId=$("input[name='authId']").val();
-					 //alert("이미가입된 아디냐??")
+					
 					$.ajax({
 						type:"POST",
-						url:"/userRest/json/checkUserId", //+userId로 get방식으로 보내면 data:를 안써줘도 됨
-						//pathVariable과 GET POST 방식은 상관없다
+						url:"/userRest/json/checkUserId", 
 						data :{userId:userId},//요청과 함께 서버에 보내는 string 또는 map
-                       //json.stringify({}) 이런식으로 쓰면 제이슨으로 가기 때문에 headers설정이랑 매치해줘야함 {,} 스트링타입으로 가는거
-					   dataType:"json",//서버에서 받는 데이터형식
+						dataType:"json",//서버에서 받는 데이터형식
 					    success: function(JSONData,status){
 					    	console.log(status);
 					    	console.log(JSON.stringify(JSONData)); //json string 형식으로 변환해주는거
@@ -291,20 +231,10 @@
 				    		   
 					    		$(".col-id-check").text("이미 가입된 아이디입니다.").css("color","red");
 				    	  }
-<<<<<<< HEAD
-					    }//success
-					})//ajax
-		         })//input keyup
-		         
-		 });//onload 
-		 */
-		
-=======
 					    }
 					});		
 				});						
 		 }); 
->>>>>>> refs/heads/new/sungkyoung
 
 	</script>		
     
@@ -371,7 +301,6 @@
 		  
 		  </div>
 		  
-		  <span class="col-id-check"></span>
 		  <span class="col-id-checkAuthCode"></span>
 		  
 		  <span class="col-id-check"></span>
