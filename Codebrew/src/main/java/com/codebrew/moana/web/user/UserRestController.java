@@ -122,7 +122,11 @@ public class UserRestController {
 		@RequestMapping(value="json/checkUserId", method=RequestMethod.POST)
 		public boolean checkUserId(@RequestParam("userId")String userId)throws Exception{
 			
+			System.out.println("userId...."+ userId);
+			
 			System.out.println("/userRest/json/checkUserId : POST ");
+			
+			
 			
 			boolean result=userService.checkUserId(userId);
 			
