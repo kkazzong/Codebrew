@@ -146,7 +146,7 @@
 			
 		});
 		 
-    /*  
+   
      $(function(){
     	 $(".btn:contains('확인')").on("click", function(event){
     		 
@@ -156,21 +156,17 @@
     		 
     		 if(authCode != authCodeUser){
 					$("span.col-id-checkAuthCode").html("인증번호를 다시 확인해주세요").css("color","red");
-					//event.preventDefault();
+					event.preventDefault();
 					return;
 				}else{
 					$("span.col-id-checkAuthCode").remove();
 					$("form").attr("method","POST").attr("action","/user/confirmUser").submit();
 				}
-    		  */
-    		 /* $.ajax({
-    			type:"POST",
-    			url:"userRest/json/confirmUser",
-    			
-    		 }) */
+    		
     		 
-    /* 	 });
-     }); */
+    		 
+ 	 });
+     }); 
      /* if(authCode != JSONData.authCode){
 			$("span.col-id-checkAuthCode").html("인증번호를 다시 확인해주세요").css("color","red");
 		}else{

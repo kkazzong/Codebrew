@@ -270,7 +270,7 @@
 		        reader.onload = function (e) {
 		            $target.css('display', '');
 		            //$target.css('background-image', 'url(\"' + e.target.result + '\")'); // 배경으로 지정시
-		            $target.html('<img src="' + e.target.result + '"width="80%" border="0" alt="" />');
+		            $target.html('<img src="' + e.target.result + '"width="30%" border="0" alt="" />');
 		        	console.log("사진미리보기 출력=====> "+e.target.result);
 		        }
 		        reader.readAsDataURL(html.files[0]);
@@ -377,10 +377,16 @@
 		    </div>
 		  </div>
 		  
+		  
+		    <div class="form-group text-center" id="previewImage">
+            <img src="../../resources/uploadFile/${user.profileImage }" width="30%">
+             <br>
+           </div> 
+		  
 		  <div class="form-group">
-		    <label for="uploadFile" class="col-sm-offset-1 col-sm-3 control-label">프로필이미지</label>
+		    <label for="uploadFile" class="col-sm-offset-1 col-sm-3 control-label">프로필사진</label>
 		    <div class="col-sm-4">
-		      <input type="file" class="form-control" id="uploadFile" name="uploadFile"  placeholder="사진을 올려주세요" >
+		      <input type="file" class="form-control" id="uploadFile" name="uploadFile"onchange="getUploadFilePrivew(this,$('#previewImage'))" />
 		    </div>
 		  </div>
 		  

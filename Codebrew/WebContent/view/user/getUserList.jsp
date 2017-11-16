@@ -59,10 +59,10 @@
 				self.location = "/purchase/getUserList";
 			})	
 			
-			
+		//클릭버젼	
 		$(".btn:contains('검색')").on("click", function() {
 			
-			alert("검색");
+			//alert("검색");
 		 	
 			if($("#searchKeyword").val() == ''){
 			
@@ -72,11 +72,29 @@
 			
 			fncGetList(1);
 			
-			alert("왔나안왔나?")
+			//alert("왔나안왔나?")
 		});
 		
+		//엔터버젼
+		$("#searchKeyword").on("keydown", function(event) {
+				
+				//alert("검색");
+			 	if(event.keyCode == '13'){
+				if($("#searchKeyword").val() == ''){
+			        event.preventDefault();	
+					alert("검색어를 입력해주세요");
+					return;	
+				} 
+				event.preventDefault();
+				fncGetList(1);
+			 	}
+				//alert("왔나안왔나?")
+			});
+		 
 		});
-		
+		 
+		 
+		 
 		//============= userId 에 회원정보보기  Event  처리(Click) =============	
 		 $(function() {
 		

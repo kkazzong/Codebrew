@@ -190,12 +190,14 @@ public class UserController {
 		     System.out.println("새로가입한 회원임"+user.getUserId());
 			  userService.addUser(user);
 			
-		}else {
+		}else if(dbUser.getUserId() != null){
 		
 			System.out.println("이미 가입한 회원"+dbUser.getUserId());
 			userService.updateUser(dbUser);
 		
 		} 
+		
+	
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("redirect:/index.jsp");//"redirect:/user/login.jsp"
@@ -254,6 +256,8 @@ public class UserController {
 			 user.setProfileImage(uploadFile.getOriginalFilename());
 			 
 			 uploadFile.transferTo(file);
+			 //이미 존재하기때문에 already exists and could not be deleted 나옴
+			 //<img src="/resources/uploadFile/${user.profileImage }">
 			 System.out.println("업데이트 사진");
 			}
 		

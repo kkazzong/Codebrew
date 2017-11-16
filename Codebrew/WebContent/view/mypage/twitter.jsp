@@ -578,8 +578,11 @@
           
             <div class="socials text-center"> 
              <form name="form">
+             <c:if test="${! empty sessionScope.user.userId}">
+              <c:if test="${sessionScope.user.userId == user.userId }">
             <a href="/user/updateUser?userId=${sessionScope.user.userId }" class="btn btn-circle btn-primary" title="회원정보수정"><i class="fa fa-cog" aria-hidden="true"></i></a> 
-       
+             </c:if>
+             </c:if>
             <button type="button" class="btn btn-circle btn-danger" title="채팅" onclick="javascript:chatPopup(this.form);"><i class="fa fa-weixin"aria-hidden="true"></i></button>
             
             
