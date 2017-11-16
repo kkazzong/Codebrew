@@ -9,7 +9,7 @@ public class Review {
 	private int festivalNo;			 	// festivalNo : from Festival(auto)
 	private String festivalName;		// festivalName : from Festival(auto)
 	private String addr;				// addr :  from Festival(auto)
-	private List<Reply> replyList;			// List of the replies
+	private List<Reply> replyList;		// List of the replies
 	private String checkCode;			// Flag : checkCode
 	private String reviewTitle;			
 	private int goodCount;				// how many 'like'

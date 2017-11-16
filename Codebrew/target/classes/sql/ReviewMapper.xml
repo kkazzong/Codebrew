@@ -120,32 +120,33 @@
 	 -->
 	 <!-- 2 -->
 	<update id="updateReview" parameterType="review">
-		UPDATE 
-			review (
-					check_code, 
-					review_title, 
-					good_count, 
-					review_festival_rating, 
-					review_detail, 
-					review_hashtag, 
-					review_reg_date, 
-					delete_flag
-					)
-			VALUES 	(
-				<if test="checkCode==1">
-					'1', 
-				</if>
-				<if test="checkCode == 1 || checkCode==2 || checkCode==4 || checkCode==22 || checkCode==44">
-					'11', 
-				</if>
-					#{reviewTitle:VARCHAR}, 
-					0, 
-					#{reviewFestivalRating:NUMERIC}, 
-					#{reviewDetail:VARCHAR}, 
-					#{reviewHashtag:VARCHAR}, 
-					SYSDATE, 
-					'1'
-					)
+		UPDATE review SET 
+			<if test="checkCode == 1">
+				check_code = '1', 
+			</if>
+			<if test="checkCode == 11">
+				check_code = '11', 
+			</if>
+			<if test="checkCode == 2">
+				check_code = '11', 
+			</if>
+			<if test="checkCode == 4">
+				check_code = '11', 
+			</if>
+			<if test="checkCode == 22">
+				check_code = '11', 
+			</if>
+			<if test="checkCode == 44">
+				check_code = '11', 
+			</if>
+				review_title = #{reviewTitle:VARCHAR}, 
+				<!-- good_count = 0,  -->
+				review_festival_rating = #{reviewFestivalRating:NUMERIC}, 
+				review_detail = #{reviewDetail:VARCHAR}, 
+				review_hashtag = #{reviewHashtag:VARCHAR}, 
+				review_reg_date = SYSDATE, 
+				delete_flag = '1'
+		WHERE review_no = #{reviewNo:INTEGER}
 	</update>
 	 
 	<!-- 3 -->
@@ -247,6 +248,20 @@
 		WHERE review_no=#{reviewNo}
 	</select>
 	
+	
+	<select id="deleteReviewImage" parameterType="int">
+		DELETE 
+		FROM image 
+		WHERE review_no = #{reviewNo}
+	</select>
+	
+	
+	<select id="deleteReviewVideo" parameterType="int">
+		DELETE 
+		FROM video 
+		WHERE review_no = #{reviewNo}
+	</select>
+	
 	<!-- 9 -->
 	<select id="getReviewVideo" parameterType="int" resultMap="videoSelectMap">
 		SELECT
@@ -263,8 +278,8 @@
 	deleteFlag
 	* "1" : default = 보통
 	* "4" : 삭제됨 (checkCode와 헷갈리지 말라고...4(반려)로...)
-	 -->
-	 <!-- 10 -->
+	-->
+	<!-- 10 -->
 	<update id="deleteReview" parameterType="int">
 		UPDATE review SET
 			delete_flag = '4'

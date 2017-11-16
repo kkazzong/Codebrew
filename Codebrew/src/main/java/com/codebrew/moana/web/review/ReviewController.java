@@ -320,9 +320,15 @@ public class ReviewController {
 	@RequestMapping(value="updateReview", method=RequestMethod.POST)
 	public ModelAndView updateReview(HttpSession session, 
 									@ModelAttribute("review") Review review, 
-									@RequestParam("uploadReviewImageList") List<MultipartFile> uploadReviewImage, 
-									@RequestParam("uploadReviewVideoList") List<MultipartFile> uploadReviewVideo) throws Exception{
+									@RequestParam(value = "uploadReviewImageList", required = false) List<MultipartFile> uploadReviewImage, 
+									@RequestParam(value = "uploadReviewVideoList", required = false) List<MultipartFile> uploadReviewVideo) throws Exception{
 		
+		int reviewNo = review.getReviewNo();
+		//test
+		System.out.println("\n\n\ntest Controller updateReview review :: \n"+review);
+		System.out.println("\n\n\ntest Controller updateReview review.getCheckCode() :: \n"+review.getCheckCode());
+		
+		System.out.println("\n\nreviewNo :: "+reviewNo);
 		System.out.println("updateReview processing...");
 		
 		String filePath1 = reviewUploadFilesDir; // 실제 directory 경로로 파일을 영구적으로 저장하기 위함이다.
@@ -330,47 +336,56 @@ public class ReviewController {
 		
 		System.out.println("\n\n\nfilePath :: \n"+filePath2);
 		
+		//새롭게 업로드할 이미지가 있는 경우
 		if(uploadReviewImage != null && uploadReviewImage.size() > 0){
 			
 			List<Image> uploadImageList = new ArrayList<Image>();
 			
 			for(MultipartFile multipartFile : uploadReviewImage){
 				
-				Image eachImage = new Image();
-				
-				String fileName = "review"+UUID.randomUUID().toString()+System.currentTimeMillis()+multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."), multipartFile.getOriginalFilename().length());
-				eachImage.setReviewImage(fileName); //각각의 이미지 fileName을 setting
-				
-				uploadImageList.add(eachImage); //생성한 list에 setting이 끝난 각각의 Image 객체를 넣어줌
-				File file1 = new File(filePath1+fileName); // 1st Path : 실제 존재하는 uploadFile 경로+fileName
-				//File file1 = new File(filePath1, fileName);
-				File file2 = new File(filePath2+fileName); // 2nd Path : Tomcat의 temporary folder 경로+fileName
-				//File file2 = new File(filePath2, fileName);
-				
-				System.out.println("\n\n\nmultipartFile :: Image :: \n"+multipartFile+"\n\n\n\n\n");
-				multipartFile.transferTo(file2);
-				
-				FileInputStream fis = null;
-				FileOutputStream fos = null; 
-
-				try {
-					fis = new FileInputStream(file2); // 원본파일
-					fos = new FileOutputStream(file1); // 복사위치
-					   
-					byte[] buffer = new byte[1024];
-					int readcount = 0;
-					  
-					while((readcount=fis.read(buffer)) != -1) {
-						fos.write(buffer, 0, readcount); // 파일 복사 
+				if(!multipartFile.getOriginalFilename().isEmpty()) {
+					
+					reviewService.deleteReviewImage(reviewNo);
+					
+					System.out.println("멀티파트파일이잇군요");
+					System.out.println(" 파일네임 -> "+multipartFile.getOriginalFilename());
+					
+					Image eachImage = new Image();
+					
+					String fileName = "review"+UUID.randomUUID().toString()+System.currentTimeMillis()+multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."), multipartFile.getOriginalFilename().length());
+					eachImage.setReviewImage(fileName); //각각의 이미지 fileName을 setting
+					
+					uploadImageList.add(eachImage); //생성한 list에 setting이 끝난 각각의 Image 객체를 넣어줌
+					File file1 = new File(filePath1+fileName); // 1st Path : 실제 존재하는 uploadFile 경로+fileName
+					//File file1 = new File(filePath1, fileName);
+					File file2 = new File(filePath2+fileName); // 2nd Path : Tomcat의 temporary folder 경로+fileName
+					//File file2 = new File(filePath2, fileName);
+					
+					System.out.println("\n\n\nmultipartFile :: Image :: \n"+multipartFile+"\n\n\n\n\n");
+					multipartFile.transferTo(file2);
+					
+					FileInputStream fis = null;
+					FileOutputStream fos = null; 
+	
+					try {
+						fis = new FileInputStream(file2); // 원본파일
+						fos = new FileOutputStream(file1); // 복사위치
+						   
+						byte[] buffer = new byte[1024];
+						int readcount = 0;
+						  
+						while((readcount=fis.read(buffer)) != -1) {
+							fos.write(buffer, 0, readcount); // 파일 복사 
+						}
+					} catch(Exception e) {
+						e.printStackTrace();
+					} finally {
+						fis.close();
+						fos.close();
 					}
-				} catch(Exception e) {
-					e.printStackTrace();
-				} finally {
-					fis.close();
-					fos.close();
 				}
-			}
-			review.setReviewImageList(uploadImageList);
+				review.setReviewImageList(uploadImageList);
+			} //이름이 엠티가 아님
 		}
 		
 		/*
@@ -380,48 +395,65 @@ public class ReviewController {
 			
 			List<Video> uploadVideoList = new ArrayList<Video>();
 			for(MultipartFile multipartFile : uploadReviewVideo){
-				Video eachVideo = new Video();
-				String fileName = "review"+UUID.randomUUID().toString()+System.currentTimeMillis()+multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."), multipartFile.getOriginalFilename().length());
-				eachVideo.setReviewVideo(fileName); //각각의 이미지 fileName을 setting
 				
-				uploadVideoList.add(eachVideo); //생성한 list에 setting이 끝난 각각의 video 객체를 넣어줌
-				File file1 = new File(filePath1+fileName); // 1st Path : 실제 존재하는 uploadFile 경로+fileName
-				//File file1 = new File(filePath1, fileName);
-				File file2 = new File(filePath2+fileName); // 2nd Path : Tomcat의 temporary folder 경로+fileName
-				//File file2 = new File(filePath2, fileName);
+				if(!multipartFile.getOriginalFilename().isEmpty()) {
+					
+					reviewService.deleteReviewVideo(reviewNo);
 				
-				System.out.println("\n\n\n\n\nmultipartFile :: Video :: "+multipartFile+"\n\n\n\n\n");
-				multipartFile.transferTo(file2);
-				
-				FileInputStream fis = null;
-				FileOutputStream fos = null; 
-
-				try {
-					fis = new FileInputStream(file2); // 원본파일
-					fos = new FileOutputStream(file1); // 복사위치
-					   
-					byte[] buffer = new byte[1024];
-					int readcount = 0;
-					  
-					while((readcount=fis.read(buffer)) != -1) {
-						fos.write(buffer, 0, readcount); // 파일 복사 
+					Video eachVideo = new Video();
+					String fileName = "review"+UUID.randomUUID().toString()+System.currentTimeMillis()+multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."), multipartFile.getOriginalFilename().length());
+					eachVideo.setReviewVideo(fileName); //각각의 이미지 fileName을 setting
+					
+					uploadVideoList.add(eachVideo); //생성한 list에 setting이 끝난 각각의 video 객체를 넣어줌
+					File file1 = new File(filePath1+fileName); // 1st Path : 실제 존재하는 uploadFile 경로+fileName
+					//File file1 = new File(filePath1, fileName);
+					File file2 = new File(filePath2+fileName); // 2nd Path : Tomcat의 temporary folder 경로+fileName
+					//File file2 = new File(filePath2, fileName);
+					
+					System.out.println("\n\n\n\n\nmultipartFile :: Video :: "+multipartFile+"\n\n\n\n\n");
+					multipartFile.transferTo(file2);
+					
+					FileInputStream fis = null;
+					FileOutputStream fos = null; 
+	
+					try {
+						fis = new FileInputStream(file2); // 원본파일
+						fos = new FileOutputStream(file1); // 복사위치
+						   
+						byte[] buffer = new byte[1024];
+						int readcount = 0;
+						  
+						while((readcount=fis.read(buffer)) != -1) {
+							fos.write(buffer, 0, readcount); // 파일 복사 
+						}
+					} catch(Exception e) {
+						e.printStackTrace();
+					} finally {
+						fis.close();
+						fos.close();
 					}
-				} catch(Exception e) {
-					e.printStackTrace();
-				} finally {
-					fis.close();
-					fos.close();
 				}
+				review.setReviewVideoList(uploadVideoList);
 			}
-			review.setReviewVideoList(uploadVideoList);
 		}
+		
+		
+		/////////// 디비 입출력시 엔터처리 ////////////////
+		String reviewDetail = review.getReviewDetail();
+		System.out.println("\n\nreviewDetail :: \n"+reviewDetail);
+		reviewDetail = reviewDetail.replaceAll("\n", "<br>");
+		review.setReviewDetail(reviewDetail);
+		/////////// 디비 입출력시 엔터처리 ////////////////
 		
 		System.out.println("\n\n\n\n\n=====okokokokok=====\n\n\n\n\n");
 		
-		review = reviewService.addReview(review);
+		reviewService.updateReview(review);
+		
+		//test
+		System.out.println("\n\nreviewService.getReview(reviewNo) :: "+reviewService.getReview(reviewNo));
 		
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject(review);
+		modelAndView.addObject(reviewService.getReview(reviewNo));
 		modelAndView.setViewName("/view/review/getReview.jsp");
 		
 		return modelAndView;

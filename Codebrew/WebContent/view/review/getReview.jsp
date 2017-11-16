@@ -223,11 +223,12 @@
 		})
 		*/
 		
+		//삭제버튼일 때
 		$(".btn-warning:contains('삭제')").on("click", function(){
 			//alert("댓글삭제버튼클릭 :: replyNo :: "+$(this).val());
 			self.location="/reply/deleteReply?replyNo="+$(this).val();
 		});
-		
+		 
 		
 		var tempReplyNo;
 		var tempReviewNo;
@@ -250,6 +251,8 @@
 			//alert("2 :: focusing 부분"); //debugging
 			
 		});
+		
+		
 		
 		//please...do not handle more than one event in one button.........fuxx
 		$(".btn-info:contains('완료')").on("click", function(){
@@ -504,7 +507,7 @@
 			
 		});
 		
-		//addGood ajax
+		//addGood ajax 이미 document loading 된 상태에서 
 		$(function(){
 			
 			$("#addGood").on("click", function(){
@@ -526,6 +529,8 @@
 									});
 									$("#forGetGoodLocation").html("<small>이미'좋아요'했는데~~~</small>");
 									$("#goodCountForGoogleMap").html(JSONData.goodCount);
+									$("#idForGetGoodLocation").attr('class', 'glyphicon glyphicon-heart');
+									$("#addGood").attr('class', 'glyphicon glyphicon-thumbs-down');
 								}else{
 									swal({
 										text: "'좋아요'가 취소되었습니다.", 
@@ -533,6 +538,8 @@
 									});
 									$("#forGetGoodLocation").html("");
 									$("#goodCountForGoogleMap").html(JSONData.goodCount);
+									$("#idForGetGoodLocation").attr('class', 'glyphicon glyphicon-heart-empty');
+									$("#addGood").attr('class', 'glyphicon glyphicon-thumbs-up')
 								}
 							}
 						}		
@@ -627,10 +634,14 @@
 							
 							if(tempUserIdForReadyFunc == JSONData.userId){
 								$("#forGetGoodLocation").html("<small>이미'좋아요'했는데~~~</small>");
+								$("#idForGetGoodLocation").attr('class', 'glyphicon glyphicon-heart');
+								$("#addGood").attr('class', 'glyphicon glyphicon-thumbs-down');
 							}
 						}
 					}
 				)
+		}else{
+			$("#idForGetGoodLocation").attr('class', 'glyphicon glyphicon-heart-empty')
 		}
 	 
 	});
@@ -825,19 +836,17 @@
 							</h3>
 							<hr>
 						</div>
-						<div class="col-md-12 text-center">
+						<div class="col-md-12">
 							<span class="glyphicon glyphicon-dashboard" aria-hidden="true"> 축제평점</span>
 						</div>
-						<hr>
-						<div class="col-md-12 text-middle">
+						<div class="col-md-12">
 							<input type="number" id="reviewFestivalRating" class="rating" name="reviewFestivalRating" value="${review.reviewFestivalRating }" data-min="0" data-max="5" data-step="1" data-size="xs" data-rtl="true" readonly>
 							<hr>
 						</div>
-						<hr>
 						<div class="col-md-12">
 							<span id="forGetGoodLocation"></span>
 							<br>
-							<span class="glyphicon glyphicon-heart-empty" aria-hidden="true"> 좋아요 : </span>
+							<span class="glyphicon glyphicon-heart-empty" id="idForGetGoodLocation" aria-hidden="true"> 좋아요 : </span>
 							<span id="goodCountForGoogleMap">${review.goodCount }</span>
 							<c:if test="${!empty sessionScope.user }">
 								<h3>
@@ -848,7 +857,6 @@
 						</div>
 						<div class="col-md-12">
 							<span class="glyphicon glyphicon-book" aria-hidden="true"> 후기내용</span>
-							<br>
 							<br>
 							<span id="reviewDetailForJS">${review.reviewDetail }</span>
 							<hr>
@@ -871,8 +879,8 @@
 				   			<c:if test="${empty review.reviewVideoList[0].reviewVideo }">
 				   				동영상 없다~
 				   			</c:if>
+							<hr>
 						</div>
-						<hr>
 						<div class="col-md-12">
 							<small>
 								<!-- button class 구분 ==>> 회원 : primary, Admin : default -->
@@ -976,24 +984,24 @@
 							<!-- 댓글입력 form Start : 로그인한 사람만 댓글등록가능-->
 							<form class="form-horizontal" method="post" name="detailForm">
 								<div class="col-md-12">
-									<div class="form-group pull-right">
+									<div class="form-group">
 										<input type="hidden" id="reviewNo" name="reviewNo" value="${review.reviewNo }"/>
 										<input type="hidden" id="userId" name="userId" value="${sessionScope.user.userId }"/>
 										<!-- 
 										<label for="replyDetail" class="col-sm-offset-1 col-sm-3 control-label">댓글내용</label>
 										 -->
 										<c:if test="${user.userId != null }">
-										<div class="col-md-10 pull-left">
-											<textarea class="form-control" id="replyDetail" name="replyDetail" placeholder='댓글을 등록해 주세요' style="margin: 0px -10px 0px 0px; width: 450px; height: 80px;"></textarea>
+										<div class="col-md-10">
+											<textarea class="form-control" id="replyDetail" name="replyDetail" placeholder='댓글을 등록해 주세요'></textarea>
 										</div>
 										</c:if>
 										<c:if test="${user.userId == null }">
-										<div class="col-md-10 pull-left">
+										<div class="col-md-10">
 											<textarea class="form-control" id="cannotUse" name="cannotUse" placeholder='로그인 후 댓글기능을 이용하세요'></textarea>
 										</div>
 										</c:if>
 										<div class="col-md-2">
-											<button type="button" class="btn btn-primary pull pull-left" <c:if test="${user.userId ==null}">disabled="disabled"</c:if> id="addReply">댓글등록</button>
+											<button type="button" class="btn btn-primary" <c:if test="${user.userId ==null}">disabled="disabled"</c:if> id="addReply">댓글등록</button>
 										</div>
 									</div>
 								</div>
@@ -1032,19 +1040,19 @@
 									</div>
 									<div class="input-group col-md-12">
 										<div class="col-md-12">
-											<div class="col-md-9">
+											<div class="col-md-9" style="display:inline">
 												<small>
 													<span class="glyphicon glyphicon-time" aria-hidden="true" id="replyRegDate${replyList.replyNo }">
 														${replyList.replyRegDate }
 													</span>
 												</small>
 											</div>
-											<div class="col-md-3">
+											<div class="col-md-3" style="display:inline">
 												<small>
 												<c:if test="${!empty sessionScope.user }">
 													<c:if test="${!(sessionScope.user.role == 'a' || sessionScope.user.nickname == replyList.userId) }">
-														<div class="col-offset-10 col-md-2">
-															<div class="input-group-btn">
+														<div class="col-md-12">
+															<div class="input-group-btn" style="text-align:right">
 																<button type="button" name="replyNoForReport" id="willBeReported" class="btn btn-secondary btn-sm btn-danger btn-reply">
 													   				신고
 													   			</button>
@@ -1055,7 +1063,7 @@
 												<c:if test="${!empty sessionScope.user}" >
 													<c:if test="${sessionScope.user.role == 'a' || sessionScope.user.nickname == replyList.userId }">
 														<div class="col-md-12">
-															<div class="input-group-btn">
+															<div class="input-group-btn" style="text-align:right">
 													   			<button type="button" name="buttonForUpdate" id="updateReply${replyList.replyNo }" class="btn btn-secondary btn-sm btn-info btn-reply" value="${replyList.replyNo }" style="display:inline">
 													   				수정
 													   			</button>

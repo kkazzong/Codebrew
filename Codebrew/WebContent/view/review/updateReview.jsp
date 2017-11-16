@@ -39,11 +39,13 @@
 	
 	<!--  ///////////////////////// CSS ////////////////////////// -->
 	<style>
+		/* 
 		body > div.container{
 			border: 3px solid #D6CDB7;
 			margin-top: 10px;
 		}
-    	
+    	 */
+    	 
     	.img_wrap{
         	width:600px;
         	margin-top: 50px;
@@ -53,12 +55,22 @@
         max-width: 200px;
         }
         
+        .imgs_wrap { 
+        	/* border: 3px solid #333; */
+        	/* width: 600px; */
+        	/* height : 120px; */
+        	margin-top: 50px;
+        	aling-items: center;
+        	justify-content: center;
+        }
+        
         .form-control{
         	resize: none; /* cannot be changed by the user */
         }
         
  		body {
             padding-top : 50px;
+            background-color: #f2f4f6;
         }
 		        
     </style>
@@ -77,6 +89,7 @@
 		var reviewTitle = $("input[name='reviewTitle']").val();
 		var reviewDetail = $("textarea[name='reviewDetail']").val();
 		var reviewImageList = $("input[name='uploadReviewImageList']").val();
+		var lastReviewImageList = $("input:hidden[name='lastReviewImageList']").val();
 		//var reviewImageList = $($("input:file[name='uploadReviewImageList']")[0]).val();
 		//var reviewImageList = [];
 		
@@ -96,7 +109,7 @@
 			alert("후기상세정보는 반드시 입력하여야 합니다.");
 			return;
 		}
-		if(reviewImageList == null || reviewImageList.length<1){
+		if((reviewImageList == null || reviewImageList.length<1) && (lastReviewImageList == null || lastReviewImageList.length<1)){
 			alert("후기사진는 반드시 1장 이상 등록하여야 합니다.");
 			return;
 		}
@@ -207,6 +220,7 @@
 			}
 			reader.readAsDataURL(f);
 		});
+		$("input:hidden[name='lastReviewImageList']").prop('disabled', true); // 새로운 파일이 들어가면 기존의 이미지들 disabled 속성을 부여함....이건 사실 update 가 아닌데...회피코딩인듯
 	}
 	
 	/* function deleteImageAction(index) {
@@ -241,15 +255,25 @@
 
 <!-- ////////// 화면구성 div Start ////////// -->
 <div class="container">
-	<h1 class="bg-primary text-center">후기수정양식</h1>
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="page-header text-center">
+				<h3 class="text-info"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> 후기수정양식</h3>
+				<small>축제 후기를 수정할 수 있습니다.</small>
+			</div>	
+		</div>
+	</div>
 	
 	<!-- ////////// form Start ////////// -->
 	<form class="form-horizontal" method="post" name="detailForm" enctype="multipart/form-data">
 
 		<!-- in the form group, should be there the hidden prodNo? -->
+		<input type="hidden" name="reviewNo" value="${review.reviewNo }">
+		<input type="hidden" name="checkCode" value="${review.checkCode }">
 		<div class="form-group">
-			<label for="festivalName" class="col-sm-offset-1 col-sm-3 control-label">축제번호</label>
-			<div class="col-sm-4">
+			<label for="festivalNo" class="col-md-3 control-label">축제번호</label>
+			<div class="col-md-6">
 				<input type="text" class="form-control" id="festivalNo" name="festivalNo" value="${festival.festivalNo}" readonly>
 			</div>
 		</div>
@@ -257,8 +281,8 @@
 		<hr/>
 		
 		<div class="form-group">
-			<label for="festivalName" class="col-sm-offset-1 col-sm-3 control-label">축제명</label>
-			<div class="col-sm-4">
+			<label for="festivalName" class="col-md-3 control-label">축제명</label>
+			<div class="col-md-6">
 				<input type="text" class="form-control" id="festivalName" name="festivalName" value="${festival.festivalName}" readonly>
 			</div>
 		</div>
@@ -266,8 +290,8 @@
 		<hr/>
 		
 		<div class="form-group">
-			<label for="addr" class="col-sm-offset-1 col-sm-3 control-label">축제위치</label>
-			<div class="col-sm-4">
+			<label for="addr" class="col-md-3 control-label">축제위치</label>
+			<div class="col-md-6">
 				<input type="text" class="form-control" id="addr" name="addr" value="${festival.addr }" readonly>
 			</div>
 		</div>
@@ -275,36 +299,27 @@
 		<hr/>
 		
 		<div class="form-group">
-			<label for="reviewTitle" class="col-sm-offset-1 col-sm-3 control-label">후기제목</label>
-			<div class="col-sm-4">
-				<input type="text" class="form-control" id="reviewTitle" name="reviewTitle" value="${review.reviewTitle }"/>
-			</div>
-		</div>
-		
-		<hr/>
-		
-		<div class="form-group">
-			<label for="userId" class="col-sm-offset-1 col-sm-3 control-label">작성자</label>
-			<div class="col-sm-4">
-				<input type="text" class="form-control" id="userId" name="userId" value="${sessionScope.user.userId }" readonly/>
-			</div>
-		</div>
-		
-		<hr/>
-		
-		<div class="form-group">
-			<label for="nickname" class="col-sm-offset-1 col-sm-3 control-label">작성자닉네임</label>
-			<div class="col-sm-4">
-				<input type="text" class="form-control" id="nickname" name="nickname" value="${sessionScope.user.nickname }" readonly/>
-			</div>
-		</div>
-		
-		<hr/>
-		
-		<div class="form-group">
-			<label for="reviewFestivalRating" class="col-sm-offset-1 col-sm-3 control-label">축제평점</label>
+			<label for="reviewTitle" class="col-md-3 control-label">후기제목</label>
 			<div class="col-md-6">
-				<%-- 
+				<input type="text" class="form-control" id="reviewTitle" name="reviewTitle" value="${review.reviewTitle }" maxlength="90"/>
+			</div>
+		</div>
+		
+		<hr/>
+		
+		<div class="form-group">
+			<label for="userId" class="col-md-3 control-label">작성자</label>
+			<div class="col-md-6">
+				<input type="text" class="form-control" id="userId" name="userId" value="${review.userId }" readonly/>
+			</div>
+		</div>
+		
+		<hr/>
+
+		<div class="form-group">
+			<label for="reviewFestivalRating" class="col-md-3 control-label">축제평점</label>
+			<div class="col-md-6">
+				<%-- 1~5점 정수형으로....domain 상 field에 int 로 되어있음
 				<input type="number" class="form-control" id="reviewFestivalRating" name="reviewFestivalRating" value="${review.reviewFestivalRating }" min="1" max="10">
 				--%>
 				<input type="number" id="reviewFestivalRating" class="form-control rating" name="reviewFestivalRating" value="${review.reviewFestivalRating }" data-min="0" data-max="5" data-step="1" data-size="xs" data-rtl="true">
@@ -314,17 +329,28 @@
 		<hr/>
 		
 		<div class="form-group">
-			<label for="reviewImageList" class="col-sm-offset-1 col-sm-3 control-label">후기사진</label>
-			<div class="col-sm-3">
+			<label for="reviewImageList" class="col-md-3 control-label">후기사진</label>
+			<div class="col-md-6">
+				<!-- 이미 가지고있던 사진을 받아서 다시 저장하는 경우와 바꾸는 경우('change')를 고려 Start-->
+				<c:if test="${!empty review.reviewImageList }">
+					<c:set var="i" value="0"/>
+						<c:forEach var="lastReviewImageList" items="${review.reviewImageList }">
+							<c:set var="i" value="${i+1 }"/>
+							<input type="hidden" class="form-control" id="lastReviewImageList" name="lastReviewImageList" value="${review.reviewImageList[i-1].reviewImage }">
+					</c:forEach>
+				</c:if>
+				<!-- 이미 가지고있던 사진을 받아서 다시 저장하는 경우와 바꾸는 경우('change')를 고려 Start-->
+				
+					
 				<button type="button" class="btn btn-primary" onclick="document.getElementById('uploadReviewImageList').click(); ">사진 업로드</button>
-				<input type="file" class="form-control" id="uploadReviewImageList" accept="image/*" name="uploadReviewImageList" style="display:none;" value="${review.reviewImageList }" multiple/>
+				<input type="file" class="form-control" id="uploadReviewImageList" accept="image/*" name="uploadReviewImageList" style="display:none;" multiple/>
 			</div>
 		</div>
 		
 		<div class="form-group text-center">
 			<div class="imgs_wrap" align="center">
 				<c:if test="${empty review.reviewImageList }">
-				<small class="text-danger">사진은 반드시 1장 이상 업로드해야 합니다</small><br>
+					<small class="text-danger">사진은 반드시 1장 이상 업로드해야 합니다</small><br>
 				</c:if>
 				<c:if test="${!empty review.reviewImageList }">
 					<c:set var="i" value="0"/>
@@ -341,26 +367,35 @@
 		</div>
 		
 		<div class="form-group">
-			<label for="reviewDetail" class="col-sm-offset-1 col-sm-3 control-label">후기내용</label>
-			<div class="col-sm-4">
+			<label for="reviewDetail" class="col-md-1 control-label">후기</label>
+			<div class="col-md-10">
 				<textarea rows="5" cols="30" class="form-control" id="reviewDetail" name="reviewDetail">${review.reviewDetail }</textarea>
+				<span id="helpBlock" class="help-block">
+					<strong class="text-danger text-center">후기내용은 반드시 입력해야 합니다.</strong>
+				</span>
 			</div>
 		</div>
 		
 		<hr/>
 		
 		<div class="form-group">
-			<label for="reviewVideo" class="col-sm-offset-1 col-sm-3 control-label">동영상</label>
-			<div class="col-sm-4">
-				<input type="file" class="form-control" id="uploadReviewVideoList" accept="video/*" name="uploadReviewVideoList" multiple/>			
+			<label for="reviewVideo" class="col-md-3 control-label">동영상</label>
+			<div class="col-md-6">
+				test용 : ${review.reviewVideoList }<br>test용 : ${review.reviewVideoList[0].reviewVideo }
+				<c:if test="${!empty review.reviewVideoList }">
+					<input type="file" class="form-control" id="uploadReviewVideoList" accept="video/*" name="uploadReviewVideoList" value="${review.reviewVideoList[0].reviewVideo }"/>
+				</c:if>
+				<c:if test="${empty review.reviewVideoList }">
+					<input type="file" class="form-control" id="uploadReviewVideoList" accept="video/*" name="uploadReviewVideoList"/>
+				</c:if>
 			</div>
 		</div>
 		<!-- updateVideo -->
 		
 		
 		<div class="form-group">
-			<label for="toBeHashtag" class="col-sm-offset-1 col-sm-3 control-label">해시태그를 입력</label>
-			<div class="col-sm-4">
+			<label for="toBeHashtag" class="col-md-3 control-label">해시태그를 입력</label>
+			<div class="col-md-6">
 				<input type="text" class="form-control" id="toBeHashtag" name="toBeHashtag">
 				<span id="helpBlock" class="help-block">
 					<strong class="text-danger">해시태그를 입력한 후 스페이스 혹은 엔터 키를 누르세요</strong>
@@ -371,10 +406,12 @@
 		<hr/>
 		
 		<div class="form-group">
-			<label for="reviewHashtag" class="col-md-offset-1 col-md-3 control-label">등록예정 해시태그</label>
-			<div class="col-md-4">
+			<label for="reviewHashtag" class="col-md-3 control-label">등록예정 해시태그</label>
+			<div class="col-md-6">
 				<input type="text" class="form-control" id="reviewHashtag" name="reviewHashtag" value="${review.reviewHashtag }">
-				<button type="button" class="btn btn-primary">삭제</button>
+				<span>
+					<button type="button" class="btn btn-primary">삭제</button>
+				</span>
 			</div>
 		</div>
 		

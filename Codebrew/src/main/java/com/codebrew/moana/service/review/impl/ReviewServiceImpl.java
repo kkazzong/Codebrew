@@ -90,6 +90,9 @@ public class ReviewServiceImpl implements ReviewService {
 		
 		System.out.println("Service :: updateReview");
 		
+		//test
+		System.out.println("\n\nreview.getCheckCode() :: \n"+review.getCheckCode());
+		
 		reviewDAO.updateReview(review);
 		
 		if(review.getReviewImageList() != null && review.getReviewImageList().size() != 0) { //이미지 upload
@@ -151,6 +154,18 @@ public class ReviewServiceImpl implements ReviewService {
 		map.put("list", list);
 		map.put("totalCount", new Integer(totalCount));
 		return map;
+	}
+	
+	@Override
+	public void deleteReviewImage(int reviewNo) throws Exception {
+		System.out.println("Service :: deleteReviewImage");
+		reviewDAO.deleteReviewImage(reviewNo);;
+	}
+	
+	@Override
+	public void deleteReviewVideo(int reviewNo) throws Exception {
+		System.out.println("Service :: deleteReviewVideo");
+		reviewDAO.deleteReviewVideo(reviewNo);
 	}
 
 	@Override //8
