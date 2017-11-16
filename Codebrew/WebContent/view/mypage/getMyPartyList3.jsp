@@ -28,11 +28,13 @@
 	<!--  ///////////////////////// JavaScript ////////////////////////// -->
     <script type="text/javascript">
 	
+		
+	
 		//=============    검색 / page 두가지 경우 모두  Event  처리	 =============	
-		function fncGetList(currentPage) {
+		/* function fncGetList(currentPage) {
 				$("#currentPage").val(currentPage)
 				$("form").attr("method" , "POST").attr("action", "/party/getMyPartyList").submit();
-		} 
+		}  *///이거 지워줘야 폼이 겹치지 않아서 제대로 정보 받아옴
 		
 		$(function(){
 			$("#search").on("click", function() {
@@ -109,9 +111,9 @@
 				var partyNo = $(this).find("input:hidden[name='partyNo']").val()
 				self.location = "/party/getParty?partyNo="+partyNo;
 			});
-			
+		});
 			/* 파티 삭제 */
-			$(".pull-right").each(function(){}).on("click", function(){
+		/* 	$("#deleteParty").each(function(){}).on("click", function(){
 				
 				if(confirm("파티목록에서 삭제하시겠습니까?")) {
 					$(this).parents("#deleteForm").attr("method", "post").attr("action", "/party/deleteMyPartyList").submit();
@@ -121,7 +123,7 @@
 				
 			});
 			
-		});
+		}); */
 		
 		
 		
@@ -141,14 +143,14 @@
 	  font-family: 'Open Sans', Arial, sans-serif;
 	}
 	
-	.container{
+/* 	.container{
 	  padding: 2rem;
-	}
+	}*/
 	.gallery{
 	  width: 100%;
-	  max-width: 960px;
-	  min-height: 100vh;
-	  margin: 2rem auto;
+	 /*  max-width: 960px; */
+	 /*  min-height: 100vh; */
+	 /*  margin: 2rem auto;  */
 	  
 	  display: -webkit-box;
 	  display: -webkit-flex;
@@ -221,17 +223,17 @@
 
 <body>
 
-<div class="container">
+<%-- <div class="container">
 	<!-- ToolBar Start /////////////////////////////////////-->
 	 <jsp:include page="/toolbar/toolbar.jsp" /> 
-   	<!-- ToolBar End /////////////////////////////////////-->
+   	<!-- ToolBar End /////////////////////////////////////--> --%>
 
-
+<div class="col-md-8 col-md-offset-2">
   <div class="gallery">
   	<!-- 목록 조회 Start /////////////////////////////////////-->
 	 <!--  <div class="row"> -->
 		
-			<c:forEach var="party" items="${list}">
+			<c:forEach var="party" items="${list3}">
 				<c:set var="i" value="${i+1}"></c:set>
 				
 					<div class="gallery-item">
@@ -264,11 +266,11 @@
 							<form id="deleteForm">
 									<input type="hidden" name="partyNo" value="${party.partyNo}">
 									
-									<c:if test="${search.searchCondition == '3' }">
+									<%-- <c:if test="${search.searchCondition == '3' }"> --%>
 										<button class="btn btn-xs btn-warning pull-right" type="button" value="${party.partyNo}">
 											<small><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></small>
 										</button>
-									</c:if>
+									<%-- </c:if> --%>
 							</form>
 							<div class="clearfix"></div>
 						<!-- </span> -->

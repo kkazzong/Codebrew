@@ -109,7 +109,7 @@
 			var userId=$("input[name='authId']").val();
 			
 			
-			$.ajax({
+			/* $.ajax({
 				type:"POST",
 				url:"/userRest/json/checkUserId", //+userId로 get방식으로 보내면 data:를 안써줘도 됨
 				//pathVariable과 GET POST 방식은 상관없다
@@ -128,7 +128,7 @@
 		    		  $("span.col-id-check").remove();
 		    	  }
 			    }//success
-			})//ajax
+			})//ajax */
 			
 			
 			
@@ -169,12 +169,14 @@
 				  $("form").attr("method","POST").attr("action","/user/confirmUser").submit();
 				} 
 				//{"authId":"skale83@naver.com","authCode":"c067bf517dcf47aab5fff3cc3d22f79e"}
+				
 			
-			  })
+				
+			  })//확인
 			  
-			}
+			}//success
 			
-		})
+		})//ajax
 		
 		});
 		

@@ -106,17 +106,17 @@ public class UserController {
 	 System.out.println("dbUser정보는? "+dbUser);
 	 
 	 ModelAndView modelAndView = new ModelAndView();
-	 
-	 if(dbUser ==null) {
+	/* 
+	 if(dbUser.getUserId() == null) {
 		 
 		 modelAndView.setViewName("redirect:/user/findUser.jsp"); 
-	 }
+	 }*/
 	 
 	 
 	 
 	 
 		//탈퇴한 회원 걸러줌
-	   if(dbUser.getRole().indexOf("d")== -1) {
+	  if(dbUser.getRole().indexOf("d")== -1) {
 		
 		 if (user.getPassword().equals(dbUser.getPassword())) {
 			session.setAttribute("user", dbUser);

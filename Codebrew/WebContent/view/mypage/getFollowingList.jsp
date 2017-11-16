@@ -41,17 +41,23 @@
 			console.log("sessionId는?????"+sessionId);
 			console.log("userId는????"+userId);
 		
-			 if( sessionId == userId ) {
+			// if( sessionId == userId ) {
 				 
 				 
-				 $(".btn:contains('Following')" ).each(function(){}).on("click" , function() {	
+				 $("#deleteFollowing" ).each(function(){}).on("click" , function() {	
 						var requestId = $(this).val();
 						//alert(requestId);
 						/* else  if( f4f == "Following" ) { *///내팔로워 목록에  맞팔이 되어있으니깐 삭제할수 있다.
 							
-						var flag = $(this).attr('class').trim();
+						//var flag = $(this).attr('class').trim();
 						
 						//alert(flag);
+						
+					if(sessionId == requestId){
+					    alert("니 아디야.")	
+					    event.preventDefault();
+					  
+				    }else{
 						
 							$.ajax({
 										type:'POST',
@@ -88,9 +94,58 @@
 										 
 										 
 										 }
-									})
-							})
-					 }
+									})//ajax
+							}//if
+						});
+				 
+				 
+							$("#addFollow" ).each(function(){}).on("click" , function() {
+								var requestId = $(this).val();//each(function(){})반복문마다 요소를 선택해서
+								//alert(requestId);			
+								 //f4f = $(this).val();
+								//var flag = $(this).attr('class').trim();
+								
+								//alert(flag);
+								
+								if(sessionId == requestId){
+								    alert("니 아디야.")	
+								    event.preventDefault();
+								  
+								}else{
+								
+								//if( f4f == "Follow" ) {//내 팔로워 목록에 맞팔이 안되있으니깐 추가하는거고
+								 // if(${follow.f4f == 1})
+									$.ajax({
+												type:'POST',
+												url : '/myPageRest/json/addFollow',
+												data : {requestId:requestId},
+												dataType : "json",
+											/* 	headers : {
+													 "Accept" : "application/json",
+													 "Content-Type" : "application/json"
+												 }, */
+												 context : this, 
+												 success : function(JSONData, status) {
+													
+													 //alert(JSON.stringify(JSONData));
+													/*  location.reload(); */ 
+												   //$("#followButton").text("Following").css('background-color', '#3897f0').css('color', '#fff');
+													//location.reload();
+													//alert("context는 머다??"+this);//[object HTMLButtonElement]
+												  // $(this).removeClass('.btn.btn-sm').addClass('.btn.btn-info'); 
+													//alert(status);
+												  
+												  //$('#followButton').onClick
+													//moveFollow();
+													//$(this).reload();
+													//$("#tag").removeClass(".btn btn-sm").addClass(".btn btn-info btn-sm");
+													
+													$(this).removeClass("btn btn-sm pull-right").addClass("btn btn-info btn-sm pull-right").text("Following");
+												 }
+											})//ajax
+								}//if
+								})
+				 
 				});	
 			 
 
@@ -212,7 +267,7 @@
 												value="Follow">
 											<input type="hidden" class="follow"
 												value="${follow.requestId }"> --%>
-								<button name="follow" type="button" class="btn btn-sm pull-right" value="${follow.requestId}">Follow</button>	
+								<button name="follow" id="addFollow" type="button" class="btn btn-sm pull-right" value="${follow.requestId}">Follow</button>	
 												
 										</c:when>
 										<c:otherwise>
@@ -221,7 +276,7 @@
 											<input type="hidden" class="follow"
 												value="${follow.requestId }"> --%>
 												
-								<button name="following" type="button" class="btn btn-info btn-sm pull-right" value="${follow.requestId}">Following</button>
+								<button name="following" id="deleteFollowing" type="button" class="btn btn-info btn-sm pull-right" value="${follow.requestId}">Following</button>
 										</c:otherwise>
 									</c:choose>
 								</div>
