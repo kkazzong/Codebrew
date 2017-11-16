@@ -341,6 +341,7 @@
 					} else if(message.command == 'groupChat') {
 						
 						var roomId = message.roomId+"";
+						//alert(JSON.stringify(message));
 						//$("#"+roomId).html(data);
 						if($("#"+roomId).html() != undefined) {
 							//alert("리스트에 존재하는 채팅");
@@ -387,6 +388,10 @@
 				
 					
 				}
+				
+				socket.on('messageOnListSender', function(message){
+					//alert(JSON.stringify(message));
+				});
 				
 				////////////////////////////disconnect//////////////////////////////////
 				socket.on('disconnect', function(){
@@ -524,6 +529,7 @@
 			var members = message.members;
 			var roomId = message.roomId;
 			var senNicks = message.senNicks;
+			//alert(senNicks);
 			var roomName = message.roomName; //SR2.jsp 에서 추가
 			var img = "/resources/image/chat/group.png"; ///default 이미지
 			//var roomName = partyName;
@@ -674,7 +680,7 @@
 	
 	
 	<!-- 로그인시 서버에 보낼 정보 -->
-	<input type = "hidden" id = "hostInput" value = "localhost">
+	<input type = "hidden" id = "hostInput" value = "192.168.0.7">
 	<input type = "hidden" id = "portInput" value = "3000">
 	<!-- 보낼 유저 정보 -->
 	<input type = "hidden" id = "sender" value="${sender.userId}">
