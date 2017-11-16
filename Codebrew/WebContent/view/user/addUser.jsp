@@ -178,7 +178,7 @@
 		};
 	   
  
-	   /* $( function() {
+	    $( function() {
 	       $("#datepicker").datepicker({
 	    	   changeMonth: true, 
 	           changeYear: true,
@@ -200,11 +200,11 @@
 	       });   
 	       
 	      
-	    });  */
+	    });  
 	
 	   
 	  
-	  /* $( function() {
+	   $( function() {
 	        $( "input[name='birth']" ).datepicker(); 
 			$.datepicker.setDefaults({
 		           dateFormat: 'yy-mm-dd',
@@ -223,7 +223,7 @@
 		           buttonImage: "/resources/image/ui/small_cal.jpg", 
 		           yearRange : "1900:2017"
 		       }); 
-	    }); */
+	    });
 		
 		
 	
@@ -390,12 +390,12 @@
 		    </div>
 		  </div>
 		  
-	     <!--  <div class="form-group">
+	      <div class="form-group">
 		    <label for="birth" class="col-sm-offset-1 col-sm-3 control-label">생년월일</label>
 		    <div class="col-sm-4">
 		    <input type="text" id="datepicker" class="form-control" readonly="readonly" name="birth" onchange="getAge();">
 		    </div>
-		  </div> -->
+		  </div>
 		  
 		<!--     <div class="form-group">
 		    <label for="birth" class="col-sm-offset-1 col-sm-3 control-label">생년월일</label>
