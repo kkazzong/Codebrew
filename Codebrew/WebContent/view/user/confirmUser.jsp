@@ -130,11 +130,15 @@
 				console.log(JSON.stringify(JSONData));//받는정보
 				
 				var authCode = JSONData.authCode;
-				/* if(authCode != JSONData.authCode){
+				 if(authCode != JSONData.authCode){
 					$("span.col-id-checkAuthCode").html("인증번호를 다시 확인해주세요").css("color","red");
+					event.preventDefault();
+					console.log("확이중..");
+					return;
 				}else{
-					$("span.col-id-checkAuthCode").remove();
-				} */
+					/* $("span.col-id-checkAuthCode").remove(); */
+					$("span.col-id-checkAuthCode").html("인증번호가 일치합니다.").css("color","blue");
+				} 
 				//{"authId":"skale83@naver.com","authCode":"c067bf517dcf47aab5fff3cc3d22f79e"}
 			//콘솔에 이렇게 옴
 			
@@ -173,40 +177,40 @@
 			$("span.col-id-checkAuthCode").remove();
 		}
 	 */
-	
+	 
 		 //이미 가입된 아디로 본인인증을 하려고 할 경우 ajax
-	 /*  $(function(){
+	/*    $(function(){
 			
 			$("input:text[name='authId']").on("keyup",function(){
 				var userId=$("input[name='authId']").val();
-				alert("userId : "+userId);
-				$.ajax({
+				/* alert("userId : "+userId); */
+				/* $.ajax({
 					type:"POST",
 					url:"/userRest/json/checkUserId/"+userId,//만약 이런식으로 데이터를 보내면 data:를 안써줘도 됨
 					//pathVariable과 GET POST 방식은 상관이 없다.
-					 /* headers : {
-						/* "Accept" : "application/json;charset=UTF-8", ///utf 설정 빼도 에러
+					  headers : {
+						"Accept" : "application/json;charset=UTF-8", ///utf 설정 빼도 에러
 						"Content-Type" : "application/json"
-					},   */
+					}, */ 
 					/* data :JSON.stringify({ //이런식으로 쓰면 제이슨으로 간다 그래서 headers 설정이랑 매치해줘야함
 						userId : userId	
-					}, *///{userId:userId} 이런식으로 쓰면 스트링 타입으로 가고
-					/* dataType:"json",//서버에서 받는 데이터형식
-				    //success: function(JSONData,status){
+					}), ///{userId:userId} 이런식으로 쓰면 스트링 타입으로 가고
+					dataType:"json",//서버에서 받는 데이터형식
+				    success: function(JSONData,status){
 				    	console.log(status);
-				    	console.log(JSON.stringify(JSONData)); //json string 형식으로 변환해주는거
-				    	
+				    	console.log(JSON.stringify(JSONData)); //json string 형식으로 변환해주는거 */
+	/* 			    	
 			    	  if(JSONData == false){
 				    		$("span.col-id-check").html("이미 가입된 아이디입니다.").css("color","blue");
 			    	  } //.MissingServletRequestParameterException
 				    }	
 				});		
 			});					
-		});  */ 
+		});   */
 		 
-		
+		  
 		 //이미 가입된 아디로 본인인증을 하려고 할 경우 ajax
-		 $(function(){
+		  $(function(){
 				
 				$("input:text[name='authId']").on("keyup",function(){
 					var userId=$("input[name='authId']").val();
@@ -220,16 +224,18 @@
 					    	console.log(status);
 					    	console.log(JSON.stringify(JSONData)); //json string 형식으로 변환해주는거
 					    	
-				    	  if(JSONData == false){
-					    		$("span.col-id-check").html("이미 가입된 아이디입니다.").css("color","blue");
+					    	
+				    	   if(JSONData == true){
+				    		  $(".col-id-check").text("사용가능 아이디입니다.").css("color","blue");
 				    	  }else{
-				    		  $("span.col-id-check").remove();
+				    		   /* $(".col-id-check").remove(); */
+				    		   
+					    		$(".col-id-check").text("이미 가입된 아이디입니다.").css("color","red");
 				    	  }
 					    }
 					});		
 				});						
 		 }); 
-		
 
 	</script>		
     
@@ -297,6 +303,8 @@
 		  </div>
 		  
 		  <span class="col-id-checkAuthCode"></span>
+		  
+		  <span class="col-id-check"></span>
 		
 		</form>
 		
