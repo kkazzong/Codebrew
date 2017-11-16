@@ -563,15 +563,21 @@
              </div>
             <h3 class="username">${user.nickname}</h3>
            <%--  <h3 class="username">${user.userId}</h3> --%>
-            <h3 class="username">
-            <c:if test="${user.gender == 'm'}">
-            <i class="fa fa-mars" aria-hidden="true"></i>
-            </c:if>
-            <c:if test="${user.gender == 'f'}">
-            <i class="fa fa-venus" aria-hidden="true"></i>
+           
+           <c:if test="${! empty sessionScope.user.userId}">
+             <c:if test="${sessionScope.user.userId == user.userId }">
+           
+              <h3 class="username">
+               <c:if test="${user.gender == 'm'}">
+               <i class="fa fa-mars" aria-hidden="true"></i>
+               </c:if>
+               <c:if test="${user.gender == 'f'}">
+               <i class="fa fa-venus" aria-hidden="true"></i>
+               </c:if>
+               </h3>
+             </c:if>
             </c:if>
             
-            </h3>
             <%-- <h3 class="username">${user.age}</h3> --%>
             <h3 class="username"><i class="fa fa-lemon-o" aria-hidden="true"></i>${user.coconutCount}</h3>
             
@@ -683,7 +689,7 @@
             </ul>
           </div> -->
       
-  <jsp:include page="/view/mypage/getMyPartyList4.jsp"/>  
+  <jsp:include page="/view/mypage/getMyPartyList3.jsp"/>  
               
   
 </body>

@@ -39,21 +39,26 @@
 		 $(function() {
 			 
 			 var sessionId = $("#sessionId").val();
-				var userId = $("#userId").val();
-	
+			 var userId = $("#userId").val();
+	          
+	         
 				console.log("sessionId????"+sessionId);
 				console.log("userId????"+userId);
 				
 				
-				 if( sessionId == userId ) { /* 그래서 세리일때만 나옴  */
+				 //if( sessionId == userId ) { /* 그래서 세리일때만 나옴  */
 					 /*내 화면 모달창에서 add delete 하고 싶을때  */
 				//$("#tag" ).on("click" , function() {//맞팔이 안되어있는 follow를 클릭했을때
-				$(".btn:contains('Follow')" ).each(function(){}).on("click" , function() {
+				$("#addFollow" ).each(function(){}).on("click" , function() {
 					var requestId = $(this).val();//each(function(){})반복문마다 요소를 선택해서
 					//alert(requestId);			
 					 //f4f = $(this).val();
-					var flag = $(this).attr('class').trim();
-					
+					//var flag = $(this).attr('class').trim();
+					if(sessionId == requestId){
+					    alert("니 아디야.")	
+					    event.preventDefault();
+					  
+					}else{
 					//alert(flag);
 					
 					//if( f4f == "Follow" ) {//내 팔로워 목록에 맞팔이 안되있으니깐 추가하는거고
@@ -76,7 +81,7 @@
 										//location.reload();
 										//alert("context는 머다??"+this);//[object HTMLButtonElement]
 									  // $(this).removeClass('.btn.btn-sm').addClass('.btn.btn-info'); 
-										
+										//alert(status);
 									  
 									  //$('#followButton').onClick
 										//moveFollow();
@@ -85,18 +90,25 @@
 										
 										$(this).removeClass("btn btn-sm pull-right").addClass("btn btn-info btn-sm pull-right").text("Following");
 									 }
-								})
+								})//ajax
+								
+					    }//if	
 					}); 
 					
 					
-				$(".btn:contains('Following')" ).each(function(){}).on("click" , function() {	
+				$("#deleteFollowing" ).each(function(){}).on("click" , function() {	
 					var requestId = $(this).val();
 					//alert(requestId);
 					/* else  if( f4f == "Following" ) { *///내팔로워 목록에  맞팔이 되어있으니깐 삭제할수 있다.
 						
-					var flag = $(this).attr('class').trim();
+					//var flag = $(this).attr('class').trim();
 					
 					//alert(flag);
+					if(sessionId == requestId){
+					   alert("니 아디야.")	
+					   event.preventDefault();
+					
+					}else{
 					
 						$.ajax({
 									type:'POST',
@@ -125,10 +137,11 @@
 											//location.reload(); 
 									
 											//moveFollowing();
-									 }
-								})
+									 }//success
+								})//ajax
+					}//if
 						})
-				 }
+				
 			});	
 		 
 	
@@ -273,7 +286,7 @@
 											<input type="hidden"
 												value="${follow.responseId }"> --%>
 												
-										<button name="following" type="button" class="btn btn-info btn-sm pull-right" value="${follow.responseId}">Following</button>
+										<button name="following" id="deleteFollowing" type="button" class="btn btn-info btn-sm pull-right" value="${follow.responseId}">Following</button>
 										</c:when>
 										
 										
@@ -282,7 +295,7 @@
 												value="Follow" aria-hidden="true">
 											<input type="hidden" name="follower" id="follower" 
 												value="${follow.responseId }"> --%>
-											<button name="follow" type="button" class="btn btn-sm pull-right" value="${follow.responseId}">Follow</button>
+											<button name="follow" id="addFollow" type="button" class="btn btn-sm pull-right" value="${follow.responseId}">Follow</button>
 										</c:otherwise>
 										
 										
