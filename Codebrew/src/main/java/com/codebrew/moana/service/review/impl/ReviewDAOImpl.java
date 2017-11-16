@@ -49,6 +49,10 @@ public class ReviewDAOImpl implements ReviewDAO {
 	@Override //3
 	public void updateReview(Review review) throws Exception {
 		System.out.println("reviewDAO :: updateReview");
+		
+		//test
+		System.out.println("\n\nreview.getCheckCode() :: \n"+review.getCheckCode());
+		
 		sqlSession.update("ReviewMapper.updateReview", review);
 	}
 	
@@ -77,6 +81,18 @@ public class ReviewDAOImpl implements ReviewDAO {
 		map.put("search", search);
 		map.put("userId", userId);
 		return sqlSession.selectList("ReviewMapper.getMyReviewList", map);
+	}
+	
+	@Override
+	public void deleteReviewImage(int reviewNo) throws Exception {
+		System.out.println("reviewDAO :: deleteReviewImage");
+		sqlSession.delete("ReviewMapper.deleteReviewImage", reviewNo);
+	}
+	
+	@Override
+	public void deleteReviewVideo(int reviewNo) throws Exception {
+		System.out.println("reviewDAO :: deleteReviewVideo");
+		sqlSession.delete("ReviewMapper.deleteReviewVideo", reviewNo);
 	}
 	
 	@Override //8

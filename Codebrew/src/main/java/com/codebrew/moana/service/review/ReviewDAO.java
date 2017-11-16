@@ -35,6 +35,12 @@ public interface ReviewDAO {
 	//7
 	public List<Review> getCheckReviewList(Search search) throws Exception;
 	
+	//8
+	public void deleteReviewImage(int reviewNo) throws Exception;
+	
+	//9
+	public void deleteReviewVideo(int reviewNo) throws Exception;
+	
 	/*
 	 * "1" : 심사대기중
 	 * "2" : 1->2 통과

@@ -64,15 +64,6 @@
         max-width: 200px;
         }
         
-        .form-control{
-        	resize: none; /* cannot be changed by the user */
-        }
-        
- 		body {
-            padding-top : 50px;
-            background-color: #f2f4f6;
-        }
-        
         .imgs_wrap { 
         	/* border: 3px solid #333; */
         	/* width: 600px; */
@@ -82,13 +73,19 @@
         	justify-content: center;
         }
         
+        .form-control{
+        	resize: none; /* cannot be changed by the user */
+        }
+        
+ 		body {
+            padding-top : 50px;
+            background-color: #f2f4f6;
+        }
+        
         .imgs_wrap img {
         	max-width: 200px;
         }
-        
 
-
-		        
     </style>
     
 	<!--  ///////////////////////// JavaScript ////////////////////////// -->
@@ -337,7 +334,7 @@
 					<!-- 
 					<label for="festivalName" class="col-md-offset-1 col-md-2 control-label">축제번호</label>
 					 -->
-					<label for="festivalName" class="col-md-3 control-label">축제번호</label>
+					<label for="festivalNo" class="col-md-3 control-label">축제번호</label>
 					<div class="col-md-6">
 						<input type="text" class="form-control" id="festivalNo" name="festivalNo" value="${festival.festivalNo }" readonly>
 					</div>
@@ -385,7 +382,7 @@
 				<div class="form-group">
 					<label for="reviewFestivalRating" class="col-md-3 control-label">축제평점</label>
 					<div class="col-md-6">
-						<!-- 되는거...근데 밋밋해 별점주기로 해보자
+						<!-- 되는거...근데 밋밋해 별점주기로 해보자 : 1~5점 정수형으로....domain 상 field에 int 로 되어있음
 						<input type="number" class="form-control" id="reviewFestivalRating" name="reviewFestivalRating" min="1" max="10"> 
 						-->
 						<input type="number" id="reviewFestivalRating" class="form-control rating" name="reviewFestivalRating" value="5" data-min="0" data-max="5" data-step="1" data-size="xs" data-rtl="true">

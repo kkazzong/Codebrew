@@ -255,7 +255,6 @@ public class ODSayAPIDAOImpl implements ReviewDAO {
 	
 	}
 
-	
 	@Override
 	public void addReview(Review review) throws Exception {
 		// TODO Auto-generated method stub
@@ -299,6 +298,18 @@ public class ODSayAPIDAOImpl implements ReviewDAO {
 	}
 
 	@Override
+	public void deleteReviewImage(int reviewNo) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteReviewVideo(int reviewNo) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
 	public void passCheckCode(Review review) throws Exception {
 		// TODO Auto-generated method stub
 		
@@ -327,7 +338,7 @@ public class ODSayAPIDAOImpl implements ReviewDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	@Override
 	public Good getGood(String userId, int reviewNo) throws Exception {
 		// TODO Auto-generated method stub
@@ -381,11 +392,13 @@ public class ODSayAPIDAOImpl implements ReviewDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	@Override
 	public void updateReviewGoodCount(Good good) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
+
+	
 
 }
