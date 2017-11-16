@@ -78,6 +78,9 @@
         	height: 25px;
         } */
         
+        #replaceTransportListAtStation {
+        	text-align: left;
+        }
         
 	</style>
 	
@@ -253,7 +256,6 @@
 		});
 		
 		
-		
 		//please...do not handle more than one event in one button.........fuxx
 		$(".btn-info:contains('완료')").on("click", function(){
 			
@@ -378,14 +380,154 @@
    							}, 
    							success : function(JSONData, status){
    								
-   								if(JSONData.busNoList.length != 0){
-   									var busStr = "";
-   									for(var i = 0; i < JSONData.busNoList.length; i++) {
-   										busStr += JSONData.busNoList[i]+", ";
+   								var totalBusStr = "";
+   								
+   								if(JSONData.busNoList1.length != 0){ // 1번 노선 : 일반
+   									var busStr1 = "";
+   									for(var i = 0; i < JSONData.busNoList1.length; i++) {
+   										busStr1 += JSONData.busNoList1[i]+", ";
    									}
-   									busStr = busStr.substr(0, busStr.length-2);
+   									busStr1 = busStr1.substr(0, busStr1.length-2);
+   									busStr1 = "<font color="+"#008765"+">일반</font> : "+busStr1+"<br>";
+   									totalBusStr += busStr1;
    								}
-   								if(JSONData.subwayList.length != 0){
+   								if(JSONData.busNoList2.length != 0){ // 2번 노선 : 좌석
+   									var busStr2 = "";
+   									for(var i = 0; i < JSONData.busNoList2.length; i++) {
+   										busStr2 += JSONData.busNoList2[i]+", ";
+   									}
+   									busStr2 = busStr2.substr(0, busStr2.length-2);
+   									busStr2 = "<font color="+"#c10c0e"+">좌석</font> : "+busStr2+"<br>";
+   									totalBusStr += busStr2;
+   								}
+   								if(JSONData.busNoList3.length != 0){ // 3번 노선 : 마을버스
+   									var busStr3 = "";
+   									for(var i = 0; i < JSONData.busNoList3.length; i++) {
+   										busStr3 += JSONData.busNoList3[i]+", ";
+   									}
+   									busStr3 = busStr3.substr(0, busStr3.length-2);
+   									busStr3 = "<font color="+"#25921d"+">마을버스</font> : "+busStr3+"<br>";
+   									totalBusStr += busStr3;
+   								}
+   								if(JSONData.busNoList4.length != 0){ // 4번 노선 : 직행좌석
+   									var busStr4 = "";
+   									for(var i = 0; i < JSONData.busNoList4.length; i++) {
+   										busStr4 += JSONData.busNoList4[i]+", ";
+   									}
+   									busStr4 = busStr4.substr(0, busStr4.length-2);
+   									busStr4 = "<font color="+"#ab0d22"+">직행좌석</font> : "+busStr4+"<br>";
+   									totalBusStr += busStr4;
+   								}
+   								if(JSONData.busNoList5.length != 0){ // 5번 노선 : 공항버스
+   									var busStr5 = "";
+   									for(var i = 0; i < JSONData.busNoList5.length; i++) {
+   										busStr5 += JSONData.busNoList5[i]+", ";
+   									}
+   									busStr5 = busStr5.substr(0, busStr5.length-2);
+   									busStr5 = "<font color="+"#3b2033"+">공항버스</font> : "+busStr5+"<br>";
+   									totalBusStr += busStr5;
+   								}
+   								if(JSONData.busNoList6.length != 0){ // 6번 노선 : 간선급행
+   									var busStr6 = "";
+   									for(var i = 0; i < JSONData.busNoList6.length; i++) {
+   										busStr6 += JSONData.busNoList6[i]+", ";
+   									}
+   									busStr6 = busStr6.substr(0, busStr6.length-2);
+   									busStr6 = "<font color="+"#66c5f5"+">간선급행</font> : "+busStr6+"<br>";
+   									totalBusStr += busStr6;
+   								}
+   								if(JSONData.busNoList10.length != 0){ // 10번 노선 : 외곽
+   									var busStr10 = "";
+   									for(var i = 0; i < JSONData.busNoList10.length; i++) {
+   										busStr10 += JSONData.busNoList10[i]+", ";
+   									}
+   									busStr10 = busStr10.substr(0, busStr10.length-2);
+   									busStr10 = "<font color="+"##16b322"+">외곽버스</font> : "+busStr10+"<br>";
+   									totalBusStr += busStr10;
+   								}
+   								if(JSONData.busNoList11.length != 0){ // 11번 노선 : 간선
+   									var busStr11 = "";
+   									for(var i = 0; i < JSONData.busNoList11.length; i++) {
+   										busStr11 += JSONData.busNoList11[i]+", ";
+   									}
+   									busStr11 = busStr11.substr(0, busStr11.length-2);
+   									busStr11 = "<font color="+"#255691"+">간선</font> : "+busStr11+"<br>";
+   									totalBusStr += busStr11;
+   								}
+   								if(JSONData.busNoList12.length != 0){ // 12번 노선 : 지선
+   									var busStr12 = "";
+   									for(var i = 0; i < JSONData.busNoList12.length; i++) {
+   										busStr12 += JSONData.busNoList12[i]+", ";
+   									}
+   									busStr12 = busStr12.substr(0, busStr12.length-2);
+   									busStr12 = "<font color="+"#0ab706"+">지선</font> : "+busStr12+"<br>";
+   									totalBusStr += busStr12;
+   								}
+   								if(JSONData.busNoList13.length != 0){ // 13번 노선 : 순환
+   									var busStr13 = "";
+   									for(var i = 0; i < JSONData.busNoList13.length; i++) {
+   										busStr13 += JSONData.busNoList13[i]+", ";
+   									}
+   									busStr13 = busStr13.substr(0, busStr13.length-2);
+   									busStr13 = "<font color="+"#e49b01"+">순환</font> : "+busStr13+"<br>";
+   									totalBusStr += busStr13;
+   								}
+   								if(JSONData.busNoList14.length != 0){ // 14번 노선 : 광역
+   									var busStr14 = "";
+   									for(var i = 0; i < JSONData.busNoList5.length; i++) {
+   										busStr14 += JSONData.busNoList14[i]+", ";
+   									}
+   									busStr14 = busStr14.substr(0, busStr14.length-2);
+   									busStr14 = "<font color="+"#fd2a00"+">광역</font> : "+busStr14+"<br>";
+   									totalBusStr += busStr14;
+   								}
+   								if(JSONData.busNoList15.length != 0){ // 15번 노선 : 급행
+   									var busStr15 = "";
+   									for(var i = 0; i < JSONData.busNoList15.length; i++) {
+   										busStr15 += JSONData.busNoList15[i]+", ";
+   									}
+   									busStr15 = busStr15.substr(0, busStr15.length-2);
+   									busStr15 = "<font color="+"#fd2a00"+">급행</font> : "+busStr15+"<br>";
+   									totalBusStr += busStr15;
+   								}
+   								if(JSONData.busNoList20.length != 0){ // 20번 노선 : 농어촌버스
+   									var busStr20 = "";
+   									for(var i = 0; i < JSONData.busNoList20.length; i++) {
+   										busStr20 += JSONData.busNoList20[i]+", ";
+   									}
+   									busStr20 = busStr20.substr(0, busStr20.length-2);
+   									busStr20 = "<font color="+"#eb7827"+">농어촌버스</font> : "+busStr20+"<br>";
+   									totalBusStr += busStr20;
+   								}
+   								if(JSONData.busNoList21.length != 0){ // 21번 노선 : 제주도 시외형버스
+   									var busStr21 = "";
+   									for(var i = 0; i < JSONData.busNoList21.length; i++) {
+   										busStr21 += JSONData.busNoList21[i]+", ";
+   									}
+   									busStr21 = busStr21.substr(0, busStr21.length-2);
+   									busStr21 = "<font color="+"#247d86"+">제주도 시외형버스</font> : "+busStr21+"<br>";
+   									totalBusStr += busStr21;
+   								}
+   								if(JSONData.busNoList22.length != 0){ // 22번 노선 : 경기도 시외형버스
+   									var busStr22 = "";
+   									for(var i = 0; i < JSONData.busNoList22.length; i++) {
+   										busStr22 += JSONData.busNoList22[i]+", ";
+   									}
+   									busStr22 = busStr22.substr(0, busStr22.length-2);
+   									busStr22 = "<font color="+"#f61f1c"+">경기도 시외형버스</font> : "+busStr22+"<br>";
+   									totalBusStr += busStr22;
+   								}
+   								if(JSONData.busNoList26.length != 0){ // 26번 노선 : 급행간선
+   									var busStr26 = "";
+   									for(var i = 0; i < JSONData.busNoList26.length; i++) {
+   										busStr26 += JSONData.busNoList26[i]+", ";
+   									}
+   									busStr26 = busStr26.substr(0, busStr26.length-2);
+   									busStr26 = "<font color="+"#fe4016"+">급행간선</font> : "+busStr26;
+   									totalBusStr += busStr26+"<br>";
+   								}
+   								
+   								if(JSONData.subwayList.length != 0){ // 지하철
    									var subwayStr = "";
    									for(var i = 0; i < JSONData.subwayList.length; i++) {
    										subwayStr += JSONData.subwayList[i]+", ";
@@ -393,18 +535,21 @@
    									subwayStr = subwayStr.substr(0, subwayStr.length-2);
    								}
    								
-   								if(JSONData.busNoList.length != 0 && JSONData.subwayList.length == 0) {
-	   								$("#transportListAtStation").html("<br><img src=../../resources/images/transport/BlackBus.PNG width=24 height=24>"+"버스 : "+busStr);   									
+   								if(totalBusStr.length != 0 && JSONData.subwayList.length == 0) { //버스만 존재하고 subway 없는경우
+   									$('#transportListAtStation').empty();
+	   								$("#replaceTransportListAtStation").html("<br><img src=../../resources/images/transport/BlackBus.PNG width=24 height=24>"+"버스<br>"+totalBusStr);   									
    								}
-   								if(JSONData.subwayList.length != 0 && JSONData.busNoList.length == 0) {
-	   								$("#transportListAtStation").html("<br><img src=../../resources/images/transport/BlackSubway.PNG width=24 height=24>"+"지하철 : "+subwayStr);   									
+   								if(JSONData.subwayList.length != 0 && totalBusStr.length == 0) { //subway만 존재하고 버스 없는경우
+   									$('#transportListAtStation').empty();
+	   								$("#replaceTransportListAtStation").html("<br><img src=../../resources/images/transport/BlackSubway.PNG width=24 height=24>"+"지하철<br>"+subwayStr);   									
    								}
-   								if(JSONData.subwayList.length != 0 && JSONData.busNoList.length != 0) {
-	   								$("#transportListAtStation").html("<br><img src=../../resources/images/transport/BlackBus.PNG width=24 height=24>"+"버스 : "+busStr+"<br>"+"<img src=../../resources/images/transport/BlackSubway.PNG width=24 height=24>"+"지하철 : "+subwayStr);   									
+   								if(JSONData.subwayList.length != 0 &&totalBusStr.length != 0) { //버스와 subway 둘 모두 존재하는 경우
+   									$('#transportListAtStation').empty();
+	   								$("#replaceTransportListAtStation").html("<br><img src=../../resources/images/transport/BlackBus.PNG width=24 height=24>"+"버스<br>"+totalBusStr+"<br>"+"<img src=../../resources/images/transport/BlackSubway.PNG width=24 height=24>"+"지하철<br>"+subwayStr);   									
    								}
-   								
-   								if(JSONData.busNoList.length == 0 && JSONData.subwayList.length == 0){
-   									$("#transportListAtStation").html("반경 "+defaultRadius+"m내에 관련 대중교통 정보가 없습니다.");
+   								if(totalBusStr.length == 0 && JSONData.subwayList.length == 0){ // 버스와 subway 둘 모두 존재하지 않는 경우
+   									$('#transportListAtStation').empty();
+   									$("#replaceTransportListAtStation").html("반경 "+defaultRadius+"m내에 관련 대중교통 정보가 없습니다.");
    								}
    								
    							}
@@ -541,6 +686,7 @@
 									$("#idForGetGoodLocation").attr('class', 'glyphicon glyphicon-heart-empty');
 									$("#addGood").attr('class', 'glyphicon glyphicon-thumbs-up')
 								}
+								
 							}
 						}		
 				)
@@ -574,6 +720,180 @@
    							success : function(JSONData, status){
    								
    								
+								var totalBusStr = "";
+   								
+								if(JSONData.busNoList1.length != 0){ // 1번 노선 : 일반
+   									var busStr1 = "";
+   									for(var i = 0; i < JSONData.busNoList1.length; i++) {
+   										busStr1 += JSONData.busNoList1[i]+", ";
+   									}
+   									busStr1 = busStr1.substr(0, busStr1.length-2);
+   									busStr1 = "<font color="+"#008765"+">일반</font> : "+busStr1+"<br>";
+   									totalBusStr += busStr1;
+   								}
+   								if(JSONData.busNoList2.length != 0){ // 2번 노선 : 좌석
+   									var busStr2 = "";
+   									for(var i = 0; i < JSONData.busNoList2.length; i++) {
+   										busStr2 += JSONData.busNoList2[i]+", ";
+   									}
+   									busStr2 = busStr2.substr(0, busStr2.length-2);
+   									busStr2 = "<font color="+"#c10c0e"+">좌석</font> : "+busStr2+"<br>";
+   									totalBusStr += busStr2;
+   								}
+   								if(JSONData.busNoList3.length != 0){ // 3번 노선 : 마을버스
+   									var busStr3 = "";
+   									for(var i = 0; i < JSONData.busNoList3.length; i++) {
+   										busStr3 += JSONData.busNoList3[i]+", ";
+   									}
+   									busStr3 = busStr3.substr(0, busStr3.length-2);
+   									busStr3 = "<font color="+"#25921d"+">마을버스</font> : "+busStr3+"<br>";
+   									totalBusStr += busStr3;
+   								}
+   								if(JSONData.busNoList4.length != 0){ // 4번 노선 : 직행좌석
+   									var busStr4 = "";
+   									for(var i = 0; i < JSONData.busNoList4.length; i++) {
+   										busStr4 += JSONData.busNoList4[i]+", ";
+   									}
+   									busStr4 = busStr4.substr(0, busStr4.length-2);
+   									busStr4 = "<font color="+"#ab0d22"+">직행좌석</font> : "+busStr4+"<br>";
+   									totalBusStr += busStr4;
+   								}
+   								if(JSONData.busNoList5.length != 0){ // 5번 노선 : 공항버스
+   									var busStr5 = "";
+   									for(var i = 0; i < JSONData.busNoList5.length; i++) {
+   										busStr5 += JSONData.busNoList5[i]+", ";
+   									}
+   									busStr5 = busStr5.substr(0, busStr5.length-2);
+   									busStr5 = "<font color="+"#3b2033"+">공항버스</font> : "+busStr5+"<br>";
+   									totalBusStr += busStr5;
+   								}
+   								if(JSONData.busNoList6.length != 0){ // 6번 노선 : 간선급행
+   									var busStr6 = "";
+   									for(var i = 0; i < JSONData.busNoList6.length; i++) {
+   										busStr6 += JSONData.busNoList6[i]+", ";
+   									}
+   									busStr6 = busStr6.substr(0, busStr6.length-2);
+   									busStr6 = "<font color="+"#66c5f5"+">간선급행</font> : "+busStr6+"<br>";
+   									totalBusStr += busStr6;
+   								}
+   								if(JSONData.busNoList10.length != 0){ // 10번 노선 : 외곽
+   									var busStr10 = "";
+   									for(var i = 0; i < JSONData.busNoList10.length; i++) {
+   										busStr10 += JSONData.busNoList10[i]+", ";
+   									}
+   									busStr10 = busStr10.substr(0, busStr10.length-2);
+   									busStr10 = "<font color="+"##16b322"+">외곽버스</font> : "+busStr10+"<br>";
+   									totalBusStr += busStr10;
+   								}
+   								if(JSONData.busNoList11.length != 0){ // 11번 노선 : 간선
+   									var busStr11 = "";
+   									for(var i = 0; i < JSONData.busNoList11.length; i++) {
+   										busStr11 += JSONData.busNoList11[i]+", ";
+   									}
+   									busStr11 = busStr11.substr(0, busStr11.length-2);
+   									busStr11 = "<font color="+"#255691"+">간선</font> : "+busStr11+"<br>";
+   									totalBusStr += busStr11;
+   								}
+   								if(JSONData.busNoList12.length != 0){ // 12번 노선 : 지선
+   									var busStr12 = "";
+   									for(var i = 0; i < JSONData.busNoList12.length; i++) {
+   										busStr12 += JSONData.busNoList12[i]+", ";
+   									}
+   									busStr12 = busStr12.substr(0, busStr12.length-2);
+   									busStr12 = "<font color="+"#0ab706"+">지선</font> : "+busStr12+"<br>";
+   									totalBusStr += busStr12;
+   								}
+   								if(JSONData.busNoList13.length != 0){ // 13번 노선 : 순환
+   									var busStr13 = "";
+   									for(var i = 0; i < JSONData.busNoList13.length; i++) {
+   										busStr13 += JSONData.busNoList13[i]+", ";
+   									}
+   									busStr13 = busStr13.substr(0, busStr13.length-2);
+   									busStr13 = "<font color="+"#e49b01"+">순환</font> : "+busStr13+"<br>";
+   									totalBusStr += busStr13;
+   								}
+   								if(JSONData.busNoList14.length != 0){ // 14번 노선 : 광역
+   									var busStr14 = "";
+   									for(var i = 0; i < JSONData.busNoList5.length; i++) {
+   										busStr14 += JSONData.busNoList14[i]+", ";
+   									}
+   									busStr14 = busStr14.substr(0, busStr14.length-2);
+   									busStr14 = "<font color="+"#fd2a00"+">광역</font> : "+busStr14+"<br>";
+   									totalBusStr += busStr14;
+   								}
+   								if(JSONData.busNoList15.length != 0){ // 15번 노선 : 급행
+   									var busStr15 = "";
+   									for(var i = 0; i < JSONData.busNoList15.length; i++) {
+   										busStr15 += JSONData.busNoList15[i]+", ";
+   									}
+   									busStr15 = busStr15.substr(0, busStr15.length-2);
+   									busStr15 = "<font color="+"#fd2a00"+">급행</font> : "+busStr15+"<br>";
+   									totalBusStr += busStr15;
+   								}
+   								if(JSONData.busNoList20.length != 0){ // 20번 노선 : 농어촌버스
+   									var busStr20 = "";
+   									for(var i = 0; i < JSONData.busNoList20.length; i++) {
+   										busStr20 += JSONData.busNoList20[i]+", ";
+   									}
+   									busStr20 = busStr20.substr(0, busStr20.length-2);
+   									busStr20 = "<font color="+"#eb7827"+">농어촌버스</font> : "+busStr20+"<br>";
+   									totalBusStr += busStr20;
+   								}
+   								if(JSONData.busNoList21.length != 0){ // 21번 노선 : 제주도 시외형버스
+   									var busStr21 = "";
+   									for(var i = 0; i < JSONData.busNoList21.length; i++) {
+   										busStr21 += JSONData.busNoList21[i]+", ";
+   									}
+   									busStr21 = busStr21.substr(0, busStr21.length-2);
+   									busStr21 = "<font color="+"#247d86"+">제주도 시외형버스</font> : "+busStr21+"<br>";
+   									totalBusStr += busStr21;
+   								}
+   								if(JSONData.busNoList22.length != 0){ // 22번 노선 : 경기도 시외형버스
+   									var busStr22 = "";
+   									for(var i = 0; i < JSONData.busNoList22.length; i++) {
+   										busStr22 += JSONData.busNoList22[i]+", ";
+   									}
+   									busStr22 = busStr22.substr(0, busStr22.length-2);
+   									busStr22 = "<font color="+"#f61f1c"+">경기도 시외형버스</font> : "+busStr22+"<br>";
+   									totalBusStr += busStr22;
+   								}
+   								if(JSONData.busNoList26.length != 0){ // 26번 노선 : 급행간선
+   									var busStr26 = "";
+   									for(var i = 0; i < JSONData.busNoList26.length; i++) {
+   										busStr26 += JSONData.busNoList26[i]+", ";
+   									}
+   									busStr26 = busStr26.substr(0, busStr26.length-2);
+   									busStr26 = "<font color="+"#fe4016"+">급행간선</font> : "+busStr26;
+   									totalBusStr += busStr26+"<br>";
+   								}
+   								
+   								if(JSONData.subwayList.length != 0){ // 지하철
+   									var subwayStr = "";
+   									for(var i = 0; i < JSONData.subwayList.length; i++) {
+   										subwayStr += JSONData.subwayList[i]+", ";
+   									}
+   									subwayStr = subwayStr.substr(0, subwayStr.length-2);
+   								}
+   								
+   								if(totalBusStr.length != 0 && JSONData.subwayList.length == 0) { //버스만 존재하고 subway 없는경우
+   									$('#transportListAtStation').empty();
+	   								$("#replaceTransportListAtStation").html("<br><img src=../../resources/images/transport/BlackBus.PNG width=24 height=24>"+"버스<br>"+totalBusStr);   									
+   								}
+   								if(JSONData.subwayList.length != 0 && totalBusStr.length == 0) { //subway만 존재하고 버스 없는경우
+   									$('#transportListAtStation').empty();
+	   								$("#replaceTransportListAtStation").html("<br><img src=../../resources/images/transport/BlackSubway.PNG width=24 height=24>"+"지하철<br>"+subwayStr);   									
+   								}
+   								if(JSONData.subwayList.length != 0 &&totalBusStr.length != 0) { //버스와 subway 둘 모두 존재하는 경우
+   									$('#transportListAtStation').empty();
+	   								$("#replaceTransportListAtStation").html("<br><img src=../../resources/images/transport/BlackBus.PNG width=24 height=24>"+"버스<br>"+totalBusStr+"<br>"+"<img src=../../resources/images/transport/BlackSubway.PNG width=24 height=24>"+"지하철<br>"+subwayStr);   									
+   								}
+   								if(totalBusStr.length == 0 && JSONData.subwayList.length == 0){ // 버스와 subway 둘 모두 존재하지 않는 경우
+   									$('#transportListAtStation').empty();
+   									$("#replaceTransportListAtStation").html("반경 "+defaultRadius+"m내에 관련 대중교통 정보가 없습니다.");
+   								}
+   								
+   								
+   								/* 
    								if(JSONData.busNoList.length != 0){
    									var busStr = "";
    									for(var i = 0; i < JSONData.busNoList.length; i++) {
@@ -602,7 +922,7 @@
    								if(JSONData.busNoList.length == 0 && JSONData.subwayList.length == 0){
    									$("#transportListAtStation").html("반경 "+radiusForTransportSearchAgain+"m내에 관련 대중교통 정보가 없습니다.");
    								}
-   								
+   								 */
    								
    							}
    						}		
@@ -809,10 +1129,18 @@
 						<div class="col-md-12" id="googleMap" style="width:100%;height:380px;">
 						</div>
 						<div class="col-md-12">
+							<span class="glyphicon glyphicon-road" aria-hidden="true"> 대중교통정보</span>
 							<small>
-								<span class="glyphicon glyphicon-road" aria-hidden="true"> 대중교통정보</span>
 								<span id="transportListAtStation">교통정보 불러오는 중...</span>
-								<br>
+							</small>
+						</div>
+						<div class="col-md-12 pull pull-left">
+							<small>
+								<span id="replaceTransportListAtStation" class="pull pull-left"></span>
+							</small>
+						</div>
+						<div>
+							<small>
 								<input type="number" id="radiusForTransportSearchAgain" min="100" max="3000" value="350"/>
 								<button type="button" class="btn btn-default btn-xs" id="searchAgainWithNewRadius">
 									재검색
