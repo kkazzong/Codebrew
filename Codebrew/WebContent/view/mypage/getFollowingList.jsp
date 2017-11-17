@@ -19,16 +19,19 @@
 	
 	<script type="text/javascript">
 	
-/* 	
-	$(function() {
+ 	
+	/* $(function() {
 		
-		//팔로우한 회원 프로필로 이동(회원프로필에서 userId입장에서 물고들어간다.)
-		$(".followProfile").on("click", function() {
-			var userId = $(this).text().trim();
-			self.location = "/myPage/getYourPage?userId="+userId;
+		//팔로우한 회원 프로필로 이동(회원프로필에서 requestId입장에서 물고들어간다.)
+		 $(".userNick").each(function(){}).on("click", function() {
+			
+			var requestId=$(this).text.trim();
+			var requestId = $(this).val();
+			alert(requestId);
+			self.location = "/myPage/getMyPage?requestId="+requestId;
 		});
-	
-	}); */
+		
+		});  */
 	
 	
 	
@@ -41,23 +44,23 @@
 			console.log("sessionId는?????"+sessionId);
 			console.log("userId는????"+userId);
 		
-			// if( sessionId == userId ) {
+			if( sessionId == userId ) {
 				 
 				 
-				 $("#deleteFollowing" ).each(function(){}).on("click" , function() {	
+				 $(".deleteFollowing" ).each(function(){}).on("click" , function() {	
 						var requestId = $(this).val();
-						//alert(requestId);
+						console.log(requestId);
 						/* else  if( f4f == "Following" ) { *///내팔로워 목록에  맞팔이 되어있으니깐 삭제할수 있다.
 							
-						//var flag = $(this).attr('class').trim();
+						var flag = $(this).attr('class').trim();
 						
-						//alert(flag);
+						console.log(flag);
 						
-					if(sessionId == requestId){
+				 /* 	if(sessionId == requestId){
 					    alert("니 아디야.")	
 					    event.preventDefault();
 					  
-				    }else{
+				    }else{ */
 						
 							$.ajax({
 										type:'POST',
@@ -88,30 +91,31 @@
 												//moveFollowing();
 												
 												
-											//alert("context는 뭘까??"+this);//[object HTMLButtonElement]
+											console.log("context는 뭘까??"+this);//[object HTMLButtonElement]
 											
-										   $(this).removeClass("btn btn-info btn-sm pull-right").addClass("btn btn-sm pull-right").text("Follow");
+										   $(this).removeClass("btn btn-info btn-sm pull-right deleteFollowing").addClass("btn btn-sm pull-right addFollowing").text("Follow");
 										 
 										 
 										 }
 									})//ajax
-							}//if
+							//}//if
 						});
 				 
 				 
-							$("#addFollow" ).each(function(){}).on("click" , function() {
+							$(".addFollowing" ).each(function(){}).on("click" , function(event) {
 								var requestId = $(this).val();//each(function(){})반복문마다 요소를 선택해서
-								//alert(requestId);			
+								
+								console.log(requestId);			
 								 //f4f = $(this).val();
-								//var flag = $(this).attr('class').trim();
+								var flag = $(this).attr('class').trim();
 								
-								//alert(flag);
-								
-								if(sessionId == requestId){
+								console.log(flag);
+							 	
+								/* if(sessionId == requestId){
 								    alert("니 아디야.")	
 								    event.preventDefault();
 								  
-								}else{
+								}else{  */
 								
 								//if( f4f == "Follow" ) {//내 팔로워 목록에 맞팔이 안되있으니깐 추가하는거고
 								 // if(${follow.f4f == 1})
@@ -127,26 +131,26 @@
 												 context : this, 
 												 success : function(JSONData, status) {
 													
-													 //alert(JSON.stringify(JSONData));
+													console.log(JSON.stringify(JSONData));
 													/*  location.reload(); */ 
 												   //$("#followButton").text("Following").css('background-color', '#3897f0').css('color', '#fff');
 													//location.reload();
 													//alert("context는 머다??"+this);//[object HTMLButtonElement]
 												  // $(this).removeClass('.btn.btn-sm').addClass('.btn.btn-info'); 
-													//alert(status);
+												     console.log(status);
 												  
 												  //$('#followButton').onClick
 													//moveFollow();
 													//$(this).reload();
 													//$("#tag").removeClass(".btn btn-sm").addClass(".btn btn-info btn-sm");
 													
-													$(this).removeClass("btn btn-sm pull-right").addClass("btn btn-info btn-sm pull-right").text("Following");
+													$(this).removeClass("btn btn-sm pull-right addFollowing").addClass("btn btn-info btn-sm pull-right deleteFollowing").text("Following");
 												 }
 											})//ajax
-								}//if
+								//}//if
 								})
-				 
-				});	
+							}
+				 });	
 			 
 
 		
@@ -229,7 +233,8 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="following">팔로잉</h5>
+        <h5 class="modal-title" id="following">팔로잉(내가 팔로잉한 회원목록)</h5>
+         <h7 class="modal-title" id="following">닉네임 클릭이동하여 친구를 추가할 수 있습니다.</h7>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -256,10 +261,13 @@
 								
 							    <div class="row" id="userDiv">
 								
-								 <div class="col-xs-2" id="userImage">
+								 <div class="col-xs-2 userImage" id="userImage">
 									<img class="img-circle" src="/resources/uploadFile/${follow.profileImage}" width="30" height="30"></div>
 									<input type="hidden" class="follow" name="follow" value="${follow.requestId }">
-										<div class="col-xs-6" id="userNick" title="클릭 이동">${follow.nickname}</div>
+										<div class="col-xs-6 userNick"   title="클릭 이동" >
+										<%-- ${follow.nickname} --%>
+		                                <a href="/myPage/getMyPage?requestId=${follow.requestId}">${follow.nickname}</a>
+										</div>
 									<div class="col-xs-4">
 									<c:choose>
 										<c:when test="${ empty follow.nickname } ">
@@ -267,7 +275,13 @@
 												value="Follow">
 											<input type="hidden" class="follow"
 												value="${follow.requestId }"> --%>
-								<button name="follow" id="addFollow" type="button" class="btn btn-sm pull-right" value="${follow.requestId}">Follow</button>	
+							<%-- 	<c:if test="${follow.requestId == sessionScope.user.userId }">							
+								<button name="follow" id="addFollow" type="button"  disabled="disabled" class="btn btn-sm pull-right" value="${follow.requestId}">Follow</button>	
+								</c:if> --%>
+								
+								<%-- <c:if test="${follow.requestId != sessionScope.user.userId }"> --%>
+								<button name="follow" id="addFollow" type="button" class="btn btn-sm pull-right addFollowing" value="${follow.requestId}">Follow</button>	
+							<%-- 	</c:if> --%>
 												
 										</c:when>
 										<c:otherwise>
@@ -275,8 +289,15 @@
 												id="followingButton" value="Following">
 											<input type="hidden" class="follow"
 												value="${follow.requestId }"> --%>
-												
-								<button name="following" id="deleteFollowing" type="button" class="btn btn-info btn-sm pull-right" value="${follow.requestId}">Following</button>
+								<%-- <c:if test="${follow.requestId == sessionScope.user.userId}">				
+								<button name="following" id="deleteFollowing" type="button" disabled="disabled" class="btn btn-info btn-sm pull-right" value="${follow.requestId}">Following</button>
+								</c:if>	 --%>	
+								
+								<%-- <c:if test="${follow.requestId != sessionScope.user.userId }"> --%>
+								<button name="following" id="deleteFollowing" type="button" class="btn btn-info btn-sm pull-right deleteFollowing" value="${follow.requestId}">Following</button>
+								<%-- </c:if> --%>
+								
+										
 										</c:otherwise>
 									</c:choose>
 								</div>

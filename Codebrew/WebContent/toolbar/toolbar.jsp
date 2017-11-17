@@ -530,9 +530,10 @@ $( function() {
 				    	console.log(status);
 				    	console.log(JSON.stringify(JSONData)); //json string 형식으로 변환해주는거
 				    	
-				    	//var id=JSONData.userId;
+				    	var id=JSONData.userId;
 				    	var pw=JSONData.password;
 				
+				 
 				    if(pw != password){
 				     /* $("span.col-id-checkPassword").html("비밀번호가 틀렸습니다.").css("color","blue"); */
 				     alert("비밀번호가 틀렸습니다.")
@@ -549,12 +550,11 @@ $( function() {
 				      }
 				    }
 				    
-			    });
-				
+			      });
 			});
-		});	
+		});
 	   
-		
+			
 		
    		
 	</script>  
