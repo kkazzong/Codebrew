@@ -28,7 +28,7 @@
    
    $(function(){
 		 $( "button:contains('검색')" ).on("click" , function() {
-			alert("검색누름");
+			/* alert("검색누름"); */
 			fncGetList(1);
 		});
 });
