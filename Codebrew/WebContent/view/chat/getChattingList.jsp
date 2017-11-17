@@ -145,7 +145,7 @@
 		/////////////////////============jQuery start================/////////////////////////
 		$(function(){
 			
-			alert("여기로 옴");
+			//alert("여기로 옴");
 			//////오늘 날짜 출력
 			printDate();
 			
@@ -249,7 +249,7 @@
 						//addToDiscussion(message[i]);
 						
 						if(senders[0].sender == "${user.userId}") {
-							alert("센더가 나다")
+							//alert("센더가 나다")
 							senders[0] = {
 									sender : message[i].recipient,
 									senNick : message[i].recNick
@@ -298,7 +298,7 @@
 					for(var i = 0; i < message.length; i++) {
 						var roomId = message[i].roomId;
 						var members = message[i].members;
-						alert(roomId+", "+members);
+						//alert(roomId+", "+members);
 						//getPartyAjax(roomId);
 						getPartyAjax(roomId, message[i]);
 						//alert("에이작스에서 얻은 파티네임"+roomName);
@@ -341,7 +341,18 @@
 					} else if(message.command == 'groupChat') {
 						
 						var roomId = message.roomId+"";
-						$("#"+roomId).html(data);
+						//alert(JSON.stringify(message));
+						//$("#"+roomId).html(data);
+						if($("#"+roomId).html() != undefined) {
+							//alert("리스트에 존재하는 채팅");
+							$("#"+roomId).html(data);
+						} else {
+							/////////////추가함//////
+							//alert("리스트에 없는 채팅");
+							sender = message.sender;
+							data = message.data;
+							addToNewGroupDiscussion(message);
+						}
 						
 					} else {
 						
@@ -358,6 +369,14 @@
 					
 				});
 				
+				/////////GJ4.jsp추가
+				/* socket.on('messageOnListJoin', function(message){
+					
+					alert("FROM DB"+JSON.stringify(message));
+					
+					
+				}); */
+								
 				
 				//추가
 				function addToLastMessage(message){
@@ -369,6 +388,10 @@
 				
 					
 				}
+				
+				socket.on('messageOnListSender', function(message){
+					//alert(JSON.stringify(message));
+				});
 				
 				////////////////////////////disconnect//////////////////////////////////
 				socket.on('disconnect', function(){
@@ -500,6 +523,46 @@
 			
 		}
 		
+		/////////////////////////////////////////새로 추가 그룹 채팅 새로운 리스트 html////////////////////////////////////////////
+		function addToNewGroupDiscussion(message){
+			
+			var members = message.members;
+			var roomId = message.roomId;
+			var senNicks = message.senNicks;
+			//alert(senNicks);
+			var roomName = message.roomName; //SR2.jsp 에서 추가
+			var img = "/resources/image/chat/group.png"; ///default 이미지
+			//var roomName = partyName;
+			
+			contents = '<div class="row">'
+							+'<div class="col-md-offset-2 col-md-8">'
+							+'<div class="panel panel-default chatting">'
+							+'<div class="panel-body"'
+							+"onclick=javascript:chatGroupPopup('${user.userId}','"+roomId+"');>"
+							+'<div class="col-md-2">'
+							+"<div class = 'avatar'>"
+							+'<img width="67px" height="67px" src="'+img+'">'
+							+'</div>'
+							+'</div>'
+							+'<div class="col-md-10">'
+							+'<div>'+roomName+'</div>'
+							+'<div>'+senNicks+'</div>'
+							+'<div id="'+roomId+'" class = "groupmessage">'
+							 +'<p><h4>' + message.data + '</h4></p>' 
+							+"<time datetime='2017-10-05 13:52'>"+message.time+"</time>" 
+							+'</div>'
+							+'</div>'
+							+'</div>'
+							+'</div>'
+							+'</div>'
+							+'</div> ';
+							
+			console.log("추가할 HTML : " + contents);
+			
+			//////////////////////////////////////클릭시 대화방 입장//////////////////////////////////////////////////////////
+			$(".discussion").prepend(contents);
+		}
+		
 		///////////////////////////////////////////////////////채팅 팝업 띄우기/////////////////////////////////////////////////////
 		function chatPopup(sender, recipient) {
 			//alert("팝업 샌더-"+sender+", 리시피언트-"+recipient);
@@ -617,7 +680,7 @@
 	
 	
 	<!-- 로그인시 서버에 보낼 정보 -->
-	<input type = "hidden" id = "hostInput" value = "localhost">
+	<input type = "hidden" id = "hostInput" value = "192.168.0.7">
 	<input type = "hidden" id = "portInput" value = "3000">
 	<!-- 보낼 유저 정보 -->
 	<input type = "hidden" id = "sender" value="${sender.userId}">

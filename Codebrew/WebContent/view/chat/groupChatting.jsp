@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -82,6 +81,24 @@
 				connectToServer();
 			//});
 			
+			
+			////////////////////////////////////GJ3.jsp 추가
+				//var senderId = $('#senderInput').val();
+				//var recipientId = $('#recipientInput').val();
+				
+				var output = {
+						roomId : "${party.partyNo}",
+						senderId : "${user.userId}"
+				};
+				
+				console.log('서버로 보낼 데이터 : '+ JSON.stringify(output));
+				
+				if(socket == undefined){
+					alert('서버에 연결되어 있지 않습니다. 먼저 서버에 연결하세요.');
+					return;
+				}
+				
+				//socket.emit('loginGroup', output);
 			
 			/////////////////////그룹톡 전송/////////////////////
 			$("#sendButton").on('click', function(event){
@@ -280,7 +297,9 @@
 										return;
 									}
 									
+									/////////////////GJ3.jsp추가
 									socket.emit('room', output);
+									//socket.emit('loginGroup', output);
 									
 								//})
 								
@@ -418,6 +437,8 @@
 					}
 					
 					socket.emit('room', output);
+					/////////////////GJ3.jsp추가
+					//socket.emit('loginGroup', output);
 				
 				});
 				
@@ -910,7 +931,7 @@
 	
 	<div>
 		<div class = "ui input">
-			<input type = "hidden" id = "hostInput" value = "localhost">
+			<input type = "hidden" id = "hostInput" value = "192.168.0.7">
 		</div>
 		<div class = "ui input">
 			<input type = "hidden" id = "portInput" value = "3000">
