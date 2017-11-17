@@ -256,68 +256,6 @@ public class FestivalRestController {
 
 	}
 
-	/*@RequestMapping(value = "/json/addZzim/{userId}/{festivalNo}")
-	public Zzim addZzim(@PathVariable("userId") String userId, @PathVariable("festivalNo") int festivalNo)
-			throws Exception {
-
-		System.out.println("json/addZzim........");
-		System.out.println("festivalNo : " + festivalNo);
-		System.out.println("userId : " + userId);
-
-		Zzim returnZzim = new Zzim(userId, festivalNo);
-
-		if (festivalService.getZzim(returnZzim) == null) {
-
-			System.out.println("addZzim 댐");
-
-			festivalService.addZzim(returnZzim);
-			
-			int getTotalZzim = festivalService.getTotalZzim(festivalNo);
-			System.out.println("getTotalZzim................" + getTotalZzim);
-					
-
-			return returnZzim;
-
-		} else {
-
-			System.out.println("deleteZzim~~~~~~~~~~~");
-
-			festivalService.deleteZzim(returnZzim);
-			
-			int getTotalZzim = festivalService.getTotalZzim(festivalNo);
-			System.out.println("getTotalZzim................" + getTotalZzim);
-
-			returnZzim = null;
-
-			return returnZzim;
-
-		}
-
-	}
-
-	@RequestMapping(value = "/json/deleteZzim/{userId}"+"/{festivalNo}")
-	public Zzim deleteZzim(@PathVariable("userId") String userId, @PathVariable("festivalNo") int festivalNo)
-			throws Exception {
-
-		System.out.println("json/deleteZzim........");
-
-		System.out.println("deleteZzim userId........." + userId + "," + festivalNo);
-
-		Zzim returnZzim = new Zzim(userId, festivalNo);
-
-		festivalService.deleteZzim(returnZzim);
-		
-		int getTotalZzim = festivalService.getTotalZzim(festivalNo);
-		System.out.println("getTotalZzim................" + getTotalZzim);
-
-		// returnZzim=null;
-
-		System.out.println("returnZzim 확인 : " + returnZzim);
-
-		return returnZzim;
-
-	}*/
-
 	@RequestMapping(value = "json/getZzim", method = RequestMethod.GET)
 	public Zzim getZzim(@RequestParam String userId, @RequestParam int festivalNo) throws Exception {
 
@@ -346,6 +284,4 @@ public class FestivalRestController {
 		return festival;
 
 	}
-
-
 }
