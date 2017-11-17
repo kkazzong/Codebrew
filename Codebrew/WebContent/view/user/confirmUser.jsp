@@ -87,7 +87,7 @@
 		
 		
 	
-	
+	/* 
 	 $(function(){
 		$(".btn:contains('확인')").on("click", function(){
 			
@@ -97,7 +97,7 @@
 	    $("form").attr("method","POST").attr("action","/user/confirmUser").submit();
 		}) 	
 		
-	});
+	}); */
 		
 	var authCode = ""; //인증번호 전역변수.. 전역변수를 지정하면 메소드 안을 실행하고 나서 바뀐 값으로 또 쓸수 있다.
 	
@@ -106,9 +106,10 @@
 		$(".btn:contains('인증하기')")	.on("click", function(){
 			
 			var authId=$("input[name='authId']").val();
-			//var authCode=$("input[name='auchCode']").val();
+
 			
-			alert(authId);
+			
+			
 			
 			$.ajax({
 				type:"POST",
@@ -129,94 +130,41 @@
 				alert("인증번호를 전송했습니다.");
 				console.log(JSON.stringify(JSONData));//받는정보
 				
-<<<<<<< HEAD
-
-
-=======
->>>>>>> refs/heads/new/sungkyoung
-				var authCode = JSONData.authCode;
-				
                 $(".btn:contains('확인')").on("click", function(){
                 	
-				 if(authCode != JSONData.authCode){
+                	var authCode=$("input[name='authCode']").val();
+				 
+                if(authCode != JSONData.authCode){
 					$("span.col-id-checkAuthCode").html("인증번호를 다시 확인해주세요").css("color","red");
 					event.preventDefault();
-<<<<<<< HEAD
+
 					console.log("확인중..");
-=======
->>>>>>> refs/heads/new/sungkyoung
+
 					return;
-				}else(authCode == JSONDate.authCode){
-					/* $("span.col-id-checkAuthCode").remove(); */
+				}else if(authCode == JSONData.authCode){
+				
 					$("span.col-id-checkAuthCode").html("인증번호가 일치합니다.").css("color","blue");
 					
 					$("form").attr("method","POST").attr("action","/user/confirmUser").submit();
 				} 
 				//{"authId":"skale83@naver.com","authCode":"c067bf517dcf47aab5fff3cc3d22f79e"}
 			//콘솔에 이렇게 옴
-			
-			})
-			}
-<<<<<<< HEAD
-			});
+             
 
-=======
->>>>>>> refs/heads/new/sungkyoung
-				
-<<<<<<< HEAD
-				$(".btn:contains('확인')").on("click", function(){
-				
-				 if(authCode != JSONData.authCode){
-					$("span.col-id-checkAuthCode").html("인증번호를 다시 확인해주세요").css("color","red");
-				}else(authCode == JSONDate.authCode){
-					$("span.col-id-checkAuthCode").remove();
-					
-				  $("form").attr("method","POST").attr("action","/user/confirmUser").submit();
-				} 
-				//{"authId":"skale83@naver.com","authCode":"c067bf517dcf47aab5fff3cc3d22f79e"}
-			
-			  })
-			  
-			
-=======
-			})
->>>>>>> refs/heads/new/sungkyoung
-			
-		})
-<<<<<<< HEAD
 
-=======
->>>>>>> refs/heads/new/sungkyoung
-			
-		});
-		 
+			})//확인 onclick
+			}//success
+			});//ajax
+				    //}//존재하지않는 아이디
+				    //})//checkUserId ajax
+		});//인증하기 onclick
+     });//onload click
+
+				
+
+				
    
-     $(function(){
-    	 $(".btn:contains('확인')").on("click", function(event){
-    		 
-    		 var authId=$("input[name='authId']").val();
-    		 var authCodeUser=$("input[name='authCode']").val();
-    		 
-    		 
-    		 if(authCode != authCodeUser){
-					$("span.col-id-checkAuthCode").html("인증번호를 다시 확인해주세요").css("color","red");
-					event.preventDefault();
-					return;
-				}else{
-					$("span.col-id-checkAuthCode").remove();
-					$("form").attr("method","POST").attr("action","/user/confirmUser").submit();
-				}
-    		
-    		 
-    		 
- 	 });
-     }); 
-     /* if(authCode != JSONData.authCode){
-			$("span.col-id-checkAuthCode").html("인증번호를 다시 확인해주세요").css("color","red");
-		}else{
-			$("span.col-id-checkAuthCode").remove();
-		}
-	 */
+    
 	 
 		 //이미 가입된 아디로 본인인증을 하려고 할 경우 ajax
 	/*    $(function(){
@@ -243,61 +191,16 @@
 			    	  if(JSONData == false){
 				    		$("span.col-id-check").html("이미 가입된 아이디입니다.").css("color","blue");
 			    	  } //.MissingServletRequestParameterException
-				    }	
+				    }	$(".col-id-check").text("존재하는 아이디입니다.").css("color","red");
 				});		
 			});					
 		});   */
 		 
-<<<<<<< HEAD
 
-=======
-		  
->>>>>>> refs/heads/new/sungkyoung
-		 //이미 가입된 아디로 본인인증을 하려고 할 경우 ajax
-<<<<<<< HEAD
+		
 
-		/*  $( function(){
-=======
-=======
->>>>>>> refs/heads/new/sungkyoung
-		  $(function(){
-				
-				$("input:text[name='authId']").on("keyup",function(){
-					var userId=$("input[name='authId']").val();
-					
-					$.ajax({
-						type:"POST",
-						url:"/userRest/json/checkUserId", 
-						data :{userId:userId},//요청과 함께 서버에 보내는 string 또는 map
-						dataType:"json",//서버에서 받는 데이터형식
-					    success: function(JSONData,status){
-					    	console.log(status);
-					    	console.log(JSON.stringify(JSONData)); //json string 형식으로 변환해주는거
-					    	
-					    	
-				    	   if(JSONData == true){
-				    		  $(".col-id-check").text("사용가능 아이디입니다.").css("color","blue");
-				    	  }else{
-				    		   /* $(".col-id-check").remove(); */
-				    		   
-					   /*  		$(".col-id-check").text("이미 가입된 아이디입니다.").css("color","red");
-				    	  }
-<<<<<<< HEAD
 
-					    }//success
-					})//ajax
-		         })//input keyup
-		         
-		 });//onload 
-
- */
-=======
-					    }
-					});		
-				});						
-		 }); 
-
->>>>>>> refs/heads/new/sungkyoung
+		 
 	</script>		
     
 </head>

@@ -236,7 +236,7 @@
 		   <input type="hidden" name="role" value="${user.role}">
 		     <input type="hidden" name="regDate" value="${user.regDate}">
 		      <input type="hidden" name="locationFlag" value="${user.locationFlag}">
-		   
+		       <input type="hidden" name="gender" value="${user.gender}">
 		  
 		  <div class="form-group">
 		    <label for="nickname" class="col-sm-offset-1 col-sm-3 control-label">닉네임</label>
@@ -258,7 +258,7 @@
 		  </div>
 		  
 		  		  
-	<div class="form-group">
+ 	<div class="form-group">
     <label for="gender" class="col-sm-offset-1 col-sm-3 control-label">성별</label>
 	 <span class="col-sm-2">
     <label>
@@ -271,7 +271,19 @@
     </label>
     
   </span>
-	</div>
+	</div> 
+	
+	<%-- <div class="form-group">
+		    <label for="userName" class="col-sm-offset-1 col-sm-3 control-label">성별</label>
+		    <div class="col-sm-4">
+		      <input type="text" class="form-control" id="gender" name="gender" value="${user.gender == 'm'? '남자' :'여자'}"  readOnly>
+		       <span id="helpBlock" class="help-block">
+		      <strong class="text-danger">성별은 수정불가</strong>
+		      </span>
+		   
+		    </div>
+		  </div> --%>
+	
 	
        <div	class="form-group text-center" id="previewImage">
        <img src="/resources/uploadFile/${user.profileImage }" width="30%">
