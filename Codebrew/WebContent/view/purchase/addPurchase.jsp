@@ -365,7 +365,7 @@
 					}
 					$("input:hidden[name='purchasePrice']").val(AddComma(purchasePrice));
 					
-					alert(selectedCount+"개, "+purchasePrice+"원");
+					console.log(selectedCount+"개, "+purchasePrice+"원");
 					$("form").attr("method", "POST").attr("action", "/purchase/addPurchase").submit();
 					
 				} else {
