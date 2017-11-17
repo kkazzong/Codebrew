@@ -46,20 +46,20 @@
 				console.log("userId????"+userId);
 				
 				
-				 //if( sessionId == userId ) { /* 그래서 세리일때만 나옴  */
+				if( sessionId == userId ) { /* 그래서 세리일때만 나옴  */
 					 /*내 화면 모달창에서 add delete 하고 싶을때  */
 				//$("#tag" ).on("click" , function() {//맞팔이 안되어있는 follow를 클릭했을때
-				$("#addFollow" ).each(function(){}).on("click" , function() {
+				$(".addFollower" ).each(function(){}).on("click" , function() {
 					var requestId = $(this).val();//each(function(){})반복문마다 요소를 선택해서
-					//alert(requestId);			
+					console.log(requestId);			
 					 //f4f = $(this).val();
-					//var flag = $(this).attr('class').trim();
-					if(sessionId == requestId){
+					var flag = $(this).attr('class').trim();
+					/* if(sessionId == requestId){
 					    alert("니 아디야.")	
 					    event.preventDefault();
 					  
-					}else{
-					//alert(flag);
+					}else{ */
+					console.log(flag);
 					
 					//if( f4f == "Follow" ) {//내 팔로워 목록에 맞팔이 안되있으니깐 추가하는거고
 					 // if(${follow.f4f == 1})
@@ -75,6 +75,7 @@
 									 context : this, 
 									 success : function(JSONData, status) {
 										
+										 console.log(status);
 										 //alert(JSON.stringify(JSONData));
 										/*  location.reload(); */ 
 									   //$("#followButton").text("Following").css('background-color', '#3897f0').css('color', '#fff');
@@ -88,27 +89,30 @@
 										//$(this).reload();
 										//$("#tag").removeClass(".btn btn-sm").addClass(".btn btn-info btn-sm");
 										
-										$(this).removeClass("btn btn-sm pull-right").addClass("btn btn-info btn-sm pull-right").text("Following");
+										
+										//alert(this);
+										$(this).removeClass("btn btn-sm pull-right addFollower").addClass("btn btn-info btn-sm pull-right deleteFollower").text("Following");
 									 }
 								})//ajax
 								
-					    }//if	
+					    //}//if	
+					    
 					}); 
 					
 					
-				$("#deleteFollowing" ).each(function(){}).on("click" , function() {	
+				$(".deleteFollower" ).each(function(){}).on("click" , function() {	
 					var requestId = $(this).val();
-					//alert(requestId);
+					console.log(requestId);
 					/* else  if( f4f == "Following" ) { *///내팔로워 목록에  맞팔이 되어있으니깐 삭제할수 있다.
 						
-					//var flag = $(this).attr('class').trim();
+					var flag = $(this).attr('class').trim();
 					
-					//alert(flag);
-					if(sessionId == requestId){
+					console.log(flag);
+				/* 	if(sessionId == requestId){
 					   alert("니 아디야.")	
 					   event.preventDefault();
 					
-					}else{
+					}else{ */
 					
 						$.ajax({
 									type:'POST',
@@ -133,15 +137,15 @@
 										//$("#followingButton").val("Follow").css('background-color', 'buttonface').css('color', '#fff');
 										 //location.reload();
 										 
-									  $(this).removeClass("btn btn-info btn-sm pull-right").addClass("btn btn-sm pull-right").text("Follow");
+									  $(this).removeClass("btn btn-info btn-sm pull-right deleteFollower").addClass("btn btn-sm pull-right addFollower").text("Follow");
 											//location.reload(); 
 									
 											//moveFollowing();
 									 }//success
 								})//ajax
-					}//if
+					//}//if
 						})
-				
+				}
 			});	
 		 
 	
@@ -243,7 +247,8 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="follower">팔로워</h5>
+        <h5 class="modal-title" id="follower">팔로워(나를 팔로잉한 회원목록)</h5>
+         <h7 class="modal-title" id="following">닉네임 클릭이동하여 친구를 추가할 수 있습니다.</h7>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -277,29 +282,52 @@
 									<img class="img-circle" src="/resources/uploadFile/${follow.profileImage}" width="30" height="30"></div>
 								
 									<input type="hidden" class="follow" value="${follow.responseId }">
-									 <div class="col-xs-6" id="userNick" title="클릭 이동">${follow.nickname}</div>
+									 <div class="col-xs-6" id="userNick" title="클릭 이동">
+									 <a href="/myPage/getMyPage?requestId=${follow.responseId}">${follow.nickname}</a>
+									</div>
 									 <div class="col-xs-4">
-									 <c:choose>
-										<c:when test="${follow.f4f == 1}">
+									 <%-- <c:choose>
+										<c:when test="${follow.f4f == 1}"> --%>
+										
+										<c:if test="${follow.f4f == 1 }">
+										
+										
 											<%-- <input type="button" class="btn btn-info btn-sm pull-right" id="tag"
 												value="Following" aria-hidden="true">
 											<input type="hidden"
 												value="${follow.responseId }"> --%>
-												
-										<button name="following" id="deleteFollowing" type="button" class="btn btn-info btn-sm pull-right" value="${follow.responseId}">Following</button>
-										</c:when>
+									<c:if test="${follow.responseId == sessionScope.user.userId }">	
+										<button name="following" id="deleteFollowing" type="button" disabled="disabled" class="btn btn-info btn-sm pull-right" value="${follow.responseId}">Following</button>
+										</c:if> 
+									<c:if test="${follow.responseId != sessionScope.user.userId }"> 
+										<button name="following" id="deleteFollowing" type="button" class="btn btn-info btn-sm pull-right deleteFollower" value="${follow.responseId}">Following</button>
+									</c:if> 
+										
+										</c:if>
+									<%-- 	</c:when> --%>
 										
 										
-										<c:otherwise>
+										<%-- <c:otherwise> --%>
+										
+										  <c:if test="${follow.f4f == 0 }">
+										
 											<%-- <input type="button" class="btn btn-sm pull-right follow" id="tag"
 												value="Follow" aria-hidden="true">
 											<input type="hidden" name="follower" id="follower" 
 												value="${follow.responseId }"> --%>
-											<button name="follow" id="addFollow" type="button" class="btn btn-sm pull-right" value="${follow.responseId}">Follow</button>
-										</c:otherwise>
+										 	<c:if test="${follow.responseId == sessionScope.user.userId }">	<!--내 아이디가 이사람 responseId로 있으면 -->
+											<button name="follow" id="addFollow" type="button" disabled="disabled" class="btn btn-sm pull-right" value="${follow.responseId}">Follow</button>
+										    </c:if> 
+										 
+										 <c:if test="${follow.responseId != sessionScope.user.userId }">
+										<button name="follow" id="addFollow" type="button" class="btn btn-sm pull-right addFollower" value="${follow.responseId}">Follow</button>
+										</c:if> 
 										
+										</c:if>
 										
-									</c:choose>
+									<%-- 	</c:otherwise>
+									</c:choose> --%>
+									
 							      </div>
 							 </div>
 							 
