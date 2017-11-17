@@ -103,7 +103,7 @@
 		var reviewDetail = $("textarea[name='reviewDetail']").val();
 		var reviewImageList = $("input[name='uploadReviewImageList']").val();
 		
-		alert("reviewImageList :: "+reviewImageList);
+		//alert("reviewImageList :: "+reviewImageList);
 		
 		if(reviewTitle == null || reviewTitle.length<1){
 			alert("후기제목은 반드시 입력하여야 합니다.");
@@ -119,7 +119,7 @@
 		}
 		
 		//reviewDetail.replace("\r\n", "<br>");
-		alert("reviewDetail 입력확인 :: "+reviewDetail); //debugging 용
+		//alert("reviewDetail 입력확인 :: "+reviewDetail); //debugging 용
 		
 		$("form").attr("method", "POST").attr("action", "/review/addReview").submit();
 	}
