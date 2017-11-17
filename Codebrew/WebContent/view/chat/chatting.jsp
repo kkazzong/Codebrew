@@ -550,6 +550,7 @@
 		#labelbox {
 			position: fixed;
 			z-index: 3333;
+			line-height: 2;
 		}
 		
 		/* //채팅메시지전체 */

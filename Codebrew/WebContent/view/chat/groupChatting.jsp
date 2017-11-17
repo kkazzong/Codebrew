@@ -752,6 +752,7 @@
 		#labelbox {
 			position: fixed;
 			z-index: 3333;
+			line-height: 2;
 		}
 		
 		/* //상단이미지 */
