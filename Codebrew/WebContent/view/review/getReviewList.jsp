@@ -134,21 +134,14 @@
    				</div>
    			</div>
    		</div>
-
-		<!-- 데이터 수 -->
-		<div class="row">
-			<div class="col-md-12">
-				<h5>총 : ${resultPage.totalCount} 건</h5>
-				<h5>현재 : ${resultPage.currentPage} 페이지 / 총 : ${resultPage.maxPage} 페이지</h5>
-			</div>
-		</div>
 		
    		<!-- 검색 Start -->
    		<div class="row">
    		
    			<div class="col-md-6 text-left">
    				<p class="text-primary">
-   					전체  ${resultPage.totalCount } 건수, 현재 ${resultPage.currentPage}  페이지 
+   					총 : ${resultPage.totalCount} 건<br>
+					현재 : ${resultPage.currentPage} 페이지 / 총 : ${resultPage.maxPage} 페이지
    				</p>
    			</div>
    			

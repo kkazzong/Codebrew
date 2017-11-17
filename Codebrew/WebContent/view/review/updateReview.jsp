@@ -381,7 +381,6 @@
 		<div class="form-group">
 			<label for="reviewVideo" class="col-md-3 control-label">동영상</label>
 			<div class="col-md-6">
-				test용 : ${review.reviewVideoList }<br>test용 : ${review.reviewVideoList[0].reviewVideo }
 				<c:if test="${!empty review.reviewVideoList }">
 					<input type="file" class="form-control" id="uploadReviewVideoList" accept="video/*" name="uploadReviewVideoList" value="${review.reviewVideoList[0].reviewVideo }"/>
 				</c:if>

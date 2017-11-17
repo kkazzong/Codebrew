@@ -87,7 +87,7 @@ public class ReviewRestController {
 		return null;
 	}
 	
-	//완
+	//예전에 완료였는데 아마 안될걸...reply때문에...
 	@RequestMapping(value = "json/getReview/{reviewNo}", method=RequestMethod.GET)
 	public Review getReview(@PathVariable int reviewNo) throws Exception {
 		
@@ -163,18 +163,13 @@ public class ReviewRestController {
 		
 	}
 	
-	//
+	// 완료
 	@RequestMapping(value="/json/getTransportListAtStation/{x}/{y}/{radius}")
 	public Map<String, Object> getTransportListAtStation(@PathVariable("x") double x, 
 														@PathVariable("y") double y, 
 														@PathVariable("radius") int radius) throws Exception {
 		
 		System.out.println("Review RestController :: getTransportListAtStation");
-		/*
-		System.out.println("\n\nx : Long :: \n"+x);
-		System.out.println("\n\ny : Lat :: \n"+y);
-		System.out.println("\n\nradius : 반경 :: \n"+radius);
-		*/
 		Map<String, Object> returnMap = reviewService.getTransportListAtStation(x, y, radius);
 		
 		return returnMap;

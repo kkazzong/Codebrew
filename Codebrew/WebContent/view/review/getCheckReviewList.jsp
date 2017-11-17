@@ -50,7 +50,7 @@
 	<!--  // 검색 / page 두가지 경우 모두 Form 전송을 위해 JavaScript 이용 --> 
 	function fncGetList(currentPage) {
 		$("#currentPage").val(currentPage)
-	   	$("form[name='detailForm']").attr("method" , "POST").attr("action" , "/review/getReviewList").submit();
+	   	$("form[name='detailForm']").attr("method" , "POST").attr("action" , "/review/getCheckReviewList").submit();
 	}
 	
 	//=====> "검색", reviewTitle link Event 연결 및 처리
@@ -67,9 +67,7 @@
 			}
 			event.preventDefault();
 			fncGetList(1);
-			
-			alert("검색버튼 클릭 : val = "+$("#searchKeyword").val());
-			
+			//alert("검색버튼 클릭 : val = "+$("#searchKeyword").val());
 		});
 		
 		//enter key 검색 : 뒤의 on부터
@@ -144,20 +142,13 @@
    			</div>
    		</div>
 
-		<!-- 데이터 수 -->
-		<div class="row">
-			<div class="col-md-12">
-				<h5>총 : ${resultPage.totalCount} 건</h5>
-				<h5>현재 : ${resultPage.currentPage} 페이지 / 총 : ${resultPage.maxPage} 페이지</h5>
-			</div>
-		</div>
-		
    		<!-- 검색 Start -->
    		<div class="row">
    		
    			<div class="col-md-6 text-left">
    				<p class="text-primary">
-   					전체  ${resultPage.totalCount } 건수, 현재 ${resultPage.currentPage}  페이지
+   					총 : ${resultPage.totalCount} 건<br>
+					현재 : ${resultPage.currentPage} 페이지 / 총 : ${resultPage.maxPage} 페이지
    				</p>
    			</div>
    			
