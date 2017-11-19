@@ -53,17 +53,17 @@
 						
 						var grasp=$(this).attr('class').trim();
 						
-						alert("지금 잡고 있는거"+grasp)
+						console.log("지금 잡고 있는거"+grasp)
 						
 		                var flag=$(this).text().trim();
 		                
-		                alert("flag-->"+flag)
+		                console.log("flag-->"+flag)
 		                
 		                var jsonFollow;
 		                
 		                var requestId=$(this).val();
 		                
-		                alert("requestId-->"+requestId);
+		                console.log("requestId-->"+requestId);
 		                
 		                
 		                if(flag == "Follow"){
