@@ -85,19 +85,7 @@
 
 		
 		
-		
-	
-	/* 
-	 $(function(){
-		$(".btn:contains('확인')").on("click", function(){
-			
-		 //var authId=$("input[name='authId']").val();
-		 //self.location = "/user/addUser";
-		//self.location = "/user/addUser?authId="+authId;//@@@@@@@@@@@@
-	    $("form").attr("method","POST").attr("action","/user/confirmUser").submit();
-		}) 	
-		
-	}); */
+
 		
 	var authCode = ""; //인증번호 전역변수.. 전역변수를 지정하면 메소드 안을 실행하고 나서 바뀐 값으로 또 쓸수 있다.
 	
@@ -106,7 +94,37 @@
 		$(".btn:contains('인증하기')")	.on("click", function(){
 			
 			var authId=$("input[name='authId']").val();
-
+            
+			var userId=$("input[name='authId']").val();
+			
+			alert("userId는???"+userId);
+			
+			$.ajax({
+				type:"POST",
+				url:"/userRest/json/checkUserId",//만약 이런식으로 데이터를 보내면 data:를 안써줘도 됨
+				//pathVariable과 GET POST 방식은 상관이 없다.
+				
+				data :{userId:userId}, //이런식으로 쓰면 스트링 타입으로 가고
+				dataType:"json",//서버에서 받는 데이터형식
+			    success: function(JSONData,status){
+			    	console.log(status);
+			    	console.log(JSON.stringify(JSONData)); //json string 형식으로 변환해주는거 */
+                 
+			    	if(JSONData == false){
+			    		$("span.col-id-check").html("이미 가입된 아이디입니다. 다시 입력해주세요").css("color","blue");
+			    		event.preventDefault();
+			    		return;
+		    	    }else{//.MissingServletRequestParameterException
+			    
+			  //  }
+			//});//checkUserId ajax
+	 
+			
+			
+			
+			
+			
+			
 			
 			
 			
@@ -147,54 +165,26 @@
 					
 					$("form").attr("method","POST").attr("action","/user/confirmUser").submit();
 				} 
-				//{"authId":"skale83@naver.com","authCode":"c067bf517dcf47aab5fff3cc3d22f79e"}
-			//콘솔에 이렇게 옴
+		
              
 
 
 			})//확인 onclick
 			}//success
 			});//ajax
-				    //}//존재하지않는 아이디
-				    //})//checkUserId ajax
+			
+				    }//else
+		}//sucess
+				   })//checkUserId ajax
+				   
 		});//인증하기 onclick
-     });//onload click
+     });//onload function()
 
 				
 
 				
    
-    
-	 
-		 //이미 가입된 아디로 본인인증을 하려고 할 경우 ajax
-	/*    $(function(){
-			
-			$("input:text[name='authId']").on("keyup",function(){
-				var userId=$("input[name='authId']").val();
-				/* alert("userId : "+userId); */
-				/* $.ajax({
-					type:"POST",
-					url:"/userRest/json/checkUserId/"+userId,//만약 이런식으로 데이터를 보내면 data:를 안써줘도 됨
-					//pathVariable과 GET POST 방식은 상관이 없다.
-					  headers : {
-						"Accept" : "application/json;charset=UTF-8", ///utf 설정 빼도 에러
-						"Content-Type" : "application/json"
-					}, */ 
-					/* data :JSON.stringify({ //이런식으로 쓰면 제이슨으로 간다 그래서 headers 설정이랑 매치해줘야함
-						userId : userId	
-					}), ///{userId:userId} 이런식으로 쓰면 스트링 타입으로 가고
-					dataType:"json",//서버에서 받는 데이터형식
-				    success: function(JSONData,status){
-				    	console.log(status);
-				    	console.log(JSON.stringify(JSONData)); //json string 형식으로 변환해주는거 */
-	/* 			    	
-			    	  if(JSONData == false){
-				    		$("span.col-id-check").html("이미 가입된 아이디입니다.").css("color","blue");
-			    	  } //.MissingServletRequestParameterException
-				    }	$(".col-id-check").text("존재하는 아이디입니다.").css("color","red");
-				});		
-			});					
-		});   */
+
 		 
 
 		
@@ -217,7 +207,7 @@
 			<div class="col-md-offset-4 col-md-4">
 				<div class="page-header text-center">
 					<h3 class="text-info"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>본인인증</h3>
-				     <small class="text-muted">본인명의의 이메일로 인증번호를 받은 후 가입할 수 있습니.</small>
+				     <small class="text-muted">본인명의의 이메일로 인증을 거친 후 가입할 수 있습니다.</small>
 				</div>
 			</div>
 		</div>

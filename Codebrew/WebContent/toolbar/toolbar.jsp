@@ -496,13 +496,48 @@
 		});
    		
 		
+	$(function(){
 		
-$( function() {
+		//$("#loginPassword").on("keydown", function(event){
 			
-			$("#loginUserId").focus();
+	     $("#loginPassword").focus(function(){
+	
+			var userId=$("#loginUserId").val();
+			
+		   //if(event.keyCode == '9'){ //tab 9
+		
+			 $.ajax({
+			   type: "POST",
+			   url:"/userRest/json/checkUserId",
+			   data:{userId:userId},
+			   dataType:"json",
+			   success: function(JSONData,status){
+				   console.log(status);
+				   console.log(JSON.stringify(JSONData));
+				   
+				   if(JSONData == true){
+					 alert("존재하지 않는아이디 입니다. 회원가입 후 로그인 해주세요"); 
+					 event.preventDefault();
+					 $("#loginUserId").focus();
+					 return;
+					 //return false;
+				    // event.stopPropagation();
+				    //event.stopImmediatePropagation();
+				   }else if(JSONData == false){
+					  fncLogin();
+				   }
+			   }//success
+			})//ajax
+		  // }//keyCode
+		});//keyDown
+	 });
+		
+  function fncLogin() {
+			
+			//$("#loginPassword").blur( function(){
 			
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			$("#sign").on("click" , function() {
+			$("#sign").on("click" , function(event) {
 				var userId=$("#loginUserId").val();
 				var password=$("#loginPassword").val();
 				
@@ -519,6 +554,7 @@ $( function() {
 					$("#loginPassword").focus();
 					return;
 				}
+				
 				
 				
 				$.ajax({
@@ -548,13 +584,18 @@ $( function() {
 			      
 			      
 				      }
-				    }
-				    
-			      });
-			});
-		});
-	   
+				    }//success
+				})//비번체크 ajax 
+					  
+				
+				
+			});//click event
 			
+			//}
+			
+		}//fncLogin()
+	   
+	
 		
    		
 	</script>  
