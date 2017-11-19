@@ -46,125 +46,65 @@
 				console.log("userId????"+userId);
 				
 				
-				if( sessionId == userId ) { /* 그래서 세리일때만 나옴  */
+				if( sessionId == userId ) { //내 마이페이지에서만 팔로우 목록을 추가 삭제할 수 있다.
 					 /*내 화면 모달창에서 add delete 하고 싶을때  */
-				//$("#tag" ).on("click" , function() {//맞팔이 안되어있는 follow를 클릭했을때
-				$(".addFollower" ).each(function(){}).on("click" , function() {
-					var requestId = $(this).val();//each(function(){})반복문마다 요소를 선택해서
-					console.log(requestId);			
-					 //f4f = $(this).val();
-					var flag = $(this).attr('class').trim();
-					/* if(sessionId == requestId){
-					    alert("니 아디야.")	
-					    event.preventDefault();
-					  
-					}else{ */
-					console.log(flag);
-					
-					//if( f4f == "Follow" ) {//내 팔로워 목록에 맞팔이 안되있으니깐 추가하는거고
-					 // if(${follow.f4f == 1})
-						$.ajax({
-									type:'POST',
-									url : '/myPageRest/json/addFollow',
-									data : {requestId:requestId},
-									dataType : "json",
-								/* 	headers : {
-										 "Accept" : "application/json",
-										 "Content-Type" : "application/json"
-									 }, */
-									 context : this, 
-									 success : function(JSONData, status) {
-										
-										 console.log(status);
-										 //alert(JSON.stringify(JSONData));
-										/*  location.reload(); */ 
-									   //$("#followButton").text("Following").css('background-color', '#3897f0').css('color', '#fff');
-										//location.reload();
-										//alert("context는 머다??"+this);//[object HTMLButtonElement]
-									  // $(this).removeClass('.btn.btn-sm').addClass('.btn.btn-info'); 
-										//alert(status);
-									  
-									  //$('#followButton').onClick
-										//moveFollow();
-										//$(this).reload();
-										//$("#tag").removeClass(".btn btn-sm").addClass(".btn btn-info btn-sm");
-										
-										
-										//alert(this);
-										$(this).removeClass("btn btn-sm pull-right addFollower").addClass("btn btn-info btn-sm pull-right deleteFollower").text("Following");
-									 }
-								})//ajax
-								
-					    //}//if	
-					    
-					}); 
-					
-					
-				$(".deleteFollower" ).each(function(){}).on("click" , function() {	
-					var requestId = $(this).val();
-					console.log(requestId);
-					/* else  if( f4f == "Following" ) { *///내팔로워 목록에  맞팔이 되어있으니깐 삭제할수 있다.
+					//$("#tag" ).on("click" , function() {//맞팔이 안되어있는 follow를 클릭했을때
+					$(".follower" ).each(function(){}).on("click" , function() {
 						
-					var flag = $(this).attr('class').trim();
+						var grasp=$(this).attr('class').trim();
+						
+						alert("지금 잡고 있는거"+grasp)
+						
+		                var flag=$(this).text().trim();
+		                
+		                alert("flag-->"+flag)
+		                
+		                var jsonFollow;
+		                
+		                var requestId=$(this).val();
+		                
+		                alert("requestId-->"+requestId);
+		                
+		                
+		                if(flag == "Follow"){
+		                   jsonFollow="addFollow";
+		                	
+		                  }else{
+		                	jsonFollow="deleteFollow";  
+		                  
+		                  }
+		               
+		                $.ajax({
+		                	type : 'POST',
+		                	url : '/myPageRest/json/'+jsonFollow,
+		                	data : {requestId:requestId},
+		                	dataType : 'json',
+		                	context : this,
+		                	success : function(JSONData, status){
+		                	
+		                		console.log("context는 뭘까??"+this);
+		                		console.log(status);
+		                		console.log(JSONData);
+		                		
+		                		if(flag == "Follow"){
+		                			
+		                			$(this).removeClass("btn btn-sm pull-right addFollower").addClass("btn btn-info btn-sm pull-right deleteFollower").text("Following");
+		                		  
+		                		}else{
+		                			  
+		                			$(this).removeClass("btn btn-info btn-sm pull-right deleteFollower").addClass("btn btn-sm pull-right addFollower").text("Follow");
+		  		                	
+		                		  }
+		                		}//success
+		                		
+		                		
+		                	})//ajax
+		                	})//on click
+		                	
+					}
+				});
 					
-					console.log(flag);
-				/* 	if(sessionId == requestId){
-					   alert("니 아디야.")	
-					   event.preventDefault();
 					
-					}else{ */
-					
-						$.ajax({
-									type:'POST',
-									url : '/myPageRest/json/deleteFollow',
-									data : {requestId:requestId},
-									dataType : "json",
-									/* headers : {
-										 "Accept" : "application/json",
-										 "Content-Type" : "application/json"
-									 }, */
-								     context : this, 
-									 success : function(JSONData, status) {
-									
-										 //$("#tag").removeClass(".btn.btn-info.btn-sm").addClass(".btn.btn-sm");
-										 //alert("context는 뭘까??"+this);//[object HTMLButtonElement]
-										 //$(this).removeClass("btn btn-info btn-sm pull-right").addClass("btn btn-sm pull-right");
-										//$(this).removeClass('.btn.btn-info').addClass('.btn.btn-sm');
-										 
-										 	//$(this).reload();
-										/* location.reload(); */ 
-										// this.val('Follow');
-										//$("#followingButton").val("Follow").css('background-color', 'buttonface').css('color', '#fff');
-										 //location.reload();
-										 
-									  $(this).removeClass("btn btn-info btn-sm pull-right deleteFollower").addClass("btn btn-sm pull-right addFollower").text("Follow");
-											//location.reload(); 
-									
-											//moveFollowing();
-									 }//success
-								})//ajax
-					//}//if
-						})
-				}
-			});	
-		 
-	
-	/* function moveFollow(){
-	
-	var follow=$("#followButton").val();	
-		
-	 $("#followingButton").val(follow)	
-	 	
-	};
-	
-	function moveFollowing(){
-		
-	var following=$("#followingButton").val();
-	
-	$("#followButton").val(following)
-		
-	};
-	 */
 	
 	
 	
@@ -286,48 +226,34 @@
 									 <a href="/myPage/getMyPage?requestId=${follow.responseId}">${follow.nickname}</a>
 									</div>
 									 <div class="col-xs-4">
-									 <%-- <c:choose>
-										<c:when test="${follow.f4f == 1}"> --%>
-										
-										<c:if test="${follow.f4f == 1 }">
+									<c:choose>
+										<c:when test="${follow.f4f == 1}">
 										
 										
-											<%-- <input type="button" class="btn btn-info btn-sm pull-right" id="tag"
-												value="Following" aria-hidden="true">
-											<input type="hidden"
-												value="${follow.responseId }"> --%>
-									<c:if test="${follow.responseId == sessionScope.user.userId }">	
-										<button name="following" id="deleteFollowing" type="button" disabled="disabled" class="btn btn-info btn-sm pull-right" value="${follow.responseId}">Following</button>
-										</c:if> 
+										
+								
+										
 									<c:if test="${follow.responseId != sessionScope.user.userId }"> 
-										<button name="following" id="deleteFollowing" type="button" class="btn btn-info btn-sm pull-right deleteFollower" value="${follow.responseId}">Following</button>
+										<button name="following" id="followButton" type="button" class="btn btn-info btn-sm pull-right follower" value="${follow.responseId}">Following</button>
 									</c:if> 
 										
-										</c:if>
-									<%-- 	</c:when> --%>
+										
+									</c:when>
 										
 										
-										<%-- <c:otherwise> --%>
+									 <c:otherwise>
 										
-										  <c:if test="${follow.f4f == 0 }">
+									
 										
-											<%-- <input type="button" class="btn btn-sm pull-right follow" id="tag"
-												value="Follow" aria-hidden="true">
-											<input type="hidden" name="follower" id="follower" 
-												value="${follow.responseId }"> --%>
-										 	<c:if test="${follow.responseId == sessionScope.user.userId }">	<!--내 아이디가 이사람 responseId로 있으면 -->
-											<button name="follow" id="addFollow" type="button" disabled="disabled" class="btn btn-sm pull-right" value="${follow.responseId}">Follow</button>
-										    </c:if> 
-										 
+											
 										 <c:if test="${follow.responseId != sessionScope.user.userId }">
-										<button name="follow" id="addFollow" type="button" class="btn btn-sm pull-right addFollower" value="${follow.responseId}">Follow</button>
+										<button name="follow" id="followButton" type="button" class="btn btn-sm pull-right follower" value="${follow.responseId}">Follow</button>
 										</c:if> 
 										
-										</c:if>
 										
-									<%-- 	</c:otherwise>
-									</c:choose> --%>
-									
+										
+										</c:otherwise>
+									</c:choose> 
 							      </div>
 							 </div>
 							 

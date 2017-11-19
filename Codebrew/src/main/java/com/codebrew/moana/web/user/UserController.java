@@ -48,45 +48,8 @@ public class UserController {
 	@Value("#{imageRepositoryProperties['profileImageDir']}")
 	String profileImageDir;
 
-/*	// 로그인 화면
-	@RequestMapping(value = "login", method = RequestMethod.GET)
-	public ModelAndView login() throws Exception {
 
-		System.out.println("/user/login : GET");
 
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("redirect:/view/user/login.jsp");
-		return modelAndView;
-	}*/
-	
-	/*
-	@RequestMapping(value = "login", method = RequestMethod.POST)
-	public ModelAndView login(@ModelAttribute("user") User user, HttpSession session) throws Exception {
-
-		System.out.println("/user/login : POST");
-
-		User dbUser = userService.getUser(user.getUserId());
-		// user:내가 입력한 정보 /dbUser:디비에서 가져온 정보 / session 세션에 담고 있는 정보
-		
-	 System.out.println("user 정보는?"+user);
-	 System.out.println("dbUser정보는? "+dbUser);
-	 
-		//탈퇴한 회원 걸러줌
-	   if(dbUser.getRole().indexOf("d")== -1) {
-		
-		 if (user.getPassword().equals(dbUser.getPassword())) {
-			session.setAttribute("user", dbUser);
-		 }
-		
-	   }
-
-		ModelAndView modelAndView = new ModelAndView();
-		// modelAndView.addObject("user", user);//??
-		modelAndView.setViewName("redirect:/index.jsp");
-		return modelAndView;
-	}
-	
-*/
 	// 로그인
 	@RequestMapping(value = "login", method = RequestMethod.POST)
 	public ModelAndView login(@RequestParam("loginPassword")String loginPassword,
@@ -144,17 +107,7 @@ public class UserController {
 
 	}
 
-	/*
-	 * //회원가입 화면이동
-	 * 
-	 * @RequestMapping(value="addUser", method=RequestMethod.GET) public
-	 * ModelAndView addUser(@ModelAttribute("auth")Auth auth)throws Exception{
-	 * //auth 정보를 물고 가야되니깐 ${auth.authId} name=userId 지만 Value는 ${auth.authId}임
-	 * System.out.println("/user/addUser : GET"); ModelAndView modelAndView=new
-	 * ModelAndView(); modelAndView.addObject("auth", auth);
-	 * modelAndView.setViewName("forward:/view/user/addUser.jsp"); return
-	 * modelAndView; }
-	 */
+	
 
 	// 진짜 회원가입
 	@RequestMapping(value = "addUser", method = RequestMethod.POST)
@@ -560,25 +513,6 @@ public class UserController {
 
 	}
 
-	/*
-	 * //타계정 회원가입 화면이동
-	 * 
-	 * @RequestMapping (value="addExtraUser", method=RequestMethod.GET) public
-	 * ModelAndView addExtraUser(@RequestParam("userId")String userId)throws
-	 * Exception{
-	 * 
-	 * System.out.println("/user/addExtraUser : GET");
-	 * 
-	 * 
-	 * 
-	 * User user=userService.getUser(userId);
-	 * 
-	 * ModelAndView modelAndView=new ModelAndView(); modelAndView.addObject("user",
-	 * user); //이화면에 왔을때 이미 정보가저장된 user를 가져온 상태인것
-	 * modelAndView.setViewName("forward:/view/user/addExtraUser.jsp"); return
-	 * modelAndView;
-	 * 
-	 * }
-	 */
+	
 
 }
