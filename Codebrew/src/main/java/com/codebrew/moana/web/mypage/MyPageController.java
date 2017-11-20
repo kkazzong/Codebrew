@@ -661,7 +661,7 @@ public class MyPageController {
 	   //modelAndView.setViewName("forward:/view/mypage/getMyPage.jsp");
 	   
 
-	   modelAndView.setViewName("forward:/view/mypage/twitter.jsp");
+	   modelAndView.setViewName("forward:/view/mypage/getMyPage.jsp");
 
 		
 		return modelAndView;
