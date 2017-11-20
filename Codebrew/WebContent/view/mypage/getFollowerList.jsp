@@ -88,11 +88,11 @@
 		                		
 		                		if(flag == "Follow"){
 		                			
-		                			$(this).removeClass("btn btn-sm pull-right addFollower").addClass("btn btn-info btn-sm pull-right deleteFollower").text("Following");
+		                			$(this).removeClass("btn btn-sm pull-right follower").addClass("btn btn-info btn-sm pull-right follower").text("Following");
 		                		  
 		                		}else{
 		                			  
-		                			$(this).removeClass("btn btn-info btn-sm pull-right deleteFollower").addClass("btn btn-sm pull-right addFollower").text("Follow");
+		                			$(this).removeClass("btn btn-info btn-sm pull-right follower").addClass("btn btn-sm pull-right follower").text("Follow");
 		  		                	
 		                		  }
 		                		}//success

@@ -49,6 +49,19 @@ public class UserController {
 	String profileImageDir;
 
 
+	// 로그인 화면
+		@RequestMapping(value = "login", method = RequestMethod.GET)
+		public ModelAndView login() throws Exception {
+
+			System.out.println("/user/login : GET");
+
+			ModelAndView modelAndView = new ModelAndView();
+			modelAndView.setViewName("redirect:/view/user/loginException.jsp");
+			return modelAndView;
+		}
+	
+	
+	
 
 	// 로그인
 	@RequestMapping(value = "login", method = RequestMethod.POST)
@@ -204,40 +217,48 @@ public class UserController {
 	// 진짜 회원정보 수정
 	@RequestMapping(value = "updateUser", method = RequestMethod.POST)
 	public ModelAndView updateUser(@ModelAttribute("user") User user, 
-			@RequestParam(value="uploadFile", required=false) MultipartFile uploadFile, HttpSession session) throws Exception {
+			@RequestParam("uploadFile") MultipartFile uploadFile, HttpSession session) throws Exception {
 
 		System.out.println("/user/updateUser : POST");
 
 		
 		//MultipartFile uploadfile = user.getUploadFile();
 		
-		  if(uploadFile != null && user.getProfileImage() == null) {
+		
+		
+		  if(uploadFile != null) {
 			
 			 System.out.println("upload로 들어왔나..."+uploadFile);
+			 
+			 //에러->업로드파일은 들어오고, getOriginalFilename은 안들어온 상태
 			
 			// String profileImage=uploadFile.getOriginalFilename();
 			 
 			 File file=new File(profileImageDir,uploadFile.getOriginalFilename());
 			 System.out.println("파일 파일 뉴파일"+file);
-			  
 			 
-			 
-			 System.out.println("유저 프로필 사진"+user.getProfileImage());
 			 
 			 uploadFile.transferTo(file);
+	
+			 
 			 
 			 user.setProfileImage(System.currentTimeMillis()+"_"+uploadFile.getOriginalFilename());
+			 
+			 System.out.println("유저 프로필 사진"+user.getProfileImage());
 			 //이미 존재하기때문에 already exists and could not be deleted 나옴
 			 //<img src="/resources/uploadFile/${user.profileImage }">
 			 System.out.println("업데이트 사진");
+			 
+			 userService.updateUser(user);
+			 
+			 
+			}else {
+		
+	          userService.updateUser(user);
+	          
+	          System.out.println("else로 들어옴?");
+	          
 			}
-		
-		
-		
-		
-		
-		// 비즈니스로직
-		userService.updateUser(user);
 
 		String sessionId = ((User) session.getAttribute("user")).getUserId();
 		// user 클래스 형태로 형변환을 해줘야 userId를 꺼낼수 있다.
@@ -255,6 +276,7 @@ public class UserController {
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("redirect:/view/user/updateUser.jsp");
+		modelAndView.addObject(user);
 		return modelAndView;
 	}
 
@@ -430,7 +452,7 @@ public class UserController {
 
 		ModelAndView modelAndView = new ModelAndView();
 
-		if (result == true) {
+		if (result == true) {//아이디가 존재하지 않으면
             
 			userService.addUser(kakaoUser);
 			 
@@ -449,7 +471,7 @@ public class UserController {
 
 			//modelAndView.setViewName("redirect:/view/user/addExtraUser.jsp");
 
-		}else if(result == false){
+		}else if(result == false){//아이디가 존재하면
 			
 			session.setAttribute("user", kakaoUser);
 			modelAndView.setViewName("redirect:/index.jsp");

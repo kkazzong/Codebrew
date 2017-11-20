@@ -286,13 +286,13 @@
 	
 	
        <div	class="form-group text-center" id="previewImage">
-       <img src="/resources/uploadFile/${user.profileImage }" width="30%">
+       <img src="../../resources/uploadFile/${user.profileImage }" width="30%">
        <br>
        </div>
 		  
 		  
 		  <div class="form-group">
-		    <label for="profileImage" class="col-sm-offset-1 col-sm-3 control-label">프로필사진</label>
+		    <label for="uploadFile" class="col-sm-offset-1 col-sm-3 control-label">프로필사진</label>
 		    <div class="col-sm-4">
 		      <input type="file" class="form-control" id="uploadFile" name="uploadFile" onchange="getUploadFilePrivew(this,$('#previewImage'))"/>
 		    </div>
