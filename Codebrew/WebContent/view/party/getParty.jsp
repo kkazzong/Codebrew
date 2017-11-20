@@ -153,7 +153,7 @@
 	//============= "주최자"  Event 처리 및  연결 =============
 	
 	$(function() {
-		$("#host").on("click", function() {
+		$("#userDiv").on("click", function() {
 			var hostId = "${party.user.userId}";
 			self.location="/myPage/getMyPage?requestId="+hostId;
 					
@@ -210,8 +210,7 @@
 	} */
 	
 	//============= "일대일 채팅"  Event 처리 및  연결 =============
-	function chatPopup(frm) {
-		/* var url = "http://127.0.0.1:3000/public/client05.html"; */
+	/* function chatPopup(frm) {
 		var url = "/chat/getChatting";
 		var title = "chatPop";
 		var status = "toolbar=no,directories=no,scrollbars=yes,resizable=no,status=no,menubar=no,width=440, height=520, top=0,left=20";
@@ -222,10 +221,26 @@
 		frm.action = url; //form.action 이 부분이 빠지면 action값을 찾지 못해서 제대로 된 팝업이 뜨질 않습니다.
 		frm.method = "post";
 		frm.submit();
-	}
+	} */
 	
 	
-	
+	$(function(){
+		
+		$("#privateChat").on("click", function() {
+			
+			var url = "/chat/getChatting";
+			var title = "chatPop";
+			var status = "toolbar=no,directories=no,scrollbars=yes,resizable=no,status=no,menubar=no,width=440, height=520, top=0,left=20";
+			window.open("", title, status); //window.open(url,title,status); window.open 함수에 url을 앞에와 같이
+			//인수로  넣어도 동작에는 지장이 없으나 form.action에서 적용하므로 생략
+			//가능합니다.
+			frm.target = title; //form.target 이 부분이 빠지면 form값 전송이 되지 않습니다. 
+			frm.action = url; //form.action 이 부분이 빠지면 action값을 찾지 못해서 제대로 된 팝업이 뜨질 않습니다.
+			frm.method = "post";
+			frm.submit();
+
+		});
+	});
 	
 </script>
 
@@ -293,7 +308,9 @@ body {
 .modal-body {
 	background-color : #fff8d6;
 }
-
+#privateChat {
+	padding-top : 25px;
+}
 </style>
 
 
@@ -438,27 +455,34 @@ body {
 										<%-- <input type="hidden" name="recipient" value="${party.user.userId}"> --%>
 										<!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<button type='button' class='btn btn-default'>채팅하기</button> -->
+										
+										
 									</p>
 									
-	        						<!-- chatting form -->
+									<!-- chatting form -->
 									<form name="form">
 										<input type="hidden" name="recipient" value="${party.user.userId}">
 										<input type="hidden" name="sender" value="${user.userId}">
 										<c:if test="${user.userId != party.user.userId }">
-											<button type='button' class='btn-sm btn-default pull-right' onclick="javascript:chatPopup(this.form);">채팅하기</button>
+											<!-- <button type='button' class='btn-sm btn-default pull-right' onclick="javascript:chatPopup(this.form);">채팅하기</button> -->
+											<figure id="privateChat" class="text-right">
+												<img src='../../resources/image/chat/chat-bubble-icon.png' width='8%' height='8%' >
+											</figure>
 										</c:if>
 										<c:if test="${user.userId == party.user.userId }">
 											<!-- <button type='button' class='btn-sm btn-default pull-right' onclick="javascript:chatPopup(this.form);">채팅목록보기</button> -->
 										</c:if>
-										<br>
+										
 									</form>
+									
+	        						
 									
 								</div>
 								<div class="col-xs-12"><hr></div>
 							</div>
 
 							<div class="col-xs-12">
-								<%@include file="/view/party/getPartyMemberList6.jsp"%>
+								<%@include file="/view/party/getPartyMemberList.jsp"%>
 								
 								<small><span class="glyphicon glyphicon-star"></span> 파티에 참여한 사람들</small>
 								<div id="currentMemberCountDiv"></div>
