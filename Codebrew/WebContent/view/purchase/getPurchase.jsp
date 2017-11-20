@@ -41,7 +41,7 @@
 	<script type="text/javascript">
 		
 		// '가정'app 키 ip변경시 동적변경해줘야함
-		/*  Kakao.init('4c581b38ff4c308971bc220233e61b89');
+		Kakao.init('4c581b38ff4c308971bc220233e61b89');
 		
 		var ticketPrice = ${ticket.ticketPrice};
 		var itemName = '${purchase.itemName}';
@@ -64,12 +64,12 @@
 			url = ip+"/party/getParty?partyNo=${ticket.party.partyNo}";
 			purl = ip+"/purchase/addPurchase?partyNo=${ticket.party.partyNo}";
 		}
-		 */
+		 
 		
 		//console.log(imageUrl+","+url+","+purl);
 		
 		// 카카오 링크 보내기
-		/* function sendLink() {
+		function sendLink() {
 		    Kakao.Link.sendDefault({
 		      objectType: 'commerce',
 		      content: {
@@ -93,7 +93,7 @@
 		        }
 		      ]
 		    });
-		  }  */
+		  } 
 	
 		// 카카오페이 결제취소
 		function fncCancelPayment(purchaseNo) {
