@@ -889,7 +889,7 @@
    								}
    								if(totalBusStr.length == 0 && JSONData.subwayList.length == 0){ // 버스와 subway 둘 모두 존재하지 않는 경우
    									$('#transportListAtStation').empty();
-   									$("#replaceTransportListAtStation").html("반경 "+defaultRadius+"m내에 관련 대중교통 정보가 없습니다.");
+   									$("#replaceTransportListAtStation").html("반경 "+radiusForTransportSearchAgain+"m내에 관련 대중교통 정보가 없습니다.");
    								}
    								
    								
@@ -992,7 +992,6 @@
 			   					후기상세조회
 			   				</span>
 			   			</h2>
-			   			<h4 class="text-muted">후기 정보를 <strong class="text-danger">내놓으시길</strong>바랍니다.</h4>
 			   		</div>
 				</div>
 				<!-- row end -->
