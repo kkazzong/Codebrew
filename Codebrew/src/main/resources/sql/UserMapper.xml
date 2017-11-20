@@ -85,19 +85,19 @@
 	UPDATE users
 	
 	<set>
-	user_name=#{userName:VARCHAR},
-	nickname= #{nickname:VARCHAR},
-	gender=#{gender:VARCHAR},
-	phone=#{phone:VARCHAR},
-	age=#{age:VARCHAR},
+	user_name = #{userName:VARCHAR},
+	nickname = #{nickname:VARCHAR},
+	gender = #{gender:VARCHAR},
+	phone = #{phone:VARCHAR},
+	age = #{age:VARCHAR},
 	<if test="profileImage != null">
-	profile_image=#{profileImage:VARCHAR},
+	profile_image = #{profileImage:VARCHAR},
 	</if>
 	<if test="locationFlag != null">
-	location_flag=#{locationFlag:VARCHAR},
+	location_flag = #{locationFlag:VARCHAR},
 	</if>
 	password=#{password:VARCHAR},
-	coconut_count=#{coconutCount:NUMERIC}
+	coconut_count = #{coconutCount:NUMERIC}
 	</set>
 	
 	where user_id = #{userId}

@@ -14,11 +14,12 @@
 </head>
 <body>
 
-<div class="panel-body" >
+
+ <div class="panel-body" >
 <a id="custom-login-btn" href="javascript:loginWithKakao()">
-<img src="//k.kakaocdn.net/14/dn/btqbjxsO6vP/KPiGpdnsubSq3a0PHEGUK1/o.jpg" width="300"/>
+<img src="//k.kakaocdn.net/14/dn/btqbjxsO6vP/KPiGpdnsubSq3a0PHEGUK1/o.jpg" width="290"/>
 </a>
-</div>
+</div> 
 
 <script type='text/javascript'>
  
