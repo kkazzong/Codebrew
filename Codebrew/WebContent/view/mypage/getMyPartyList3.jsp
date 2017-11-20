@@ -146,8 +146,8 @@
 /* 	.container{
 	  padding: 2rem;
 	}*/
-	.gallery{
-	  width: 100%;
+	 .gallery{
+	 /*  width: 100%;  */
 	 /*  max-width: 960px; */
 	 /*  min-height: 100vh; */
 	 /*  margin: 2rem auto;  */
@@ -228,7 +228,7 @@
 	 <jsp:include page="/toolbar/toolbar.jsp" /> 
    	<!-- ToolBar End /////////////////////////////////////--> --%>
 
-<div class="col-md-8 col-md-offset-2">
+<div class="col-md-8 col-md-offset-2 ">
   <div class="gallery">
   	<!-- 목록 조회 Start /////////////////////////////////////-->
 	 <!--  <div class="row"> -->

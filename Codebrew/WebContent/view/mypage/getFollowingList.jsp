@@ -63,11 +63,11 @@
 		                console.log("requestId-->"+requestId);
 		                
 		                
-		                if(flag == "Follow"){
-		                   jsonFollow="addFollow";
+		                if(flag == "Following"){
+		                   jsonFollow="deleteFollow";
 		                	
 		                  }else{
-		                	jsonFollow="deleteFollow";  
+		                	jsonFollow="addFollow";  
 		                  
 		                  }
 		               
@@ -83,15 +83,16 @@
 		                		console.log(status);
 		                		console.log(JSONData);
 		                		
-		                		if(flag == "Follow"){
+		                		if(flag == "Following"){
 		                			
-		                			$(this).removeClass("btn btn-sm pull-right following").addClass("btn btn-info btn-sm pull-right following").text("Following");
+		                			$(this).removeClass("btn btn-info btn-sm pull-right following").addClass("btn btn-sm pull-right following").text("Follow");
+		                		
 		                		  
 		                		}else{
-		                			  
-		                			$(this).removeClass("btn btn-info btn-sm pull-right following").addClass("btn btn-sm pull-right following").text("Follow");
-		  		                	
-		                		  }
+	                			
+	                			$(this).removeClass("btn btn-sm pull-right following").addClass("btn btn-info btn-sm pull-right following").text("Following");
+		                		  
+		                		 }
 		                		}//success
 		                		
 		                		

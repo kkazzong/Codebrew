@@ -204,18 +204,29 @@ public class UserController {
 	// 진짜 회원정보 수정
 	@RequestMapping(value = "updateUser", method = RequestMethod.POST)
 	public ModelAndView updateUser(@ModelAttribute("user") User user, 
-			@RequestParam("uploadFile") MultipartFile uploadFile, HttpSession session) throws Exception {
+			@RequestParam(value="uploadFile", required=false) MultipartFile uploadFile, HttpSession session) throws Exception {
 
 		System.out.println("/user/updateUser : POST");
 
 		
-		  if(uploadFile !=null) {
+		//MultipartFile uploadfile = user.getUploadFile();
+		
+		  if(uploadFile != null && user.getProfileImage() == null) {
 			
-			 File file=new File(profileImageDir+uploadFile.getOriginalFilename());
+			 System.out.println("upload로 들어왔나..."+uploadFile);
+			
+			// String profileImage=uploadFile.getOriginalFilename();
+			 
+			 File file=new File(profileImageDir,uploadFile.getOriginalFilename());
+			 System.out.println("파일 파일 뉴파일"+file);
 			  
-			 user.setProfileImage(uploadFile.getOriginalFilename());
+			 
+			 
+			 System.out.println("유저 프로필 사진"+user.getProfileImage());
 			 
 			 uploadFile.transferTo(file);
+			 
+			 user.setProfileImage(System.currentTimeMillis()+"_"+uploadFile.getOriginalFilename());
 			 //이미 존재하기때문에 already exists and could not be deleted 나옴
 			 //<img src="/resources/uploadFile/${user.profileImage }">
 			 System.out.println("업데이트 사진");
