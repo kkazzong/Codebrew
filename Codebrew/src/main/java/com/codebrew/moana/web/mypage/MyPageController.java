@@ -134,7 +134,8 @@ public class MyPageController {
 		search2.setPageSize(pageSize);
 		
 	  //파티33
-	  Map<String, Object> map3 = partyService.getMyPartyList(search2, sessionId);//원래 userId였음
+	  //Map<String, Object> map3 = partyService.getMyPartyList(search2, sessionId);//원래 userId였음
+	  Map<String, Object> map3 = partyService.getMyPartyListByUserId(sessionId);
 	  Page resultPage = new Page(search2.getCurrentPage(),((Integer)map3.get("totalCount")).intValue(), pageUnit, pageSize);
 
 
