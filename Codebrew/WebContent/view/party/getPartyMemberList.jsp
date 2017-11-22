@@ -35,111 +35,132 @@
 			
 			console.log("\nbuttonFlag ==>"+buttonFlag);
 			
-			if(buttonFlag == 'ap'){
-				
-				/* 애프터 파티 참여 버튼 */
-  				var joinParty = "<button type='button' class='btn btn-info btn-block' id='afterPartyBtn'>애프터파티 참여</button>" 
-  					
-  				$("#partyButtonDiv").html(joinParty).on("click", function() {
-  					
-  					swal({
-	    				  title: '애프터 파티 참여!',
-						  text: "파티에 참여하시겠습니까?",
-						  type: 'warning',
-						  showCancelButton: true,
-						  confirmButtonColor: '#9adbf9',
-						  cancelButtonColor: '#b5bcbf',
-						  confirmButtonText: '네!',
-						  cancelButtonText: '아니오',
-						 
-						}).then(function () {
-						  	
-							self.location="/party/joinParty?partyNo=${party.partyNo}";
-						 
-						}) 
-  					
-  				}); 
-			}else if(buttonFlag == 'ccap'){
-				
-				/* 애프터 파티 취소 버튼 */
-	    		var cancelParty = "<button type='button' class='btn btn-info btn-block'>파티참여취소</button>"; 
-	    		
-	    		$("#partyButtonDiv").html(cancelParty).on("click", function() {
+			if(sessionId !=""){
+			
+				if(buttonFlag == 'ap'){
+					
+					/* 애프터 파티 참여 버튼 */
+	  				var joinParty = "<button type='button' class='btn btn-info btn-block' id='afterPartyBtn'>애프터파티 참여</button>" 
+	  					
+	  				$("#partyButtonDiv").html(joinParty).on("click", function() {
+	  					
+	  					swal({
+		    				  title: '애프터 파티 참여!',
+							  text: "파티에 참여하시겠습니까?",
+							  type: 'warning',
+							  showCancelButton: true,
+							  confirmButtonColor: '#9adbf9',
+							  cancelButtonColor: '#b5bcbf',
+							  confirmButtonText: '네!',
+							  cancelButtonText: '아니오',
+							 
+							}).then(function () {
+							  	
+								self.location="/party/joinParty?partyNo=${party.partyNo}";
+							 
+							}) 
+	  					
+	  				}); 
+				}else if(buttonFlag == 'ccap'){
+					
+					/* 애프터 파티 취소 버튼 */
+		    		var cancelParty = "<button type='button' class='btn btn-info btn-block'>파티참여취소</button>"; 
+		    		
+		    		$("#partyButtonDiv").html(cancelParty).on("click", function() {
+		    			
+		    			swal({
+		    				  title: '애프터 파티 취소!',
+							  text: "파티 참여를 취소하시겠습니까?",
+							  type: 'warning',
+							  showCancelButton: true,
+							  confirmButtonColor: '#9adbf9',
+							  cancelButtonColor: '#b5bcbf',
+							  confirmButtonText: '네!',
+							  cancelButtonText: '아니오',
+							 
+							}).then(function () {
+							  	
+								self.location='/party/cancelParty?partyNo=${party.partyNo}'
+							 
+							}) 
+							
+					
+		    			
+					});
+				}else if(buttonFlag == "p"){
+					
+					/* 파티 티켓 구매 버튼 */
+		    		var purchaseTicket = "<button type='button' class='btn btn-info btn-block'>파티티켓구매</button>"
 	    			
-	    			swal({
-	    				  title: '애프터 파티 취소!',
-						  text: "파티 참여를 취소하시겠습니까?",
-						  type: 'warning',
-						  showCancelButton: true,
-						  confirmButtonColor: '#9adbf9',
-						  cancelButtonColor: '#b5bcbf',
-						  confirmButtonText: '네!',
-						  cancelButtonText: '아니오',
-						 
-						}).then(function () {
-						  	
-							self.location='/party/cancelParty?partyNo=${party.partyNo}'
-						 
-						}) 
-						
-				
+		    		$("#partyButtonDiv").html(purchaseTicket).on("click", function() {
+					
+						swal({
+		  				  title: '파티 참여!',
+							  text: "파티 티켓을 구매하시겠습니까?",
+							  type: 'warning',
+							  showCancelButton: true,
+							  confirmButtonColor: '#9adbf9',
+							  cancelButtonColor: '#b5bcbf',
+							  confirmButtonText: '네!',
+							  cancelButtonText: '아니오',
+							 
+							}).then(function () {
+							  	
+								self.location = '/purchase/addPurchase?partyNo=${party.partyNo}'
+							 
+							}) 
+							
+		    		});
+		    		
+				}else if(buttonFlag == "ccp"){
+					
+					/* 파티 참여 취소 버튼 */
+		    		var cancelPurchase = "<button type='button' class='btn btn-info btn-block'>티켓구매취소</button>";
+		    		var partyNo = $("#partyNo").val(); 
+		    		
+		    			
+	    			/// ajax 호출 함수
+	    			fncGetPurchaseNo(sessionId, partyNo); 
+	    			/// 파티참여취소 버튼 클릭 시 바로 getPurchase로 이동
+	    			$("#partyButtonDiv").html(cancelPurchase).on("click", function(){
 	    			
+						swal({
+		  				  title: '파티 참여 취소!',
+							  text: "파티 티켓 구매를 취소하시겠습니까?",
+							  type: 'warning',
+							  showCancelButton: true,
+							  confirmButtonColor: '#9adbf9',
+							  cancelButtonColor: '#b5bcbf',
+							  confirmButtonText: '네!',
+							  cancelButtonText: '아니오',
+							 
+							}).then(function () {
+							  	
+								self.location = "/purchase/getPurchase?purchaseNo="+purchaseNo;
+							 
+							}) 
+							
+	    			});
+				}
+			
+			}else{
+				
+				/* 로그인 하지 않은 경우 */
+				var defaultButton = "<button type='button' class='btn btn-info btn-block'>파티참여</button>";
+				
+				$("#partyButtonDiv").html(defaultButton).on("click", function(){
+					console.log("로그인 후 이용 가능한 서비스 실행");
+				
+					swal({
+						  title: '로그인 후 이용 가능',
+						  text: "로그인하면 다양한 서비스를 이용할 수 있어요",	  
+						  type: 'info',
+						  confirmButtonColor: '#9adbf9',
+						  confirmButtonText: 'ok',
+						})
 				});
-			}else if(buttonFlag == "p"){
-				
-				/* 파티 티켓 구매 버튼 */
-	    		var purchaseTicket = "<button type='button' class='btn btn-info btn-block'>파티티켓구매</button>"
-    			
-	    		$("#partyButtonDiv").html(purchaseTicket).on("click", function() {
-				
-					swal({
-	  				  title: '파티 참여!',
-						  text: "파티 티켓을 구매하시겠습니까?",
-						  type: 'warning',
-						  showCancelButton: true,
-						  confirmButtonColor: '#9adbf9',
-						  cancelButtonColor: '#b5bcbf',
-						  confirmButtonText: '네!',
-						  cancelButtonText: '아니오',
-						 
-						}).then(function () {
-						  	
-							self.location = '/purchase/addPurchase?partyNo=${party.partyNo}'
-						 
-						}) 
-						
-	    		});
-	    		
-			}else if(buttonFlag == "ccp"){
-				
-				/* 파티 참여 취소 버튼 */
-	    		var cancelPurchase = "<button type='button' class='btn btn-info btn-block'>티켓구매취소</button>";
-	    		var partyNo = $("#partyNo").val(); 
-	    		
-	    			
-    			/// ajax 호출 함수
-    			fncGetPurchaseNo(sessionId, partyNo); 
-    			/// 파티참여취소 버튼 클릭 시 바로 getPurchase로 이동
-    			$("#partyButtonDiv").html(cancelPurchase).on("click", function(){
-    			
-					swal({
-	  				  title: '파티 참여 취소!',
-						  text: "파티 티켓 구매를 취소하시겠습니까?",
-						  type: 'warning',
-						  showCancelButton: true,
-						  confirmButtonColor: '#9adbf9',
-						  cancelButtonColor: '#b5bcbf',
-						  confirmButtonText: '네!',
-						  cancelButtonText: '아니오',
-						 
-						}).then(function () {
-						  	
-							self.location = "/purchase/getPurchase?purchaseNo="+purchaseNo;
-						 
-						}) 
-						
-    			});
 			}
+			
 		}	
 			
 		
@@ -191,7 +212,7 @@
 											
 											self.location="/myPage/getMyPage?requestId="+userId;
 									
-										});; 
+										});
 										console.log(partyMemberList);
 										
 										
@@ -210,6 +231,7 @@
 							  		
 							  		for(i=0 ; i<JSONData.list.length ; i++){
 							  			console.log("for문 안");
+							  			
 							  			
 							  			/* 파티 멤버 리스트 보기 버튼 */
 										if(sessionId !=""){
@@ -293,7 +315,7 @@
 										}
 										
 										
-							  		}
+							  		}//for문
 						  }
 						});
 				

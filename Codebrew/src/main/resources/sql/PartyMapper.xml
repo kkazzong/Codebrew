@@ -295,7 +295,7 @@
 			        AND pm.delete_flag IS NULL
 			        
 		        </where>
-		        ORDER BY inner_table.party_date ASC)
+		        ORDER BY inner_table.party_date DESC)
 	  	
 	 </select>
 	 

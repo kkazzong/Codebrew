@@ -203,6 +203,8 @@
 		
 		/* 파티 멤버 리스트 보기 버튼 */
 		$("#ratioLock > img").on("click", function() {
+			
+			var sessionId = "${user.userId}";
 			if(sessionId !=""){
 				var getPartyRatioList = "<div class='hover01 column'>"
 										+"<div>"
@@ -214,7 +216,7 @@
 				
 				console.log("코코넛 차감후 파티 비율 보기 실행");
 				
-				var coconutCount = ${user.coconutCount};
+				var coconutCount = "${user.coconutCount}";
 				
 				if( coconutCount>3){
 					swal.queue([{
@@ -271,7 +273,7 @@
 				console.log("로그인 후 이용 가능한 서비스 실행");
 			
 				swal({
-					  title: '파티 멤버 리스트',
+					  title: '파티 참여자 비율',
 					  text: "로그인 후 이용할 수 있어요!",	  
 					  type: 'info',
 					  confirmButtonColor: '#9adbf9',
