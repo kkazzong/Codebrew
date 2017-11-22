@@ -143,14 +143,14 @@
 	  font-family: 'Open Sans', Arial, sans-serif;
 	}
 	
-/* 	.container{
+	.container{
 	  padding: 2rem;
-	}*/
+	}
 	 .gallery{
-	 /*  width: 100%;  */
-	 /*  max-width: 960px; */
-	 /*  min-height: 100vh; */
-	 /*  margin: 2rem auto;  */
+	   width: 100%;  
+	  max-width: 960px; 
+	   min-height: 100vh; 
+	   margin: 2rem auto;  
 	  
 	  display: -webkit-box;
 	  display: -webkit-flex;

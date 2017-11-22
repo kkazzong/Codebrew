@@ -279,7 +279,8 @@
 	margin: 22px;
 }
  .userprofile.social {
-    background: url(/resources/uploadFile/f424d0ed-341f-4c47-9670-cd959a19ba2f1510036321585.jpg) no-repeat top center; 
+   /* background: url(/resources/uploadFile/f424d0ed-341f-4c47-9670-cd959a19ba2f1510036321585.jpg) no-repeat top center;  */
+	background: url(/resources/image/ui/pexels-photo-226718.jpg) no-repeat top center; 
 	background-size: 100%;
 	padding: 50px 0;
 	margin: 0
