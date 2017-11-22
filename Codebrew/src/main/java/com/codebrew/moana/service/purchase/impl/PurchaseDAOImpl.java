@@ -206,7 +206,8 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			if (!file.exists()) {
 				file.mkdirs();
 			}
-			String url = "http://127.0.0.1:8080/purchase/getPurchase?purchaseNo="+purchaseNo;
+			String url = "http://192.168.0.13:8080/purchase/getPurchase?purchaseNo="+purchaseNo;
+			//String url = "http://192.168.0.13:8080";
 			qrCode = new QRCode();
 			qrCode.setQrCodeResult(url);
 			//code
