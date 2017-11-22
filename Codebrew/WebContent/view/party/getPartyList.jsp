@@ -179,9 +179,11 @@
     	margin-top : 400px;
     }
 	#banner {
-		background: url(https://cdnstrgcu01.azureedge.net/web/banners/banner_1.jpg) center center no-repeat;
+		/* background: url(https://cdnstrgcu01.azureedge.net/web/banners/banner_1.jpg) center center no-repeat; */
+		background: url(/resources/image/ui/people-eiffel-tower-lights-night.jpg) center center no-repeat;
 	    background-size: cover;
-	    height: 21.75rem;
+	    /* height: 21.75rem; */
+	    height: 50rem;
 	    text-align: center;
 	    -ms-flex-align: center;
 	    align-items: center;
@@ -196,6 +198,7 @@
 	    transition: opacity .5s ease-out;
 	    color: #FFF;
 	    /* width: 100%; */
+	    
 	}
 	.title {
 		color: white;
@@ -399,7 +402,7 @@
 		</div>
 		<hr><br>
 		<div class="page-header text-info">
-   		   <h3 align="center">다가오는 파티</h3>
+   		   <h3 align="center"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp; 다가오는 파티</h3>
 	    </div>
 		<div class="input-group-btn text-center">
 	    	Buttons
