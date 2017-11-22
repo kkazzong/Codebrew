@@ -232,10 +232,9 @@
 										
 										
 								
-										
-									<c:if test="${follow.responseId != sessionScope.user.userId }"> 
+								
 										<button name="following" id="followButton" type="button" class="btn btn-info btn-sm pull-right follower" value="${follow.responseId}">Following</button>
-									</c:if> 
+								
 										
 										
 									</c:when>
@@ -246,9 +245,9 @@
 									
 										
 											
-										 <c:if test="${follow.responseId != sessionScope.user.userId }">
+										
 										<button name="follow" id="followButton" type="button" class="btn btn-sm pull-right follower" value="${follow.responseId}">Follow</button>
-										</c:if> 
+								 
 										
 										
 										
