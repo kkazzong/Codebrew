@@ -4,6 +4,7 @@ import java.io.File;
 import java.sql.Date;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -215,7 +216,7 @@ public class UserController {
 	}
 
 	// 진짜 회원정보 수정
-	@RequestMapping(value = "updateUser", method = RequestMethod.POST)
+	/*@RequestMapping(value = "updateUser", method = RequestMethod.POST)
 	public ModelAndView updateUser(@ModelAttribute("user") User user, 
 			@RequestParam("uploadFile") MultipartFile uploadFile, HttpSession session) throws Exception {
 
@@ -278,7 +279,70 @@ public class UserController {
 		modelAndView.setViewName("redirect:/view/user/updateUser.jsp");
 		modelAndView.addObject(user);
 		return modelAndView;
+	}*/
+	
+	
+	@RequestMapping(value = "updateUser", method = RequestMethod.POST)
+	public ModelAndView updateUser(@ModelAttribute("user") User user, 
+			HttpServletRequest request, HttpSession session) throws Exception {
+
+		System.out.println("/user/updateUser : POST");
+
+		
+		MultipartFile uploadfile = user.getUploadFile();
+		
+		//업로드 파일이 널인데 지금 null이 아닐때 들어와야 할  if문에 들어옴
+		
+		  if(uploadfile != null) {
+			
+			 System.out.println("upload로 들어왔나..."+uploadfile);
+			 
+			 //에러->업로드파일은 들어오고, getOriginalFilename은 안들어온 상태
+			
+			 String profileImage=uploadfile.getOriginalFilename();
+			
+			 System.out.println("프로필이미지"+profileImage);
+			 
+			 File file=new File(profileImageDir+profileImage);
+			 
+			 System.out.println("파일 파일 뉴파일"+file);
+			 
+			 
+			 uploadfile.transferTo(file);
+	
+			 
+			 
+			 user.setProfileImage(System.currentTimeMillis()+"_"+uploadfile.getOriginalFilename());
+			 
+			 System.out.println("유저 프로필 사진"+user.getProfileImage());
+			 //이미 존재하기때문에 already exists and could not be deleted 나옴
+			 //<img src="/resources/uploadFile/${user.profileImage }">
+			 System.out.println("업데이트 사진");
+		  }
+			 
+		  userService.updateUser(user);
+			 
+		String sessionId = ((User) session.getAttribute("user")).getUserId();
+		// user 클래스 형태로 형변환을 해줘야 userId를 꺼낼수 있다.
+
+		// String sessionId1=(String)session.getAttribute("userId");
+		// 이건 안됨.. 왜냐면 세션에 user정보를 도메인으로 보내놨기 때문에
+
+		if (sessionId.equals(user.getUserId())) {
+			session.setAttribute("user", user);
+		}
+		// 수정후 uservo의 userId와 현재 세션의 userId와 같다면 세션에 user정보를 넣는다
+		// user.getUserId의 user는 updateUser시 바인딩되서 들어간 uservo(불러온 user정보:파라미터)를 의미함
+		// 데이터로 가기전에 수정된 정보는 user 도메인에 머금고 있다.그래서 userId랑 sessionId를 비교해주는 것이다.
+		// 수정하기전에 들어온 user.getUserId와 session에 있는 userId와 같다면 session에 user setAttribute
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("redirect:/view/user/updateUser.jsp");
+		modelAndView.addObject(user);
+		return modelAndView;
 	}
+
+	
 
 	// 아이디찾기 비밀번호찾기 화면이동
 	@RequestMapping(value = "findUser", method = RequestMethod.GET)

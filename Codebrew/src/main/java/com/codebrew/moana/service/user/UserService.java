@@ -40,7 +40,7 @@ public interface UserService {
 	//본인인증
 	public Auth confirmUser(Auth auth)throws Exception;
     
-	//카카오로그인할때 정보가지고 올거
+	//카카오로그인
 	public User getCode(String authorize_code) throws Exception;
 	
 	//코코넛수량 업데이트

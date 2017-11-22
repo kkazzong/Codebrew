@@ -1,20 +1,18 @@
 package com.codebrew.moana.web.mypage;
 
-import java.util.ArrayList;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,16 +20,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.codebrew.moana.common.Page;
 import com.codebrew.moana.common.Search;
-import com.codebrew.moana.service.domain.Festival;
+
 import com.codebrew.moana.service.domain.Follow;
 import com.codebrew.moana.service.domain.Party;
 import com.codebrew.moana.service.domain.User;
-import com.codebrew.moana.service.domain.Zzim;
-import com.codebrew.moana.service.festival.FestivalService;
+
+
 import com.codebrew.moana.service.follow.FollowService;
 import com.codebrew.moana.service.party.PartyService;
-import com.codebrew.moana.service.purchase.PurchaseService;
-import com.codebrew.moana.service.review.ReviewService;
 import com.codebrew.moana.service.user.UserService;
 
 @Controller
@@ -51,20 +47,8 @@ public class MyPageController {
 	@Autowired
 	@Qualifier("partyServiceImpl")
 	private PartyService partyService;
-	
-	@Autowired
-	@Qualifier("festivalServiceImpl")
-	private FestivalService festivalService;
-	
-	
-	@Autowired
-	@Qualifier("reviewServiceImpl")
-	private ReviewService reviewService;
-	
-	@Autowired
-	@Qualifier("purchaseServiceImpl")
-	private PurchaseService purchaseService;
-	
+
+
 	
 	@Value("#{commonProperties['pageUnit']}")
 	//@Value("#{commonProperties['pageUnit'] ?: 3}")
@@ -83,7 +67,130 @@ public class MyPageController {
 		System.out.println(this.getClass());
 	}
 
-	@RequestMapping(value="getFollowingList", method=RequestMethod.GET)
+	
+	@RequestMapping(value="getMyPage", method=RequestMethod.GET)
+	public ModelAndView getMyPage(@RequestParam(value="requestId", required=false)String requestId, HttpSession session
+			,@ModelAttribute("user")User user,@ModelAttribute("search")Search search,
+			@ModelAttribute("party")Party party)throws Exception{
+	
+		System.out.println("/myPage/getMyPage 수정 : GET");
+		
+		
+	  Map<String, Object>map=new HashMap<String, Object>();
+	  map.put("requestId", requestId);
+	  map.put("sessionId", ((User)session.getAttribute("user")).getUserId());
+			
+    Follow follow=followService.getFollow(map.get("sessionId").toString(), requestId);
+		   
+    //일단 화면에서 받은 requestId(userId)와 나 sessionId상태로 getFollow를 가져온다
+    //이사람과 내가 팔로우 되어있는지 안되어있는지 판단하기 위해...add 두번가면 무결성에러..니깐...
+    
+   
+    
+    
+    
+    
+    
+    String sessionId="";
+	if(session.getAttribute("user") !=null) {
+	
+		sessionId=((User)session.getAttribute("user")).getUserId();
+	}
+	
+	System.out.println("세션아디는???"+sessionId);
+	System.out.println("리퀘스트아이디는???"+requestId);
+	  if(requestId !=null) {//팔로잉 하는 사람이 있으면
+		
+		if(sessionId.indexOf("requestId")== -1) {
+			sessionId=requestId;
+		}
+		
+	}
+	  
+	  
+		  
+		System.out.println("세션아디가 뭘로 변했나??"+sessionId);//리퀘스트 아이디로 변환
+		
+		user=userService.getUser(sessionId);//requstId(sessionId)의 유저 정보
+			
+	    System.out.println("세션"+user);
+	   
+		
+	  //팔로잉11
+	  Map<String, Object>map1=followService.getFollowingList(search, sessionId);
+	  		
+	  //sessionId가 requestId로		
+	  		
+	  //팔로워22
+	  Map<String, Object>map2=followService.getFollowerList(search, sessionId);
+		
+	//sessionId가 responseId로	
+		  
+	 Search search2=new Search();
+	 
+	 if (search2.getCurrentPage() == 0) {
+			search2.setCurrentPage(1);
+		}
+		search2.setPageSize(pageSize);
+		
+	  //파티33
+	  Map<String, Object> map3 = partyService.getMyPartyList(search2, sessionId);//원래 userId였음
+	  Page resultPage = new Page(search2.getCurrentPage(),((Integer)map3.get("totalCount")).intValue(), pageUnit, pageSize);
+
+
+	  
+	  
+	
+		ModelAndView modelAndView=new ModelAndView();
+		modelAndView.addObject("user", user);//마이페이지 왔을때 그사람의 정보
+	    modelAndView.addObject("follow",follow);//requestId가 있는지 없는지...
+	    
+	    // 리스트 정보를 마이페이지에 뿌려주지 않으면 getFollowList include 한 정보가 나오는것이기때문에 아무것도 안나옴..
+	    
+	    //팔로잉리스트
+		modelAndView.addObject("list1", map1.get("list"));
+		modelAndView.addObject("totalCount1",map1.get("totalCount"));
+		
+		System.out.println("팔로잉리스트는????"+map1.get("list"));
+		System.out.println("팔로잉토탈카운트는??"+map1.get("totalCount"));
+		
+		//팔로워
+		modelAndView.addObject("list2", map2.get("list"));
+		modelAndView.addObject("totalCount2",map2.get("totalCount"));
+		
+		
+		System.out.println("팔로워리스트는????"+map2.get("list"));
+		System.out.println("팔로워토탈카운트는??"+map2.get("totalCount"));
+	
+	    //파티
+		modelAndView.addObject("list3", map3.get("list"));
+		modelAndView.addObject("resultPage", resultPage);
+		modelAndView.addObject("search", search2);
+	    modelAndView.addObject("party",party); 
+	    
+	    
+	    System.out.println("파티리스트는???"+map3.get("list"));
+	    System.out.println("파티 토탈카운트는??"+resultPage.getTotalCount());
+	    System.out.println("파티정보는???"+party);
+				
+	    System.out.println("오긴왔니???");
+	   //modelAndView.setViewName("forward:/view/mypage/mmm.jsp");
+	    
+	   //modelAndView.setViewName("forward:/view/mypage/getMyPage.jsp");
+	   
+
+	   modelAndView.setViewName("forward:/view/mypage/getMyPage.jsp");
+
+		
+		return modelAndView;
+		
+	
+    }
+	
+	
+	
+	
+	/*@RequestMapping(value="getFollowingList", method=RequestMethod.GET)
 	public ModelAndView getFollowingList(@ModelAttribute("search")Search search, HttpSession session,
 			      @RequestParam(value="requestId", required=false)String requestId )throws Exception{
 		
@@ -124,7 +231,7 @@ public class MyPageController {
 		ModelAndView modelAndView=new ModelAndView();
 		modelAndView.addObject("list", map.get("list"));
 		modelAndView.addObject("user", user);
-		/*modelAndView.setViewName("forward:/view/mypage/getFollowingList.jsp");*/
+		modelAndView.setViewName("forward:/view/mypage/getFollowingList.jsp");
 		modelAndView.setViewName("forward:/view/mypage/getMyPage.jsp");
 	
 		return modelAndView;
@@ -170,11 +277,11 @@ public class MyPageController {
 		ModelAndView modelAndView=new ModelAndView();
 		modelAndView.addObject("list", map.get("list"));
 		modelAndView.addObject("user", user);
-		/*modelAndView.setViewName("forward:/view/mypage/getFollowerList.jsp");*/
+		modelAndView.setViewName("forward:/view/mypage/getFollowerList.jsp");
 		modelAndView.setViewName("forward:/view/mypage/getMyPage.jsp");
 		
 		return modelAndView;
-	}
+	}*/
 /*	
 	@RequestMapping(value="getMyPage", method=RequestMethod.GET)
 	public ModelAndView getMyPage(@RequestParam("requestId")String requestId, 
@@ -549,125 +656,6 @@ public class MyPageController {
 	
 	
 	*/
-	
-	@RequestMapping(value="getMyPage", method=RequestMethod.GET)
-	public ModelAndView getMyPage(@RequestParam(value="requestId", required=false)String requestId, HttpSession session
-			,@ModelAttribute("user")User user,@ModelAttribute("search")Search search,
-			@ModelAttribute("party")Party party)throws Exception{
-	
-		System.out.println("/myPage/getMyPage 수정 : GET");
-		
-		
-	  Map<String, Object>map=new HashMap<String, Object>();
-	  map.put("requestId", requestId);
-	  map.put("sessionId", ((User)session.getAttribute("user")).getUserId());
-			
-    Follow follow=followService.getFollow(map.get("sessionId").toString(), requestId);
-		   
-    //일단 화면에서 받은 requestId(userId)와 나 sessionId상태로 getFollow를 가져온다
-    //이사람과 내가 팔로우 되어있는지 안되어있는지 판단하기 위해...add 두번가면 무결성에러..니깐...
-    
-   
-    
-    
-    
-    
-    
-    String sessionId="";
-	if(session.getAttribute("user") !=null) {
-	
-		sessionId=((User)session.getAttribute("user")).getUserId();
-	}
-	
-	System.out.println("세션아디는???"+sessionId);
-	System.out.println("리퀘스트아이디는???"+requestId);
-	  if(requestId !=null) {//팔로잉 하는 사람이 있으면
-		
-		if(sessionId.indexOf("requestId")== -1) {
-			sessionId=requestId;
-		}
-		
-	}
-	  
-	  
-		  
-		System.out.println("세션아디가 뭘로 변했나??"+sessionId);//리퀘스트 아이디로 변환
-		
-		user=userService.getUser(sessionId);//requstId(sessionId)의 유저 정보
-			
-	    System.out.println("세션"+user);
-	   
-		
-	  //팔로잉11
-	  Map<String, Object>map1=followService.getFollowingList(search, sessionId);
-	  		
-	  //sessionId가 requestId로		
-	  		
-	  //팔로워22
-	  Map<String, Object>map2=followService.getFollowerList(search, sessionId);
-		
-	//sessionId가 responseId로	
-		  
-	 Search search2=new Search();
-	 
-	 if (search2.getCurrentPage() == 0) {
-			search2.setCurrentPage(1);
-		}
-		search2.setPageSize(pageSize);
-		
-	  //파티33
-	  Map<String, Object> map3 = partyService.getMyPartyList(search2, sessionId);//원래 userId였음
-	  Page resultPage = new Page(search2.getCurrentPage(),((Integer)map3.get("totalCount")).intValue(), pageUnit, pageSize);
-
-
-	  
-	  
-	
-		ModelAndView modelAndView=new ModelAndView();
-		modelAndView.addObject("user", user);//마이페이지 왔을때 그사람의 정보
-	    modelAndView.addObject("follow",follow);//requestId가 있는지 없는지...
-	    
-	    // 리스트 정보를 마이페이지에 뿌려주지 않으면 getFollowList include 한 정보가 나오는것이기때문에 아무것도 안나옴..
-	    
-	    //팔로잉리스트
-		modelAndView.addObject("list1", map1.get("list"));
-		modelAndView.addObject("totalCount1",map1.get("totalCount"));
-		
-		System.out.println("팔로잉리스트는????"+map1.get("list"));
-		System.out.println("팔로잉토탈카운트는??"+map1.get("totalCount"));
-		
-		//팔로워
-		modelAndView.addObject("list2", map2.get("list"));
-		modelAndView.addObject("totalCount2",map2.get("totalCount"));
-		
-		
-		System.out.println("팔로워리스트는????"+map2.get("list"));
-		System.out.println("팔로워토탈카운트는??"+map2.get("totalCount"));
-	
-	    //파티
-		modelAndView.addObject("list3", map3.get("list"));
-		modelAndView.addObject("resultPage", resultPage);
-		modelAndView.addObject("search", search2);
-	    modelAndView.addObject("party",party); 
-	    
-	    
-	    System.out.println("파티리스트는???"+map3.get("list"));
-	    System.out.println("파티 토탈카운트는??"+resultPage.getTotalCount());
-	    System.out.println("파티정보는???"+party);
-				
-	    System.out.println("오긴왔니???");
-	   //modelAndView.setViewName("forward:/view/mypage/mmm.jsp");
-	    
-	   //modelAndView.setViewName("forward:/view/mypage/getMyPage.jsp");
-	   
-
-	   modelAndView.setViewName("forward:/view/mypage/getMyPage.jsp");
-
-		
-		return modelAndView;
-		
-	
-    }
 	
 	
 	

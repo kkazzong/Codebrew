@@ -689,7 +689,8 @@
             </ul>
           </div> -->
       
-  <jsp:include page="/view/mypage/getMyPartyList3.jsp"/>  
+  <%-- <jsp:include page="/view/mypage/getMyPartyList3.jsp"/>   --%>
+       <jsp:include page="/view/mypage/getMyPartyList3.jsp"/>
               
   
 </body>

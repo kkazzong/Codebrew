@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.Part;
 import javax.mail.internet.MimeMessage;
 
 import org.codehaus.jackson.JsonNode;
@@ -91,6 +92,7 @@ public class UserServiceImpl implements UserService{
 		    messageHelper.setTo(user.getUserId());
 		    messageHelper.setSubject(subject);
 		    messageHelper.setText(user.getUserName()+contentAdd);
+		    //message.setContent(contentAdd, "text/html;charset=utf-8");
 		    
 		    mailSender.send(message);
 		}catch(Exception e) {
@@ -190,42 +192,8 @@ public class UserServiceImpl implements UserService{
 	    
 	    try {
 	      MimeMessage message = mailSender.createMimeMessage();
-	      
-	     //메일폼 방식은 2가지임
-	      //simpleMailMessage: 오로지 String 으로 메일 보낼때만
-	      //MimeMessage:html,첨부파일등 다양한 폼의 메일 보내구 싶을때
-	      
-	      //javaMailSenderImpe 안에 있는.createMimeMessage()를 통해 새로운 mimemessage인스턴스생성
-	      //javaMailSenerderImpl안에 Public MimeMessage CerateMimeMassage() throws Exception{} 있는거
-	      //=userService.addUser(); 랑 같다고 보믄 됨
-	      
-	      //JavaMailSender mailSender = new JavaMailSenderImpl();
-          //set.sender.setHost("smtp.naver.com"); SMTP 서버에서 인증이 필요할때 설정하는 값들
-	      // Properties prop = new Properties();SMTP와 관련된 세션을 생성하기 위해서 SMTP서버와 관련된 정보 지정
-	      // prop.setProperty("mail.smtp.auth", "true"); 
-	     // sender.setJavaMailProperties(prop);//여기까지의 과정을 프로퍼티에 저장해놈
-	      
-	      //properties클래스 사용해서 세션을 생성할때 필요한 값을 설정하고 javax.mail.Session을 사용하여 세션을 생성한다
-          //javaMail 메일과 관련된 모든 작업을 처리하기 위해서는 세션을 먼저 생성해야 한다.
-	      //Session session=Session.getDefaultInstance(props, authenticator);
-	      
-	      //javax.mail.AuthenticationFailedException: 535 5.7.1 Username and Password not accepted 9+0ovge2TIq7k8N74XWkCw - nsmtp
-	      //new javax.mail.Authenticator() 는 Authenticator auth = new SMTPAuthenticator(id,pwd);
-
-	    /*  Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
-	    		protected PasswordAuthentication getPasswordAuthentication() {
-	    		return new PasswordAuthentication(setFrom, setPwd);
-	    		}
-	    		});
-	      */
-	   
-
-	  
-	      
-	      //스프링프레임워트에서 제공하는 Helper를 이용해서 좀 더 직관적인 메서드 이름과 편리한 인터페이스로 MimeMessage를 작성할 수 있게해주는거
-	      //원래는 message.setFrom(new InternetAddress("codebrew@naver.com"));이런식으로 귀찮게 써줘야됨
-            MimeMessageHelper messageHelper 
-	                        = new MimeMessageHelper(message, true, "UTF-8");//true는 멀티파트메세지가 필요할때
+	      MimeMessageHelper messageHelper 
+	                        = new MimeMessageHelper(message, true, "UTF-8");
 	 
 	      messageHelper.setFrom(setFrom); //보내는 사람
 	      messageHelper.setTo(user.getUserId());     

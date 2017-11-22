@@ -56,7 +56,7 @@ public class UserRestController {
 	}
 	
 	
-    //입력한 아이디와 비밀번호가 맞는지 알려주려고 만든 거
+  /*  //입력한 아이디와 비밀번호가 맞는지 알려주려고 만든 거
 	@RequestMapping(value="json/getLoginUser", method=RequestMethod.POST)
 	public User getLoginUser(@RequestParam("requestId")String requestId)throws Exception{
 		
@@ -64,11 +64,11 @@ public class UserRestController {
 		
 		return userService.getUser(requestId);
 		
-	}
+	}*/
 	
 	
 	
-	/*
+	//안드로이드
 	@RequestMapping(value="json/login", method=RequestMethod.POST)
 	public User login(@RequestBody User user, HttpSession session)throws Exception{
 	
@@ -83,18 +83,18 @@ public class UserRestController {
 		
 		return dbUser;
 	
-	}*/
+	}
 	
 	
-	
-	/*@RequestMapping(value="json/logout", method=RequestMethod.GET)
+	//안드로이드	
+	@RequestMapping(value="json/logout", method=RequestMethod.GET)
 	public void logout(HttpSession session)throws Exception{
 		System.out.println("/userRest/json/logout : GET");
 		
 		session.invalidate();
 	
 	}
-	*/
+	
 	
 	
     //회원정보수정, 회원가입시 닉네임중복체크
@@ -151,7 +151,7 @@ public class UserRestController {
 		return map;
 		
 	}
-	
+	/*
 	//위치동의
 	@RequestMapping(value="json/locateUser", method=RequestMethod.POST)
 	public User locateUser(@RequestParam(value="locationFlag", defaultValue="n")String locationFlag,
@@ -168,7 +168,7 @@ public class UserRestController {
 		
 		return user;
   }
-	
+	*/
 	
 
 	

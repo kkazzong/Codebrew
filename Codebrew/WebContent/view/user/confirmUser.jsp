@@ -97,7 +97,7 @@
             
 			var userId=$("input[name='authId']").val();
 			
-			alert("userId는???"+userId);
+			//alert("userId는???"+userId);
 			
 			$.ajax({
 				type:"POST",

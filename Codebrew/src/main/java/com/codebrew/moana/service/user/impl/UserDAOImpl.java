@@ -90,15 +90,13 @@ public class UserDAOImpl implements UserDAO {
 		// TODO Auto-generated method stub
 		String uuid="";
 		
-		for(int i=0; i<number ; i++) {//i가 횟수 random넘버가 되는건 uuid
-			//UUID uuid = UUID.randomUUID(); // UUID 자체는 오브젝트 타입
-			//String uuid= UUID.randomUUID().toString();//스트링타입으로 바꿔줌
-			uuid= UUID.randomUUID().toString().replaceAll("-", "");//특수문자 지우고 null로 바꿈
-			uuid.substring(0, 4);//4번째에서 자름
+		for(int i=0; i<number ; i++) {
+		    uuid= UUID.randomUUID().toString().replaceAll("-", "");
+			uuid.substring(0, 4);
 
 		}
 		
-	return uuid;//괄호 밖이라서 마지막 결과만 나옴
+	return uuid;
 	
 	}
 
